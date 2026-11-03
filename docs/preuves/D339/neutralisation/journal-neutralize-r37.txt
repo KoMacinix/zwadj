@@ -1,0 +1,94 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 21 déclarées · 21 jouées · 3 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol pro-creation : code 0 · passés 4 · en échec 0
+  pré-vol pro-fournisseur : code 0 · passés 15 · en échec 0
+  pré-vol pro-relecture : code 0 · passés 19 · en échec 0
+✓ P-1. `revalidate` perd son garde `idleRef` : il relit pendant un chargement et sur l'état « error » (une cascade, et le bouton « Réessayer » contourné)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 13 · en échec 2 · AssertionError: expected 2 to be 1 // Object.is equality
+   [pro-fournisseur#2] code 1 · passés 13 · en échec 2 · AssertionError: expected 2 to be 1 // Object.is equality
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ P-2. la relecture d'entrée n'est plus silencieuse : elle masque la liste connue pendant la lecture
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [pro-fournisseur] code 1 · passés 12 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-3. ⛔ le drapeau silencieux n'est plus consommé quand aucun PRO n'est connecté : la première lecture de la session suivante est silencieuse (la liste de l'ancien compte reste à l'écran)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected null not to be null
+✓ P-4. un échec de la relecture d'entrée remplace la liste connue par l'état « error »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-5. ⛔ une réponse qui n'est pas un tableau remplace la liste connue par une liste VIDE (un compte faux présenté comme un fait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-6. ⛔ la lecture précédente n'est plus annulée : une réponse tardive écrase la plus fraîche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-7. `count` ne garde plus le dernier compte connu pendant une relecture voulue : le libellé « Mes salles » clignote
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-8. le drapeau « liste connue » reste coincé après un échec silencieux : plus aucune relecture d'entrée ensuite
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [pro-fournisseur] code 1 · passés 14 · en échec 1 · AssertionError: expected 2 to be 3 // Object.is equality
+✓ P-9. ⛔ la relecture VOULUE devient silencieuse : la salle supprimée reste montrée comme présente, et l'échec d'une relecture après écriture est avalé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 16 · en échec 3 · AssertionError: expected null not to be null
+   [pro-fournisseur] code 1 · passés 13 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ P-10. le drapeau « liste connue » n'est plus relevé après une lecture réussie : la relecture d'entrée ne part jamais
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 16 · en échec 3 · AssertionError: expected 0 to be greater than 0
+   [pro-fournisseur] code 1 · passés 10 · en échec 5 · AssertionError: expected 1 to be 2 // Object.is equality
+✓ E-1. ⛔ l'enregistrement réussi ne fait plus relire la liste : « Ma salle », le libellé et la salle courante restent ceux d'avant (S4 de D327)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 15 · en échec 4 · AssertionError: expected null not to be null
+   [pro-relecture#2] code 1 · passés 15 · en échec 4 · AssertionError: expected null not to be null
+   [pro-relecture#3] code 1 · passés 15 · en échec 4 · AssertionError: expected null not to be null
+✓ E-2. ⛔ la relecture part AVANT la réponse du serveur (F-4) : elle lit l'état d'avant l'enregistrement
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-relecture] code 1 · passés 16 · en échec 3 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ E-3. ⛔ la suppression réussie ne fait plus relire la liste avant d'y arriver : la salle supprimée y est montrée (S6 de D327)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected null not to be null
+✓ E-4. la relecture part AVANT la réponse de la suppression : elle part même quand le serveur REFUSE
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-relecture] code 1 · passés 16 · en échec 3 · AssertionError: expected 2 to be 1 // Object.is equality
+   [pro-relecture#2] code 1 · passés 16 · en échec 3 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ E-5. un enregistrement SANS rien à enregistrer relit quand même la liste
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ L-1. ⛔ la liste ne demande plus la relecture à son entrée : la publication faite ailleurs reste invisible (S5 de D327)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 16 · en échec 3 · AssertionError: expected 0 to be greater than 0
+   [pro-relecture#2] code 1 · passés 16 · en échec 3 · AssertionError: expected 1 to be 2 // Object.is equality
+   [pro-relecture#3] code 1 · passés 16 · en échec 3 · AssertionError: expected 1 to be 2 // Object.is equality
+✓ L-2. la liste demande une relecture VOULUE à son entrée : elle se masque (« Chargement ») à chaque visite
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [pro-relecture] code 1 · passés 17 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ L-3. ⛔ la page lit elle-même la liste (`listMine`) : deux sources, le libellé et la liste peuvent diverger (D78)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [pro-relecture] code 1 · passés 12 · en échec 7 · AssertionError: src/venues/venue-list-page.tsx: expected '\r\r\r\r\r\r\r\r\r\r\r\r\nimport { us…' not to match /\blistMine\b/
+✓ D-1. ⛔ `create` enregistre la salle AU MOMENT DE L'APPEL : une relecture partie trop tôt la verrait (le test de D326, vert pour la mauvaise raison)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-creation] code 1 · passés 3 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 2 times
+✓ D-2. `update` enregistre au moment de l'appel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ D-3. `softDelete` supprime au moment de l'appel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-relecture] code 1 · passés 18 · en échec 1 · AssertionError: expected 3 to be 1 // Object.is equality
+  empreintes : 4 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+21 garde(s) mordue(s) sur 21 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 21 sur 21, 0, 0)
+arbre rendu à son état de départ : vérifié.
+

@@ -1,0 +1,9 @@
+2026-11-03 14:19:51 | AVANT   | secteur=Online | batterie=100% | RAM libre=3246 Mo | chrome=0 | headless_shell=0 | node=0 | cpu=16%
+2026-11-03 14:19:52 | PENDANT | secteur=Online | batterie=100% | RAM libre=3240 Mo | chrome=0 | headless_shell=0 | node=0 | cpu=11%
+2026-11-03 14:20:23 | PENDANT | secteur=Online | batterie=100% | RAM libre=1345 Mo | chrome=0 | headless_shell=0 | node=12 | cpu=18%
+2026-11-03 14:20:56 | PENDANT | secteur=Online | batterie=100% | RAM libre=953 Mo | chrome=0 | headless_shell=8 | node=14 | cpu=55%
+2026-11-03 14:21:27 | PENDANT | secteur=Online | batterie=100% | RAM libre=950 Mo | chrome=0 | headless_shell=9 | node=14 | cpu=49%
+2026-11-03 14:21:58 | PENDANT | secteur=Online | batterie=100% | RAM libre=1001 Mo | chrome=0 | headless_shell=9 | node=15 | cpu=66%
+2026-11-03 14:22:29 | PENDANT | secteur=Online | batterie=100% | RAM libre=1221 Mo | chrome=0 | headless_shell=8 | node=15 | cpu=54%
+2026-11-03 14:23:00 | PENDANT | secteur=Online | batterie=100% | RAM libre=1281 Mo | chrome=0 | headless_shell=4 | node=13 | cpu=65%
+2026-11-03 14:23:20 | APRES   | secteur=Online | batterie=100% | RAM libre=3263 Mo | chrome=0 | headless_shell=0 | node=0 | cpu=25%

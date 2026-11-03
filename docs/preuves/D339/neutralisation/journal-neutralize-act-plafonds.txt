@@ -1,0 +1,10 @@
+pre-vol : le spec n'est plus exempte dans PLAFONDS
+temoin (aucune mutation)
+✓ C1  la fenetre act du socle de montage est retiree  (attendu rouge, obtenu rouge)
+✓ C2  la fenetre act du montage du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C3  la fenetre act du second effet du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C4  meme retrait que C1, mais l'exemption PLAFONDS est remise  (attendu vert, obtenu vert)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu a son etat de depart : verifie.
+

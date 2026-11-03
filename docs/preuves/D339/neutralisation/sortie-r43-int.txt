@@ -1,0 +1,315 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 87 déclarées · 87 jouées · 0 non jouée(s) (sans --int) · 13 mesure(s) distincte(s) · 12 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 11 · en échec 0
+  pré-vol contrat : code 0 · passés 32 · en échec 0
+  pré-vol document : code 0 · passés 61 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+  pré-vol int-devis : code 0 · passés 87 · en échec 0
+  pré-vol int-document : code 0 · passés 30 · en échec 0
+  pré-vol int-migration : code 0 · passés 27 · en échec 0
+  pré-vol magasin : code 0 · passés 58 · en échec 0
+  pré-vol pro-contact : code 0 · passés 30 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 158 · en échec 0
+  pré-vol reference : code 0 · passés 40 · en échec 0
+  pré-vol service : code 0 · passés 47 · en échec 0
+  pré-vol transitions : code 0 · passés 17 · en échec 0
+✓ T-1. ⛔ R-2 — `isOfficial` accepte de nouveau `true` (il n'y a plus qu'UNE façon de dire « officiel » : omettre le champ)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 31 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-2. ⛔ R-2 — un brouillon peut de nouveau porter une fiche ou un nom (la CHECK serait la seule barrière)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 29 · en échec 3 · AssertionError: expected true to be false // Object.is equality
+✓ T-3. ⛔ R-1 — la révision accepte `isOfficial` (elle choisirait le drapeau d'une chaîne déjà remise)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 30 · en échec 2 · AssertionError: expected true to be false // Object.is equality
+✓ T-4. ⛔ la promotion n'exige plus la FICHE (un devis « officiel » sans client)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [contrat] code 1 · passés 31 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-5. ⛔ la promotion n'exige plus de NOM (une fiche sans copie du nom sur le devis)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 31 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-6. ⛔ la référence d'un brouillon porte le préfixe d'un devis OFFICIEL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [reference] code 1 · passés 37 · en échec 3 · AssertionError: expected 'DEVIS-2026-0001-0089 v1' to be 'BROUILLON-2026-0001-0089 v1' // Object.is equality
+✓ T-7. ⛔ le nom de fichier d'un brouillon ne se dérive plus (le motif ne connaît que `DEVIS`)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [reference] code 1 · passés 36 · en échec 4 · AssertionError: expected [Function] to not throw an error but 'TypeError: « BROUILLON-2026-0001-0089…' was thrown
+✓ T-8. ⛔ le préfixe d'un brouillon s'écrit autrement que le motif du nom de fichier le lit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [reference] code 1 · passés 35 · en échec 5 · AssertionError: expected 'BROUILLON_-2026-0001-0089 v1' to be 'BROUILLON-2026-0001-0089 v1' // Object.is equality
+✓ S-1. ⛔ la création ignore `isOfficial: false` : un brouillon demandé naît OFFICIEL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 62 · en échec 25 · AssertionError: expected true to be false // Object.is equality
+✓ S-2. ⛔ la remise d'un brouillon n'est plus traduite : le refus du port devient un 409 de statut
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_NOT_OFFICIAL' // Object.is equality
+✓ S-3. ⛔ la conversion d'un brouillon n'est plus refusée par le service (la base seule le garderait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: classe du refus : TypeError: Cannot read properties of undefined (reading 'ok'): expected false to be true // Object.is equa
+✓ S-4. ⛔ L'ORDRE — la conversion regarde « brouillon » AVANT le statut (un brouillon annulé répondrait « pas officiel », pas « statut »)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected 'QUOTE_NOT_OFFICIAL' to be 'QUOTE_STATUS_CONFLICT' // Object.is equality
+✓ S-5. ⛔ la promotion ne passe plus le RÔLE de l'acteur au port (la ligne d'audit le porte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ S-6. ⛔ la promotion ne passe aucun statut source : plus rien ne se promeut
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected [] to deeply equal [ 'DRAFT', 'SENT' ]
+✓ S-7. ⛔ « déjà officiel » répond avec le code d'un conflit de STATUT
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_ALREADY_OFFICIAL' // Object.is equality
+✓ S-8. ⛔ « version non active » n'est plus traduite (la promotion d'une ancienne version répond autre chose)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_VERSION_NOT_ACTIVE' // Object.is equality
+✓ S-9. ⛔ la promotion ne vérifie plus que le devis est au pro AVANT de lire sa fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: classe du refus : TypeError: Cannot read properties of undefined (reading 'linkedUserId'): expected false to be true // Obje
+✓ S-10. ⛔ R-3 — la boîte de langue (K-5) d'un brouillon répond « déjà renseigné » au lieu de « un brouillon n'a pas de nom »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected 'QUOTE_CLIENT_NAME_ALREADY_SET' to be 'QUOTE_DRAFT_HAS_NO_CLIENT' // Object.is equality
+✓ S-11. ⛔ R-1 — la révision d'un brouillon avec fiche ou nom répond « introuvable » au lieu de « un brouillon n'a pas de client »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: {"statusCode":404,"message":{"code":"QUOTE_NOT_FOUND","message":"quote.errors.notFound"},"path":"/api/v1/quotes/01a18f07-53a
+✓ S-12. ⛔ le DTO dit toujours « officiel » (le drapeau de la ligne STOCKÉE n'est plus rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 46 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ S-13. ⛔ la référence rendue au pro ne suit plus le drapeau de la ligne (un brouillon s'appelle `DEVIS-…`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 45 · en échec 2 · AssertionError: expected 'DEVIS-2026-0007-0089 v1' to be 'BROUILLON-2026-0007-0089 v1' // Object.is equality
+✓ A-1. ⛔ D-1 — la remise ne met plus `isOfficial: true` DANS le WHERE (un brouillon se remet)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+   [int-devis] code 1 · passés 85 · en échec 2 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a18f0b-3faf-798f-93d1-b3de550b7302/deliver","ti
+✓ A-2. ⛔ la remise n'exige plus l'état officiel (le dernier argument du check-and-set passe à faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+   [int-devis] code 1 · passés 85 · en échec 2 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a18f0e-f94c-7c8e-855b-a2e377ed8e36/deliver","ti
+✓ A-3. ⛔ D-12 — l'annulation exige l'état officiel (un brouillon ne s'annule plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+   [int-devis] code 1 · passés 82 · en échec 5 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a18f12-2fde-7cb6-bc44-a8129eb46346/cancel","tim
+✓ A-4. ⛔ L'ORDRE — le refus « pas officiel » ne regarde plus le statut (un brouillon ANNULÉ répond « pas officiel », il est clos)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected { ok: false, raison: 'nonOfficiel' } to deeply equal { ok: false, …(2) }
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected 'QUOTE_NOT_OFFICIAL' to be 'QUOTE_STATUS_CONFLICT' // Object.is equality
+✓ A-5. ⛔ R-1 — une révision n'HÉRITE plus du drapeau de la chaîne (la v2 d'un brouillon naît officielle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+   [int-devis] code 1 · passés 84 · en échec 3 · AssertionError: expected true to be false // Object.is equality
+✓ A-6. ⛔ R-1 — la révision d'un brouillon avec fiche ou nom n'est plus refusée avant l'écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 55 · en échec 3 · AssertionError: expected { ok: true, …(1) } to deeply equal { ok: false, …(1) }
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a18f1b-17d1-7aa4-9891-462afc212c3a/revise","tim
+✓ A-7. ⛔ la « plus haute version » est la PLUS BASSE (le drapeau hérité et le numéro suivant viennent de la mauvaise ligne)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 84 · en échec 3 · AssertionError: 201 {"id":"01a18f1c-96ab-7922-bfde-897d707c3c5b","venueId":"01a18f1c-95c3-7ffc-8367-04023156ea2a","clientId":null,"status":"
+✓ A-8. ⛔ la promotion ne conditionne plus l'écriture à `isOfficial: false` (un devis déjà officiel se « re-promeut »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(4) } } ]
+   [int-devis] code 1 · passés 85 · en échec 2 · AssertionError: expected 201 to be 409 // Object.is equality
+✓ A-9. ⛔ la ligne d'audit de la promotion change d'ACTION (la recherche d'un historique ne la retrouve plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected { action: 'quote.promoted', …(4) } to deeply equal { action: 'quote.promote', …(4) }
+✓ A-10. ⛔ S-81 — la ligne d'audit porte le NOM du client (une donnée personnelle dans le journal)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected { nom: 'Amina Bensalem', …(2) } to deeply equal { isOfficial: true, …(1) }
+✓ A-11. ⛔ la promotion ne prend plus le VERROU de la chaîne (promotion ‖ révision ne se sérialisent plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected [ 'propriété', …(4) ] to deeply equal [ 'propriété', 'FOR UPDATE', …(4) ]
+✓ A-12. ⛔ la promotion d'une ANCIENNE version n'est plus refusée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: expected { ok: true, devis: { …(2) } } to deeply equal { ok: false, …(2) }
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected 201 to be 409 // Object.is equality
+✓ A-13. ⛔ « déjà officiel » ne se distingue plus du conflit de statut
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected { ok: false, …(2) } to deeply equal { ok: false, raison: 'dejaOfficiel' }
+   [int-devis] code 1 · passés 84 · en échec 3 · AssertionError: expected 'QUOTE_STATUS_CONFLICT' to be 'QUOTE_ALREADY_OFFICIAL' // Object.is equality
+✓ A-14. ⛔ la promotion ne traverse plus la RELATION au pro (le devis d'un autre pro se promeut)
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [magasin] code 1 · passés 54 · en échec 4 · AssertionError: expected [ 'dernière version', …(5) ] to deeply equal [ 'propriété', 'FOR UPDATE', …(4) ]
+✓ A-15. ⛔ R-3 — la complétion du nom (K-5) n'exclut plus un brouillon du WHERE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 56 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a18f30-f271-7002-a1a6-4755a440cc77/client-name"
+✓ A-16. ⛔ la création écrit TOUJOURS `isOfficial: true` (le brouillon demandé par le service est perdu à l'écriture)
+   ancre 1→0 · marqueur 8→9 · genre substitution
+   [magasin] code 1 · passés 57 · en échec 1 · AssertionError: officiel = false: expected true to be false // Object.is equality
+   [int-devis] code 1 · passés 62 · en échec 25 · AssertionError: expected true to be false // Object.is equality
+✓ A-17. ⛔ l'audit s'écrit HORS de la transaction de la promotion (un échec d'audit laisserait le devis promu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 51 · en échec 7 · AssertionError: expected [Function] to throw error including 'audit_logs indisponible' but got 'Cannot read properties of undefined (…'
+✓ A-18. ⛔ la sélection des lignes n'inclut plus `isOfficial` (le DTO le rendrait absent)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 63 · en échec 24 · AssertionError: 409 {"statusCode":409,"message":{"code":"QUOTE_NOT_OFFICIAL","message":"quote.errors.notOfficial"},"path":"/api/v1/quotes/01
+✓ X-1. ⛔ la commande `promote` écrit un statut (elle ANNULERAIT le devis qu'elle rend officiel)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [transitions] code 1 · passés 16 · en échec 1 · AssertionError: expected 'CANCELLED' to be null
+✓ X-2. ⛔ la commande `promote` n'a aucun statut source (aucun devis ne se promeut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [transitions] code 1 · passés 13 · en échec 4 · AssertionError: une commande sans statut source ne mesure rien: expected 0 to be greater than 0
+✓ K-1. ⛔ la route de promotion change de chemin (le client d'API appelle une route qui n'existe plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 74 · en échec 13 · AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/quotes/01a18f
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+✓ K-2. ⛔ la promotion ne valide plus son corps par le contrat (une clé inconnue, un champ de trop passent)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: sans fiche: expected 500 to be 400 // Object.is equality
+✓ C-1. ⛔ le client d'API appelle un autre chemin pour la promotion
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 9 · en échec 2 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+✓ C-2. ⛔ le client d'API promeut par une autre méthode HTTP
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 10 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+✓ M-1. ⛔ `is_official` a pour défaut FAUX : tout devis d'avant le lot deviendrait un brouillon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 21 · en échec 6 · AssertionError: expected [] to deeply equal [ { data_type: 'boolean', …(2) } ]
+✓ M-3. ⛔ la CHECK ne regarde plus `sent_via` (un brouillon remis en base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 26 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+✓ M-4. ⛔ la CHECK ne regarde plus `sent_at`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 26 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+✓ M-6. ⛔ Q2 — la CHECK ne regarde plus `client_record_id` (un brouillon avec une fiche)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 26 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected "la base devait refuser (quotes_unofficial_inert)" not to be reached
+✓ M-7. ⛔ Q2 — la CHECK ne regarde plus `client_name_ar` (un brouillon avec un nom en arabe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 26 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected "la base devait refuser (quotes_unofficial_inert)" not to be reached
+✓ M-8. ⛔ Q2 — la CHECK ne regarde plus `client_name_latin` (un brouillon avec un nom en lettres latines)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 25 · en échec 2 · AssertionError: promise resolved "[]" instead of rejecting
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected "la base devait refuser (quotes_unofficial_inert)" not to be reached
+✓ M-9. ⛔ R-4 — le déclencheur ne s'exécute plus sur l'UPDATE de `quote_id` (une réservation se rattache à un brouillon APRÈS coup)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 25 · en échec 2 · AssertionError: expected 'CREATE TRIGGER bookings_quote_must_be…' to contain 'BEFORE INSERT OR UPDATE OF quote_id ON'
+   [int-devis] code 1 · passés 86 · en échec 1 · AssertionError: expected "la base devait refuser (bookings_quote_must_be_official)" not to be reached
+✓ M-10. ⛔ la fonction du déclencheur ne refuse plus rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 26 · en échec 1 · AssertionError: promise resolved "[]" instead of rejecting
+   [int-devis] code 1 · passés 85 · en échec 2 · AssertionError: expected "la base devait refuser (bookings_quote_must_be_official)" not to be reached
+✓ M-11. ⛔ le refus du déclencheur n'est plus une violation de CONTRAINTE (SQLSTATE 23514)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-devis] code 1 · passés 85 · en échec 2 · AssertionError: SQLSTATE : error: bookings.quote_id désigne un devis non officiel : 01a18f4e-de29-7907-a841-456b0faa1da6: expected 'P0001' t
+✓ D-1. ⛔ le filigrane n'est plus `position: fixed` (il n'apparaîtrait que sur la PREMIÈRE page — R-5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [document] code 1 · passés 59 · en échec 2 · AssertionError: expected ' position: absolute; inset-inline: 0;…' to contain 'position: fixed'
+   [int-document] code 1 · passés 28 · en échec 2 · AssertionError: autant de poses du filigrane que de pages: expected 1 to be 4 // Object.is equality
+✓ D-2. ⛔ un devis OFFICIEL porte aussi le filigrane (l'élément est posé sans condition)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [document] code 1 · passés 59 · en échec 2 · AssertionError: fr: expected 1 to be +0 // Object.is equality
+   [int-document] code 1 · passés 29 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' not to contain 'filigrane'
+✓ D-3. ⛔ aucun devis ne porte plus le filigrane (le modèle croit tout devis officiel)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [document] code 1 · passés 57 · en échec 4 · AssertionError: expected +0 to be 1 // Object.is equality
+   [int-document] code 1 · passés 26 · en échec 4 · AssertionError: autant de poses du filigrane que de pages: expected +0 to be 4 // Object.is equality
+✓ D-4. ⛔ le filigrane est annoncé par les lecteurs d'écran (`aria-hidden` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [document] code 1 · passés 59 · en échec 2 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain '<div class="filigrane" aria-hidden="t…'
+✓ D-5. ⛔ la feuille de style du filigrane n'est plus posée (le mot « BROUILLON » coule dans le texte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [document] code 1 · passés 58 · en échec 3 · AssertionError: la règle `.filigrane` est dans le document: expected null not to be null
+   [int-document] code 1 · passés 27 · en échec 3 · AssertionError: autant de poses du filigrane que de pages: expected +0 to be 4 // Object.is equality
+✓ D-6. ⛔ la source du PDF dit toujours « officiel » (le drapeau de la ligne n'est pas lu)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [int-document] code 1 · passés 29 · en échec 1 · AssertionError: expected '<!doctype html>\n<html lang="fr" dir=…' to contain 'class="filigrane"'
+✓ D-7. ⛔ la référence imprimée sur un brouillon porte le préfixe d'un devis officiel
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-document] code 1 · passés 29 · en échec 1 · AssertionError: expected 'attachment; filename="DEVIS-2026-0001…' to contain 'BROUILLON-2026-0001-0001_fr_v1.pdf'
+✓ P-1. ⛔ Q1 — le second bouton CRÉE un devis officiel (le drapeau `isOfficial: false` n'est pas envoyé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'v1', …(1) ]
+✓ P-2. ⛔ le bandeau du brouillon n'est jamais rendu (ni téléchargement, ni promotion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 144 · en échec 14 · AssertionError: le titre du bandeau: expected false to be true // Object.is equality
+✓ P-3. ⛔ R-1 — la révision d'un brouillon porte la fiche et les noms (le serveur la refuserait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'q1', …(1) ]
+✓ P-4. ⛔ l'état de la chaîne ne vient plus du SERVEUR (`isOfficial` de la réponse ignoré)
+   ancre 1→0 · marqueur 2→3 · genre substitution
+   [pro-parcours] code 1 · passés 151 · en échec 7 · AssertionError: le total d'avant est là: expected false to be true // Object.is equality
+✓ P-5. ⛔ la promotion vise la FICHE au lieu du devis (le mauvais identifiant)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'q1', { …(2) } ]
+✓ P-6. ⛔ après la promotion, l'écran garde le brouillon (la réponse du serveur n'est pas posée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 156 · en échec 2 · AssertionError: expected 'BROUILLON-2026-0003-0014 v1' to be 'DEVIS-2026-0003-0014 v1' // Object.is equality
+✓ P-7. ⛔ le message « devis officiel » n'est jamais rendu après la promotion
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 156 · en échec 2 · AssertionError: le message de la promotion: expected false to be true // Object.is equality
+✓ P-8. ⛔ le second bouton n'est jamais offert
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 133 · en échec 25 · AssertionError: le bouton « sans coordonnées »: expected false to be true // Object.is equality
+✓ P-9. ⛔ R-1 — le second bouton est offert sur une chaîne OFFICIELLE déjà commencée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: expected <button type="button" …(1)></button> to be null
+✓ P-10. ⛔ le second bouton ne passe pas en mode « sans coordonnées »
+   ancre 1→0 · marqueur 3→4 · genre substitution
+   [pro-parcours] code 1 · passés 136 · en échec 22 · AssertionError: expected <input id="wk-_r_1gl_" …(4)></input> to be null
+✓ P-11. ⛔ « Continuer » ne quitte plus le mode « sans coordonnées » (un brouillon garderait des coordonnées données ensuite)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: avec des coordonnées, le champ du nom est là: expected true to be false // Object.is equality
+✓ P-12. ⛔ « Ajouter les coordonnées » ne ramène plus à l'étape Contact
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 151 · en échec 7 · AssertionError: expected 'Devis' to be 'Comment joindre le client ?' // Object.is equality
+✓ P-13. ⛔ D-23 — changer les noms d'un brouillon jette son total (une version de plus, inutile)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 151 · en échec 7 · AssertionError: le total d'avant est là: expected false to be true // Object.is equality
+✓ P-14. ⛔ D-23 — « Continuer » du contact jette le total d'un brouillon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 151 · en échec 7 · AssertionError: le total d'avant est là: expected false to be true // Object.is equality
+✓ P-15. ⛔ Q2 — « Continuer » de l'étape Client d'un brouillon cherche ou crée une fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 156 · en échec 2 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ P-16. ⛔ R-3 — le PDF d'un brouillon porte un nom qui n'est pas celui de sa référence
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 156 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ Any<Blob>, …(1) ]
+✓ P-17. ⛔ le téléchargement d'un brouillon ne le dit jamais
+   ancre 1→0 · marqueur 3→4 · genre substitution
+   [pro-parcours] code 1 · passés 155 · en échec 3 · AssertionError: « Brouillon téléchargé »: expected false to be true // Object.is equality
+✓ P-18. ⛔ « Rendre officiel » s'offre avant que le client soit renseigné
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 157 · en échec 1 · AssertionError: sans nom, le geste est retenu: expected false to be true // Object.is equality
+✓ P-19. ⛔ le récapitulatif du contact ne dit pas « sans coordonnées »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 156 · en échec 2 · AssertionError: la ligne du contact: expected false to be true // Object.is equality
+✓ P-20. ⛔ Q2 — un brouillon exige aussi un NOM pour continuer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 138 · en échec 20 · AssertionError: avec 200 invités, sans nom: expected true to be false // Object.is equality
+✓ P-21. ⛔ l'étape Contact d'un brouillon n'est pas « répondue » (le parcours reste bloqué dessus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 137 · en échec 21 · AssertionError: expected 'Comment joindre le client ?' to be 'Quelle date ?' // Object.is equality
+✓ P-22. ⛔ le devis d'un brouillon n'est pas calculable sans fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 140 · en échec 18 · AssertionError: et il n'est pas grisé : un brouillon n'a pas besoin de fiche pour être chiffré: expected true to be false // Object.is equal
+✓ P-23. ⛔ l'étape Client d'un brouillon n'est pas « répondue » sans fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 140 · en échec 18 · AssertionError: la question affichée après les prestations: expected 'Qui est le client ?' to be 'Devis' // Object.is equality
+✓ P-24. ⛔ « Rendre officiel » s'offre à un brouillon SANS fiche (le geste demanderait une fiche absente)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 148 · en échec 10 · AssertionError: ajouter des coordonnées: expected false to be true // Object.is equality
+✓ P-25. ⛔ le bouton « sans coordonnées » mène ailleurs (il ramène à l'étape Contact)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 134 · en échec 24 · AssertionError: expected 'Comment joindre le client ?' to be 'Qui est le client ?' // Object.is equality
+✓ P-26. ⛔ D-20 — la règle des invités d'un brouillon ne bloque plus un nombre nul
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 27 · en échec 3 · AssertionError: expected [] to deeply equal [ 'needGuests' ]
+   [pro-parcours] code 1 · passés 153 · en échec 5 · AssertionError: expected [ Array(1) ] to deeply equal [ …(2) ]
+  empreintes : 12 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.

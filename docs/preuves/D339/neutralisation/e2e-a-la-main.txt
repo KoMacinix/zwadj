@@ -1,0 +1,68 @@
+   ✓ calibration du lecteur — positif : assertion de locator (`expect(locator)`, Expected/Received)
+   ✓ calibration du lecteur — positif : assertion AVEC message personnalisé (le message d'abord, l'appel `expect(received)` ensuite)
+   ✓ calibration du lecteur — positif : `toHaveLength` (reçu 2, attendu 1)
+   ✓ calibration du lecteur — négatif : délai d'ACTION (`locator.click: Timeout`) — jamais une morsure (D323)
+   ✓ calibration du lecteur — négatif : délai du TEST entier
+   calibration du lecteur : 5 bras, 0 manqué
+
+■ TÉMOIN. aucune mutation — la spec entière (FR et AR)
+   code 0 · tests exécutés : 3 · en échec : 0 · résumé Playwright : ['4 passed (1.3m)']
+      ok 2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+      ok 3 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (ar) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+      ok 4 [chromium] › specs\r43-devis-brouillon.e2e.ts:185:5 › ⛔ le chemin ORDINAIRE ne crée jamais un brouillon : « Continuer » du contact, la fiche, les noms ⇒ un devis OFFICIEL `DEVIS-…`, avec sa fiche
+   témoin vert : True (attendu : code 0, ≥ 2 tests exécutés — un par langue —, 0 en échec)
+
+■ E-1. le second bouton CRÉE un devis OFFICIEL (le drapeau `isOfficial: false` n'est pas envoyé) — la spec doit rougir sur l'état du devis créé
+   pose · apps/pro/src/dashboard/walkin-journey.tsx · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   filtre -g : \(fr\) un brouillon · code 1 · tests exécutés : 1 · en échec : 1 · résumé : ['1 failed', '1 passed (57.8s)'] · empreintes restaurées : identiques
+      x  2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+   échec lu : 1) [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à
+      première ligne d'erreur : Error: expect(received).toMatchObject(expected) · appel `expect(` dans le bloc et pas un délai d'action : True
+
+■ E-2. la remise ne met plus `isOfficial: true` DANS le WHERE (un brouillon se remet) — la spec doit rougir sur le refus de la remise
+   pose · apps/api/src/venues/quote-store.prisma.ts · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   filtre -g : \(fr\) un brouillon · code 1 · tests exécutés : 1 · en échec : 1 · résumé : ['1 failed', '1 passed (57.2s)'] · empreintes restaurées : identiques
+      x  2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+   échec lu : 1) [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à
+      première ligne d'erreur : Error: expect(received).toBe(expected) // Object.is equality · appel `expect(` dans le bloc et pas un délai d'action : True
+      Expected: 409
+      Received: 500
+
+■ E-3. la ligne d'audit de la promotion change d'ACTION — la spec doit rougir sur l'action lue en base
+   pose · apps/api/src/venues/quote-store.prisma.ts · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   filtre -g : \(fr\) un brouillon · code 1 · tests exécutés : 1 · en échec : 1 · résumé : ['1 failed', '1 passed (1.0m)'] · empreintes restaurées : identiques
+      x  2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+   échec lu : 1) [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à
+      première ligne d'erreur : Error: expect(received).toMatchObject(expected) · appel `expect(` dans le bloc et pas un délai d'action : True
+
+■ E-4. la référence d'un brouillon porte le préfixe d'un devis OFFICIEL — la spec doit rougir sur la référence
+   pose · packages/types/src/quote.ts · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   pose · packages/types/dist/quote.js · ancre 1→0 · marqueur 0→1 · fins de ligne LF
+   filtre -g : \(fr\) un brouillon · code 1 · tests exécutés : 1 · en échec : 1 · résumé : ['1 failed', '1 passed (56.3s)'] · empreintes restaurées : identiques
+      x  2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+   échec lu : 1) [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à
+      première ligne d'erreur : Error: expect(received).toMatch(expected) · appel `expect(` dans le bloc et pas un délai d'action : True
+      Expected pattern: /^BROUILLON-\d{4}-\d{4,}-0001 v1$/u
+      Received string:  "DEVIS-2026-0001-0001 v1"
+
+■ E-5. LE FILTRE D'AUDIT de la spec est DÉFAIT (l'ancienne lecture : toutes les lignes `quote`, sans paramètre) — les DEUX parcours ; le parcours AR doit voir la ligne du parcours FR et rougir sur `toHaveLength(1)`
+   pose · e2e/specs/r43-devis-brouillon.e2e.ts · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   pose · e2e/specs/r43-devis-brouillon.e2e.ts · ancre 1→0 · marqueur 0→1 · fins de ligne CRLF
+   filtre -g : — (toute la spec) · code 1 · tests exécutés : 3 · en échec : 1 · résumé : ['1 failed', '3 passed (1.3m)'] · empreintes restaurées : identiques
+      ok 2 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+      x  3 [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (ar) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écra
+      ok 4 [chromium] › specs\r43-devis-brouillon.e2e.ts:185:5 › ⛔ le chemin ORDINAIRE ne crée jamais un brouillon : « Continuer » du contact, la fiche, les noms ⇒ un devis OFFICIEL `DEVIS-…`, avec sa fiche
+   échec lu : 1) [chromium] › specs\r43-devis-brouillon.e2e.ts:85:7 › ⛔ (ar) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à
+      première ligne d'erreur : Error: expect(received).toHaveLength(expected) · appel `expect(` dans le bloc et pas un délai d'action : True
+      Expected length: 1
+      Received length: 2
+      Received array:  [{"action": "quote.promote", "actor_role": "PRO", "apres": "{\"isOfficial\": true, \"clientRecordId\": \"01a19d4e-8ca0-75c9-b9fe-f24ef1aabca8\"}", "entity_id": "01a19d4e-81ab-7a81-970
+
+BILAN :
+   TÉMOIN  exécutés 3 · échecs 0 · code 0 · restauré oui · joué-et-rouge oui · assertion lue oui
+   E-1     exécutés 1 · échecs 1 · code 1 · restauré oui · joué-et-rouge oui · assertion lue oui
+   E-2     exécutés 1 · échecs 1 · code 1 · restauré oui · joué-et-rouge oui · assertion lue oui
+   E-3     exécutés 1 · échecs 1 · code 1 · restauré oui · joué-et-rouge oui · assertion lue oui
+   E-4     exécutés 1 · échecs 1 · code 1 · restauré oui · joué-et-rouge oui · assertion lue oui
+   E-5     exécutés 3 · échecs 1 · code 1 · restauré oui · joué-et-rouge oui · assertion lue oui
+(attendu : témoin vert avec ≥ 2 exécutés ; chaque mutation : ≥ 1 exécuté, ≥ 1 échec, code ≠ 0, restaurée, assertion `expect(` lue)

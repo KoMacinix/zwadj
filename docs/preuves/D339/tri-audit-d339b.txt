@@ -1,0 +1,19 @@
+D339 — tri différentiel de l'audit de secrets « b » de la clôture (AVANT le commit des pièces : les quatre verts, le rejeu de l'e2e et son relevé machine, la pièce de l'arrêt complétée de sa section 7, la consigne des sections 2, 4 et 5, les six gestes de Ko, et le dossier `neutralisation/`)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339e.txt docs/preuves/D339/audit-secrets-d339b.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« e ») : 651 contextes lus ; nouvelle (« b ») : 730. Alertes ABSENTES de la précédente : 79 (ventilation par motif : jeton = 79 ; 730 − 651 = 79 : aucun autre motif ne rend d'alerte NOUVELLE).
+
+Tri au contexte (lignes de la sortie scellée « b » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299 ; chaque contexte a été relu par un script qui l'applique à l'ensemble des renvois et imprime ce qu'il a lu :
+« alertes lues dans le tri : 79 (attendu 79) · marqueurs de test-e2e-rejeu.txt : 79 (attendu 79) · autres : 0 (attendu 0) ») :
+  · 79 [jeton] = docs/preuves/D339/portes/test-e2e-rejeu.txt, MARQUEURS de masquage et rien d'autre : chaque contexte est « token=<7 car. masques> masquée> », la valeur vue est le marqueur « <valeur masquée> » lui-même,
+                comme à D337, à D338, au tri « d » et au tri « e » de ce lot. 79 jetons masqués par portes/outils/masquer.py (calibré sur deux bras), qui relit sa sortie et y compte 0 jeton restant.
+  · Les quatre verts, les pièces du rejeu autres que sa sortie, la section 7 de la pièce de l'arrêt, la consigne, les gestes de Ko et les 36 fichiers de `neutralisation/` ne rendent AUCUNE alerte nouvelle.
+
+BILAN : 79 sur 79 = des marqueurs ; AUCUNE valeur réelle.
+⚠ Ce fichier cite lui-même le marqueur : un audit rejoué APRÈS lui y compterait une alerte de plus, de la même nature (le texte d'un tri nomme ce qu'il trie — même point au tri « e »). Écrit ici pour que le 80ᵉ contexte ne se lise pas comme une valeur.
+
+CE QUI FAIT FOI SUR L'ABSENCE DE VALEURS (D299) est le contrôle dédié, `docs/preuves/D339/aucune-valeur-reelle.txt` : 6 journaux bruts, 253 valeurs cherchées, 90 fichiers parcourus, 0 porteur (attendu 0) ; et, en complément, l'hôte non local d'un
+tunnel de développement relevé dans un journal jamais versé n'apparaît dans aucun des 5 181 fichiers du dépôt (0 porteur).
+
+Sceau de la sortie « b » : sha256:f3a83ab9c3168a6fe53473fc589667a191aa1ee13403cd0430b5501612c851e7 — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

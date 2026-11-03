@@ -1,0 +1,28 @@
+liste versée : 18 campagne(s) · jouées dans ce lancement : 5 (FILTRE ['neutralize-r32.py', 'neutralize-r38.py', 'neutralize-r39.py', 'neutralize-r41.py', 'neutralize-s10b.py'] : un lancement filtré n'est pas la passe)
+
+[1] neutralize-r32.py …
+    sortie=0 · 65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 65 garde(s) mordue(s) sur 65 cible
+
+[2] neutralize-r38.py …
+    sortie=0 · 46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 46 garde(s) mordue(s) sur 46 cible
+
+[3] neutralize-r39.py --int …
+    sortie=1 · 50 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s) · 50 garde(s) mordue(s) sur 51 cible
+
+[4] neutralize-r41.py --int …
+    sortie=0 · 70 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 70 garde(s) mordue(s) sur 70 cible
+
+[5] neutralize-s10b.py …
+    sortie=0 · 20 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 20 garde(s) mordue(s) sur 20 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-r32.py                       0    65     0     0   837  65 garde(s) mordue(s) sur 65 cible
+neutralize-r38.py                       0    46     0     0   648  46 garde(s) mordue(s) sur 46 cible
+neutralize-r39.py --int                 1    50     1     0   693  50 garde(s) mordue(s) sur 51 cible
+neutralize-r41.py --int                 0    70     0     0  1320  70 garde(s) mordue(s) sur 70 cible
+neutralize-s10b.py                      0    20     0     0    94  20 garde(s) mordue(s) sur 20 cible
+========================================================================================================================
+PARCOURU : 5 passage(s) pour 5 campagne(s) (attendu : autant que de campagnes ; `r33` et `r39` sont jouées UNE fois, avec --int) · 3592s
+MESURÉ : 251 garde(s) mordue(s) · 1 muette(s)/erreur(s) · 0 non mesurée(s) · 1 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+  ⚠ neutralize-r39.py --int → sortie 1

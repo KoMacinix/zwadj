@@ -1,0 +1,42 @@
+HEAD au lancement : 021b02e903f84d5b60a749630671309608561a40
+arbre (git status --short) :
+   ?? docs/preuves/D339/consigne-sections-2-4-5.md
+   ?? docs/preuves/D339/neutralisation/
+   ?? docs/preuves/D339/scenarios-ko.md
+etat-env ouverture : code 0
+relevé AVANT : code 0
+DÉPART DU REJEU : 2026-11-03 14:19:53
+FIN DU REJEU : 2026-11-03 14:23:19 · code 0 · 206 s
+relevé APRES : code 0
+etat-env clôture : code 0
+etat-env comparer : code 0
+HEAD à la fin : 021b02e903f84d5b60a749630671309608561a40
+--- comparaison des .env (etat-env.py comparer, ouverture contre clôture du rejeu) :
+   ✓ calibration comparaison : deux relevés identiques → identiques ; une empreinte changée → différents
+ouverture : 3 fichier(s) · clôture : 3 fichier(s)
+COMPARAISON : IDENTIQUE — mêmes fichiers, mêmes empreintes, hôtes locaux (attendu)
+--- git diff 138a7dc..HEAD --name-only (HEAD = 021b02e903f84d5b60a749630671309608561a40) :
+   docs/preuves/D339/audit-secrets-d339e.txt
+   docs/preuves/D339/portes/_index.txt
+   docs/preuves/D339/portes/arret-e2e-r41.md
+   docs/preuves/D339/portes/build.txt
+   docs/preuves/D339/portes/etat-env-cloture.txt
+   docs/preuves/D339/portes/etat-env-ouverture.txt
+   docs/preuves/D339/portes/etat-machine.txt
+   docs/preuves/D339/portes/isolee-r41-1.txt
+   docs/preuves/D339/portes/isolee-r41-2.txt
+   docs/preuves/D339/portes/isolee-r41-3.txt
+   docs/preuves/D339/portes/lint.txt
+   docs/preuves/D339/portes/outils/masquer.py
+   docs/preuves/D339/portes/outils/rejeu.sh
+   docs/preuves/D339/portes/outils/releve-machine.ps1
+   docs/preuves/D339/portes/passe-02-11-etat-machine.txt
+   docs/preuves/D339/portes/passe-02-11-index.txt
+   docs/preuves/D339/portes/passe-02-11-test-e2e.txt
+   docs/preuves/D339/portes/test-e2e.txt
+   docs/preuves/D339/portes/test-int.txt
+   docs/preuves/D339/portes/test.txt
+   docs/preuves/D339/portes/typecheck.txt
+   docs/preuves/D339/table-ouverture.md
+   docs/preuves/D339/tri-audit-d339e.txt
+--- dont HORS docs/preuves/ (attendu 0) : 0

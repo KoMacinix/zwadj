@@ -1,0 +1,27 @@
+# D339 — vert « api-unitaire » : pnpm --filter @zwadj/api exec vitest run src/common/quote-reference.spec.ts src/common/quote-draft.spec.ts src/venues/quotes.service.spec.ts src/venues/quote-store.prisma.spec.ts src/venues/quote-transitions.spec.ts src/documents/quote-document.spec.ts src/documents/quote-document.service.spec.ts
+# HEAD : 021b02e903f84d5b60a749630671309608561a40   début : 2026-11-03T14:25:00   code de sortie : 0   durée : 5 s
+# empreintes sha256 des fichiers de test joués, relevées AVANT le jeu ; relues APRÈS le jeu : IDENTIQUES (7 fichiers)
+# 5da75a6dbec83b9263a681cb5e83a955de781620a5dbff8c793b40c89936cab7 *apps/api/src/common/quote-reference.spec.ts
+# abeb82adf17ea2f5dd28c9587636b7f382c68c2fff0983f21470fa4e90b11192 *apps/api/src/common/quote-draft.spec.ts
+# 3e2952abaaf2305dfbcc8d82f6c53a9d92af9e81a93b433cf6505bb6a640a7f0 *apps/api/src/venues/quotes.service.spec.ts
+# 917a73c6c13effd1d8735b94138ee22bc95be70508c82ae80eb98e13f6af6cad *apps/api/src/venues/quote-store.prisma.spec.ts
+# 6088becda738be0eb2fd76efba1ca37d814edfcc9b6214d1acb5fbbfdfc851c2 *apps/api/src/venues/quote-transitions.spec.ts
+# 230ce048d55a97a33ebf6ede40ee529df79ac091975076d37b4e4f77276a308d *apps/api/src/documents/quote-document.spec.ts
+# 6e25e07dce50e851b084ba550f44c839d7c7db53040957228fa0dbca318afd18 *apps/api/src/documents/quote-document.service.spec.ts
+# (sortie brute, couleurs coupées)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/quote-reference.spec.ts (40 tests) 21ms
+ ✓ src/venues/quote-transitions.spec.ts (17 tests) 14ms
+ ✓ src/common/quote-draft.spec.ts (32 tests) 61ms
+ ✓ src/documents/quote-document.service.spec.ts (17 tests) 33ms
+ ✓ src/venues/quote-store.prisma.spec.ts (58 tests) 53ms
+ ✓ src/documents/quote-document.spec.ts (61 tests) 69ms
+ ✓ src/venues/quotes.service.spec.ts (47 tests) 34ms
+
+ Test Files  7 passed (7)
+      Tests  272 passed (272)
+   Start at  14:25:02
+   Duration  2.95s (transform 1.66s, setup 0ms, collect 8.82s, tests 285ms, environment 2ms, prepare 2.97s)
+

@@ -1,0 +1,11 @@
+liste versée : 18 campagne(s) · jouées dans ce lancement : 1 (FILTRE ['neutralize-r39.py'] : un lancement filtré n'est pas la passe)
+
+[1] neutralize-r39.py --int …
+    sortie=0 · 51 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 51 garde(s) mordue(s) sur 51 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-r39.py --int                 0    51     0     0   714  51 garde(s) mordue(s) sur 51 cible
+========================================================================================================================
+PARCOURU : 1 passage(s) pour 1 campagne(s) (attendu : autant que de campagnes ; `r33` et `r39` sont jouées UNE fois, avec --int) · 714s
+MESURÉ : 51 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 0 sortie(s) non nulle(s) (attendu : 0, 0, 0)

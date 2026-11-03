@@ -1,0 +1,33 @@
+migrations lues dans les blobs de HEAD (e51aa30) : 32 dossier(s) · la dernière : 20261028100000_quote_unofficial_draft · 31 antérieure(s)
+pose M-2 : ancre 1→0 · marqueur 0→1 · le remplacement n'est pas une sous-chaîne de l'ancre : True · POSÉE
+pose M-5 : ancre 1→0 · marqueur 0→1 · le remplacement n'est pas une sous-chaîne de l'ancre : True · POSÉE
+pose M-4 : ancre 1→0 · marqueur 0→1 · le remplacement n'est pas une sous-chaîne de l'ancre : True · POSÉE
+AVANT — bases (hors zwadj_equiv_*) : postgres,template0,template1,zwadj,zwadj_e2e,zwadj_migration_test,zwadj_test · base `zwadj` : 31 migrations, dernière 20261024100000_booking_contact_phone_optional
+base de départ : 31 migrations appliquées, graine posée (5 insertions)
+énumération `QuoteStatus` relevée dans le catalogue : ['DRAFT', 'SENT', 'ACCEPTED', 'DECLINED', 'CANCELLED', 'SUPERSEDED'] · `text` : ['PRINT']
+variantes : témoin, M-2, M-5, M-4 · une base jetable chacune, un devis NON officiel (DRAFT) chacune
+--- contraintes lues dans le catalogue de la base `témoin` (pg_get_constraintdef) :
+   quotes_unofficial_inert : CHECK ((is_official OR ((status = ANY (ARRAY['DRAFT'::"QuoteStatus", 'CANCELLED'::"QuoteStatus"])) AND (sent_via IS NULL) AND (sent_at IS NULL) AND (accepted_at IS NULL) AND (client_record_id IS NULL) AND (client_name_ar IS NULL) AND (client_name_latin IS NULL))))
+   quotes_sent_at_coherent : CHECK (((status = ANY (ARRAY['DRAFT'::"QuoteStatus", 'CANCELLED'::"QuoteStatus"])) OR (sent_at IS NOT NULL)))
+   quotes_accepted_at_coherent : CHECK (((accepted_at IS NULL) OR (status = ANY (ARRAY['ACCEPTED'::"QuoteStatus", 'SUPERSEDED'::"QuoteStatus"]))))
+grille : 6 statuts × 2 sent_via × 2 sent_at × 2 accepted_at = 48 états (attendu : 48)
+témoin  : 48 états parcourus · 2 admis · 46 refusés
+M-2     : 48 états parcourus · 2 admis · 46 refusés
+M-5     : 48 états parcourus · 2 admis · 46 refusés
+M-4     : 48 états parcourus · 4 admis · 44 refusés
+   ✓ calibration — positif : le témoin ADMET au moins un état
+   ✓ calibration — positif : le témoin REFUSE au moins un état
+   ✓ calibration — positif : la CONTRE-ÉPREUVE M-4 diffère du témoin sur au moins un état
+   calibration : 3 bras, 0 manqué
+
+■ M-2 : 48 états comparés au témoin · décision d'admission DIFFÉRENTE : 0 · même refus mais par une AUTRE contrainte : 0
+
+■ M-5 : 48 états comparés au témoin · décision d'admission DIFFÉRENTE : 0 · même refus mais par une AUTRE contrainte : 0
+
+■ M-4 : 48 états comparés au témoin · décision d'admission DIFFÉRENTE : 2 · même refus mais par une AUTRE contrainte : 0
+   DIFFÉRENT  statut DRAFT      sent_via —      sent_at oui accepted_at —   · témoin : refusé par quotes_unofficial_inert · M-4 : admis
+   DIFFÉRENT  statut CANCELLED  sent_via —      sent_at oui accepted_at —   · témoin : refusé par quotes_unofficial_inert · M-4 : admis
+
+BILAN : M-2 : ÉQUIVALENTE · M-5 : ÉQUIVALENTE · M-4 : DIFFÉRENTE (2 état(s)) · états parcourus par variante : 48 (attendu : 48)  (attendu : M-2 ÉQUIVALENTE · M-5 ÉQUIVALENTE · M-4 DIFFÉRENTE)
+APRÈS — bases (hors zwadj_equiv_*) : postgres,template0,template1,zwadj,zwadj_e2e,zwadj_migration_test,zwadj_test · base `zwadj` : 31 migrations, dernière 20261024100000_booking_contact_phone_optional
+état du serveur identique avant/après : True (attendu : True) · bases jetables supprimées : True

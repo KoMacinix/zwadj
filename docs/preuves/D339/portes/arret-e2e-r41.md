@@ -91,4 +91,59 @@ passe 3 · 09:26:34 · secteur=Online · RAM libre avant=3398 Mo · sortie=0 · 
 
 ## 7. Résultat du rejeu
 
-*(à écrire après le rejeu, dans un commit postérieur au premier commit de cette pièce.)*
+*(Écrite APRÈS le rejeu, dans un commit postérieur au commit `021b02e` qui porte les sections 1 à 6. Les sections 1 à 6 n'ont pas été retouchées.)*
+
+Pièces : `portes/test-e2e-rejeu.txt` (la sortie du rejeu, MASQUÉE : 79 jetons ; sha256 de la forme masquée `cfa71523…7c31c`, du brut `64e1ea7e…578e`), `portes/rejeu-etat-machine.txt` (R-8), `portes/rejeu-etat-env-ouverture.txt` et `portes/rejeu-etat-env-cloture.txt`, `portes/rejeu-lancement.txt`.
+
+**Ce qui s'est passé.**
+- **Un seul lancement**, par `portes/outils/rejeu.sh`, `retries` inchangé : départ 14:19:53, fin 14:23:19, **206 s**, **code de sortie 0**. `HEAD` au lancement et à la fin : `021b02e903f84d5b60a749630671309608561a40` (le commit qui porte la règle de la section 5, **antérieur** au lancement — `git log`). Arbre au lancement : trois chemins non suivis, tous sous `docs/preuves/D339/`.
+- **Portes dures** (section 5, point 2) : `.env` à l'ouverture, code 0 (0 hôte non local) ; état machine AVANT, code 0 (secteur `Online`, `chrome` 0, `headless_shell` 0).
+- **Le code joué n'est pas celui de la passe 1 par `docs/preuves/` seulement** : `git diff 138a7dc..021b02e --name-only` rend **23 chemins, tous sous `docs/preuves/D339/`** ; hors de ce dossier : **0** (attendu 0). *(Les écritures de clôture qui suivent n'ont pas été jouées par ce rejeu ; la clôture le dit.)*
+
+**Le verdict, lu sur la sortie BRUTE (D275), avec l'attendu à côté du mesuré :**
+
+| quoi | mesuré | attendu / repère |
+|---|---|---|
+| code de sortie de la commande | **0** | 0 pour « vert » |
+| résumé Playwright | `1 skipped` · **`63 passed (3.4m)`** · aucune ligne `failed` | « vert » = aucune ligne `failed` |
+| lignes de test lues | 63 `ok` + 1 `-` = **64** | 64 (= 62 + 1 + 1 de la passe rouge) |
+| `ECONNRESET` / `fetch failed` dans la sortie | **0** | l'extracteur est calibré : il en trouve **4** dans la sortie rouge (`portes/test-e2e.txt`), où ils existent |
+| `r41-fiche-client.e2e.ts:65` | `ok 55` (ligne 1877) — **le même rang, 55ᵉ, que dans la passe rouge** | — |
+| les trois tests du lot (`r43`) | `ok 61` (fr), `ok 63` (ar), `ok 64` (chemin ordinaire) | trois verts |
+| ignoré | `a5-cold-reload-vs-spa.e2e.ts:175`, test n° 20 (ligne 716) | le même qu'aux deux passes précédentes |
+
+⇒ **Par la règle de la section 5 (point 4) : le rejeu est VERT.** ⇒ **Par la règle R-6 (« rejeu vert (0 échec) : la porte est verte AU REJEU ») : la porte `test:e2e` est verte AU REJEU**, et s'écrit avec ses deux résultats (section 5, point 6) :
+
+| passe | quand | code | passés / échecs / ignorés | durée |
+|---|---|---|---|---|
+| première passe des portes (02/11) | 12:30-12:43 | 0 | 63 / 0 / 1 | 213 s |
+| **passe 1 des portes (03/11)** | 09:17-09:20 | **1** | **62 / 1 (`r41:65`, `ECONNRESET`) / 1** | 220 s |
+| **rejeu unique (03/11)** | 14:19-14:23 | **0** | **63 / 0 / 1** | 206 s |
+
+Sur le même code de produit (`138a7dc`), **trois passes complètes : deux vertes, une rouge**. Le rejeu n'est pas un « deuxième essai qui remplace le premier » : les trois sont versées.
+
+**Le relevé machine PENDANT le rejeu (R-8)** — `portes/rejeu-etat-machine.txt`, neuf lignes, secteur `Online` à chacune, batterie 100 % :
+
+```
+14:19:51  AVANT    RAM libre 3246 Mo · chrome 0 · headless_shell 0 · node 0  · cpu 16 %
+14:19:52  PENDANT  RAM libre 3240 Mo · chrome 0 · headless_shell 0 · node 0  · cpu 11 %
+14:20:23  PENDANT  RAM libre 1345 Mo · chrome 0 · headless_shell 0 · node 12 · cpu 18 %
+14:20:56  PENDANT  RAM libre  953 Mo · chrome 0 · headless_shell 8 · node 14 · cpu 55 %
+14:21:27  PENDANT  RAM libre  950 Mo · chrome 0 · headless_shell 9 · node 14 · cpu 49 %
+14:21:58  PENDANT  RAM libre 1001 Mo · chrome 0 · headless_shell 9 · node 15 · cpu 66 %
+14:22:29  PENDANT  RAM libre 1221 Mo · chrome 0 · headless_shell 8 · node 15 · cpu 54 %
+14:23:00  PENDANT  RAM libre 1281 Mo · chrome 0 · headless_shell 4 · node 13 · cpu 65 %
+14:23:20  APRES    RAM libre 3263 Mo · chrome 0 · headless_shell 0 · node 0  · cpu 25 %
+```
+
+- **`chrome` : 0 à chaque ligne.** `headless_shell` : 0 avant et après, de 4 à 9 pendant (le navigateur de Playwright, attendu). `node` : 0 avant et après, de 12 à 15 pendant.
+- **La RAM libre passe de 3 246 Mo à environ 950 Mo pendant la suite, et revient à 3 263 Mo après.** Le creux relevé est de **950 Mo** (14:21:27) ; l'échantillonnage est toutes les 30 s, donc un creux plus bas entre deux lignes n'est pas exclu.
+- **Les `.env` du rejeu** : trois fichiers, 8 variables d'URL, 0 hôte non local, **empreintes identiques à la clôture** (`comparer` : code 0).
+
+**Ce que le rejeu ne dit PAS (écrit pour ne pas se lire comme une explication) :**
+- **La cause de l'échec de la passe 1 n'est pas établie, et le rejeu vert ne la lève pas.** Une passe de plus est une observation, pas une enquête. L'hypothèse de D265 n'est ni reproduite ni exclue ; son enquête reste un lot à part, à placer par Ko.
+- **La RAM libre n'est pas un coupable désigné.** Le creux de ~950 Mo est relevé pendant une passe VERTE ; **la passe rouge n'a pas été échantillonnée pendant** (section 2), donc aucune comparaison de creux n'existe. Rien ne dit que la RAM a quoi que ce soit à voir avec `ECONNRESET`.
+- **Un rejeu vert ne rend pas la porte « verte » sans condition** : elle est verte AU REJEU, après une passe rouge versée à côté. C'est ce que `ZWADJ_CONTINUITE.md` dira, avec les trois lignes du tableau.
+- **Aucune deuxième reprise n'a eu lieu** (R-6 : « pas de deuxième rejeu, quel que soit le résultat ») ; `r41` est restée dans la suite ; aucun délai n'a été changé ; `retries` est resté à 0.
+
+**La suite.** La clôture reprend là où elle s'était arrêtée (section 5, point 6) : verts, audit de secrets « b », passe D277, fichiers d'autorité (R-6 à R-10 sous « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO » ; R-10 : annotation additive de l'entrée D265 du backlog), contrôle de fin de lot, push. Les six portes ont été jouées sur `138a7dc`, le rejeu sur `021b02e` ; **aucune ligne de code n'a changé entre les deux** (`git diff 138a7dc..021b02e` : 0 chemin hors `docs/preuves/`). Les verts de la clôture et la mesure finale rejouent ce qui doit l'être **après la dernière modification** (CLAUDE.md) : si une écriture de clôture touche autre chose que `docs/preuves/` et les `.md` d'autorité, la porte concernée se rejoue.
