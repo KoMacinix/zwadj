@@ -1,0 +1,1622 @@
+
+> zwadj@ test C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r --workspace-concurrency=1 --no-bail run test
+
+Scope: 9 of 10 workspace projects
+
+> @zwadj/api-client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ✓ src/clients-client.test.ts (5 tests) 5ms
+ ✓ src/quotes-client.test.ts (11 tests) 7ms
+ ✓ src/venue-families.test.ts (2 tests) 10ms
+ ✓ src/account-client.test.ts (3 tests) 40ms
+ ✓ src/auth-client.test.ts (17 tests) 130ms
+ ✓ src/venue-client.test.ts (21 tests) 123ms
+
+ Test Files  6 passed (6)
+      Tests  59 passed (59)
+   Start at  09:08:38
+   Duration  1.14s (transform 372ms, setup 0ms, collect 769ms, tests 315ms, environment 3ms, prepare 2.36s)
+
+
+> @zwadj/api@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/quote-draft.spec.ts (32 tests) 129ms
+ ✓ src/common/e2e-api-sans-surveillance.spec.ts (3 tests) 36ms
+ ✓ src/media/image-pipeline.spec.ts (6 tests) 883ms
+   ✓ processVenuePhoto > au-delà du plafond : la grande redescend à 1920 de large  343ms
+ ✓ src/common/phone.spec.ts (55 tests) 29ms
+ ✓ src/documents/playwright-pdf.renderer.spec.ts (12 tests) 508ms
+ ✓ src/auth/password.service.spec.ts (2 tests) 153ms
+ ✓ src/documents/quote-document.service.spec.ts (17 tests) 92ms
+ ✓ src/common/contact.spec.ts (49 tests) 49ms
+ ✓ src/venues/quote-store.prisma.spec.ts (58 tests) 125ms
+ ✓ src/venues/venues-public.service.spec.ts (25 tests) 70ms
+ ✓ src/documents/quote-document.spec.ts (61 tests) 202ms
+ ✓ src/common/client-record.spec.ts (27 tests) 46ms
+ ✓ src/venues/quotes.service.spec.ts (47 tests) 68ms
+ ✓ src/auth/auth.service.spec.ts (34 tests) 121ms
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 13144  - 2026-11-03, 9:08:46 a.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>
+ ✓ src/payments/chargily.gateway.spec.ts (17 tests) 44ms
+ ✓ src/venues/bookings.schemas.spec.ts (26 tests) 38ms
+ ✓ src/auth/google-auth.spec.ts (12 tests) 50ms
+ ✓ src/config/env.spec.ts (25 tests) 27ms
+ ✓ src/account/account-deletion.service.spec.ts (14 tests) 43ms
+ ✓ src/venues/visit-notifications.service.spec.ts (15 tests) 39ms
+ ✓ src/media/disk-storage.adapter.spec.ts (5 tests) 30ms
+ ✓ src/account/account.service.spec.ts (16 tests) 48ms
+ ✓ src/common/notifications/notification-dispatch.spec.ts (10 tests) 35ms
+ ✓ src/clients/pro-clients.service.spec.ts (19 tests) 33ms
+ ✓ src/venues/domain-events.spec.ts (8 tests) 35ms
+ ✓ prisma/seed-data/seed-data.spec.ts (8 tests) 21ms
+ ✓ src/venues/venue-store.prisma.spec.ts (13 tests) 37ms
+ ✓ src/venues/quote-transitions.spec.ts (17 tests) 17ms
+ ✓ src/venues/venue-media.service.spec.ts (11 tests) 39ms
+ ✓ src/venues/booking-transitions.spec.ts (24 tests) 24ms
+ ✓ src/auth/jwt-auth.guard.spec.ts (12 tests) 41ms
+ ✓ src/auth/auth.schemas.spec.ts (15 tests) 22ms
+ ✓ src/venues/quote-reference.spec.ts (29 tests) 20ms
+ ✓ src/venues/booking-notification-input.spec.ts (24 tests) 20ms
+ ✓ src/venues/venue-filters.schemas.spec.ts (9 tests) 18ms
+ ✓ src/common/quote-reference.spec.ts (40 tests) 20ms
+ ✓ src/venues/availability-engine.spec.ts (18 tests) 23ms
+ ✓ src/venues/venue-media.schemas.spec.ts (12 tests) 20ms
+ ✓ src/common/i18n-parity.spec.ts (5 tests) 16ms
+ ✓ src/venues/venues.service.spec.ts (9 tests) 34ms
+ ✓ src/venues/availability-time.spec.ts (21 tests) 18ms
+ ✓ src/venues/visit-bookings.schemas.spec.ts (6 tests) 16ms
+ ✓ src/documents/html.spec.ts (8 tests) 17ms
+ ✓ src/venues/visit-slots-engine.spec.ts (13 tests) 12ms
+ ✓ src/payments/payment-intent.spec.ts (12 tests) 12ms
+ ✓ src/venues/venues-admin.service.spec.ts (6 tests) 20ms
+ ✓ src/payments/payments.service.spec.ts (11 tests) 21ms
+ ✓ src/clients/pro-client-policy.spec.ts (17 tests) 14ms
+ ✓ src/venues/pricing-engine.spec.ts (16 tests) 11ms
+ ✓ src/health/health.controller.spec.ts (2 tests) 20ms
+ ✓ src/venues/booking-admission.spec.ts (15 tests) 11ms
+ ✓ src/venues/service-pricing.spec.ts (17 tests) 13ms
+ ✓ src/auth/google-verifier.spec.ts (9 tests) 15ms
+ ✓ src/venues/booking-charge.spec.ts (13 tests) 16ms
+ ✓ src/payments/payment-store.prisma.spec.ts (8 tests) 16ms
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests) 17ms
+ ✓ src/venues/slug.spec.ts (6 tests) 7ms
+ ✓ src/venues/booking-window.spec.ts (7 tests) 10ms
+ ✓ src/auth/token.service.spec.ts (4 tests) 17ms
+ ✓ src/documents/quote-document-policy.spec.ts (7 tests) 9ms
+ ✓ src/venues/booking-deadline.spec.ts (6 tests) 8ms
+ ✓ src/venues/deposit.spec.ts (9 tests) 7ms
+ ✓ src/referentials/referentials.service.spec.ts (4 tests) 12ms
+ ✓ src/common/email/render.spec.ts (3 tests) 8ms
+ ✓ src/auth/password.service.dummy.spec.ts (4 tests) 14ms
+ ✓ src/common/whatsapp/dev-logger.whatsapp.spec.ts (1 test) 5ms
+ ✓ src/payments/payment-gateway.factory.spec.ts (7 tests) 8ms
+ ✓ src/venues/slot-templates.service.spec.ts (6 tests) 9ms
+ ✓ src/common/email/dev-logger.email.spec.ts (1 test) 4ms
+ ✓ src/auth/auth-emails.service.spec.ts (3 tests) 3ms
+ ✓ src/auth/roles.guard.spec.ts (7 tests) 5ms
+
+ Test Files  71 passed (71)
+      Tests  1096 passed (1096)
+   Start at  09:08:41
+   Duration  14.45s (transform 3.93s, setup 0ms, collect 79.15s, tests 3.68s, environment 28ms, prepare 33.67s)
+
+
+> @zwadj/client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ✓ src/lib/contact-channel-guard.test.ts (7 tests) 762ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers)  715ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > nom, commune, accroche, prix formaté et capacité
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > nom, commune, accroche, prix formaté et capacité
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/venue/visit-booking-panel.test.tsx (5 tests) 763ms
+   ✓ VisitBookingPanel — le téléphone (facultatif) est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro ; plus de « +213… » écrit dans le composant  300ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > équipements en pastilles ; liste vide dite explicitement
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — contenu > équipements en pastilles ; liste vide dite explicitement
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — D33 > TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — D33 > TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — D33 > ACTIVE : aucun bandeau
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — D33 > ACTIVE : aucun bandeau
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/auth/register-form.test.tsx (5 tests) 1125ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP)
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP)
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > « agrandir » est un simple lien vers l'original — aucune visionneuse JS
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > « agrandir » est un simple lien vers l'original — aucune visionneuse JS
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > l'alt saisi par le pro fait foi ; absent, l'image est décorative
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > l'alt saisi par le pro fait foi ; absent, l'image est décorative
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > aucune photo : c'est dit, pas un trou dans la page
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — photos > aucune photo : c'est dit, pas un trou dans la page
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/venue/booking-date-picker.test.tsx (11 tests) 933ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page  443ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données)
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données)
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/account/account-settings-view.test.tsx (10 tests) 1458ms
+   ✓ profil CLIENT — porté par User, pas par un ProProfile > téléphone vidé ⇒ null EXPLICITE (il est facultatif à l'inscription client)  365ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/venue/availability-calendar.test.tsx (11 tests) 1999ms
+   ✓ Calendrier — la semaine algérienne (D56) > la première colonne est DIMANCHE, même en français  304ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > salle sans scan : aucune section visite, aucun bouton mort
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — visite Matterport > salle sans scan : aucune section visite, aucun bouton mort
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/app/[locale]/page.test.tsx (25 tests) 1933ms
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — appels à l'action (Flux B) > PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — appels à l'action (Flux B) > PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — appels à l'action (Flux B) > AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — appels à l'action (Flux B) > AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — bilingue > en arabe : nom, accroche, description et libellés passent en AR
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — bilingue > en arabe : nom, accroche, description et libellés passent en AR
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — bilingue > aucun `dir` en dur : l'orientation vient de <html>
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/venue/venue-detail-view.test.tsx > Détail salle — bilingue > aucun `dir` en dur : l'orientation vient de <html>
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to AvailabilityCalendar inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to VisitBookingPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingRequestPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/venue/venue-detail-view.test.tsx (20 tests) 2736ms
+   ✓ Détail salle — contenu > nom, commune, accroche, prix formaté et capacité  395ms
+ ✓ src/components/search/search-view.test.tsx (42 tests) 3140ms
+   ✓ Recherche — filtres sans JavaScript > les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche  307ms
+stderr | src/components/filter-wizard.test.tsx > La séquence finit sur la page de résultats EXISTANTE > ⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT
+An update to FilterWizard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/filter-wizard.test.tsx > La séquence finit sur la page de résultats EXISTANTE > sans aucun critère, mène à /salles nu
+An update to FilterWizard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to FilterWizard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/filter-wizard.test.tsx (27 tests) 3786ms
+   ✓ La séquence finit sur la page de résultats EXISTANTE > ⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT  377ms
+stderr | src/components/auth/google-signin.test.tsx > GoogleSignIn (Lot 9) > SANS NEXT_PUBLIC_GOOGLE_CLIENT_ID : ne rend RIEN et ne charge PAS le script Google (feature OFF)
+An update to AuthProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/auth/google-signin.test.tsx (7 tests) 718ms
+ ✓ src/components/auth/login-form.test.tsx (4 tests) 646ms
+   ✓ LoginForm (fr) > soumission vide : erreurs de validation partagées, AUCUN appel API  354ms
+ ✓ src/lib/phone-literal-guard.test.ts (4 tests) 939ms
+   ✓ L'indicatif d'un pays n'est écrit que dans le modèle de pays — jamais dans un composant > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un indicatif en dur (et la garde a PARCOURU de vrais fichiers)  911ms
+ ✓ src/components/account/bookings-section.test.tsx (6 tests) 532ms
+ ✓ src/components/lost-word-cloud.test.tsx (16 tests) 414ms
+ ✓ src/components/account/visit-bookings-section.test.tsx (6 tests) 441ms
+ ✓ src/components/site-nav.test.tsx (8 tests) 405ms
+ ✓ src/components/ui-phone-field.test.tsx (4 tests) 403ms
+ ✓ src/app/[locale]/not-found.test.tsx (14 tests) 422ms
+ ✓ src/components/theme-toggle.test.tsx (6 tests) 286ms
+stdout | src/components/venue/booking-request-panel.test.tsx
+PLAFOND ABAISSABLE  "src/components/venue/booking-request-panel.test.tsx": 0 observé(s) sous un plafond de 5. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/components/venue/booking-request-panel.test.tsx (32 tests) 11818ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre  608ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas  523ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif  809ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps  672ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > avec un e-mail, il est transmis tel quel  511ms
+   ✓ Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)  352ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie  332ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises  384ms
+   ✓ Prestations — E2d > décocher retire la prestation du total  366ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro  453ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique  611ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus  922ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message  585ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null)  713ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux »  657ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby`  380ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte  359ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide  333ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > le numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente  321ms
+ ✓ src/lib/calendar.spec.ts (20 tests) 35ms
+ ✓ src/lib/search-query.test.ts (39 tests) 48ms
+ ✓ src/lib/api.test.ts (8 tests) 16ms
+ ✓ src/lib/seo.test.ts (9 tests) 15ms
+ ✓ src/components/locale-switch.test.tsx (3 tests) 198ms
+ ✓ src/lib/booking-calendar.test.ts (13 tests) 50ms
+ ✓ src/lib/availability-windows.test.ts (16 tests) 16ms
+ ✓ src/lib/routes.test.ts (3 tests) 4ms
+ ✓ src/lib/login-path-guard.test.ts (5 tests) 7ms
+
+ Test Files  30 passed (30)
+      Tests  386 passed (386)
+   Start at  09:08:56
+   Duration  23.20s (transform 3.67s, setup 18.03s, collect 40.82s, tests 36.05s, environment 109.89s, prepare 16.05s)
+
+
+> @zwadj/pro@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/photos-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-form.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/ma-salle-relecture.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000,5 » (virgule) refusé de la même façon
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Création — rejeu de validate() et mapping des erreurs API > CITY_NOT_FOUND → message porté par le champ Commune
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/photos-section.test.tsx (16 tests) 1876ms
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > le champ AFFICHE la valeur groupée + l'unité, mais ENVOIE bien 15000000 centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > D43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/ma-salle-relecture.test.tsx (19 tests) 2606ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)  419ms
+ ✓ src/venues/venue-form.test.tsx (45 tests) 2649ms
+stdout | src/venues/slots-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-wizard.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/account/account-settings-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > ⚠ au succès, la salle EXISTE et l'assistant reprend à l'ÉTAPE 2 dans l'URL
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > un seul appel : jamais POST puis PATCH dans le même geste
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — « Suivant » et la raison de son inactivité > ⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/slots-section.test.tsx (9 tests) 1385ms
+stdout | src/venues/venue-wizard.test.tsx
+PLAFOND ABAISSABLE  "src/venues/venue-wizard.test.tsx": 3 observé(s) sous un plafond de 4. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/venues/venue-wizard.test.tsx (19 tests) 1235ms
+ ✓ src/account/account-settings-page.test.tsx (31 tests) 1374ms
+stdout | src/venues/services-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/blocks-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/pricing-rules-editor.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/services-section.test.tsx (8 tests) 1211ms
+ ✓ src/venues/pricing-rules-editor.test.tsx (9 tests) 1149ms
+ ✓ src/venues/blocks-section.test.tsx (10 tests) 1255ms
+stdout | src/App.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/create-venue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/App.test.tsx (18 tests) 1082ms
+ ✓ src/venues/create-venue-page.test.tsx (4 tests) 1093ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle  461ms
+ ✓ src/venues/venue-list.test.tsx (13 tests) 1053ms
+stdout | src/shell/pro-venues-context.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/quotes-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/edit-venue-save.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/shell/pro-venues-context.test.tsx (15 tests) 928ms
+ ✓ src/venues/edit-venue-save.test.tsx (6 tests) 625ms
+ ✓ src/venues/quotes-section.test.tsx (20 tests) 854ms
+stdout | src/dashboard/dashboard-aside.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/dashboard/dashboard-aside.test.tsx (10 tests) 458ms
+stdout | src/venues/booking-requests-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/calendar-link.test.tsx (3 tests) 450ms
+   ✓ Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-a, K-c : sa cible est une route DÉCLARÉE — la table de routes y rend le calendrier, et l'adresse reste  338ms
+ ✓ src/venues/booking-requests-section.test.tsx (11 tests) 355ms
+stdout | src/venues/a3-unexpected-responses.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/confirm-dialog.test.tsx (9 tests) 183ms
+ ✓ src/venues/a3-unexpected-responses.test.tsx (12 tests) 338ms
+ ✓ src/ui-phone-field.test.tsx (17 tests) 279ms
+stdout | src/venues/visits-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/ui-choice-dialog.test.tsx (9 tests) 216ms
+stdout | src/venues/request-scope.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/visits-section.test.tsx (6 tests) 253ms
+ ✓ src/venues/request-scope.test.tsx (5 tests) 200ms
+stdout | src/venues/time-select.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/time-select.test.tsx (11 tests) 269ms
+stdout | src/venues/calendar-source.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/calendar-source.test.tsx (3 tests) 170ms
+ ✓ src/routes.test.tsx (2 tests) 227ms
+ ✓ src/venues/pro-calendar.spec.ts (20 tests) 28ms
+ ✓ src/dashboard/walkin-contact.test.ts (30 tests) 21ms
+ ✓ src/auth/brand-loader.test.tsx (3 tests) 95ms
+ ✓ src/venues/calendar-style.test.ts (26 tests) 17ms
+ ✓ src/lib/reveal.test.ts (6 tests) 13ms
+ ✓ src/dashboard/remittance.test.ts (13 tests) 19ms
+ ✓ src/dashboard/walkin-client.test.ts (13 tests) 9ms
+ ✓ src/venues/slot-time.spec.ts (10 tests) 6ms
+ ✓ src/venues/layout-style.test.ts (8 tests) 6ms
+ ✓ src/dashboard/walkin-journey.test.tsx (158 tests) 41833ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré  359ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  416ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  332ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus  300ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près  391ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge  364ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille  371ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien  311ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »  362ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)  329ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours  304ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion  312ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit  391ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé  400ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`  311ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise  392ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre  352ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue  348ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran  338ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS  310ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone  304ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF  325ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  1610ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle  301ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  614ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF  303ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)  363ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  350ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé  376ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise  308ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)  331ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »  317ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1809ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  1668ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré  359ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements  329ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran  303ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte  348ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  1534ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  928ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`  425ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois  304ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu  312ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`  306ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise  367ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN  303ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  561ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite  332ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail »  349ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont  346ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue  390ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)  324ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé  323ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom  328ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN  345ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée  322ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre  322ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit  331ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît  365ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms  501ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe  334ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion  419ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche)  360ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — après la promotion, le message « officiel » est rendu  389ms
+ ✓ src/venues/venue-client-narrowing.test.ts (3 tests) 6ms
+ ✓ src/venues/block-time.spec.ts (12 tests) 8ms
+ ✓ src/ui-tokens.test.ts (8 tests) 5ms
+ ✓ src/shell/venues-label.test.ts (3 tests) 5ms
+
+ Test Files  41 passed (41)
+      Tests  653 passed (653)
+   Start at  09:09:20
+   Duration  48.58s (transform 2.11s, setup 11.55s, collect 29.94s, tests 65.84s, environment 63.37s, prepare 10.50s)
+

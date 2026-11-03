@@ -1,0 +1,26 @@
+D339 — tri différentiel de l'audit de secrets « e » (AVANT le commit des pièces de l'arrêt de l'e2e qui entrent avant le rejeu : la sortie rouge masquée de la passe 1, les trois passes isolées de r41, la première passe du 02/11, les relevés des .env, les trois outils archivés, la pièce de l'arrêt)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339d.txt docs/preuves/D339/audit-secrets-d339e.txt
+Calibration à deux bras tenue (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+Précédente (« d ») : 470 contextes lus ; nouvelle (« e ») : 651. Alertes ABSENTES de la précédente : 181 (ventilation par motif : jeton = 179 · mot-de-passe = 2 ; 179 + 2 = 181 = 651 − 470 : aucun autre motif ne rend d'alerte NOUVELLE).
+
+Tri au contexte (lignes de la sortie scellée « e » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299 ; chaque contexte a été relu par un script qui l'applique à l'ensemble des 179 renvois et imprime ce qu'il a lu : « alertes lues dans le tri : 181 (attendu 181) ») :
+  · 174 [jeton] = des MARQUEURS de masquage, et rien d'autre : docs/preuves/D339/portes/test-e2e.txt (77), docs/preuves/D339/portes/passe-02-11-test-e2e.txt (79), docs/preuves/D339/portes/isolee-r41-1.txt,
+                  isolee-r41-2.txt et isolee-r41-3.txt (6 chacun). Chaque contexte est « token=<7 car. masques> masquée> » : la valeur vue est le marqueur « <valeur masquée> » lui-même, comme à D337, à D338 et au tri « d »
+                  de ce lot. 77 + 79 + 18 = 174 ; chaque fichier a été masqué par portes/outils/masquer.py (calibré sur deux bras à chaque lancement), qui relit sa sortie et y compte 0 jeton restant.
+  · 3 [jeton]   = docs/preuves/D339/portes/outils/masquer.py, lignes 16, 17 et 34 : le MOTIF de recherche (deux expressions régulières) et une concaténation du bras négatif de sa calibration. Un instrument qui nomme ce qu'il
+                  cherche ; aucune valeur.
+  · 1 [jeton]   = docs/preuves/D339/tri-audit-d339d.txt, ligne 11 : ma propre phrase du tri « d » qui cite le marqueur.
+  · 1 [mot-de-passe] = docs/preuves/D339/portes/test-int.txt, ligne 306 : le TITRE d'un test (« après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : réponse CONSTANTE… ») ; le « mot » vu est « réponse ».
+  · 1 [jeton] + 1 [mot-de-passe] = CE FICHIER, aux lignes 9 et 14 : le tri qui cite le marqueur de masquage et le titre du test ci-dessus se compte lui-même, par construction (le texte d'un tri nomme ce qu'il trie). Aucune valeur : le marqueur et un titre de test.
+
+BILAN : 181 sur 181 = 174 marqueurs, du code qui nomme son motif, un titre de test et deux phrases de tri ; AUCUNE valeur réelle. (174 + 3 + 1 + 1 + 2 = 181.)
+
+⚠ INCIDENT RELEVÉ PAR CE TRI ET RÉPARÉ AVANT TOUT COMMIT (D295 : l'instrument et ses sorties se corrigent ensemble) : la PREMIÈRE version de l'audit « e » (sortie écrasée, jamais commitée) a montré, aux lignes 27 et 29 de
+`portes/outils/masquer.py`, que le bras POSITIF de la calibration du masqueur portait **une vraie valeur de jeton** — copiée, pour fabriquer l'essai, d'un journal d'une base jetable de l'e2e — et un préfixe de 8 de ses
+caractères dans une assertion. Aucune valeur ne s'est trouvée dans un fichier commité (le fichier n'avait pas été commité ; la valeur appartenait à un compte de test d'une base recréée à chaque passe), mais c'est la faute
+exacte de D200 : une valeur réelle dans un fichier qui allait entrer au dépôt. RÉPARATION : le bras positif utilise désormais une valeur SYNTHÉTIQUE assemblée à l'exécution (« Zz » répété) ; les CINQ sorties masquées ont été
+régénérées par le script corrigé et comparées à celles déjà écrites : IDENTIQUES octet pour octet (le masquage ne dépend pas de la calibration) ; l'audit a été REJOUÉ EN ENTIER (puis une seconde fois, après l'écriture de la pièce `portes/arret-e2e-r41.md`, qui n'ajoute aucune alerte) ; la recherche de la valeur et de son préfixe dans
+`docs`, `apps`, `packages`, `e2e` et `neutralisation` rend 0 fichier (attendu 0). Le motif : une calibration qui « utilise un cas réel » le recopie dans le fichier qui va avec.
+
+Sceau de la sortie « e » : sha256:52010dd46525d08f4dd9433b7347508a758f8684f649d2af82dd11cc3c739ba5 — relue identique et vérifiée à la relecture (« relue identique : True · sceau vérifié à la relecture : True »).

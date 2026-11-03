@@ -1,0 +1,18 @@
+INDEX DES PORTES — D339, rang 43 (reprise du 02/11/2026)
+départ : 2026-11-02 12:30:57
+HEAD : 138a7dc8fd014c08e4908e125fa5f49b05e8d3c1
+arbre avant les portes (git status --short) :
+   ?? docs/preuves/D339/consigne-sections-2-4-5.md
+   ?? docs/preuves/D339/neutralisation/
+   ?? docs/preuves/D339/portes/
+   ?? docs/preuves/D339/scenarios-ko.md
+état machine : docs/preuves/D339/portes/etat-machine.txt
+
+porte        code   durée   fichier
+typecheck    0      17s      docs/preuves/D339/portes/typecheck.txt
+lint         0      13s      docs/preuves/D339/portes/lint.txt
+test         0      89s      docs/preuves/D339/portes/test.txt
+build        0      35s      docs/preuves/D339/portes/build.txt
+test:int     1      364s     docs/preuves/D339/portes/test-int.txt
+test:e2e     0      213s     docs/preuves/D339/portes/test-e2e.txt
+fin : 2026-11-02 12:43:11

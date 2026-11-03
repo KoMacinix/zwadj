@@ -1,0 +1,17 @@
+ÉTAT MACHINE AVANT LES SIX PORTES ET L'E2E DE CLÔTURE — D339, rang 43 (reprise du 02/11/2026) — note de Ko, point 1
+relevé le : 2026-11-02 12:30:37
+secteur (PowerOnline) : True   (attendu : True — sur batterie, ces portes ne se lancent pas, D290)
+en charge (Charging) : False   (False = branché, batterie pleine ou maintenue)
+batterie : 100 %
+RAM libre : 4229 Mo sur 16095 Mo   (déclarée ; aucune barre hors certification — note de Ko, point 1)
+chrome : 0   (attendu : 0)
+headless_shell : 0   (attendu : 0)
+node : 0 · python : 0   (attendu : 0 et 0 — aucune campagne ni serveur résiduel)
+port 3100 à l'écoute : 0   (attendu : 0)
+port 3101 à l'écoute : 0   (attendu : 0)
+port 3000 à l'écoute : 0   (attendu : 0)
+port 4000 à l'écoute : 0   (attendu : 0)
+conteneur zwadj-db : Up 2 days
+HEAD : 138a7dc8fd014c08e4908e125fa5f49b05e8d3c1
+arbre (git status --short, lignes) : 3
+méthode : Get-CimInstance root\wmi BatteryStatus / Win32_OperatingSystem / Get-Process / Get-NetTCPConnection ; aucun seuil PERF (D290) — le régime se lit pendant la mesure, jamais avant.
