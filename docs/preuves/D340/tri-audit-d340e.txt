@@ -1,0 +1,14 @@
+D340 — tri différentiel de l'audit de secrets « e » (AVANT le commit de la note de Ko du 04/11/2026, de l'état machine à la réception, de la règle de la passe sur secteur et de son pilote)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D340/audit-secrets-d340d.txt docs/preuves/D340/audit-secrets-d340e.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D340/audit-secrets-d340e.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru : 4 574 fichiers parcourus, 4 445 audités, 129 exclus, 901 alertes. Précédente (« d ») : 900 contextes lus, 4 567 fichiers ; nouvelle (« e ») : 901 contextes, 4 574 fichiers.
+Rapprochement des fichiers (D290) : 4 574 − 4 567 = 7 = les quatre pièces de cette étape (la note, l'état machine à la réception, la règle de la passe sur secteur, le pilote) + les trois pièces écrites APRÈS l'audit « d » (sa sortie scellée, son tri, et le contrôle de fin de lot du 03/11).
+
+Alertes ABSENTES de la précédente : 1 = 901 − 900 (ventilation par motif : mot-de-passe = 1). Tri au contexte (ligne 2990 de la sortie scellée « e », relue) :
+  · 1 [mot-de-passe] = docs/preuves/D340/tri-audit-d340d.txt, ligne 12 : MON PROPRE tri « d », écrit APRÈS l'audit « d » — il CITE des fragments de titres de tests (« …après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password… »). Un nom de route dans un titre de test, cité par un tri : aucune valeur (l'audit le dit : « valeur trop courte pour une recherche »).
+Résultat du tri : 1 alerte lue, 0 valeur réelle. Les quatre pièces de cette étape ne figurent dans aucun contexte d'alerte.
+
+⚠ Limite écrite : le contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) cherche les valeurs d'un JOURNAL e2e qu'on lui nomme ; la passe sur secteur n'a pas encore eu lieu, il est joué sur son journal APRÈS elle. Le présent fichier est écrit APRÈS l'audit « e » ; il est couvert par l'audit « f ». Il ne contient aucune valeur.

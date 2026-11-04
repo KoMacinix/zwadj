@@ -1,0 +1,29 @@
+D340 — ÉTAT MACHINE À LA RÉCEPTION DE LA NOTE DE KO DU 04/11/2026 (point 1 de la note) — relevé de la session, AVANT toute action
+relevé le 04-11-2026 15:08:09
+alimentation : BatteryStatus=2 => SECTEUR ; charge=100 %
+RAM libre : 4,563 Mo sur 16,095 Mo
+processus : chrome 10 · headless_shell 0 · node 0
+démarrage du poste : 2026-10-29 2:34:39 AM
+chrome (Id, mémoire en Mo, fenêtre principale, heure de démarrage) :
+  13672 · 20 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  16340 · 111 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  16892 · 92 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  17716 · 37 Mo · fenêtre=[] · 2026-11-03 9:52:08 PM
+  24380 · 276 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  29188 · 63 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  29536 · 10 Mo · fenêtre=[] · 2026-11-03 9:51:48 PM
+  29656 · 21 Mo · fenêtre=[] · 2026-11-03 9:52:08 PM
+  29904 · 80 Mo · fenêtre=[] · 2026-11-03 9:51:50 PM
+  33508 · 32 Mo · fenêtre=[] · 2026-11-04 3:03:29 PM
+docker : service com.docker.service = Stopped ; vmmemWSL = présent ; Docker Desktop.exe = NON lancé
+ports d'e2e occupés (3100 3101 5273 5274) : []
+--- vérification du point 0 de la note (dépôt), faite par la session à la réception, après `git fetch` :
+HEAD local   = fba4c5e34cae5dab72c0cc94d1669f6e7bf49202 (attendu fba4c5e) ✓
+origin/main  = 8c18e7ed0fb8cf2d6023609c4cc5c9ac7b576f6f (attendu 8c18e7e) ✓
+branche = main · `git status --short` = vide · `git stash list` = vide · HEAD en avance de 5 commits sur origin/main ✓
+--- écarts entre la note et le poste constatés à la réception (dits, non corrigés par la session) :
+· la note dit « Ko a fermé Chrome » : dix processus `chrome` sans fenêtre sont présents (neuf démarrés le 03/11/2026 vers 21:51-21:52, un le 04/11/2026 à 15:03:29) — la session n'en arrête aucun, ils ne sont pas les siens ; la note ne fait de `chrome` qu'un RELEVÉ, pas une condition d'arrêt ;
+· le démon Docker ne répond pas (Docker Desktop n'est pas lancé, `com.docker.service` arrêté) : sans PostgreSQL, `test:int` et l'e2e ne peuvent pas jouer. La session lance Docker Desktop à 15:08:19 (condition préalable des portes, pas un travail en plus) ; ce lancement est une action de la session sur le poste de Ko, déclarée ici.
+--- actions de la session pour rendre les portes jouables (APRÈS le relevé ci-dessus ; déclarées) :
+15:08:19  Docker Desktop lancé par la session (Start-Process). Démon opérationnel quelques secondes plus tard.
+15:09:28  `pnpm db:up` (= `docker compose up -d`) : le conteneur `zwadj-db` était « Exited (0) 4 hours ago » ; il est « Up » à 15:09:34, port 5432 publié, volume nommé `zwadj_zwadj_pgdata` inchangé. C'est un DÉMARRAGE de conteneur : la session n'a écrit AUCUNE donnée sur la base de développement de Ko (règle permanente de D337) ; `test:int` travaille sur sa propre base (DROP DATABASE puis rejeu) et l'e2e sur `zwadj_e2e`, recréée à chaque passe.
