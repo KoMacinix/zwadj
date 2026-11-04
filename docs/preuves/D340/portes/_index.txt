@@ -1,0 +1,35 @@
+D340 — chaîne des portes — départ 03/11/2026 22:44:14
+SHA: 8c18e7ed0fb8cf2d6023609c4cc5c9ac7b576f6f
+origin/main: 8c18e7ed0fb8cf2d6023609c4cc5c9ac7b576f6f
+arbre (git status --short): []
+stash: []
+état machine à l'OUVERTURE: 22:44:16 | BATTERIE | RAM libre 3,965 Mo | chrome 15 | headless_shell 0 | node 9
+=== typecheck — départ 22:44:16 — 22:44:17 | BATTERIE | RAM libre 3,947 Mo | chrome 15 | headless_shell 0 | node 9
+    typecheck : code de sortie 0 · durée 139 s · fin 22:46:37 — 22:46:38 | BATTERIE | RAM libre 3,993 Mo | chrome 13 | headless_shell 0 | node 9
+=== lint — départ 22:46:39 — 22:46:40 | BATTERIE | RAM libre 3,976 Mo | chrome 13 | headless_shell 0 | node 9
+    lint : code de sortie 0 · durée 89 s · fin 22:48:09 — 22:48:10 | BATTERIE | RAM libre 3,843 Mo | chrome 13 | headless_shell 0 | node 9
+=== test — départ 22:48:10 — 22:48:12 | BATTERIE | RAM libre 3,843 Mo | chrome 13 | headless_shell 0 | node 9
+    test : code de sortie 1 · durée 532 s · fin 22:57:04 — 22:57:05 | BATTERIE | RAM libre 3,479 Mo | chrome 13 | headless_shell 0 | node 9
+=== build — départ 22:57:05 — 22:57:06 | BATTERIE | RAM libre 3,482 Mo | chrome 13 | headless_shell 0 | node 9
+    build : code de sortie 0 · durée 179 s · fin 23:00:05 — 23:00:06 | BATTERIE | RAM libre 4,256 Mo | chrome 12 | headless_shell 0 | node 4
+=== test-int — départ 23:00:07 — 23:00:08 | BATTERIE | RAM libre 4,236 Mo | chrome 12 | headless_shell 0 | node 4
+    test-int : code de sortie 0 · durée 956 s · fin 23:16:04 — 23:16:05 | BATTERIE | RAM libre 3,743 Mo | chrome 12 | headless_shell 0 | node 4
+=== test-e2e — départ 23:16:05 — 23:16:06 | BATTERIE | RAM libre 3,735 Mo | chrome 12 | headless_shell 0 | node 4
+    test-e2e : code de sortie 1 · durée 840 s · fin 23:30:06 — 23:30:07 | BATTERIE | RAM libre 4,044 Mo | chrome 12 | headless_shell 0 | node 4
+état machine à la CLÔTURE: 23:30:09 | BATTERIE | RAM libre 4,033 Mo | chrome 12 | headless_shell 0 | node 4
+arbre après les portes (git status --short): []
+fin 03/11/2026 23:30:10
+
+################ REJEU UNIQUE (règle : arret-portes.md, commit 49cd9f9) ################
+D340 — REJEU UNIQUE — départ 03/11/2026 23:49:14
+SHA: 49cd9f94846db14afdbd0cc22ccb1c31f8e5f912
+arbre (git status --short): []
+ports d'e2e occupés avant le lancement (3100 3101 5273 5274): []
+état machine JUSTE AVANT: 23:49:19 | BATTERIE | RAM libre 3,807 Mo | chrome 15 | headless_shell 0 | node 4
+=== test-rejeu-1 — départ 23:49:19 — 23:49:21 | BATTERIE | RAM libre 3,788 Mo | chrome 15 | headless_shell 0 | node 4
+    test-rejeu-1 : code de sortie 1 · durée 452 s · fin 23:56:53 — 23:56:54 | BATTERIE | RAM libre 3,981 Mo | chrome 12 | headless_shell 0 | node 3
+=== test-e2e-rejeu — départ 23:56:54 — 23:56:55 | BATTERIE | RAM libre 3,997 Mo | chrome 12 | headless_shell 0 | node 3
+    test-e2e-rejeu : code de sortie 1 · durée 824 s · fin 00:10:39 — 00:10:40 | BATTERIE | RAM libre 3,880 Mo | chrome 13 | headless_shell 0 | node 3
+état machine JUSTE APRÈS: 00:10:42 | BATTERIE | RAM libre 3,890 Mo | chrome 13 | headless_shell 0 | node 3
+arbre après le rejeu (git status --short): []
+fin 04/11/2026 00:10:43
