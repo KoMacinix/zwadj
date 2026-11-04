@@ -1,0 +1,475 @@
+D340 — mesures du cadrage de L36-3 — SHA de départ ec44937 (ec449378595f8eeb8cc6cddaccfb94f8d2eddbef)
+
+### M01 — les trois gardes globaux et leur ordre (app.module.ts, lignes 65-74)
+$ git show ec44937:apps/api/src/app.module.ts | sed -n '65,74p' | cat -n
+     1	  providers: [
+     2	    // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :
+     3	    // 1. Throttler : le rate-limiting s'applique aussi aux routes publiques
+     4	    //    (login/register sont précisément les plus attaquées) ;
+     5	    // 2. JwtAuthGuard : fermé par défaut, @Public() pour ouvrir ;
+     6	    // 3. RolesGuard : lit request.user posé par le guard précédent.
+     7	    { provide: APP_GUARD, useClass: ThrottlerGuard },
+     8	    { provide: APP_GUARD, useClass: JwtAuthGuard },
+     9	    { provide: APP_GUARD, useClass: RolesGuard }
+    10	  ]
+[code de sortie: 0]
+
+### M02 — les gardes globaux sont seulement ces trois-là (nombre d'occurrences de « provide: APP_GUARD »)
+$ git grep -c 'provide: APP_GUARD' ec44937 -- apps/api/src
+ec44937:apps/api/src/app.module.ts:3
+[code de sortie: 0]
+
+### M03 — les claims du jeton d'accès (auth.types.ts, lignes 11-21)
+$ git show ec44937:apps/api/src/auth/auth.types.ts | sed -n '11,21p' | cat -n
+     1	export interface AccessTokenPayload {
+     2	  sub: string;
+     3	  role: UserRole;
+     4	}
+     5	
+     6	/** Ce que JwtAuthGuard attache à `request.user` après vérification de la
+     7	 *  signature — exposé aux handlers via le décorateur `@CurrentUser()`. */
+     8	export interface AuthenticatedUser {
+     9	  userId: string;
+    10	  role: UserRole;
+    11	}
+[code de sortie: 0]
+
+### M04 — JwtAuthGuard : l'identité vient du Bearer, jamais d'un cookie (extraction + ce que le garde pose sur request.user)
+$ git show ec44937:apps/api/src/auth/jwt-auth.guard.ts | sed -n '26,56p' | cat -n
+     1	  async canActivate(context: ExecutionContext): Promise<boolean> {
+     2	    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+     3	      context.getHandler(),
+     4	      context.getClass()
+     5	    ]);
+     6	    if (isPublic) return true;
+     7	
+     8	    const request = context.switchToHttp().getRequest<Request & { user?: AuthenticatedUser }>();
+     9	    const token = this.extractBearerToken(request);
+    10	    if (!token) throw this.unauthenticated();
+    11	
+    12	    let payload: AccessTokenPayload;
+    13	    try {
+    14	      // Secret + algorithme (HS256) viennent de la config du JwtModule (auth.module).
+    15	      payload = await this.jwt.verifyAsync<AccessTokenPayload>(token);
+    16	    } catch {
+    17	      throw this.unauthenticated();
+    18	    }
+    19	
+    20	    request.user = { userId: payload.sub, role: payload.role };
+    21	    return true;
+    22	  }
+    23	
+    24	  private extractBearerToken(request: Request): string | undefined {
+    25	    const header = request.headers.authorization;
+    26	    if (!header) return undefined;
+    27	    const [scheme, token, ...rest] = header.split(" ");
+    28	    if (rest.length > 0 || scheme?.toLowerCase() !== "bearer" || !token) return undefined;
+    29	    return token;
+    30	  }
+    31	
+[code de sortie: 0]
+
+### M05 — RolesGuard : 401 sans identité, 403 si le rôle manque (lignes 24-50)
+$ git show ec44937:apps/api/src/auth/roles.guard.ts | sed -n '24,50p' | cat -n
+     1	  canActivate(context: ExecutionContext): boolean {
+     2	    const requiredRoles = this.reflector.getAllAndOverride<UserRole[] | undefined>(ROLES_KEY, [
+     3	      context.getHandler(),
+     4	      context.getClass()
+     5	    ]);
+     6	    if (!requiredRoles || requiredRoles.length === 0) return true;
+     7	
+     8	    const { user } = context.switchToHttp().getRequest<{ user?: AuthenticatedUser }>();
+     9	
+    10	    // Défense en profondeur : @Public + @Roles combinés (ou guard mal ordonné)
+    11	    // laisseraient passer une requête anonyme jusqu'ici — on exige l'identité
+    12	    // avant de juger le rôle. 401, pas 403 : le problème est l'absence d'identité.
+    13	    if (!user) {
+    14	      throw new UnauthorizedException({
+    15	        code: AuthErrorCode.UNAUTHENTICATED,
+    16	        message: "auth.errors.unauthenticated"
+    17	      });
+    18	    }
+    19	
+    20	    if (!requiredRoles.includes(user.role)) {
+    21	      throw new ForbiddenException({
+    22	        code: AuthErrorCode.FORBIDDEN,
+    23	        message: "auth.errors.forbidden"
+    24	      });
+    25	    }
+    26	    return true;
+    27	  }
+[code de sortie: 0]
+
+### M06 — jeton opaque et son hachage (token.service.ts, lignes 12-21)
+$ git show ec44937:apps/api/src/auth/token.service.ts | sed -n '12,21p' | cat -n
+     1	@Injectable()
+     2	export class TokenService {
+     3	  generate(): string {
+     4	    return randomBytes(32).toString("base64url");
+     5	  }
+     6	
+     7	  hash(token: string): string {
+     8	    return createHash("sha256").update(token).digest("hex");
+     9	  }
+    10	}
+[code de sortie: 0]
+
+### M07 — le cookie de rafraîchissement : nom, chemin, attributs (auth.constants.ts:8-11 ; auth.controller.ts:215-230)
+$ git show ec44937:apps/api/src/auth/auth.constants.ts | sed -n '8,11p'; git show ec44937:apps/api/src/auth/auth.controller.ts | sed -n '215,230p'
+  /** Nom du cookie httpOnly portant le refresh token (D2). */
+  REFRESH_COOKIE_NAME: "zwadj_rt",
+  /** Le cookie refresh n'est envoyé que sur les routes auth (D2 : path restreint). */
+  REFRESH_COOKIE_PATH: "/api/v1/auth",
+  private refreshCookieOptions(cookie: { expiresAt: Date; persistent: boolean }): CookieOptions {
+    const base = this.clearCookieOptions();
+    return cookie.persistent ? { ...base, expires: cookie.expiresAt } : base;
+  }
+
+  private clearCookieOptions(): CookieOptions {
+    return {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: this.config.getOrThrow<boolean>("AUTH_COOKIE_SECURE"),
+      path: AUTH.REFRESH_COOKIE_PATH
+    };
+  }
+}
+[code de sortie: 0]
+
+### M08 — INVENTAIRE DES ROUTES de l'API (extrait des sources des contrôleurs ; extracteur embarqué, calibré, abandon si un bras manque)
+$ python3 <extracteur embarqué> (lit apps/api/src/**/*.controller.ts à l'état de l'arbre de travail = ec44937 + pièces de docs/preuves/D340 seulement)
+calibration : cas fictif 1 (préfixe, @Public, rôle de classe hérité) ✓ · cas fictif 2 (filtre puis contrôleur dans le même fichier : 3 routes héritent @Roles(PRO)) ✓ · cas faux (@Roles de classe retiré : 0 rôle) ✓ · cas fictif 3 (@Public() suivi d'un commentaire) ✓
+24 contrôleurs parcourus · 85 routes extraites · compte indépendant (routes, @Public, @Roles) : 0 écart(s) [] (attendu 0)
+--- ventilation par catégorie :
+   48  @Roles(PRO)
+   19  public
+    7  authentifiée, sans @Roles
+    6  @Roles(CLIENT)
+    5  @Roles(ADMIN)
+--- routes ATTEIGNABLES par un compte PRO (authentifiées, @Roles contenant PRO ou sans @Roles) : 55
+    lectures (GET) : 13 · écritures (POST/PUT/PATCH/DELETE) : 42
+    9 routes (7 écritures, 0 sans @Roles)  quotes.controller.ts
+    6 routes (5 écritures, 6 sans @Roles)  account.controller.ts
+    5 routes (5 écritures, 0 sans @Roles)  venue-media.controller.ts
+    5 routes (3 écritures, 0 sans @Roles)  venues.controller.ts
+    4 routes (4 écritures, 0 sans @Roles)  pro-clients.controller.ts
+    4 routes (3 écritures, 0 sans @Roles)  bookings-pro.controller.ts
+    4 routes (3 écritures, 0 sans @Roles)  services.controller.ts
+    4 routes (3 écritures, 0 sans @Roles)  visit-availabilities.controller.ts
+    3 routes (2 écritures, 0 sans @Roles)  availability-blocks.controller.ts
+    3 routes (3 écritures, 0 sans @Roles)  pricing-rules.controller.ts
+    3 routes (3 écritures, 0 sans @Roles)  slot-templates.controller.ts
+    2 routes (1 écritures, 0 sans @Roles)  visit-bookings.controller.ts
+    1 routes (0 écritures, 1 sans @Roles)  auth.controller.ts
+    1 routes (0 écritures, 0 sans @Roles)  quote-document.controller.ts
+    1 routes (0 écritures, 0 sans @Roles)  availability.controller.ts
+--- routes authentifiées SANS @Roles (la liste blanche de D119) :
+  PATCH  /me/profile   [account.controller.ts · updateProfile]
+  POST   /me/change-email   [account.controller.ts · changeEmail]
+  POST   /me/change-password   [account.controller.ts · changePassword]
+  GET    /me/deletion-request   [account.controller.ts · getDeletionRequest]
+  POST   /me/deletion-request   [account.controller.ts · requestDeletion]
+  POST   /me/deletion-request/cancel   [account.controller.ts · cancelDeletion]
+  GET    /auth/me   [auth.controller.ts · me]
+--- routes @Roles(CLIENT) / @Roles(ADMIN) (hors du périmètre d'un Pro) :
+  GET    /admin/deletion-requests   [account-admin.controller.ts] ADMIN
+  POST   /admin/deletion-requests/:id/approve   [account-admin.controller.ts] ADMIN
+  POST   /admin/deletion-requests/:id/reject   [account-admin.controller.ts] ADMIN
+  POST   /venues/:slug/bookings   [bookings.controller.ts] CLIENT
+  GET    /me/bookings   [bookings.controller.ts] CLIENT
+  DELETE /bookings/:id   [bookings.controller.ts] CLIENT
+  POST   /admin/venues/:id/publish   [venues-admin.controller.ts] ADMIN
+  PATCH  /admin/venues/:id/commission-rate   [venues-admin.controller.ts] ADMIN
+  POST   /venues/:slug/visit-bookings   [visit-bookings.controller.ts] CLIENT
+  GET    /me/visit-bookings   [visit-bookings.controller.ts] CLIENT
+  DELETE /visit-bookings/:id   [visit-bookings.controller.ts] CLIENT
+--- routes @Roles(PRO) qui ÉCRIVENT :
+  POST   /pro/clients/lookup   [pro-clients.controller.ts]
+  POST   /pro/clients   [pro-clients.controller.ts]
+  PATCH  /pro/clients/:id/names   [pro-clients.controller.ts]
+  PATCH  /pro/clients/:id   [pro-clients.controller.ts]
+  POST   /venues/:id/availability-blocks   [availability-blocks.controller.ts]
+  DELETE /venues/:id/availability-blocks/:blockId   [availability-blocks.controller.ts]
+  POST   /pro/bookings/:id/accept   [bookings-pro.controller.ts]
+  POST   /pro/bookings/:id/decline   [bookings-pro.controller.ts]
+  POST   /pro/bookings/:id/cancel   [bookings-pro.controller.ts]
+  POST   /venues/:id/slot-templates/:slotId/pricing-rules   [pricing-rules.controller.ts]
+  PATCH  /venues/:id/slot-templates/:slotId/pricing-rules/:ruleId   [pricing-rules.controller.ts]
+  DELETE /venues/:id/slot-templates/:slotId/pricing-rules/:ruleId   [pricing-rules.controller.ts]
+  POST   /venues/:id/quotes   [quotes.controller.ts]
+  POST   /quotes/:id/deliver   [quotes.controller.ts]
+  POST   /quotes/:id/revise   [quotes.controller.ts]
+  POST   /quotes/:id/convert   [quotes.controller.ts]
+  POST   /quotes/:id/cancel   [quotes.controller.ts]
+  POST   /quotes/:id/promote   [quotes.controller.ts]
+  POST   /quotes/:id/client-name   [quotes.controller.ts]
+  POST   /venues/:id/services   [services.controller.ts]
+  PATCH  /services/:id   [services.controller.ts]
+  DELETE /services/:id   [services.controller.ts]
+  POST   /venues/:id/slot-templates   [slot-templates.controller.ts]
+  PATCH  /venues/:id/slot-templates/:slotId   [slot-templates.controller.ts]
+  DELETE /venues/:id/slot-templates/:slotId   [slot-templates.controller.ts]
+  POST   /venues/:id/photos   [venue-media.controller.ts]
+  PATCH  /venues/:id/photos/order   [venue-media.controller.ts]
+  PATCH  /venues/:id/photos/:photoId   [venue-media.controller.ts]
+  DELETE /venues/:id/photos/:photoId   [venue-media.controller.ts]
+  PATCH  /venues/:id/virtual-tour   [venue-media.controller.ts]
+  POST   /venues   [venues.controller.ts]
+  PATCH  /venues/:id   [venues.controller.ts]
+  DELETE /venues/:id   [venues.controller.ts]
+  POST   /venues/:id/visit-availabilities   [visit-availabilities.controller.ts]
+  PATCH  /venues/:id/visit-availabilities/:availabilityId   [visit-availabilities.controller.ts]
+  DELETE /venues/:id/visit-availabilities/:availabilityId   [visit-availabilities.controller.ts]
+  DELETE /pro/venues/:id/visit-bookings/:bookingId   [visit-bookings.controller.ts]
+[code de sortie: 0]
+
+### M09 — le collecteur de routes DÉRIVÉ DU ROUTEUR existe déjà (D119) : fichiers qui parcourent ModulesContainer
+$ git grep -l 'ModulesContainer' ec44937 -- apps/api/test | sed 's/^[^:]*://'
+apps/api/test/int/contract-api-client.int-spec.ts
+apps/api/test/int/rbac-all-routes.int-spec.ts
+[code de sortie: 0]
+
+### M10 — transport côté client : credentials, Bearer en mémoire, et SEULE réaction à un 401 (auth-client.ts:144-147 et :200-204)
+$ git show ec44937:packages/api-client/src/auth-client.ts | sed -n '142,148p;196,204p' | cat -n
+     1	      res = await fetchImpl(`${baseUrl}/api/v1${path}`, {
+     2	        method: init.method ?? "GET",
+     3	        credentials: "include",
+     4	        headers: {
+     5	          ...(init.body !== undefined && !isFormData ? { "Content-Type": "application/json" } : {}),
+     6	          ...(init.bearer && accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
+     7	        },
+     8	  /** Requête authentifiée : Bearer en mémoire, et sur 401 UNAUTHENTICATED,
+     9	   *  UN refresh puis UN rejeu — jamais de boucle. */
+    10	  async function authed<T>(path: string, init: { method?: string; body?: unknown; responseType?: "json" | "blob" } = {}): Promise<T> {
+    11	    try {
+    12	      return await raw<T>(path, { ...init, bearer: true });
+    13	    } catch (e) {
+    14	      const expired = e instanceof ApiError && e.status === 401 && e.code === "UNAUTHENTICATED";
+    15	      if (!expired) throw e;
+    16	      const renewed = await refreshSession();
+[code de sortie: 0]
+
+### M11 — CORS : origine restreinte + credentials, aucun allowedHeaders (main.ts:21-23)
+$ git show ec44937:apps/api/src/main.ts | sed -n '21,23p'
+  // CORS restreint aux fronts connus (env CORS_ORIGINS)
+  const config = app.get(ConfigService);
+  app.enableCors({ origin: config.get<string[]>("CORS_ORIGINS"), credentials: true });
+[code de sortie: 0]
+
+### M12 — les limites de débit des routes d'auth : un seul levier de test (D128) — clés d'AUTH_THROTTLE
+$ git show ec44937:apps/api/src/auth/auth.throttle.ts | grep -n -E '^  [a-zA-Z]+: \{ limit' | cut -c1-110
+39:  register: { limit: num("THROTTLE_REGISTER_LIMIT", 5), ttl: TTL },
+41:  verifyEmail: { limit: num("THROTTLE_VERIFY_LIMIT", 10), ttl: TTL },
+43:  resend: { limit: num("THROTTLE_RESEND_LIMIT", 3), ttl: TTL },
+46:  login: { limit: num("THROTTLE_LOGIN_LIMIT", 10), ttl: TTL },
+50:  refresh: { limit: num("THROTTLE_REFRESH_LIMIT", 30), ttl: TTL },
+52:  logout: { limit: num("THROTTLE_LOGOUT_LIMIT", 10), ttl: TTL },
+55:  forgot: { limit: num("THROTTLE_FORGOT_LIMIT", 3), ttl: TTL },
+58:  reset: { limit: num("THROTTLE_RESET_LIMIT", 10), ttl: TTL },
+63:  changePassword: { limit: num("THROTTLE_CHANGE_PASSWORD_LIMIT", 10), ttl: TTL },
+67:  changeEmail: { limit: num("THROTTLE_CHANGE_EMAIL_LIMIT", 3), ttl: TTL },
+71:  google: { limit: num("THROTTLE_GOOGLE_LIMIT", 5), ttl: TTL }
+[code de sortie: 0]
+
+### M13 — PasswordService : hachage argon2id, vérification, coût factice (lignes 11-41)
+$ git show ec44937:apps/api/src/auth/password.service.ts | sed -n '11,41p' | cat -n
+     1	@Injectable()
+     2	export class PasswordService {
+     3	  hash(plain: string): Promise<string> {
+     4	    return argon2.hash(plain, { type: argon2.argon2id });
+     5	  }
+     6	
+     7	  /** false sur mauvais mot de passe ET sur hash malformé — jamais d'exception. */
+     8	  async verify(hash: string, plain: string): Promise<boolean> {
+     9	    try {
+    10	      return await argon2.verify(hash, plain);
+    11	    } catch {
+    12	      return false;
+    13	    }
+    14	  }
+    15	
+    16	  /**
+    17	   * Vérification FACTICE anti-timing (D5) : quand l'email n'existe pas, le
+    18	   * login paie quand même le coût d'un argon2.verify complet — sinon la
+    19	   * différence de latence (~100 ms vs ~0 ms) trahirait l'existence du compte
+    20	   * malgré un corps de réponse identique.
+    21	   * Le hash factice est calculé au premier usage (préimage = 32 octets CSPRNG
+    22	   * aussitôt oubliés : la comparaison est structurellement toujours fausse)
+    23	   * puis mémoïsé — un seul hash payé par vie du process.
+    24	   */
+    25	  async verifyAgainstDummy(plain: string): Promise<false> {
+    26	    this.dummyHash ??= argon2.hash(randomBytes(32).toString("base64url"), { type: argon2.argon2id });
+    27	    await this.verify(await this.dummyHash, plain);
+    28	    return false;
+    29	  }
+    30	
+    31	  private dummyHash?: Promise<string>;
+[code de sortie: 0]
+
+### M14 — passwordSchema actuel (packages/types/src/auth.ts:12-18)
+$ git show ec44937:packages/types/src/auth.ts | sed -n '12,18p'
+/** Politique mot de passe validée (Lot 0) : min 8, ≥ 1 lettre, ≥ 1 chiffre, max 128. */
+export const passwordSchema = z
+  .string({ required_error: "auth.validation.passwordRequired" })
+  .min(8, "auth.validation.passwordTooShort")
+  .max(128, "auth.validation.passwordTooLong")
+  .regex(/[\p{L}]/u, "auth.validation.passwordNeedsLetter")
+  .regex(/\d/, "auth.validation.passwordNeedsDigit");
+[code de sortie: 0]
+
+### M15 — normaliseurs existants dans packages/types (aucun pour un nom de compte ni pour l'arabe) ; TÉMOIN POSITIF : NFKC est bien trouvé dans contact.ts
+$ git grep -n -E 'export function (normalize|canonical)\w*' ec44937 -- packages/types/src | grep -v -E 'test|spec' | sed 's/^[^:]*://'; echo '--- témoin positif (fichiers de packages/types/src qui mentionnent NFKC):'; git grep -c NFKC ec44937 -- packages/types/src | sed 's/^[^:]*://'; echo '--- script arabe (plages \u0600-\u06FF, Script=Arabic, tatweel) dans packages/types/src et apps/api/src, hors tests et client généré:'; git grep -c -i -E 'u0600|u06FF|Script=Arabic|tatweel' ec44937 -- packages/types/src apps/api/src ':(exclude)apps/api/src/generated' ':(exclude)*.spec.ts' ':(exclude)*.test.ts' || echo '(aucune occurrence)'
+packages/types/src/contact.ts:88:export function normalizeContactEmail(raw: string): string {
+packages/types/src/phone.ts:107:export function normalizePhone(id: PhoneCountryId, raw: string | null | undefined): string | null {
+packages/types/src/phone.ts:141:export function normalizeDzPhone(raw: string | null | undefined): string | null {
+--- témoin positif (fichiers de packages/types/src qui mentionnent NFKC):
+packages/types/src/client-record.ts:1
+packages/types/src/contact.ts:3
+--- script arabe (plages \u0600-\u06FF, Script=Arabic, tatweel) dans packages/types/src et apps/api/src, hors tests et client généré:
+(aucune occurrence)
+[code de sortie: 0]
+
+### M16 — ports Clock / Random / PinHasher : existants ? TÉMOIN POSITIF : TokenService est bien trouvé
+$ echo -n 'témoin positif (fichiers mentionnant TokenService): '; git grep -c TokenService ec44937 -- apps/api/src ':(exclude)apps/api/src/generated' | wc -l; echo -n 'cible (fichiers mentionnant Clock/PinHasher/Random en port): '; git grep -c -E 'interface Clock|CLOCK|PinHasher|interface Random|RANDOM_' ec44937 -- apps/api/src ':(exclude)apps/api/src/generated' | wc -l
+témoin positif (fichiers mentionnant TokenService): 9
+cible (fichiers mentionnant Clock/PinHasher/Random en port): 0
+[code de sortie: 0]
+
+### M17 — les variables d'environnement actuellement exigées en production (env.ts:150-161) et la forme du secret JWT (env.ts:21)
+$ git show ec44937:apps/api/src/config/env.ts | sed -n '21p;150,161p'
+  JWT_ACCESS_SECRET: z.string().min(32, "JWT_ACCESS_SECRET doit faire au moins 32 caractères"),
+const PROD_REQUIRED_EXPLICIT = [
+  "CLIENT_URL",
+  "PRO_URL",
+  "AUTH_COOKIE_SECURE",
+  "GOOGLE_CLIENT_ID",
+  // ⚠ EXPLICITE EN PRODUCTION, alors qu'il a déjà un défaut sûr. Le défaut
+  // protège contre l'allumage accidentel ; cette liste-ci protège contre
+  // l'inverse — croire les paiements actifs alors que la variable a été oubliée
+  // au déploiement. Sur le chemin de l'argent, les deux erreurs coûtent, et
+  // aucune ne doit pouvoir se produire en silence.
+  "PAYMENTS_ENABLED"
+] as const;
+[code de sortie: 0]
+
+### M18 — AuditLog : le modèle (schema.prisma:1438-1456) et ses ÉCRIVAINS à ec44937 (hors client généré, specs, tests, migrations)
+$ git show ec44937:apps/api/prisma/schema.prisma | sed -n '1438,1456p'; echo '--- écrivains:'; git grep -n -E 'auditLog\.(create|createMany|upsert|update)\(' ec44937 -- apps/api ':(exclude)apps/api/src/generated' ':(exclude)*.spec.ts' ':(exclude)apps/api/test' | sed 's/^[^:]*://'
+model AuditLog {
+  id         String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  actorId    String?  @map("actor_id") @db.Uuid
+  actorRole  String?  @map("actor_role")
+  action     String // ex: "venue.publish", "commission_rate.update"
+  entityType String   @map("entity_type")
+  entityId   String?  @map("entity_id")
+  before     Json?
+  after      Json?
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([actorId])
+  @@map("audit_logs")
+}
+
+// NB : pg-boss (jobs différés, Phase 3.1) crée et gère son propre schéma
+--- écrivains:
+apps/api/src/venues/quote-store.prisma.ts:322:      await tx.auditLog.create({
+[code de sortie: 0]
+
+### M19 — ProProfile (schema.prisma:409-436) : la clé de rattachement d'un compte à sa salle est user_id UNIQUE
+$ git show ec44937:apps/api/prisma/schema.prisma | sed -n '409,436p'
+model ProProfile {
+  id                 String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId             String   @unique @map("user_id") @db.Uuid
+  businessName       String   @map("business_name")
+  phone              String // contact pro, normalisé +213
+  /// D38 (A10) — seconde ligne, NULLABLE : beaucoup de salles opèrent avec
+  /// deux numéros, mais un seul reste obligatoire.
+  phone2             String?  @map("phone2")
+  registrationNumber String?  @map("registration_number") // RC/NIF — KYC P1
+  /// D60 — canaux de notification choisis par le pro. DEUX booléens et non un
+  /// enum { EMAIL, SMS, BOTH } : un enum explose dès le troisième canal.
+  /// `CHECK pro_profiles_one_channel_required` interdit de tout couper — un pro
+  /// sans canal ne verrait plus jamais une demande arriver.
+  notifyByEmail      Boolean  @default(true) @map("notify_by_email")
+  notifyBySms        Boolean  @default(false) @map("notify_by_sms")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  venues Venue[]
+  /// D336 (rang 41) — les FICHES CLIENT du pro, communes à toutes ses salles.
+  clientRecords ProClientRecord[]
+
+  @@map("pro_profiles")
+}
+
+// =============================================================================
+// GÉOGRAPHIE & SALLES — backlog 3.3
+[code de sortie: 0]
+
+### M20 — précédent d'une écriture atomique « INSERT … ON CONFLICT … RETURNING » dans le code (compteur de devis, D333)
+$ git grep -n -E 'ON CONFLICT|RETURNING' ec44937 -- apps/api/src ':(exclude)apps/api/src/generated' ':(exclude)*.spec.ts' | sed 's/^[^:]*://' | cut -c1-170
+apps/api/src/clients/pro-client-policy.ts:34: * ⛔ MD-2 (K-2) — après un `INSERT … ON CONFLICT DO NOTHING` qui n'a rien inséré, ou avant toute écriture : la fich
+apps/api/src/clients/pro-client-store.prisma.ts:47:  // ⛔ MD-1 — la BASE tranche : l'insertion qui heurte l'unicité `(pro, numéro)` ou `(pro, e-mail)` ne fait RIEN 
+apps/api/src/clients/pro-client-store.prisma.ts:54:      ON CONFLICT DO NOTHING
+apps/api/src/clients/pro-client-store.prisma.ts:55:      RETURNING id::text AS id`;
+apps/api/src/clients/pro-client-store.types.ts:6:// (`INSERT … ON CONFLICT DO NOTHING`) suivie d'une relecture — jamais « lire puis insérer » (MD-1).
+apps/api/src/clients/pro-client-store.types.ts:66:  /** ⛔ K-2 (MD-1) — `INSERT … ON CONFLICT DO NOTHING`, puis, si rien n'est inséré, la relecture des fiches du n
+apps/api/src/venues/quote-store.prisma.ts:63:  /** ⛔ LE COMPTEUR DES NUMÉROS DE DEVIS (rang 39, R3). Une ligne par (salle, année) ; l'incrément est ATOMIQUE (`ON CON
+apps/api/src/venues/quote-store.prisma.ts:70:      ON CONFLICT (venue_id, year) DO UPDATE SET last_number = quote_number_counters.last_number + 1
+apps/api/src/venues/quote-store.prisma.ts:71:      RETURNING last_number`;
+apps/api/src/venues/quote-store.types.ts:187:   *  ⛔ LE NUMÉRO DU DEVIS s'alloue DANS CETTE TRANSACTION, par un compteur `(salle, année)` incrémenté atomiquement (`
+[code de sortie: 0]
+
+### M21 — numéros K déjà attribués dans les fichiers d'autorité et les cadrages (le plus grand détermine les numéros neufs)
+$ git show ec44937:ZWADJ_CONTINUITE.md ec44937:ZWADJ_BACKLOG.md | grep -ohE '\bK-[0-9]+[a-z]?\b' | sort -t- -k2 -n -u | tr '\n' ' '
+K-1 K-2 K-3 K-4 K-5 K-6 K-7 K-8 K-9 K-10 K-11 K-12 K-13 [code de sortie: 0]
+
+### M22 — migrations : les trois dernières (le nom de la migration de L36-3 se place après la dernière)
+$ git ls-tree --name-only ec44937 apps/api/prisma/migrations/ | sed 's#apps/api/prisma/migrations/##' | grep -v lock | tail -3
+20261022120000_pro_client_records
+20261024100000_booking_contact_phone_optional
+20261028100000_quote_unofficial_draft
+[code de sortie: 0]
+
+### M23 — la suite e2e existante : nombre de specs ; TÉMOIN POSITIF (playwright) puis cible (le personnel : staff, pin en mot entier)
+$ echo -n 'specs: '; git ls-tree -r --name-only ec44937 e2e/specs/ | wc -l; echo -n 'témoin positif (fichiers de e2e/ mentionnant playwright): '; git grep -c -i playwright ec44937 -- e2e | wc -l; echo -n 'cible (fichiers de e2e/ mentionnant staff ou pin en mot entier): '; git grep -c -i -w -E 'staff|pin' ec44937 -- e2e | wc -l
+specs: 15
+témoin positif (fichiers de e2e/ mentionnant playwright): 23
+cible (fichiers de e2e/ mentionnant staff ou pin en mot entier): 0
+[code de sortie: 0]
+
+### M24 — taille de RÉFÉRENCE : le lot L36-2 (D339), code de d703117 à ec44937 (apps, packages, e2e, neutralisation)
+$ git diff --shortstat d703117 ec44937 -- apps packages e2e neutralisation; echo "ajoutés: $(git diff --diff-filter=A --name-only d703117 ec44937 -- apps packages e2e neutralisation | wc -l) · modifiés: $(git diff --diff-filter=M --name-only d703117 ec44937 -- apps packages e2e neutralisation | wc -l) · fichiers de test: $(git diff --name-only d703117 ec44937 -- apps packages e2e | grep -c -E '\.(spec|test|int-spec|e2e)\.tsx?$')"; git diff --numstat d703117 ec44937 -- apps packages | awk '{ if ($3 ~ /\.(spec|test|int-spec|e2e)\.tsx?$/) t+=$1; else p+=$1 } END { print "insertions production+config:", p, " insertions tests:", t }'
+ 44 files changed, 3840 insertions(+), 123 deletions(-)
+ajoutés: 4 · modifiés: 40 · fichiers de test: 17
+insertions production+config: 674  insertions tests: 2237
+[code de sortie: 0]
+
+### M25 — la même référence : tests avant et après D339, SOMMÉS sur tous les paquets du pnpm test racine (défaut de la première version : tail -2 prenait le DERNIER paquet seulement) ; avant = le REJEU vert de D338 (sa première passe était rouge), après = la passe de D339
+$ somme_vitest docs/preuves/D338/portes/test-rejeu-1.txt ; somme_vitest docs/preuves/D339/portes/test.txt   # awk : somme des lignes « Test Files N passed » et « Tests N passed »
+docs/preuves/D338/portes/test-rejeu-1.txt: fichiers=147 (4 résumés) tests=2049 (4 résumés)
+docs/preuves/D339/portes/test.txt: fichiers=148 (4 résumés) tests=2194 (4 résumés)
+--- attendu, lu dans la section D339 de ZWADJ_CONTINUITE.md (clôture du rang 43) :
+test` 2 194 / 148
+--- test:int avant / après (un seul paquet, pas de somme) :
+docs/preuves/D338/portes/test-int.txt :       Tests  567 passed (567)
+docs/preuves/D339/portes/test-int.txt :       Tests  619 passed (619)
+
+### M26 — la migration de référence : sa taille (D339, une colonne, une CHECK, un déclencheur)
+$ wc -l apps/api/prisma/migrations/20261028100000_quote_unofficial_draft/migration.sql
+45 apps/api/prisma/migrations/20261028100000_quote_unofficial_draft/migration.sql
+[code de sortie: 0]
+
+### M27 — LE JOURNAL DES REQUÊTES MASQUE-T-IL LES COOKIES ? (pino-http avec la configuration EXACTE d'app.module.ts:30, puis avec « res.headers[set-cookie] » ajouté)
+$ node <script embarqué> (résolution de pino-http depuis apps/api, serveur http local, une requête portant cookie + Authorization, une réponse posant un Set-Cookie ; rien n'est écrit dans le dépôt)
+--- configuration lue dans le dépôt :
+        redact: ["req.headers.authorization", "req.headers.cookie"]
+pino-http 10.5.0
+configuration ACTUELLE (app.module.ts:30)   — lignes de journal: 1 · cookie ENTRANT visible: false · Authorization ENTRANT visible: false · Set-Cookie SORTANT visible: true
+configuration + res.headers[set-cookie]     — lignes de journal: 1 · cookie ENTRANT visible: false · Authorization ENTRANT visible: false · Set-Cookie SORTANT visible: false
+[code de sortie: 0]
+--- lecture : les deux premières colonnes à « false » prouvent que la rédaction MARCHE là où elle est déclarée (bras de contrôle) ; « Set-Cookie SORTANT visible: true » avec la configuration actuelle est le défaut ; « false » avec la configuration corrigée prouve que le remède agit.
+--- limite écrite : mesuré au niveau de pino-http (la bibliothèque que nestjs-pino enveloppe), pas à travers l'application Nest démarrée.

@@ -1,0 +1,17 @@
+D340 — tri différentiel de l'audit de secrets « b » (AVANT le commit du cadrage, des mesures du cadrage et du signalement SIG-1)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D340/audit-secrets-d340a.txt docs/preuves/D340/audit-secrets-d340b.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D340/audit-secrets-d340b.txt (sortie scellée, sceau vérifié à la relecture).
+Calibration à deux bras tenue pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru : 4 543 fichiers parcourus, 4 417 audités, 126 exclus (les sorties d'audit scellées, dont « a » de D340), 736 alertes. Précédente (« a ») : 731 contextes lus ; nouvelle (« b ») : 736. Alertes ABSENTES de la précédente : 5 (ventilation par motif : porteur = 1 · mot-de-passe = 1 · valeur-nommee-secrete = 1 · jeton = 2 ; 731 + 5 = 736 : aucun autre motif ne rend d'alerte NOUVELLE).
+
+Tri au contexte (lignes de la sortie scellée « b » ; l'instrument renvoie aux lignes et ne recopie aucun contexte, D299 ; les cinq contextes ont été relus dans la sortie scellée, lignes 2638 à 2646) :
+  · 1 [porteur] = docs/preuves/D340/mesures-cadrage.sh, ligne 229 : le TÉMOIN FACTICE de la mesure M27 — une chaîne de substitution écrite par la session pour tester la rédaction du journal (un en-tête d'autorisation de la forme « Bearer », suivi d'un mot majuscule inventé et d'un nombre). Elle n'a servi qu'à un serveur local jetable ; la valeur n'existe dans aucun fichier suivi (l'audit le dit : « valeur déjà présente dans 0 fichier(s) suivi(s) hors preuves »). Aucune valeur réelle.
+  · 1 [mot-de-passe] = docs/preuves/D340/mesures-cadrage.txt, ligne 269 : une LIGNE DE CODE SOURCE recopiée par M12 (`auth.throttle.ts`) — la clé « changePassword » d'`AUTH_THROTTLE` avec son nom de variable de débit. Un nom de limite et un nombre : aucune valeur.
+  · 1 [valeur-nommee-secrete] = docs/preuves/D340/mesures-cadrage.txt, ligne 340 : une LIGNE DE CODE SOURCE recopiée par M17 (`env.ts:21`) — le NOM de la variable du secret du jeton d'accès et son message de validation. Un nom et une règle de longueur : aucune valeur. L'audit le confirme : la « valeur » vue est déjà présente dans un fichier suivi (le fichier de code).
+  · 2 [jeton] = docs/preuves/D340/mesures-cadrage.txt, lignes 47 et 111 : deux LIGNES DE CODE SOURCE recopiées par M04 et M06 (`jwt-auth.guard.ts` : l'affectation de la variable locale « token » au retour de l'extraction du Bearer ; `token.service.ts` : la signature de la méthode de hachage). Aucune valeur.
+
+Résultat du tri : 5 alertes lues, 0 valeur réelle. Les cinq sont des MOTS sensibles (un nom de variable, une signature, une clé de configuration) ou un témoin factice écrit par la session — la distinction que D299 fixe : l'audit ne garantit pas l'absence de mots, il garantit l'absence de valeurs.
+
+⚠ Limite écrite : le contrôle dédié « 0 valeur réelle sur N fichiers » (docs/preuves/D299/outils/aucune-valeur-reelle.py) cherche les valeurs d'un JOURNAL qu'on lui nomme ; à cette étape la session n'a lu aucun journal à valeurs réelles (elle n'a lancé ni l'e2e ni une base). Il est joué à la clôture, avec les portes. Le présent fichier est écrit APRÈS l'audit « b » ; il est couvert par l'audit « c ». Il ne contient aucune valeur.
