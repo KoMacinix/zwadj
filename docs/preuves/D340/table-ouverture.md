@@ -97,3 +97,20 @@ Liste **prévisible** à la lecture du code, pour les fichiers EXISTANTS que le 
 - **Aucun fichier d'écran** (`apps/pro/src/…`) : les écrans sont L36-4, hors lot. Avant la première activation, l'app Pro marche exactement comme aujourd'hui (la suite e2e existante, inchangée, le mesure).
 - **Aucun fichier de l'annuaire (L36-5), de la fiche client, des notifications (L36-9), de `visit_bookings`, du paiement (E3, R1)** : hors lot.
 - **Les routes ADMIN** : le lot ne les touche pas (consigne 3 a).
+
+## Extension 1 — 03/11/2026 — commitée SEULE, AVANT le versement qu'elle couvre : l'arrêt des portes, le rejeu unique (R-6), l'instrument du contrôle de fin de lot
+
+Motif : la première passe des portes (sur batterie, arbre sans code modifié) est sortie **rouge sur deux portes** — `pnpm test` (39 échecs sur 2 paquets) et `pnpm test:e2e` (3 échecs) —, ce que les pièces déclarées plus haut ne prévoyaient pas. La consigne (section 2, R-6) renvoie à la règle R-6 de D339 : un seul rejeu complet à la main, sa règle écrite et commitée AVANT, les deux passes versées côte à côte, l'état machine relevé pendant. Les pièces ci-dessous en sortent, plus l'instrument du contrôle de fin de lot (un instrument entre au dépôt, il ne reste pas dans un scratchpad : D286).
+
+⚠ **Numérotation des audits** : la table d'ouverture annonçait « c » pour la clôture ; l'audit « c » sert maintenant à verser la **règle du rejeu AVANT son lancement** (D298 : tout versement passe par l'audit avant son commit) ; l'audit de **clôture** s'appelle donc « d ». Rien n'est retiré de ce qui précède.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D340/portes/arret-portes.md` | l'arrêt (chiffres et signatures lues sur la sortie brute), la règle du rejeu écrite AVANT, puis le résultat |
+| `docs/preuves/D340/portes/chaine-portes.sh` | le pilote de la chaîne des six portes de la première passe |
+| `docs/preuves/D340/portes/rejeu-portes.sh` | le pilote du rejeu unique (`pnpm test` puis `pnpm test:e2e`), état machine toutes les 30 s |
+| `docs/preuves/D340/portes/etat-machine-pendant.txt` | l'état machine de la première passe (une ligne par minute) |
+| `docs/preuves/D340/portes/test-e2e-rejeu.txt` | la sortie du rejeu de l'e2e (pièce MASQUÉE si elle porte des jetons d'une base jetable) |
+| `docs/preuves/D340/controle-fin-de-lot.py` | l'instrument du contrôle de fin de lot (calibré à quatre bras, familles 1 à 8) |
+| `docs/preuves/D340/audit-secrets-d340d.txt` | audit de secrets scellé de la clôture |
+| `docs/preuves/D340/tri-audit-d340d.txt` | son tri différentiel |
