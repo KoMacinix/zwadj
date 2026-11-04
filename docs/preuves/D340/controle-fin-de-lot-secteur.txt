@@ -1,0 +1,70 @@
+D340 — CONTRÔLE DE FIN DE LOT — SHA de départ ec44937 — e10c51d = HEAD au moment du contrôle
+calibration : chemin déclaré connu → ✓ ; chemin fabriqué → ✗ ; prose ≠ déclaration, tableau = déclaration ; texte sain → 0 mojibake ; texte cassé → 1 — les bras tiennent (74 chemins complets lus dans la table).
+
+commits du lot (14, du plus ancien au plus récent) :
+  e3c1890  docs(rang-44): D340 — table d'ouverture, SEULE : L36-3 (le personnel et le PIN, serveur), cadrage d'abord, règ
+  8878025  test(rang-44): D340 — la consigne en pièce, la lecture adverse de la consigne (43 contrôles : 35 ✓ · 3 ≈ · 0 ✗
+  c7645b7  docs(rang-44): D340 — PREMIÈRE écriture d'autorité : l'arbitrage du rang 44 (L36-3), sections 1 et 2 de la con
+  8c18e7e  docs(rang-44): D340 — le CADRAGE de L36-3 : la règle d'arrêt JOUE (taille ≈ 2,8 × L36-2, frontière de R-5 cont
+  96880de  docs(rang-44): D340 — extension 1 de la table, SEULE : l'arrêt des portes et le rejeu unique (R-6), le pilote 
+  49cd9f9  test(rang-44): D340 — l'ARRÊT des portes (test : 39 échecs dont 34 délais de 5 000 ms ; test:e2e : 3 échecs, d
+  caf3317  test(rang-44): D340 — les pièces de CLÔTURE : les six portes (typecheck, lint, build, test:int à 0 ; test et t
+  a5de56a  docs(rang-44): D340 — les .md d'autorité de CLÔTURE, EN DERNIER : la section D340, le point d'entrée du rang 4
+  fba4c5e  docs(rang-44): D340 — le contrôle de fin de lot (familles 2 à 8 ✓ ; famille 1 ✗ ATTENDU : clôture locale, non 
+  2eb05b3  docs(rang-44): D340 — extension 2 de la table, SEULE : la note de Ko du 04/11/2026 (R-7 à R-10) et la passe de
+  16e79da  test(rang-44): D340 — la note de Ko du 04/11/2026 en pièce, l'état machine à la RÉCEPTION (secteur ; chrome 10
+  b939301  docs(rang-44): D340 — PREMIÈRE écriture d'autorité de la clôture : la NOTE DE KO du 04/11/2026 mot pour mot (R
+  0074fa4  test(rang-44): D340 — la passe sur SECTEUR (R-8), TOUT VERT : les sorties des six portes et de l'e2e, le contr
+  e10c51d  docs(rang-44): D340 — les .md d'autorité EN DERNIER, annotations additives de la passe sur SECTEUR (R-7 à R-10
+
+1. LOCAL ET DISTANT SUR LE MÊME SHA (D288)
+  ✓ HEAD = e10c51df9e7cab9aaffcd08e09534b6c1c1726ad · origin/main = e10c51df9e7cab9aaffcd08e09534b6c1c1726ad (après `git fetch` fait avant ce contrôle) — examinés : 2 SHA
+  ✓ `git status --short` = vide ; `git stash list` = vide
+
+2. LE PREMIER COMMIT DU LOT EST LA TABLE SEULE (D328, point 1)
+  ✓ e3c1890 : parent ec44937, fichiers = ['docs/preuves/D340/table-ouverture.md'] — examinés : 1 fichier(s)
+
+3. DIFF ⊆ TABLE, CHEMINS COMPLETS, EXTENSIONS COMPRISES (D328)
+  ✓ 63 fichiers au diff ec44937..HEAD, 74 chemins complets déclarés ; non déclarés : aucun
+     commits qui modifient la table après le premier : 2
+  ✓ l'extension du commit n°5 (96880de) est SEULE (['docs/preuves/D340/table-ouverture.md']) et précède les 8 fichier(s) qu'elle déclare ; déjà commités avant ou avec elle : aucun
+  ✓ l'extension du commit n°10 (2eb05b3) est SEULE (['docs/preuves/D340/table-ouverture.md']) et précède les 23 fichier(s) qu'elle déclare ; déjà commités avant ou avec elle : aucun
+
+4. AUCUN FICHIER DE CODE NI DE TEST (la règle d'arrêt a joué : lot DOCUMENTAIRE)
+  ✓ 63 fichiers examinés ; hors `docs/preuves/D340/` et hors les trois `.md` d'autorité : aucun
+
+5. L'ORDRE DES COMMITS (D328, points 2 à 4)
+  ✓ la sortie de la lecture adverse (commit n°2) précède le premier `.md` d'autorité (commit n°3) — examinés : 14 commits
+  ✓ la PREMIÈRE écriture d'autorité (c7645b7) ne contient que ZWADJ_CONTINUITE.md : ['ZWADJ_CONTINUITE.md']
+  ✓ le cadrage (8c18e7e, commit n°4) est un ancêtre de origin/main : poussé ; aucun commit de code n'existe (famille 4)
+  ✓ les pièces de clôture (portes, passe D277 : commit n°7) précèdent les `.md` de clôture (dernier : commit n°14)
+     rouges avant le code (D334, item 5) : SANS OBJET — aucun code.
+
+6. LE REGISTRE
+  ✓ 294 lignes de registre examinées ; les deux dernières : | D339 | A |…, | D340 | A |…
+
+7. L'ARBRE, LES FINS DE LIGNE, L'ENCODAGE (D289 : relire ce qu'on a ÉCRIT, pas le compte rendu de l'outil)
+  ✓ ZWADJ_CONTINUITE.md : 24621 CRLF, 0 LF nu(s) — examiné : 3054293 octets
+  ✓ AGENTS.md : 1667 CRLF, 0 LF nu(s) — examiné : 233892 octets
+  ✓ ZWADJ_BACKLOG.md : 5654 CRLF, 0 LF nu(s) — examiné : 696880 octets
+  ✓ 60 pièces de docs/preuves/D340 relues en UTF-8 : mojibake / U+FFFD = aucun
+
+8. LES JETONS ATTENDUS SONT DANS LES FICHIERS (D289 : on cherche les jetons, on ne constate pas qu'une écriture a eu lieu)
+  ✓ ZWADJ_CONTINUITE.md : 10 jetons cherchés dans le texte APLATI ; manquants : aucun
+  ✓ AGENTS.md : 4 jetons cherchés dans le texte APLATI ; manquants : aucun
+  ✓ ZWADJ_BACKLOG.md : 3 jetons cherchés dans le texte APLATI ; manquants : aucun
+
+9. LES DÉCISIONS DU CHAT ONT ATTERRI DANS UN FICHIER (corollaire de fin de session de CLAUDE.md) — chaque ligne est vérifiée par la famille 8
+     · la délégation de Ko (02/11/2026) : citation mot pour mot dans ZWADJ_CONTINUITE.md (bloc d'arbitrage) et annotation dans AGENTS.md (règle D284) ;
+     · R-1 à R-6 du relecteur, S-97 confirmée, S-83 à S-96 ratifiées, condition de clôture du rang 43 levée : ZWADJ_CONTINUITE.md (première écriture d'autorité) ;
+     · la question au relecteur (trois lots ou deux) : ZWADJ_CONTINUITE.md (point d'entrée du rang 44) et cadrage § 8 ;
+     · SIG-1 et le recours administrateur : ZWADJ_BACKLOG.md ; SIG-1 : docs/preuves/D340/signalements.md ;
+     · rien ne vit seulement dans ce fil : les décisions de la session (S-98 à S-112) sont dans le cadrage et la section D340, À RATIFIER.
+
+10. CE QUE CE CONTRÔLE NE DIT PAS
+     · Il ne dit rien de la CORRECTION du cadrage (ses estimations de taille sont des estimations, ses affirmations de code sont des lectures) : c'est le rôle du relecteur.
+     · Il ne rejoue pas les portes : leurs sorties sont dans docs/preuves/D340/portes/ ; elles disent que l'arbre sans code n'a pas bougé, pas que L36-3 est bon.
+     · La famille 5 compare des POSITIONS de commits : elle ne dit pas ce que chaque commit contient au-delà des noms de fichiers.
+     · Le « sur secteur » de la consigne n'est PAS contrôlé ici : la chaîne des portes s'est faite sur batterie (docs/preuves/D340/portes/_index.txt).
+
+RÉSULTAT : 0 échec(s) sur les familles 1 à 8 (attendu 0).
