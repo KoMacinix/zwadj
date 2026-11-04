@@ -1,0 +1,14 @@
+D340 — tri différentiel de l'audit de secrets « c » (AVANT le commit de la règle du rejeu, des deux pilotes de portes, de l'instrument du contrôle de fin de lot et de l'état machine de la première passe)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D340/audit-secrets-d340b.txt docs/preuves/D340/audit-secrets-d340c.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D340/audit-secrets-d340c.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+⚠ L'audit « c » a été joué DEUX fois, la seconde sur les octets FINAUX : entre les deux, l'instrument du contrôle de fin de lot a changé de quatre lignes (ses signatures d'encodage, écrites en clair par l'outil d'écriture qui avait converti mes séquences d'échappement, sont désormais assemblées à partir de points de code ; aucune valeur, aucun jeton). La sortie versée est celle de la SECONDE passe ; la première (4 550 fichiers parcourus, 736 alertes, 0 nouvelle) n'est pas versée : elle a été écrasée par la seconde, dont les chiffres sont ci-dessous.
+
+ce que l'audit a parcouru (seconde passe) : 4 552 fichiers parcourus, 4 424 audités, 128 exclus (les sorties d'audit scellées, dont « b » et « c » de D340), 736 alertes. Précédente (« b ») : 736 contextes lus, 4 543 fichiers parcourus ; nouvelle (« c ») : 736 contextes, 4 552 fichiers. Alertes ABSENTES de la précédente : 0 (ventilation par motif : aucune).
+Rapprochement des fichiers (D290) : 4 552 − 4 543 = 9 = les neuf pièces écrites depuis l'audit « b » (la sortie scellée « b », le tri « b », l'instrument du contrôle de fin de lot, la règle du rejeu, les deux pilotes de portes, l'état machine de la première passe, le tri « c » et la première sortie « c »).
+
+Tri au contexte : il n'y a rien à trier — 0 alerte nouvelle sur 736.
+
+⚠ Limite écrite : le contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) cherche les valeurs d'un JOURNAL e2e qu'on lui nomme ; la première passe de l'e2e en a produit un (hors dépôt, dans le scratchpad), mais ses pièces ne sont versées qu'APRÈS le rejeu et masquées ; le contrôle est joué à la clôture sur l'ensemble. Le présent fichier est écrit APRÈS l'audit « c » ; il est couvert par l'audit « d ». Il ne contient aucune valeur.
