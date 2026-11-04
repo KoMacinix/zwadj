@@ -1,0 +1,18 @@
+D340 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne en pièce, de la lecture adverse et de sa sortie)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D339/audit-secrets-d339f.txt docs/preuves/D340/audit-secrets-d340a.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D340/audit-secrets-d340a.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq : motifs, positif, écho, discrimination, cas réel) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) :
+  · précédente (d339f) : 4 528 fichiers parcourus, 4 404 audités, 124 exclus, 731 alertes.
+  · nouvelle (d340a) : 4 537 fichiers parcourus, 4 412 audités, 125 exclus, 731 alertes.
+  · RAPPROCHEMENT MESURÉ (les nombres ci-dessous se recomptent) : l'outil énumère `docs/preuves/` par os.walk (il voit donc les fichiers NON SUIVIS) et ajoute `.gitattributes` à sa liste. À l'instant de l'audit « a », `docs/preuves/` comptait 4 536 fichiers (4 538 relevés ensuite, moins les deux écrits APRÈS l'audit : sa sortie et ce tri) ; 4 536 + `.gitattributes` = 4 537, le nombre que l'audit a rapporté.
+  · Les fichiers de D340 que l'audit « a » a lus : 6 (la table d'ouverture, la consigne en pièce, l'instrument de la lecture adverse, sa sortie, la sortie de sa passe 1, le fichier des défauts d'instrument). Sa propre sortie et ce tri n'existaient pas encore.
+  · Écart avec d339f : 4 537 − 4 528 = 9 = les 6 de D340 + 3 hors D340. Mesuré : `git diff --diff-filter=A` de cafb139 à ec44937 n'ajoute sous docs/preuves/ que docs/preuves/D339/controle-fin-de-lot.txt. Les deux autres sont INFÉRÉS, non recomptés : la sortie scellée « f » elle-même et le tri « f » de D339, écrits après l'audit « f » (l'arithmétique tombe juste : 4 527 + 3 = 4 530 fichiers hors D340 aujourd'hui, relevés). Les 125 exclus (124 + 1) sont les sorties d'audit scellées ou épinglées, exclues par l'identité de leurs octets, jamais par leur nom.
+
+Précédente : 731 contextes lus ; nouvelle : 731. Alertes ABSENTES de la précédente : 0 (ventilation par motif : aucune).
+
+Tri au contexte : il n'y a rien à trier — 0 alerte nouvelle sur 731, et les sept pièces de D340 ne figurent dans aucun contexte d'alerte (`grep -c -i d340` sur la sortie scellée : 0 occurrence).
+
+⚠ Limite écrite : le présent fichier est écrit APRÈS l'audit « a » (il décrit son résultat), comme les tris de D338 et de D339 ; il est couvert par l'audit « b », avant le commit du cadrage. Il ne contient aucune valeur : des noms de fichiers et des nombres.

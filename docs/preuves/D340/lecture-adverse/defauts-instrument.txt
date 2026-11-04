@@ -1,0 +1,14 @@
+DÉFAUTS D'INSTRUMENT DE LA LECTURE ADVERSE DE D340 (écrits à côté de la sortie qui les a montrés — D295)
+
+DÉFAUT 1 — le contrôle 3.6 lisait UNE ligne d'un bloc qui en compte sept.
+  Passe 1 (sortie versée telle quelle : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt) : « ✗ [3.6] … R-6 aplatie : 148 caractères ; rejeu unique
+  à la main, règle écrite avant, passes côte à côte = False ». 148 caractères, c'est la première ligne de R-6 : le bloc réel va de la ligne 2278 à la
+  2284 de ZWADJ_CONTINUITE.md (la puce « - R-7. » est à 2285). L'extracteur prenait `next(l for l in ls if l.startswith("- R-6. …"))`, c'est-à-dire
+  la ligne qui OUVRE le bloc, jamais ses lignes de suite.
+  Classe : extracteur ligne à ligne aveugle à ce qui enjambe un retour à la ligne — AGENTS.md (D275, D294 : « tout balayage d'un fichier d'autorité
+  se fait sur le texte APLATI »). Ce n'est pas un défaut de la consigne ; le « ✗ » de la passe 1 ne dit RIEN du dépôt.
+  Second défaut dans la même ligne de code : le texte de détail (« Imprécision de numéro seulement… ») était écrit AVANT la mesure, donc affirmait un
+  résultat que l'instrument n'avait pas calculé. Il ne s'écrit plus que si la mesure le donne.
+  Réparation : le bloc est lu de « - R-6. » à « - R-7. » ; le texte de nuance dépend des faits mesurés. Les huit bras de calibration sont rejoués
+  avec le reste (rejeu intégral, jamais la seule partie qui a échoué — AGENTS.md, règle de Ko du 21/09/2026).
+  Le COMPORTEMENT n'est pas en cause : la sortie brute porte ce que l'instrument cherchait (R-6 lisible en entier dans le fichier).

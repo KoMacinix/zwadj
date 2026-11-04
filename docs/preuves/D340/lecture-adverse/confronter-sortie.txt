@@ -1,0 +1,93 @@
+LECTURE ADVERSE DE LA CONSIGNE DU RANG 44 (D340) — instrument confronter-consigne.py, SHA de base ec44937
+calibration : registre (ligne D339 → ✓, ligne D999 → ✗) ; littéral dans un fichier nommé (`zwadj_e2e` → ✓, `zwadj_base_qui_n_existe_pas` → ✗) ; ligne numérotée (app.module.ts:71 contient ThrottlerGuard → ✓, contient RolesGuard → ✗) ; git grep (`class PasswordService` → 1 occurrence, motif inexistant → 0) — les huit bras tiennent.
+
+══ PREMIÈRE PARTIE — COURTE ══
+43 contrôles parcourus : 35 ✓ · 3 ≈ (imprécis, sans action) · 0 ✗ · 5 ? non vérifiables (attendu : aucun ✗ ; chaque ≈ et chaque ? expliqué en seconde partie)
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] le premier commit du lot (la table) a pour parent ec44937 et ne contient que table-ouverture.md
+     ↳ ec44937 → ec449378595f ; parent de e3c1890 = ec449378595f ; fichiers du commit = ['docs/preuves/D340/table-ouverture.md']
+✓ [0.2] origin/main = ec44937 au moment de la lecture (la consigne : « Si origin/main a bougé, tu t'arrêtes »)
+     ↳ origin/main = ec449378595f ; SHA de base = ec449378595f (après `git fetch` fait par la session avant cette lecture)
+✓ [0.3] aucun stash
+     ↳ `git stash list` = vide
+✓ [0.4] le dernier numéro du registre est D339 (attendu D340 pour ce lot)
+     ↳ 293 lignes de registre parcourues ; dernière = D339
+✓ [0.5] D340 n'est attribué dans aucun fichier d'autorité
+     ↳ 4 fichiers parcourus ; occurrences de « D340 » = {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0, 'CLAUDE.md': 0}
+✓ [0.6] branche main
+     ↳ branche = main
+✓ [0.7] arbre propre à l'ouverture (hors les pièces D340 en cours d'écriture)
+     ↳ `git status --short` hors docs/preuves/D340 = vide
+✓ [1.1.a] app.module.ts:71 enregistre ThrottlerGuard
+     ↳ 76 lignes parcourues ; ligne 71 = « { provide: APP_GUARD, useClass: ThrottlerGuard }, »
+✓ [1.1.b] app.module.ts:72 enregistre JwtAuthGuard
+     ↳ 76 lignes parcourues ; ligne 72 = « { provide: APP_GUARD, useClass: JwtAuthGuard }, »
+✓ [1.1.c] app.module.ts:73 enregistre RolesGuard
+     ↳ 76 lignes parcourues ; ligne 73 = « { provide: APP_GUARD, useClass: RolesGuard } »
+✓ [1.1.d] ces TROIS gardes sont les seuls gardes globaux (APP_GUARD) de l'API
+     ↳ occurrences de `provide: APP_GUARD` dans apps/api/src = 3
+✓ [1.2] les claims du jeton d'accès sont exactement { sub, role } (auth.types.ts)
+     ↳ 771 caractères aplatis parcourus ; interface AccessTokenPayload = { sub: string; role: UserRole } présente = True
+✓ [1.3.a] token.service.ts engendre le jeton opaque (256 bits d'aléa) et le hache en SHA-256
+     ↳ 21 lignes parcourues ; randomBytes(32) = True ; sha256 = True
+≈ [1.3.b] le cookie du jeton de rafraîchissement vit dans token.service.ts (consigne 3 a : « le jeton de rafraîchissement et son cookie (token.service.ts) »)
+     ↳ token.service.ts mentionne « cookie » = False ; le cookie est défini dans auth.constants.ts (nom, chemin) et posé par auth.controller.ts : 6 occurrences de REFRESH_COOKIE_NAME. Imprécision de localisation seulement : le jeton est bien dans token.service.ts, son cookie ailleurs ; la lecture de ces deux fichiers est faite dans le cadrage.
+✓ [1.4] password.service.ts porte le hachage argon2id et le coût factice du mot de passe (D5)
+     ↳ 42 lignes parcourues ; verifyAgainstDummy = True ; « (D5) » = True ; argon2id = True
+✓ [1.5] PROD_REQUIRED_EXPLICIT est à env.ts:150
+     ↳ 183 lignes parcourues ; ligne 150 = « const PROD_REQUIRED_EXPLICIT = [ »
+✓ [1.6.a] le modèle AuditLog est à schema.prisma:1438
+     ↳ 1459 lignes parcourues ; ligne 1438 = « model AuditLog { »
+✓ [1.6.b] le modèle ProProfile est à schema.prisma:409
+     ↳ 1459 lignes parcourues ; ligne 409 = « model ProProfile { »
+✓ [1.7.a] AuditLog a UN seul écrivain à ec44937 (hors client généré, specs, tests, migrations)
+     ↳ écritures trouvées par git grep (create/createMany/upsert/update/INSERT INTO) = 1 : ['apps/api/src/venues/quote-store.prisma.ts:322:      await tx.auditLog.create({']
+✓ [1.7.b] cet écrivain est quote-store.prisma.ts:322 (la promotion de D339)
+     ↳ 417 lignes parcourues ; ligne 322 = « await tx.auditLog.create({ »
+✓ [1.8] des routes ADMIN existent (que le lot ne touche pas)
+     ↳ occurrences de @Roles(UserRole.ADMIN) dans apps/api/src = 2 (['account-admin.controller.ts', 'venues-admin.controller.ts'])
+✓ [1.9] la suite e2e existante (e2e/specs/) existe : c'est elle qui mesure « avant la première activation, l'app Pro marche comme aujourd'hui »
+     ↳ 15 fichiers sous e2e/specs/
+✓ [2.1] DR5 (ZWADJ_CONTINUITE.md:2105-2117) dit tout ce que la consigne en cite : jeton, garde global, PIN HMAC, appareil, 3 essais atomiques, expirations, inactivité, 5 échecs/15 min, jamais zéro Manager, capacités, audit
+     ↳ 29 motifs cherchés dans les 13 lignes de DR5 aplaties (3579 caractères) ; manquants = []
+✓ [2.2] DR5 est à ZWADJ_CONTINUITE.md:2105
+     ↳ 24431 lignes parcourues ; ligne 2105 = « DR5. PERSONNEL (lots L36-3 serveur, L36-4 écrans). »
+✓ [2.3] la tranche [L36-3] tient en cinq lignes (2129-2133) : pro_profiles, pro_staff_members, pro_staff_devices, pro_staff_sessions, audit_logs
+     ↳ lignes 2129-2133 lues ; débuts = ['[L36-3] pro_profiles : + staff_layer', '[L36-3] pro_staff_members : id uuidv', '[L36-3] pro_staff_devices : id ; mem', '[L36-3] pro_staff_sessions : id ; me', '[L36-3] audit_logs : + actor_member_']
+✓ [2.4] la tranche [L36-3] porte les colonnes, énumérations, CHECK et UNIQUE que la consigne suppose
+     ↳ 14 motifs cherchés dans les 5 lignes aplaties (1125 caractères) ; manquants = []
+✓ [2.5] la section 5 de la consigne v3 porte « 44 L36-3 — personnel et PIN, serveur · chemin d'identité », « 45 L36-4 », « Pilote minimum : 41 à 45 » et le titre « ORDRE PROPOSÉ DES LOTS (aucune certification) »
+     ↳ 24431 lignes parcourues ; lignes 44 = [2146], 45 = [2147], pilote = [2148], titre = [2141]
+✓ [2.6] DR1 : en pause, les passes de certification et les sessions B ; conservés, les tests rouges d'abord (RENFORCÉE), la lecture adverse d'ouverture, le contrôle de fin de lot
+     ↳ ligne DR1 aplatie : 518 caractères parcourus
+✓ [2.7] DR8 : tout schéma est ratifié avant sa migration ; une session qui doit s'en écarter s'arrête et présente l'écart
+     ↳ ligne DR8 aplatie : 251 caractères parcourus
+✓ [2.8] DR9 / MS-6 : la relecture extérieure des chemins d'identité reste dans la liste de mise en service
+     ↳ ligne DR9 aplatie : 894 caractères parcourus
+✓ [2.9] Q7 : le défaut de la table des capacités est celui du relecteur, à confirmer par la salle pilote
+     ↳ motif cherché dans DR5 aplatie
+✓ [3.1] la dernière ligne « ⇒ RANG » de l'ordre des rangs est « RANG 44 : EN ATTENTE D'ARBITRAGE DE KO » (le rang que cette session ouvre)
+     ↳ 2420 lignes parcourues ; 25 lignes « ⇒ RANG » ; dernière = ligne 2305 : « ⇒ **RANG 44 : EN ATTENTE D'ARBITRAGE DE KO.** Candidat **proposé** par la sectio »
+✓ [3.2] le compteur pour mémoire est à TROIS à la clôture du rang 43 (dans ZWADJ_CONTINUITE.md et dans AGENTS.md)
+     ↳ texte aplati de 2846454 caractères ; motif présent dans CONTINUITE = True ; dans AGENTS = True
+✓ [3.3] S-83 à S-97 existent dans la section D339
+     ↳ 15 identifiants cherchés sous la forme `- **S-nn**` ; manquants = []
+✓ [3.4] S-97 dit ce que la consigne confirme (R-2) : la pause couvre la certification immédiate d'un lot d'identité
+     ↳ ligne S-97 aplatie : 295 caractères parcourus
+≈ [3.5] docs/preuves/D339/scenarios-ko.md porte « sept gestes (0 à 6) » dont le geste 0 = la migration appliquée à la base de développement
+     ↳ 10 lignes parcourues ; gestes NUMÉROTÉS = ['1', '2', '3', '4', '5', '6'] (six) ; la commande de migration est dans la phrase d'introduction, non numérotée = True. Imprécision de forme seulement : « geste 0 » n'est pas un item du fichier mais sa phrase d'introduction ; le fond (la migration est à faire par Ko avant les six gestes) est exact.
+≈ [3.6] R-6 de D339 : un seul rejeu complet à la main, sa règle écrite avant, les deux passes versées côte à côte, l'état machine relevé pendant
+     ↳ bloc R-6 lu en entier : lignes 2278-2284 (1128 caractères aplatis) ; rejeu unique à la main, règle écrite avant, passes côte à côte, pas de deuxième rejeu = True ; « état machine » dans le bloc R-6 = False ; « L'état machine se relève PENDANT le rejeu » dans R-8 = True. Imprécision de numéro seulement : le relevé de l'état machine est la décision R-8 de D339, pas R-6 ; la règle appliquée sera R-6 ET R-8.
+✓ [3.7] l'entrée L36-3 du backlog existe, ouverte, et sera mise à jour (pas dupliquée)
+     ↳ 5651 lignes du backlog parcourues ; entrées « L36-3 … CÔTÉ SERVEUR » = 1
+? [3.8] « aucune entrée ouverte du backlog n'est placée avant lui » (R-1)
+     ↳ NON VÉRIFIABLE mécaniquement : le backlog ne porte pas de rang (D302). Relevé seulement : 0 lignes du backlog nomment « rang 44 ».
+? [4.1] « origin/main = ec44937 (vérifié par le relecteur le 03/11/2026) »
+     ↳ la vérification du relecteur est dans le chat ; la session a refait la sienne (0.2).
+? [4.2] la citation de Ko du 02/11/2026 (1 a) : « je prends que les descision … »
+     ↳ dite dans le chat du relecteur, hors dépôt : recopiée mot pour mot dans le premier fichier d'autorité, sans pouvoir être confrontée.
+? [4.3] « joués par Ko avant l'envoi de ce message » (1 b : les gestes du rang 43)
+     ↳ déclaration de Ko ; aucun fichier du dépôt ne peut la confirmer. Elle s'écrira comme déclarée.
+? [4.4] « Ko l'a collé » / « adopté par Ko tel quel » (en-tête, 1)
+     ↳ la consigne s'écrit « par ADOPTION de ce message » (sa propre instruction) ; l'adoption n'est pas une parole de Ko.
