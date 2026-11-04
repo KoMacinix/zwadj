@@ -1,0 +1,25 @@
+DÉFAUTS D'INSTRUMENT DE LA LECTURE ADVERSE DE LA CONSIGNE (D341) — relevés avant le versement, gardés à côté de la passe réparée (D295)
+
+Instrument : docs/preuves/D341/lecture-adverse/confronter-consigne.py
+Passe 1 (sortie gardée telle quelle) : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt — 54 contrôles : 45 ✓ · 5 ≈ · 0 ✗ · 4 ?
+Passe 2 (sortie versée)            : confronter-sortie.txt
+
+Aucun de ces défauts ne changeait un verdict de la passe 1 ; ils changeaient ce que l'instrument PRÉTENDAIT avoir mesuré (D275, D290).
+
+1. UN NOMBRE ÉCRIT, PAS MESURÉ — contrôle 4.7. Le détail de la passe 1 disait « 2 occurrences de « second Manager » » : le « 2 » était tapé dans le texte du
+   détail, après un relevé fait à la main dans le shell. L'instrument n'avait donc compté ni les occurrences de « Manager seul » ni celles de « second Manager » :
+   il aurait écrit « 2 » sur n'importe quel backlog. Réparé : les deux comptes sont calculés (`bk.count(...)`) et imprimés à côté de ce qu'ils attendent
+   (« attendu 0 »). Règle de D290 : tout compteur imprime ce qu'il a parcouru, l'attendu écrit à côté du mesuré.
+
+2. DEUX CONTRÔLES ABSENTS QUI VISAIENT LA SESSION ELLE-MÊME — la consigne exige que la table d'ouverture porte « les noms du § 5.5 du cadrage, lot 1 » en chemins
+   complets (section 0) et que la liste de R-5 ait « source, licence et sha256 écrits dans la table ». La passe 1 ne vérifiait ni l'un ni l'autre. Ajoutés (0.9 : 23
+   chemins complets cherchés entre accents graves dans la table du PREMIER commit ; 0.10 : sha256, « MIT », « SecLists », « 10 001 », le commit de la source,
+   « minuscules »), avec un bras de calibration pour la sorte de test qu'ils emploient (un chemin entre accents graves : un vrai → ✓, un inventé → ✗).
+
+3. DEUX CONDITIONS VRAIES PAR CONSTRUCTION, RATTRAPÉES À LA RELECTURE AVANT LA PASSE 1 (elles n'ont jamais été jouées) — les contrôles 4.2 et 4.5 de la première
+   écriture se terminaient par « … and True » et « … or True ». Une assertion qui ne peut pas rougir est le vert creux que ce dépôt interdit (CLAUDE.md,
+   « une garde qui ne mord pas n'est pas une garde »). Remplacées par de vraies conditions avant le premier lancement ; mentionnées ici parce qu'un défaut
+   attrapé à la relecture reste un défaut de l'écriture, et que la prochaine session doit savoir que cet instrument en a produit deux.
+
+Ce que la passe 2 ne corrige PAS (écrit) : la fidélité de la copie de la consigne (docs/preuves/D341/consigne.md) au message de Ko n'est pas vérifiable contre le
+dépôt — le message n'y est pas (contrôle 0.8 : la structure est vérifiée, pas le texte).

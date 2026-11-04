@@ -1,0 +1,115 @@
+LECTURE ADVERSE DE LA CONSIGNE DU RANG 44 (SUITE, L36-3a-1) — D341 — instrument confronter-consigne.py, SHA de base e40c141
+calibration : registre (ligne D340 → ✓, ligne D999 → ✗) ; littéral dans un fichier nommé (`zwadj_e2e` → ✓, `zwadj_base_qui_n_existe_pas` → ✗) ; ligne numérotée (app.module.ts:71 contient ThrottlerGuard → ✓, contient RolesGuard → ✗) ; git grep (`class PasswordService` → 1 occurrence, motif inexistant → 0) ; NFKC dans Node (« ﬁ » est vu comme changé, « a » comme inchangé) — les dix bras tiennent.
+
+══ PREMIÈRE PARTIE — COURTE ══
+54 contrôles parcourus : 45 ✓ · 5 ≈ (imprécis ou en tension, sans arrêt) · 0 ✗ · 4 ? non vérifiables (attendu : aucun ✗ ; chaque ≈ et chaque ? expliqué en seconde partie)
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] le premier commit du lot (la table) a pour parent e40c141 et ne contient que table-ouverture.md
+     ↳ e40c141 → e40c14150881 ; parent de ed30944 = e40c14150881 ; fichiers du commit = ['docs/preuves/D341/table-ouverture.md']
+✓ [0.2] origin/main = e40c141 au moment de la lecture (la consigne : « Si origin/main a bougé, tu t'arrêtes »)
+     ↳ origin/main = e40c14150881 ; SHA de base = e40c14150881 (après `git fetch` fait par la session avant cette lecture)
+✓ [0.3] aucun stash
+     ↳ `git stash list` = vide
+✓ [0.4] le dernier numéro du registre est D340 (attendu D341 pour ce lot)
+     ↳ 294 lignes de registre parcourues ; dernière = D340
+✓ [0.5] D341 n'est attribué dans aucun fichier d'autorité
+     ↳ 4 fichiers parcourus (texte aplati) ; occurrences de « D341 » = {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0, 'CLAUDE.md': 0}
+✓ [0.6] branche main
+     ↳ branche = main
+✓ [0.7] arbre propre à l'ouverture (hors les pièces D341 en cours d'écriture)
+     ↳ `git status --short` hors docs/preuves/D341 = vide
+✓ [0.8] la pièce docs/preuves/D341/consigne.md porte les sections 0 à 4 et les décisions R-1 à R-10, en LF, finie par une fin de ligne
+     ↳ 7535 octets parcourus ; sections = ['0', '1', '2', '3', '4'] ; décisions = ['R-1', 'R-2', 'R-3', 'R-4', 'R-5', 'R-6', 'R-7', 'R-8', 'R-9', 'R-10'] ; octets CR = 0. ⚠ Le texte n'est pas comparable octet pour octet au message de Ko (il n'est pas au dépôt) : la fidélité de la copie est une déclaration de la session.
+✓ [1.1] le cadrage de D340 porte les sections 3 (verrous), 4 (modes), 5 (fichiers, nullabilité, garanties), 6 (taille), 7 (décisions S-98 à S-112), 9 (limites)
+     ↳ sections trouvées = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+✓ [1.2] § 5.5 du cadrage porte les fichiers du lot 1 (la table d'ouverture en reprend les noms)
+     ↳ 326 lignes parcourues ; lignes de la table 5.5 pour le lot « 1 » = 8 ; noms cherchés = 12 ; manquants = []
+✓ [1.3] § 5.2 (nullabilité) et § 5.3 (six garanties, (a) à (f)) existent
+     ↳ 326 lignes du cadrage parcourues ; titres `### 5.2` et `### 5.3` présents ; section 5 aplatie : 8244 caractères ; marqueurs trouvés = ['a', 'b', 'c', 'd', 'e', 'f']
+✓ [1.4] § 5.3 : aucun déclencheur pour « jamais zéro Manager » (§ 3.2)
+     ↳ section 5 aplatie : motifs « pour « jamais zéro Manager » » = True et « non proposé » = True
+✓ [1.5] § 3.2 : « Aucune garde base pour « jamais zéro Manager » : elle exigerait un déclencheur différé… hors de la tranche »
+     ↳ section 3 aplatie : 2135 caractères parcourus
+✓ [1.6] § 6.3 : « ≈ 2,2 × L36-2 » pour 3a d'un seul tenant, les trois lots, et « un seul rôle utilisable : MANAGER » pour 3a-1
+     ↳ section 6 aplatie : 4186 caractères parcourus
+✓ [1.7] § 6.2 : la frontière de R-5 est contredite parce que `pro_staff_sessions.device_id` exige un appareil
+     ↳ section 6 aplatie : motifs « pro_staff_sessions.device_id » et « exige un appareil » cherchés
+✓ [1.8] S-98 à S-112 existent (quinze décisions de la session, au cadrage § 7)
+     ↳ section 7 aplatie : 4075 caractères ; identifiants cherchés S-98..S-112 ; manquants = []
+✓ [1.9] les décisions R-2 à R-5 couvrent S-98 à S-112 SANS trou ni doublon (11 ratifiées + S-107 + S-103 + S-110 + S-111 = 15)
+     ↳ S couvertes par la consigne = ['S-98', 'S-99', 'S-100', 'S-101', 'S-102', 'S-103', 'S-104', 'S-105', 'S-106', 'S-107', 'S-108', 'S-109', 'S-110', 'S-111', 'S-112'] (15 sur 15)
+✓ [1.10] S-103 (refusée) est bien la décision « un code distinct pendant la pause : `STAFF_LOGIN_PAUSED` »
+     ↳ texte de S-103 aplati : 327 caractères parcourus
+✓ [1.11] S-110 (confirmée avec ajouts) dit : NFKC, minuscules, diacritiques latins, voyelles brèves et tatweel, `أ إ آ ٱ → ا`, `ى → ي`, `ة → ه`, blancs comprimés
+     ↳ texte de S-110 aplati : 358 caractères parcourus
+✓ [1.12] S-112 : masquer `res.headers["set-cookie"]` AVANT de poser les cookies
+     ↳ texte de S-112 aplati : 539 caractères parcourus
+✓ [1.13] limite 12 du cadrage = SIG-1 mesuré au niveau de pino-http, pas à travers l'application Nest démarrée ; limite 6 = la lecture du drapeau par requête Pro, « à mesurer au lot 3a-1 »
+     ↳ 13 limites parcourues ; limite 12 = « **SIG-1 est mesuré au niveau de pino-http, pas à travers l'application Nest démarrée** : l » ; limite 6 = « **Le garde ajoute une lecture SQL par requête Pro** (le drapeau), puis un `UPDATE` par req »
+✓ [1.14] K-14 à K-18 sont les cinq routes du lot 1 (§ 5.1)
+     ↳ lignes `| **K-14..18** |` trouvées = 5 ; chacune porte le lot « 1 » = True
+✓ [1.15] le § 4 liste les modes de défaillance (la consigne : « un mode absent du § 4 ne se code pas »)
+     ↳ lignes `| MP-n |` parcourues = 44 (attendu 44, MP-1 à MP-44)
+✓ [2.1] AGENTS.md (D328) : l'ordre des commits ; point 3 = les .md d'autorité, les arbitrages en première écriture
+     ↳ AGENTS.md aplati : 220806 caractères parcourus
+✓ [2.2] AGENTS.md (D334, item 5) : les pièces des rouges, avec l'empreinte sha256 de chaque fichier de test, dans un commit ANTÉRIEUR au premier commit de code
+     ↳ motifs cherchés dans AGENTS.md aplati
+✓ [2.3] AGENTS.md porte R-9 de D340 (batterie) mot pour mot
+     ↳ phrase cherchée dans AGENTS.md aplati
+✓ [2.4] AGENTS.md (D302) : « un rang que Ko arbitre » ; aucun lot hors de l'ordre des rangs
+     ↳ motifs cherchés dans AGENTS.md aplati
+✓ [2.5] ZWADJ_CONTINUITE.md porte « Aucun lot ne s'ouvre sans l'arbitrage de Ko » (que R-9 relit)
+     ↳ CONTINUITE aplati : 2899586 caractères parcourus
+✓ [2.6] DR5 dit ce que R-3, R-5 et la section 3 en citent (réponse identique, 5 échecs / 15 min, 90 jours, passwordSchema + courants + réutilisé, inactivité 10 min, plafond 12 h, activation par le propriétaire)
+     ↳ 9 motifs cherchés dans les lignes 2105-2120 aplaties (4747 caractères) ; manquants = []
+✓ [2.7] DR8 : tout schéma est ratifié avant sa migration ; une session qui doit s'en écarter s'arrête et présente l'écart
+     ↳ ligne DR8 aplatie : 251 caractères parcourus
+✓ [2.8] la tranche [L36-3] (lignes 2129-2133) porte `expires_at (jamais au-delà de pin_expires_at)` pour l'appareil et la CHECK `pin_failed_count` entre 0 et 3 (R-6 s'appuie dessus)
+     ↳ lignes 2129-2133 lues ; 1125 caractères aplatis
+✓ [2.9] le cookie zwadj_rt est posé en SameSite=Lax aujourd'hui (R-2, précision sur S-99)
+     ↳ 228 lignes parcourues ; ligne 223 = « sameSite: "lax", »
+✓ [2.10] `verifyAgainstDummy` (D5) existe : le coût factice d'un argon2.verify complet (R-3)
+     ↳ 42 lignes parcourues ; verifyAgainstDummy = True ; « (D5) » = True
+✓ [2.11] le pilote passe-secteur.sh refuse : batterie, Docker ou base absents, port d'e2e occupé, arbre sale (R-10)
+     ↳ 68 lignes parcourues ; refus cherchés = ['batterie', 'Docker absent', 'base absente', 'arbre sale', "port d'e2e occupé"] ; manquants = []
+✓ [2.12] l'ordre des rangs porte « RANG 44 : OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE » et « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » (les formes que la consigne fait évoluer en fin de lot)
+     ↳ 2420 lignes parcourues ; lignes « RANG 44 : OUVERT… » = [2325, 2338] ; ligne « RANG 45 : EN ATTENTE DE CADRAGE… » = [2327]
+✓ [2.13] le compteur pour mémoire est à TROIS à l'ouverture (la consigne : TROIS → QUATRE)
+     ↳ motif « TROIS, inchangé » cherché dans AGENTS.md aplati
+✓ [2.14] la rubrique « Patrons » existe dans les sections de lot (D340 en porte une)
+     ↳ titres trouvés par git grep = ['ZWADJ_CONTINUITE.md:5076:### D340 — rubrique « Patrons » (règle du ran']
+✓ [3.1] R-4 : « NFKC ne ramène ni ces chiffres ni ces marques » (chiffres arabes-indiens et persans ; U+200B–U+200F, U+202A–U+202E, U+2066–U+2069, U+FEFF)
+     ↳ EXÉCUTÉ dans Node : 20 chiffres examinés → changés par NFKC = [] ; 15 marques examinées → changées par NFKC = []
+✓ [3.2] R-4 : les quatre lettres ajoutées (ؤ ئ ک ی) ne sont pas ramenées par NFKC non plus — le remplacement explicite est nécessaire
+     ↳ EXÉCUTÉ dans Node : 4 lettres examinées → changées par NFKC = []
+≈ [4.1] TENSION R-3 ↔ MP-17 : le cadrage (MP-17) veut que 20 mauvais mots de passe parallèles ne déclenchent PAS 20 argon2 ; R-3 veut que la requête mise en pause paie un argon2 FACTICE au même coût
+     ↳ MP-16 : « l'échéance | — | int-spec : 20 mauvais mots de passe parallèles → ≤ 5 `argon2.verify` ; après 15 min (vieillissement SQL) : la connexion réussit | 1 | » ; MP-17 : « | MP-17 | **20 mauvais mots de passe parallèles ne déclenchent pas 20 `argon2`** (coût : 64 Mio chacun) | idem MP-16 | — | idem MP ». Lecture retenue, à écrire : au plus 5 vérifications du VRAI hachage ; les autres paient un argon2 factice (R-3). Le coût total reste borné par la limite de débit par IP, qui existe déjà.
+✓ [4.2] R-2 ratifie S-102 (« les compteurs se réservent AVANT la vérification ») : c'est la décision qui produit « 5 comptées » sur 20 parallèles dans le test de la section 3 (le cadrage chiffre l'exemple du PIN : vingt essais comptent trois)
+     ↳ texte de S-102 aplati : 170 caractères parcourus ; « se réservent AVANT la vérification » = True ; « vingt essais simultanés comptent trois » = True. Le cas du mot de passe (5, pas 3) vient de DR5 (« 5 échecs consécutifs ») et de MP-16 : la consigne applique S-102 au seuil de 5.
+≈ [4.3] S-105 (ratifiée) couvre le changement de mot de passe (K-18, ce lot) ET la réinitialisation par un Manager (lot 3a-2) : seule la première moitié est dans ce lot
+     ↳ texte de S-105 aplati : 301 caractères parcourus. La moitié « réinitialisation » appartient à K-21 (3a-2), hors lot.
+✓ [4.4] la consigne dit « K-14 à K-18 » seulement : les amendements des réponses de K-14, K-15, K-18 pour le PIN (« rendu une fois ») sont du lot 3b, pas de ce lot
+     ↳ § 5.1 : « (3b : PIN neuf si absent, expiré ou verrouillé) » dans la ligne de K-15 = True ; § 6.3 : « amendement des réponses de K-14, K-15, K-18 » dans la ligne du lot 3b = True
+≈ [4.5] R-8 place « l'audit création et modification de fiche » en 3a-2 ; la consigne, section 3, garde « l'audit » dans ce lot : il s'agit de l'audit de la couche (activation, connexion, déconnexion, changement de mot de passe), pas de celui des fiches
+     ↳ § 6.3 lu : la ligne de 3a-1 contient « audit » = True et PAS « audit des fiches » = True ; la ligne de 3a-2 contient « audit des fiches » = True. Lecture retenue : deux audits différents, aucun recouvrement — mais le mot « audit » seul, dans la ligne de 3a-1, ne dit pas QUELLES actions sont journalisées : la liste de DR5 (connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation) est à découper entre 3a-1 et 3a-2 par la session.
+✓ [4.6] les points « HORS LOT » de la section 3 existent comme entrées ou mentions du backlog
+     ↳ backlog aplati : 655641 caractères parcourus ; présent = {'Q4 (b)': True, 'enquête D265': True, 'garde des sorties console': True, 'NB-6': True, "recours administrateur d'un Manager sans second Manager": True}
+≈ [4.7] « le recours administrateur d'un Manager seul (backlog) » : le backlog a la MENTION (dans l'annotation de l'entrée L36-3) mais PAS d'entrée à son nom ; l'expression « Manager seul » n'y figure pas
+     ↳ 0 occurrence de « Manager seul » ; 2 occurrences de « second Manager » (annotation de L36-3). Le cadrage (MP-44, § 9.3) dit « procédure manuelle (SQL), à écrire au backlog » : l'entrée est donc DUE par ce lot, sans rang (D302).
+✓ [4.8] R-7 : la fuite existe déjà pour zwadj_rt (app.module.ts:30 ne masque pas le Set-Cookie de réponse)
+     ↳ 76 lignes parcourues ; ligne 30 = « redact: ["req.headers.authorization", "req.headers.cookie"] » ; « set-cookie » dans le fichier = False
+✓ [4.9] « la suite e2e existante, inchangée, le mesure » : aucune spec e2e ne mentionne le personnel, le PIN ou une session de personnel (elle mesure donc l'app Pro d'AVANT)
+     ↳ `git grep -w -E staff|personnel|pin-login|PIN` sous e2e/specs = 0 occurrences
+✓ [4.10] le harnais `neutralize-r44.py` n'existe pas encore (aucune collision de nom) ; son prédécesseur `neutralize-r43.py` existe
+     ↳ `git cat-file -e e40c141:neutralisation/neutralize-r44.py` → code 128 (attendu non nul) ; `…neutralize-r43.py` → code 0 (attendu 0)
+≈ [4.11] ce lot ne code PAS MP-14 ni MP-25 (mot de passe temporaire, mot de passe expiré : lot 3a-2) : le champ `mustChangePassword` voyage dans les réponses, la colonne existe, mais rien ne l'écrit à `true` dans ce lot
+     ↳ § 4 : MP-14 et MP-25 portent le lot « 2 » ; § 5.1 : K-15 rend `mustChangePassword`
+? [5.1] « origin/main = e40c141 (vérifié par le relecteur le 04/11/2026) »
+     ↳ la vérification du relecteur est dans le chat ; la session a refait la sienne (0.2).
+? [5.2] « adopté par Ko tel quel » / « Ko l'a collé » (en-tête, 1)
+     ↳ la consigne s'écrit « par ADOPTION de ce message » (sa propre instruction) ; l'adoption n'est pas une parole de Ko.
+? [5.3] R-1 : « erreur du relecteur, corrigée par le cadrage » ; la proposition des rangs 45 et 46
+     ↳ des propositions et un aveu du relecteur, hors dépôt ; le rang suivant n'est écrit qu'à la clôture, sous la forme « EN ATTENTE DE CADRAGE DU RELECTEUR ».
+? [5.4] R-9 et R-10 : « confirmées » (lectures de D302 ; trois décisions dérivées à la clôture de D340)
+     ↳ les décisions de D340 sont écrites comme DÉRIVÉES par la session et À RATIFIER dans ZWADJ_CONTINUITE.md (relevé de 2.x : la phrase « nulle et ne se rejoue pas » y figure) ; leur confirmation est dans le chat, hors dépôt.

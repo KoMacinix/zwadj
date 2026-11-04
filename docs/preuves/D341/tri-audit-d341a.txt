@@ -1,0 +1,31 @@
+D341 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne en pièce, de la lecture adverse et de sa sortie)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D340/audit-secrets-d340f.txt docs/preuves/D341/audit-secrets-d341a.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341a.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq : motifs, positif, écho, discrimination, cas réel) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) :
+  · précédente (d340f) : 4 590 fichiers parcourus, 4 460 audités, 130 exclus, 981 alertes.
+  · nouvelle (d341a)   : 4 599 fichiers parcourus, 4 468 audités, 131 exclus, 985 alertes. Contrôle de l'outil : audités + exclus = 4 599 (attendu 4 599).
+  · RAPPROCHEMENT MESURÉ : l'outil énumère `docs/preuves/` par os.walk (il voit donc les fichiers NON SUIVIS) et ajoute `.gitattributes`. `docs/preuves/` compte 4 599 fichiers
+    maintenant (os.walk), dont la sortie scellée d341a elle-même, écrite APRÈS l'audit : 4 598 + `.gitattributes` = 4 599, le nombre rapporté. Avant : 4 590 − 1 = 4 589.
+    Écart = 4 598 − 4 589 = 9 = les 6 fichiers de D341 présents à l'instant de l'audit (la table, la consigne, l'instrument de la lecture adverse, sa sortie, la sortie de sa
+    passe 1, le fichier des défauts d'instrument) + 3 fichiers hors D341, dont `docs/preuves/D340/tri-audit-d340f.txt` (écrit après l'audit « f » qu'il décrit, versé par 0074fa4).
+    ⚠ L'identité des deux autres n'est PAS établie par ce rapprochement (la sortie précédente ne liste pas ses fichiers) : l'arithmétique ferme, l'attribution non.
+  · Exclus : 131 contre 130, soit un de plus — la sortie scellée d340f, désormais versée et épinglée par son sceau.
+
+Résultat du tri différentiel : 4 alertes ABSENTES de la sortie précédente, toutes du motif « jeton », toutes dans UN fichier, `docs/preuves/D340/tri-audit-d340f.txt`, ligne 11
+(lignes 3163, 3165, 3167 et 3169 de la sortie scellée d341a). Ventilation par motif : jeton = 4 (attendu : les 4 sont à trier).
+
+Tri au contexte — LU, pas déduit (les contextes sont dans la sortie scellée aux lignes citées ; ils ne sont pas recopiés ici, sans quoi ce fichier serait un écho non scellé de plus) :
+  · Le fichier est le TRI de l'audit « f » de D340, écrit APRÈS cet audit : il n'avait donc jamais été audité, et c'est la première fois que l'outil le lit. Sa ligne 11 décrit en
+    prose la classe d'alerte « l'URL de vérification d'e-mail que les serveurs de développement impriment » : elle cite la FORME `…/auth/verification-email?token=…` avec des points
+    de suspension ou un masque `<1 car. masques>` à la place de la valeur.
+  · MESURE : la ligne 11 (763 caractères) ne contient AUCUNE suite alphanumérique de 24 caractères ou plus (comptées : 0). Une valeur de jeton réel en porte 43.
+  · Les quatre contextes sont la même ligne de prose, relevée quatre fois par l'outil ; l'un d'eux porte l'étiquette « valeur déjà présente dans 1 fichier suivi hors preuves » et les trois
+    autres « valeur trop courte pour une recherche » : ce sont des recoupements de l'outil, pas des verdicts. Ce qui tranche est la mesure ci-dessus (aucune suite de 24 caractères ou plus
+    dans la ligne), pas ces étiquettes — que je n'ai pas élucidées (quelle valeur a été cherchée dans quel fichier suivi n'est pas relevé ici).
+  · Verdict : 4 / 4 = ÉCHO DE PROSE (la forme `token=` citée dans un texte de tri), 0 valeur réelle, 0 fuite. Même classe que les 79 alertes de l'e2e triées par D340 (« e » et « f »).
+
+Ce que ce tri NE couvre PAS : les fichiers écrits après l'audit « a » (cette note, la sortie de la passe 2 de l'instrument si elle est rejouée, les pièces des audits suivants). Ils passent par
+l'audit « b » (avant le commit des rouges) puis « c » et « d », déclarés par la table d'ouverture.
