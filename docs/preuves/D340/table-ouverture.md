@@ -114,3 +114,35 @@ Motif : la première passe des portes (sur batterie, arbre sans code modifié) e
 | `docs/preuves/D340/controle-fin-de-lot.py` | l'instrument du contrôle de fin de lot (calibré à quatre bras, familles 1 à 8) |
 | `docs/preuves/D340/audit-secrets-d340d.txt` | audit de secrets scellé de la clôture |
 | `docs/preuves/D340/tri-audit-d340d.txt` | son tri différentiel |
+
+## Extension 2 — 04/11/2026 — commitée SEULE, AVANT le versement qu'elle couvre : la note de Ko du 04/11/2026 et la passe sur SECTEUR (R-8)
+
+Motif : la note de Ko du 04/11/2026 (adoptée telle quelle, copiée en pièce) invalide les deux passes du 03/11 au soir (jouées sur batterie, **non certifiantes**, R-7 ; D290) et ordonne **UNE passe des six portes et de l'e2e sur secteur**, sa règle écrite et commitée AVANT son lancement (R-8). Les pièces ci-dessous en sortent. Les fichiers marqués **(conditionnel)** n'existent que sous la condition écrite dans la colonne de droite ; le rapport dit lesquels existent.
+
+⚠ **Numérotation des audits** : « d » est l'audit de la première clôture (extension 1). **« e »** verse les pièces écrites AVANT le lancement de la passe sur secteur (la note, l'état machine à la réception, la règle, le pilote) ; **« f »** verse les sorties de la passe et les écritures qui la suivent.
+
+| fichier | pour |
+|---|---|
+| `docs/preuves/D340/note-ko-04-11.md` | la note de Ko du 04/11/2026, copiée telle que reçue (comme la consigne : une note qui n'est pas dans le dépôt se perd) |
+| `docs/preuves/D340/portes/secteur/etat-machine-reception.txt` | l'état machine à la réception de la note (point 1) : alimentation, RAM libre, `chrome`, `headless_shell`, Docker — relevé AVANT toute action de la session |
+| `docs/preuves/D340/portes/regle-passe-secteur.md` | R-8 : la règle de la passe sur secteur, écrite et commitée AVANT son lancement ; le résultat s'y ajoute APRÈS, par un commit postérieur |
+| `docs/preuves/D340/portes/passe-secteur.sh` | le pilote de la passe (six portes en série, état machine juste avant, toutes les 30 s pendant, juste après) |
+| `docs/preuves/D340/portes/secteur/_index.txt` | l'index de la passe sur secteur : heure, SHA, arbre, alimentation, code et durée de chaque porte |
+| `docs/preuves/D340/portes/secteur/typecheck.txt` | `pnpm typecheck` sur secteur |
+| `docs/preuves/D340/portes/secteur/lint.txt` | `pnpm lint` sur secteur |
+| `docs/preuves/D340/portes/secteur/test.txt` | `pnpm test` sur secteur |
+| `docs/preuves/D340/portes/secteur/build.txt` | `pnpm build` sur secteur |
+| `docs/preuves/D340/portes/secteur/test-int.txt` | `pnpm test:int` sur secteur |
+| `docs/preuves/D340/portes/secteur/test-e2e.txt` | `pnpm test:e2e` sur secteur — PIÈCE MASQUÉE si elle porte des jetons d'une base jetable |
+| `docs/preuves/D340/portes/secteur/etat-machine-pendant.txt` | l'état machine de la passe sur secteur (une ligne toutes les 30 s) |
+| `docs/preuves/D340/aucune-valeur-reelle-secteur.txt` | le contrôle « 0 valeur réelle » (D299) de la passe sur secteur |
+| `docs/preuves/D340/audit-secrets-d340e.txt` | audit de secrets scellé, AVANT le commit de la note, de la règle et du pilote |
+| `docs/preuves/D340/tri-audit-d340e.txt` | son tri différentiel |
+| `docs/preuves/D340/audit-secrets-d340f.txt` | audit de secrets scellé, AVANT le commit des sorties de la passe sur secteur |
+| `docs/preuves/D340/tri-audit-d340f.txt` | son tri différentiel |
+| `docs/preuves/D340/portes/secteur/lecture-rouge.md` | **(conditionnel : un rouge, quel qu'il soit)** la répartition des échecs par fichier et la première ligne de chaque bloc d'échec (D304), exigées par R-8 |
+| `docs/preuves/D340/passe-d277-secteur.md` | **(conditionnel : tout vert)** la passe D277 des deux sens sur les annotations additives de la note (R-7 à R-10) |
+| `docs/preuves/D340/passe-d277-secteur/passe-d277-secteur.py` | **(conditionnel : tout vert)** l'instrument de cette passe |
+| `docs/preuves/D340/passe-d277-secteur/sortie-avant.txt` | **(conditionnel : tout vert)** sa sortie AVANT les annotations |
+| `docs/preuves/D340/passe-d277-secteur/sortie-apres.txt` | **(conditionnel : tout vert)** sa sortie APRÈS les annotations |
+| `docs/preuves/D340/controle-fin-de-lot-secteur.txt` | **(conditionnel : tout vert, poussée faite)** le contrôle de fin de lot rejoué APRÈS la poussée, local = `origin/main` |
