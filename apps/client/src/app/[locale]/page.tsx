@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { searchVenues } from "../../lib/api";
+import { getWilayas, searchVenues } from "../../lib/api";
 import { publicMetadata } from "../../lib/seo";
 import { HomeView } from "../../components/home-view";
 import { previewVenuesFor } from "../../lib/preview-venues";
@@ -33,9 +33,11 @@ export async function generateMetadata({
 }
 
 export default async function HomePage() {
-  const [recentOutcome, affordableOutcome] = await Promise.all([
+  // FC-8 (D231) — les communes du premier champ, en PARALLÈLE des deux grilles : une requête de plus, pas une attente de plus.
+  const [recentOutcome, affordableOutcome, wilayas] = await Promise.all([
     searchVenues(new URLSearchParams({ sort: "recent", pageSize: "6" })),
-    searchVenues(new URLSearchParams({ sort: "price_asc", pageSize: "6" }))
+    searchVenues(new URLSearchParams({ sort: "price_asc", pageSize: "6" })),
+    getWilayas()
   ]);
   const recent = recentOutcome.kind === "ok" ? recentOutcome.data : null;
   const affordable = affordableOutcome.kind === "ok" ? affordableOutcome.data : null;
@@ -46,6 +48,7 @@ export default async function HomePage() {
     <HomeView
       recent={recent}
       affordable={affordable}
+      wilayas={wilayas}
       // ⚠ Lu ICI, dans un composant serveur : `PRO_URL` n'est pas préfixée
       // `NEXT_PUBLIC_`, elle n'existe donc pas dans le navigateur. `null` fait
       // disparaître le bloc au lieu de rendre un bouton vers nulle part.

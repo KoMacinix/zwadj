@@ -260,6 +260,51 @@ export function toPublicQuery(state: SearchState, page = state.page): string {
   return serialized ? `?${serialized}` : "";
 }
 
+/* ── FC-8 (session `front-client`) — LE LOT ③ : L'ASSISTANT EST UN MODE DE `/salles` (D229, D230) ───────────────────────
+   ⚠ AUCUN ÉTAT LOCAL : l'étape et les réponses vivent dans l'URL. Ces fonctions sont PURES — la page (serveur) lit l'étape, le
+   composant (client) construit l'URL de la réponse suivante — et elles passent par `toPublicQuery`, la seule autorité des noms
+   de l'URL publique. La date (cinquième étape) est HORS lot. */
+
+/** Les étapes de l'assistant, dans l'ordre du filtre existant : commune, invités, budget, goûts (styles et équipements). */
+export const GUIDE_STEPS = ["city", "guests", "budget", "taste"] as const;
+export type GuideStep = (typeof GUIDE_STEPS)[number];
+
+/** `?guide=` → l'étape, ou `null`. ⛔ Toute valeur inconnue FERME le panneau (D230) : l'ouvrir sur la première étape ferait
+ *  croire que la valeur a été comprise. */
+export function parseGuide(raw: string | string[] | undefined): GuideStep | null {
+  const valeur = first(raw);
+  return (GUIDE_STEPS as readonly string[]).includes(valeur) ? (valeur as GuideStep) : null;
+}
+
+/** La query de `/salles` (avec son « ? », ou vide) pour un état et une étape : l'URL PUBLIQUE de l'état, page 1 — une réponse
+ *  change les résultats —, puis `guide`. Sans étape : la page de résultats, panneau fermé. */
+export function guidedSearchQuery(state: SearchState, step: GuideStep | null): string {
+  const query = new URLSearchParams(toPublicQuery(state, 1));
+  if (step !== null) query.set("guide", step);
+  const serialized = query.toString();
+  return serialized ? `?${serialized}` : "";
+}
+
+/** Les réponses DÉJÀ données, lues dans l'état — jamais une mémoire locale. « Aucun goût » et « pas encore répondu » sont
+ *  indiscernables dans l'URL : les goûts ne comptent comme répondus que cochés. */
+export function guideAnswered(state: SearchState): Record<GuideStep, boolean> {
+  return {
+    city: state.cityId !== "",
+    guests: state.guests !== "",
+    budget: state.maxPrice !== "",
+    taste: state.styles.length > 0 || state.amenities.length > 0
+  };
+}
+
+/** L'étape suivante : la PREMIÈRE sans réponse APRÈS `apres` (exclue ; sans `apres`, depuis le début), sinon la dernière.
+ *  ⚠ « Après », et non « la première du parcours » : un visiteur qui PASSE toutes les questions retomberait sinon
+ *  indéfiniment sur la commune, sans jamais atteindre les résultats (défaut réel de l'assistant d'avant, gardé). */
+export function nextGuideStep(state: SearchState, apres?: GuideStep): GuideStep {
+  const depuis = apres === undefined ? 0 : GUIDE_STEPS.indexOf(apres) + 1;
+  const repondu = guideAnswered(state);
+  return GUIDE_STEPS.slice(depuis).find((etape) => !repondu[etape]) ?? "taste";
+}
+
 /** Fenêtre de pagination : bornes toujours présentes, voisins de la courante,
  *  `null` pour les ellipses. Une salle de plus ne doit pas ajouter un lien de
  *  plus indéfiniment en bas de page. */

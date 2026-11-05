@@ -9,7 +9,7 @@ import { getTranslations } from "next-intl/server";
 import { SearchView } from "../../../../components/search/search-view";
 import { previewVenuesFor } from "../../../../lib/preview-venues";
 import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../../lib/api";
-import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../../lib/search-query";
+import { parseGuide, parseSearchParams, toApiQuery, type RawSearchParams } from "../../../../lib/search-query";
 import { isVariant, publicMetadata } from "../../../../lib/seo";
 import { SEARCH_PATH } from "../../../../lib/routes";
 
@@ -62,7 +62,10 @@ export default async function VenuesSearchPage({
   searchParams: Promise<RawSearchParams>;
 }) {
   await params;
-  const state = parseSearchParams(await searchParams);
+  const brut = await searchParams;
+  const state = parseSearchParams(brut);
+  // FC-8 — le mode guidé (D229, D230) : l'étape de l'assistant ; une valeur inconnue FERME le panneau (`parseGuide`).
+  const guide = parseGuide(brut.guide);
 
   // Les référentiels ne dépendent pas des résultats : quatre requêtes en
   // PARALLÈLE, pas quatre allers-retours en cascade. Sur réseau lent, c'est la
@@ -81,6 +84,7 @@ export default async function VenuesSearchPage({
       wilayas={wilayas}
       amenities={amenities}
       styles={styles}
+      guide={guide}
       // UI-D5 — le repli sur des salles FICTIVES se décide ICI, et nulle part
       // ailleurs. `NODE_ENV` est posé par Next lui-même (`dev` → development,
       // `build`/`start` → production) : aucune variable à configurer, donc

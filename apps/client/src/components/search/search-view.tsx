@@ -34,7 +34,7 @@
 //  - **Le cartouche de carte a quitté le bas de page** : il n'y est pas dans le
 //    design, et il annonçait un report sous des résultats qui n'en parlaient
 //    pas. Il EST maintenant la vue carte.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
 import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
@@ -44,6 +44,7 @@ import { Link } from "../../i18n/navigation";
 // rend les mêmes salles, et deux copies auraient divergé à la première
 // correction. Le rendu est inchangé — ses tests n'ont pas bougé.
 import { VenueCard } from "../venue-card";
+import { FilterWizard } from "../filter-wizard";
 // ⚠ `import type` et NON un import de valeur : le type est effacé à la
 // compilation, la DONNÉE ne l'est pas. Importer `PREVIEW_VENUES` ici la
 // ferait entrer dans le bundle NAVIGATEUR — le `tree-shaking` ne peut pas la
@@ -60,6 +61,7 @@ import {
   CAPACITY_STEP,
   pageWindow,
   toPublicQuery,
+  type GuideStep,
   type SearchState
 } from "../../lib/search-query";
 import { SEARCH_PATH } from "../../lib/routes";
@@ -114,13 +116,19 @@ export interface SearchViewProps {
    *  Fournie par la page serveur en développement seulement. Par défaut `null` :
    *  une consommation oubliée ne peut pas faire fuiter de fausses salles. */
   previewVenues?: readonly VenueCardData[] | null;
+  /** FC-8 — le mode guidé (D229, D230) : l'étape de l'assistant, lue par la page (`parseGuide`) ; `null` : panneau fermé. */
+  guide?: GuideStep | null;
 }
 
-export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null }: SearchViewProps) {
+export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null, guide = null }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
   const ar = locale === "ar";
   const [view, setView] = useState<ResultView>("grid");
+  // FC-8 — l'assistant se MONTE côté client seulement : sans JavaScript, `/salles?guide=…` rend la page de résultats et son
+  // formulaire, entiers — un panneau qui ne répondrait pas masquerait une page qui marche.
+  const [monte, setMonte] = useState(false);
+  useEffect(() => setMonte(true), []);
 
   const results = outcome.kind === "ok" ? outcome.data : null;
   const refus = refusDeDate(outcome);
@@ -332,6 +340,10 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
           </>
         )}
       </section>
+      {/* FC-8 — le mode guidé : l'assistant PAR-DESSUS les résultats RÉELS (D229), au total que la page a reçu. */}
+      {monte && guide !== null ? (
+        <FilterWizard step={guide} state={state} total={results?.total ?? null} wilayas={wilayas} styles={styles} amenities={amenities} />
+      ) : null}
     </main>
   );
 }

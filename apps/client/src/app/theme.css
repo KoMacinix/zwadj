@@ -1545,3 +1545,33 @@
   color: var(--ink);
   font-size: 13px;
 }
+
+/* ── FC-8 (session `front-client`) — l'assistant, MODE de `/salles` : un panneau PAR-DESSUS les résultats réels (D229) ───────
+   Le voile et le panneau reprennent ceux du dialogue partagé (`.dialog-overlay`, `.dialog-panel` de `@zwadj/ui`) : les mêmes
+   tokens, donc les deux thèmes ; propriétés LOGIQUES (RTL) ; à 360 px le panneau prend la largeur (FC-2). Le panneau défile en
+   lui-même : la page de résultats, dessous, ne bouge pas. */
+.wz-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  padding: clamp(8px, 3vw, 32px);
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+.wz-overlay .wz {
+  max-inline-size: 960px;
+  margin-inline: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-modal);
+}
+.wz-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+.wz-head-actions .wz-head-reset {
+  margin-inline-start: 0;
+}

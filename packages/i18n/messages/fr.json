@@ -440,7 +440,7 @@
       "cta": "Ouvrir l'espace gestionnaire"
     },
     "search": {
-      "assistant": "Répondre à quatre questions guidées",
+      "assistant": "Li hwas lqa",
       "budget": "Budget maximum",
       "budgetAny": "Sans limite",
       "city": "Où",
@@ -1433,6 +1433,7 @@
   },
   "wizard": {
     "amenities": "Équipements",
+    "close": "Fermer l'assistant",
     "budgetAny": "Sans limite",
     "cityAll": "Toute l'Algérie",
     "continue": "Continuer",

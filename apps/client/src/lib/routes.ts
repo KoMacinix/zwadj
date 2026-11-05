@@ -29,8 +29,8 @@ export const RESET_PASSWORD_PATH = "/auth/reinitialisation";
 export const VERIFY_EMAIL_PATH = "/auth/verification-email";
 /** La recherche : `src/app/[locale]/salles/(recherche)/page.tsx` (le groupe ne fait pas partie de l'adresse, D250). */
 export const SEARCH_PATH = "/salles";
-/** `src/app/[locale]/assistant/page.tsx`. */
-export const ASSISTANT_PATH = "/assistant";
+/* FC-8 — `ASSISTANT_PATH` est RETIRÉE avec sa page : l'assistant est un MODE de `/salles` (D229), ouvert par `?guide=<étape>`
+   (`guidedSearchQuery`, `apps/client/src/lib/search-query.ts`). */
 /** `src/app/[locale]/compte/page.tsx`. */
 export const ACCOUNT_PATH = "/compte";
 /** `src/app/[locale]/cgu/page.tsx`. */

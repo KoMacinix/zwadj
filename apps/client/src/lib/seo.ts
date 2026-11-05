@@ -55,7 +55,10 @@ export const SEARCH_VARIANT_PARAMS = [
   "ceremonyType",
   "availableOn",
   "sort",
-  "page"
+  "page",
+  // FC-8 — le mode guidé (D230) : `/salles?guide=…` montre les MÊMES résultats sous un panneau ; c'est une seconde adresse.
+  // ⚠ D230 y joignait `maxPriceCents` : sans objet depuis FC-7 (le repli est retiré, le paramètre n'a plus d'effet).
+  "guide"
 ] as const;
 
 /** La page porte-t-elle au moins un paramètre de variante ? */

@@ -36,15 +36,16 @@
 // est une revendication de curation sans mécanisme de curation derrière —
 // `VenueSummaryDTO` n'a aucun champ mis en avant. Les deux grilles s'adossent
 // donc aux deux SEULS tris que l'API expose : `recent` et `price_asc`.
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
-import type { VenueListResponse } from "@zwadj/types";
+import type { VenueListResponse, WilayaDTO } from "@zwadj/types";
 import { Link } from "../i18n/navigation";
 import type { VenueCardData } from "../lib/preview-venues";
-import { BUDGET_TIERS, centsFromDinars } from "../lib/search-query";
+import { BUDGET_TIERS, centsFromDinars, guidedSearchQuery, nextGuideStep, parseSearchParams } from "../lib/search-query";
 import { VENDOR_CATEGORIES } from "../lib/vendor-categories";
 import { VenueCard } from "./venue-card";
-import { ASSISTANT_PATH, SEARCH_PATH } from "../lib/routes";
+import { SEARCH_PATH } from "../lib/routes";
 
 export interface HomeViewProps {
   /** `sort=recent`. `null` = API injoignable, distinct d'une liste vide. */
@@ -57,15 +58,30 @@ export interface HomeViewProps {
    *  Voir `preview-venues.ts` : importé en `import type` seulement, sans quoi
    *  six salles inventées partiraient dans le paquet de chaque visiteur. */
   previewVenues?: readonly VenueCardData[] | null;
+  /** FC-8 (D231) — les communes, groupées par wilaya : le PREMIER champ du formulaire, et la première question de l'assistant.
+   *  Vide si l'API n'a pas répondu : le champ ne propose que « Toute l'Algérie », la recherche continue. */
+  wilayas?: WilayaDTO[];
 }
 
 /** Le nombre de cartes de chaque grille. La maquette en met 6 puis 3. */
 const RECENT_COUNT = 6;
 const AFFORDABLE_COUNT = 3;
 
-export function HomeView({ recent, affordable, proUrl, previewVenues = null }: HomeViewProps) {
+export function HomeView({ recent, affordable, proUrl, previewVenues = null, wilayas = [] }: HomeViewProps) {
   const t = useTranslations("home");
   const ar = useLocale() === "ar";
+  // FC-8 (D231) — « Avec JS : le même formulaire devient l'étape 1. » Le champ `guide` n'existe qu'une fois JavaScript là :
+  // le HTML du serveur n'en porte aucun, donc sans JavaScript le formulaire soumet ses trois champs, et rien d'autre. À la
+  // soumission, il reçoit la PREMIÈRE question sans réponse (`nextGuideStep`) — après la commune, les invités (D229).
+  const [avecJs, setAvecJs] = useState(false);
+  useEffect(() => setAvecJs(true), []);
+  const etapeRef = useRef<HTMLInputElement>(null);
+  const versEtapeSuivante = (event: FormEvent<HTMLFormElement>) => {
+    const donnees = new FormData(event.currentTarget);
+    const lu = (cle: string) => String(donnees.get(cle) ?? "");
+    const etat = parseSearchParams({ cityId: lu("cityId"), guests: lu("guests"), maxPrice: lu("maxPrice") });
+    if (etapeRef.current !== null) etapeRef.current.value = nextGuideStep(etat);
+  };
 
   const showPreview =
     previewVenues !== null && previewVenues.length > 0 && (recent === null || recent.items.length === 0);
@@ -115,9 +131,27 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
             `maxPriceCents`, le nom de l'API. `parseSearchParams` ne lit que
             `maxPrice`, donc le budget choisi ici était jeté en silence et le
             visiteur recevait le catalogue entier. */}
-        <form className="hm-search" action={SEARCH_PATH} method="get">
+        <form className="hm-search" action={SEARCH_PATH} method="get" onSubmit={versEtapeSuivante}>
           <fieldset>
             <legend className="sr-only">{t("search.legend")}</legend>
+
+            {/* FC-8 (D231) — la COMMUNE, premier champ et première question de l'assistant, groupée par wilaya (deux homonymes
+                de deux wilayas seraient sinon indiscernables). Facultative : « Toute l'Algérie ». */}
+            <div className="hm-search-field">
+              <label htmlFor="hm-city">{t("search.city")}</label>
+              <select id="hm-city" name="cityId" defaultValue="">
+                <option value="">{t("search.cityAny")}</option>
+                {wilayas.map((w) => (
+                  <optgroup key={w.id} label={ar ? w.nameAr : w.nameFr}>
+                    {w.cities.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {ar ? c.nameAr : c.nameFr}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
 
             <div className="hm-search-field">
               <label htmlFor="hm-guests">{t("search.guests")}</label>
@@ -155,6 +189,7 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
               </select>
             </div>
 
+            {avecJs ? <input ref={etapeRef} type="hidden" name="guide" defaultValue="city" /> : null}
             <button type="submit" className="hm-btn hm-btn-primary">
               {t("search.submit")}
             </button>
@@ -166,7 +201,8 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
             une recherche complète, et c'est un LIEN — pas un bouton piloté par
             un gestionnaire de clic, qui ne mènerait nulle part sans JS. */}
         <p className="hm-assistant">
-          <Link href={ASSISTANT_PATH}>{t("search.assistant")}</Link>
+          {/* FC-8 (D229) — l'assistant est un MODE de `/salles`, ouvert à sa première question ; « Li hwas lqa ». */}
+          <Link href={`${SEARCH_PATH}${guidedSearchQuery(parseSearchParams({}), "city")}`}>{t("search.assistant")}</Link>
         </p>
       </section>
 
