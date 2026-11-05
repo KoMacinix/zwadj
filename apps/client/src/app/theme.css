@@ -132,7 +132,8 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* FC-1 — 12 px sur le fond de la barre de filtres : `--accent` y tombait à 4,16:1 (D264). */
+  color: var(--accent-text);
   text-decoration: none;
 }
 
@@ -221,7 +222,8 @@
 .range-value {
   margin: 0;
   font-size: 13px;
-  color: var(--accent);
+  /* FC-1 — même règle que `.filters-reset`, même mesure. */
+  color: var(--accent-text);
 }
 
 /* ── Puces (styles, type de mariage) ────────────────────────────────────────
@@ -417,10 +419,14 @@
   color: var(--ink-2);
 }
 
-/* Accent en TEXTE : légitime ici et seulement ici, parce que `.search-results`
-   est sur blanc pur (voir ② en tête de bloc). */
+/* FC-1 — le nombre ACCENTUÉ du design, en `--accent-text` (D264). Le commentaire qui
+   était ici disait « légitime ici et seulement ici, parce que `.search-results` est sur
+   blanc pur » : une règle qui dépend du fond SUPPOSÉ ne tient qu'aussi longtemps que
+   personne ne touche au fond — et B8 ne la voyait pas (le compteur n'existe qu'avec au
+   moins une salle). `apps/client/src/app/theme-contrast.test.ts` exige désormais 4,5:1
+   sur CHAQUE fond neutre des deux thèmes. */
 .results-count-n {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -1306,7 +1312,8 @@
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* FC-1 — 12 px sur le fond de l'assistant ; l'ornement suit (`currentColor`). */
+  color: var(--accent-text);
   inline-size: 100%;
 }
 .wz-ornament {
