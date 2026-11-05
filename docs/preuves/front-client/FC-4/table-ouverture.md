@@ -38,3 +38,12 @@ empreintes sha256 ; (3) le code ; (4) le harnais, les campagnes, les portes, l'a
 | 27 | `docs/preuves/front-client/FC-4/rapport.md` | le rapport du lot | 4 |
 
 Conditionnels : aucun.
+
+## Extension 1 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 28 | `neutralisation/neutralize-r29.py` | deux ancres PÉRIMÉES par ce lot, RÉORIENTÉES par écrit : R29-1 (la règle « un jour tout pris redevient choisissable » vit désormais dans `dayState`) et R29-7 (le nom du jour passe par `NOM_DU_JOUR[etat]`) — même faute mutée, nouveau site | 4 |
+| 29 | `docs/preuves/front-client/FC-4/ancres-campagnes.txt` | le relevé des ancres de r29 et r30 : ce que FC-4 a périmé (R29-1, R29-7) et ce qui ne vient PAS de lui (R30-4, ancre écrite en CRLF, injouable dans un dépôt en LF) | 4 |
+
+Motif : `lancer-campagnes.py` a arrêté r29 et r30 « ARBRE NON CONFORME AU DÉPART » — ce que le tri existe pour attraper (D269).
