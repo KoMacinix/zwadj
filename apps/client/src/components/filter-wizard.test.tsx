@@ -65,9 +65,13 @@ function poser(step: Etape, raw: Record<string, string | string[]> = {}, locale:
   return render(element(step, raw, locale, total));
 }
 
-/** Une URL poussée (`push` ou `replace`), relue par le parseur RÉEL de `/salles` — clés répétées comprises. */
-function relue(url: string): { chemin: string; params: URLSearchParams; etat: SearchState } {
-  const [chemin = "", q = ""] = url.split("?");
+/** Une URL poussée (`push` ou `replace`), relue par le parseur RÉEL de `/salles` — clés répétées comprises.
+ *  ⚠ Une URL ABSENTE (rien n'a été poussé) se dit en ASSERTION, pas en plantage : un `split` sur `undefined` lèverait une
+ *  `TypeError`, qu'un lecteur de neutralisation ne compte pas comme une morsure (D304) — relevé le 05/11/2026 par
+ *  `neutralize-r32.py` R-1, « client-wizard » : « TypeError: Cannot read properties of undefined (reading 'split') ». */
+function relue(url: string | undefined): { chemin: string; params: URLSearchParams; etat: SearchState } {
+  expect(typeof url).toBe("string");
+  const [chemin = "", q = ""] = (url ?? "").split("?");
   const params = new URLSearchParams(q);
   const brut: Record<string, string | string[]> = {};
   for (const cle of new Set(params.keys())) {
