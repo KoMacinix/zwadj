@@ -1,0 +1,188 @@
+# FC-12 — ROUGE (client) REJOUÉ (v2), contre l'état d'AVANT, après la correction du test du retour du focus (sans focus préalable) — session front-client, 05/11/2026
+# HEAD au moment de la mesure : a72153e4c4d5b537e409e38f6c5a2cf2c3021330 (code du lot mis de côté : git stash des 4 fichiers modifiés, le composant neuf écarté ; test livré)
+# commande : (apps/client) npx vitest run src/components/venue/venue-detail-view.test.tsx — code de sortie 1
+# sha256 apps/client/src/components/venue/venue-detail-view.test.tsx : 69e2412211e83eb5c3d2be135d470d937c3d3f2ffb57ab4d1ca9a35243c767aa
+# lecture : même rouge que la v1 — 7 échecs sur 8 tests neufs, TOUS AssertionError (la boîte ne s'ouvre pas) ; le clic avec modificateur vert à vide (calibration) ; les 20 tests d'avant, verts.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/components/venue/venue-detail-view.test.tsx (28 tests | 7 failed) 1471ms
+   ✓ Détail salle — contenu > nom, commune, accroche, prix formaté et capacité 247ms
+   ✓ Détail salle — contenu > le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B 50ms
+   ✓ Détail salle — contenu > les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML 38ms
+   ✓ Détail salle — contenu > équipements en pastilles ; liste vide dite explicitement 73ms
+   ✓ Détail salle — D33 > TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable 48ms
+   ✓ Détail salle — D33 > ACTIVE : aucun bandeau 27ms
+   ✓ Détail salle — photos > URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette 37ms
+   ✓ Détail salle — photos > la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP) 33ms
+   ✓ Détail salle — photos > « agrandir » RESTE un lien vers l'original : le repli sans JavaScript (FC-12 y ajoute la visionneuse) 39ms
+   ✓ Détail salle — photos > l'alt saisi par le pro fait foi ; absent, l'image est décorative 30ms
+   ✓ Détail salle — photos > aucune photo : c'est dit, pas un trou dans la page 27ms
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un clic sur une vignette ouvre la visionneuse sur CETTE photo, pleine taille, avec l'alt du pro dans la langue de la page 34ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ Échap ferme, et le focus REVIENT à la vignette qui l'a ouverte 39ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > le focus reste DANS la boîte : Tab depuis le dernier bouton revient au premier 39ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > en français, la flèche DROITE mène à la photo suivante, la GAUCHE à la précédente — et la galerie boucle 41ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ en arabe (RTL), les flèches sont INVERSÉES : la GAUCHE mène à la photo suivante 34ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un alt ABSENT reste vide dans la visionneuse (image décorative), jamais inventé 31ms
+     → expected false to be true // Object.is equality
+   × FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > une seule photo : la boîte n'a que « Fermer » — ni précédente ni suivante 31ms
+     → expected false to be true // Object.is equality
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un clic avec MODIFICATEUR (Ctrl) reste un lien : la visionneuse ne s'ouvre pas 34ms
+   ✓ Détail salle — visite Matterport > AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données) 101ms
+   ✓ Détail salle — visite Matterport > après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant 74ms
+   ✓ Détail salle — visite Matterport > le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas 36ms
+   ✓ Détail salle — visite Matterport > salle sans scan : aucune section visite, aucun bouton mort 60ms
+   ✓ Détail salle — appels à l'action (Flux B) > PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a 70ms
+   ✓ Détail salle — appels à l'action (Flux B) > AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre 79ms
+   ✓ Détail salle — appels à l'action (Flux B) > le panneau de visite est MONTÉ et interroge les créneaux — un composant livré mais non monté est un composant absent 42ms
+   ✓ Détail salle — bilingue > en arabe : nom, accroche, description et libellés passent en AR 41ms
+   ✓ Détail salle — bilingue > aucun `dir` en dur : l'orientation vient de <html> 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un clic sur une vignette ouvre la visionneuse sur CETTE photo, pleine taille, avec l'alt du pro dans la langue de la page
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:234:30
+    232|     await renderDetail({ photos: TROIS_PHOTOS });
+    233|     fireEvent.click(vignettes()[1]!);
+    234|     expect(boite() !== null).toBe(true);
+       |                              ^
+    235|     expect(boite()?.getAttribute("aria-label")).toBe(etiquette("fr", 2…
+    236|     expect(boite()?.querySelector("img")?.getAttribute("alt")).toBe("L…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ Échap ferme, et le focus REVIENT à la vignette qui l'a ouverte
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:246:30
+    244|     expect(document.activeElement === lien).toBe(false);
+    245|     fireEvent.click(lien);
+    246|     expect(boite() !== null).toBe(true);
+       |                              ^
+    247|     fireEvent.keyDown(document, { key: "Escape" });
+    248|     expect(boite()).toBe(null);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > le focus reste DANS la boîte : Tab depuis le dernier bouton revient au premier
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:255:30
+    253|     await renderDetail({ photos: TROIS_PHOTOS });
+    254|     fireEvent.click(vignettes()[0]!);
+    255|     expect(boite() !== null).toBe(true);
+       |                              ^
+    256|     const boutons = [...(boite()?.querySelectorAll("button") ?? [])];
+    257|     expect(boutons.length).toBe(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > en français, la flèche DROITE mène à la photo suivante, la GAUCHE à la précédente — et la galerie boucle
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:266:30
+    264|     await renderDetail({ photos: TROIS_PHOTOS });
+    265|     fireEvent.click(vignettes()[0]!);
+    266|     expect(boite() !== null).toBe(true);
+       |                              ^
+    267|     fireEvent.keyDown(boite()!, { key: "ArrowRight" });
+    268|     expect(boite()?.getAttribute("aria-label")).toBe(etiquette("fr", 2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ en arabe (RTL), les flèches sont INVERSÉES : la GAUCHE mène à la photo suivante
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:277:30
+    275|     await renderDetail({ photos: TROIS_PHOTOS }, "ar");
+    276|     fireEvent.click(vignettes("ar")[0]!);
+    277|     expect(boite() !== null).toBe(true);
+       |                              ^
+    278|     fireEvent.keyDown(boite()!, { key: "ArrowLeft" });
+    279|     expect(boite()?.getAttribute("aria-label")).toBe(etiquette("ar", 2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un alt ABSENT reste vide dans la visionneuse (image décorative), jamais inventé
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:288:30
+    286|     await renderDetail({ photos: TROIS_PHOTOS });
+    287|     fireEvent.click(vignettes()[2]!);
+    288|     expect(boite() !== null).toBe(true);
+       |                              ^
+    289|     expect(boite()?.querySelector("img")?.getAttribute("alt")).toBe(""…
+    290|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > une seule photo : la boîte n'a que « Fermer » — ni précédente ni suivante
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:295:30
+    293|     await renderDetail({ photos: [photo(1)] });
+    294|     fireEvent.click(vignettes()[0]!);
+    295|     expect(boite() !== null).toBe(true);
+       |                              ^
+    296|     expect(boite()?.querySelectorAll("button").length).toBe(1);
+    297|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 21 passed (28)
+   Start at  15:19:10
+   Duration  3.11s (transform 569ms, setup 74ms, collect 951ms, tests 1.47s, environment 346ms, prepare 64ms)
+
+code=1

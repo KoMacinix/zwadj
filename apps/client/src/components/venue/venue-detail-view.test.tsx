@@ -240,7 +240,8 @@ describe("FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page"
   it("⛔ Échap ferme, et le focus REVIENT à la vignette qui l'a ouverte", async () => {
     await renderDetail({ photos: TROIS_PHOTOS });
     const lien = vignettes()[2]!;
-    lien.focus();
+    // ⚠ SANS focus préalable : sur macOS, cliquer ne donne PAS le focus — la boîte doit savoir d'où elle vient (`restoreFocusRef`).
+    expect(document.activeElement === lien).toBe(false);
     fireEvent.click(lien);
     expect(boite() !== null).toBe(true);
     fireEvent.keyDown(document, { key: "Escape" });
