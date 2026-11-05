@@ -8,6 +8,8 @@ process.env.THROTTLE_LOGOUT_LIMIT = "10";
 process.env.THROTTLE_FORGOT_LIMIT = "3";
 process.env.THROTTLE_RESET_LIMIT = "10";
 process.env.THROTTLE_GOOGLE_LIMIT = "5"; // Lot 8
+process.env.THROTTLE_STAFF_ACTIVATE_LIMIT = "5"; // Rang 44 (D341, MP-36) — budget register
+process.env.THROTTLE_STAFF_LOGIN_LIMIT = "10"; // Rang 44 (D341, MP-36) — budget login
 process.env.THROTTLE_AUTH_TTL_MS = "900000";
 
 import request from "supertest";
@@ -99,6 +101,28 @@ describe("Rate limiting /auth (limites réelles)", () => {
       expect((await request(server).post("/api/v1/auth/google").send(payload)).status).toBe(401);
     }
     const blocked = await request(server).post("/api/v1/auth/google").send(payload);
+    expect(blocked.status).toBe(429);
+    expect(blocked.headers["retry-after"]).toBeDefined();
+  });
+
+  it("staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register", async () => {
+    const server = ctx.app.getHttpServer();
+    const payload = { accountName: "Amine", password: "Zq7!xvn3-Pk2" };
+    for (let i = 1; i <= 5; i++) {
+      expect((await request(server).post("/api/v1/pro/staff/activate").send(payload)).status).toBe(401);
+    }
+    const blocked = await request(server).post("/api/v1/pro/staff/activate").send(payload);
+    expect(blocked.status).toBe(429);
+    expect(blocked.headers["retry-after"]).toBeDefined();
+  });
+
+  it("staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion", async () => {
+    const server = ctx.app.getHttpServer();
+    const payload = { accountName: "Amine", password: "Tentative1" };
+    for (let i = 1; i <= 10; i++) {
+      expect((await request(server).post("/api/v1/pro/staff/login").send(payload)).status).toBe(401);
+    }
+    const blocked = await request(server).post("/api/v1/pro/staff/login").send(payload);
     expect(blocked.status).toBe(429);
     expect(blocked.headers["retry-after"]).toBeDefined();
   });

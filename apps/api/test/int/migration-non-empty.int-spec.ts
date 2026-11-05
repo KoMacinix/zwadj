@@ -718,11 +718,12 @@ describe("L35-3 — la numérotation des salles et des devis sur une base NON VI
     const toutes = migrationsOrdonnees();
     const i282 = toutes.indexOf(NOM_D282);
     suite = toutes.slice(i282 + 1);
+    // ⛔ Rang 44 (D341) : la migration de L36-3a-1 (`staff_layer`) SUIT celle de L36-2 ; elle est mesurée par son propre bloc, en bas de ce fichier — et ce bloc-ci n'en applique aucune.
     // ⛔ Rang 43 (D339) : la migration de L36-2 (`quote_unofficial_draft`) SUIT celle de L36-1 ; elle est mesurée par son propre bloc, en bas de ce fichier — et ce bloc-ci n'en applique aucune.
     // ⛔ Rang 42 (D337) : la migration de L36-1 (`booking_contact_phone_optional`) SUIT celle de L35-4 ; elle est mesurée par son propre bloc, en bas de ce fichier — et ce bloc-ci n'en applique aucune.
     // ⛔ Rang 41 (D336) : la migration de L35-4 (`pro_client_records`) SUIT celles de L35-3 — elle est mesurée par son propre bloc, en bas de ce fichier ; ce bloc-ci n'applique que `suite[0]` et `suite[1]`.
     // ⚠ `expect.soft` : le test ROUGIT si un lot de plus arrive, mais la préparation CONTINUE — sinon M-A et M-B, dont le comportement ne change pas, tomberaient en cascade.
-    expect.soft(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4, de L36-1 puis de L36-2 : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference", "pro_client_records", "booking_contact_phone_optional", "quote_unofficial_draft"]);
+    expect.soft(suite.map((n) => n.replace(/^\d+_/u, "")), "les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4, de L36-1, de L36-2 puis de L36-3a-1 : un lot de plus doit re-pointer ce bloc").toEqual(["venue_number", "quote_reference", "pro_client_records", "booking_contact_phone_optional", "quote_unofficial_draft", "staff_layer"]);
 
     // D282 refusait l'agrégat faux (test précédent) : on rend les deux lignes cohérentes, puis on l'applique — le chemin FAVORABLE, que ce fichier n'avait jamais joué.
     await sql(`UPDATE bookings SET total_cents = base_price_cents + services_total_cents WHERE total_cents <> base_price_cents + services_total_cents`);
@@ -1246,5 +1247,107 @@ describe("⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK
     // ce que le déclencheur laisse passer : un UPDATE d'une AUTRE colonne d'une réservation déjà rattachée à un devis officiel
     await sql(`UPDATE bookings SET guests = 120 WHERE id = $1::uuid`, [RESERVATION_LIEE]);
     expect(await sql(`SELECT guests FROM bookings WHERE id = $1::uuid`, [RESERVATION_LIEE])).toEqual([{ guests: 120 }]);
+  });
+});
+
+describe("⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE", () => {
+  const NOM_L36_3 = "staff_layer";
+  let derniere = "";
+  const PROFIL_A = "018f0000-0000-7000-8000-000000004401";
+  const PROFIL_B = "018f0000-0000-7000-8000-000000004402";
+  /** Les profils, MOINS la colonne que la migration ajoute : une ligne d'avant ne doit pas bouger d'un octet (`updated_at` compris). */
+  const profils = `SELECT to_jsonb(p) - 'staff_layer_enabled_at' AS ligne FROM pro_profiles p ORDER BY id`;
+  /** Le journal, MOINS la colonne que la migration ajoute. */
+  const journal = `SELECT to_jsonb(a) - 'actor_member_id' AS ligne FROM audit_logs a ORDER BY id`;
+
+  it("prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur)", async () => {
+    await recreerBase();
+    const toutes = migrationsOrdonnees();
+    const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === NOM_L36_3);
+    expect(rang, "la migration du lot L36-3a-1 existe").toBeGreaterThanOrEqual(0);
+    derniere = toutes[rang]!;
+    expect(rang, "c'est la DERNIÈRE migration au moment du lot : un lot de plus doit re-pointer ce bloc").toBe(toutes.length - 1);
+    await appliquerMigrations(toutes.slice(0, rang));
+
+    for (const [n, profil, courriel] of [[1, PROFIL_A, "a@example.dz"], [2, PROFIL_B, "b@example.dz"]] as const) {
+      await sql(
+        `INSERT INTO users (id, email, password_hash, role, status, email_verified_at, locale, created_at, updated_at)
+         VALUES ('018f0000-0000-7000-8000-00000000440${n + 2}'::uuid, $1, '$argon2id$fake', 'PRO', 'ACTIVE', now(), 'fr', now(), now())`,
+        [courriel]
+      );
+      await sql(
+        `INSERT INTO pro_profiles (id, user_id, business_name, phone, phone2, created_at, updated_at)
+         VALUES ($1::uuid, '018f0000-0000-7000-8000-00000000440${n + 2}'::uuid, $2, '+213550000001', $3, now(), now())`,
+        [profil, `Salle ${n}`, n === 2 ? "+213550000002" : null]
+      );
+    }
+    await sql(`INSERT INTO audit_logs (action, entity_type, entity_id, actor_id, actor_role, after) VALUES ('quote.promote', 'quote', 'q1', '018f0000-0000-7000-8000-000000004403'::uuid, 'PRO', '{"isOfficial": true}'::jsonb)`);
+    await sql(`INSERT INTO audit_logs (action, entity_type, entity_id) VALUES ('venue.publish', 'venue', 'v1')`);
+    await sql(`INSERT INTO audit_logs (action, entity_type, entity_id, before) VALUES ('commission_rate.update', 'venue', 'v2', '{"rate": 2}'::jsonb)`);
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM pro_profiles`), "sans profils semés, la migration s'appliquerait sur du vide").toEqual([{ n: "2" }]);
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM audit_logs`)).toEqual([{ n: "3" }]);
+    // Garde-fou : la migration du lot N'EST PAS encore appliquée.
+    expect(await sql(`SELECT 1 FROM information_schema.tables WHERE table_name LIKE 'pro_staff_%'`), "les tables existent déjà").toHaveLength(0);
+    expect(await sql(`SELECT 1 FROM information_schema.columns WHERE column_name IN ('staff_layer_enabled_at', 'actor_member_id')`), "les colonnes existent déjà").toHaveLength(0);
+  });
+
+  it("⛔ la migration passe sur la base NON VIDE : les deux profils et les trois lignes d'audit la traversent INTACTS, ligne à ligne ; AUCUN profil n'est activé (avant toute activation, rien ne change) et aucune ligne d'audit n'a d'auteur-membre", async () => {
+    const profilsAvant = await sql(profils);
+    const journalAvant = await sql(journal);
+    expect(profilsAvant, "le semis du test précédent a disparu").toHaveLength(2);
+    expect(journalAvant).toHaveLength(3);
+    await appliquerMigrations([derniere]);
+    expect(await sql(profils), "les profils ont bougé").toEqual(profilsAvant);
+    expect(await sql(journal), "le journal a bougé").toEqual(journalAvant);
+    expect(await sql<{ actif: boolean }>(`SELECT (staff_layer_enabled_at IS NOT NULL) AS actif FROM pro_profiles ORDER BY id`), "la migration n'active aucune salle").toEqual([{ actif: false }, { actif: false }]);
+    expect(await sql(`SELECT 1 FROM audit_logs WHERE actor_member_id IS NOT NULL`)).toHaveLength(0);
+    for (const t of ["pro_staff_members", "pro_staff_devices", "pro_staff_sessions"]) {
+      expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM ${t}`), `${t} naît vide`).toEqual([{ n: "0" }]);
+    }
+  });
+
+  it("⛔ les garanties que la migration pose (D186), par nom et par nature : les CHECK de la tranche et des six garanties adoptées, les trois uniques, les clés étrangères avec leur action de suppression (RESTRICT, et SET NULL pour l'audit)", async () => {
+    const attendues: ReadonlyArray<readonly [string, string, string]> = [
+      // [nom, nature (c = CHECK, f = clé étrangère, u = unique), action de suppression (f seulement : r = RESTRICT, n = SET NULL)]
+      ["pro_staff_members_pin_failed_count_range", "c", ""],
+      ["pro_staff_members_status_disabled_coherent", "c", ""],
+      ["pro_staff_members_pin_triple_coherent", "c", ""],
+      ["pro_staff_members_password_failed_count_nonneg", "c", ""],
+      ["pro_staff_members_account_name_key_present", "c", ""],
+      ["pro_staff_devices_expires_after_created", "c", ""],
+      ["pro_staff_sessions_ended_coherent", "c", ""],
+      ["pro_staff_sessions_expires_after_created", "c", ""],
+      ["pro_staff_members_pro_profile_id_fkey", "f", "r"],
+      ["pro_staff_members_created_by_member_id_fkey", "f", "r"],
+      ["pro_staff_devices_member_id_fkey", "f", "r"],
+      ["pro_staff_sessions_member_id_fkey", "f", "r"],
+      ["pro_staff_sessions_device_id_fkey", "f", "r"],
+      ["audit_logs_actor_member_id_fkey", "f", "n"]
+    ];
+    const lues = await sql<{ conname: string; contype: string; confdeltype: string }>(`SELECT conname, contype, confdeltype FROM pg_constraint WHERE conname = ANY($1::text[])`, [attendues.map((a) => a[0])]);
+    const parNom = new Map(lues.map((l) => [l.conname, l]));
+    for (const [nom, nature, suppression] of attendues) {
+      const l = parNom.get(nom);
+      expect(l, `la contrainte ${nom} existe`).toBeDefined();
+      expect(l!.contype, nom).toBe(nature);
+      if (nature === "f") expect(l!.confdeltype, `${nom} : action à la suppression`).toBe(suppression);
+    }
+    const uniques = await sql<{ indexname: string }>(
+      `SELECT indexname FROM pg_indexes WHERE indexname = ANY($1::text[]) AND indexdef LIKE 'CREATE UNIQUE INDEX%'`,
+      [["pro_staff_members_pro_profile_id_account_name_key_key", "pro_staff_devices_token_hash_key", "pro_staff_sessions_token_hash_key"]]
+    );
+    expect(uniques.map((u) => u.indexname).sort()).toEqual(["pro_staff_devices_token_hash_key", "pro_staff_members_pro_profile_id_account_name_key_key", "pro_staff_sessions_token_hash_key"]);
+    const index = await sql<{ indexname: string }>(`SELECT indexname FROM pg_indexes WHERE indexname = 'audit_logs_actor_member_id_idx'`);
+    expect(index, "l'audit est indexé par auteur-membre (la tranche : « indexé »)").toHaveLength(1);
+  });
+
+  it("après la migration : un membre se rattache à un profil d'AVANT la migration (les clés étrangères tiennent sur des lignes anciennes) et sa suppression-par-profil est refusée", async () => {
+    await sql(
+      `INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash, password_changed_at, password_expires_at)
+       VALUES ($1::uuid, 'Amine', 'amine', 'MANAGER', 'h', now(), now() + interval '90 days')`,
+      [PROFIL_A]
+    );
+    expect(await sql<{ n: string }>(`SELECT count(*)::text AS n FROM pro_staff_members`)).toEqual([{ n: "1" }]);
+    await expect(sql(`DELETE FROM pro_profiles WHERE id = $1::uuid`, [PROFIL_A])).rejects.toThrow(/pro_staff_members_pro_profile_id_fkey/);
   });
 });

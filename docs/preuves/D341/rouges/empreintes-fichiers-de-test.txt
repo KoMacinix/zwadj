@@ -1,0 +1,27 @@
+# D341 — empreintes sha256 des fichiers de test JOUÉS par les rouges (AGENTS.md, D334 item 5). Calculées sur les fichiers de l'arbre de travail, OCTETS tels qu'écrits sur le disque (fins de ligne comprises), juste après le dernier jeu des rouges.
+# format : <sha256>  <octets>  <chemin>
+
+1e66230fdb7e9e7f4bf107d053268e868a37c4c0da06a9be7f67ff2502b0c0e2     8616  apps/api/src/common/staff-account-name.spec.ts
+7fcf23bdf429c48580695d74108d97c8c7206d6daff0fe5ea3f5e65f4e991b77    11966  apps/api/src/common/staff-contract.spec.ts
+1382ea104f956318263a4e0b4ac210dd5011a111456605c36f56751337d3b48e     6809  apps/api/src/staff/staff-cookies.spec.ts
+211fd1d685367c78eda117fc3d61d194b0146650530fbf260276af27d2dbe9fd     7607  apps/api/src/staff/staff-password-policy.spec.ts
+63e73b9b1cd364689f2c5f0442d70c325afa924213d9f9b8b4f75a9203a8afc9     8820  apps/api/src/staff/staff-session-policy.spec.ts
+1a77ec0f98a347fdbcc5653c16bd6ebeefcc9933940a0094b2d0a0a283590ebc    11508  apps/api/src/staff/staff-session.guard.spec.ts
+1c810bb64424d3f3d0918c92fe3a6071a9401810a2e916c9c6ced55111f062fb    23900  apps/api/src/staff/staff-session.service.spec.ts
+b1ef7fac12b9d8395dcd7333a06ff563e6fd4a94ac7e94fbc2ac83de3c6b397e    10637  apps/api/src/staff/staff-source-guards.spec.ts
+4b3c9c8df5acf1d0b73625e8a61a993ffdc94bffe540e494ac82cbe75bfe4996    28570  apps/api/src/staff/staff-store.prisma.spec.ts
+7882a5dafa207426c7740859794716576a25bd342b22c9e0a401cdfd6ffc515e     5734  apps/api/test/int/log-capture.ts
+ec005fa4b5cf49187bb6dfbdaf6c6ecd6401c116926aa3bacee81dd53bad579a     6221  apps/api/test/int/log-set-cookie.int-spec.ts
+00c1fccf23ac2888274ef88c1475a628a0e36d4bd9b788c89054ae2d6df58a1a    95655  apps/api/test/int/migration-non-empty.int-spec.ts
+1550eea8af9d528cd921197afcc2e99cf04af9c3b6cf08ff0fe015ccdc6f54d5     4413  apps/api/test/int/route-collector.ts
+60592360ec3e9d78d43186e84cf5b39f4bfc2715894396a566ee03978fdb84fc     1846  apps/api/test/int/setup-env.ts
+645d1598ffc89f4ef7a8767fddb9be51e0b589bae15af417b49059c0c435e142    15651  apps/api/test/int/staff-activation.int-spec.ts
+c20c0056c485032b2a949a8f6a016c836c8ccd3fc72cb8f7fc56034183541f03    10151  apps/api/test/int/staff-helpers.ts
+f4e572d340a08130110a5271924c0217a93ad2ec7a14fdfd2c10f6a5f05ca222    29181  apps/api/test/int/staff-login.int-spec.ts
+3f5b931d672999bc9e964a7a28d33cfe92576071e8cd003cc30581c1800dd8f6    13225  apps/api/test/int/staff-password.int-spec.ts
+42745c08593dfbb707e90f8498094cf5d8822d3af575e0915fbbffafbf067ade    19991  apps/api/test/int/staff-schema.int-spec.ts
+439a83385e752ec5bb6e87711ad7deb04d149aae8eea1abcb059be6d3b6ed826    14276  apps/api/test/int/staff-session-guard.int-spec.ts
+75fdd8ec0a42ca4534087efa4bb47c0eff95807e4e6a3262a2b72909a0f2523a     6307  apps/api/test/int/throttle.int-spec.ts
+4e02f3cd38c08a5747ec52ead6c12013204a16db4900c6f9c753cc8e84118c48     4033  packages/api-client/src/staff-client.test.ts
+
+# 22 fichiers (tests, aides de test, leviers de test) — AUCUN fichier de production n'est modifié au moment du jeu ; `git status` ne montre que ces fichiers et des pièces de docs/preuves/D341.

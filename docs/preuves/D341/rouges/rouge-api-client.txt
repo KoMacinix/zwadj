@@ -1,0 +1,30 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff-client.test.ts [ src/staff-client.test.ts ]
+Error: Cannot find module './staff-client' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/staff-client.test.ts'
+ ❯ src/staff-client.test.ts:7:1
+      5| // ⚠ Aucune règle ici : le nom de compte et le mot de passe sont valid…
+      6| import { describe, expect, it } from "vitest";
+      7| import { createStaffClient } from "./staff-client";
+       | ^
+      8| import type { AuthedRequest } from "./venue-client";
+      9| 
+
+Caused by: Error: Failed to load url ./staff-client (resolved id: ./staff-client) in C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/staff-client.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  18:51:01
+   Duration  644ms (transform 48ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 208ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff-client.test.ts

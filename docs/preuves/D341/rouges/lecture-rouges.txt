@@ -1,0 +1,247 @@
+# D341 — LECTURE DES ROUGES (D334, item 5) : chaque test en échec contre l'état d'AVANT le code, sa première ligne d'erreur, sa classe
+# lecteur : docs/preuves/D341/rouges/lire-rouges.py — calibration à deux bras rejouée à ce lancement : positif (deux en-têtes regroupés + un seul + une collecte) ✓ ; négatif (aucun échec) ✓
+
+## rouge-api-unitaire.txt
+parcouru : 1025 lignes · tests en échec LUS : 81 · annoncés par vitest : 81 · écart 0 (attendu 0) · échecs de COLLECTE : 6
+par classe : assertion 11, exécution 70, collecte 6
+  [collecte] src/staff/staff-cookies.spec.ts — Error: Cannot find module './staff-cookies' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-cookies.spec.ts'
+  [collecte] src/staff/staff-password-policy.spec.ts — Error: Cannot find module './staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-password-policy.spec.ts'
+  [collecte] src/staff/staff-session-policy.spec.ts — Error: Cannot find module './staff-session-policy' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session-policy.spec.ts'
+  [collecte] src/staff/staff-session.guard.spec.ts — Error: Cannot find module './staff-decorators' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session.guard.spec.ts'
+  [collecte] src/staff/staff-session.service.spec.ts — Error: Cannot find module './staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session.service.spec.ts'
+  [collecte] src/staff/staff-store.prisma.spec.ts — Error: Cannot find module './staff-store.prisma' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-store.prisma.spec.ts'
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine" ≡ "amine" (la casse)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "AMINE" ≡ "amine" (la casse, tout en capitales)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "  Amine  " ≡ "amine" (les espaces de bord)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine    Benali" ≡ "amine benali" (les blancs internes comprimés)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (un diacritique latin COMPOSÉ)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (le même diacritique DÉCOMPOSÉ (e + accent combinant))
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Éloïse" ≡ "eloise" (deux diacritiques)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ＡＭＩＮＥ" ≡ "amine" (la pleine chasse (NFKC))
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "أمين" ≡ "امين" (alef avec hamza → alef)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "إسماعيل" ≡ "اسماعيل" (alef avec hamza dessous → alef)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "آمنة" ≡ "امنه" (alef madda → alef, et ta marbouta → ha)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مُحَمَّد" ≡ "محمد" (les voyelles brèves (harakat) et la chadda)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مـحـمـد" ≡ "محمد" (le tatweel)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "فاطمة" ≡ "فاطمه" (ta marbouta → ha)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "موسى" ≡ "موسي" (alef maksura → ya)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مؤمن" ≡ "مومن" (R-4 : waw avec hamza → waw)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "عائشة" ≡ "عايشه" (R-4 : ya avec hamza → ya, et ta marbouta → ha)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "کریم" ≡ "كريم" (R-4 : kaf et ya PERSANS → kaf et ya arabes)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse٣" ≡ "caisse3" (R-4 : chiffre arabe-indien → 0-9)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse۳" ≡ "caisse3" (R-4 : chiffre arabe-indien ÉTENDU (persan) → 0-9)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ca​isse" ≡ "caisse" (R-4 : espace de largeur nulle)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "﻿amine" ≡ "amine" (R-4 : U+FEFF en tête)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "am‏ine" ≡ "amine" (R-4 : marque de direction (RLM) au milieu)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "‮amine‬" ≡ "amine" (R-4 : surcharge de direction)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "⁦amine⁩" ≡ "amine" (R-4 : isolat de direction)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine" ≢ "amina" (une lettre de plus)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "karim" ≢ "kareem" (deux écritures de prénoms voisins ne sont pas fusionnées)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "caisse1" ≢ "caisse2" (le chiffre distingue deux postes)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "أمين" ≢ "أمير" (deux prénoms arabes voisins)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "علي" ≢ "عالي" (une voyelle longue distingue deux prénoms)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine.b" ≢ "amineb" (le point est conservé)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "ali" ≢ "al i" (l'espace interne est significatif)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "فاطمة" ≢ "فاطم" (la ta marbouta finale devient ha mais ne disparaît pas)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "o'brien" ≢ "obrien" (l'apostrophe est conservée)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > la clé est IDEMPOTENTE : normaliser une clé ne la change pas (sans quoi l'unicité dépendrait du nombre de passages)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marques invisibles, NI les quatre lettres : la preuve est rejouée avec le NFKC du moteur
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > une chaîne qui ne contient que des marques invisibles ou des diacritiques donne une clé VIDE (que la CHECK `account_name_key <> ''` et le schéma refusent)
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > les blancs spéciaux (insécable, pleine chasse) valent un espace puis sont comprimés
+      ↳ TypeError: cle is not a function
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Amine"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "أمين"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "caisse 2"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "o'brien"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Karim B."
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "réception-1"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Aya_B"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "مُحَمَّد"
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > rogne les espaces de bord et rend le nom ROGNÉ (c'est lui qui s'affiche)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom trop court (1 caractère), vide ou blanc : `staff.validation.accountNameTooShort`
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > la borne haute est 40 : 40 caractères passent, 41 sont refusés (`staff.validation.accountNameTooLong`)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse les caractères qui ne sont ni lettres, ni marques, ni chiffres, ni espace . _ ' - : `staff.validation.accountNameInvalid`
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom dont la CLÉ serait vide (que des diacritiques combinants) : la base le refuserait aussi
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > une valeur qui n'est pas une chaîne est refusée avec le message du champ obligatoire
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot de passe 90 jours, PIN 90 jours
+      ↳ TypeError: Cannot read properties of undefined (reading 'IDLE_TIMEOUT_MINUTES')
+  [exécution] src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver)
+      ↳ TypeError: Cannot convert undefined or null to object
+  [exécution] src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun appelant ne le modifie)
+      ↳ TypeError: Cannot read properties of undefined (reading 'DEVICE_COOKIES_MAX')
+  [assertion] src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais reflété
+      ↳ AssertionError: expected undefined to be 'Poste' // Object.is equality
+  [exécution] src/common/staff-contract.spec.ts > les énumérations du personnel suivent le schéma ratifié (tranche [L36-3], D186) > StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ; fins de session = IDLE, LOGOUT, DISABLED, PASSWORD_CHANGED, PIN_LOCKED
+      ↳ TypeError: Cannot convert undefined or null to object
+  [exécution] src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE)
+      ↳ TypeError: Cannot convert undefined or null to object
+  [exécution] src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET dans le catalogue ARABE
+      ↳ TypeError: Cannot convert undefined or null to object
+  [exécution] src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus)
+      ↳ TypeError: Cannot convert undefined or null to object
+  [exécution] src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en français, et porte la DURÉE DU LEVIER dans les deux langues
+      ↳ TypeError: Cannot read properties of undefined (reading 'STAFF_INVALID_CREDENTIALS')
+  [exécution] src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raison (un 401 par cause serait un oracle)
+      ↳ TypeError: Cannot read properties of undefined (reading 'STAFF_SESSION_REQUIRED')
+  [exécution] src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [assertion] src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale)
+      ↳ AssertionError: le namespace `staff` existe: expected 0 to be greater than 8
+  [exécution] src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > applique la politique de mot de passe EXISTANTE (`passwordSchema`) : 8 à 128 caractères, une lettre, un chiffre — avec les clés `auth.validation.*`
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractères (un mot de passe trop court se refuse à la vérification, pas à la validation)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > accepte un corps valide
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [exécution] src/common/staff-contract.spec.ts > staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle)
+      ↳ TypeError: Cannot read properties of undefined (reading 'safeParse')
+  [assertion] src/staff/staff-source-guards.spec.ts > les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée
+      ↳ AssertionError: expected 0 to be greater than or equal to 9
+  [assertion] src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`)
+      ↳ AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+  [assertion] src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit)
+      ↳ AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+  [assertion] src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN)
+      ↳ AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+  [assertion] src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs`
+      ↳ AssertionError: expected [] to deeply equal [ 'staff-store.prisma.ts' ]
+  [exécution] src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage
+      ↳ TypeError: Cannot read properties of undefined (reading 'code')
+  [assertion] src/staff/staff-source-guards.spec.ts > le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6)
+      ↳ AssertionError: expected [ 'ThrottlerGuard', …(2) ] to deeply equal [ 'ThrottlerGuard', …(3) ]
+  [assertion] src/staff/staff-source-guards.spec.ts > le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même)
+      ↳ AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /\bStaffModule\b/
+  [assertion] src/staff/staff-source-guards.spec.ts > le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`)
+      ↳ AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /redact:\s*\[[^\]]*req\.headers\.autho…/
+  [assertion] src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b)
+      ↳ AssertionError: expected {} to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+
+## rouge-api-client.txt
+parcouru : 31 lignes · tests en échec LUS : 0 · annoncés par vitest : None · écart -1 (attendu 0) · échecs de COLLECTE : 1
+par classe : , collecte 1
+  [collecte] src/staff-client.test.ts — Error: Cannot find module './staff-client' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/staff-client.test.ts'
+
+## rouge-integration.txt
+parcouru : 776 lignes · tests en échec LUS : 28 · annoncés par vitest : 28 · écart 0 (attendu 0) · échecs de COLLECTE : 4
+par classe : assertion 17, autre 9, base-objet-absent 2, collecte 4
+  [collecte] test/int/staff-activation.int-spec.ts — Error: Cannot find module '../../src/staff/staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-activation.int-spec.ts'
+  [collecte] test/int/staff-login.int-spec.ts — TypeError: Cannot read properties of undefined (reading 'IDLE_TIMEOUT_MINUTES')
+  [collecte] test/int/staff-password.int-spec.ts — Error: Cannot find module '../../src/staff/staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-password.int-spec.ts'
+  [collecte] test/int/staff-session-guard.int-spec.ts — Error: Cannot find module '../../src/staff/staff-decorators' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/route-collector.ts'
+  [assertion] test/int/log-set-cookie.int-spec.ts > SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/login : la valeur du cookie `zwadj_rt` posé par la réponse n'est NULLE PART dans la sortie du journal, et le champ est masqué
+      ↳ AssertionError: la valeur du cookie de rafraîchissement ne doit pas être dans le journal: expected '{"level":30,"time":1793836298396,"pid…' not to contain 'pTnud-hFJhVpGoCLe-LBuKPPDpcUtIfyShUsM…'
+  [assertion] test/int/log-set-cookie.int-spec.ts > SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/refresh : le cookie posé par la rotation n'est pas journalisé (même défaut, deuxième route qui pose `zwadj_rt`)
+      ↳ AssertionError: expected '{"level":30,"time":1793836298770,"pid…' not to contain '0cMb-6RFzOAABbOeGMwAcWtx0yysKB-OwB5-w…'
+  [assertion] test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot
+      ↳ AssertionError: les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4, de L36-1, de L36-2 puis de L36-3a-1 : un lot de plus doit re-pointer ce bloc: expected [ 'venue_number', …(4) ] to deeply equal [ 'venue_number', …(5) ]
+  [assertion] test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur)
+      ↳ AssertionError: la migration du lot L36-3a-1 existe: expected -1 to be greater than or equal to 0
+  [base-objet-absent] test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les deux profils et les trois lignes d'audit la traversent INTACTS, ligne à ligne ; AUCUN profil n'est activé (avant toute activation, rien ne change) et aucune ligne d'audit n'a d'auteur-membre
+      ↳ error: relation "pro_profiles" does not exist
+  [assertion] test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ les garanties que la migration pose (D186), par nom et par nature : les CHECK de la tranche et des six garanties adoptées, les trois uniques, les clés étrangères avec leur action de suppression (RESTRICT, et SET NULL pour l'audit)
+      ↳ AssertionError: la contrainte pro_staff_members_pin_failed_count_range existe: expected undefined to be defined
+  [base-objet-absent] test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > après la migration : un membre se rattache à un profil d'AVANT la migration (les clés étrangères tiennent sur des lignes anciennes) et sa suppression-par-profil est refusée
+      ↳ error: relation "pro_staff_members" does not exist
+  [assertion] test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la colonne d'audit
+      ↳ AssertionError: expected [] to deeply equal [ 'pro_staff_devices', …(2) ]
+  [assertion] test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > ⛔ 1 a — la NULLABILITÉ du § 5.2 du cadrage, colonne par colonne (la table est celle du cadrage, lue ici comme une donnée à confronter à la base)
+      ↳ AssertionError: pro_staff_members.pin_hash doit être NULLABLE: expected undefined to be true // Object.is equality
+  [autre] test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` faux, compteurs à 0, aucun PIN, aucune pause ; la session naît active à l'instant
+      ↳ PrismaClientKnownRequestError:
+  [autre] test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle passe
+      ↳ PrismaClientKnownRequestError:
+  [assertion] test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_pin_failed_count_range »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_failed_count_ra…'
+  [autre] test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions
+      ↳ PrismaClientKnownRequestError:
+  [assertion] test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > clés étrangères : un membre sans salle, un appareil sans membre, une session sans appareil sont refusés
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pro_profile_id_fkey'
+  [assertion] test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > ⛔ les énumérations refusent une valeur hors schéma — chacune PAR SON NOM (un rôle `ADMIN`, un statut `ARCHIVED`, une fin `INCONNUE`) : un refus pour une autre raison (une table absente) ne prouverait rien
+      ↳ AssertionError: attendu : un refus par « invalid input value for enum "StaffRole" »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'invalid input value for enum "StaffRo…'
+  [assertion] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec date refusé, DISABLED avec date accepté
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_status_disabled_coh…'
+  [assertion] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des trois, isolé, est refusé ; les trois ensemble sont acceptés
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_triple_coherent'
+  [autre] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé
+      ↳ PrismaClientKnownRequestError:
+  [autre] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refusées
+      ↳ PrismaClientKnownRequestError:
+  [assertion] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés (le seuil est une règle du service, pas de la base)
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_password_failed_count_nonneg »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_password_failed_cou…'
+  [assertion] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (f) `account_name_key <> ''` : une clé vide est refusée
+      ↳ AssertionError: attendu : un refus par « pro_staff_members_account_name_key_present »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_account_name_key_pr…'
+  [autre] test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas une garde de base (§ 3.2 du cadrage) ; la table n'en porte aucun, et un dernier Manager peut être désactivé en SQL
+      ↳ PrismaClientKnownRequestError:
+  [assertion] test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `audit_logs.actor_member_id` est une clé étrangère : un membre inexistant est refusé
+      ↳ AssertionError: attendu : un refus par « audit_logs_actor_member_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'audit_logs_actor_member_id_fkey'
+  [autre] test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne d'audit SURVIT, sans son auteur
+      ↳ PrismaClientKnownRequestError:
+  [autre] test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un appareil qui porte une session non plus
+      ↳ PrismaClientKnownRequestError:
+  [autre] test/int/staff-schema.int-spec.ts > l'audit et les suppressions > `created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactivent, ils ne se suppriment jamais)
+      ↳ PrismaClientKnownRequestError:
+  [assertion] test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register
+      ↳ AssertionError: expected 404 to be 401 // Object.is equality
+  [assertion] test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion
+      ↳ AssertionError: expected 404 to be 401 // Object.is equality
+
+## total
+assertion 28, autre 9, base-objet-absent 2, collecte 11, exécution 70
+écart cumulé entre les échecs LUS et ceux qu'ANNONCE vitest : 1 (attendu 0)

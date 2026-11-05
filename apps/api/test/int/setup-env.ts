@@ -26,3 +26,8 @@ process.env.THROTTLE_LOGOUT_LIMIT = "10000";
 process.env.THROTTLE_FORGOT_LIMIT = "10000";
 process.env.THROTTLE_RESET_LIMIT = "10000";
 process.env.THROTTLE_GOOGLE_LIMIT = "10000"; // Lot 8
+// Rang 44 (D341, MP-36) — le MÊME levier (D128) pour les clés neuves du personnel ; `THROTTLE_CHANGE_PASSWORD_LIMIT` est relâché aussi : la route `POST /pro/staff/password` l'emploie
+// (le spec du personnel change des mots de passe plus de dix fois par fichier, et le 429 de cette clé n'est pas ce qu'il mesure).
+process.env.THROTTLE_STAFF_ACTIVATE_LIMIT = "10000";
+process.env.THROTTLE_STAFF_LOGIN_LIMIT = "10000";
+process.env.THROTTLE_CHANGE_PASSWORD_LIMIT = "10000";

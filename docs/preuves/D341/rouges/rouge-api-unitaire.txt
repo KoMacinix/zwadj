@@ -1,0 +1,1024 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-source-guards.spec.ts (14 tests | 10 failed) 42ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'horloge : `new Date()`, `Date.now()` et leurs voisins sont VUS ; `Date` comme type et `date.toISOString()` ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > les durées en dur : un littéral dans un intervalle SQL, un produit « 15 * 60_000 », une valeur dérivée (900) sont VUS ; un paramètre, une constante et un facteur de conversion ne le sont pas 1ms
+   ✓ calibration des détecteurs (deux bras chacun) > le journal : un appel à `logger.`, `console.` ou `new Logger(` est VU ; un identifiant qui contient seulement le mot ne l'est pas 0ms
+   ✓ calibration des détecteurs (deux bras chacun) > le retrait des commentaires ne mange pas du code : une URL dans une chaîne reste, un commentaire de fin de ligne part 0ms
+   × les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée 6ms
+     → expected 0 to be greater than or equal to 9
+   × les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`) 1ms
+     → zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+   × les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit) 0ms
+     → zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+   × les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN) 0ms
+     → zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+   × les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs` 5ms
+     → expected [] to deeply equal [ 'staff-store.prisma.ts' ]
+   × les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage 1ms
+     → Cannot read properties of undefined (reading 'code')
+   × le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6) 2ms
+     → expected [ 'ThrottlerGuard', …(2) ] to deeply equal [ 'ThrottlerGuard', …(3) ]
+   × le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même) 1ms
+     → expected 'import { Module } from "@nestjs/commo…' to match /\bStaffModule\b/
+   × le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`) 1ms
+     → expected 'import { Module } from "@nestjs/commo…' to match /redact:\s*\[[^\]]*req\.headers\.autho…/
+   × le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b) 20ms
+     → expected {} to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+ ❯ src/common/staff-contract.spec.ts (20 tests | 19 failed) 26ms
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot de passe 90 jours, PIN 90 jours 9ms
+     → Cannot read properties of undefined (reading 'IDLE_TIMEOUT_MINUTES')
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver) 2ms
+     → Cannot convert undefined or null to object
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun appelant ne le modifie) 1ms
+     → Cannot read properties of undefined (reading 'DEVICE_COOKIES_MAX')
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais reflété 4ms
+     → expected undefined to be 'Poste' // Object.is equality
+   × les énumérations du personnel suivent le schéma ratifié (tranche [L36-3], D186) > StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ; fins de session = IDLE, LOGOUT, DISABLED, PASSWORD_CHANGED, PIN_LOCKED 1ms
+     → Cannot convert undefined or null to object
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE) 1ms
+     → Cannot convert undefined or null to object
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET dans le catalogue ARABE 0ms
+     → Cannot convert undefined or null to object
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus) 0ms
+     → Cannot convert undefined or null to object
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en français, et porte la DURÉE DU LEVIER dans les deux langues 1ms
+     → Cannot read properties of undefined (reading 'STAFF_INVALID_CREDENTIALS')
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > aucune clé de pause n'existe dans les catalogues (S-103 refusée : la pause répond comme un mauvais mot de passe) 1ms
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raison (un 401 par cause serait un oracle) 1ms
+     → Cannot read properties of undefined (reading 'STAFF_SESSION_REQUIRED')
+   × les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale) 1ms
+     → le namespace `staff` existe: expected 0 to be greater than 8
+   × staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > applique la politique de mot de passe EXISTANTE (`passwordSchema`) : 8 à 128 caractères, une lettre, un chiffre — avec les clés `auth.validation.*` 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractères (un mot de passe trop court se refuse à la vérification, pas à la validation) 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > accepte un corps valide 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-account-name.spec.ts (53 tests | 52 failed) 40ms
+   ✓ normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > ⛔ MP-9 — au moins 12 paires ÉQUIVALENTES et au moins 6 paires DISTINCTES (la table est assez large pour rougir sous une règle retirée) 3ms
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine" ≡ "amine" (la casse) 10ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "AMINE" ≡ "amine" (la casse, tout en capitales) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "  Amine  " ≡ "amine" (les espaces de bord) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine    Benali" ≡ "amine benali" (les blancs internes comprimés) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (un diacritique latin COMPOSÉ) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (le même diacritique DÉCOMPOSÉ (e + accent combinant)) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Éloïse" ≡ "eloise" (deux diacritiques) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ＡＭＩＮＥ" ≡ "amine" (la pleine chasse (NFKC)) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "أمين" ≡ "امين" (alef avec hamza → alef) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "إسماعيل" ≡ "اسماعيل" (alef avec hamza dessous → alef) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "آمنة" ≡ "امنه" (alef madda → alef, et ta marbouta → ha) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مُحَمَّد" ≡ "محمد" (les voyelles brèves (harakat) et la chadda) 1ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مـحـمـد" ≡ "محمد" (le tatweel) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "فاطمة" ≡ "فاطمه" (ta marbouta → ha) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "موسى" ≡ "موسي" (alef maksura → ya) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مؤمن" ≡ "مومن" (R-4 : waw avec hamza → waw) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "عائشة" ≡ "عايشه" (R-4 : ya avec hamza → ya, et ta marbouta → ha) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "کریم" ≡ "كريم" (R-4 : kaf et ya PERSANS → kaf et ya arabes) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse٣" ≡ "caisse3" (R-4 : chiffre arabe-indien → 0-9) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse۳" ≡ "caisse3" (R-4 : chiffre arabe-indien ÉTENDU (persan) → 0-9) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ca​isse" ≡ "caisse" (R-4 : espace de largeur nulle) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "﻿amine" ≡ "amine" (R-4 : U+FEFF en tête) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "am‏ine" ≡ "amine" (R-4 : marque de direction (RLM) au milieu) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "‮amine‬" ≡ "amine" (R-4 : surcharge de direction) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "⁦amine⁩" ≡ "amine" (R-4 : isolat de direction) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine" ≢ "amina" (une lettre de plus) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "karim" ≢ "kareem" (deux écritures de prénoms voisins ne sont pas fusionnées) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "caisse1" ≢ "caisse2" (le chiffre distingue deux postes) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "أمين" ≢ "أمير" (deux prénoms arabes voisins) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "علي" ≢ "عالي" (une voyelle longue distingue deux prénoms) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine.b" ≢ "amineb" (le point est conservé) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "ali" ≢ "al i" (l'espace interne est significatif) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "فاطمة" ≢ "فاطم" (la ta marbouta finale devient ha mais ne disparaît pas) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "o'brien" ≢ "obrien" (l'apostrophe est conservée) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > la clé est IDEMPOTENTE : normaliser une clé ne la change pas (sans quoi l'unicité dépendrait du nombre de passages) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marques invisibles, NI les quatre lettres : la preuve est rejouée avec le NFKC du moteur 3ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > une chaîne qui ne contient que des marques invisibles ou des diacritiques donne une clé VIDE (que la CHECK `account_name_key <> ''` et le schéma refusent) 0ms
+     → cle is not a function
+   × normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > les blancs spéciaux (insécable, pleine chasse) valent un espace puis sont comprimés 0ms
+     → cle is not a function
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Amine" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "أمين" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "caisse 2" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "o'brien" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Karim B." 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "réception-1" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Aya_B" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "مُحَمَّد" 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > rogne les espaces de bord et rend le nom ROGNÉ (c'est lui qui s'affiche) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom trop court (1 caractère), vide ou blanc : `staff.validation.accountNameTooShort` 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > la borne haute est 40 : 40 caractères passent, 41 sont refusés (`staff.validation.accountNameTooLong`) 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse les caractères qui ne sont ni lettres, ni marques, ni chiffres, ni espace . _ ' - : `staff.validation.accountNameInvalid` 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom dont la CLÉ serait vide (que des diacritiques combinants) : la base le refuserait aussi 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > une valeur qui n'est pas une chaîne est refusée avec le message du champ obligatoire 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-cookies.spec.ts [ src/staff/staff-cookies.spec.ts ]
+Error: Cannot find module './staff-cookies' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-cookies.spec.ts'
+ ❯ src/staff/staff-cookies.spec.ts:8:1
+      6| import { describe, expect, it } from "vitest";
+      7| import { STAFF_LIMITS } from "@zwadj/types";
+      8| import {
+       | ^
+      9|   STAFF_DEVICE_COOKIE_PATH,
+     10|   STAFF_DEVICE_COOKIE_PREFIX,
+
+Caused by: Error: Failed to load url ./staff-cookies (resolved id: ./staff-cookies) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-cookies.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/87]⎯
+
+ FAIL  src/staff/staff-password-policy.spec.ts [ src/staff/staff-password-policy.spec.ts ]
+Error: Cannot find module './staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-password-policy.spec.ts'
+ ❯ src/staff/staff-password-policy.spec.ts:11:1
+      9| import { describe, expect, it } from "vitest";
+     10| import { passwordSchema } from "@zwadj/types";
+     11| import { STAFF_COMMON_PASSWORDS, STAFF_COMMON_PASSWORDS_SOURCE } from …
+       | ^
+     12| import { COMMON_PASSWORDS, isCommonPassword, passwordViolation } from …
+     13| 
+
+Caused by: Error: Failed to load url ./staff-common-passwords (resolved id: ./staff-common-passwords) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-password-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/87]⎯
+
+ FAIL  src/staff/staff-session-policy.spec.ts [ src/staff/staff-session-policy.spec.ts ]
+Error: Cannot find module './staff-session-policy' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session-policy.spec.ts'
+ ❯ src/staff/staff-session-policy.spec.ts:8:1
+      6| import { describe, expect, it } from "vitest";
+      7| import { StaffSessionEndReason } from "@zwadj/types";
+      8| import { classifySessionRefusal, guardVerdict, loginVerification, pick…
+       | ^
+      9| 
+     10| describe("guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (…
+
+Caused by: Error: Failed to load url ./staff-session-policy (resolved id: ./staff-session-policy) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/87]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts [ src/staff/staff-session.guard.spec.ts ]
+Error: Cannot find module './staff-decorators' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session.guard.spec.ts'
+ ❯ src/staff/staff-session.guard.spec.ts:12:1
+     10| import { describe, expect, it, vi } from "vitest";
+     11| import { Public } from "../auth/auth.decorators";
+     12| import { StaffExempt } from "./staff-decorators";
+       | ^
+     13| import { StaffSessionGuard } from "./staff-session.guard";
+     14| import type { StaffStore } from "./staff-store.types";
+
+Caused by: Error: Failed to load url ./staff-decorators (resolved id: ./staff-decorators) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session.guard.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/87]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts [ src/staff/staff-session.service.spec.ts ]
+Error: Cannot find module './staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-session.service.spec.ts'
+ ❯ src/staff/staff-session.service.spec.ts:10:1
+      8| import { describe, expect, it, vi } from "vitest";
+      9| import { passwordSchema, StaffErrorCode, STAFF_DEVICE_DEFAULT_LABEL, t…
+     10| import { STAFF_COMMON_PASSWORDS } from "./staff-common-passwords";
+       | ^
+     11| import { StaffSessionService } from "./staff-session.service";
+     12| import type { StaffStore } from "./staff-store.types";
+
+Caused by: Error: Failed to load url ./staff-common-passwords (resolved id: ./staff-common-passwords) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-password-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/87]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts [ src/staff/staff-store.prisma.spec.ts ]
+Error: Cannot find module './staff-store.prisma' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-store.prisma.spec.ts'
+ ❯ src/staff/staff-store.prisma.spec.ts:10:1
+      8| import { describe, expect, it, vi } from "vitest";
+      9| import { STAFF_LIMITS } from "@zwadj/types";
+     10| import { PrismaStaffStore } from "./staff-store.prisma";
+       | ^
+     11| 
+     12| const SALLE = "018f0000-0000-7000-8000-0000000000b1";
+
+Caused by: Error: Failed to load url ./staff-store.prisma (resolved id: ./staff-store.prisma) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-store.prisma.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/87]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 81 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine" ≡ "amine" (la casse)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "AMINE" ≡ "amine" (la casse, tout en capitales)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "  Amine  " ≡ "amine" (les espaces de bord)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine    Benali" ≡ "amine benali" (les blancs internes comprimés)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (un diacritique latin COMPOSÉ)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (le même diacritique DÉCOMPOSÉ (e + accent combinant))
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Éloïse" ≡ "eloise" (deux diacritiques)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ＡＭＩＮＥ" ≡ "amine" (la pleine chasse (NFKC))
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "أمين" ≡ "امين" (alef avec hamza → alef)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "إسماعيل" ≡ "اسماعيل" (alef avec hamza dessous → alef)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "آمنة" ≡ "امنه" (alef madda → alef, et ta marbouta → ha)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مُحَمَّد" ≡ "محمد" (les voyelles brèves (harakat) et la chadda)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مـحـمـد" ≡ "محمد" (le tatweel)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "فاطمة" ≡ "فاطمه" (ta marbouta → ha)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "موسى" ≡ "موسي" (alef maksura → ya)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مؤمن" ≡ "مومن" (R-4 : waw avec hamza → waw)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "عائشة" ≡ "عايشه" (R-4 : ya avec hamza → ya, et ta marbouta → ha)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "کریم" ≡ "كريم" (R-4 : kaf et ya PERSANS → kaf et ya arabes)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse٣" ≡ "caisse3" (R-4 : chiffre arabe-indien → 0-9)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse۳" ≡ "caisse3" (R-4 : chiffre arabe-indien ÉTENDU (persan) → 0-9)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ca​isse" ≡ "caisse" (R-4 : espace de largeur nulle)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "﻿amine" ≡ "amine" (R-4 : U+FEFF en tête)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "am‏ine" ≡ "amine" (R-4 : marque de direction (RLM) au milieu)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "‮amine‬" ≡ "amine" (R-4 : surcharge de direction)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "⁦amine⁩" ≡ "amine" (R-4 : isolat de direction)
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:60:12
+     58| 
+     59|   it.each(EQUIVALENTES)("deux écritures d'un même nom donnent UNE clé …
+     60|     expect(cle(a)).toBe(cle(b));
+       |            ^
+     61|     expect(cle(a), "une clé vide serait équivalente à toutes les autre…
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine" ≢ "amina" (une lettre de plus)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "karim" ≢ "kareem" (deux écritures de prénoms voisins ne sont pas fusionnées)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "caisse1" ≢ "caisse2" (le chiffre distingue deux postes)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "أمين" ≢ "أمير" (deux prénoms arabes voisins)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "علي" ≢ "عالي" (une voyelle longue distingue deux prénoms)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "amine.b" ≢ "amineb" (le point est conservé)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "ali" ≢ "al i" (l'espace interne est significatif)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "فاطمة" ≢ "فاطم" (la ta marbouta finale devient ha mais ne disparaît pas)
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux noms DIFFÉRENTS restent deux clés : "o'brien" ≢ "obrien" (l'apostrophe est conservée)
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:65:12
+     63| 
+     64|   it.each(DISTINCTES)("deux noms DIFFÉRENTS restent deux clés : %j ≢ %…
+     65|     expect(cle(a)).not.toBe(cle(b));
+       |            ^
+     66|   });
+     67| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > la clé est IDEMPOTENTE : normaliser une clé ne la change pas (sans quoi l'unicité dépendrait du nombre de passages)
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:70:18
+     68|   it("la clé est IDEMPOTENTE : normaliser une clé ne la change pas (sa…
+     69|     for (const [a, b] of [...EQUIVALENTES, ...DISTINCTES]) {
+     70|       expect(cle(cle(a)), a).toBe(cle(a));
+       |                  ^
+     71|       expect(cle(cle(b)), b).toBe(cle(b));
+     72|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marques invisibles, NI les quatre lettres : la preuve est rejouée avec le NFKC du moteur
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:93:14
+     91|     // ... et pourtant la clé les ramène : chaque chiffre à son chiffr…
+     92|     for (let i = 0; i < 10; i += 1) {
+     93|       expect(cle(`a${String.fromCodePoint(0x0660 + i)}`), `chiffre ara…
+       |              ^
+     94|       expect(cle(`a${String.fromCodePoint(0x06f0 + i)}`), `chiffre per…
+     95|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > une chaîne qui ne contient que des marques invisibles ou des diacritiques donne une clé VIDE (que la CHECK `account_name_key <> ''` et le schéma refusent)
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:103:12
+    101| 
+    102|   it("une chaîne qui ne contient que des marques invisibles ou des dia…
+    103|     expect(cle("​‌﻿")).toBe("");
+       |            ^
+    104|     expect(cle("́̀")).toBe("");
+    105|     expect(cle("")).toBe("");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > les blancs spéciaux (insécable, pleine chasse) valent un espace puis sont comprimés
+TypeError: cle is not a function
+ ❯ src/common/staff-account-name.spec.ts:110:12
+    108| 
+    109|   it("les blancs spéciaux (insécable, pleine chasse) valent un espace …
+    110|     expect(cle("amine  benali")).toBe("amine benali");
+       |            ^
+    111|     expect(cle("amine　benali")).toBe("amine benali");
+    112|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Amine"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "أمين"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "caisse 2"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "o'brien"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Karim B."
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "réception-1"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "Aya_B"
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > accepte le nom réel "مُحَمَّد"
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ src/common/staff-account-name.spec.ts:120:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > rogne les espaces de bord et rend le nom ROGNÉ (c'est lui qui s'affiche)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ src/common/staff-account-name.spec.ts:124:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom trop court (1 caractère), vide ou blanc : `staff.validation.accountNameTooShort`
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ issues src/common/staff-account-name.spec.ts:117:34
+ ❯ src/common/staff-account-name.spec.ts:129:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > la borne haute est 40 : 40 caractères passent, 41 sont refusés (`staff.validation.accountNameTooLong`)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ src/common/staff-account-name.spec.ts:135:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse les caractères qui ne sont ni lettres, ni marques, ni chiffres, ni espace . _ ' - : `staff.validation.accountNameInvalid`
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ issues src/common/staff-account-name.spec.ts:117:34
+ ❯ src/common/staff-account-name.spec.ts:141:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom dont la CLÉ serait vide (que des diacritiques combinants) : la base le refuserait aussi
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ ok src/common/staff-account-name.spec.ts:116:52
+    114| 
+    115| describe("staffAccountNameSchema — ce que l'écran et le serveur accept…
+    116|   const ok = (v: string) => staffAccountNameSchema.safeParse(v);
+       |                                                    ^
+    117|   const issues = (v: string) => (ok(v).success ? [] : (ok(v) as { erro…
+    118| 
+ ❯ src/common/staff-account-name.spec.ts:146:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/87]⎯
+
+ FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > une valeur qui n'est pas une chaîne est refusée avec le message du champ obligatoire
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-account-name.spec.ts:150:38
+    148| 
+    149|   it("une valeur qui n'est pas une chaîne est refusée avec le message …
+    150|     const r = staffAccountNameSchema.safeParse(undefined);
+       |                                      ^
+    151|     expect(r.success).toBe(false);
+    152|     expect(!r.success && r.error.issues[0]?.message).toBe("staff.valid…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot de passe 90 jours, PIN 90 jours
+TypeError: Cannot read properties of undefined (reading 'IDLE_TIMEOUT_MINUTES')
+ ❯ src/common/staff-contract.spec.ts:38:25
+     36| describe("STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5)…
+     37|   it("DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 1…
+     38|     expect(STAFF_LIMITS.IDLE_TIMEOUT_MINUTES).toBe(10);
+       |                         ^
+     39|     expect(STAFF_LIMITS.SESSION_MAX_HOURS).toBe(12);
+     40|     expect(STAFF_LIMITS.PASSWORD_PAUSE_MINUTES).toBe(15);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts:47:19
+     45| 
+     46|   it("R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « mêm…
+     47|     expect(Object.keys(STAFF_LIMITS).sort()).toEqual(
+       |                   ^
+     48|       ["DEVICE_COOKIES_MAX", "IDLE_TIMEOUT_MINUTES", "PASSWORD_MAX_FAI…
+     49|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun appelant ne le modifie)
+TypeError: Cannot read properties of undefined (reading 'DEVICE_COOKIES_MAX')
+ ❯ src/common/staff-contract.spec.ts:53:25
+     51| 
+     52|   it("la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2…
+     53|     expect(STAFF_LIMITS.DEVICE_COOKIES_MAX).toBe(8);
+       |                         ^
+     54|     expect(Object.isFrozen(STAFF_LIMITS)).toBe(true);
+     55|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais reflété
+AssertionError: expected undefined to be 'Poste' // Object.is equality
+
+- Expected: 
+"Poste"
+
++ Received: 
+undefined
+
+ ❯ src/common/staff-contract.spec.ts:58:40
+     56| 
+     57|   it("le libellé d'un appareil est une constante (« Poste ») : aucun t…
+     58|     expect(STAFF_DEVICE_DEFAULT_LABEL).toBe("Poste");
+       |                                        ^
+     59|   });
+     60| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les énumérations du personnel suivent le schéma ratifié (tranche [L36-3], D186) > StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ; fins de session = IDLE, LOGOUT, DISABLED, PASSWORD_CHANGED, PIN_LOCKED
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts:64:19
+     62| describe("les énumérations du personnel suivent le schéma ratifié (tra…
+     63|   it("StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ;…
+     64|     expect(Object.values(StaffRole).sort()).toEqual(["EMPLOYEE", "MANA…
+       |                   ^
+     65|     expect(Object.values(StaffStatus).sort()).toEqual(["ACTIVE", "DISA…
+     66|     expect(Object.values(StaffSessionEndReason).sort()).toEqual(["DISA…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts:72:19
+     70| describe("les codes d'erreur du personnel — messages FR = AR (MP-39)",…
+     71|   it("l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN cod…
+     72|     expect(Object.values(StaffErrorCode).sort()).toEqual(
+       |                   ^
+     73|       [
+     74|         "STAFF_ACCOUNT_NAME_TAKEN",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET dans le catalogue ARABE
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts:88:31
+     86| 
+     87|   it("chaque code a une clé de message, et cette clé existe, non vide,…
+     88|     for (const code of Object.values(StaffErrorCode)) {
+       |                               ^
+     89|       const cle = STAFF_ERROR_MESSAGE_KEYS[code];
+     90|       expect(cle, `clé du code ${code}`).toMatch(/^staff\.errors\.[a-z…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts:97:25
+     95| 
+     96|   it("deux codes n'ont jamais la même clé (un message partagé confondr…
+     97|     const cles = Object.values(STAFF_ERROR_MESSAGE_KEYS);
+       |                         ^
+     98|     expect(new Set(cles).size).toBe(cles.length);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en français, et porte la DURÉE DU LEVIER dans les deux langues
+TypeError: Cannot read properties of undefined (reading 'STAFF_INVALID_CREDENTIALS')
+ ❯ src/common/staff-contract.spec.ts:102:57
+    100| 
+    101|   it("⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les…
+    102|     const cle = STAFF_ERROR_MESSAGE_KEYS[StaffErrorCode.STAFF_INVALID_…
+       |                                                         ^
+    103|     expect(lire(FR, cle)).toBe("Nom de compte ou mot de passe incorrec…
+    104|     const minutes = String(STAFF_LIMITS.PASSWORD_PAUSE_MINUTES);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raison (un 401 par cause serait un oracle)
+TypeError: Cannot read properties of undefined (reading 'STAFF_SESSION_REQUIRED')
+ ❯ src/common/staff-contract.spec.ts:115:57
+    113| 
+    114|   it("le message de la session requise ne dit ni « expirée » ni « révo…
+    115|     const cle = STAFF_ERROR_MESSAGE_KEYS[StaffErrorCode.STAFF_SESSION_…
+       |                                                         ^
+    116|     expect(lire(FR, cle)).not.toMatch(/expir|révoqu|désactiv/i);
+    117|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:138:24
+    136|     const cles = new Set<string>();
+    137|     for (const [nom, schema, entree] of entreesFautives) {
+    138|       const r = schema.safeParse(entree);
+       |                        ^
+    139|       expect(r.success, nom).toBe(false);
+    140|       for (const issue of r.error?.issues ?? []) cles.add(issue.messag…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale)
+AssertionError: le namespace `staff` existe: expected 0 to be greater than 8
+ ❯ src/common/staff-contract.spec.ts:156:54
+    154|     const fr = aplatir((FR.staff ?? {}) as Tree, "staff.", []).sort();
+    155|     const ar = aplatir((AR.staff ?? {}) as Tree, "staff.", []).sort();
+    156|     expect(fr.length, "le namespace `staff` existe").toBeGreaterThan(8…
+       |                                                      ^
+    157|     expect(ar).toEqual(fr);
+    158|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:163:35
+    161| describe("staffActivateSchema — K-14 : le nom de compte et le mot de p…
+    162|   it("accepte un corps valide et rend le nom rogné", () => {
+    163|     const r = staffActivateSchema.safeParse({ accountName: " Amine ", …
+       |                                   ^
+    164|     expect(r.success && r.data).toEqual({ accountName: "Amine", passwo…
+    165|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > applique la politique de mot de passe EXISTANTE (`passwordSchema`) : 8 à 128 caractères, une lettre, un chiffre — avec les clés `auth.validation.*`
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ refus src/common/staff-contract.spec.ts:169:37
+    167|   it("applique la politique de mot de passe EXISTANTE (`passwordSchema…
+    168|     const refus = (password: string) => {
+    169|       const r = staffActivateSchema.safeParse({ accountName: "Amine", …
+       |                                     ^
+    170|       return r.success ? [] : r.error.issues.map((i) => i.message);
+    171|     };
+ ❯ src/common/staff-contract.spec.ts:172:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:179:32
+    177| 
+    178|   it("refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé …
+    179|     expect(staffActivateSchema.safeParse({ accountName: "Amine", passw…
+       |                                ^
+    180|   });
+    181| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractères (un mot de passe trop court se refuse à la vérification, pas à la validation)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:185:29
+    183| describe("staffLoginSchema — K-15 : NE révèle PAS la politique de mot …
+    184|   it("accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractè…
+    185|     expect(staffLoginSchema.safeParse({ accountName: "Amine", password…
+       |                             ^
+    186|     expect(staffLoginSchema.safeParse({ accountName: "Amine", password…
+    187|     expect(staffLoginSchema.safeParse({ accountName: "Amine", password…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:191:29
+    189| 
+    190|   it("n'applique PAS les bornes du nom de compte de l'activation : un …
+    191|     expect(staffLoginSchema.safeParse({ accountName: "a", password: "x…
+       |                             ^
+    192|     expect(staffLoginSchema.safeParse({ accountName: "<b>", password: …
+    193|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > accepte un corps valide
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:198:38
+    196| describe("staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau,…
+    197|   it("accepte un corps valide", () => {
+    198|     expect(staffPasswordChangeSchema.safeParse({ currentPassword: "Anc…
+       |                                      ^
+    199|   });
+    200| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/87]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle)
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:202:38
+    200| 
+    201|   it("le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est p…
+    202|     expect(staffPasswordChangeSchema.safeParse({ currentPassword: "x",…
+       |                                      ^
+    203|     expect(staffPasswordChangeSchema.safeParse({ currentPassword: "x",…
+    204|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée
+AssertionError: expected 0 to be greater than or equal to 9
+ ❯ src/staff/staff-source-guards.spec.ts:67:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`)
+AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+ ❯ src/staff/staff-source-guards.spec.ts:74:75
+     72| 
+     73|   it("⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel …
+     74|     expect(sources.length, "zéro fichier parcouru ne prouve rien (D290…
+       |                                                                           ^
+     75|     const fautifs = sources.filter((s) => HORLOGE.test(s.code)).map((s…
+     76|     expect(fautifs, `fichiers qui lisent l'horloge de l'API : ${fautif…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit)
+AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+ ❯ src/staff/staff-source-guards.spec.ts:80:75
+     78| 
+     79|   it("⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : to…
+     80|     expect(sources.length, "zéro fichier parcouru ne prouve rien (D290…
+       |                                                                           ^
+     81|     const fautifs = sources.filter((s) => duree(s.code)).map((s) => s.…
+     82|     expect(fautifs, `fichiers qui écrivent une durée en dur : ${fautif…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN)
+AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 0 to be greater than or equal to 9
+ ❯ src/staff/staff-source-guards.spec.ts:86:75
+     84| 
+     85|   it("⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console…
+     86|     expect(sources.length, "zéro fichier parcouru ne prouve rien (D290…
+       |                                                                           ^
+     87|     const fautifs = sources.filter((s) => JOURNAL.test(s.code)).map((s…
+     88|     expect(fautifs, `fichiers qui journalisent : ${fautifs.join(", ")}…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs`
+AssertionError: expected [] to deeply equal [ 'staff-store.prisma.ts' ]
+
+- Expected
++ Received
+
+- [
+-   "staff-store.prisma.ts",
+- ]
++ []
+
+ ❯ src/staff/staff-source-guards.spec.ts:93:19
+     91|   it("⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `au…
+     92|     const sites = sources.flatMap((s) => (s.code.match(/\bauditLog\s*\…
+     93|     expect(sites).toEqual(["staff-store.prisma.ts"]);
+       |                   ^
+     94|     const tables = sources.filter((s) => /audit_logs/.test(s.code)).ma…
+     95|     expect(tables).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage
+TypeError: Cannot read properties of undefined (reading 'code')
+ ❯ src/staff/staff-source-guards.spec.ts:100:52
+     98|   it("⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, …
+     99|     for (const nom of ["staff-session-policy.ts", "staff-password-poli…
+    100|       const source = sources.find((s) => s.nom === nom)!.code;
+       |                                                    ^
+    101|       const imports = [...source.matchAll(/^\s*import\s+(type\s+)?[^;]…
+    102|       for (const i of imports) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6)
+AssertionError: expected [ 'ThrottlerGuard', …(2) ] to deeply equal [ 'ThrottlerGuard', …(3) ]
+
+- Expected
++ Received
+
+  [
+    "ThrottlerGuard",
+    "JwtAuthGuard",
+    "RolesGuard",
+-   "StaffSessionGuard",
+  ]
+
+ ❯ src/staff/staff-source-guards.spec.ts:116:20
+    114|   it("⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, ap…
+    115|     const gardes = [...module.matchAll(/provide:\s*APP_GUARD\s*,\s*use…
+    116|     expect(gardes).toEqual(["ThrottlerGuard", "JwtAuthGuard", "RolesGu…
+       |                    ^
+    117|   });
+    118| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même)
+AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /\bStaffModule\b/
+
+- Expected: 
+/\bStaffModule\b/
+
++ Received: 
+"import { Module } from \"@nestjs/common\";
+import { APP_GUARD } from \"@nestjs/core\";
+import { ThrottlerGuard, ThrottlerModule } from \"@nestjs/throttler\";
+import { DEFAULT_THROTTLE } from \"./auth/auth.throttle\";
+import { LoggerModule } from \"nestjs-pino\";
+import { AccountModule } from \"./account/account.module\";
+import { AuthModule } from \"./auth/auth.module\";
+import { ProClientsModule } from \"./clients/pro-clients.module\";
+import { JwtAuthGuard } from \"./auth/jwt-auth.guard\";
+import { RolesGuard } from \"./auth/roles.guard\";
+import { EmailModule } from \"./common/email/email.module\";
+import { PaymentsModule } from \"./payments/payments.module\";
+import { WhatsAppModule } from \"./common/whatsapp/whatsapp.module\";
+import { ConfigModule } from \"./config/config.module\";
+import { DocumentsModule } from \"./documents/documents.module\";
+import { HealthModule } from \"./health/health.module\";
+import { MediaModule } from \"./media/media.module\";
+import { PrismaModule } from \"./prisma/prisma.module\";
+import { ReferentialsModule } from \"./referentials/referentials.module\";
+import { VenuesModule } from \"./venues/venues.module\";
+
+@Module({
+  imports: [
+    ConfigModule,
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.LOG_LEVEL ?? (process.env.NODE_ENV === \"production\" ? \"info\" : \"debug\"),
+        transport:
+          process.env.NODE_ENV === \"production\" ? undefined : { target: \"pino-pretty\", options: { singleLine: true } },
+        redact: [\"req.headers.authorization\", \"req.headers.cookie\"]
+      }
+    }),
+    
+    
+    
+    
+    
+    
+    
+    
+    ThrottlerModule.forRoot({ throttlers: [DEFAULT_THROTTLE] }),
+    PrismaModule,
+    EmailModule,
+    
+    
+    
+    
+    
+    
+    PaymentsModule,
+    
+    
+    WhatsAppModule,
+    AuthModule,
+    AccountModule,
+    HealthModule,
+    MediaModule,
+    ReferentialsModule,
+    VenuesModule,
+    
+    DocumentsModule,
+    
+    ProClientsModule
+  ],
+  providers: [
+    
+    
+    
+    
+    
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard }
+  ]
+})
+export class AppModule {}
+"
+
+ ❯ src/staff/staff-source-guards.spec.ts:120:20
+    118| 
+    119|   it("l'application importe le module du personnel (leçon R1 : un cont…
+    120|     expect(module).toMatch(/\bStaffModule\b/);
+       |                    ^
+    121|     expect(module).toMatch(/imports:\s*\[[\s\S]*\bStaffModule\b[\s\S]*…
+    122|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`)
+AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /redact:\s*\[[^\]]*req\.headers\.autho…/
+
+- Expected: 
+/redact:\s*\[[^\]]*req\.headers\.authorization[^\]]*req\.headers\.cookie[^\]]*res\.headers\["set-cookie"\][^\]]*\]/
+
++ Received: 
+"import { Module } from \"@nestjs/common\";
+import { APP_GUARD } from \"@nestjs/core\";
+import { ThrottlerGuard, ThrottlerModule } from \"@nestjs/throttler\";
+import { DEFAULT_THROTTLE } from \"./auth/auth.throttle\";
+import { LoggerModule } from \"nestjs-pino\";
+import { AccountModule } from \"./account/account.module\";
+import { AuthModule } from \"./auth/auth.module\";
+import { ProClientsModule } from \"./clients/pro-clients.module\";
+import { JwtAuthGuard } from \"./auth/jwt-auth.guard\";
+import { RolesGuard } from \"./auth/roles.guard\";
+import { EmailModule } from \"./common/email/email.module\";
+import { PaymentsModule } from \"./payments/payments.module\";
+import { WhatsAppModule } from \"./common/whatsapp/whatsapp.module\";
+import { ConfigModule } from \"./config/config.module\";
+import { DocumentsModule } from \"./documents/documents.module\";
+import { HealthModule } from \"./health/health.module\";
+import { MediaModule } from \"./media/media.module\";
+import { PrismaModule } from \"./prisma/prisma.module\";
+import { ReferentialsModule } from \"./referentials/referentials.module\";
+import { VenuesModule } from \"./venues/venues.module\";
+
+@Module({
+  imports: [
+    ConfigModule,
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.LOG_LEVEL ?? (process.env.NODE_ENV === \"production\" ? \"info\" : \"debug\"),
+        transport:
+          process.env.NODE_ENV === \"production\" ? undefined : { target: \"pino-pretty\", options: { singleLine: true } },
+        redact: [\"req.headers.authorization\", \"req.headers.cookie\"]
+      }
+    }),
+    
+    
+    
+    
+    
+    
+    
+    
+    ThrottlerModule.forRoot({ throttlers: [DEFAULT_THROTTLE] }),
+    PrismaModule,
+    EmailModule,
+    
+    
+    
+    
+    
+    
+    PaymentsModule,
+    
+    
+    WhatsAppModule,
+    AuthModule,
+    AccountModule,
+    HealthModule,
+    MediaModule,
+    ReferentialsModule,
+    VenuesModule,
+    
+    DocumentsModule,
+    
+    ProClientsModule
+  ],
+  providers: [
+    
+    
+    
+    
+    
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard }
+  ]
+})
+export class AppModule {}
+"
+
+ ❯ src/staff/staff-source-guards.spec.ts:125:20
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/87]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b)
+AssertionError: expected {} to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "auth/auth.controller.ts": 1,
+-   "staff/staff-session.controller.ts": 3,
+- }
++ {}
+
+ ❯ src/staff/staff-source-guards.spec.ts:142:21
+    140|     };
+    141|     parcourir(SRC);
+    142|     expect(comptes).toEqual({ "auth/auth.controller.ts": 1, "staff/sta…
+       |                     ^
+    143|   });
+    144| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/87]⎯
+
+
+ Test Files  9 failed (9)
+      Tests  81 failed | 6 passed (87)
+   Start at  18:50:57
+   Duration  2.23s (transform 1.12s, setup 0ms, collect 1.27s, tests 108ms, environment 4ms, prepare 4.17s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/staff-account-name.spec.ts src/common/staff-contract.spec.ts src/staff/

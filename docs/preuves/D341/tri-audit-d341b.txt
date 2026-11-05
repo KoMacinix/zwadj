@@ -1,0 +1,29 @@
+D341 — tri différentiel de l'audit de secrets « b » (AVANT le commit des rouges : les trois sorties de vitest lues contre l'état d'avant, leur lecture, leurs empreintes, la liste versée et son avis de licence, le tri de l'audit « a »)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341a.txt docs/preuves/D341/audit-secrets-d341b.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341b.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) :
+  · précédente (d341a) : 4 599 fichiers parcourus, 4 468 audités, 131 exclus, 985 alertes.
+  · nouvelle (d341b)   : 4 610 fichiers parcourus, 4 478 audités, 132 exclus, 995 alertes. Contrôle de l'outil : audités + exclus = 4 610 (attendu 4 610).
+  · RAPPROCHEMENT — l'arithmétique FERME ENTIÈREMENT, cette fois (11 = 1 + 1 + 7 + 2) : +11 fichiers parcourus = la sortie scellée d341a (écrite après l'audit « a »), le tri d341a (idem), les sept fichiers de
+    `docs/preuves/D341/rouges/` (LISEZ-MOI, lire-rouges.py, lecture-rouges.txt, empreintes-fichiers-de-test.txt, et les trois sorties de rouges) et les deux fichiers de `docs/preuves/D341/liste-mots-de-passe/`
+    (la liste, l'avis de licence). Audités +10 (4 468 → 4 478) : tout sauf la sortie scellée d341a. Exclus +1 (131 → 132) : cette sortie scellée d341a, désormais épinglée par son sceau.
+    Alertes +10 (985 → 995) : exactement les dix du tri ci-dessous.
+
+Résultat du tri différentiel : 10 alertes ABSENTES de la sortie précédente — 8 du motif « mot-de-passe », 2 du motif « jeton » (lignes 3177 à 3195 de la sortie scellée d341b).
+
+Tri au contexte — LU, pas déduit (les contextes sont dans la sortie scellée aux lignes citées ; ils ne sont pas recopiés ici) :
+  · 6 « mot-de-passe » dans `rouges/rouge-api-unitaire.txt` (lignes 641, 679, 681, 691, 703, 705 de la pièce) : ce sont des LIGNES DE CODE DU SPEC, citées par les cadres d'échec de vitest (« 168| const refus = (password: string) => { »).
+    La ligne 641 est une ANNOTATION DE TYPE (`password: string`) ; les lignes 679, 681, 703, 705 portent la fixture « x » ; la ligne 691 la fixture « Ancien1motdepasse ». Ni l'une ni l'autre n'est un secret : ce sont des entrées de test
+    pour des schémas de validation.
+  · 2 « mot-de-passe » dans `rouges/rouge-integration.txt` (lignes 739 et 758 de la pièce) : `password: "Zq7!xvn3-Pk2"` (la constante `MOT_DE_PASSE_STAFF` des specs du personnel, assemblée dans `throttle.int-spec.ts:110` et
+    `staff-helpers.ts:10`) et `password: "Tentative1"` (déjà présente UNE fois dans `throttle.int-spec.ts` à `HEAD`, avant ce lot — le test de connexion d'avant ; ce lot en ajoute une seconde, pour la clé `staffLogin` : mesuré sur `git show HEAD:…`, 1 occurrence). Des mots de passe de comptes JETABLES d'une base de test recréée à chaque lancement,
+    versés dans le dépôt comme tout fixture de test ; ils ne protègent rien de réel. L'outil le dit lui-même pour les deux : « valeur déjà présente dans 1 fichier suivi hors preuves » (la spec de débit).
+  · 2 « jeton » dans `tri-audit-d341a.txt` (lignes 22 et 28) : MA PROSE, écrite après l'audit « a » et auditée ici pour la première fois ; elle cite la FORME `…/auth/verification-email?token=…` avec un masque. Même classe que les
+    quatre alertes triées par l'audit « a » (écho de prose), et que les 79 alertes de l'e2e triées par D340.
+  · Verdict : 10 / 10 = ÉCHO (code de spec cité par un cadre d'échec ; fixtures de comptes jetables ; prose), 0 valeur réelle, 0 fuite.
+
+Ce que ce tri NE couvre PAS : les fichiers écrits après l'audit « b » (cette note ; la sortie de l'audit « c » et ses pièces). Ils passent par l'audit « c » (avant le commit des pièces de neutralisation et des verts) puis « d » (clôture),
+déclarés par la table d'ouverture.

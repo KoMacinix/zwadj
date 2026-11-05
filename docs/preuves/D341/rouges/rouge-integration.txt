@@ -1,0 +1,775 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-schema.int-spec.ts (19 tests | 19 failed) 8801ms
+   × la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la colonne d'audit 849ms
+     → expected [] to deeply equal [ 'pro_staff_devices', …(2) ]
+   × la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > ⛔ 1 a — la NULLABILITÉ du § 5.2 du cadrage, colonne par colonne (la table est celle du cadrage, lue ici comme une donnée à confronter à la base) 405ms
+     → pro_staff_members.pin_hash doit être NULLABLE: expected undefined to be true // Object.is equality
+   × la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` faux, compteurs à 0, aucun PIN, aucune pause ; la session naît active à l'instant 433ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle passe 431ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés 401ms
+     → attendu : un refus par « pro_staff_members_pin_failed_count_range »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_failed_count_ra…'
+   × la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions 423ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × la tranche ratifiée — ses garanties > clés étrangères : un membre sans salle, un appareil sans membre, une session sans appareil sont refusés 425ms
+     → attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pro_profile_id_fkey'
+   × la tranche ratifiée — ses garanties > ⛔ les énumérations refusent une valeur hors schéma — chacune PAR SON NOM (un rôle `ADMIN`, un statut `ARCHIVED`, une fin `INCONNUE`) : un refus pour une autre raison (une table absente) ne prouverait rien 429ms
+     → attendu : un refus par « invalid input value for enum "StaffRole" »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'invalid input value for enum "StaffRo…'
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec date refusé, DISABLED avec date accepté 379ms
+     → attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_status_disabled_coh…'
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des trois, isolé, est refusé ; les trois ensemble sont acceptés 408ms
+     → attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_triple_coherent'
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé 408ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refusées 393ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés (le seuil est une règle du service, pas de la base) 391ms
+     → attendu : un refus par « pro_staff_members_password_failed_count_nonneg »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_password_failed_cou…'
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (f) `account_name_key <> ''` : une clé vide est refusée 383ms
+     → attendu : un refus par « pro_staff_members_account_name_key_present »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_account_name_key_pr…'
+   × 1 b — les SIX garanties de base adoptées par la consigne > ⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas une garde de base (§ 3.2 du cadrage) ; la table n'en porte aucun, et un dernier Manager peut être désactivé en SQL 405ms
+     → 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × l'audit et les suppressions > ⛔ `audit_logs.actor_member_id` est une clé étrangère : un membre inexistant est refusé 376ms
+     → attendu : un refus par « audit_logs_actor_member_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'audit_logs_actor_member_id_fkey'
+   × l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne d'audit SURVIT, sans son auteur 406ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un appareil qui porte une session non plus 385ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+   × l'audit et les suppressions > `created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactivent, ils ne se suppriment jamais) 416ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ test/int/migration-non-empty.int-spec.ts (31 tests | 5 failed) 6067ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  423ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⛔ D282 — la dernière migration REFUSE une base incohérente, et ne laisse RIEN 98ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ E3d-1 — l'index EXISTE ; son départage n'est plus mesurable ici (D282) 13ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ Q4 — la colonne a disparu, et RIEN d'autre 44ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ R4 — un BROUILLON JAMAIS REMIS peut être clos : les DEUX défauts sont fermés 48ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > les objets du lot PRÉCÉDENT n'ont pas bougé, et aucun canal n'a été inventé 56ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > ⚠ l'index partiel des SENT tient encore — la migration ne l'a pas emporté 13ms
+   × L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot 274ms
+     → les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4, de L36-1, de L36-2 puis de L36-3a-1 : un lot de plus doit re-pointer ce bloc: expected [ 'venue_number', …(4) ] to deeply equal [ 'venue_number', …(5) ]
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-A — toutes les salles, SUPPRIMÉES comprises, sont numérotées dans l'ordre de création, départage par identifiant ; la séquence repart du maximum 100ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ M-B — les devis existants sont numérotés par (salle, ANNÉE D'ALGER) dans l'ordre de création ; les révisions recopient leur tête ; les compteurs valent le maximum 90ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  449ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)  542ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les devis existants la traversent INCHANGÉS, leurs trois colonnes neuves sont NULLES, la table neuve est VIDE 150ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : quatre CHECK, deux unicités PARTIELLES par pro, et l'action de chaque clé étrangère 65ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > après la migration : une fiche s'écrit, un devis EXISTANT s'y rattache ; supprimer la fiche remet son lien à NULL et le devis garde sa COPIE du nom 80ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL  496ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-4 — la migration passe sur la base NON VIDE : les deux réservations la traversent INTACTES, ligne à ligne, les trois colonnes de contact comprises 67ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ la colonne est FACULTATIVE et la contrainte est posée (D186) : le CHECK porte les DEUX colonnes, sous son nom 88ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ⛔ ML-11 — après la migration : un e-mail SEUL s'écrit ; ni numéro ni e-mail est REFUSÉ (23514) ; retirer le dernier canal d'une ligne existante aussi, sans rien écrire 209ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > ML-15 — `visit_bookings.contact_phone` n'a pas bougé (nullable depuis D61, hors lot) et ne porte aucun CHECK de ce lot 47ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de huit devis dans CHAQUE état (hérités compris), d'une fiche, et de deux réservations (l'une rattachée à un devis)  926ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les huit devis et les deux réservations la traversent INTACTS, ligne à ligne, et CHAQUE devis existant est OFFICIEL 134ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⛔ les garanties que la migration pose (D186) : la colonne est un booléen OBLIGATOIRE de défaut `true`, la CHECK porte les sept colonnes sous son nom, le déclencheur est actif sur INSERT et UPDATE OF quote_id 66ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⛔ après la migration : un devis neuf peut être un BROUILLON ; ce qu'un brouillon ne peut pas porter est REFUSÉ (23514) — et les devis HÉRITÉS qui porteraient ces états n'ont pas été touchés 183ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⛔ la CHECK refuse un brouillon COLONNE PAR COLONNE (M-3, M-4, M-6, M-7 de `neutralize-r43.py`) : chacune, ÉCRITE SEULE sur un brouillon qui sinon est valide — le test du dessus en écrit deux à la fois et ne sépare pas la fautive 173ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⚠ LIMITE ÉCRITE (cadrage D339, 2.1) : la base n'interdit PAS `true → false` d'un devis INERTE, même rattaché à une réservation — aucun code n'écrit ce sens (le fermer est une entrée de backlog) 86ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > ⛔ après la migration, le déclencheur : les deux réservations existantes sont intactes ; rattacher une réservation à un BROUILLON est refusé à l'INSERT et à l'UPDATE de `quote_id` (R-4), sans rien écrire 138ms
+   × ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur) 96ms
+     → la migration du lot L36-3a-1 existe: expected -1 to be greater than or equal to 0
+   × ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les deux profils et les trois lignes d'audit la traversent INTACTS, ligne à ligne ; AUCUN profil n'est activé (avant toute activation, rien ne change) et aucune ligne d'audit n'a d'auteur-membre 24ms
+     → relation "pro_profiles" does not exist
+   × ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ les garanties que la migration pose (D186), par nom et par nature : les CHECK de la tranche et des six garanties adoptées, les trois uniques, les clés étrangères avec leur action de suppression (RESTRICT, et SET NULL pour l'audit) 22ms
+     → la contrainte pro_staff_members_pin_failed_count_range existe: expected undefined to be defined
+   × ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > après la migration : un membre se rattache à un profil d'AVANT la migration (les clés étrangères tiennent sur des lignes anciennes) et sa suppression-par-profil est refusée 20ms
+     → relation "pro_staff_members" does not exist
+ ❯ test/int/throttle.int-spec.ts (9 tests | 2 failed) 5737ms
+   ✓ Rate limiting /auth (limites réelles) > resend-verification : 3 requêtes passent, la 4e est rejetée en 429 avec Retry-After  320ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  1585ms
+   ✓ Rate limiting /auth (limites réelles) > refresh (D13) : 30 requêtes passent (401 sans cookie), la 31e est rejetée en 429 287ms
+   ✓ Rate limiting /auth (limites réelles) > logout (D13) : 10 requêtes passent (200 idempotent), la 11e est rejetée en 429 96ms
+   ✓ Rate limiting /auth (limites réelles) > forgot-password (Lot 4) : 3 demandes passent (202 constant), la 4e est rejetée en 429 47ms
+   ✓ Rate limiting /auth (limites réelles) > reset-password (Lot 4) : 10 tentatives passent (ici 400), la 11e est rejetée en 429 235ms
+   ✓ Rate limiting /auth (limites réelles) > google (Lot 8) : 5 tentatives passent (ici 401, table vide), la 6e est rejetée en 429 — budget register 54ms
+   × Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register 32ms
+     → expected 404 to be 401 // Object.is equality
+   × Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion 18ms
+     → expected 404 to be 401 // Object.is equality
+ ❯ test/int/log-set-cookie.int-spec.ts (6 tests | 2 failed) 1898ms
+   × SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/login : la valeur du cookie `zwadj_rt` posé par la réponse n'est NULLE PART dans la sortie du journal, et le champ est masqué 200ms
+     → la valeur du cookie de rafraîchissement ne doit pas être dans le journal: expected '{"level":30,"time":1793836298396,"pid…' not to contain 'pTnud-hFJhVpGoCLe-LBuKPPDpcUtIfyShUsM…'
+   ✓ SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ le jeton d'accès (Bearer) renvoyé dans le CORPS n'est pas journalisé non plus : le journal ne porte jamais les corps 152ms
+   × SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/refresh : le cookie posé par la rotation n'est pas journalisé (même défaut, deuxième route qui pose `zwadj_rt`) 200ms
+     → expected '{"level":30,"time":1793836298770,"pid…' not to contain '0cMb-6RFzOAABbOeGMwAcWtx0yysKB-OwB5-w…'
+   ✓ SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > BRAS DE CONTRÔLE 1 — le journal contient bien les en-têtes de RÉPONSE : la ligne de login porte `x-powered-by` (l'absence du cookie vient du masque, pas d'un journal sans en-têtes) 138ms
+   ✓ SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > BRAS DE CONTRÔLE 2 — les en-têtes ENTRANTS restent masqués (`Authorization`, `Cookie`) : le masque fonctionne là où il était déjà déclaré 27ms
+   ✓ SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > la sortie du journal est du JSON, une ligne par objet (le format de production) : aucune ligne ne se parse en erreur 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-activation.int-spec.ts [ test/int/staff-activation.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-activation.int-spec.ts'
+ ❯ test/int/staff-activation.int-spec.ts:12:1
+     10| import { afterAll, beforeAll, beforeEach, describe, expect, it } from …
+     11| import { STAFF_LIMITS, StaffErrorCode } from "@zwadj/types";
+     12| import { STAFF_COMMON_PASSWORDS } from "../../src/staff/staff-common-p…
+       | ^
+     13| import { passwordSchema } from "@zwadj/types";
+     14| import { createTestApp, loginAs, registerUser, truncateAll, verifyLast…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-common-passwords (resolved id: ../../src/staff/staff-common-passwords) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-activation.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/32]⎯
+
+ FAIL  test/int/staff-login.int-spec.ts [ test/int/staff-login.int-spec.ts ]
+TypeError: Cannot read properties of undefined (reading 'IDLE_TIMEOUT_MINUTES')
+ ❯ test/int/staff-login.int-spec.ts:283:30
+    281| describe("MP-13 — l'inactivité et le plafond, côté serveur, à l'heure …
+    282|   const route = "/api/v1/pro/venues";
+    283|   const seuil = STAFF_LIMITS.IDLE_TIMEOUT_MINUTES * 60;
+       |                              ^
+    284| 
+    285|   it("⛔ JUSTE AVANT le seuil (9 min 30 s) : la requête passe ET l'acti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/32]⎯
+
+ FAIL  test/int/staff-password.int-spec.ts [ test/int/staff-password.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-common-passwords' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-password.int-spec.ts'
+ ❯ test/int/staff-password.int-spec.ts:11:1
+      9| import { STAFF_LIMITS, StaffErrorCode, passwordSchema } from "@zwadj/t…
+     10| import { PasswordService } from "../../src/auth/password.service";
+     11| import { STAFF_COMMON_PASSWORDS } from "../../src/staff/staff-common-p…
+       | ^
+     12| import { createTestApp, truncateAll, type TestContext } from "./helper…
+     13| import { Jar, MOT_DE_PASSE_STAFF, appeler, codeDe, compterLignes, conn…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-common-passwords (resolved id: ../../src/staff/staff-common-passwords) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-activation.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/32]⎯
+
+ FAIL  test/int/staff-session-guard.int-spec.ts [ test/int/staff-session-guard.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-decorators' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/route-collector.ts'
+ ❯ test/int/route-collector.ts:10:1
+      8| import { ModulesContainer } from "@nestjs/core/injector/modules-contai…
+      9| import { IS_PUBLIC_KEY, ROLES_KEY } from "../../src/auth/auth.decorato…
+     10| import { STAFF_EXEMPT_KEY } from "../../src/staff/staff-decorators";
+       | ^
+     11| 
+     12| export interface RouteEntry {
+
+Caused by: Error: Failed to load url ../../src/staff/staff-decorators (resolved id: ../../src/staff/staff-decorators) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/route-collector.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/32]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 28 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/log-set-cookie.int-spec.ts > SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/login : la valeur du cookie `zwadj_rt` posé par la réponse n'est NULLE PART dans la sortie du journal, et le champ est masqué
+AssertionError: la valeur du cookie de rafraîchissement ne doit pas être dans le journal: expected '{"level":30,"time":1793836298396,"pid…' not to contain 'pTnud-hFJhVpGoCLe-LBuKPPDpcUtIfyShUsM…'
+
+- Expected
++ Received
+
+- <jeton zwadj_rt masqué #2 (43 car.)>
++ {"level":30,"time":1793836298396,"pid":26192,"hostname":"Macinix","req":{"id":4,"method":"POST","url":"/api/v1/auth/login","query":{},"params":{"path":["auth","login"]},"headers":{"host":"127.0.0.1:52653","accept-encoding":"gzip, deflate","content-type":"application/json","content-length":"59","connection":"close"},"remoteAddress":"::ffff:127.0.0.1","remotePort":52654},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9998","x-ratelimit-reset":"900","set-cookie":"zwadj_rt=<jeton zwadj_rt masqué #2 (43 car.)>; Path=/api/v1/auth; Expires=Fri, 04 Dec 2026 23:51:38 GMT; HttpOnly; SameSite=Lax","content-type":"application/json; charset=utf-8","content-length":"559","etag":"W/\"22f-R2C/HqfGwtuxj2h6vx3sWerTbAM\""}},"responseTime":156,"msg":"request completed"}
++
+
+ ❯ test/int/log-set-cookie.int-spec.ts:45:100
+     43|     const ligne = await ctx.attendreRequete("POST", "/api/v1/auth/logi…
+     44|     const sortie = ctx.sortie();
+     45|     expect(sortie, "la valeur du cookie de rafraîchissement ne doit pa…
+       |                                                                                                    ^
+     46|     const entetes = (ligne.res as { headers?: Record<string, unknown> …
+     47|     expect(entetes["set-cookie"], "le champ `set-cookie` de la réponse…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/32]⎯
+
+ FAIL  test/int/log-set-cookie.int-spec.ts > SIG-1 — le journal réel de l'application ne porte AUCUNE valeur de cookie posé > ⛔ POST /auth/refresh : le cookie posé par la rotation n'est pas journalisé (même défaut, deuxième route qui pose `zwadj_rt`)
+AssertionError: expected '{"level":30,"time":1793836298770,"pid…' not to contain '0cMb-6RFzOAABbOeGMwAcWtx0yysKB-OwB5-w…'
+
+- Expected
++ Received
+
+- <jeton zwadj_rt masqué #1 (43 car.)>
++ {"level":30,"time":1793836298770,"pid":26192,"hostname":"Macinix","req":{"id":7,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"127.0.0.1:52659","accept-encoding":"gzip, deflate","cookie":"[Redacted]","connection":"close","content-length":"0"},"remoteAddress":"::ffff:127.0.0.1","remotePort":52660},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9999","x-ratelimit-reset":"900","set-cookie":"zwadj_rt=<jeton zwadj_rt masqué #1 (43 car.)>; Path=/api/v1/auth; Expires=Fri, 04 Dec 2026 23:51:38 GMT; HttpOnly; SameSite=Lax","content-type":"application/json; charset=utf-8","content-length":"559","etag":"W/\"22f-R2C/HqfGwtuxj2h6vx3sWerTbAM\""}},"responseTime":29,"msg":"request completed"}
++
+
+ ❯ test/int/log-set-cookie.int-spec.ts:66:30
+     64|     expect(pose).toBeDefined();
+     65|     await ctx.attendreRequete("POST", "/api/v1/auth/refresh");
+     66|     expect(ctx.sortie()).not.toContain(pose!.value);
+       |                              ^
+     67|   });
+     68| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/32]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot
+AssertionError: les migrations qui SUIVENT D282 sont celles de L35-3, de L35-4, de L36-1, de L36-2 puis de L36-3a-1 : un lot de plus doit re-pointer ce bloc: expected [ 'venue_number', …(4) ] to deeply equal [ 'venue_number', …(5) ]
+
+- Expected
++ Received
+
+@@ -2,7 +2,6 @@
+    "venue_number",
+    "quote_reference",
+    "pro_client_records",
+    "booking_contact_phone_optional",
+    "quote_unofficial_draft",
+-   "staff_layer",
+  ]
+
+ ❯ test/int/migration-non-empty.int-spec.ts:726:204
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/32]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur)
+AssertionError: la migration du lot L36-3a-1 existe: expected -1 to be greater than or equal to 0
+ ❯ test/int/migration-non-empty.int-spec.ts:1267:57
+    1265|     const toutes = migrationsOrdonnees();
+    1266|     const rang = toutes.findIndex((m) => m.replace(/^\d+_/u, "") === N…
+    1267|     expect(rang, "la migration du lot L36-3a-1 existe").toBeGreaterTha…
+       |                                                         ^
+    1268|     derniere = toutes[rang]!;
+    1269|     expect(rang, "c'est la DERNIÈRE migration au moment du lot : un lo…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/32]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ la migration passe sur la base NON VIDE : les deux profils et les trois lignes d'audit la traversent INTACTS, ligne à ligne ; AUCUN profil n'est activé (avant toute activation, rien ne change) et aucune ligne d'audit n'a d'auteur-membre
+error: relation "pro_profiles" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:1295:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/32]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ les garanties que la migration pose (D186), par nom et par nature : les CHECK de la tranche et des six garanties adoptées, les trois uniques, les clés étrangères avec leur action de suppression (RESTRICT, et SET NULL pour l'audit)
+AssertionError: la contrainte pro_staff_members_pin_failed_count_range existe: expected undefined to be defined
+ ❯ test/int/migration-non-empty.int-spec.ts:1331:48
+    1329|     for (const [nom, nature, suppression] of attendues) {
+    1330|       const l = parNom.get(nom);
+    1331|       expect(l, `la contrainte ${nom} existe`).toBeDefined();
+       |                                                ^
+    1332|       expect(l!.contype, nom).toBe(nature);
+    1333|       if (nature === "f") expect(l!.confdeltype, `${nom} : action à la…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/32]⎯
+
+ FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > après la migration : un membre se rattache à un profil d'AVANT la migration (les clés étrangères tiennent sur des lignes anciennes) et sa suppression-par-profil est refusée
+error: relation "pro_staff_members" does not exist
+ ❯ ../../node_modules/.pnpm/pg@8.22.0/node_modules/pg/lib/client.js:652:17
+ ❯ sql test/int/migration-non-empty.int-spec.ts:92:15
+     90|   await c.connect();
+     91|   try {
+     92|     const r = await c.query(query, params);
+       |               ^
+     93|     return r.rows as T[];
+     94|   } finally {
+ ❯ test/int/migration-non-empty.int-spec.ts:1345:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la colonne d'audit
+AssertionError: expected [] to deeply equal [ 'pro_staff_devices', …(2) ]
+
+- Expected
++ Received
+
+- [
+-   "pro_staff_devices",
+-   "pro_staff_members",
+-   "pro_staff_sessions",
+- ]
++ []
+
+ ❯ test/int/staff-schema.int-spec.ts:56:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > ⛔ 1 a — la NULLABILITÉ du § 5.2 du cadrage, colonne par colonne (la table est celle du cadrage, lue ici comme une donnée à confronter à la base)
+AssertionError: pro_staff_members.pin_hash doit être NULLABLE: expected undefined to be true // Object.is equality
+
+- Expected: 
+true
+
++ Received: 
+undefined
+
+ ❯ test/int/staff-schema.int-spec.ts:82:83
+     80|       const lignes = await ctx.prisma.$queryRawUnsafe<Array<{ c: strin…
+     81|       const reel = Object.fromEntries(lignes.map((l) => [l.c, l.n === …
+     82|       for (const c of nulles) expect(reel[c], `${table}.${c} doit être…
+       |                                                                                   ^
+     83|       for (const c of obligatoires) expect(reel[c], `${table}.${c} doi…
+     84|       expect(Object.keys(reel).sort(), `${table} : aucune colonne hors…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` faux, compteurs à 0, aucun PIN, aucune pause ; la session naît active à l'instant
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:89:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle passe
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:104:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés
+AssertionError: attendu : un refus par « pro_staff_members_pin_failed_count_range »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_failed_count_ra…'
+
+- Expected
++ Received
+
+- pro_staff_members_pin_failed_count_range
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:111:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:116:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > clés étrangères : un membre sans salle, un appareil sans membre, une session sans appareil sont refusés
+AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pro_profile_id_fkey'
+
+- Expected
++ Received
+
+- pro_staff_members_pro_profile_id_fkey
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:126:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > ⛔ les énumérations refusent une valeur hors schéma — chacune PAR SON NOM (un rôle `ADMIN`, un statut `ARCHIVED`, une fin `INCONNUE`) : un refus pour une autre raison (une table absente) ne prouverait rien
+AssertionError: attendu : un refus par « invalid input value for enum "StaffRole" »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'invalid input value for enum "StaffRo…'
+
+- Expected
++ Received
+
+- invalid input value for enum "StaffRole"
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:134:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec date refusé, DISABLED avec date accepté
+AssertionError: attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_status_disabled_coh…'
+
+- Expected
++ Received
+
+- pro_staff_members_status_disabled_coherent
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:146:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des trois, isolé, est refusé ; les trois ensemble sont acceptés
+AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_pin_triple_coherent'
+
+- Expected
++ Received
+
+- pro_staff_members_pin_triple_coherent
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:156:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:166:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refusées
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:177:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés (le seuil est une règle du service, pas de la base)
+AssertionError: attendu : un refus par « pro_staff_members_password_failed_count_nonneg »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_password_failed_cou…'
+
+- Expected
++ Received
+
+- pro_staff_members_password_failed_count_nonneg
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:188:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (f) `account_name_key <> ''` : une clé vide est refusée
+AssertionError: attendu : un refus par « pro_staff_members_account_name_key_present »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_staff_members_account_name_key_pr…'
+
+- Expected
++ Received
+
+- pro_staff_members_account_name_key_present
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42P01","originalMessage":"relation \"pro_staff_members\" does not exist","kind":"TableDoesNotExist","table":"pro_staff_members"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:194:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas une garde de base (§ 3.2 du cadrage) ; la table n'en porte aucun, et un dernier Manager peut être désactivé en SQL
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ test/int/staff-schema.int-spec.ts:198:26
+    196| 
+    197|   it("⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas un…
+    198|     const declencheurs = await ctx.prisma.$queryRaw<Array<{ n: string …
+       |                          ^
+    199|       SELECT tgname AS n FROM pg_trigger WHERE NOT tgisinternal AND tg…
+    200|     expect(declencheurs).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `audit_logs.actor_member_id` est une clé étrangère : un membre inexistant est refusé
+AssertionError: attendu : un refus par « audit_logs_actor_member_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'audit_logs_actor_member_id_fkey'
+
+- Expected
++ Received
+
+- audit_logs_actor_member_id_fkey
++
++ Invalid `prisma.$executeRawUnsafe()` invocation:
++
++
++ Raw query failed. Code: `42703`. Message: `column "actor_member_id" of relation "audit_logs" does not exist`{"driverAdapterError":{"name":"DriverAdapterError","cause":{"originalCode":"42703","originalMessage":"column \"actor_member_id\" of relation \"audit_logs\" does not exist","kind":"ColumnNotFound","column":"actor_member_id of relation audit_logs"}}}
+
+ ❯ refus test/int/staff-schema.int-spec.ts:42:63
+     40|     message = String((e as { message?: unknown }).message ?? e) + JSON…
+     41|   }
+     42|   expect(message, `attendu : un refus par « ${contrainte} »`).toContai…
+       |                                                               ^
+     43| }
+     44| 
+ ❯ test/int/staff-schema.int-spec.ts:208:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne d'audit SURVIT, sans son auteur
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:212:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un appareil qui porte une session non plus
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:221:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/32]⎯
+
+ FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > `created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactivent, ils ne se suppriment jamais)
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "pro_staff_members" does not exist`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ ok test/int/staff-schema.int-spec.ts:31:3
+     29| /** Exécute un SQL attendu VALIDE ; une contrainte qui le refuserait l…
+     30| async function ok(sql: string, ...valeurs: unknown[]): Promise<void> {
+     31|   await ctx.prisma.$executeRawUnsafe(sql, ...valeurs);
+       |   ^
+     32| }
+     33| 
+ ❯ test/int/staff-schema.int-spec.ts:232:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/32]⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/throttle.int-spec.ts:112:95
+    110|     const payload = { accountName: "Amine", password: "Zq7!xvn3-Pk2" };
+    111|     for (let i = 1; i <= 5; i++) {
+    112|       expect((await request(server).post("/api/v1/pro/staff/activate")…
+       |                                                                                               ^
+    113|     }
+    114|     const blocked = await request(server).post("/api/v1/pro/staff/acti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/32]⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/throttle.int-spec.ts:123:92
+    121|     const payload = { accountName: "Amine", password: "Tentative1" };
+    122|     for (let i = 1; i <= 10; i++) {
+    123|       expect((await request(server).post("/api/v1/pro/staff/login").se…
+       |                                                                                            ^
+    124|     }
+    125|     const blocked = await request(server).post("/api/v1/pro/staff/logi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/32]⎯
+
+
+ Test Files  8 failed (8)
+      Tests  28 failed | 37 passed (65)
+   Start at  18:51:04
+   Duration  42.15s (transform 2.56s, setup 165ms, collect 9.87s, tests 22.50s, environment 1ms, prepare 1.29s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/log-set-cookie.int-spec.ts test/int/staff-activation.int-spec.ts test/int/staff-login.int-spec.ts test/int/staff-session-guard.int-spec.ts test/int/staff-password.int-spec.ts test/int/staff-schema.int-spec.ts test/int/throttle.int-spec.ts test/int/migration-non-empty.int-spec.ts
