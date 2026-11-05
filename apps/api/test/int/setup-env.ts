@@ -31,3 +31,7 @@ process.env.THROTTLE_GOOGLE_LIMIT = "10000"; // Lot 8
 process.env.THROTTLE_STAFF_ACTIVATE_LIMIT = "10000";
 process.env.THROTTLE_STAFF_LOGIN_LIMIT = "10000";
 process.env.THROTTLE_CHANGE_PASSWORD_LIMIT = "10000";
+// Rang 44 (D341) — LEVIER OUBLIÉ AUX ROUGES, trouvé à la première passe verte : `POST /me/change-email` (limite réelle : 3 / 15 min / IP, `AUTH_THROTTLE.changeEmail`) était la seule clé de la famille à ne pas être
+// relâchée. Le spec du garde du personnel rejoue TOUTES les routes d'un Pro plusieurs fois dans une même application : la quatrième requête rendait 429 (le ThrottlerGuard précède tout), et le cas « la session d'une
+// autre salle est refusée » lisait ce 429 comme « route franchie ». Le MÊME levier que les autres (D128) — aucun second mécanisme.
+process.env.THROTTLE_CHANGE_EMAIL_LIMIT = "10000";

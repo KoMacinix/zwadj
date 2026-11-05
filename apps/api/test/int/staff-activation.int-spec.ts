@@ -174,6 +174,35 @@ describe("l'ACTIVATION REFUSÉE", () => {
     expect(await compterLignes(ctx.prisma, "pro_staff_members")).toBe(0);
   });
 
+  it("⛔ MP-34 — les CINQ routes du personnel sont réservées au PRO : un CLIENT et un ADMIN reçoivent 403 `FORBIDDEN` sur chacune (l'état et la déconnexion comprises), un anonyme 401 `UNAUTHENTICATED`", async () => {
+    await registerUser(ctx, { role: "CLIENT", email: "client2@example.dz", password: MOT_DE_PASSE_PRO, firstName: "Aya", lastName: "B" });
+    await verifyLastRegistered(ctx);
+    const clientToken = await loginAs(ctx, "client2@example.dz", MOT_DE_PASSE_PRO);
+    await registerUser(ctx, { role: "CLIENT", email: "admin2@example.dz", password: MOT_DE_PASSE_PRO, firstName: "Adm", lastName: "In" });
+    await verifyLastRegistered(ctx);
+    await ctx.prisma.user.update({ where: { email: "admin2@example.dz" }, data: { role: "ADMIN" } });
+    const adminToken = await loginAs(ctx, "admin2@example.dz", MOT_DE_PASSE_PRO);
+    const routes: Array<["get" | "post", string, unknown]> = [
+      ["post", "/api/v1/pro/staff/activate", { accountName: "Amine", password: MOT_DE_PASSE_STAFF }],
+      ["post", "/api/v1/pro/staff/login", { accountName: "Amine", password: MOT_DE_PASSE_STAFF }],
+      ["post", "/api/v1/pro/staff/logout", undefined],
+      ["get", "/api/v1/pro/staff/session", undefined],
+      ["post", "/api/v1/pro/staff/password", { currentPassword: MOT_DE_PASSE_STAFF, newPassword: "Nouveau-mot-de-passe-7" }]
+    ];
+    for (const [methode, chemin, corps] of routes) {
+      for (const [nom, bearer, statut, code] of [
+        ["client", clientToken, 403, "FORBIDDEN"],
+        ["admin", adminToken, 403, "FORBIDDEN"],
+        ["anonyme", undefined, 401, "UNAUTHENTICATED"]
+      ] as const) {
+        const res = await appeler(ctx, bearer, undefined, methode, chemin, corps);
+        expect(res.status, `${nom} ${methode.toUpperCase()} ${chemin}`).toBe(statut);
+        expect(codeDe(res), `${nom} ${methode.toUpperCase()} ${chemin}`).toBe(code);
+      }
+    }
+    expect(await compterLignes(ctx.prisma, "pro_staff_members")).toBe(0);
+  });
+
   it("⛔ MP-24 — un mot de passe COURANT (une entrée de la liste qui passe déjà le schéma, dérivée de la liste) : 400 `STAFF_PASSWORD_COMMON`, rien n'est créé", async () => {
     const pro = await creerPro(ctx);
     const courant = STAFF_COMMON_PASSWORDS.find((p) => passwordSchema.safeParse(p).success)!;

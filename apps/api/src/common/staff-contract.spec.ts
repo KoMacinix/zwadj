@@ -148,7 +148,10 @@ describe("les clés `staff.validation.*` employées par les schémas existent da
 
   it("TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale)", () => {
     const aplatir = (t: Tree, prefixe: string, out: string[]): string[] => {
-      for (const [k, v] of Object.entries(t)) (typeof v === "string" ? out.push(`${prefixe}${k}`) : aplatir(v, `${prefixe}${k}.`, out));
+      for (const [k, v] of Object.entries(t)) {
+        if (typeof v === "string") out.push(`${prefixe}${k}`);
+        else aplatir(v, `${prefixe}${k}.`, out);
+      }
       return out;
     };
     const fr = aplatir((FR.staff ?? {}) as Tree, "staff.", []).sort();
@@ -178,6 +181,14 @@ describe("staffActivateSchema — K-14 : le nom de compte et le mot de passe du 
   it("refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée)", () => {
     expect(staffActivateSchema.safeParse({ accountName: "Amine", password: "Motdepasse1", role: "EMPLOYEE" }).success).toBe(false);
   });
+
+  it("⛔ un nom fait UNIQUEMENT de marques (accents, voyelles brèves) passe la forme mais se normalise en chaîne VIDE : il est refusé (`accountNameInvalid`), sinon la clé de nom serait vide", () => {
+    for (const nom of ["́́", "َُ"]) {
+      const r = staffActivateSchema.safeParse({ accountName: nom, password: "Motdepasse1" });
+      expect(r.success, JSON.stringify(nom)).toBe(false);
+      expect(r.success ? [] : r.error.issues.map((i) => i.message), JSON.stringify(nom)).toContain("staff.validation.accountNameInvalid");
+    }
+  });
 });
 
 describe("staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe", () => {
@@ -190,6 +201,13 @@ describe("staffLoginSchema — K-15 : NE révèle PAS la politique de mot de pas
   it("n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe)", () => {
     expect(staffLoginSchema.safeParse({ accountName: "a", password: "x" }).success).toBe(true);
     expect(staffLoginSchema.safeParse({ accountName: "<b>", password: "x" }).success).toBe(true);
+  });
+
+  it("⛔ le nom de compte de la connexion a UNE borne haute (100 caractères) : une chaîne démesurée ne part pas jusqu'à la normalisation et à la base", () => {
+    expect(staffLoginSchema.safeParse({ accountName: "a".repeat(100), password: "x" }).success).toBe(true);
+    const r = staffLoginSchema.safeParse({ accountName: "a".repeat(101), password: "x" });
+    expect(r.success).toBe(false);
+    expect(r.success ? [] : r.error.issues.map((i) => i.message)).toContain("staff.validation.accountNameTooLong");
   });
 });
 

@@ -25,6 +25,14 @@ let routesPro: RouteEntry[];
 /** Le cas qui ne se rejoue pas tel quel : se déconnecter TERMINE la session, qui sert aux autres requêtes de la boucle. */
 const TERMINE_LA_SESSION = new Set(["POST /api/v1/pro/staff/logout"]);
 
+/**
+ * Les routes d'un MEMBRE : quand la couche est éteinte, le GARDE les laisse passer (il ne regarde que le drapeau), mais c'est leur HANDLER qui exige un membre et répond le même 401 `STAFF_SESSION_REQUIRED` — il n'y a
+ * personne à déconnecter, ni dont changer le mot de passe (`staff-login.int-spec.ts` : « se déconnecter AVANT toute activation » ; `staff-password.int-spec.ts` : « couche éteinte : 401 aussi »). Sans cette sortie, le cas
+ * « couche éteinte » ci-dessous contredisait ces deux specs sur la MÊME requête (un POST sans corps vers `/logout`) : aucun code ne pouvait satisfaire les deux. La preuve que le garde lui-même laisse passer est celle de son
+ * spec unitaire (« drapeau nul : passe, et LA SEULE lecture est celle du drapeau »).
+ */
+const ROUTES_DE_MEMBRE = new Set(["POST /api/v1/pro/staff/logout", "POST /api/v1/pro/staff/password"]);
+
 beforeAll(async () => {
   ctx = await createTestApp();
   routes = collectRoutes(ctx.app);
@@ -65,8 +73,8 @@ describe("MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui", () 
   it("⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`", async () => {
     await truncateAll(ctx.prisma);
     const pro = await creerPro(ctx);
-    const reponses = await toutesLesRoutes(pro.token, undefined);
-    expect(reponses.length).toBe(routesPro.length);
+    const reponses = await toutesLesRoutes(pro.token, undefined, (r) => !ROUTES_DE_MEMBRE.has(signature(r)));
+    expect(reponses.length, "toutes les routes, moins exactement les deux routes de membre").toBe(routesPro.length - ROUTES_DE_MEMBRE.size);
     const refusees = reponses.filter((r) => refuseParLeGarde(r.res)).map((r) => signature(r.route));
     expect(refusees, `routes refusées par le garde alors que la couche est éteinte :\n${refusees.join("\n")}`).toEqual([]);
   });
@@ -209,6 +217,20 @@ describe("MP-19 / MP-4 — la révocation à l'instant", () => {
     expect(refuseParLeGarde(await appeler(ctx, a.pro.token, a.jar, "get", "/api/v1/pro/venues"))).toBe(true);
     expect((await sessionParJeton(ctx.prisma, a.jar.session()!)).end_reason).toBe("IDLE");
     expect((await sessionParJeton(ctx.prisma, b.jar.session()!)).ended_at, "la session de B n'a pas été présentée : elle n'est pas terminée").toBeNull();
+  });
+
+  it("⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)", async () => {
+    await truncateAll(ctx.prisma);
+    const a = await proActive(ctx);
+    const b = await proActive(ctx);
+    const sa = await sessionParJeton(ctx.prisma, a.jar.session()!);
+    await rendreInactive(ctx.prisma, sa.id, 3600);
+    const croise = new Jar();
+    croise.poser("zwadj_ss", a.jar.session()!, "/api/v1");
+    expect(refuseParLeGarde(await appeler(ctx, b.pro.token, croise, "get", "/api/v1/pro/venues"))).toBe(true);
+    const apres = await sessionParJeton(ctx.prisma, a.jar.session()!);
+    expect(apres.ended_at, "la session de A n'a pas été terminée par la requête de B").toBeNull();
+    expect(apres.end_reason).toBeNull();
   });
 
   it("le hachage SHA-256 du cookie est ce qui est cherché : un cookie dont le hachage a été retiré de la base est refusé", async () => {

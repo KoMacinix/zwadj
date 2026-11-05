@@ -121,6 +121,25 @@ describe("readDeviceCookies (MP-28, borne dure de 8)", () => {
     ]);
   });
 
+  it("⛔ le PRÉFIXE est exigé : un cookie dont les neuf premiers caractères ne sont pas `zwadj_dv_` n'est jamais lu comme un appareil, même si sa fin a la forme d'un suffixe et sa valeur celle d'un jeton", () => {
+    const lus = readDeviceCookies({
+      zwadj_xx_abcd1234: jeton("a"),
+      autre____abcd1234: jeton("b"),
+      zwadj_dv_abcd1234: jeton("c")
+    });
+    expect(lus).toEqual([{ name: "zwadj_dv_abcd1234", value: jeton("c") }]);
+  });
+
+  it("⛔ le SUFFIXE est exigé : huit caractères base64url exactement — trop court, trop long ou avec un caractère étranger, le cookie est ignoré même si sa valeur est un jeton", () => {
+    const lus = readDeviceCookies({
+      zwadj_dv_court: jeton("a"),
+      zwadj_dv_abcd12345: jeton("b"),
+      "zwadj_dv_abc!1234": jeton("c"),
+      zwadj_dv_abcd1234: jeton("d")
+    });
+    expect(lus).toEqual([{ name: "zwadj_dv_abcd1234", value: jeton("d") }]);
+  });
+
   it("⛔ lit AU PLUS `STAFF_LIMITS.DEVICE_COOKIES_MAX` cookies d'appareil et ignore le reste (une requête ne force pas une recherche de taille arbitraire)", () => {
     const cookies: Record<string, string> = {};
     for (let i = 0; i < STAFF_LIMITS.DEVICE_COOKIES_MAX + 4; i += 1) cookies[`zwadj_dv_${String(i).padStart(8, "0")}`] = jeton(String.fromCharCode(97 + (i % 26)));

@@ -30,7 +30,9 @@ function faux(reponses: unknown[] = [], extra: { profil?: unknown; membre?: unkn
   const file = [...reponses];
   const suivante = (type: Appel["type"], strings: TemplateStringsArray, valeurs: unknown[]): unknown => {
     appels.push({ type, sql: normaliser(strings), valeurs });
-    if (file.length === 0) throw new Error(`réponse non prévue pour : ${normaliser(strings)}`);
+    // Une instruction que le scénario n'a pas prévue est un ÉCHEC D'ASSERTION (`expect.fail`), pas une `Error` quelconque : sous une mutation du code, c'est souvent ce qui rougit, et un rouge qui n'est pas
+    // une assertion n'est pas une morsure que la campagne de neutralisation sache lire (R1, D304/D305).
+    if (file.length === 0) expect.fail(`réponse non prévue pour : ${normaliser(strings)}`);
     return file.shift();
   };
   const client = {
@@ -63,6 +65,8 @@ describe("readLayer — UNE lecture du drapeau, par le compte commun (limite 6 d
     expect(await f.store.readLayer(UTILISATEUR)).toEqual({ proProfileId: SALLE, enabledAt: date });
     expect(f.appels).toHaveLength(0);
     expect(f.client.proProfile.findUnique).toHaveBeenCalledTimes(1);
+    // La clé de recherche est le COMPTE COMMUN (`userId`), jamais l'identifiant du profil : un profil cherché par la mauvaise colonne ne trouverait personne.
+    expect(f.client.proProfile.findUnique).toHaveBeenCalledWith(expect.objectContaining({ where: { userId: UTILISATEUR } }));
   });
 
   it("un compte sans profil ⇒ null", async () => {
@@ -169,7 +173,8 @@ describe("touchSession — le garde : UNE instruction, tous les prédicats, la d
     expect(f.appels).toHaveLength(3);
     expect(f.appels[2]!.type).toBe("execute");
     expect(f.appels[2]!.sql).toMatch(/UPDATE pro_staff_sessions SET ended_at = now\(\), end_reason = \?::"StaffSessionEndReason"/);
-    expect(f.appels[2]!.sql).toContain("ended_at IS NULL");
+    // Le prédicat est LE DERNIER de l'instruction, tel quel : une sous-chaîne `ended_at IS NULL` se retrouverait dans une tautologie (`… OR ended_at IS NOT NULL`) qui laisserait écrire une seconde fin.
+    expect(f.appels[2]!.sql).toMatch(/WHERE id = \?::uuid AND ended_at IS NULL$/);
     expect(f.appels[2]!.valeurs).toContain("IDLE");
     expect(f.appels[2]!.valeurs).toContain("s9");
   });
@@ -250,7 +255,8 @@ describe("activate — K-14 : une transaction, le drapeau d'abord (L1), puis Man
     expect(f.client.$transaction).toHaveBeenCalledTimes(1);
     const sqls = f.appels.map((a) => a.sql);
     expect(sqls[0]).toMatch(/^UPDATE pro_profiles SET staff_layer_enabled_at = now\(\)/);
-    expect(sqls[0]).toContain("staff_layer_enabled_at IS NULL");
+    // Le check-and-set est le DERNIER prédicat de l'instruction, tel quel (D305) : une tautologie qui CONTIENDRAIT cette sous-chaîne (`… IS NULL OR … IS NOT NULL`) re-poserait le drapeau.
+    expect(sqls[0]).toMatch(/WHERE id = \?::uuid AND staff_layer_enabled_at IS NULL$/);
     expect(sqls[1]).toMatch(/^INSERT INTO pro_staff_members/);
     expect(sqls[1]).toContain("ON CONFLICT (pro_profile_id, account_name_key) DO NOTHING");
     expect(sqls[1]).toContain("'MANAGER'");
@@ -371,7 +377,7 @@ describe("closeSession, changePassword, listKnownMembers, resetPasswordAttempts"
     const f = faux([1]);
     await f.store.closeSession({ actor: acteur, sessionId: "s1", memberId: MEMBRE });
     expect(f.appels[0]!.sql).toMatch(/^UPDATE pro_staff_sessions SET ended_at = now\(\), end_reason = 'LOGOUT'/);
-    expect(f.appels[0]!.sql).toContain("ended_at IS NULL");
+    expect(f.appels[0]!.sql).toMatch(/WHERE id = \?::uuid AND ended_at IS NULL$/);
     expect(f.audits[0]!.data).toMatchObject({ action: "staff.logout", entityType: "staff_session", entityId: "s1", actorMemberId: MEMBRE });
 
     const f0 = faux([0]);
@@ -393,8 +399,7 @@ describe("closeSession, changePassword, listKnownMembers, resetPasswordAttempts"
     expect(f.appels[1]!.valeurs).toContain("H-NEUF");
     expect(f.appels[1]!.valeurs).toContain(STAFF_LIMITS.PASSWORD_VALIDITY_DAYS);
     expect(sqls[2]).toMatch(/^UPDATE pro_staff_sessions SET ended_at = now\(\), end_reason = 'PASSWORD_CHANGED'/);
-    expect(sqls[2]).toContain("id <>");
-    expect(sqls[2]).toContain("ended_at IS NULL");
+    expect(sqls[2]).toMatch(/WHERE member_id = \?::uuid AND id <> \?::uuid AND ended_at IS NULL$/);
     expect(f.audits[0]!.data).toMatchObject({ action: "staff.password_change", entityType: "staff_member", entityId: MEMBRE });
     expect(f.audits[0]!.data.after).toEqual({ otherSessionsEnded: 2 });
   });
@@ -403,6 +408,13 @@ describe("closeSession, changePassword, listKnownMembers, resetPasswordAttempts"
     const f = faux([[{ id: MEMBRE }], []]);
     expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF" })).toEqual({ ok: false, reason: "changedConcurrently" });
     expect(f.appels).toHaveLength(2);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ changePassword : le membre introuvable ou éteint (le verrou ne rend AUCUNE ligne) ⇒ `changedConcurrently`, aucun remplacement ne part", async () => {
+    const f = faux([[]]);
+    expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF" })).toEqual({ ok: false, reason: "changedConcurrently" });
+    expect(f.appels).toHaveLength(1);
     expect(f.audits).toHaveLength(0);
   });
 

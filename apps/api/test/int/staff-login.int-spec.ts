@@ -462,7 +462,8 @@ describe("MP-11 — AUCUN jeton du personnel dans la sortie RÉELLE du journal d
     const noter = (res: Awaited<ReturnType<typeof appeler>>) => valeurs.push(...lireCookies(res).filter((c) => c.value !== "").map((c) => c.value));
 
     noter((await activer(journalise, pro, jar)).res);
-    noter(await connecter(journalise, pro, jar));
+    // Un AUTRE poste (pot neuf) : la connexion pose SA session ET un appareil neuf. Avec le pot de l'activation, l'appareil serait réutilisé (MP-3) et seule la session serait posée — le décompte de valeurs mesurées tombait à trois.
+    noter(await connecter(journalise, pro, new Jar()));
     noter(await appeler(journalise, pro.token, jar, "get", "/api/v1/pro/staff/session"));
     noter(await appeler(journalise, pro.token, jar, "post", "/api/v1/pro/staff/password", { currentPassword: MOT_DE_PASSE_STAFF, newPassword: "Nouveau-mot-de-passe-7" }));
     noter(await appeler(journalise, pro.token, jar, "post", "/api/v1/pro/staff/logout"));

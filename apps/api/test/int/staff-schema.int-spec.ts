@@ -228,6 +228,26 @@ describe("l'audit et les suppressions", () => {
     await refus("pro_staff_sessions_device_id_fkey", `DELETE FROM pro_staff_devices WHERE id = $1::uuid`, d);
   });
 
+  it("⛔ RESTRICT sur `pro_staff_sessions.member_id`, ISOLÉ : un membre qui porte une session ne se supprime pas — la session pointe l'appareil d'un AUTRE membre, pour que ce ne soit pas la clé de l'appareil qui refuse à sa place", async () => {
+    await membre("amine");
+    await membre("sara");
+    const amine = await idMembre("amine");
+    const sara = await idMembre("sara");
+    await appareil(sara, "d-sara");
+    const d = (await ctx.prisma.$queryRaw<Array<{ id: string }>>`SELECT id::text AS id FROM pro_staff_devices WHERE token_hash = 'd-sara'`)[0]!.id;
+    await ok(`INSERT INTO pro_staff_sessions (member_id, device_id, token_hash, expires_at) VALUES ($1::uuid, $2::uuid, 's', now() + interval '1 hour')`, amine, d);
+    await refus("pro_staff_sessions_member_id_fkey", `DELETE FROM pro_staff_members WHERE id = $1::uuid`, amine);
+  });
+
+  it("les index simples existent sous les noms que `schema.prisma` leur donne (sinon dérive permanente, D186) : appareils et sessions par membre, sessions par appareil, journal par auteur-membre", async () => {
+    const l = await ctx.prisma.$queryRaw<Array<{ n: string }>>`
+      SELECT indexname AS n FROM pg_indexes
+       WHERE schemaname = 'public'
+         AND indexname IN ('pro_staff_devices_member_id_idx', 'pro_staff_sessions_member_id_idx', 'pro_staff_sessions_device_id_idx', 'audit_logs_actor_member_id_idx')
+       ORDER BY 1`;
+    expect(l.map((r) => r.n)).toEqual(["audit_logs_actor_member_id_idx", "pro_staff_devices_member_id_idx", "pro_staff_sessions_device_id_idx", "pro_staff_sessions_member_id_idx"]);
+  });
+
   it("`created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactivent, ils ne se suppriment jamais)", async () => {
     await membre("amine");
     const createur = await idMembre("amine");

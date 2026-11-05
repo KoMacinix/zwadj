@@ -54,13 +54,21 @@ async function refus(g: StaffSessionGuard, ctx: ExecutionContext): Promise<unkno
     expect(e).toBeInstanceOf(UnauthorizedException);
     return (e as UnauthorizedException).getResponse();
   }
-  throw new Error("le garde devait refuser");
+  // Un refus attendu qui n'arrive pas est un ÉCHEC D'ASSERTION (`expect.fail`), pas une `Error` quelconque (R1, D304/D305).
+  return expect.fail("le garde devait refuser");
 }
 
 describe("StaffSessionGuard — ce qui PASSE sans toucher à la base", () => {
   it("une route `@Public()` passe, sans aucune lecture", async () => {
     const m = magasin();
     await expect(garde(m.double).canActivate(contexte("publique", { cookies: {} }))).resolves.toBe(true);
+    expect(m.readLayer).not.toHaveBeenCalled();
+    expect(m.touchSession).not.toHaveBeenCalled();
+  });
+
+  it("⛔ une route `@Public()` atteinte avec une identité PRO déjà posée passe aussi, SANS lecture : le garde ne doit pas dépendre du fait que `JwtAuthGuard` n'attache rien aux routes publiques AUJOURD'HUI (le jour où il le fera, la connexion d'un Pro muni d'un Bearer ne doit pas exiger une session)", async () => {
+    const m = magasin();
+    await expect(garde(m.double).canActivate(contexte("publique", pro()))).resolves.toBe(true);
     expect(m.readLayer).not.toHaveBeenCalled();
     expect(m.touchSession).not.toHaveBeenCalled();
   });

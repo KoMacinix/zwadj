@@ -6,7 +6,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { passwordSchema } from "@zwadj/types";
 import { STAFF_COMMON_PASSWORDS, STAFF_COMMON_PASSWORDS_SOURCE } from "./staff-common-passwords";
 import { COMMON_PASSWORDS, isCommonPassword, passwordViolation } from "./staff-password-policy";
@@ -22,6 +22,21 @@ const sha256 = (b: Buffer | string) => createHash("sha256").update(b).digest("he
 describe("isCommonPassword — la comparaison se fait APRÈS mise en minuscules (R-5 (D341))", () => {
   // La valeur d'exemple est DÉRIVÉE de la liste : la première entrée qui passe déjà `passwordSchema` (sinon l'exemple serait refusé avant la liste et ne la mesurerait pas).
   const exemple = STAFF_COMMON_PASSWORDS.find((p) => passwordSchema.safeParse(p).success);
+
+  it("⛔ R-5 — la liste est mise en minuscules à la CONSTRUCTION, pas seulement le candidat : la source versée n'a aucune majuscule AUJOURD'HUI (mesuré : 0 entrée sur 10 001), donc seule une source de remplacement le montre", async () => {
+    vi.resetModules();
+    vi.doMock("./staff-common-passwords", () => ({ STAFF_COMMON_PASSWORDS: ["Motdepasse1", "ABC12345"], STAFF_COMMON_PASSWORDS_SOURCE: {} }));
+    try {
+      const politique = await import("./staff-password-policy");
+      expect(politique.isCommonPassword("motdepasse1")).toBe(true);
+      expect(politique.isCommonPassword("MOTDEPASSE1")).toBe(true);
+      expect(politique.isCommonPassword("abc12345")).toBe(true);
+      expect(politique.isCommonPassword("Motdepasse2")).toBe(false);
+    } finally {
+      vi.doUnmock("./staff-common-passwords");
+      vi.resetModules();
+    }
+  });
 
   it("la liste contient au moins une entrée que le schéma actuel laisse passer (sinon la politique n'ajouterait RIEN à passwordSchema)", () => {
     expect(exemple, "aucune entrée de la liste ne passe passwordSchema").toBeDefined();

@@ -126,4 +126,19 @@ describe("Rate limiting /auth (limites réelles)", () => {
     expect(blocked.status).toBe(429);
     expect(blocked.headers["retry-after"]).toBeDefined();
   });
+
+  it("⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune variable définie, D128) : activation 5, connexion 10 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code", async () => {
+    const noms = ["THROTTLE_STAFF_ACTIVATE_LIMIT", "THROTTLE_STAFF_LOGIN_LIMIT"] as const;
+    const sauvegarde = noms.map((n) => [n, process.env[n]] as const);
+    for (const n of noms) delete process.env[n];
+    try {
+      vi.resetModules();
+      const { AUTH_THROTTLE } = await import("../../src/auth/auth.throttle");
+      expect(AUTH_THROTTLE.staffActivate.limit).toBe(5);
+      expect(AUTH_THROTTLE.staffLogin.limit).toBe(10);
+    } finally {
+      for (const [n, v] of sauvegarde) if (v !== undefined) process.env[n] = v;
+      vi.resetModules();
+    }
+  });
 });

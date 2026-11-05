@@ -21,28 +21,29 @@ const staff = { sessionId: "s1", memberId: "m1", role: "MANAGER", accountName: "
 function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: string, clair: string) => boolean } = {}) {
   let n = 0;
   const jeton = () => `jeton-${String((n += 1)).padStart(36, "0")}`; // 42 + ... : une forme de jeton déterministe
-  const magasin = {
+  const defauts = {
     readLayer: vi.fn(async () => ({ proProfileId: SALLE, enabledAt: new Date("2026-11-01T10:00:00Z") })),
-    activate: vi.fn(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1" })),
+    activate: vi.fn<StaffStore["activate"]>(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1" })),
     findMember: vi.fn(async () => ACTIF),
     reservePasswordAttempt: vi.fn(async () => ({ reserved: true as const, passwordHash: "HASH-ACTUEL", failedCount: 1, pausedNow: false })),
     recordPasswordFailure: vi.fn(async () => undefined),
     resetPasswordAttempts: vi.fn(async () => undefined),
-    openSession: vi.fn(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false })),
+    openSession: vi.fn<StaffStore["openSession"]>(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false })),
     touchSession: vi.fn(async () => ({ ok: false as const })),
     peekSession: vi.fn(async () => ({ ok: false as const })),
     closeSession: vi.fn(async () => undefined),
-    changePassword: vi.fn(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 2 })),
-    listKnownMembers: vi.fn(async () => []),
-    ...surcharge
-  } satisfies StaffStore;
+    changePassword: vi.fn<StaffStore["changePassword"]>(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 2 })),
+    listKnownMembers: vi.fn(async () => [])
+  };
+  // `satisfies` vérifie le double fusionné contre le port ; l'objet rendu garde les TYPES des espions par défaut (`.mock.calls` typé) — une union avec `Partial<StaffStore>` les aurait perdus.
+  const magasin = { ...defauts, ...surcharge } satisfies StaffStore;
   const mots = {
     hash: vi.fn(async (clair: string) => `HACHE(${clair})`),
     verify: vi.fn(async (hash: string, clair: string) => hachage.verify?.(hash, clair) ?? false),
     verifyAgainstDummy: vi.fn(async (): Promise<false> => false)
   };
   const jetons = { generate: vi.fn(jeton), hash: vi.fn((t: string) => `sha(${t})`) };
-  return { service: new StaffSessionService(magasin, mots, jetons), magasin, mots, jetons };
+  return { service: new StaffSessionService(magasin, mots, jetons), magasin: magasin as typeof defauts, mots, jetons };
 }
 
 const CORPS_CONNEXION: StaffLoginInput = { accountName: "Amine", password: "Motdepasse1" };
@@ -55,7 +56,9 @@ async function corpsDuRefus(promesse: Promise<unknown>): Promise<{ status: numbe
     const h = e as { getStatus(): number; getResponse(): unknown };
     return { status: h.getStatus(), corps: h.getResponse() };
   }
-  throw new Error("un refus était attendu");
+  // Un refus attendu qui n'arrive pas est un ÉCHEC D'ASSERTION (`expect.fail`), pas une `Error` quelconque : sous une mutation du code, c'est ce qui rougit, et la campagne de neutralisation ne sait lire
+  // comme une morsure qu'une assertion (R1, D304/D305).
+  return expect.fail("un refus était attendu");
 }
 
 describe("login — la connexion par nom de compte et mot de passe (K-15)", () => {
@@ -115,6 +118,12 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
     expect(m.mots.verifyAgainstDummy).not.toHaveBeenCalled();
     expect(m.magasin.recordPasswordFailure).toHaveBeenCalledWith({ actor: user, memberId: "m1", failedCount: 1, pausedNow: false, action: "staff.login_failed" });
     expect(m.magasin.openSession).not.toHaveBeenCalled();
+  });
+
+  it("⛔ MP-16 — l'échec qui FRANCHIT le seuil est consigné tel que la réservation le rend : le compte d'échecs ET `pausedNow: true` (c'est ce booléen qui fait écrire la ligne de pause)", async () => {
+    const m = monde({ reservePasswordAttempt: vi.fn(async () => ({ reserved: true as const, passwordHash: "HASH-ACTUEL", failedCount: 5, pausedNow: true })) }, { verify: () => false });
+    await corpsDuRefus(m.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
+    expect(m.magasin.recordPasswordFailure).toHaveBeenCalledWith({ actor: user, memberId: "m1", failedCount: 5, pausedNow: true, action: "staff.login_failed" });
   });
 
   it("⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUN échec consigné — et le MÊME corps que le mauvais mot de passe", async () => {
@@ -181,7 +190,9 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
     const r = await m.service.login(user, CORPS_CONNEXION, { session: undefined, devices: [{ name: "zwadj_dv_abcd1234", value: "valeur-claire-1" }, { name: "zwadj_dv_wxyz9876", value: "valeur-claire-2" }] });
     const entree = m.magasin.openSession.mock.calls[0]![0];
     expect(entree.candidateDeviceHashes).toEqual(["sha(valeur-claire-1)", "sha(valeur-claire-2)"]);
-    expect(JSON.stringify(entree)).not.toContain("valeur-claire");
+    // Le double de hachage écrit `sha(<valeur>)` : les formes HACHÉES attendues contiennent donc le mot « valeur-claire ». On les retire, puis la valeur CLAIRE ne doit plus figurer NULLE PART dans ce que reçoit le magasin.
+    const sansLesHaches = JSON.stringify(entree).replaceAll("sha(valeur-claire-1)", "").replaceAll("sha(valeur-claire-2)", "");
+    expect(sansLesHaches).not.toContain("valeur-claire");
     expect(r.cookies.device).toBeUndefined();
   });
 
@@ -270,7 +281,8 @@ describe("changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (
   });
 
   it("⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci", async () => {
-    const m = monde({}, { verify: (hash) => hash === "HASH-ACTUEL" });
+    // Le vérificateur DISCRIMINE (comme celui du premier cas) : « valide tout contre le hachage courant » ferait aussi passer le NOUVEAU mot de passe pour identique à l'actuel (la réutilisation est un second `verify`).
+    const m = monde({}, { verify: (hash, clair) => hash === "HASH-ACTUEL" && clair === "Ancien1motdepasse" });
     await m.service.changePassword(user, staff, entree);
     expect(m.magasin.changePassword.mock.calls[0]![0].currentSessionId).toBe("s1");
   });

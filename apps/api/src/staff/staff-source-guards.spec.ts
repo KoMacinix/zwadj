@@ -121,6 +121,16 @@ describe("le câblage", () => {
     expect(module).toMatch(/imports:\s*\[[\s\S]*\bStaffModule\b[\s\S]*\]/);
   });
 
+  it("⛔ MP-37 — `Secure` des cookies du personnel suit le levier EXISTANT `AUTH_COOKIE_SECURE`, lu par le contrôleur : ni littéral `secure = true|false`, ni second levier (aucun test d'intégration ne démarre l'application avec ce levier allumé)", () => {
+    const litteral = /\bsecure\s*[=:]\s*(true|false)\b/;
+    // calibration, deux bras : un littéral est VU, la lecture du levier ne l'est pas
+    expect(litteral.test("const secure = false;")).toBe(true);
+    expect(litteral.test('const secure = this.config.getOrThrow<boolean>("AUTH_COOKIE_SECURE");')).toBe(false);
+    const controleur = sansCommentaires(readFileSync(join(STAFF, "staff-session.controller.ts"), "utf8"));
+    expect(controleur).toMatch(/getOrThrow<boolean>\(\s*"AUTH_COOKIE_SECURE"\s*\)/);
+    expect(controleur).not.toMatch(litteral);
+  });
+
   it("⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`)", () => {
     expect(module).toMatch(/redact:\s*\[[^\]]*req\.headers\.authorization[^\]]*req\.headers\.cookie[^\]]*res\.headers\["set-cookie"\][^\]]*\]/);
   });
