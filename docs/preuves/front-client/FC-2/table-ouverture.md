@@ -28,3 +28,11 @@ les campagnes, les portes, l'audit, le rapport.
 | 18 | `docs/preuves/front-client/FC-2/rapport.md` | le rapport du lot, avec le contrôle de fin de lot | 4 |
 
 Conditionnels : aucun. Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 19 | `docs/preuves/front-client/FC-2/controle.txt` | sortie du contrôle de fin de lot (`docs/preuves/front-client/outils/controle-lot.py`) | 4 |
+
+Motif : la table d'ouverture l'avait omis ; le contrôle lui-même l'a trouvé hors table (« hors table : 1 »).
