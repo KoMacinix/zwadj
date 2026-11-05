@@ -27,7 +27,10 @@ import { VenuesModule } from "./venues/venues.module";
         level: process.env.LOG_LEVEL ?? (process.env.NODE_ENV === "production" ? "info" : "debug"),
         transport:
           process.env.NODE_ENV === "production" ? undefined : { target: "pino-pretty", options: { singleLine: true } },
-        redact: ["req.headers.authorization", "req.headers.cookie"]
+        // ⛔ SIG-1 (D340, R-7 (D341)) : les en-têtes de RÉPONSE sont sérialisés par `pino-http` comme les autres. Sans `res.headers["set-cookie"]` dans cette liste, la valeur du cookie de rafraîchissement
+        // (`zwadj_rt`) — et celle de TOUT cookie d'identité posé par une réponse — était écrite dans le journal au niveau `info`, celui de la production. La garde qui lit la SORTIE RÉELLE de ce journal
+        // est `test/int/log-set-cookie.int-spec.ts`.
+        redact: ["req.headers.authorization", "req.headers.cookie", 'res.headers["set-cookie"]']
       }
     }),
     // Primitive rate-limiting (backlog Phase 4, réutilisée par l'auth puis le
