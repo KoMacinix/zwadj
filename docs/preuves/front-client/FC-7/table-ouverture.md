@@ -46,3 +46,13 @@ extension, commitée seule, avant sa réorientation. Aucune chaîne visible n'es
 Motif : `centsFromDinars` n'était plus employé par `search-query.test.ts` une fois le test de réciprocité retiré — `pnpm lint`
 le refuse (`no-unused-vars`). L'import est retiré AVANT le commit du code, le code mis de côté, et le rouge rejoué sur l'état
 d'avant : l'empreinte versée est celle du test livré (même faute qu'en FC-3 et FC-5, même réparation).
+
+## Extension 2 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 24 | `docs/preuves/front-client/FC-7/crlf/available-on.txt` | `neutralize-available-on.py` joué sous CRLF simulé | 4 |
+
+Motif : le tri sélectionne `neutralize-available-on.py` (ce lot touche `search-query.ts`, qu'elle lit) ; son ancre 6 est écrite en
+CRLF (relevé : `ancres-campagnes.txt`) — dans ce conteneur la campagne s'arrête sur elle et ne joue pas 7 à 10. Elle est rejouée
+entière sous CRLF simulé, comme en FC-5.
