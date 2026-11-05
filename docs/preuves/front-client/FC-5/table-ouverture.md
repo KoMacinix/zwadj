@@ -92,3 +92,15 @@ par une extension, commitée seule, avant sa réorientation. Aucune chaîne visi
 Motif : les deux tests commités avec les rouges passaient sous vitest mais ne compilaient pas (`tsc`, TS2677 : un prédicat `v is
 string` sur une union de littéraux) ; corrigés AVANT le commit du code, le code mis de côté (stash), et les rouges rejoués sur
 l'état d'avant — pour que l'empreinte des rouges soit celle des tests livrés. Même faute qu'en FC-3, même réparation.
+
+## Extension 2 — commitée SEULE, avant les fichiers qu'elle déclare (le conditionnel de la table s'est réalisé)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 72 | `neutralisation/neutralize-available-on.py` | cible 10 RÉORIENTÉE : la carte d'une salle lie par `venuePath(venue.slug)` (même faute mutée, nouveau site) | 4 |
+| 73 | `neutralisation/neutralize-r30.py` | cible R30-7 RÉORIENTÉE : le lien du calendrier de l'assistant passe par `CALENDAR_PATH` | 4 |
+| 74 | `neutralisation/neutralize-r37.py` | cible E-3 RÉORIENTÉE : la suppression revient à `VENUES_PATH` | 4 |
+| 75 | `docs/preuves/front-client/FC-5/ancres-campagnes.txt` | le relevé statique des ancres des 16 campagnes concernées, avant et après réorientation | 4 |
+
+Motif : relevé statique des ancres des campagnes que le tri sélectionne (`ancres-campagnes.txt`) — trois ancres périmées par ce
+lot ; la quatrième ligne signalée (`neutralize-journey.py` D2, ×2) est VOULUE ×2 par son harnais, elle n'est pas touchée.
