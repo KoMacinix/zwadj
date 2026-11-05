@@ -1,0 +1,8 @@
+# HEAD b6d3aa3ddf509d687d4931f7a199e919af83d95c · arbre : 5 entrée(s) non commitée(s) · 2026-11-05T03:54:10Z
+typecheck exit=0 duree=29s
+lint exit=0 duree=14s
+test exit=0 duree=104s
+build exit=0 duree=46s
+test:int exit=1 duree=393s
+test:e2e exit=0 duree=232s
+FINI · journaux bruts : /tmp/tmp.iFEXe3qVO3

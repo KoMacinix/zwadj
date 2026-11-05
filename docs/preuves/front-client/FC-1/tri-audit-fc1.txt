@@ -1,0 +1,18 @@
+FC-1 — tri différentiel de l'audit de secrets « fc1 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FC-1/audit-secrets-fc1.txt (sortie scellée ;
+code 1 dès qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 610 fichiers
+(80 382 932 octets), audités 4 478, exclus 132, alertes 997.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/audit-secrets-ouverture.txt
+docs/preuves/front-client/FC-1/audit-secrets-fc1.txt — calibration à deux bras tenue (négatif 0/0, positif 2/2, chemins attendus).
+Précédente « ouverture » : 987 contextes ; nouvelle : 997 ⇒ alertes ABSENTES de la précédente : 10 (jeton = 9 · mot-de-passe = 1),
+lues au contexte aux lignes 3173 à 3195 de la sortie scellée.
+  · 6 [jeton] sont des EN-TÊTES de pièces de ce lot qui COMPTENT le paramètre de jeton dans les lignes gardées et rendent 0
+    (campagnes.txt l. 3, neutralisation/sortie-e2e.txt l. 2, neutralisation/sortie-unitaire.txt l. 2, portes/test-e2e.txt l. 1,
+    rouges/rouge-e2e-b8.txt l. 7) et le pilote des portes qui fait ce compte (outils/portes.sh l. 14, 33, 34 — trois lignes :
+    un commentaire, le comptage, l'en-tête écrit). Le nom d'un paramètre, aucune valeur.
+  · 2 dans portes/test-int.txt (l. 404 [mot-de-passe], l. 552 [jeton]) : des TITRES de tests d'intégration imprimés par vitest
+    (une route d'oubli de mot de passe, un compte supprimé « après émission » d'un jeton) — la forme que les tris de D340 « d »,
+    « e » et « f » ont déjà triée ; l'audit le dit (« valeur déjà présente dans 139 / 43 fichiers suivis hors preuves »).
+Résultat du tri : 10 alertes lues, 0 valeur réelle. Aucune ligne [WebServer] n'est versée (chaque extrait le compte : 0 restante).
+Limite écrite : ce fichier et rapport.md sont écrits après l'audit ; l'audit du lot suivant les couvre.
