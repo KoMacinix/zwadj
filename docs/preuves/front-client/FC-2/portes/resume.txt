@@ -1,0 +1,9 @@
+# HEAD ee427eda13dd007c131de56aaae909c6bfc91f9b · arbre : 4 entrée(s) non commitée(s) · 2026-11-05T04:22:25Z
+typecheck exit=0 duree=21s
+lint exit=0 duree=12s
+test exit=0 duree=85s
+build exit=0 duree=37s
+test:int exit=1 duree=344s
+# ⚠ le conteneur a REDÉMARRÉ pendant l'e2e de cette passe (processus tués, démon Docker arrêté) : typecheck → test:int ci-dessus sont ceux de la passe interrompue, aucun fichier n'a changé depuis ; l'e2e est REJOUÉE SEULE après redémarrage du démon et de la base (même commande, même filtrage)
+test:e2e exit=0 duree=204s
+FINI
