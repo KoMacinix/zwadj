@@ -277,6 +277,31 @@ describe("FC-8 — un panneau par-dessus les résultats : une boîte de dialogue
     expect(document.getElementById(boite.getAttribute("aria-labelledby") ?? "")?.textContent).toBe(FR.title);
     expect(document.activeElement).toBe(document.querySelector(".zj-card"));
   });
+
+  // ⚠ UNE BOÎTE QUI SE DÉCLARE MODALE (`aria-modal="true"`) SE COMPORTE COMME TELLE : Échap la ferme et Tab reste dedans — sinon
+  // un lecteur d'écran tait la page dessous pendant que le clavier y part. Le mécanisme est le SEUL piège de focus du dépôt
+  // (`useDismissLayer`, `@zwadj/ui`, lot A11a) : ces deux tests mesurent qu'il est BRANCHÉ ici, pas qu'il marche (ses tests le font).
+  it("⛔ Échap FERME l'assistant : la même URL que « Fermer » — les réponses restent, `guide` part", () => {
+    poser("budget", { guests: "250" });
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(push.mock.calls.length).toBe(1);
+    const { chemin, params, etat } = poussee();
+    expect(chemin).toBe("/salles");
+    expect(params.has("guide")).toBe(false);
+    expect(etat.guests).toBe("250");
+  });
+
+  it("⛔ Tab reste DANS le panneau : du dernier bouton il revient au premier, et Maj+Tab fait l'inverse", () => {
+    poser("budget");
+    const boutons = within(screen.getByRole("dialog")).getAllByRole("button");
+    const premier = boutons[0]!;
+    const dernier = boutons[boutons.length - 1]!;
+    dernier.focus();
+    fireEvent.keyDown(document, { key: "Tab" });
+    expect(document.activeElement).toBe(premier);
+    fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(dernier);
+  });
 });
 
 describe("Arabe", () => {
