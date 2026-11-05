@@ -1,0 +1,234 @@
+# FC-2 — ROUGE e2e, lu contre l'état d'AVANT (theme.css non modifié), session front-client, 05/11/2026
+# HEAD au moment de la mesure : fa38448e6a72552010539e4e410b804167d76af5 (la spec neuve n'est pas encore commitée)
+# commande : pnpm --filter @zwadj/e2e exec playwright test specs/fc2-debordement-360.e2e.ts --reporter list — code de sortie 1
+# sha256 e2e/specs/fc2-debordement-360.e2e.ts : 792dfb05276ec3fbb97d4759140eba01cb7cd9d0a329c5b21ca3ac82df79c2f2
+# sha256 apps/client/src/app/theme.css (état d'AVANT) : 68b2bd0e6ea104095704dd36377bacdfa7e304601e45b057afbf951af51410fb
+# sha256 packages/ui/styles.css (lu par la page) : bb712f8f45ce8dbc28bc6fef7f1d15c8d32398af71435f39fa165dc951b1e545
+# journal brut : 518 lignes ; gardées 225 (lignes [WebServer] retirées) ; jetons gardés : 0 (attendu 0)
+# lecture : 3 échecs (fr : accueil, recherche, fiche — scrollWidth 364 pour 360, « Expected: <= 360 · Received: 364 », bloc expect(…)) ; ar : 3 verts
+
+
+> @zwadj/api@0.0.0 prisma:migrate /home/user/zwadj/apps/api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+32 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 7 tests using 1 worker
+
+  ✓  1 [warmup] › specs/warmup.setup.ts:57:5 › préchauffe les routes des deux applications (22.5s)
+  ✘  2 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, accueil : à 360 px, la page tient dans la fenêtre (2.8s)
+  ✘  3 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, recherche : à 360 px, la page tient dans la fenêtre (3.2s)
+  ✘  4 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, fiche salle : à 360 px, la page tient dans la fenêtre (2.9s)
+  ✓  5 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, accueil : à 360 px, la page tient dans la fenêtre (2.8s)
+  ✓  6 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, recherche : à 360 px, la page tient dans la fenêtre (2.9s)
+  ✓  7 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, fiche salle : à 360 px, la page tient dans la fenêtre (2.6s)
+
+
+  1) [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, accueil : à 360 px, la page tient dans la fenêtre 
+
+    Error: scrollWidth de « accueil » (fr) pour une fenêtre de 360 px
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 360
+    Received:    364
+
+      51 |     test(`FC-2 — ${locale}, ${ecran} : à ${LARGEUR} px, la page tient dans la fenêtre`, async ({ browser }) => {
+      52 |       const largeur = await largeurDeLaPage(browser, `/${locale}${chemin.replace(":slug", slug)}`);
+    > 53 |       expect(largeur, `scrollWidth de « ${ecran} » (${locale}) pour une fenêtre de ${LARGEUR} px`).toBeLessThanOrEqual(LARGEUR);
+         |                                                                                                    ^
+      54 |     });
+      55 |   }
+      56 | }
+        at /home/user/zwadj/e2e/specs/fc2-debordement-360.e2e.ts:53:100
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-a787b--page-tient-dans-la-fenêtre-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-a787b--page-tient-dans-la-fenêtre-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/fc2-debordement-360.e2e.ts-a787b--page-tient-dans-la-fenêtre-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, recherche : à 360 px, la page tient dans la fenêtre 
+
+    Error: scrollWidth de « recherche » (fr) pour une fenêtre de 360 px
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 360
+    Received:    364
+
+      51 |     test(`FC-2 — ${locale}, ${ecran} : à ${LARGEUR} px, la page tient dans la fenêtre`, async ({ browser }) => {
+      52 |       const largeur = await largeurDeLaPage(browser, `/${locale}${chemin.replace(":slug", slug)}`);
+    > 53 |       expect(largeur, `scrollWidth de « ${ecran} » (${locale}) pour une fenêtre de ${LARGEUR} px`).toBeLessThanOrEqual(LARGEUR);
+         |                                                                                                    ^
+      54 |     });
+      55 |   }
+      56 | }
+        at /home/user/zwadj/e2e/specs/fc2-debordement-360.e2e.ts:53:100
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-5a64a--page-tient-dans-la-fenêtre-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-5a64a--page-tient-dans-la-fenêtre-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/fc2-debordement-360.e2e.ts-5a64a--page-tient-dans-la-fenêtre-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, fiche salle : à 360 px, la page tient dans la fenêtre 
+
+    Error: scrollWidth de « fiche salle » (fr) pour une fenêtre de 360 px
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 360
+    Received:    364
+
+      51 |     test(`FC-2 — ${locale}, ${ecran} : à ${LARGEUR} px, la page tient dans la fenêtre`, async ({ browser }) => {
+      52 |       const largeur = await largeurDeLaPage(browser, `/${locale}${chemin.replace(":slug", slug)}`);
+    > 53 |       expect(largeur, `scrollWidth de « ${ecran} » (${locale}) pour une fenêtre de ${LARGEUR} px`).toBeLessThanOrEqual(LARGEUR);
+         |                                                                                                    ^
+      54 |     });
+      55 |   }
+      56 | }
+        at /home/user/zwadj/e2e/specs/fc2-debordement-360.e2e.ts:53:100
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-e8d1a--page-tient-dans-la-fenêtre-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/fc2-debordement-360.e2e.ts-e8d1a--page-tient-dans-la-fenêtre-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/fc2-debordement-360.e2e.ts-e8d1a--page-tient-dans-la-fenêtre-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs/warmup.setup.ts (22.5s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  3 failed
+    [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, accueil : à 360 px, la page tient dans la fenêtre 
+    [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, recherche : à 360 px, la page tient dans la fenêtre 
+    [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, fiche salle : à 360 px, la page tient dans la fenêtre 
+  4 passed (1.4m)
+undefined
+/home/user/zwadj/e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/fc2-debordement-360.e2e.ts --reporter list
