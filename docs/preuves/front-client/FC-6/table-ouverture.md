@@ -80,3 +80,15 @@ Motif : le relevé statique des ancres des 15 campagnes que le tri sélectionne 
 6 ancres PÉRIMÉES par ce lot, 0 ancre CRLF : fc5 W-1 et W-2 (l'import `{ WEEKEND_DAYS, WEEK_START_DAY }` reçoit `intlLocale`), r30
 R30-1 à R30-4 (`Intl.DateTimeFormat(locale, …)` devient `Intl.DateTimeFormat(intlLocale(locale), …)`). r30 se joue sous CRLF simulé
 (conditionnel déjà déclaré : `crlf/r30.txt`), son ancre R30-4 étant écrite en CRLF.
+
+## Extension 2 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 48 | `docs/preuves/front-client/FC-6/portes/test-int-isole.txt` | les deux fichiers de concurrence (`quote-numbering`, `pro-clients`) rejoués SEULS sur le code du lot | 4 |
+
+Motif : `test:int` rend 608/619 ; 8 des 11 rouges sont dans l'ensemble d'entrée (MD-1 ×2, F-1, F-2, F-3, F-4, F-6 ×2), mais trois
+portent des titres HORS de son libellé (F-6 « le prochain numéro … SUIT le plus grand », F-7, F-8), tous en `deadlock detected`
+dans le même fichier, à la suite d'un `read ECONNRESET` — la cascade que `etat-entree.md` décrit. La règle de la session (« un
+rouge hors de ces tests de concurrence arrête la session ») se tranche par une MESURE, pas par un libellé : ce lot ne touche pas
+`apps/api`, et les deux fichiers sont rejoués seuls, sur son code.
