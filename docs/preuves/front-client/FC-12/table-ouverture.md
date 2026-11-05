@@ -50,3 +50,16 @@ Motif : le test « Échap ferme, et le focus REVIENT à la vignette » donnait l
 passait alors même sans que la boîte sache d'où elle vient (`restoreFocusRef`), et une cible qui retirerait ce lien serait muette par
 construction. Sur macOS, cliquer ne donne PAS le focus : le test clique désormais sans focus préalable. Le code étant mis de côté, le
 rouge est rejoué : l'empreinte versée est celle du test livré.
+
+## Extension 2 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 26 | `docs/preuves/front-client/FC-12/portes/test-rejeu.txt` | le REJEU UNIQUE de la porte `test` (même commande, même arbre) | 4 |
+| 27 | `docs/preuves/front-client/FC-12/portes/act-intermittent.md` | la mesure de l'échec intermittent de la première passe : le fichier seul ×10, la suite client ×3, et sa cause lue | 4 |
+
+Motif : la première passe de `pnpm test` rend 1 échec dans un fichier que ce lot ne touche PAS (`apps/client/src/components/account/
+account-settings-view.test.tsx`, « un premier chiffre refusé reste SEUL… ») : la garde des sorties console, 5 avertissements `act(...)`
+tardifs (`BookingsSection`, `VisitBookingsSection`). Mesuré ensuite : 10 passes du fichier seul et 3 de la suite client, toutes vertes.
+Précédent du dépôt pour un rouge intermittent hors du lot : un REJEU UNIQUE de la porte (D338 ; D339, rejeu décidé par Ko), et la règle
+d'arrêt de la consigne s'applique s'il est rouge.
