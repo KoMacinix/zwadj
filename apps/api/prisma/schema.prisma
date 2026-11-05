@@ -421,6 +421,9 @@ model ProProfile {
   /// sans canal ne verrait plus jamais une demande arriver.
   notifyByEmail      Boolean  @default(true) @map("notify_by_email")
   notifyBySms        Boolean  @default(false) @map("notify_by_sms")
+  /// D341 (rang 44, L36-3a-1) — LA COUCHE DU PERSONNEL : `null` = éteinte (l'app Pro marche comme avant) ; posé UNE fois par l'activation (K-14), en check-and-set sous `staff_layer_enabled_at IS NULL`. Relu à CHAQUE
+  /// requête Pro par le quatrième garde global — jamais dans le jeton d'accès (D4 : claims `{ sub, role }`).
+  staffLayerEnabledAt DateTime? @map("staff_layer_enabled_at") @db.Timestamptz(6)
   createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -428,6 +431,8 @@ model ProProfile {
   venues Venue[]
   /// D336 (rang 41) — les FICHES CLIENT du pro, communes à toutes ses salles.
   clientRecords ProClientRecord[]
+  /// D341 (rang 44) — les MEMBRES du personnel de la salle (jamais supprimés : désactivés).
+  staffMembers  ProStaffMember[]
 
   @@map("pro_profiles")
 }
@@ -1076,6 +1081,106 @@ model ProClientRecord {
   @@map("pro_client_records")
 }
 
+// =============================================================================
+// LA COUCHE DU PERSONNEL — rang 44, L36-3a-1 (D341) : trois énumérations, trois tables. Conception : `docs/preuves/D340/cadrage.md` ; règles : DR5 de D336.
+// ⚠ Les GARANTIES — les CHECK, l'unicité du nom de compte par salle, les clés étrangères RESTRICT — sont dans la MIGRATION `20261104170000_staff_layer` (D186) : Prisma n'exprime pas les CHECK. Les
+// durées (10 min, 12 h, 15 min, 90 j) ne sont PAS ici : elles sont des paramètres (`STAFF_LIMITS`, `@zwadj/types`).
+// =============================================================================
+enum StaffRole {
+  MANAGER
+  EMPLOYEE
+}
+
+enum StaffStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum StaffSessionEndReason {
+  IDLE
+  LOGOUT
+  DISABLED
+  PASSWORD_CHANGED
+  PIN_LOCKED
+}
+
+/// D341 (rang 44) — un MEMBRE du personnel d'une salle. Jamais supprimé : désactivé. Le nom de compte est unique PAR SALLE à la normalisation près (`accountNameKey`, `normalizeStaffAccountName`).
+/// Le mot de passe est haché en Argon2id ; les colonnes du PIN (lot 3b) naissent avec la table et restent nulles : une seule migration pour toute la tranche.
+model ProStaffMember {
+  id                  String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  proProfileId        String          @map("pro_profile_id") @db.Uuid
+  /// Le nom TEL QUE TAPÉ, rogné : c'est lui qui s'affiche.
+  accountName         String          @map("account_name")
+  /// La clé d'unicité : `normalizeStaffAccountName(accountName)`.
+  accountNameKey      String          @map("account_name_key")
+  role                StaffRole
+  status              StaffStatus     @default(ACTIVE)
+  disabledAt          DateTime?       @map("disabled_at") @db.Timestamptz(6)
+  passwordHash        String          @map("password_hash")
+  passwordChangedAt   DateTime        @map("password_changed_at") @db.Timestamptz(6)
+  passwordExpiresAt   DateTime        @map("password_expires_at") @db.Timestamptz(6)
+  mustChangePassword  Boolean         @default(false) @map("must_change_password")
+  passwordFailedCount Int             @default(0) @map("password_failed_count")
+  passwordLockedUntil DateTime?       @map("password_locked_until") @db.Timestamptz(6)
+  pinHash             String?         @map("pin_hash")
+  pinGeneratedAt      DateTime?       @map("pin_generated_at") @db.Timestamptz(6)
+  pinExpiresAt        DateTime?       @map("pin_expires_at") @db.Timestamptz(6)
+  pinFailedCount      Int             @default(0) @map("pin_failed_count")
+  pinLockedAt         DateTime?       @map("pin_locked_at") @db.Timestamptz(6)
+  lastLoginAt         DateTime?       @map("last_login_at") @db.Timestamptz(6)
+  createdByMemberId   String?         @map("created_by_member_id") @db.Uuid
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  proProfile     ProProfile       @relation(fields: [proProfileId], references: [id], onDelete: Restrict)
+  createdBy      ProStaffMember?  @relation("StaffCreatedBy", fields: [createdByMemberId], references: [id], onDelete: Restrict)
+  createdMembers ProStaffMember[] @relation("StaffCreatedBy")
+  devices        ProStaffDevice[]
+  sessions       ProStaffSession[]
+  auditLogs      AuditLog[]       @relation("AuditActorMember")
+
+  @@unique([proProfileId, accountNameKey])
+  @@map("pro_staff_members")
+}
+
+/// D341 (rang 44) — un APPAREIL reconnu : un poste où un membre s'est connecté par nom de compte et mot de passe. Le jeton n'est stocké que haché (SHA-256) ; son échéance est la durée du PIN (R-6 (D341)).
+model ProStaffDevice {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  memberId   String    @map("member_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash")
+  label      String
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  expiresAt  DateTime  @map("expires_at") @db.Timestamptz(6)
+  lastUsedAt DateTime? @map("last_used_at") @db.Timestamptz(6)
+  revokedAt  DateTime? @map("revoked_at") @db.Timestamptz(6)
+
+  member   ProStaffMember    @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  sessions ProStaffSession[]
+
+  @@index([memberId])
+  @@map("pro_staff_devices")
+}
+
+/// D341 (rang 44) — une SESSION de personnel : la personne qui agit derrière le compte commun. Inactivité de 10 minutes CÔTÉ SERVEUR (`lastActivityAt`), plafond absolu de 12 h (`expiresAt`) ; révocable à l'instant.
+model ProStaffSession {
+  id             String                 @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  memberId       String                 @map("member_id") @db.Uuid
+  deviceId       String                 @map("device_id") @db.Uuid
+  tokenHash      String                 @unique @map("token_hash")
+  createdAt      DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastActivityAt DateTime               @default(now()) @map("last_activity_at") @db.Timestamptz(6)
+  expiresAt      DateTime               @map("expires_at") @db.Timestamptz(6)
+  endedAt        DateTime?              @map("ended_at") @db.Timestamptz(6)
+  endReason      StaffSessionEndReason? @map("end_reason")
+
+  member ProStaffMember @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  device ProStaffDevice @relation(fields: [deviceId], references: [id], onDelete: Restrict)
+
+  @@index([memberId])
+  @@index([deviceId])
+  @@map("pro_staff_sessions")
+}
+
 /// D333 (rang 39, L35-3) — le COMPTEUR des numéros de devis : une ligne par (salle, année). Le service l'incrémente par `INSERT … ON CONFLICT DO UPDATE … + 1 … RETURNING`
 /// DANS la transaction qui crée la version 1 (jamais « lire le plus grand puis ajouter 1 ») ; un échec ultérieur de la transaction le rend. Table à part : un compteur sur `venues`
 /// toucherait le verrou de l'acceptation d'une réservation et la clé de tri de la liste (D327). Migration `20261015100100_quote_reference`.
@@ -1446,10 +1551,15 @@ model AuditLog {
   after      Json?
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  /// D341 (rang 44) — le MEMBRE du personnel qui a agi (en plus du compte commun `actorId`), `null` pour toute action d'avant la couche ; le journal survit à son auteur (SET NULL).
+  actorMemberId String? @map("actor_member_id") @db.Uuid
+
+  actor       User?            @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorMember ProStaffMember?  @relation("AuditActorMember", fields: [actorMemberId], references: [id], onDelete: SetNull)
 
   @@index([entityType, entityId])
   @@index([actorId])
+  @@index([actorMemberId])
   @@map("audit_logs")
 }
 
