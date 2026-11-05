@@ -109,3 +109,16 @@ ne se réécrit pas. Défaut du code de CE lot, pas un défaut croisé : il se c
 fichiers touchés sont déjà dans la table — le test (ligne 3), le composant (ligne 9), le harnais (ligne 22, cible G-12) ; seule la
 pièce du rouge est neuve. Les campagnes qui lisent `filter-wizard.tsx` ou son test (fc8, journey, maxprice, et r32 — ligne 46) sont
 rejouées APRÈS ce complément.
+
+## Extension 5 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 48 | `docs/preuves/front-client/FC-8/rouges/rouge-client-v3.txt` | les ROUGES REJOUÉS avec le test livré : contre l'état d'avant le lot (code mis de côté) et contre le code du lot sans le piège de focus ; empreintes sha256 des fichiers de test joués | 2 quinquies |
+
+Motif : `neutralize-r32.py` (ligne 46), rejoué après le complément, rend R-1 MUETTE côté client — « PAS-ASSERTION — première ligne du
+bloc : TypeError: Cannot read properties of undefined (reading 'split') » : sous la mutation, le test réécrit
+(`apps/client/src/components/filter-wizard.test.tsx`, ligne 3) lisait une URL qui n'avait jamais été poussée et PLANTAIT au lieu
+d'échouer en assertion. Son lecteur d'URL (`relue`) dit désormais une URL absente en assertion native. Le test ayant changé APRÈS
+ses rouges (`7cbb976`, `93fc2e0`), ceux-ci sont rejoués avec le test livré, pour que l'empreinte versée soit celle du test livré
+(précédent : l'extension 2). Puis r32 et fc8 sont rejoués.
