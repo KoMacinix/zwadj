@@ -49,3 +49,13 @@ Conditionnels, avec leur condition : (a) un COMPOSANT dont la mise à jour tardi
 démontage) — le relevé n'en montre aucun ; s'il en apparaissait un, sa correction serait déclarée par une extension avant son
 commit ; (b) un harnais d'un autre rang dont une ancre ou une mesure est périmée par ce lot (le relevé statique et les campagnes le
 diront) — déclaré par une extension, commitée seule, avant sa réorientation.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare (le conditionnel (b) s'est réalisé)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 28 | `neutralisation/neutralize-solid-s7.py` | S7-1 RÉORIENTÉE par écrit : « vider la liste d'exemptions du client fait tomber les fichiers qu'elle couvre » — le fichier couvert est désormais l'étalon `test-setup-calibration.test.ts` (l'entrée de `venue-detail-view.test.tsx` est retirée par ce lot) | 4 |
+
+Motif : le relevé statique des trois campagnes que le tri sélectionne (calculé depuis le SHA de départ du lot : ses fichiers sont
+commités avant les campagnes) rend 1 ancre PÉRIMÉE — `neutralize-solid-s7.py` S7-1, `apps/client/src/test-setup.ts` ×0. L'intention de
+la cible est inchangée ; seule son ancre suit la liste.
