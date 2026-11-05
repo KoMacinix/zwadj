@@ -37,3 +37,13 @@ Ordre des commits : (1) cette table seule ; (2) le relevé SEO et les ROUGES —
 Conditionnels : un harnais d'un autre rang dont une ANCRE serait périmée par ce lot (le relevé le dira) — déclaré par une
 extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il en porte. Aucune chaîne visible n'est
 ajoutée ⇒ aucune clé arabe à relire (le JSON-LD reprend les noms que le pro a saisis).
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 24 | `docs/preuves/front-client/FC-10/crlf/available-on.txt` | `neutralisation/neutralize-available-on.py` joué sous CRLF SIMULÉ : le tri la sélectionne (`seo.ts`), et ses ancres 6 et 7 sont écrites en CRLF (environnement, aucune n'est périmée par ce lot) | 4 |
+
+Motif : le relevé statique des 3 campagnes que le tri sélectionne rend 0 ancre périmée et 2 ancres CRLF EN DUR (available-on 6 et 7) :
+sans simulation, la campagne s'arrêterait sur la cible 6 et ne jouerait ni la 7 (la liste des variantes de `seo.ts`, que ce lot
+modifie) ni les suivantes.
