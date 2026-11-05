@@ -68,3 +68,15 @@ Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
 ⛔ CE QUE CE LOT NE FAIT PAS, écrit avant tout code : les montants d'un DEVIS (écran du pro ET PDF) restent au format français —
 D326, décision 1 (le PDF imprime comme l'écran) rencontre l'arbitrage de Ko, et le PDF est dans `apps/api`, hors de la session :
 ARRÊTÉ pour cette partie, décision due à Ko. Le PDF garde aussi sa propre écriture de la règle pour ses dates (hors session).
+
+## Extension 1 — commitée SEULE, avant les fichiers qu'elle déclare (le conditionnel de la table s'est réalisé)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 46 | `neutralisation/neutralize-fc5.py` | W-1, W-2 RÉORIENTÉES : l'import de la semaine porte aussi `intlLocale` (même faute : la semaine redéclarée dans le calendrier) | 4 |
+| 47 | `neutralisation/neutralize-r30.py` | R30-1 à R30-4 RÉORIENTÉES : les formateurs du calendrier passent par `intlLocale` (même faute : une langue écrite en dur) | 4 |
+
+Motif : le relevé statique des ancres des 15 campagnes que le tri sélectionne (`ancres-campagnes.txt`, `releve-ancres.py`) rend
+6 ancres PÉRIMÉES par ce lot, 0 ancre CRLF : fc5 W-1 et W-2 (l'import `{ WEEKEND_DAYS, WEEK_START_DAY }` reçoit `intlLocale`), r30
+R30-1 à R30-4 (`Intl.DateTimeFormat(locale, …)` devient `Intl.DateTimeFormat(intlLocale(locale), …)`). r30 se joue sous CRLF simulé
+(conditionnel déjà déclaré : `crlf/r30.txt`), son ancre R30-4 étant écrite en CRLF.
