@@ -1,0 +1,105 @@
+# FC-4 — PLAYWRIGHT_BROWSERS_PATH=<pont hors dépôt> python3 neutralisation/lancer-campagnes.py, lancé AVANT le commit du code
+# ⚠ sortie 1 : r29 (2 ancres périmées par FC-4, réorientées puis rejouées 15/15), r30 (ancre CRLF, environnement), r33 M-12 (fuseau UTC, environnement) — ancres-campagnes.txt ;
+#   fc1, fc2, r25 en 3 : leurs cibles e2e ne se jouent qu'avec --e2e (hors de ce que touche FC-4)
+# lignes gardées 100 (lignes [WebServer] retirées) · jetons gardés : 0 (attendu 0)
+
+9 fichier(s) modifié(s) depuis HEAD → 13 campagne(s) concernée(s) sur 44.
+  · neutralize-b7.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc1.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc2.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc3.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-fc4.py  (3 fichier(s) en commun)
+      apps/client/src/components/venue/booking-date-picker.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-r25.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r29.py  (3 fichier(s) en commun)
+      apps/client/src/components/venue/booking-date-picker.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-r30.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-date-picker.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-r32.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r33.py  (2 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+      packages/i18n/messages/fr.json
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r39.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r42.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+
+[1/13] neutralisation/neutralize-b7.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/13] neutralisation/neutralize-fc1.py …
+    sortie=3  4 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s)
+
+[3/13] neutralisation/neutralize-fc2.py …
+    sortie=3  0 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s)
+
+[4/13] neutralisation/neutralize-fc3.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/13] neutralisation/neutralize-fc4.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/13] neutralisation/neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[7/13] neutralisation/neutralize-r29.py …
+    sortie=2  0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/13] neutralisation/neutralize-r30.py …
+    sortie=2  0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[9/13] neutralisation/neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[10/13] neutralisation/neutralize-r33.py …
+    sortie=1  86 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[11/13] neutralisation/neutralize-r38.py …
+    sortie=0  46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[12/13] neutralisation/neutralize-r39.py …
+    sortie=0  35 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[13/13] neutralisation/neutralize-r42.py …
+    sortie=0  22 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-b7.py                        0     3     3     0     0   161
+neutralize-fc1.py                       3     4     4     0     2     8
+neutralize-fc2.py                       3     0     0     0     1     0
+neutralize-fc3.py                       0     8     8     0     0    37
+neutralize-fc4.py                       0     7     7     0     0    41
+neutralize-r25.py                       3     7     7     0     4    63
+neutralize-r29.py                       2     —     0     1     0     0
+neutralize-r30.py                       2     —     0     1     0     0
+neutralize-r32.py                       0    65    65     0     0   594
+neutralize-r33.py                       1    86    86     1     0   802
+neutralize-r38.py                       0    46    46     0     0   471
+neutralize-r39.py                       0    35    35     0     0   319
+neutralize-r42.py                       0    22    22     0     0   200
+================================================================================================
+MESURÉ : 283 garde(s) mordue(s) · 3 muette(s)/erreur(s) · 7 non mesurée(s) · 13 campagne(s) · 2697s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-fc1.py → sortie 3
+  ⚠ neutralisation/neutralize-fc2.py → sortie 3
+  ⚠ neutralisation/neutralize-r25.py → sortie 3
+  ⚠ neutralisation/neutralize-r29.py → sortie 2
+  ⚠ neutralisation/neutralize-r30.py → sortie 2
+  ⚠ neutralisation/neutralize-r33.py → sortie 1
+lancer-campagnes exit=1
