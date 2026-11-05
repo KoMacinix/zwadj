@@ -95,3 +95,17 @@ mute le rail partagé (`packages/ui/src/journey.tsx`, inchangé ici) et son chem
 de `lancer-campagnes.py` ne résout pas depuis la racine. Le titre attendu existe dans le test réécrit (« ⚠ cliquer le LIBELLÉ d'une
 étape répondue vaut « Modifier », comme sa pastille ») ; qu'il ROUGISSE sous R-1 ne se déduit pas, il se joue. `R32_FILTRE` n'est admis
 qu'en découverte (aucun verdict) : la campagne se joue donc entière.
+
+## Extension 4 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 47 | `docs/preuves/front-client/FC-8/rouges/rouge-client-v2.txt` | le ROUGE des deux tests du panneau MODAL (Échap ferme, Tab reste dedans), ajoutés à `apps/client/src/components/filter-wizard.test.tsx` (ligne 3) et lus contre le code du lot SANS le piège de focus partagé ; empreinte sha256 du fichier de test | 2 quater |
+
+Motif : relu avant le commit du code, le panneau se déclare MODAL (`aria-modal="true"`) sans en avoir le comportement — Échap ne
+ferme rien, Tab sort de la boîte vers la page qu'un lecteur d'écran tait. Le dépôt a UN piège de focus (`useDismissLayer`,
+`packages/ui/src/use-dismiss-layer.ts`, lot A11a : « ne pas écrire une troisième variante de piège de focus ») : il se BRANCHE, il
+ne se réécrit pas. Défaut du code de CE lot, pas un défaut croisé : il se corrige ici, par un test d'abord (D334 item 5). Les autres
+fichiers touchés sont déjà dans la table — le test (ligne 3), le composant (ligne 9), le harnais (ligne 22, cible G-12) ; seule la
+pièce du rouge est neuve. Les campagnes qui lisent `filter-wizard.tsx` ou son test (fc8, journey, maxprice, et r32 — ligne 46) sont
+rejouées APRÈS ce complément.
