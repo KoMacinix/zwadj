@@ -36,3 +36,13 @@ d'avant, empreinte sha256 ; (3) le code ; (4) les harnais, les campagnes, les po
 
 Conditionnels : un harnais d'un autre rang dont une ANCRE serait périmée par ce lot (le relevé le dira) — déclaré par une
 extension, commitée seule, avant sa réorientation. Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 23 | `docs/preuves/front-client/FC-7/rouges/rouge-client-v2.txt` | le rouge REJOUÉ contre l'état d'avant après le retrait d'un import devenu inutile du test (lint) | 2 bis |
+
+Motif : `centsFromDinars` n'était plus employé par `search-query.test.ts` une fois le test de réciprocité retiré — `pnpm lint`
+le refuse (`no-unused-vars`). L'import est retiré AVANT le commit du code, le code mis de côté, et le rouge rejoué sur l'état
+d'avant : l'empreinte versée est celle du test livré (même faute qu'en FC-3 et FC-5, même réparation).
