@@ -1,0 +1,21 @@
+FC-10 — relevé STATIQUE des ancres des 3 campagnes que le tri sélectionne (`lancer-campagnes.py --liste`), par l'instrument versionné
+docs/preuves/front-client/outils/releve-ancres.py (calibré, rejoué ci-dessous), APRÈS le code du lot, AVANT de jouer les campagnes : 0 ancre
+périmée par ce lot ; 2 CRLF en dur (available-on 6 et 7 : environnement) → jouée sous CRLF simulé (extension 1).
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+available-on   listées  10 · examinées  10 (avec ancre 10, sans ancre 0) · non reconnues 0 · écarts 2
+     6. `availableOn` cesse d'être transmis à l'API | apps/client/src/lib/search-query.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+     7. La règle SEO ne voit plus la pagination comme une variante | apps/client/src/lib/seo.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+fc10           listées   5 · examinées   5 (avec ancre 5, sans ancre 0) · non reconnues 0 · écarts 0
+fc8            listées  12 · examinées  12 (avec ancre 12, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 3 (illisibles : 0, attendu 0) · cibles listées : 27 · examinées : 27 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 2 ancre(s) CRLF EN DUR (environnement)
