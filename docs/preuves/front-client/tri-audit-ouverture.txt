@@ -1,0 +1,21 @@
+Session front-client — tri différentiel de l'audit de secrets « ouverture » (AVANT le commit des pièces d'ouverture de session)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/audit-secrets-ouverture.txt (sortie scellée ;
+code de sortie 1 — l'outil sort en 1 dès qu'il rend des alertes ; ce qu'il garantit est l'absence de VALEURS, pas de mots, D299).
+Calibration de l'audit : positif 1/1, écho 18 exclues, discrimination 4/4 ; « cas réel » NON REJOUÉ (journal du rang 15 hors dépôt,
+absent de ce conteneur — l'outil le dit lui-même ; les bras construits font foi).
+Parcouru : 4 590 fichiers (79 744 711 octets), audités 4 459, exclus 131, alertes 987.
+
+Procédure du tri : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D340/audit-secrets-d340f.txt
+docs/preuves/front-client/audit-secrets-ouverture.txt — calibration à deux bras tenue (négatif 0/0, positif 2/2, chemins attendus).
+Précédente « f » de D340 : 981 contextes ; nouvelle : 987 ⇒ alertes ABSENTES de la précédente : 6 (ventilation : jeton = 6), lues au
+contexte aux lignes 3157 à 3167 de la sortie scellée.
+  · 4 dans docs/preuves/D340/tri-audit-d340f.txt, ligne 11 : la PROSE du tri de D340 qui décrit la forme de l'URL de vérification
+    d'e-mail. Ce tri a été écrit APRÈS l'audit « f » et l'annonçait lui-même (« il sera couvert par l'audit suivant ») : c'est son
+    écho, aucune valeur (l'audit dit « valeur trop courte pour une recherche » ou une valeur déjà présente dans un fichier suivi).
+  · 1 dans docs/preuves/front-client/etat-entree-e2e-extrait.txt, ligne 3 : l'en-tête de l'extrait, qui COMPTE les occurrences du
+    paramètre de jeton dans les lignes gardées (« 0, attendu 0 »). Un nom de paramètre, aucune valeur.
+  · 1 dans docs/preuves/front-client/etat-entree-e2e.md, ligne 12 : la phrase qui explique pourquoi le journal brut n'est pas versé
+    et que l'extrait compte zéro jeton. Un mot, aucune valeur.
+Résultat du tri : 6 alertes lues, 0 valeur réelle. Aucune pièce de cette ouverture ne recopie une ligne [WebServer] du journal e2e.
+Limite écrite : ce fichier est écrit après l'audit ; il sera couvert par l'audit suivant de la session (celui de FC-1).
