@@ -1,0 +1,29 @@
+# FC-5 — neutralisation/neutralize-maxprice.py joué sous CRLF SIMULÉ · 2026-11-05T07:25:40Z
+# commande : PLAYWRIGHT_BROWSERS_PATH=<shim> python3 docs/preuves/front-client/outils/crlf-simule.py <les fichiers ci-dessous> -- python3 neutralisation/neutralize-maxprice.py
+# fichiers ramenés en CRLF le temps de la campagne (releve-ancres.py --fichiers maxprice) : 3
+#   apps/client/src/components/filter-wizard.tsx
+#   apps/client/src/components/home-view.tsx
+#   apps/client/src/lib/search-query.ts
+
+calibration ✓ positif : une ancre CRLF est introuvable dans le fichier LF
+calibration ✓ positif : la même ancre est trouvée une fois après conversion
+calibration ✓ négatif : l'aller-retour rend les mêmes octets
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 3 fichier(s) convertis, 1168 ligne(s)
+✓ M1. ⛔ LE DÉFAUT D'ORIGINE : le formulaire d'accueil réémet `maxPriceCents`
+✓ M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes
+✓ M3. L'assistant réémet le nom de l'API dans l'URL publique
+✓ M4. Les deux contrats se remélangent : le compteur passe en dinars
+✓ M5. Le repli disparaît : les anciens liens partagés reperdent leur plafond
+✓ M6. ⛔ LE REPLI PART DANS L'AUTRE SENS (`maxPriceCents` corrige `maxPrice`)
+✓ M7. L'arrondi s'invente : un reste non nul passe quand même
+✓ M8. L'ancien nom se remet à NAÎTRE dans l'URL publique
+✓ M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)
+✓ M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER
+
+10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+rendus en LF à l'identique : 3 sur 3 (attendu 3)
+commande : sortie 0
+crlf-simule exit=0

@@ -114,7 +114,8 @@ CIBLES = [
     (
         "10. La carte grisée cesse d'être un lien",
         "apps/client/src/components/venue-card.tsx",
-        '<Link href={`/salles/${venue.slug}`} className="venue-card-link">',
+        # ⛔ RÉORIENTÉE (FC-5, session `front-client`) : l'adresse de la fiche passe par `venuePath` (table de routes du client).
+        '<Link href={venuePath(venue.slug)} className="venue-card-link">',
         '<Link href="" className="venue-card-link">',
         1,
         "RESTE UN LIEN",

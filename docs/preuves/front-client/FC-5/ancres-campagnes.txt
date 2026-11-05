@@ -1,0 +1,47 @@
+FC-5 — relevé STATIQUE des ancres des 16 campagnes que le tri sélectionne, par l'instrument versionné
+`docs/preuves/front-client/outils/releve-ancres.py` (calibré à deux bras, rejoué ci-dessous), APRÈS la réorientation de 404 C5,
+available-on 10, r30 R30-7 et r37 E-3. Chaque ancre est comptée dans le fichier qu'elle vise, ramenée en LF et brute ; l'attendu
+est celui que la cible déclare (1 sinon).
+⚠ CE RELEVÉ REMPLACE UNE PREMIÈRE VERSION, écrite en ligne et jamais commitée, qui lisait la clé `fichier` seule : les 12 cibles
+de `neutralize-404.py` (clé `chemin`) y étaient SAUTÉES en silence et comptées comme examinées — elle imprimait « 404  12 cibles ·
+ancres ≠ 1 (ou brutes ≠ LF) : 0 » sur une campagne qui avait trois écarts. C'est la campagne elle-même (C4, « ERREUR DE SCRIPT »)
+qui l'a montré. AVANT réorientation, cette première version rendait aussi : available-on 10 ×0, r30 R30-7 ×0, r37 E-3 ×0 (périmées
+par FC-5) — et 404 C5 ×0, qu'elle ne voyait pas.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+404            listées  12 · examinées  12 (avec ancre 6, sans ancre 6) · non reconnues 0 · écarts 3
+     C4. L'attrape-tout RETOURNE au lieu de LEVER (page vide en statu | apps/client/src/app/[locale]/[...rest]/page.tsx | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+     C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à l | apps/client/src/app/[locale]/not-found.tsx | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+     C6. Le « 404 » revient à l'écran, au-dessus du titre | apps/client/src/app/[locale]/not-found.tsx | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+available-on   listées  10 · examinées  10 (avec ancre 10, sans ancre 0) · non reconnues 0 · écarts 2
+     6. `availableOn` cesse d'être transmis à l'API | apps/client/src/lib/search-query.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+     7. La règle SEO ne voit plus la pagination comme une variante | apps/client/src/lib/seo.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+fc3            listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 0
+fc4            listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+fc5            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+horizon        listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 1
+     H6. Une PANNE emprunte le message de date : `unreachable` tombe  | apps/client/src/components/search/search-view.tsx | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+journey        listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+maxprice       listées  10 · examinées  10 (avec ancre 10, sans ancre 0) · non reconnues 0 · écarts 1
+     M7. L'arrondi s'invente : un reste non nul passe quand même | apps/client/src/lib/search-query.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+r25            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+r29            listées  15 · examinées  15 (avec ancre 15, sans ancre 0) · non reconnues 0 · écarts 0
+r30            listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 1
+     R30-4. N-a : la date longue — le nom accessible d'un jour — sort | apps/client/src/lib/booking-calendar.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+r32            listées  65 · examinées  65 (avec ancre 65, sans ancre 0) · non reconnues 0 · écarts 0
+r33            listées  95 · examinées  95 (avec ancre 95, sans ancre 0) · non reconnues 0 · écarts 0
+r37            listées  21 · examinées  21 (avec ancre 21, sans ancre 0) · non reconnues 0 · écarts 0
+r38            listées  46 · examinées  46 (avec ancre 46, sans ancre 0) · non reconnues 0 · écarts 0
+r42            listées  28 · examinées  28 (avec ancre 28, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 16 (illisibles : 0, attendu 0) · cibles listées : 360 · examinées : 360 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 8 ancre(s) CRLF EN DUR (environnement)
+sortie de l'instrument : 1 (0 aucun écart · 1 au moins un écart · 2 non reconnue)

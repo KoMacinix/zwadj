@@ -1,0 +1,32 @@
+# FC-5 — neutralisation/neutralize-404.py joué sous CRLF SIMULÉ · 2026-11-05T07:15:22Z
+# commande : PLAYWRIGHT_BROWSERS_PATH=<shim> python3 docs/preuves/front-client/outils/crlf-simule.py <les fichiers ci-dessous> -- python3 neutralisation/neutralize-404.py
+# fichiers ramenés en CRLF le temps de la campagne (releve-ancres.py --fichiers 404) : 4
+#   apps/client/public/404-nuage.svg
+#   apps/client/src/app/[locale]/[...rest]/page.tsx
+#   apps/client/src/app/[locale]/not-found.tsx
+#   apps/client/src/app/not-found.tsx
+
+calibration ✓ positif : une ancre CRLF est introuvable dans le fichier LF
+calibration ✓ positif : la même ancre est trouvée une fois après conversion
+calibration ✓ négatif : l'aller-retour rend les mêmes octets
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 4 fichier(s) convertis, 912 ligne(s)
+✓ C1. ⛔ LE DÉFAUT D'ORIGINE, À L'IDENTIQUE : la 404 racine reprend son tiret bas
+✓ C2. Une COPIE `_not-found.tsx` est laissée à côté du bon fichier
+✓ C3. L'attrape-tout est SUPPRIMÉ (la 404 localisée redevient inatteignable)
+✓ C4. L'attrape-tout RETOURNE au lieu de LEVER (page vide en statut 200)
+✓ C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à la case départ)
+✓ C6. Le « 404 » revient à l'écran, au-dessus du titre
+✓ C6b. Le décor perd son `alt=""` — il redevient annoncé aux lecteurs d'écran
+✓ C6c. L'image du décor n'est plus livrée (`src` qui ne pointe sur rien)
+✓ C7. La ligne arabe de la 404 racine perd sa direction (`dir="rtl"`)
+✓ C8. La 404 localisée lit le MAUVAIS espace de noms de traduction
+✓ C9. ⛔ LE SOFT-404 REVIENT : `loading.tsx` remonte en `[locale]/`
+✓ C10. La remontée À MI-CHEMIN : `salles/loading.tsx` (recouvre la fiche)
+
+12 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+rendus en LF à l'identique : 4 sur 4 (attendu 4)
+commande : sortie 0
+crlf-simule exit=0

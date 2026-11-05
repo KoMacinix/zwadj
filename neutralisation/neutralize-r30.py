@@ -99,7 +99,8 @@ CIBLES = [
      "mesure": "calendrier-noms", "titre": "fr : chaque jour d'août 2027 porte « is-weekend »"},
     # ── Lien de l'assistant pro (K).
     {"libelle": "R30-7. ⛔ K-a : LE DÉFAUT RESTAURÉ — le lien vise `/salles/<id>/calendrier`, route supprimée par D130",
-     "fichier": EDITION, "avant": '<Link to="/calendrier" className="btn" onClick={() => selectVenue(venue.id)}>',
+     # ⛔ RÉORIENTÉE (FC-5) : le lien passe par `CALENDAR_PATH` (table de routes du pro) ; même défaut restauré, nouveau site.
+     "fichier": EDITION, "avant": '<Link to={CALENDAR_PATH} className="btn" onClick={() => selectVenue(venue.id)}>',
      "apres": '<Link to={`/salles/${venue.id}/calendrier`} className="btn" onClick={() => selectVenue(venue.id)}>',
      "mesure": "lien-pro", "titre": "K-a, K-c : sa cible est une route DÉCLARÉE"},
     {"libelle": "R30-8. K-b : le lien ne sélectionne plus la salle éditée — le calendrier ouvert est celui de la PREMIÈRE salle",

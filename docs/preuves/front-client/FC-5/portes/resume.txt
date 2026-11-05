@@ -1,0 +1,9 @@
+# HEAD d1d5698519fa13f21c0f400787737e00b5f16843 · arbre : 12 entrée(s) non commitée(s) · 2026-11-05T07:30:49Z
+typecheck exit=0 duree=21s
+lint exit=0 duree=10s
+test exit=0 duree=80s
+build exit=0 duree=35s
+test:int exit=1 duree=343s
+test:e2e exit=0 duree=207s
+FINI · journaux bruts : /tmp/tmp.3Cqjf9SIE7
+portes.sh exit=0
