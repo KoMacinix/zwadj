@@ -39,6 +39,7 @@ import { PhoneField } from "@zwadj/ui";
 import { getVenueAvailability } from "../../lib/api";
 import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
 import { longDate } from "../../lib/booking-calendar";
+import { attributsDeLangue, nomLocalise, type NomLocalise } from "../../lib/nom-localise";
 import { LOGIN_PATH } from "../../lib/routes";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
@@ -192,11 +193,12 @@ export function BookingRequestPanel({
     void load();
   }, [load]);
 
+  // FC-3 — le nom du créneau dans la langue de la page (repli DIT sur le français si l'arabe est vide : `nom-localise.ts`).
   const slotNames = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const slot of availability?.slots ?? []) map.set(slot.id, slot.nameFr);
+    const map = new Map<string, NomLocalise>();
+    for (const slot of availability?.slots ?? []) map.set(slot.id, nomLocalise(slot.nameFr, slot.nameAr, locale));
     return map;
-  }, [availability]);
+  }, [availability, locale]);
 
   const day = viewDate === null ? undefined : availability?.days.find((row) => row.date === viewDate);
 
@@ -308,7 +310,7 @@ export function BookingRequestPanel({
                           setChosen({ date: day.date, slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })
                         }
                       >
-                        {slotNames.get(slot.slotTemplateId) ?? ""} · {formatDZD(slot.priceCents)}
+                        <Nom nom={slotNames.get(slot.slotTemplateId)} /> · {formatDZD(slot.priceCents)}
                         {free ? "" : ` · ${t("taken")}`}
                       </button>
                     </li>
@@ -324,7 +326,7 @@ export function BookingRequestPanel({
           montrait d'office, le calendrier ne montre que le jour regardé. Affichage seul : il lit `chosen`, il ne
           l'écrit pas. */}
       {chosen === null ? null : (
-        <p>{t("chosen", { date: longDate(chosen.date, locale), slot: slotNames.get(chosen.slotTemplateId) ?? "" })}</p>
+        <p>{t("chosen", { date: longDate(chosen.date, locale), slot: slotNames.get(chosen.slotTemplateId)?.texte ?? "" })}</p>
       )}
 
       {/* ⚠ Le nombre d'invités vit ICI, HORS du bloc connecté, et ce n'est pas un
@@ -354,6 +356,8 @@ export function BookingRequestPanel({
           <legend>{t("servicesTitle")}</legend>
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 6 }}>
             {services.map((service) => {
+              // FC-3 — les noms de la prestation, de son unité et de ses paliers : la langue de la page, une règle.
+              const nom = nomLocalise(service.nameFr, service.nameAr, locale);
               const pick = picks.find((row) => row.serviceId === service.id);
               const chosenNow = pick !== undefined;
               return (
@@ -384,12 +388,12 @@ export function BookingRequestPanel({
                         )
                       }
                     />{" "}
-                    {service.nameFr}{" "}
+                    <Nom nom={nom} />{" "}
                     <span className="muted">
                       {service.pricingType === ServicePricingType.PER_GUEST
                         ? t("perGuest", { amount: formatDZD(service.perGuestPriceCents ?? 0) })
                         : service.pricingType === ServicePricingType.PER_UNIT
-                          ? t("perUnit", { amount: formatDZD(service.perUnitPriceCents ?? 0), unit: service.unitNameFr ?? "" })
+                          ? t("perUnit", { amount: formatDZD(service.perUnitPriceCents ?? 0), unit: nomLocalise(service.unitNameFr, service.unitNameAr, locale).texte })
                           : service.pricingType === ServicePricingType.FIXED
                             ? formatDZD(service.fixedPriceCents ?? 0)
                             : ""}
@@ -401,7 +405,7 @@ export function BookingRequestPanel({
                       encombrent sans rien apprendre. */}
                   {chosenNow && service.pricingType === ServicePricingType.TIERED ? (
                     <label htmlFor={`${champId}-${service.id}-palier`} style={{ display: "block" }}>
-                      {`${service.nameFr} — ${t("tier")}`}
+                      <Nom nom={nom} /> — {t("tier")}
                     </label>
                   ) : null}
                   {chosenNow && service.pricingType === ServicePricingType.TIERED ? (
@@ -414,17 +418,20 @@ export function BookingRequestPanel({
                         )
                       }
                     >
-                      {service.tiers.map((tier) => (
-                        <option key={tier.id} value={tier.id}>
-                          {tier.labelFr} — {formatDZD(tier.priceCents)}
-                        </option>
-                      ))}
+                      {service.tiers.map((tier) => {
+                        const palier = nomLocalise(tier.labelFr, tier.labelAr, locale);
+                        return (
+                          <option key={tier.id} value={tier.id} {...attributsDeLangue(palier)}>
+                            {palier.texte} — {formatDZD(tier.priceCents)}
+                          </option>
+                        );
+                      })}
                     </select>
                   ) : null}
 
                   {chosenNow && service.pricingType === ServicePricingType.PER_UNIT ? (
                     <label htmlFor={`${champId}-${service.id}-quantite`} style={{ display: "block" }}>
-                      {`${service.nameFr} — ${t("quantity")}`}
+                      <Nom nom={nom} /> — {t("quantity")}
                     </label>
                   ) : null}
                   {chosenNow && service.pricingType === ServicePricingType.PER_UNIT ? (
@@ -544,4 +551,11 @@ export function BookingRequestPanel({
       )}
     </section>
   );
+}
+
+/** FC-3 — un nom localisé : son texte, et dans le REPLI (arabe vide), `lang="fr"` et `dir="ltr"` sur lui seul — un lecteur d'écran le
+ *  prononce en français, et « tout élément qui déclare `lang` déclare sa direction » tient. Rien d'autre hors repli. */
+function Nom({ nom }: { nom: NomLocalise | undefined }) {
+  if (nom === undefined) return null;
+  return nom.repli ? <span {...attributsDeLangue(nom)}>{nom.texte}</span> : <>{nom.texte}</>;
 }
