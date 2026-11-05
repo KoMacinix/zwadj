@@ -10,7 +10,7 @@
 //   - les URL de médias relatives sont préfixées, la couverture n'est pas
 //     différée (LCP), les alt du pro font foi ;
 //   - parité FR/AR et aucune orientation posée par un composant.
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { VenuePublicDTO, VenuePublicPhotoDTO } from "@zwadj/types";
@@ -109,19 +109,32 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function renderDetail(over: Partial<VenuePublicDTO> = {}, locale: "fr" | "ar" = "fr") {
-  return render(
-    <NextIntlClientProvider locale={locale} messages={messages[locale]}>
-      <AuthProvider client={anonymousAuth()}>
-        <VenueDetailView venue={venue(over)} />
-      </AuthProvider>
-    </NextIntlClientProvider>
-  );
+/** ⚠ FC-9 — RENDRE, PUIS ATTENDRE L'ÉTAT FINAL, AVANT DE RENDRE LA MAIN. La fiche monte quatre chargements (la session, les
+ *  créneaux de visite, les disponibilités du panneau de demande, le calendrier) : un test qui lit puis rend la main avant eux laisse
+ *  leurs écritures d'état tomber APRÈS lui, hors `act` — cinq avertissements par rendu, cent pour ce fichier, qu'un plafond tolérait
+ *  (relevé de FC-9, `docs/preuves/front-client/FC-9/releve.md`). L'idiome du dépôt (`visit-booking-panel.test.tsx`, D269) : le rendu
+ *  dans `act`, puis un état FINAL lu à l'écran — le panneau de visite qui a reçu ses créneaux ; le relevé montre que l'attendre
+ *  suffit (le seul test qui l'attendait déjà n'émettait rien).
+ *  ⚠ Lu DANS ce rendu (`within`) : un test qui rend deux fois trouverait sinon deux panneaux. */
+async function renderDetail(over: Partial<VenuePublicDTO> = {}, locale: "fr" | "ar" = "fr") {
+  let rendu: ReturnType<typeof render> | undefined;
+  await act(async () => {
+    rendu = render(
+      <NextIntlClientProvider locale={locale} messages={messages[locale]}>
+        <AuthProvider client={anonymousAuth()}>
+          <VenueDetailView venue={venue(over)} />
+        </AuthProvider>
+      </NextIntlClientProvider>
+    );
+  });
+  const fait = rendu!;
+  await within(fait.container).findByText(messages[locale].venueDetail.visit.none);
+  return fait;
 }
 
 describe("Détail salle — contenu", () => {
-  it("nom, commune, accroche, prix formaté et capacité", () => {
-    renderDetail();
+  it("nom, commune, accroche, prix formaté et capacité", async () => {
+    await renderDetail();
     expect(screen.getByRole("heading", { level: 1, name: "Salle El Ryad" })).toBeInTheDocument();
     expect(screen.getByText("Élégance et confort")).toBeInTheDocument();
     expect(screen.getByText(/200/)).toBeInTheDocument();
@@ -129,109 +142,109 @@ describe("Détail salle — contenu", () => {
     expect(screen.getByText("Un seul créneau par jour")).toBeInTheDocument();
   });
 
-  it("le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B", () => {
-    renderDetail();
+  it("le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B", async () => {
+    await renderDetail();
     expect(screen.getByText(/Prix indicatif de base/)).toBeInTheDocument();
   });
 
-  it("les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML", () => {
-    const { container } = renderDetail({ descriptionFr: "<b>gras</b>\nligne 2" });
+  it("les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML", async () => {
+    const { container } = await renderDetail({ descriptionFr: "<b>gras</b>\nligne 2" });
     const paragraphe = [...container.querySelectorAll("p")].find((p) => p.textContent?.includes("gras"));
     expect(paragraphe).toHaveStyle({ whiteSpace: "pre-line" });
     // Le texte du pro reste du TEXTE : aucune balise injectée.
     expect(container.querySelector("b")).toBeNull();
   });
 
-  it("équipements en pastilles ; liste vide dite explicitement", () => {
-    renderDetail();
+  it("équipements en pastilles ; liste vide dite explicitement", async () => {
+    await renderDetail();
     expect(within(screen.getByRole("list", { name: "Équipements" })).getByText("Wifi")).toBeInTheDocument();
-    renderDetail({ amenities: [] });
+    await renderDetail({ amenities: [] });
     expect(screen.getByText("Aucun équipement renseigné pour le moment.")).toBeInTheDocument();
   });
 });
 
 describe("Détail salle — D33", () => {
-  it("TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable", () => {
-    renderDetail({ status: "TEMPORARILY_UNAVAILABLE" });
+  it("TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable", async () => {
+    await renderDetail({ status: "TEMPORARILY_UNAVAILABLE" });
     expect(screen.getByRole("status")).toHaveTextContent("Salle temporairement indisponible");
     // Le point du test : le contenu n'est pas masqué pour autant.
     expect(screen.getByRole("heading", { level: 1, name: "Salle El Ryad" })).toBeInTheDocument();
   });
 
-  it("ACTIVE : aucun bandeau", () => {
-    renderDetail();
+  it("ACTIVE : aucun bandeau", async () => {
+    await renderDetail();
     expect(screen.queryByText("Salle temporairement indisponible")).toBeNull();
   });
 });
 
 describe("Détail salle — photos", () => {
-  it("URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette", () => {
-    renderDetail();
+  it("URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette", async () => {
+    await renderDetail();
     const images = within(screen.getByRole("list", { name: "Photos" })).getAllByRole("presentation", { hidden: true });
     expect(images[0]).toHaveAttribute("src", "http://localhost:3001/api/v1/media/p1.webp");
     expect(images[1]).toHaveAttribute("src", "http://localhost:3001/api/v1/media/p2-thumb.webp");
   });
 
-  it("la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP)", () => {
-    renderDetail();
+  it("la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP)", async () => {
+    await renderDetail();
     const images = within(screen.getByRole("list", { name: "Photos" })).getAllByRole("presentation", { hidden: true });
     expect(images[0]).toHaveAttribute("loading", "eager");
     expect(images[1]).toHaveAttribute("loading", "lazy");
   });
 
-  it("« agrandir » est un simple lien vers l'original — aucune visionneuse JS", () => {
-    renderDetail();
+  it("« agrandir » est un simple lien vers l'original — aucune visionneuse JS", async () => {
+    await renderDetail();
     const liens = within(screen.getByRole("list", { name: "Photos" })).getAllByRole("link");
     expect(liens[0]).toHaveAttribute("href", "http://localhost:3001/api/v1/media/p1.webp");
     expect(liens[0]).toHaveAttribute("rel", expect.stringContaining("noopener"));
   });
 
-  it("l'alt saisi par le pro fait foi ; absent, l'image est décorative", () => {
-    renderDetail({ photos: [photo(1, { altFr: "Vue de la salle" }), photo(2)] });
+  it("l'alt saisi par le pro fait foi ; absent, l'image est décorative", async () => {
+    await renderDetail({ photos: [photo(1, { altFr: "Vue de la salle" }), photo(2)] });
     expect(screen.getByRole("img", { name: "Vue de la salle" })).toBeInTheDocument();
     expect(screen.getAllByRole("presentation", { hidden: true })).toHaveLength(1);
   });
 
-  it("aucune photo : c'est dit, pas un trou dans la page", () => {
-    renderDetail({ photos: [] });
+  it("aucune photo : c'est dit, pas un trou dans la page", async () => {
+    await renderDetail({ photos: [] });
     expect(screen.getByText("Cette salle n'a pas encore publié de photos.")).toBeInTheDocument();
   });
 });
 
 describe("Détail salle — visite Matterport", () => {
-  it("AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données)", () => {
-    const { container } = renderDetail();
+  it("AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données)", async () => {
+    const { container } = await renderDetail();
     expect(container.querySelector("iframe")).toBeNull();
     expect(screen.getByRole("button", { name: "Lancer la visite virtuelle" })).toBeInTheDocument();
     expect(screen.getByText(/consomme des données/)).toBeInTheDocument();
   });
 
-  it("après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant", () => {
-    const { container } = renderDetail();
+  it("après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant", async () => {
+    const { container } = await renderDetail();
     fireEvent.click(screen.getByRole("button", { name: "Lancer la visite virtuelle" }));
     const frame = container.querySelector("iframe");
     expect(frame).toHaveAttribute("src", "https://my.matterport.com/show/?m=SxQL3iGyoDo");
     expect(frame).toHaveAttribute("title", "Visite virtuelle de la salle");
   });
 
-  it("le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas", () => {
-    renderDetail();
+  it("le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas", async () => {
+    await renderDetail();
     expect(screen.getByRole("link", { name: "Ouvrir dans un nouvel onglet" })).toHaveAttribute(
       "href",
       "https://my.matterport.com/show/?m=SxQL3iGyoDo"
     );
   });
 
-  it("salle sans scan : aucune section visite, aucun bouton mort", () => {
-    renderDetail({ matterportModelId: null });
+  it("salle sans scan : aucune section visite, aucun bouton mort", async () => {
+    await renderDetail({ matterportModelId: null });
     expect(screen.queryByText("Visite virtuelle")).toBeNull();
     expect(screen.queryByRole("button", { name: "Lancer la visite virtuelle" })).toBeNull();
   });
 });
 
 describe("Détail salle — appels à l'action (Flux B)", () => {
-  it("PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a", () => {
-    renderDetail();
+  it("PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a", async () => {
+    await renderDetail();
     // E1b — le dernier appel à l'action inerte a disparu. Il annonçait « les
     // demandes ouvriront prochainement » alors qu'elles sont ouvertes. Ce test
     // le FIGE : c'est exactement ce qu'un zip bâti sur une base ancienne a déjà
@@ -242,8 +255,8 @@ describe("Détail salle — appels à l'action (Flux B)", () => {
     expect(screen.getByRole("heading", { level: 2, name: "Demander cette salle" })).toBeInTheDocument();
   });
 
-  it("AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre", () => {
-    renderDetail();
+  it("AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre", async () => {
+    await renderDetail();
     // Deux appels à l'action pour la même chose, dont un mort, apprennent
     // surtout au visiteur que le site ne marche pas.
     expect(screen.queryByRole("button", { name: "Réserver une visite" })).toBeNull();
@@ -251,7 +264,7 @@ describe("Détail salle — appels à l'action (Flux B)", () => {
   });
 
   it("le panneau de visite est MONTÉ et interroge les créneaux — un composant livré mais non monté est un composant absent", async () => {
-    renderDetail();
+    await renderDetail();
     await screen.findByText("Cette salle ne propose aucun créneau de visite pour le moment.");
     // Anonyme : on ne cache pas les créneaux, on demande la session au moment
     // où elle devient nécessaire.
@@ -264,16 +277,16 @@ describe("Détail salle — appels à l'action (Flux B)", () => {
 });
 
 describe("Détail salle — bilingue", () => {
-  it("en arabe : nom, accroche, description et libellés passent en AR", () => {
-    renderDetail({}, "ar");
+  it("en arabe : nom, accroche, description et libellés passent en AR", async () => {
+    await renderDetail({}, "ar");
     expect(screen.getByRole("heading", { level: 1, name: "قاعة الرياض" })).toBeInTheDocument();
     expect(screen.getByText("أناقة وراحة")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "اطلب هذه القاعة" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /العودة إلى القاعات/ })).toBeInTheDocument();
   });
 
-  it("aucun `dir` en dur : l'orientation vient de <html>", () => {
-    const { container } = renderDetail({}, "ar");
+  it("aucun `dir` en dur : l'orientation vient de <html>", async () => {
+    const { container } = await renderDetail({}, "ar");
     expect(container.querySelectorAll("[dir]")).toHaveLength(0);
   });
 });
