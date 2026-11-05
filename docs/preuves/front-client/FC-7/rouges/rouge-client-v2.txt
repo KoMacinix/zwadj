@@ -1,0 +1,74 @@
+# FC-7 — ROUGE (client) REJOUÉ (v2), contre l'état d'AVANT, après le retrait d'un import inutile du test — session front-client, 05/11/2026
+# HEAD au moment de la mesure : dfe07dc4db0aef3912b4642cfb57c23a86cdbdcc (code du lot mis de côté par git stash ; test livré)
+# commande : (apps/client) npx vitest run src/lib/search-query.test.ts — code de sortie 1
+# sha256 apps/client/src/lib/search-query.test.ts : fcbf6afa5225a76dbbc8cdcdade3daf86085ac2263c9feccca1497af1c44aba9
+# lecture : même rouge que la v1 — 1 échec par AssertionError (« un lien qui porte maxPriceCents n'a AUCUN plafond » : 500000 au lieu de "") ; 35 verts.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/search-query.test.ts (36 tests | 1 failed) 53ms
+   ✓ parseSearchParams > l'URL nue donne l'état par défaut : tri « recent », page 1, aucun filtre 6ms
+   ✓ parseSearchParams > les cases répétées sont collectées, dédoublonnées et triées 1ms
+   ✓ parseSearchParams > la forme jointe par virgules est acceptée aussi : une URL copiée depuis l'API ne perd pas ses filtres 1ms
+   ✓ parseSearchParams > une saisie non entière est REJETÉE côté front : elle ne doit jamais produire un 400 sur une page indexée 1ms
+   ✓ parseSearchParams > un tri inconnu retombe sur « recent », une page absurde sur 1 — jamais une erreur 1ms
+   ✓ parseSearchParams > les clés marketing sont ignorées sans bruit 1ms
+   ✓ D69 — une poignée EN BUTÉE n'est pas un filtre : elle est effacée dès la lecture 1ms
+   ✓ une valeur AU-DELÀ de la butée veut dire « tout », pas « rien » 0ms
+   ✓ une poignée à l'INTÉRIEUR de la course filtre normalement 1ms
+   ✓ plage INVERSÉE : redressée, jamais transmise — l'API la refuserait en 400 (D68) 1ms
+   ✓ un type de cérémonie inconnu est ignoré, les styles suivent la règle des amenities 1ms
+   ✓ toApiQuery > convertit les DINARS de l'URL en CENTIMES pour l'API 2ms
+   ✓ toApiQuery > joint les amenities par des virgules — la forme attendue par le contrat A3 1ms
+   ✓ toApiQuery > impose toujours tri, page et pageSize 1ms
+   ✓ toApiQuery > n'envoie pas les filtres vides : `cityId=` serait un UUID invalide, donc un 400 1ms
+   ✓ transporte le plafond de capacité, les styles joints et le type de cérémonie 1ms
+   ✓ toPublicQuery > omet les valeurs par défaut : l'URL nue et `?sort=recent&page=1` seraient du contenu dupliqué 1ms
+   ✓ toPublicQuery > garde les DINARS et RÉPÈTE les amenities : c'est la forme canonique publique 2ms
+   ✓ toPublicQuery > le numéro de page est un paramètre du lien, pas de l'état : la pagination réutilise les filtres 1ms
+   × ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > un lien qui porte `maxPriceCents` n'a AUCUN plafond, et l'API n'en reçoit aucun 12ms
+     → expected '500000' to be '' // Object.is equality
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > `maxPrice` est seul à décider, même à côté de l'ancien nom 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⚠ `?maxPrice=` VIDE reste « peu importe » — le visiteur vient d'effacer son plafond 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⚠ une valeur MALFORMÉE sous le bon nom se laisse tomber 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⛔ l'URL publique n'émet JAMAIS l'ancien nom 0ms
+   ✓ pageWindow > montre tout tant que ça tient 1ms
+   ✓ pageWindow > borne, voisins et ellipses au-delà : une salle de plus n'ajoute pas un lien de plus 0ms
+   ✓ availableOn — la date d'annotation > D55 — LE CAS RÉEL D'ABORD : une vraie date passe intacte, dans les deux sens 1ms
+   ✓ availableOn — la date d'annotation > une date à la BONNE FORME mais IRRÉELLE est abandonnée : février n'a pas de 31 0ms
+   ✓ availableOn — la date d'annotation > le 29 février d'une année BISSEXTILE est accepté, celui d'une année commune non 0ms
+   ✓ availableOn — la date d'annotation > une forme non conforme est abandonnée, jamais réécrite 0ms
+   ✓ availableOn — la date d'annotation > ABSENTE de l'URL ⇒ ABSENTE des deux querystrings : on ne pose pas une question qu'on n'a pas reçue 0ms
+   ✓ availableOn — la date d'annotation > ⚠ AUCUNE notion de « passé » ici : une date de 2020 traverse et part à l'API, seule autorité 0ms
+   ✓ page de recherche — rendu à la demande > déclare `dynamic = "force-dynamic"` 9ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > ⛔ AUCUN palier n'atteint la butée — un palier en butée ne filtre RIEN (D69) 1ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > ⛔ chaque palier SURVIT à l'aller-retour URL → état → API 1ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > les paliers sont strictement croissants et sans doublon 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/search-query.test.ts > ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > un lien qui porte `maxPriceCents` n'a AUCUN plafond, et l'API n'en reçoit aucun
+AssertionError: expected '500000' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ 500000
+
+ ❯ src/lib/search-query.test.ts:160:28
+    158|     // L'ALLER-RETOUR COMPLET : c'est ce que l'API reçoit qui filtre.
+    159|     const state = parseSearchParams({ maxPriceCents: "50000000" });
+    160|     expect(state.maxPrice).toBe("");
+       |                            ^
+    161|     expect(toApiQuery(state).get("maxPriceCents")).toBe(null);
+    162|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 passed (36)
+   Start at  09:37:20
+   Duration  1.62s (transform 390ms, setup 180ms, collect 466ms, tests 53ms, environment 543ms, prepare 135ms)
+
