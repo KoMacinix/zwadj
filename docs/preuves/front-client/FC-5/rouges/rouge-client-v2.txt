@@ -1,0 +1,292 @@
+# FC-5 — ROUGE (client) REJOUÉ (v2) contre l'état d'AVANT, après la correction de TYPAGE des tests de routes, 05/11/2026
+# HEAD : da80aba40fa8cd259c902b345d5871a501b0e123 ; le code du lot mis de côté (git stash, 47 fichiers) ; tsc des fichiers de test : 0 erreur
+# seule différence avec v1 : la table est lue `as Record<string, unknown>` avant le filtre (aucune valeur, aucune assertion ne change)
+# sha256 apps/client/src/lib/semaine-source-unique.test.ts (livré) : 9bb666819b89d919fb8efa225f30e4cc1b5f245fa0fd8b58c4e4cf210a50ae84
+# sha256 apps/client/src/lib/adresses-guard.test.ts (livré) : af859868003d851ec620b99c448c6d548366f86cd83ee99abafe210bc2ce3222
+# sha256 apps/client/src/lib/routes.test.ts (livré) : 05a6766c4d59e3799575e2b84a711aa84aee32aab05f421105c09bd0b9ba1065
+# lecture : les MÊMES échecs qu'en v1 (client 11, pro 2), tous par AssertionError
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/routes.test.ts (8 tests | 4 failed) 16ms
+   ✓ LOGIN_PATH — une page qui existe, dans les deux langues > calibration, bras négatif : l'ancienne cible `/connexion` n'a PAS de page (le défaut de D315 se voit) 2ms
+   ✓ LOGIN_PATH — une page qui existe, dans les deux langues > LOGIN_PATH désigne un `page.tsx` de l'App Router 0ms
+   ✓ LOGIN_PATH — une page qui existe, dans les deux langues > LOGIN_PATH est un chemin SANS locale : le `Link` localisé l'ajoute 0ms
+   ✓ FC-5 — la table des routes du client : une constante par page, chaque constante une page > calibration, deux bras : la recherche (groupe) et la fiche (segment dynamique) se résolvent ; `/salles/x/y` non 1ms
+   × FC-5 — la table des routes du client : une constante par page, chaque constante une page > chaque chaîne de la table désigne un `page.tsx` 6ms
+     → expected 1 to be greater than 8
+   × FC-5 — la table des routes du client : une constante par page, chaque constante une page > la fiche d'une salle (`venuePath`) désigne la page `[slug]` 1ms
+     → expected null not to be null
+   × FC-5 — la table des routes du client : une constante par page, chaque constante une page > chaque page DÉCLARÉE a sa constante — fixe par une chaîne, dynamique par `venuePath` 3ms
+     → expected [ '/assistant', …(9) ] to deeply equal []
+   × FC-5 — la table des routes du client : une constante par page, chaque constante une page > l'accueil d'une langue (`localeHomePath`) : `/<langue>`, pour chaque langue, et la page racine du segment existe 1ms
+     → expected null not to be null
+ ❯ src/lib/semaine-source-unique.test.ts (6 tests | 5 failed) 87ms
+   ✓ FC-5 — l'instrument (calibration à deux bras, D286) > bras ROUGE : une déclaration se voit ; bras VERT : un commentaire ne se voit pas, un import se voit comme un import 25ms
+   × FC-5 — la semaine algérienne : une définition, deux consommateurs > l'autorité déclare les deux constantes 7ms
+     → expected false to be true // Object.is equality
+   × FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/client/src/lib/calendar.ts ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS 29ms
+     → expected [ 'WEEK_START_DAY', 'WEEKEND_DAYS' ] to deeply equal []
+   × FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/client/src/lib/calendar.ts les importe de @zwadj/types 7ms
+     → expected [] to deeply equal [ 'WEEKEND_DAYS', 'WEEK_START_DAY' ]
+   × FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/pro/src/venues/pro-calendar.ts ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS 8ms
+     → expected [ 'WEEK_START_DAY', 'WEEKEND_DAYS' ] to deeply equal []
+   × FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/pro/src/venues/pro-calendar.ts les importe de @zwadj/types 8ms
+     → expected [] to deeply equal [ 'WEEKEND_DAYS', 'WEEK_START_DAY' ]
+ ❯ src/lib/adresses-guard.test.ts (5 tests | 2 failed) 12ms
+   ✓ FC-5 — l'instrument : calibration à deux bras (D286) > bras ROUGE : attribut JSX, gabarit, appel, texte JSX, queue de gabarit avec langue — chacun vu 2ms
+   ✓ FC-5 — l'instrument : calibration à deux bras (D286) > bras VERT : un commentaire, un chemin d'API, une origine, un voisin — rien 0ms
+   ✓ FC-5 — une adresse de page n'est écrite QUE dans la table de routes de son application > le relevé a parcouru les deux applications, et les pages déclarées sont là (D290 : un zéro sur zéro ne mesure rien) 0ms
+   × FC-5 — une adresse de page n'est écrite QUE dans la table de routes de son application > le pro lie aux pages du CLIENT par des constantes qui NOMMENT ces pages (CGU, confidentialité) 4ms
+     → expected undefined to be defined
+   × FC-5 — une adresse de page n'est écrite QUE dans la table de routes de son application > aucune adresse de page hors des deux tables de routes 4ms
+     → expected [ …(76) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/adresses-guard.test.ts > FC-5 — une adresse de page n'est écrite QUE dans la table de routes de son application > le pro lie aux pages du CLIENT par des constantes qui NOMMENT ces pages (CGU, confidentialité)
+AssertionError: expected undefined to be defined
+ ❯ src/lib/adresses-guard.test.ts:190:38
+    188|     const client = constantesLitterales("apps/client/src/lib/routes.ts…
+    189|     const pro = constantesLitterales("apps/pro/src/routes.ts");
+    190|     expect(client.get("TERMS_PATH")).toBeDefined();
+       |                                      ^
+    191|     expect(client.get("PRIVACY_PATH")).toBeDefined();
+    192|     expect(pro.get("CLIENT_TERMS_PATH")).toBe(client.get("TERMS_PATH")…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  src/lib/adresses-guard.test.ts > FC-5 — une adresse de page n'est écrite QUE dans la table de routes de son application > aucune adresse de page hors des deux tables de routes
+AssertionError: expected [ …(76) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "apps/client/src/app/[locale]/assistant/page.tsx:16 « /assistant »",
++   "apps/client/src/app/[locale]/auth/inscription/page.tsx:14 « /auth/inscription »",
++   "apps/client/src/app/[locale]/auth/mot-de-passe-oublie/page.tsx:14 « /auth/mot-de-passe-oublie »",
++   "apps/client/src/app/[locale]/auth/reinitialisation/page.tsx:14 « /auth/reinitialisation »",
++   "apps/client/src/app/[locale]/auth/verification-email/page.tsx:14 « /auth/verification-email »",
++   "apps/client/src/app/[locale]/cgu/page.tsx:15 « /cgu »",
++   "apps/client/src/app/[locale]/confidentialite/page.tsx:12 « /confidentialite »",
++   "apps/client/src/app/[locale]/not-found.tsx:72 « /salles »",
++   "apps/client/src/app/[locale]/salles/(recherche)/page.tsx:52 « /salles »",
++   "apps/client/src/app/[locale]/salles/[slug]/page.tsx:56 « /salles/ »",
++   "apps/client/src/app/not-found.tsx:98 « /fr »",
++   "apps/client/src/app/not-found.tsx:106 « /ar »",
++   "apps/client/src/components/account/visit-bookings-section.tsx:102 « /salles/ »",
++   "apps/client/src/components/auth/auth-ui.tsx:59 « /auth/inscription »",
++   "apps/client/src/components/auth/login-form.tsx:91 « /auth/mot-de-passe-oublie »",
++   "apps/client/src/components/auth/login-form.tsx:105 « /auth/inscription »",
++   "apps/client/src/components/auth/recovery-forms.tsx:122 « /auth/mot-de-passe-oublie »",
++   "apps/client/src/components/auth/register-form.tsx:192 « /cgu »",
++   "apps/client/src/components/auth/register-form.tsx:196 « /confidentialite »",
++   "apps/client/src/components/filter-wizard.tsx:214 « /salles »",
++   "apps/client/src/components/filter-wizard.tsx:214 « /salles? »",
++   "apps/client/src/components/home-view.tsx:117 « /salles »",
++   "apps/client/src/components/home-view.tsx:168 « /assistant »",
++   "apps/client/src/components/home-view.tsx:195 « /salles »",
++   "apps/client/src/components/search/search-view.tsx:238 « /salles »",
++   "apps/client/src/components/search/search-view.tsx:294 « /salles »",
++   "apps/client/src/components/search/search-view.tsx:308 « /salles »",
++   "apps/client/src/components/search/search-view.tsx:323 « /salles »",
++   "apps/client/src/components/search/search-view.tsx:382 « /salles »",
++   "apps/client/src/components/site-chrome.tsx:50 « /compte »",
++   "apps/client/src/components/site-chrome.tsx:60 « /auth/inscription »",
++   "apps/client/src/components/site-footer.tsx:31 « /cgu »",
++   "apps/client/src/components/site-footer.tsx:34 « /confidentialite »",
++   "apps/client/src/components/site-nav.tsx:32 « /salles »",
++   "apps/client/src/components/venue/booking-request-panel.tsx:259 « /compte »",
++   "apps/client/src/components/venue/venue-detail-view.tsx:52 « /salles »",
++   "apps/client/src/components/venue/visit-booking-panel.tsx:128 « /compte »",
++   "apps/client/src/components/venue-card.tsx:59 « /salles/ »",
++   "apps/pro/src/App.tsx:103 « /auth/inscription »",
++   "apps/pro/src/App.tsx:111 « /auth/mot-de-passe-oublie »",
++   "apps/pro/src/App.tsx:122 « /auth/reinitialisation »",
++   "apps/pro/src/App.tsx:123 « /auth/verification-email »",
++   "apps/pro/src/App.tsx:133 « /demandes »",
++   "apps/pro/src/App.tsx:141 « /calendrier »",
++   "apps/pro/src/App.tsx:149 « /reservations »",
++   "apps/pro/src/App.tsx:157 « /compte »",
++   "apps/pro/src/App.tsx:166 « /salles »",
++   "apps/pro/src/App.tsx:176 « /salles/nouvelle »",
++   "apps/pro/src/App.tsx:184 « /salles/:id »",
++   "apps/pro/src/auth/auth-ui.tsx:75 « /auth/inscription »",
++   "apps/pro/src/auth/login-page.tsx:109 « /auth/mot-de-passe-oublie »",
++   "apps/pro/src/auth/login-page.tsx:120 « /auth/inscription »",
++   "apps/pro/src/auth/recovery-pages.tsx:115 « /auth/mot-de-passe-oublie »",
++   "apps/pro/src/auth/register-page.tsx:183 « /cgu »",
++   "apps/pro/src/auth/register-page.tsx:187 « /confidentialite »",
++   "apps/pro/src/dashboard/dashboard-aside.tsx:165 « /salles »",
++   "apps/pro/src/dashboard/dashboard-aside.tsx:166 « /demandes »",
++   "apps/pro/src/dashboard/dashboard-aside.tsx:167 « /calendrier »",
++   "apps/pro/src/dashboard/dashboard-aside.tsx:168 « /reservations »",
++   "apps/pro/src/shell/pro-header.tsx:30 « /salles/nouvelle »",
++   "apps/pro/src/shell/pro-header.tsx:31 « /compte »",
++   "apps/pro/src/shell/pro-nav.tsx:49 « /salles »",
++   "apps/pro/src/shell/pro-nav.tsx:50 « /demandes »",
++   "apps/pro/src/shell/pro-nav.tsx:51 « /calendrier »",
++   "apps/pro/src/shell/pro-nav.tsx:52 « /reservations »",
++   "apps/pro/src/shell/venue-scope.tsx:53 « /salles/nouvelle »",
++   "apps/pro/src/venues/create-venue-page.tsx:81 « /salles/ »",
++   "apps/pro/src/venues/create-venue-page.tsx:95 « /salles »",
++   "apps/pro/src/venues/create-venue-page.tsx:148 « /salles »",
++   "apps/pro/src/venues/edit-venue-page.tsx:165 « /salles »",
++   "apps/pro/src/venues/edit-venue-page.tsx:193 « /salles »",
++   "apps/pro/src/venues/edit-venue-page.tsx:387 « /salles »",
++   "apps/pro/src/venues/edit-venue-page.tsx:450 « /calendrier »",
++   "apps/pro/src/venues/edit-venue-page.tsx:456 « /salles »",
++   "apps/pro/src/venues/venue-list-page.tsx:135 « /salles/nouvelle »",
++   "apps/pro/src/venues/venue-list-page.tsx:218 « /salles/ »",
++ ]
+
+ ❯ src/lib/adresses-guard.test.ts:200:22
+    198|       .filter(([chemin]) => !(TABLES as readonly string[]).includes(ch…
+    199|       .flatMap(([chemin, occ]) => occ.map((o) => `${chemin}:${o.ligne}…
+    200|     expect(ailleurs).toEqual([]);
+       |                      ^
+    201|   });
+    202| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  src/lib/routes.test.ts > FC-5 — la table des routes du client : une constante par page, chaque constante une page > chaque chaîne de la table désigne un `page.tsx`
+AssertionError: expected 1 to be greater than 8
+ ❯ src/lib/routes.test.ts:91:29
+     89| 
+     90|   it("chaque chaîne de la table désigne un `page.tsx`", () => {
+     91|     expect(ADRESSES.length).toBeGreaterThan(8);
+       |                             ^
+     92|     expect(ADRESSES.filter((adresse) => !pageResolue(adresse))).toEqua…
+     93|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  src/lib/routes.test.ts > FC-5 — la table des routes du client : une constante par page, chaque constante une page > la fiche d'une salle (`venuePath`) désigne la page `[slug]`
+AssertionError: expected null not to be null
+ ❯ src/lib/routes.test.ts:97:27
+     95|   it("la fiche d'une salle (`venuePath`) désigne la page `[slug]`", ()…
+     96|     const venuePath = fonction("venuePath");
+     97|     expect(venuePath).not.toBeNull();
+       |                           ^
+     98|     expect(pageResolue(venuePath!(EXEMPLE))).toBe(true);
+     99|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  src/lib/routes.test.ts > FC-5 — la table des routes du client : une constante par page, chaque constante une page > chaque page DÉCLARÉE a sa constante — fixe par une chaîne, dynamique par `venuePath`
+AssertionError: expected [ '/assistant', …(9) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/assistant",
++   "/auth/inscription",
++   "/auth/mot-de-passe-oublie",
++   "/auth/reinitialisation",
++   "/auth/verification-email",
++   "/cgu",
++   "/compte",
++   "/confidentialite",
++   "/salles",
++   "/salles/[slug]",
++ ]
+
+ ❯ src/lib/routes.test.ts:106:24
+    104|       page.includes("[") ? !fiche.startsWith(page.slice(0, page.indexO…
+    105|     );
+    106|     expect(orphelines).toEqual([]);
+       |                        ^
+    107|   });
+    108| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  src/lib/routes.test.ts > FC-5 — la table des routes du client : une constante par page, chaque constante une page > l'accueil d'une langue (`localeHomePath`) : `/<langue>`, pour chaque langue, et la page racine du segment existe
+AssertionError: expected null not to be null
+ ❯ src/lib/routes.test.ts:112:32
+    110|     expect(existsSync(resolve(PAGES, "page.tsx"))).toBe(true);
+    111|     const localeHomePath = fonction("localeHomePath");
+    112|     expect(localeHomePath).not.toBeNull();
+       |                                ^
+    113|     for (const locale of locales) expect(localeHomePath!(locale)).toBe…
+    114|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  src/lib/semaine-source-unique.test.ts > FC-5 — la semaine algérienne : une définition, deux consommateurs > l'autorité déclare les deux constantes
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/lib/semaine-source-unique.test.ts:56:51
+     54|   it("l'autorité déclare les deux constantes", () => {
+     55|     // Le fichier d'abord, en assertion : avant FC-5 il n'existe pas, …
+     56|     expect(existsSync(resolve(RACINE, AUTORITE))).toBe(true);
+       |                                                   ^
+     57|     expect(declares(arbre(AUTORITE)).filter((n) => (NOMS as readonly s…
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  src/lib/semaine-source-unique.test.ts > FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/client/src/lib/calendar.ts ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS
+ FAIL  src/lib/semaine-source-unique.test.ts > FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/pro/src/venues/pro-calendar.ts ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS
+AssertionError: expected [ 'WEEK_START_DAY', 'WEEKEND_DAYS' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "WEEK_START_DAY",
++   "WEEKEND_DAYS",
++ ]
+
+ ❯ src/lib/semaine-source-unique.test.ts:62:98
+     60|   for (const calendrier of CALENDRIERS) {
+     61|     it(`${calendrier} ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS`,…
+     62|       expect(declares(arbre(calendrier)).filter((n) => (NOMS as readon…
+       |                                                                                                  ^
+     63|     });
+     64| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  src/lib/semaine-source-unique.test.ts > FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/client/src/lib/calendar.ts les importe de @zwadj/types
+ FAIL  src/lib/semaine-source-unique.test.ts > FC-5 — la semaine algérienne : une définition, deux consommateurs > apps/pro/src/venues/pro-calendar.ts les importe de @zwadj/types
+AssertionError: expected [] to deeply equal [ 'WEEKEND_DAYS', 'WEEK_START_DAY' ]
+
+- Expected
++ Received
+
+- [
+-   "WEEKEND_DAYS",
+-   "WEEK_START_DAY",
+- ]
++ []
+
+ ❯ src/lib/semaine-source-unique.test.ts:66:121
+     64| 
+     65|     it(`${calendrier} les importe de @zwadj/types`, () => {
+     66|       expect(importes(arbre(calendrier), "@zwadj/types").filter((n) =>…
+       |                                                                                                                         ^
+     67|     });
+     68|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  11 failed | 8 passed (19)
+   Start at  06:13:33
+   Duration  1.76s (transform 315ms, setup 254ms, collect 1.96s, tests 115ms, environment 1.17s, prepare 273ms)
+

@@ -127,7 +127,8 @@ function rendreConnecteA(chemin: string) {
 /** Les adresses de la table qui sont des routes DU PRO : chaînes, hors pages du client liées depuis le pro (`CLIENT_…`), hors
  *  le motif paramétré (vérifié par `venuePath` ci-dessous), hors `/` (une adresse inconnue y est renvoyée : « rester sur `/` »
  *  ne distinguerait rien). */
-const ADRESSES_DU_PRO = Object.entries(ROUTES).filter(
+// La table lue comme un dictionnaire NON typé (unions de littéraux : un prédicat `[string, string]` ne s'y applique pas, TS2677).
+const ADRESSES_DU_PRO = Object.entries(ROUTES as Record<string, unknown>).filter(
   (entree): entree is [string, string] =>
     typeof entree[1] === "string" && !entree[0].startsWith("CLIENT_") && entree[0] !== "VENUE_PATH_PATTERN" && entree[1] !== "/"
 );

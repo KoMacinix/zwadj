@@ -70,7 +70,9 @@ function pagesDeclarees(): string[] {
   return out.sort();
 }
 
-const ADRESSES = Object.values(ROUTES).filter((v): v is string => typeof v === "string");
+/** La table, lue comme un dictionnaire NON typé : ses valeurs sont des unions de littéraux, qu'un prédicat `v is string` ne peut pas
+ *  rétrécir (TS2677) — et le fichier doit compiler avant FC-5 comme après. */
+const ADRESSES = Object.values(ROUTES as Record<string, unknown>).filter((v): v is string => typeof v === "string");
 const EXEMPLE = "salle-exemple";
 /** Une FONCTION de la table, lue par son nom — absente, `null` : le rouge d'avant FC-5 se lit en ASSERTION (D304), jamais en
  *  `TypeError`, et le fichier compile avant comme après. */
