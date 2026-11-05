@@ -7,7 +7,6 @@ import {
   BUDGET_FLOOR,
   BUDGET_TIERS,
   centsFromDinars,
-  dinarsFromCents,
   pageWindow,
   parseSearchParams,
   toApiQuery,
@@ -149,63 +148,35 @@ describe("toPublicQuery", () => {
   });
 });
 
-describe("⛔ D228 — le repli `maxPriceCents` → `maxPrice`", () => {
-  // ⚠ CE QUE CE BLOC RATTRAPE. L'URL publique porte des DINARS, l'API des
-  // CENTIMES, et les deux formulaires du front écrivaient le nom de l'API dans
-  // l'URL. `parseSearchParams` ne lisant que `maxPrice`, un visiteur qui
-  // choisissait « 500 000 DA » recevait le catalogue entier — sans message,
-  // sans erreur, sans rien à l'écran qui le dise.
-  // ⛔ DETTE DATÉE AU 19/11/2026 : ce bloc entier se retire avec le repli.
+describe("⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond", () => {
+  // ⚠ CE BLOC EXIGEAIT LE REPLI ; IL EXIGE DÉSORMAIS SON ABSENCE (FC-7, session `front-client` — dit ici, et au rapport du lot).
+  // Le repli `maxPriceCents` → `maxPrice` rattrapait les liens écrits avec le nom de l'API ; c'était une dette datée au
+  // 19/11/2026 (D228 : « un repli sans date de retrait devient un second nom officiel »). Il est retiré : le test qui assurait
+  // qu'un ancien lien retrouvait son plafond devient la garde qui assure que l'ancien nom n'a PLUS D'EFFET — sans quoi le mauvais
+  // nom redeviendrait une source. Les trois règles de lecture de `maxPrice` restent, et restent gardées.
 
-  it("un ancien lien partagé retrouve son plafond, et l'API le reçoit", () => {
-    // L'ALLER-RETOUR COMPLET, pas seulement l'état : c'est ce que l'API reçoit
-    // qui filtre, et c'est là que le facteur 100 se trompe de sens.
+  it("un lien qui porte `maxPriceCents` n'a AUCUN plafond, et l'API n'en reçoit aucun", () => {
+    // L'ALLER-RETOUR COMPLET : c'est ce que l'API reçoit qui filtre.
     const state = parseSearchParams({ maxPriceCents: "50000000" });
-    expect(state.maxPrice).toBe("500000");
-    expect(toApiQuery(state).get("maxPriceCents")).toBe("50000000");
-  });
-
-  it("⚠ le repli ne va JAMAIS dans l'autre sens : `maxPrice` gagne toujours", () => {
-    // Sans cette règle, le mauvais nom deviendrait une source normale et la
-    // dette ne se paierait jamais.
-    const state = parseSearchParams({ maxPrice: "300000", maxPriceCents: "50000000" });
-    expect(state.maxPrice).toBe("300000");
-  });
-
-  it("⚠ `?maxPrice=` VIDE coupe le repli — le visiteur vient d'effacer son plafond", () => {
-    // Un `<form method="get">` soumet ses champs vides : « peu importe » s'écrit
-    // exactement comme ça. Replier ici ressusciterait un filtre effacé.
-    const state = parseSearchParams({ maxPrice: "", maxPriceCents: "50000000" });
     expect(state.maxPrice).toBe("");
+    expect(toApiQuery(state).get("maxPriceCents")).toBe(null);
   });
 
-  it("⚠ une valeur MALFORMÉE sous le bon nom se laisse tomber, elle n'est pas remplacée", () => {
-    // La PRÉSENCE décide de la branche, la VALIDITÉ décide de la valeur (D228).
-    const state = parseSearchParams({ maxPrice: "trois-cents-mille", maxPriceCents: "50000000" });
-    expect(state.maxPrice).toBe("");
+  it("`maxPrice` est seul à décider, même à côté de l'ancien nom", () => {
+    expect(parseSearchParams({ maxPrice: "300000", maxPriceCents: "50000000" }).maxPrice).toBe("300000");
   });
 
-  it("⚠ un reste non nul est ABANDONNÉ, jamais arrondi", () => {
-    // `50000001` centimes ne vient d'aucun de nos formulaires : c'est une URL
-    // bricolée. L'arrondir poserait un plafond que personne n'a demandé.
-    expect(parseSearchParams({ maxPriceCents: "50000001" }).maxPrice).toBe("");
-    expect(parseSearchParams({ maxPriceCents: "99" }).maxPrice).toBe("");
+  it("⚠ `?maxPrice=` VIDE reste « peu importe » — le visiteur vient d'effacer son plafond", () => {
+    // Un `<form method="get">` soumet ses champs vides : « peu importe » s'écrit exactement comme ça.
+    expect(parseSearchParams({ maxPrice: "", maxPriceCents: "50000000" }).maxPrice).toBe("");
   });
 
-  it("`dinarsFromCents` rend le montant EXACT, ou rien", () => {
-    expect(dinarsFromCents("50000000")).toBe("500000");
-    expect(dinarsFromCents("100")).toBe("1");
-    expect(dinarsFromCents("0")).toBe("0");
-    expect(dinarsFromCents("50000001")).toBe("");
-    expect(dinarsFromCents("-100")).toBe("");
-    expect(dinarsFromCents("1e4")).toBe("");
-    expect(dinarsFromCents("")).toBe("");
+  it("⚠ une valeur MALFORMÉE sous le bon nom se laisse tomber", () => {
+    expect(parseSearchParams({ maxPrice: "trois-cents-mille", maxPriceCents: "50000000" }).maxPrice).toBe("");
   });
 
-  it("⛔ l'URL publique ne réémet JAMAIS l'ancien nom", () => {
-    // Le repli sert à LIRE le passé, jamais à le reproduire : sinon les liens
-    // au mauvais nom continueraient de naître, et la dette n'aurait pas de fin.
-    const url = toPublicQuery(parseSearchParams({ maxPriceCents: "50000000" }));
+  it("⛔ l'URL publique n'émet JAMAIS l'ancien nom", () => {
+    const url = toPublicQuery(parseSearchParams({ maxPrice: "500000", maxPriceCents: "50000000" }));
     expect(url).toContain("maxPrice=500000");
     expect(url).not.toContain("maxPriceCents");
   });
@@ -329,11 +300,6 @@ describe("BUDGET_TIERS — l'autorité unique des paliers", () => {
     expect(new Set(BUDGET_TIERS).size).toBe(BUDGET_TIERS.length);
   });
 
-  it("⚠ `centsFromDinars` et `dinarsFromCents` sont réciproques sur les paliers", () => {
-    // Les deux seules conversions du front, confrontées. Prises séparément
-    // elles ont chacune l'air juste ; c'est leur désaccord qui coûte.
-    for (const palier of BUDGET_TIERS) {
-      expect(dinarsFromCents(String(centsFromDinars(palier)))).toBe(String(palier));
-    }
-  });
+  // FC-7 : le test de RÉCIPROCITÉ `centsFromDinars` ↔ `dinarsFromCents` est retiré avec `dinarsFromCents` (elle ne servait
+  // que le repli retiré). `centsFromDinars` reste confrontée au contrat de l'API, palier par palier, ci-dessus (`toApiQuery`).
 });
