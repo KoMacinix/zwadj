@@ -1,0 +1,14 @@
+FC-7 — tri différentiel de l'audit de secrets « fc7 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FC-7/audit-secrets-fc7.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 732 fichiers (84 217 368 octets),
+audités 4 594, exclus 138, alertes 1 015.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FC-6/audit-secrets-fc6.txt
+docs/preuves/front-client/FC-7/audit-secrets-fc7.txt — calibration à deux bras tenue. Précédente : 1 010 contextes ; nouvelle :
+1 015 ⇒ alertes ABSENTES de la précédente : 5 (jeton = 4 · mot-de-passe = 1), lues aux lignes 3234 à 3242 de la sortie scellée.
+  · [jeton] FC-6/rapport.md l. 80 et FC-6/tri-audit-fc6.txt l. 9 : deux phrases qui COMPTENT les « token= » restants (0) — écrites
+    après l'audit de FC-6 (limite écrite là-bas), elles entrent ici.
+  · [jeton] FC-7/portes/test-e2e.txt l. 1 : l'en-tête du pilote des portes, qui compte le paramètre de jeton restant (0).
+  · [mot-de-passe] et [jeton] FC-7/portes/test-int.txt : deux TITRES de tests d'intégration (oubli de mot de passe ; compte
+    supprimé « après émission » d'un jeton), la forme déjà triée par FC-1, FC-4, FC-5 et FC-6.
+Résultat du tri : 5 alertes lues, 0 valeur réelle. Limite écrite : ce fichier et rapport.md sont écrits après l'audit.
