@@ -42,3 +42,12 @@ Conditionnels : aucun. Aucune chaîne visible n'est ajoutée ⇒ aucune clé ara
 | 24 | `docs/preuves/front-client/FC-1/portes/resume.txt` | code de sortie et durée de chaque porte | 4 |
 
 Motif : la table d'ouverture prévoyait un `portes.md` de synthèse ; les journaux bruts que cette synthèse cite entrent au dépôt (D291).
+
+## Extension 2 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 25 | `docs/preuves/front-client/outils/controle-lot.py` | NEUF — le contrôle de fin de lot de la session (premier commit = table seule, extensions seules, rouges avant le code, diff ⊆ table ; calibré à chaque lancement) ; né avec ce lot, servi aux suivants | 4 |
+| 26 | `docs/preuves/front-client/FC-1/controle.txt` | sa sortie pour FC-1, avant le dernier commit | 4 |
+
+Motif : le contrôle de fin de lot se faisait à la main ; il devient un outil versé, rejouable (D286, D291).
