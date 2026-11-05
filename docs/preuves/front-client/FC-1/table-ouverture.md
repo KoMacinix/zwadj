@@ -27,3 +27,18 @@ test neuf et la référence a11y resserrée, avec leurs sorties lues contre l'é
 | 16 | `docs/preuves/front-client/FC-1/rapport.md` | le rapport du lot, avec le contrôle de fin de lot | 4 |
 
 Conditionnels : aucun. Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 17 | `docs/preuves/front-client/outils/portes.sh` | NEUF — le pilote des portes de la session (six portes dans l'ordre de `CLAUDE.md`, code de sortie lu PAR porte, journaux sans codes ANSI ; journal e2e versé sans ses lignes `[WebServer]`) ; né avec ce lot, servi aux suivants | 4 |
+| 18 | `docs/preuves/front-client/FC-1/portes/typecheck.txt` | journal de la porte | 4 |
+| 19 | `docs/preuves/front-client/FC-1/portes/lint.txt` | journal de la porte | 4 |
+| 20 | `docs/preuves/front-client/FC-1/portes/test.txt` | journal de la porte | 4 |
+| 21 | `docs/preuves/front-client/FC-1/portes/build.txt` | journal de la porte | 4 |
+| 22 | `docs/preuves/front-client/FC-1/portes/test-int.txt` | journal de la porte | 4 |
+| 23 | `docs/preuves/front-client/FC-1/portes/test-e2e.txt` | journal de la porte, sans lignes `[WebServer]` | 4 |
+| 24 | `docs/preuves/front-client/FC-1/portes/resume.txt` | code de sortie et durée de chaque porte | 4 |
+
+Motif : la table d'ouverture prévoyait un `portes.md` de synthèse ; les journaux bruts que cette synthèse cite entrent au dépôt (D291).
