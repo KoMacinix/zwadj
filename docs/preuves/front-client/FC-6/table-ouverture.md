@@ -92,3 +92,12 @@ portent des titres HORS de son libellé (F-6 « le prochain numéro … SUIT le 
 dans le même fichier, à la suite d'un `read ECONNRESET` — la cascade que `etat-entree.md` décrit. La règle de la session (« un
 rouge hors de ces tests de concurrence arrête la session ») se tranche par une MESURE, pas par un libellé : ce lot ne touche pas
 `apps/api`, et les deux fichiers sont rejoués seuls, sur son code.
+
+## Extension 3 — commitée SEULE, avant le fichier qu'elle déclare (le conditionnel « r30 sous CRLF simulé » s'est réalisé)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 49 | `docs/preuves/front-client/FC-6/crlf/r30.txt` | `neutralize-r30.py` joué sous CRLF simulé (le conditionnel de la table, réalisé : le tri a sélectionné r30) | 4 |
+
+Motif : le contrôle de fin de lot ne lit que les LIGNES de la table ; ce conditionnel était nommé, chemin complet, dans la prose
+sous la table — `controle.txt` l'a donc compté hors table. Il entre en ligne, comme l'exige la forme des extensions.
