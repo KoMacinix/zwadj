@@ -189,3 +189,29 @@ Lot : **le rang 44 continue — L36-3a-1, « la couche et son Manager », LE COD
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (04/11/2026, commitée SEULE, AVANT le commit des pièces de clôture qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D341/` aux chemins complets de cette table : dix-neuf fichiers hors table, tous des outils ou des sorties du harnais, de la mesure et des portes, dont le nombre dépendait des campagnes que le tri retient ; les journaux des quatre campagnes de l'union sont déclarés ICI, avant d'exister) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D341/mesure/mesurer.py` | l'orchestrateur de la mesure du coût du garde : alternance AVANT / APRÈS (A B A B A B), SHA-256 de `app.module.ts` vérifié avant et après, refuse de démarrer sur batterie ; PREUVE, jamais promue en instrument (D291) |
+| `docs/preuves/D341/carte-generer.py` | le générateur (DÉRIVÉ des fichiers, calibré à deux bras) de `carte-modes-de-defaillance.md` : les tests et les cibles qui nomment chaque mode MP-n ne sont jamais écrits à la main |
+| `docs/preuves/D341/portes/masquer-jetons.py` | la procédure qui a masqué les jetons de la sortie e2e (pièce MASQUÉE : le dépôt est public, D200) ; archivée à côté de la pièce qu'elle a produite |
+| `docs/preuves/D341/neutralisation/outils/fabriquer-r44.py` | fabrique `neutralisation/neutralize-r44.py` en LISANT le moteur dans `neutralize-r43.py` (aucune ligne du moteur n'est retapée) ; PREUVE de la fabrication |
+| `docs/preuves/D341/neutralisation/outils/precheck-r44.py` | simule SANS lancer de test l'arithmétique ancre/marqueur du moteur sur les fichiers réels (il a trouvé trois fautes avant la première morsure) ; calibré à deux bras |
+| `docs/preuves/D341/neutralisation/outils/remplir-titres-r44.py` | écrit le dictionnaire TITRES à partir du RELEVÉ de la découverte (jamais de mémoire, D275) ; calibré à deux bras |
+| `docs/preuves/D341/neutralisation/calculer-union.py` | calcule l'union des campagnes concernées en croisant le diff `<départ>..HEAD` avec les fichiers que lit chaque campagne : le tri de `lancer-campagnes.py` croise `HEAD`, or le code du lot est déjà commité (même logique, autre base) |
+| `docs/preuves/D341/neutralisation/union-sortie.txt` | l'union CALCULÉE et VERSÉE avant de jouer (D339) : la dernière ligne `UNION: …` est ce que `jouer-union.py` lit |
+| `docs/preuves/D341/neutralisation/jouer-union.py` | COPIE de celui de D339 (seuls les chemins, le dossier des journaux et la liste des campagnes jouées avec `--int` changent) |
+| `docs/preuves/D341/neutralisation/union-rapport.txt` | le rapport de `jouer-union.py` : par campagne, la sortie, les gardes mordues / muettes / non mesurées, la durée |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r44.txt` | la sortie ENTIÈRE de `neutralize-r44.py --int` (le harnais du lot) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r33.txt` | la sortie entière de `neutralize-r33.py --int` (campagne que le tri retient : elle lit les deux catalogues FR et AR) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r38.txt` | la sortie entière de `neutralize-r38.py` (retenue : elle lit le catalogue AR) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r39.txt` | la sortie entière de `neutralize-r39.py --int` (retenue : elle lit le catalogue AR) |
+| `docs/preuves/D341/neutralisation/decouverte/decouverte-1-unitaires.txt` | le relevé (R44_DECOUVERTE=1, mesures unitaires) AVANT les ajouts de tests : il montre les gardes que les tests ne mesuraient pas |
+| `docs/preuves/D341/neutralisation/decouverte/decouverte-2-unitaires-apres-correctifs.txt` | le même relevé, rejoué sur les 23 cibles qui n'avaient pas mordu, APRÈS les ajouts de tests |
+| `docs/preuves/D341/neutralisation/decouverte/decouverte-3-integration.txt` | le relevé des mesures d'INTÉGRATION (PostgreSQL réel) pour les 43 cibles que les unitaires ne jugent pas |
+| `docs/preuves/D341/neutralisation/decouverte/decouverte-4-integration-apres-correctifs.txt` | le même relevé, rejoué sur les 6 cibles restantes, APRÈS les ajouts de tests d'intégration |
+| `docs/preuves/D341/neutralisation/decouverte/decouverte-5-trois-cibles-de-source.txt` | le relevé des trois cibles de SOURCE ajoutées ensuite (S-33, S-34, K-18) |
+
+⚠ **Écart dit** : `docs/preuves/D341/mesure/vitest.mesure.config.ts`, déclaré à l'ouverture, **N'EST PAS PRODUIT**. `mesurer.py` copie le script de mesure dans `apps/api/test/int/` et emploie `vitest.config.int.ts` tel quel (hachage vérifié, copie retirée ensuite) : une configuration de plus aurait été un second moyen de jouer la même chose, et la résolution de `unplugin-swc` depuis `docs/` n'est pas garantie.
