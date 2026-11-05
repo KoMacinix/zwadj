@@ -1,0 +1,9 @@
+# HEAD 917b6dee84c6646102705d777d54641a6749970b · arbre : 6 entrée(s) non commitée(s) · 2026-11-05T15:59:31Z
+typecheck exit=0 duree=21s
+lint exit=0 duree=10s
+test exit=1 duree=80s
+build exit=0 duree=40s
+test:int exit=1 duree=323s
+test:e2e exit=0 duree=212s
+FINI · journaux bruts : /tmp/tmp.OjvwgppsPE
+# rejeu unique de la porte test (extension 2) : exit=0 — portes/test-rejeu.txt

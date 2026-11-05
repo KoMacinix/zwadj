@@ -1,0 +1,13 @@
+  calibration ✓ extracteur, positif : les deux chemins des lignes de table : True (attendu True)
+  calibration ✓ extracteur, négatif : le chemin cité en prose n'est PAS dans la table : False (attendu False)
+  calibration ✓ classement : un composant est du code de produit : True (attendu True)
+  calibration ✓ classement : un test n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une pièce n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une feuille de style est du code de produit : True (attendu True)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+lot FC-12 · départ 01f3c25 · HEAD d258394 · commits parcourus : 6
+✓ 1. premier commit = la table SEULE : dbb986a → ['docs/preuves/front-client/FC-12/table-ouverture.md']
+✓ 2. extensions de la table, chacune SEULE : 2 commit(s) examiné(s), 0 mêlé(s) à d'autres fichiers (attendu 0)
+✓ 3. rouges avant le code : premier commit de rouges 8ef4e79 (rang 1) · premier commit de code 917b6de (rang 4)
+✓ 4. diff ⊆ table : 27 fichier(s) examiné(s) (9 commités, 18 non commités) contre 27 chemin(s) de la table · hors table : 0 (attendu 0)
+  (information) chemins de la table absents du diff : 0

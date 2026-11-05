@@ -1,0 +1,492 @@
+# FC-12 — REJEU UNIQUE de la porte `test` (`pnpm test`, racine), même arbre que la première passe (HEAD d258394, code du lot commité) — code de sortie 0
+
+
+> zwadj@ test /home/user/zwadj
+> pnpm -r --workspace-concurrency=1 --no-bail run test
+
+Scope: 9 of 10 workspace projects
+
+> @zwadj/api-client@0.0.0 test /home/user/zwadj/packages/api-client
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/packages/api-client
+
+ ✓ src/account-client.test.ts (3 tests) 13ms
+ ✓ src/auth-client.test.ts (17 tests) 87ms
+ ✓ src/venue-client.test.ts (21 tests) 88ms
+ ✓ src/venue-families.test.ts (2 tests) 4ms
+ ✓ src/quotes-client.test.ts (11 tests) 7ms
+ ✓ src/clients-client.test.ts (5 tests) 4ms
+
+ Test Files  6 passed (6)
+      Tests  59 passed (59)
+   Start at  16:13:27
+   Duration  806ms (transform 314ms, setup 0ms, collect 534ms, tests 202ms, environment 1ms, prepare 578ms)
+
+
+> @zwadj/api@0.0.0 test /home/user/zwadj/apps/api
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/api
+
+ ✓ src/auth/password.service.spec.ts (2 tests) 120ms
+ ✓ src/documents/playwright-pdf.renderer.spec.ts (12 tests) 394ms
+ ✓ src/media/image-pipeline.spec.ts (6 tests) 441ms
+ ✓ src/venues/quote-store.prisma.spec.ts (58 tests) 58ms
+ ✓ src/auth/auth.service.spec.ts (34 tests) 80ms
+ ✓ src/common/quote-draft.spec.ts (32 tests) 32ms
+ ✓ src/documents/quote-document.spec.ts (61 tests) 82ms
+ ✓ src/venues/venues-public.service.spec.ts (25 tests) 37ms
+ ✓ src/account/account-deletion.service.spec.ts (14 tests) 26ms
+ ✓ src/venues/quotes.service.spec.ts (47 tests) 44ms
+ ✓ src/common/contact.spec.ts (49 tests) 25ms
+ ✓ src/account/account.service.spec.ts (16 tests) 34ms
+ ✓ src/common/e2e-api-sans-surveillance.spec.ts (3 tests) 27ms
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 7174  - 11/05/2026, 4:13:33 PM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>
+ ✓ src/payments/chargily.gateway.spec.ts (17 tests) 31ms
+ ✓ src/venues/quote-transitions.spec.ts (17 tests) 9ms
+ ✓ src/common/notifications/notification-dispatch.spec.ts (10 tests) 25ms
+ ✓ src/venues/availability-engine.spec.ts (18 tests) 17ms
+ ✓ src/documents/quote-document.service.spec.ts (17 tests) 55ms
+ ✓ src/media/disk-storage.adapter.spec.ts (5 tests) 36ms
+ ✓ src/common/phone.spec.ts (55 tests) 29ms
+ ✓ src/auth/google-auth.spec.ts (12 tests) 29ms
+ ✓ src/venues/venue-store.prisma.spec.ts (13 tests) 24ms
+ ✓ src/venues/visit-notifications.service.spec.ts (15 tests) 36ms
+ ✓ src/common/quote-reference.spec.ts (40 tests) 11ms
+ ✓ src/venues/availability-time.spec.ts (21 tests) 14ms
+ ✓ src/common/client-record.spec.ts (27 tests) 30ms
+ ✓ src/config/env.spec.ts (25 tests) 48ms
+ ✓ src/auth/jwt-auth.guard.spec.ts (12 tests) 29ms
+ ✓ src/venues/venue-media.service.spec.ts (11 tests) 34ms
+ ✓ src/auth/auth.schemas.spec.ts (15 tests) 9ms
+ ✓ src/venues/bookings.schemas.spec.ts (26 tests) 15ms
+ ✓ src/venues/booking-transitions.spec.ts (24 tests) 15ms
+ ✓ src/clients/pro-clients.service.spec.ts (19 tests) 17ms
+ ✓ src/venues/venues.service.spec.ts (9 tests) 18ms
+ ✓ src/venues/domain-events.spec.ts (8 tests) 14ms
+ ✓ src/health/health.controller.spec.ts (2 tests) 13ms
+ ✓ src/venues/quote-reference.spec.ts (29 tests) 8ms
+ ✓ src/payments/payments.service.spec.ts (11 tests) 15ms
+ ✓ prisma/seed-data/seed-data.spec.ts (8 tests) 39ms
+ ✓ src/venues/slug.spec.ts (6 tests) 9ms
+ ✓ src/venues/booking-charge.spec.ts (13 tests) 8ms
+ ✓ src/venues/venue-media.schemas.spec.ts (12 tests) 11ms
+ ✓ src/venues/venue-filters.schemas.spec.ts (9 tests) 10ms
+ ✓ src/venues/venues-admin.service.spec.ts (6 tests) 11ms
+ ✓ src/venues/booking-admission.spec.ts (15 tests) 5ms
+ ✓ src/venues/booking-notification-input.spec.ts (24 tests) 11ms
+ ✓ src/auth/password.service.dummy.spec.ts (4 tests) 6ms
+ ✓ src/venues/service-pricing.spec.ts (17 tests) 9ms
+ ✓ src/documents/html.spec.ts (8 tests) 7ms
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests) 7ms
+ ✓ src/common/i18n-parity.spec.ts (5 tests) 12ms
+ ✓ src/auth/token.service.spec.ts (4 tests) 6ms
+ ✓ src/auth/google-verifier.spec.ts (9 tests) 9ms
+ ✓ src/payments/payment-gateway.factory.spec.ts (7 tests) 4ms
+ ✓ src/venues/visit-slots-engine.spec.ts (13 tests) 9ms
+ ✓ src/auth/roles.guard.spec.ts (7 tests) 6ms
+ ✓ src/venues/booking-deadline.spec.ts (6 tests) 6ms
+ ✓ src/clients/pro-client-policy.spec.ts (17 tests) 11ms
+ ✓ src/payments/payment-store.prisma.spec.ts (8 tests) 13ms
+ ✓ src/venues/visit-bookings.schemas.spec.ts (6 tests) 16ms
+ ✓ src/payments/payment-intent.spec.ts (12 tests) 11ms
+ ✓ src/common/email/render.spec.ts (3 tests) 4ms
+ ✓ src/venues/pricing-engine.spec.ts (16 tests) 13ms
+ ✓ src/referentials/referentials.service.spec.ts (4 tests) 8ms
+ ✓ src/venues/deposit.spec.ts (9 tests) 4ms
+ ✓ src/venues/booking-window.spec.ts (7 tests) 10ms
+ ✓ src/documents/quote-document-policy.spec.ts (7 tests) 8ms
+ ✓ src/common/email/dev-logger.email.spec.ts (1 test) 3ms
+ ✓ src/venues/slot-templates.service.spec.ts (6 tests) 6ms
+ ✓ src/auth/auth-emails.service.spec.ts (3 tests) 2ms
+ ✓ src/common/whatsapp/dev-logger.whatsapp.spec.ts (1 test) 4ms
+
+ Test Files  71 passed (71)
+      Tests  1096 passed (1096)
+   Start at  16:13:28
+   Duration  13.38s (transform 2.35s, setup 0ms, collect 17.94s, tests 2.28s, environment 22ms, prepare 6.43s)
+
+
+> @zwadj/client@0.0.0 test /home/user/zwadj/apps/client
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ✓ src/components/search/search-view.test.tsx (44 tests) 2178ms
+ ✓ src/components/venue/venue-detail-view.test.tsx (28 tests) 2338ms
+ ✓ src/app/[locale]/page.test.tsx (29 tests) 1385ms
+ ✓ src/components/venue/booking-request-panel-langue.test.tsx (8 tests) 1576ms
+   ✓ FC-3 — en arabe, les noms viennent des champs ARABES > le créneau : « سهرة », jamais « Soirée »  344ms
+ ✓ src/components/venue/booking-request-panel.test.tsx (32 tests) 6944ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas  385ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif  480ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps  343ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > avec un e-mail, il est transmis tel quel  461ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique  304ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus  421ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message  317ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null)  375ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide  463ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > le numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente  338ms
+ ✓ src/components/venue/booking-request-panel-demande.test.tsx (7 tests) 1060ms
+ ✓ src/components/venue/availability-calendar.test.tsx (11 tests) 1033ms
+ ✓ src/components/filter-wizard.test.tsx (34 tests) 908ms
+ ✓ src/lib/phone-literal-guard.test.ts (4 tests) 564ms
+   ✓ L'indicatif d'un pays n'est écrit que dans le modèle de pays — jamais dans un composant > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un indicatif en dur (et la garde a PARCOURU de vrais fichiers)  543ms
+ ✓ src/components/venue/booking-request-panel-montants.test.tsx (5 tests) 1029ms
+   ✓ FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix du créneau  397ms
+ ✓ src/components/account/account-settings-view.test.tsx (10 tests) 533ms
+ ✓ src/components/auth/register-form.test.tsx (5 tests) 666ms
+ ✓ src/lib/intl-locale-guard.test.ts (4 tests) 709ms
+   ✓ FC-6 — la langue de la page passe à chaque formateur de date et de nombre > aucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul  654ms
+ ✓ src/components/auth/login-form.test.tsx (4 tests) 288ms
+ ✓ src/lib/contact-channel-guard.test.ts (7 tests) 647ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers)  612ms
+ ✓ src/components/auth/google-signin.test.tsx (7 tests) 512ms
+ ✓ src/components/lost-word-cloud.test.tsx (16 tests) 245ms
+ ✓ src/components/venue/visit-booking-panel.test.tsx (5 tests) 378ms
+ ✓ src/components/venue/booking-date-picker.test.tsx (11 tests) 479ms
+ ✓ src/components/site-nav.test.tsx (8 tests) 183ms
+ ✓ src/components/account/bookings-section.test.tsx (6 tests) 199ms
+ ✓ src/components/account/visit-bookings-section.test.tsx (6 tests) 173ms
+ ✓ src/app/[locale]/not-found.test.tsx (14 tests) 216ms
+ ✓ src/components/theme-toggle.test.tsx (6 tests) 110ms
+ ✓ src/components/ui-phone-field.test.tsx (4 tests) 143ms
+ ✓ src/components/locale-switch.test.tsx (3 tests) 87ms
+ ✓ src/lib/semaine-source-unique.test.ts (6 tests) 44ms
+ ✓ src/lib/booking-calendar.test.ts (16 tests) 22ms
+ ✓ src/lib/calendar.spec.ts (21 tests) 29ms
+ ✓ src/lib/intl-locale.test.ts (7 tests) 22ms
+ ✓ src/app/theme-contrast.test.ts (14 tests) 25ms
+ ✓ src/lib/search-query.test.ts (40 tests) 17ms
+ ✓ src/lib/availability-windows.test.ts (16 tests) 12ms
+ ✓ src/lib/routes.test.ts (8 tests) 12ms
+ ✓ src/lib/api.test.ts (8 tests) 9ms
+ ✓ src/lib/login-path-guard.test.ts (5 tests) 11ms
+ ✓ src/lib/seo.test.ts (11 tests) 17ms
+ ✓ src/lib/structured-data.test.ts (6 tests) 8ms
+ ✓ src/lib/nom-localise.test.ts (6 tests) 4ms
+ ✓ src/lib/adresses-guard.test.ts (5 tests) 10ms
+stderr | src/test-setup-calibration.test.ts > étalon du plafond de console (`test-setup.ts`) > émet exactement DEUX lignes de console — le compte sous lequel ce fichier est exempté
+étalon du plafond de console (FC-9) — ligne 1 sur 2, émise exprès
+étalon du plafond de console (FC-9) — ligne 2 sur 2, émise exprès
+
+ ✓ src/test-setup-calibration.test.ts (1 test) 4ms
+
+ Test Files  41 passed (41)
+      Tests  488 passed (488)
+   Start at  16:13:42
+   Duration  25.14s (transform 1.81s, setup 2.82s, collect 16.11s, tests 24.83s, environment 18.95s, prepare 3.97s)
+
+
+> @zwadj/pro@0.0.0 test /home/user/zwadj/apps/pro
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+stdout | src/venues/venue-form.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/photos-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/ma-salle-relecture.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000,5 » (virgule) refusé de la même façon
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Création — rejeu de validate() et mapping des erreurs API > CITY_NOT_FOUND → message porté par le champ Commune
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/photos-section.test.tsx (16 tests) 2383ms
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > le champ AFFICHE la valeur groupée + l'unité, mais ENVOIE bien 15000000 centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > D43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/venue-form.test.tsx (45 tests) 2933ms
+ ✓ src/venues/ma-salle-relecture.test.tsx (19 tests) 2969ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)  479ms
+stdout | src/venues/venue-wizard.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > ⚠ au succès, la salle EXISTE et l'assistant reprend à l'ÉTAPE 2 dans l'URL
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > un seul appel : jamais POST puis PATCH dans le même geste
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stdout | src/App.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — « Suivant » et la raison de son inactivité > ⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stdout | src/account/account-settings-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-wizard.test.tsx
+PLAFOND ABAISSABLE  "src/venues/venue-wizard.test.tsx": 3 observé(s) sous un plafond de 4. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/venues/venue-wizard.test.tsx (19 tests) 1514ms
+ ✓ src/App.test.tsx (18 tests) 1204ms
+ ✓ src/account/account-settings-page.test.tsx (31 tests) 1496ms
+stdout | src/venues/slots-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/blocks-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/pricing-rules-editor.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/slots-section.test.tsx (9 tests) 1403ms
+   ✓ Volet créneaux — D52, la fin est DÉDUITE > 20:00 → 02:00 part en endMinutes 1560, PAS 120 — le créneau que B1 avait interdit  321ms
+ ✓ src/venues/blocks-section.test.tsx (10 tests) 1170ms
+ ✓ src/venues/pricing-rules-editor.test.tsx (9 tests) 1225ms
+   ✓ Variantes de prix — lecture > l'ordre affiché est celui de la RÉSOLUTION : férié, puis jour, puis saison  324ms
+stdout | src/venues/services-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/create-venue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/create-venue-page.test.tsx (4 tests) 1079ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle  501ms
+ ✓ src/venues/services-section.test.tsx (8 tests) 1091ms
+ ✓ src/venues/venue-list.test.tsx (13 tests) 1076ms
+stdout | src/venues/quotes-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/edit-venue-save.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/shell/pro-venues-context.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/quotes-section.test.tsx (20 tests) 800ms
+ ✓ src/venues/edit-venue-save.test.tsx (6 tests) 726ms
+ ✓ src/shell/pro-venues-context.test.tsx (15 tests) 716ms
+stdout | src/dashboard/dashboard-aside.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/dashboard/dashboard-aside.test.tsx (10 tests) 581ms
+ ✓ src/routes.test.tsx (16 tests) 609ms
+ ✓ src/venues/calendar-link.test.tsx (3 tests) 461ms
+   ✓ Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-a, K-c : sa cible est une route DÉCLARÉE — la table de routes y rend le calendrier, et l'adresse reste  301ms
+stdout | src/venues/time-select.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/a3-unexpected-responses.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/time-select.test.tsx (11 tests) 267ms
+ ✓ src/venues/a3-unexpected-responses.test.tsx (12 tests) 282ms
+ ✓ src/ui-choice-dialog.test.tsx (9 tests) 234ms
+stdout | src/venues/booking-requests-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/calendar-source.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/booking-requests-section.test.tsx (11 tests) 304ms
+ ✓ src/venues/calendar-source.test.tsx (3 tests) 140ms
+ ✓ src/ui-phone-field.test.tsx (17 tests) 356ms
+stdout | src/venues/request-scope.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/confirm-dialog.test.tsx (9 tests) 314ms
+ ✓ src/venues/request-scope.test.tsx (5 tests) 195ms
+stdout | src/venues/visits-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/visits-section.test.tsx (6 tests) 181ms
+ ✓ src/auth/brand-loader.test.tsx (3 tests) 73ms
+ ✓ src/venues/intl-locale-pro.test.ts (3 tests) 29ms
+ ✓ src/venues/quote-amount.test.ts (5 tests) 129ms
+ ✓ src/venues/pro-calendar.spec.ts (21 tests) 31ms
+ ✓ src/dashboard/remittance.test.ts (13 tests) 23ms
+ ✓ src/venues/calendar-style.test.ts (26 tests) 14ms
+ ✓ src/dashboard/walkin-contact.test.ts (30 tests) 22ms
+ ✓ src/dashboard/walkin-client.test.ts (13 tests) 13ms
+ ✓ src/lib/reveal.test.ts (6 tests) 35ms
+ ✓ src/venues/layout-style.test.ts (8 tests) 8ms
+ ✓ src/venues/slot-time.spec.ts (10 tests) 6ms
+ ✓ src/venues/block-time.spec.ts (12 tests) 7ms
+ ✓ src/ui-tokens.test.ts (8 tests) 13ms
+ ✓ src/venues/venue-client-narrowing.test.ts (3 tests) 9ms
+ ✓ src/shell/venues-label.test.ts (3 tests) 6ms
+ ✓ src/dashboard/walkin-journey.test.tsx (158 tests) 39569ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré  334ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette  333ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse  355ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  361ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question  441ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite  344ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  345ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite  407ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus  306ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré  324ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge  346ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille  410ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien  367ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »  304ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)  324ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)  383ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit  336ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé  392ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`  372ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise  446ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre  301ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue  318ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran  394ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  1671ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  555ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF  357ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)  352ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  309ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé  379ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise  347ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)  306ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »  384ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1426ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  1299ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré  339ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements  395ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran  386ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  1277ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  792ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`  337ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois  304ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise  308ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  412ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)  357ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact  301ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom  322ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN  322ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée  302ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre  352ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit  322ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît  364ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms  389ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion  314ms
+
+ Test Files  43 passed (43)
+      Tests  676 passed (676)
+   Start at  16:14:08
+   Duration  42.56s (transform 2.37s, setup 3.77s, collect 22.83s, tests 65.69s, environment 21.02s, prepare 4.48s)
+
