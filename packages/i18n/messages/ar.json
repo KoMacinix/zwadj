@@ -662,6 +662,27 @@
       "unknownKey": "حقل غير معروف."
     }
   },
+  "staff": {
+    "errors": {
+      "sessionRequired": "يلزم فتح جلسة موظف: سجّل الدخول للمتابعة.",
+      "invalidCredentials": "اسم الحساب أو كلمة المرور غير صحيحة. بعد عدة محاولات فاشلة، يتم تعليق الاتصال لمدة 15 دقيقة.",
+      "alreadyActivated": "تم تفعيل إدارة الموظفين مسبقًا لهذه القاعة.",
+      "emailNotVerified": "تحقق من عنوان بريدك الإلكتروني قبل تفعيل إدارة الموظفين.",
+      "accountNameTaken": "اسم الحساب هذا مستخدم بالفعل في قاعتك.",
+      "passwordCommon": "كلمة المرور هذه شائعة جدًا: اختر كلمة أخرى.",
+      "passwordReused": "يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية.",
+      "currentPasswordInvalid": "كلمة المرور الحالية غير صحيحة."
+    },
+    "validation": {
+      "accountNameRequired": "اسم الحساب إلزامي.",
+      "accountNameTooShort": "يجب أن يتكون اسم الحساب من حرفين على الأقل.",
+      "accountNameTooLong": "لا يمكن أن يتجاوز اسم الحساب 40 حرفًا.",
+      "accountNameInvalid": "حروف وأرقام ومسافات ونقاط وشرطات وشرطات سفلية وفواصل عليا فقط.",
+      "passwordRequired": "كلمة المرور إلزامية.",
+      "currentPasswordRequired": "كلمة المرور الحالية إلزامية.",
+      "unknownKey": "حقل غير معروف."
+    }
+  },
   "venue": {
     "validation": {
       "addressTooLong": "العنوان طويل جدًا (300 حرف كحد أقصى).",

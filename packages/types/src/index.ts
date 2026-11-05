@@ -10,6 +10,8 @@ export * from "./phone";
 export * from "./money";
 export * from "./contact";
 export * from "./client-record";
+export * from "./staff-account-name";
+export * from "./staff";
 export * from "./account";
 export * from "./media";
 export * from "./referentials";

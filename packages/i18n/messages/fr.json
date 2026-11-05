@@ -662,6 +662,27 @@
       "unknownKey": "Champ inconnu."
     }
   },
+  "staff": {
+    "errors": {
+      "sessionRequired": "Une session de personnel est requise : identifiez-vous pour continuer.",
+      "invalidCredentials": "Nom de compte ou mot de passe incorrect. Après plusieurs échecs, la connexion est suspendue 15 minutes.",
+      "alreadyActivated": "La gestion du personnel est déjà activée pour cette salle.",
+      "emailNotVerified": "Vérifiez votre adresse e-mail avant d'activer la gestion du personnel.",
+      "accountNameTaken": "Ce nom de compte est déjà utilisé dans votre salle.",
+      "passwordCommon": "Ce mot de passe est trop courant : choisissez-en un autre.",
+      "passwordReused": "Le nouveau mot de passe doit être différent de l'actuel.",
+      "currentPasswordInvalid": "Le mot de passe actuel est incorrect."
+    },
+    "validation": {
+      "accountNameRequired": "Le nom de compte est obligatoire.",
+      "accountNameTooShort": "Le nom de compte doit comporter au moins 2 caractères.",
+      "accountNameTooLong": "Le nom de compte ne peut pas dépasser 40 caractères.",
+      "accountNameInvalid": "Lettres, chiffres, espaces, points, tirets, tirets bas et apostrophes uniquement.",
+      "passwordRequired": "Le mot de passe est obligatoire.",
+      "currentPasswordRequired": "Le mot de passe actuel est obligatoire.",
+      "unknownKey": "Champ inconnu."
+    }
+  },
   "venue": {
     "validation": {
       "addressTooLong": "L'adresse est trop longue (300 caractères maximum).",
