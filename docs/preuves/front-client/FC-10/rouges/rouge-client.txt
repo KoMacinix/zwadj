@@ -1,0 +1,144 @@
+# FC-10 — ROUGE (client, unitaire), lu contre l'état d'AVANT (seo.ts sans les fonctions), session front-client, 05/11/2026
+# HEAD au moment de la mesure : cccd6718c3f74c0ae2e87786c2aeeb9de602c907 (test non commité ; code d'avant)
+# commande : (apps/client) npx vitest run src/lib/structured-data.test.ts — code de sortie 1
+# sha256 apps/client/src/lib/structured-data.test.ts : 8881ee5e0973312319b0e81355ab15805a43326773a59b6524b0d3591f9cb934
+# lecture : 5 échecs sur 6, tous AssertionError (les fonctions sont lues PAR LEUR NOM dans le module : absentes, `undefined`) ; le 6e, « AUCUN prix », passe À VIDE avant le code (un objet absent n'a pas de prix) — bras de calibration, mordu par la cible S-3 du harnais.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/structured-data.test.ts (6 tests | 5 failed) 23ms
+   × FC-10 — les fonctions existent > `venueStructuredData` et `jsonLdScript` 12ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > français : nom, accroche, adresse, capacité, photo absolue, position, URL canonique 4ms
+     → expected undefined to deeply equal { …(9) }
+   × FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > arabe : les champs ARABES — jamais le français en repli silencieux 1ms
+     → expected undefined to be 'قاعة الرياض' // Object.is equality
+   ✓ FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > ⛔ AUCUN prix : le serveur rend des centimes, pas un prix tel quel 1ms
+   × FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > un champ absent n'est pas inventé : ni accroche, ni rue, ni photo, ni position 1ms
+     → expected undefined to be false // Object.is equality
+   × FC-10 — ⛔ le JSON-LD ne peut pas fermer sa balise (les textes viennent du pro) > un nom qui contient `</script>` sort échappé, et le JSON relu est IDENTIQUE 2ms
+     → expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/structured-data.test.ts > FC-10 — les fonctions existent > `venueStructuredData` et `jsonLdScript`
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/lib/structured-data.test.ts:37:40
+     35| describe("FC-10 — les fonctions existent", () => {
+     36|   it("`venueStructuredData` et `jsonLdScript`", () => {
+     37|     expect(typeof venueStructuredData).toBe("function");
+       |                                        ^
+     38|     expect(typeof jsonLdScript).toBe("function");
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/lib/structured-data.test.ts > FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > français : nom, accroche, adresse, capacité, photo absolue, position, URL canonique
+AssertionError: expected undefined to deeply equal { …(9) }
+
+- Expected: 
+{
+  "@context": "https://schema.org",
+  "@type": "EventVenue",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "DZ",
+    "addressLocality": "Alger",
+    "streetAddress": "12 rue des Oliviers, Bab Ezzouar",
+  },
+  "description": "Au bord de la mer",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 36.72,
+    "longitude": 3.18,
+  },
+  "image": [
+    "https://zwadj.dz/media/p1.webp",
+  ],
+  "maximumAttendeeCapacity": 450,
+  "name": "Salle El Ryad",
+  "url": "https://zwadj.dz/fr/salles/salle-el-ryad",
+}
+
++ Received: 
+undefined
+
+ ❯ src/lib/structured-data.test.ts:45:15
+     43|   it("français : nom, accroche, adresse, capacité, photo absolue, posi…
+     44|     const d = venueStructuredData?.(SALLE, "fr", URL_FICHE, absolu);
+     45|     expect(d).toEqual({
+       |               ^
+     46|       "@context": "https://schema.org",
+     47|       "@type": "EventVenue",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/lib/structured-data.test.ts > FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > arabe : les champs ARABES — jamais le français en repli silencieux
+AssertionError: expected undefined to be 'قاعة الرياض' // Object.is equality
+
+- Expected: 
+"قاعة الرياض"
+
++ Received: 
+undefined
+
+ ❯ src/lib/structured-data.test.ts:60:21
+     58|   it("arabe : les champs ARABES — jamais le français en repli silencie…
+     59|     const d = venueStructuredData?.(SALLE, "ar", URL_FICHE, absolu);
+     60|     expect(d?.name).toBe(SALLE.nameAr);
+       |                     ^
+     61|     expect(d?.description).toBe(SALLE.taglineAr);
+     62|     expect((d?.address as Record<string, unknown> | undefined)?.addres…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/lib/structured-data.test.ts > FC-10 — une fiche se décrit en `EventVenue`, dans la langue de la page > un champ absent n'est pas inventé : ni accroche, ni rue, ni photo, ni position
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected: 
+false
+
++ Received: 
+undefined
+
+ ❯ src/lib/structured-data.test.ts:75:37
+     73|     const nue = { ...SALLE, taglineFr: null, address: null, districtFr…
+     74|     const d = venueStructuredData?.(nue, "fr", URL_FICHE, absolu);
+     75|     expect(d && "description" in d).toBe(false);
+       |                                     ^
+     76|     expect(d && "image" in d).toBe(false);
+     77|     expect(d && "geo" in d).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/lib/structured-data.test.ts > FC-10 — ⛔ le JSON-LD ne peut pas fermer sa balise (les textes viennent du pro) > un nom qui contient `</script>` sort échappé, et le JSON relu est IDENTIQUE
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/lib/structured-data.test.ts:88:30
+     86|     const texte = jsonLdScript?.(donnees) ?? "";
+     87|     // Un texte VIDE se dit en assertion (sans quoi `JSON.parse("")` p…
+     88|     expect(texte.length > 0).toBe(true);
+       |                              ^
+     89|     expect(texte.includes("<")).toBe(false);
+     90|     expect(texte.includes(">")).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  14:34:30
+   Duration  742ms (transform 78ms, setup 86ms, collect 32ms, tests 23ms, environment 353ms, prepare 66ms)
+
+code=1
