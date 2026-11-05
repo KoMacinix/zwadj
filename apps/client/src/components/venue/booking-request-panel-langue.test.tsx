@@ -58,8 +58,11 @@ function fetchDouble() {
   );
 }
 
-const base = { venueId: "v1", descriptionFr: null, descriptionAr: null, isActive: true, fixedPriceCents: null, perGuestPriceCents: null,
-  perUnitPriceCents: null, unitNameFr: null, unitNameAr: null, minUnits: null, maxUnits: null, tiers: [] } as const;
+/** Le tronc commun d'une prestation, TYPÉ par le contrat (`ServiceDTO`) : un `as const` rendait `tiers` en lecture seule, et le
+ *  fichier ne compilait pas — vitest transpile sans typer (AGENTS.md). */
+const base: Omit<ServiceDTO, "id" | "sortOrder" | "nameFr" | "nameAr" | "pricingType"> = { venueId: "v1", descriptionFr: null,
+  descriptionAr: null, isActive: true, fixedPriceCents: null, perGuestPriceCents: null, perUnitPriceCents: null, unitNameFr: null,
+  unitNameAr: null, minUnits: null, maxUnits: null, tiers: [] };
 const PRESTATIONS: ServiceDTO[] = [
   { ...base, id: "p1", sortOrder: 0, nameFr: "Traiteur", nameAr: "ممون الحفلات", pricingType: ServicePricingType.FIXED, fixedPriceCents: 5_000_000 },
   { ...base, id: "p2", sortOrder: 1, nameFr: "Tables rondes", nameAr: "طاولات مستديرة", pricingType: ServicePricingType.PER_UNIT,
