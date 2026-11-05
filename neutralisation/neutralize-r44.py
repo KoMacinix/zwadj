@@ -188,7 +188,7 @@ cible("P-9. ⛔ l'inactivité n'écrit plus la fin IDLE", POLITIQUE,
       '  if (probe.idle) return { reason: "idle", endWith: StaffSessionEndReason.IDLE };', '  if (probe.idle) return { reason: "idle", endWith: null };', ["politique"])
 cible("P-10. ⛔ une session VIVANTE est classée « inactive » au lieu de LEVER (l'appelant écrirait IDLE sur une session vivante)", POLITIQUE,
       "  throw new SessionNotRefusedError();", '  return { reason: "idle", endWith: StaffSessionEndReason.IDLE };', ["politique"])
-cible("P-11. ⛔ R-3 — pendant la PAUSE (tentative non réservée) le VRAI hachage est vérifié", POLITIQUE,
+cible("P-11. ⛔ R-3 / MP-17 — pendant la PAUSE (tentative non réservée) le VRAI hachage est vérifié", POLITIQUE,
       '  return input.memberFound && input.memberActive && input.reserved ? "real" : "dummy";', '  return input.memberFound && input.memberActive ? "real" : "dummy";', ["politique"])
 cible("P-12. ⛔ un membre DÉSACTIVÉ paie le vrai hachage", POLITIQUE,
       '  return input.memberFound && input.memberActive && input.reserved ? "real" : "dummy";', '  return input.memberFound && input.reserved ? "real" : "dummy";', ["politique"])
@@ -244,6 +244,8 @@ cible("K-15. ⛔ la forme d'un jeton n'est plus de 43 caractères", COOKIES,
       "const JETON = /^[A-Za-z0-9_-]{43}$/;", "const JETON = /^[A-Za-z0-9_-]{1,}$/;", ["cookies"])
 cible("K-16. ⛔ le suffixe d'un nom de cookie n'est plus de 8 caractères", COOKIES,
       "const SUFFIXE = /^[A-Za-z0-9_-]{8}$/;", "const SUFFIXE = /^[A-Za-z0-9_-]{1,}$/;", ["cookies"])
+cible("K-18. ⛔ MP-43 — une durée écrite EN DUR s'introduit dans le module des cookies (un second levier de la durée)", COOKIES,
+      "const MS_PAR_JOUR = 24 * 60 * 60 * 1000;", "const MS_PAR_JOUR = 24 * 60 * 60 * 1000;\nexport const DUREE_EN_DUR = 15 * 60_000;", ["sources"], genre="insertion")
 cible("K-17. ⛔ le préfixe des cookies d'appareil change (la lecture ne retrouve plus ce que la pose a écrit)", COOKIES,
       'export const STAFF_DEVICE_COOKIE_PREFIX = "zwadj_dv_";', 'export const STAFF_DEVICE_COOKIE_PREFIX = "zwadj_dd_";', ["cookies", "int-activation"])
 
@@ -310,6 +312,10 @@ cible("S-30. ⛔ MP-23 — « e-mail non vérifié » répond 409 au lieu de 403
       "      return new ForbiddenException(erreurDe(StaffErrorCode.STAFF_EMAIL_NOT_VERIFIED));", "      return new ConflictException(erreurDe(StaffErrorCode.STAFF_EMAIL_NOT_VERIFIED));", ["service"])
 cible("S-31. ⛔ « nom déjà pris » répond 400 au lieu de 409", SERVICE,
       "      return new ConflictException(erreurDe(StaffErrorCode.STAFF_ACCOUNT_NAME_TAKEN));", "      return new BadRequestException(erreurDe(StaffErrorCode.STAFF_ACCOUNT_NAME_TAKEN));", ["service"])
+cible("S-33. ⛔ MP-41 — une HORLOGE de l'API s'introduit dans le service du personnel (le temps se décide dans la base)", SERVICE,
+      "    const passwordHash = await this.passwords.hash(input.password);", "    const maintenant = new Date();\n    const passwordHash = await this.passwords.hash(input.password);", ["sources"], genre="insertion")
+cible("S-34. ⛔ MP-11 — le service du personnel écrit dans le JOURNAL (un mot de passe pourrait y arriver)", SERVICE,
+      "    const opened = await this.store.openSession({", "    console.log(input.password);\n    const opened = await this.store.openSession({", ["sources"], genre="insertion")
 cible("S-32. ⛔ un PRO sans profil reçoit un 409 au lieu de la réponse « interdit » de l'API", SERVICE,
       '      return new ForbiddenException({ code: AuthErrorCode.FORBIDDEN, message: "auth.errors.forbidden" });', '      return new ConflictException({ code: AuthErrorCode.FORBIDDEN, message: "auth.errors.forbidden" });', ["service"])
 
@@ -343,7 +349,7 @@ cible("A-13. ⛔ MP-43 — l'échéance du mot de passe de l'activation n'est pl
       "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int))", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int))", ["magasin", "int-activation"])
 cible("A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles", MAGASIN,
       "      where: { proProfileId, accountNameKey },", "      where: { accountNameKey },", ["magasin", "int-connexion"])
-cible("A-15. ⛔ MP-16 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)", MAGASIN,
+cible("A-15. ⛔ MP-16 / MP-17 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)", MAGASIN,
       "password_locked_until <= now())\n           FOR UPDATE", "password_locked_until <= now())\n           -- sans verrou", ["magasin"])
 cible("A-16. ⛔ MP-4 — la réservation compte aussi sur un membre DÉSACTIVÉ", MAGASIN,
       "AND status = 'ACTIVE'\n           AND (password_locked_until IS NULL OR", "AND status IN ('ACTIVE', 'DISABLED')\n           AND (password_locked_until IS NULL OR", ["magasin", "int-connexion"])
@@ -623,7 +629,7 @@ cible("M-17. ⛔ un membre naît DÉSACTIVÉ par défaut", MIGRATION,
       "\"StaffStatus\"  NOT NULL DEFAULT 'ACTIVE',", "\"StaffStatus\"  NOT NULL DEFAULT 'DISABLED',", ["int-schema"])
 cible("M-18. ⛔ un membre naît avec le changement de mot de passe obligatoire", MIGRATION,
       '"must_change_password"  boolean        NOT NULL DEFAULT false,', '"must_change_password"  boolean        NOT NULL DEFAULT true,', ["int-schema"])
-cible("M-19. ⛔ MP-35 — la migration ALLUME la couche de toute salle existante (le drapeau naît avec un défaut)", MIGRATION,
+cible("M-19. ⛔ MP-35 / MP-38 — la migration ALLUME la couche de toute salle existante (le drapeau naît avec un défaut) : la base NON VIDE la traverse inchangée", MIGRATION,
       'ADD COLUMN "staff_layer_enabled_at" timestamptz(6);', 'ADD COLUMN "staff_layer_enabled_at" timestamptz(6) DEFAULT now();', ["int-migration"])
 cible("M-20. ⛔ le journal n'est plus indexé par auteur-membre sous le nom attendu", MIGRATION,
       'CREATE INDEX "audit_logs_actor_member_id_idx"', 'CREATE INDEX "audit_logs_actor_member_idx"', ["int-schema"])
@@ -742,6 +748,7 @@ TITRES: dict[str, str] = {
     "K-15|cookies": "readSessionCookie > rend `undefined` pour une valeur absente, trop courte, trop longue, mal formée ou qui n'es",
     "K-16|cookies": "staffDeviceCookieName > refuse un suffixe qui n'est pas de 8 caractères base64url (un nom de cookie ne se cons",
     "K-17|cookies": "noms et chemins > la session est `zwadj_ss` sur `/api/v1` ; l'appareil `zwadj_dv_<suffixe>` sur `/api/v1/pro/s",
+    "K-18|sources": "les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `S",
     "L-1|sources": "le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGua",
     "L-2|sources": "le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré",
     "L-3|sources": "le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`A",
@@ -845,6 +852,8 @@ TITRES: dict[str, str] = {
     "S-30|service": "activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIE",
     "S-31|service": "activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIE",
     "S-32|service": "activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIE",
+    "S-33|sources": "les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se dé",
+    "S-34|sources": "les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : u",
     "T-1|contrat": "STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session",
     "T-2|contrat": "STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session",
     "T-3|contrat": "STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session",
