@@ -24,7 +24,8 @@ test("fr — `/salles?guide=guests` ouvre l'assistant par-dessus les résultats 
   await expect(boite).toBeVisible();
   await expect(boite.locator("#wz-question")).toHaveText(fr.wizard.qGuests);
 
-  await boite.getByLabel(fr.wizard.stepGuests).fill("250");
+  // `exact` : la carte est nommée par sa question (« Combien d'invités ? ») — sans lui, deux éléments répondent.
+  await boite.getByLabel(fr.wizard.stepGuests, { exact: true }).fill("250");
   await boite.getByRole("button", { name: fr.wizard.continue }).click();
   await expect(page).toHaveURL(/[?&]guide=budget(&|$)/);
   await expect(page).toHaveURL(/[?&]guests=250(&|$)/);

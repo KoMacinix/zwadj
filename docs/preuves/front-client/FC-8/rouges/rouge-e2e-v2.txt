@@ -1,0 +1,211 @@
+# FC-8 — ROUGE (e2e) REJOUÉ (v2), contre l'état d'AVANT, après la correction du sélecteur (getByLabel exact) — session front-client, 05/11/2026
+# HEAD au moment de la mesure : 4bb9a77d3d53130f0b8feac8fa873bb3462cb425 (code du lot mis de côté par git stash ; la page /assistant rétablie depuis HEAD ; spec livrée)
+# commande : (e2e) PLAYWRIGHT_BROWSERS_PATH=<shim> npx playwright test fc8-mode-guide — code de sortie 1
+# sha256 e2e/specs/fc8-mode-guide.e2e.ts : 8741173c34246a0485f767d0a5004e7b671744e0bbe074fb9481d4880c2ae1f6
+# journal brut hors dépôt : sha256 4b0e26ec5050788161f572007aa2df8f91678cbbfdfec6323b3e668bfe6040a8 · lignes [WebServer] retirées
+# lecture : même rouge que la v1 — 2 échecs par assertions web-first (le parcours guidé, l'entrée arabe), 2 bras de calibration verts. ⚠ Un premier rejeu de la v2 avait mis de côté la retouche du test avec le code (git stash sans chemins) : il a tourné sur l'ANCIENNE spec, il n'est pas versé ; celui-ci ne met de côté que le code.
+
+
+> @zwadj/api@0.0.0 prisma:migrate /home/user/zwadj/apps/api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+32 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 5 tests using 1 worker
+
+  ✓  1 [warmup] › specs/warmup.setup.ts:57:5 › préchauffe les routes des deux applications (17.7s)
+  ✘  2 [chromium] › specs/fc8-mode-guide.e2e.ts:21:5 › fr — `/salles?guide=guests` ouvre l'assistant par-dessus les résultats ; chaque réponse pousse l'URL ; « Voir les salles » le ferme (9.0s)
+  ✓  3 [chromium] › specs/fc8-mode-guide.e2e.ts:42:5 › fr — une valeur INCONNUE de `guide` n'ouvre rien (D230) : la page de résultats seule (2.0s)
+  ✓  4 [chromium] › specs/fc8-mode-guide.e2e.ts:52:5 › fr — sans JavaScript, le HTML servi de `/salles?guide=city` ne porte AUCUN panneau, et porte le formulaire de recherche (291ms)
+  ✘  5 [chromium] › specs/fc8-mode-guide.e2e.ts:60:5 › ar — « Li hwas lqa » de l'accueil ouvre l'assistant à la commune, en arabe (9.2s)
+
+
+  1) [chromium] › specs/fc8-mode-guide.e2e.ts:21:5 › fr — `/salles?guide=guests` ouvre l'assistant par-dessus les résultats ; chaque réponse pousse l'URL ; « Voir les salles » le ferme 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('dialog')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('dialog')
+
+
+      22 |   await page.goto(`${CLIENT}/fr/salles?guide=guests`);
+      23 |   const boite = page.getByRole("dialog");
+    > 24 |   await expect(boite).toBeVisible();
+         |                       ^
+      25 |   await expect(boite.locator("#wz-question")).toHaveText(fr.wizard.qGuests);
+      26 |
+      27 |   // `exact` : la carte est nommée par sa question (« Combien d'invités ? ») — sans lui, deux éléments répondent.
+        at /home/user/zwadj/e2e/specs/fc8-mode-guide.e2e.ts:24:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fc8-mode-guide.e2e.ts-fr-—-ad2a9--Voir-les-salles-»-le-ferme-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/fc8-mode-guide.e2e.ts-fr-—-ad2a9--Voir-les-salles-»-le-ferme-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/fc8-mode-guide.e2e.ts-fr-—-ad2a9--Voir-les-salles-»-le-ferme-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs/fc8-mode-guide.e2e.ts:60:5 › ar — « Li hwas lqa » de l'accueil ouvre l'assistant à la commune, en arabe 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /\/ar\/salles\?guide=city$/
+    Received string:  "http://localhost:3100/ar/assistant"
+    Call log:
+      - expect.toHaveURL with timeout 7000ms
+      - waiting for locator(':root')
+        7 × locator resolved to <html lang="ar" dir="rtl">…</html>
+          - unexpected value "http://localhost:3100/ar"
+        3 × locator resolved to <html lang="ar" dir="rtl">…</html>
+          - unexpected value "http://localhost:3100/ar/assistant"
+
+
+      61 |   await page.goto(`${CLIENT}/ar`);
+      62 |   await page.getByRole("link", { name: ar.home.search.assistant }).click();
+    > 63 |   await expect(page).toHaveURL(/\/ar\/salles\?guide=city$/);
+         |                      ^
+      64 |   await expect(page.getByRole("dialog").locator("#wz-question")).toHaveText(ar.wizard.qCity);
+      65 | });
+      66 |
+        at /home/user/zwadj/e2e/specs/fc8-mode-guide.e2e.ts:63:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fc8-mode-guide.e2e.ts-ar-—-9c5f5-stant-à-la-commune-en-arabe-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/fc8-mode-guide.e2e.ts-ar-—-9c5f5-stant-à-la-commune-en-arabe-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/fc8-mode-guide.e2e.ts-ar-—-9c5f5-stant-à-la-commune-en-arabe-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs/warmup.setup.ts (17.7s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  2 failed
+    [chromium] › specs/fc8-mode-guide.e2e.ts:21:5 › fr — `/salles?guide=guests` ouvre l'assistant par-dessus les résultats ; chaque réponse pousse l'URL ; « Voir les salles » le ferme 
+    [chromium] › specs/fc8-mode-guide.e2e.ts:60:5 › ar — « Li hwas lqa » de l'accueil ouvre l'assistant à la commune, en arabe 
+  3 passed (1.2m)
+
+To open last HTML report run:
+
+  npx playwright show-report
+
