@@ -1,0 +1,13 @@
+  calibration ✓ extracteur, positif : les deux chemins des lignes de table : True (attendu True)
+  calibration ✓ extracteur, négatif : le chemin cité en prose n'est PAS dans la table : False (attendu False)
+  calibration ✓ classement : un composant est du code de produit : True (attendu True)
+  calibration ✓ classement : un test n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une pièce n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une feuille de style est du code de produit : True (attendu True)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+lot FC-8 · départ a2d96f0 · HEAD 8fa1413 · commits parcourus : 12
+✓ 1. premier commit = la table SEULE : 483a6b8 → ['docs/preuves/front-client/FC-8/table-ouverture.md']
+✓ 2. extensions de la table, chacune SEULE : 5 commit(s) examiné(s), 0 mêlé(s) à d'autres fichiers (attendu 0)
+✓ 3. rouges avant le code : premier commit de rouges 7cbb976 (rang 1) · premier commit de code 8fa1413 (rang 11)
+✓ 4. diff ⊆ table : 48 fichier(s) examiné(s) (25 commités, 23 non commités) contre 48 chemin(s) de la table · hors table : 0 (attendu 0)
+  (information) chemins de la table absents du diff : 0

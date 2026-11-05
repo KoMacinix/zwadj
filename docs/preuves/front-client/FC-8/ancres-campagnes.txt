@@ -1,0 +1,61 @@
+FC-8 — relevé STATIQUE des ancres des 14 campagnes que le tri sélectionne (`lancer-campagnes.py --liste`, dont `neutralize-fc8.py`,
+le harnais du lot) et de `neutralize-e3d1-s8.py` (que le tri ne sélectionne pas, ses cibles S8 étant devenues muettes par ce lot),
+par l'instrument versionné `docs/preuves/front-client/outils/releve-ancres.py` (calibré, rejoué ci-dessous), APRÈS le code du lot et
+APRÈS les réorientations (extension 1), AVANT de jouer les campagnes. AVANT les réorientations, le même instrument rendait 3 ancres
+PÉRIMÉES par ce lot : available-on 7 (apps/client/src/lib/seo.ts ×0), maxprice M3 et M4 (apps/client/src/components/filter-wizard.tsx ×0).
+⚠ Une première version de cette pièce omettait `fc8` (13 campagnes + e3d1-s8) : rejouée avec lui avant le commit, 11/11 examinées.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+available-on   listées  10 · examinées  10 (avec ancre 10, sans ancre 0) · non reconnues 0 · écarts 2
+     6. `availableOn` cesse d'être transmis à l'API | apps/client/src/lib/search-query.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+     7. La règle SEO ne voit plus la pagination comme une variante | apps/client/src/lib/seo.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+b7             listées   3 · examinées   3 (avec ancre 3, sans ancre 0) · non reconnues 0 · écarts 0
+fc1            listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+fc2            listées   1 · examinées   1 (avec ancre 1, sans ancre 0) · non reconnues 0 · écarts 0
+fc5            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+fc7            listées   2 · examinées   2 (avec ancre 2, sans ancre 0) · non reconnues 0 · écarts 0
+fc8            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+horizon        listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 1
+     H6. Une PANNE emprunte le message de date : `unreachable` tombe  | apps/client/src/components/search/search-view.tsx | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+journey        listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+maxprice       listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+r25            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+r33            listées  95 · examinées  95 (avec ancre 95, sans ancre 0) · non reconnues 0 · écarts 0
+r38            listées  46 · examinées  46 (avec ancre 46, sans ancre 0) · non reconnues 0 · écarts 0
+r39            listées  51 · examinées  51 (avec ancre 51, sans ancre 0) · non reconnues 0 · écarts 0
+e3d1-s8        listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 15 (illisibles : 0, attendu 0) · cibles listées : 274 · examinées : 274 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 3 ancre(s) CRLF EN DUR (environnement)
+
+
+# ── APRÈS LE COMPLÉMENT (extension 4 : le panneau branché sur `useDismissLayer`, cible G-12) — le même instrument, sur les
+# campagnes qui lisent `filter-wizard.tsx` ou son test, et celles rejouées avec `--e2e` (fc1, fc2), AVANT leurs rejeux.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+fc8            listées  12 · examinées  12 (avec ancre 12, sans ancre 0) · non reconnues 0 · écarts 0
+journey        listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+maxprice       listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+e3d1-s8        listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 0
+r32            listées  65 · examinées  65 (avec ancre 65, sans ancre 0) · non reconnues 0 · écarts 0
+fc1            listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+fc2            listées   1 · examinées   1 (avec ancre 1, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 7 (illisibles : 0, attendu 0) · cibles listées : 105 · examinées : 105 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 0 ancre(s) CRLF EN DUR (environnement)

@@ -86,13 +86,15 @@ MESURES = {
     "course": (_int("test/int/payment-intent-race.int-spec.ts"), "int"),
     # ⚠ UN FICHIER EXEMPTÉ, sinon le plafond ne s'applique pas et les cibles
     # S8 resteraient vertes quoi qu'on neutralise.
-    "plafond": (["pnpm", "--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/filter-wizard.test.tsx"], "unit"),
+    # ⚠ MESURE DÉPLACÉE (session `front-client`, FC-8) : `filter-wizard.test.tsx` n'émet plus AUCUN avertissement `act` (l'assistant
+    # réécrit n'a plus d'effet asynchrone) — un plafond y deviendrait muet. `venue-detail-view.test.tsx` en émet encore.
+    "plafond": (["pnpm", "--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/venue/venue-detail-view.test.tsx"], "unit"),
     # ⚠ LA MÊME MESURE, MAIS EN MODE RELEVÉ. Elle sert à une seule cible :
     # prouver qu'une variable oubliée dans le shell ne peut PAS passer pour une
     # porte franchie. Elle doit être ROUGE en régime nominal — c'est la seule
     # mesure du dépôt dont le pré-vol serait faux, donc elle est déclarée
     # « hors pré-vol » et jugée à l'envers.
-    "releve": ([_avec_releve, "--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/filter-wizard.test.tsx"], "inverse"),
+    "releve": ([_avec_releve, "--filter", "@zwadj/client", "exec", "vitest", "run", "src/components/venue/venue-detail-view.test.tsx"], "inverse"),
 }
 
 CIBLES = [
@@ -150,11 +152,11 @@ CIBLES = [
         # ⚠ ON DÉPLACE LE PLAFOND, PAS LE `if`. Désactiver la comparaison ne
         # prouve rien : plafond relevé = compte observé, donc AUCUNE des deux
         # branches ne se déclenche en régime nominal et la cible serait restée
-        # verte en annonçant le contraire. Ici le fichier produit 3
-        # avertissements sous un plafond de 1 : la suite DOIT tomber.
+        # verte en annonçant le contraire. Ici le fichier produit ses avertissements (FC-8 : `venue-detail-view.test.tsx`, au
+        # plafond de 100 relevé) sous un plafond de 1 : la suite DOIT tomber.
         SETUP_CLIENT,
-        '  "src/components/filter-wizard.test.tsx": 3,',
-        '  "src/components/filter-wizard.test.tsx": 1,',
+        '  "src/components/venue/venue-detail-view.test.tsx": 100,',
+        '  "src/components/venue/venue-detail-view.test.tsx": 1,',
         1,
         ["plafond"],
     ),
@@ -164,7 +166,7 @@ CIBLES = [
         # le plafond ne fait plus tomber — la mesure flotte, voir l'entête de
         # `test-setup.ts` — donc neutraliser cette branche serait resté VERT en
         # annonçant le contraire. Ce qui porte la charge est ailleurs : la
-        # recherche d'exemption. Coupée, `filter-wizard.test.tsx` redevient un
+        # recherche d'exemption. Coupée, `venue-detail-view.test.tsx` (FC-8) redevient un
         # fichier ordinaire et ses avertissements le font tomber dans
         # `afterEach`. Si ça ne rougit pas, c'est que la garde de base ne
         # fonctionne plus du tout.
@@ -181,8 +183,8 @@ CIBLES = [
         # et c'est précisément celle qui empêche d'inscrire un nombre inventé
         # à la prochaine exemption.
         SETUP_CLIENT,
-        '  "src/components/filter-wizard.test.tsx": 3,',
-        '  "src/components/filter-wizard.test.tsx": A_RELEVER,',
+        '  "src/components/venue/venue-detail-view.test.tsx": 100,',
+        '  "src/components/venue/venue-detail-view.test.tsx": A_RELEVER,',
         1,
         ["plafond"],
     ),

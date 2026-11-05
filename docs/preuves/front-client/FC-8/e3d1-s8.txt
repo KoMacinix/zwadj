@@ -1,0 +1,19 @@
+# FC-8 — `python3 neutralisation/neutralize-e3d1-s8.py 6 8`, joué À LA MAIN après la réorientation de S8-1 à S8-3 (extension 1) :
+# le tri ne sélectionne pas cette campagne (elle lit un fichier de TEST, pas un fichier de code du lot). Plage 6 à 8 = les trois
+# cibles S8, que ce lot a déplacées sur `venue-detail-view.test.tsx` ; E1 à E5 (E3d-1, `--int`, le paiement) ne sont PAS jouées :
+# ce lot ne les touche pas, et leurs mesures exigent la base d'intégration.
+# e3d1-s8 (6..8) · début 2026-11-05T13:18:20Z · fin 2026-11-05T13:18:40Z · code 0
+# sha256 de la sortie brute (hors dépôt) : 8e659cb97696bc2b2f43f9ecb2545754e7420270f462fe70ff6970162addc90e · lignes lues 13 · lignes [WebServer] retirées 0 · « token= » restants 0 (attendu 0)
+
+✓ Pré-vol inversé : un run de relevé ROUGIT — releve
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, les cinq gardes de E3d-1 restent NON PROUVÉES : une contrainte
+  de table ne se mesure pas contre un faux magasin.
+
+✓ Pré-vol : 1 mesure(s) verte(s) — plafond
+
+✓ S8-1. ⛔ LE PLAFOND EST DÉPASSÉ ET RIEN NE TOMBE — le nombre redevient décoratif  [plafond]
+✓ S8-2. ⛔ L'EXEMPTION CESSE D'ÊTRE CIBLÉE — plus rien ne sépare un fichier bruyant d'un échec  [plafond]
+✓ S8-3. La sentinelle `A_RELEVER` cesse de mordre — un plafond deviné passerait  [plafond]
+
+3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).

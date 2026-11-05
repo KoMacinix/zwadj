@@ -1,0 +1,30 @@
+# FC-8 — neutralisation/neutralize-available-on.py joué sous CRLF SIMULÉ · 2026-11-05T13:02:28Z
+# commande : PLAYWRIGHT_BROWSERS_PATH=<shim> python3 docs/preuves/front-client/outils/crlf-simule.py <les fichiers ci-dessous> -- python3 neutralisation/neutralize-available-on.py
+# fichiers ramenés en CRLF le temps de la campagne (releve-ancres.py --fichiers available-on) : 5
+#   apps/client/src/components/search/search-view.tsx
+#   apps/client/src/components/venue-card.tsx
+#   apps/client/src/lib/api.ts
+#   apps/client/src/lib/search-query.ts
+#   apps/client/src/lib/seo.ts
+
+calibration ✓ positif : une ancre CRLF est introuvable dans le fichier LF
+calibration ✓ positif : la même ancre est trouvée une fois après conversion
+calibration ✓ négatif : l'aller-retour rend les mêmes octets
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 5 fichier(s) convertis, 1446 ligne(s)
+✓ 1. Le grisé ne mord plus : `false` cesse de produire la classe
+✓ 2. `null` grise comme `false` (le piège du booléen à trois valeurs)
+✓ 3. La date affichée vient de l'URL et non de l'écho du serveur
+✓ 4. Le refus de date passée est replié sur la panne générique
+✓ 5. La date irréelle n'est plus filtrée (février 31 part à l'API)
+✓ 6. `availableOn` cesse d'être transmis à l'API
+✓ 7. La règle SEO ne voit plus la pagination comme une variante
+✓ 8. `noindex` emporte `nofollow` (le chemin vers les fiches est coupé)
+✓ 9. Un champ vide redevient une variante (la page nue se désindexe)
+✓ 10. La carte grisée cesse d'être un lien
+
+10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+rendus en LF à l'identique : 5 sur 5 (attendu 5)
+commande : sortie 0
+# code de sortie de crlf-simule.py (celui de la campagne, ou 4 si la restauration a échoué) : 0

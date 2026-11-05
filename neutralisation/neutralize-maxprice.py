@@ -95,25 +95,20 @@ CIBLES = [
         "titre": "chaque palier de budget SURVIT",
     },
     {
-        "libelle": "M3. L'assistant réémet le nom de l'API dans l'URL publique",
+        # ⚠ M3 RÉORIENTÉE (session `front-client`, FC-8). L'assistant est devenu un MODE de `/salles` (D229) : il ne construit
+        # plus sa querystring à la main — il pousse un ÉTAT par `guidedSearchQuery`, donc par `toPublicQuery` (M8 garde ses noms).
+        # La faute qui reste possible À L'ASSISTANT est d'y mettre des CENTIMES : le facteur 100 dans l'URL publique.
+        "libelle": "M3. L'assistant pousse des CENTIMES dans l'URL publique (le facteur 100)",
         "fichier": ASSISTANT,
-        "avant": '          q.set("maxPrice", budget);',
-        "apres": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
+        "avant": "onClick={() => repondre({ ...state, maxPrice: String(dinars) })}",
+        "apres": "onClick={() => repondre({ ...state, maxPrice: String(centsFromDinars(dinars)) })}",
         "occurrences": 1,
         "suite": "assistant",
-        "titre": "les noms et l'encodage que `/salles` LIT",
+        "titre": "arrive intact à l'API ET à l'URL",
     },
-    {
-        "libelle": "M4. Les deux contrats se remélangent : le compteur passe en dinars",
-        # Prouve que la séparation est mesurée DES DEUX CÔTÉS. Une garde qui ne
-        # regarderait que l'URL laisserait la requête d'API se tromper d'unité.
-        "fichier": ASSISTANT,
-        "avant": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
-        "apres": '          q.set("maxPriceCents", budget);',
-        "occurrences": 1,
-        "suite": "assistant",
-        "titre": "interroge le serveur avec les paramètres du CONTRAT",
-    },
+    # ⛔ M4 RETIRÉE PAR ÉCRIT (FC-8) : elle mutait le second constructeur de query de l'assistant, celui de son COMPTEUR d'API
+    # (`countVenues`, en centimes). L'assistant n'interroge plus l'API : le compte est le total de la page de résultats qu'il
+    # recouvre (D229). La cause structurelle de D228 — une querystring pour deux contrats — a disparu avec lui.
     # ⛔ M5, M6 ET M7 RETIRÉES PAR ÉCRIT (session `front-client`, FC-7). Elles mutaient le REPLI `maxPriceCents` → `maxPrice`
     # (`maxPriceFromRaw`, `dinarsFromCents`) : FC-7 l'a RETIRÉ, la dette datée au 19/11/2026 (D228). Une cible devenue sans objet
     # se retire ou se réoriente, par écrit (AGENTS.md) : la faute possible n'est plus « le repli disparaît » mais « le repli
