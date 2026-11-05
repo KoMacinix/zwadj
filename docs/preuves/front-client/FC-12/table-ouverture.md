@@ -39,3 +39,14 @@ Ordre des commits : (1) cette table seule ; (2) les tests et leurs ROUGES — lu
 
 Conditionnels : un harnais d'un autre rang dont une ancre ou une mesure serait périmée par ce lot (le relevé et les campagnes le
 diront) — déclaré par une extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 25 | `docs/preuves/front-client/FC-12/rouges/rouge-client-v2.txt` | le rouge REJOUÉ contre l'état d'avant après la correction d'un test (le retour du focus, mesuré SANS focus préalable) ; empreinte du test livré | 2 bis |
+
+Motif : le test « Échap ferme, et le focus REVIENT à la vignette » donnait le focus à la vignette AVANT de cliquer : le retour du focus
+passait alors même sans que la boîte sache d'où elle vient (`restoreFocusRef`), et une cible qui retirerait ce lien serait muette par
+construction. Sur macOS, cliquer ne donne PAS le focus : le test clique désormais sans focus préalable. Le code étant mis de côté, le
+rouge est rejoué : l'empreinte versée est celle du test livré.
