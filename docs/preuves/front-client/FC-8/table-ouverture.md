@@ -83,3 +83,15 @@ est un composant serveur : le passage de `guide` ne se mesure qu'en navigateur.
 Motif : avec le code du lot, `getByLabel("Invités")` trouvait DEUX éléments dans la boîte — le champ, et la carte nommée par sa
 question (« Combien d'invités ? », correspondance partielle par défaut). La recherche devient exacte ; le code mis de côté, le rouge
 est rejoué : l'empreinte versée est celle du test livré.
+
+## Extension 3 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 46 | `docs/preuves/front-client/FC-8/r32.txt` | `neutralisation/neutralize-r32.py` joué À LA MAIN : sa cible R-1 (le rail ne réagit plus au clic) se mesure aussi sur « client-wizard », c'est-à-dire `apps/client/src/components/filter-wizard.test.tsx`, RÉÉCRIT par ce lot | 4 |
+
+Motif : la prémisse nomme `neutralize-r32.py` (R-1) parmi les quatre harnais qui MESURENT l'assistant ; le tri ne le sélectionne pas — il
+mute le rail partagé (`packages/ui/src/journey.tsx`, inchangé ici) et son chemin de mesure est relatif à l'application, que la détection
+de `lancer-campagnes.py` ne résout pas depuis la racine. Le titre attendu existe dans le test réécrit (« ⚠ cliquer le LIBELLÉ d'une
+étape répondue vaut « Modifier », comme sa pastille ») ; qu'il ROUGISSE sous R-1 ne se déduit pas, il se joue. `R32_FILTRE` n'est admis
+qu'en découverte (aucun verdict) : la campagne se joue donc entière.
