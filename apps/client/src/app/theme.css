@@ -1523,3 +1523,25 @@
     display: none;
   }
 }
+
+/* ── FC-4 — le jour et le créneau DÉJÀ DEMANDÉS (REQUESTED) ──────────────────
+   Arbitrage de Ko du 04/10/2026 : un jour qui ne porte qu'une demande en attente
+   se CHOISIT, avec un avis. Son nom accessible le dit (« demandes en attente ») ;
+   ici l'œil le voit aussi : un bord POINTILLÉ en `--ink-2` (contraste d'élément
+   non textuel ≥ 3:1 sur `--surface`, WCAG 1.4.11), sans couleur d'accent.
+   L'avis est du TEXTE : encre normale (`--ink`), jamais l'accent (AGENTS.md, AA). */
+.cal-day.is-requested {
+  border-style: dashed;
+  border-color: var(--ink-2);
+}
+
+.booking-requested-notice {
+  margin-block: 8px 12px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  border-inline-start: 3px solid var(--star);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+}

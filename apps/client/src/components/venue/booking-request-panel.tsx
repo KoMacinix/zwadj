@@ -38,7 +38,7 @@ import {
 import { PhoneField } from "@zwadj/ui";
 import { getVenueAvailability } from "../../lib/api";
 import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
-import { longDate } from "../../lib/booking-calendar";
+import { isSlotChoosable, longDate } from "../../lib/booking-calendar";
 import { attributsDeLangue, nomLocalise, type NomLocalise } from "../../lib/nom-localise";
 import { LOGIN_PATH } from "../../lib/routes";
 import { useAuth } from "../../lib/auth/auth-context";
@@ -294,7 +294,8 @@ export function BookingRequestPanel({
               <legend>{tCal("slotsFor", { date: longDate(day.date, locale) })}</legend>
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 6 }}>
                 {day.slots.map((slot) => {
-                  const free = slot.status === "AVAILABLE";
+                  // FC-4 — un créneau DEMANDÉ se choisit aussi (le créneau suit le jour) ; BOOKED et BLOCKED restent fermés.
+                  const choisissable = isSlotChoosable(slot.status);
                   const picked =
                     chosen !== null && chosen.date === day.date && chosen.slotTemplateId === slot.slotTemplateId;
                   return (
@@ -304,14 +305,14 @@ export function BookingRequestPanel({
                         className={picked ? "btn btn-accent" : "btn"}
                         // Un créneau pris RESTE affiché, désactivé : c'est une
                         // information utile pour choisir, pas un déchet à masquer.
-                        disabled={!free}
+                        disabled={!choisissable}
                         aria-pressed={picked}
                         onClick={() =>
                           setChosen({ date: day.date, slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })
                         }
                       >
                         <Nom nom={slotNames.get(slot.slotTemplateId)} /> · {formatDZD(slot.priceCents)}
-                        {free ? "" : ` · ${t("taken")}`}
+                        {slot.status === "REQUESTED" ? ` · ${t("requested")}` : choisissable ? "" : ` · ${t("taken")}`}
                       </button>
                     </li>
                   );
@@ -328,6 +329,16 @@ export function BookingRequestPanel({
       {chosen === null ? null : (
         <p>{t("chosen", { date: longDate(chosen.date, locale), slot: slotNames.get(chosen.slotTemplateId)?.texte ?? "" })}</p>
       )}
+      {/* FC-4 — l'AVIS de l'arbitrage de Ko : le créneau choisi porte déjà une demande en attente. Lu dans la disponibilité du
+          SERVEUR (le statut du créneau ce jour-là), jamais supposé ; `role="status"` le fait annoncer sans voler le focus. */}
+      {chosen !== null &&
+      availability?.days
+        .find((row) => row.date === chosen.date)
+        ?.slots.find((row) => row.slotTemplateId === chosen.slotTemplateId)?.status === "REQUESTED" ? (
+        <p role="status" className="booking-requested-notice">
+          {t("requestedNotice")}
+        </p>
+      ) : null}
 
       {/* ⚠ Le nombre d'invités vit ICI, HORS du bloc connecté, et ce n'est pas un
           détail de mise en page : il MULTIPLIE le prix des prestations par

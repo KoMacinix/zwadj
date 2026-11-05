@@ -1408,6 +1408,9 @@
       "quantity": "Quantité",
       "dayFree": "{date}, disponible",
       "dayFull": "{date}, indisponible",
+      "dayRequested": "{date}, demandes en attente",
+      "requested": "demandes en attente",
+      "requestedNotice": "D'autres demandes sont déjà en attente pour ce créneau. La salle choisit entre les demandes : vous pouvez envoyer la vôtre.",
       "chosen": "Votre choix : {date} · {slot}"
     },
     "bookingHint": "Envoyez votre demande ci-dessous : la salle vous répond, rien n'est débité maintenant."

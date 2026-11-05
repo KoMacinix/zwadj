@@ -10,7 +10,7 @@
 //
 // ⛔ BORNE DE D316, INCHANGÉE : ce module ne lit AUCUN prix et n'en produit aucun. Il dit quel JOUR se choisit ; le
 // créneau, son prix et leur transport vers le calcul restent dans le panneau, à la ligne `setChosen` qui n'a pas bougé.
-import type { VenueAvailabilityDayDTO } from "@zwadj/types";
+import type { SlotAvailabilityStatus, VenueAvailabilityDayDTO } from "@zwadj/types";
 import { compareMonths, monthGrid, offsetInWeek, shiftMonth, type MonthCursor } from "./calendar";
 
 const DAY_MS = 86_400_000;
@@ -49,7 +49,27 @@ export function windowMonths(days: ReadonlyArray<Pick<VenueAvailabilityDayDTO, "
  *  fenêtre — ne se choisit pas. Un jour dont TOUS les créneaux sont pris reste affiché, inactif : voir qu'une date est
  *  occupée aide à en choisir une autre (principe 3 du panneau). */
 export function isDaySelectable(day: Pick<VenueAvailabilityDayDTO, "slots"> | undefined): boolean {
-  return day !== undefined && day.slots.some((slot) => slot.status === "AVAILABLE");
+  return dayState(day) !== "full";
+}
+
+/** FC-4 — LES STATUTS QUI SE CHOISISSENT, une fois, pour le jour ET pour le créneau (le créneau suit le jour, décision du
+ *  relecteur). AVAILABLE : rien ne recouvre le créneau. REQUESTED : au moins une demande PENDING le recouvre, et elle « ne
+ *  verrouille RIEN » (`apps/api/src/venues/availability-engine.ts`) — le pro tranche entre les demandes ; arbitrage de Ko du
+ *  04/10/2026 : « Bloquer la date sur une simple demande fait perdre des demandes. » BOOKED et BLOCKED restent fermés. */
+export const CHOOSABLE_SLOT_STATUSES: readonly SlotAvailabilityStatus[] = ["AVAILABLE", "REQUESTED"];
+
+export function isSlotChoosable(status: SlotAvailabilityStatus): boolean {
+  return CHOOSABLE_SLOT_STATUSES.includes(status);
+}
+
+/** FC-4 — l'état d'un JOUR, pour son nom et son aspect : « libre » s'il porte un créneau AVAILABLE ; « demandé » s'il n'en porte
+ *  aucun mais au moins un REQUESTED ; « complet » sinon — et un jour absent de la réponse (passé, hors fenêtre) est complet. */
+export type DayState = "free" | "requested" | "full";
+
+export function dayState(day: Pick<VenueAvailabilityDayDTO, "slots"> | undefined): DayState {
+  if (day === undefined) return "full";
+  if (day.slots.some((slot) => slot.status === "AVAILABLE")) return "free";
+  return day.slots.some((slot) => isSlotChoosable(slot.status)) ? "requested" : "full";
 }
 
 /** Mois ouvert d'abord : celui du jour déjà choisi s'il y en a un, sinon celui du PREMIER jour choisissable — un visiteur

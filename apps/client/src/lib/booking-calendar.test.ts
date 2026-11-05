@@ -1,13 +1,16 @@
 // Rang 29 (D321) — le module pur du calendrier du panneau de demande. Un test par mode de défaillance du point d'entrée
 // (C-a à C-f) ; les attendus se DÉRIVENT (fenêtre, formateur), ils ne se tapent pas.
-import type { VenueAvailabilityDayDTO } from "@zwadj/types";
+import { SLOT_AVAILABILITY_STATUSES, type VenueAvailabilityDayDTO } from "@zwadj/types";
 import { WINDOW_DAYS } from "../components/venue/booking-request-panel";
 import {
   addDays,
   dayNumber,
   focusTarget,
   initialMonth,
+  CHOOSABLE_SLOT_STATUSES,
+  dayState,
   isDaySelectable,
+  isSlotChoosable,
   longDate,
   moveFocus,
   windowBounds,
@@ -70,6 +73,22 @@ describe("booking-calendar — quel jour se choisit (MD C-a, C-b)", () => {
     const pris = Array.from({ length: 30 }, (_, i) => addDays("2027-08-02", i)); // tout août sauf le 01
     expect(initialMonth(fenetre("2027-08-02", pris), null)).toEqual({ year: 2027, month: 9 });
     expect(initialMonth(fenetre("2027-08-02"), "2027-11-20")).toEqual({ year: 2027, month: 11 });
+  });
+});
+
+describe("booking-calendar — FC-4 : l'état d'un jour, et les statuts qui se choisissent", () => {
+  it("les statuts choisissables sont EXACTEMENT AVAILABLE et REQUESTED — confrontés à l'énumération du contrat", () => {
+    expect([...CHOOSABLE_SLOT_STATUSES].sort()).toEqual(["AVAILABLE", "REQUESTED"]);
+    for (const statut of SLOT_AVAILABILITY_STATUSES) {
+      expect(isSlotChoosable(statut)).toBe(statut === "AVAILABLE" || statut === "REQUESTED");
+    }
+  });
+
+  it("libre s'il porte un AVAILABLE, même à côté d'un REQUESTED ; demandé s'il n'a que des REQUESTED (et des fermés) ; complet sinon", () => {
+    expect(dayState(jour("2027-08-15", "REQUESTED", "AVAILABLE"))).toBe("free");
+    expect(dayState(jour("2027-08-16", "BOOKED", "REQUESTED"))).toBe("requested");
+    expect(dayState(jour("2027-08-17", "BOOKED", "BLOCKED"))).toBe("full");
+    expect(dayState(undefined)).toBe("full");
   });
 });
 
