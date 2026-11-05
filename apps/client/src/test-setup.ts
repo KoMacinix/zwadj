@@ -71,14 +71,15 @@ import { afterAll, afterEach, beforeEach, expect } from "vitest";
 const A_RELEVER = -1;
 
 const PLAFONDS: Record<string, number> = {
-  // ⚠ 38 le 22/08 (S7) → 100. ÉCART NON EXPLIQUÉ — voir plus bas.
-  "src/components/venue/venue-detail-view.test.tsx": 100,
-  // 5 le 22/08 (S7), inchangé.
-  "src/components/venue/booking-request-panel.test.tsx": 5,
-  // 2 le 22/08 (S7) → 3 : D254 y a ajouté un `it.each` sur les trois paliers.
-  "src/components/filter-wizard.test.tsx": 3,
-  // 1 le 22/08 (S7), inchangé.
-  "src/components/auth/google-signin.test.tsx": 1
+  // ⛔ FC-9 (session `front-client`, 05/11/2026) — LES QUATRE EXEMPTIONS SONT RETIRÉES, chacune sur trois passes concordantes
+  // (`docs/preuves/front-client/FC-9/releve/`) : `venue-detail-view.test.tsx` (100, cinq par test : ses tests rendaient la main
+  // avant les quatre chargements de la fiche) et `google-signin.test.tsx` (1) sont CORRIGÉS à la source — les tests attendent l'état
+  // final ; `booking-request-panel.test.tsx` (plafond 5) et `filter-wizard.test.tsx` (plafond 3) n'émettaient plus RIEN. Ces quatre
+  // fichiers sont désormais gardés comme les autres : leur premier avertissement les fait tomber.
+  // ⚠ LE CAS CONNU DU MÉCANISME (`test-setup-calibration.test.ts`) : sans aucun fichier exempté, plus rien ne prouverait que
+  // « dépasser fait tomber », que la sentinelle `A_RELEVER` mord, ni qu'un relevé ne sort jamais en vert. Ce fichier émet EXACTEMENT
+  // deux lignes, exprès, et rien d'autre : il n'est pas du bruit toléré, c'est l'étalon (`neutralize-e3d1-s8.py`, S8-1 à S8-3).
+  "src/test-setup-calibration.test.ts": 2
 };
 
 /** Motifs tolérés partout : ils ne signalent pas un état tardif. */
@@ -152,7 +153,10 @@ afterEach(() => {
   if (exemptionDe(chemin) !== undefined) return;
 
   const apercu = captures.slice(0, 3).map((c) => `  · ${c.split("\n")[0]}`).join("\n");
-  throw new Error(
+  // ⚠ FC-9 : une ASSERTION, plus une `Error` nue — même message. Un plantage et une assertion se distinguent par la PREMIÈRE ligne
+  // de leur bloc d'échec (D304) ; un harnais qui réintroduit du bruit doit lire ce verdict comme une morsure, pas comme un plantage.
+  expect(
+    captures.length,
     `${captures.length} avertissement(s) de console dans un fichier NON exempté.\n` +
       `${apercu}\n` +
       "Un « not wrapped in act(...) » signale un état mis à jour APRÈS la fin du test — " +
@@ -161,7 +165,7 @@ afterEach(() => {
       "probablement la CONSÉQUENCE et non la cause : un test interrompu laisse ses " +
       "mises à jour tomber dans le suivant. Corrigez l'échec d'abord, relancez, et " +
       "ne jugez ce message que sur une suite par ailleurs verte."
-  );
+  ).toBe(0);
 });
 
 /** ⚠ Le total du FICHIER, pas du test. Les avertissements `act(…)` se
