@@ -22,11 +22,11 @@ import { formatDZD } from "@zwadj/i18n";
 import type { VenuePublicDTO } from "@zwadj/types";
 import { ArrowBackIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
-import { mediaSrc } from "../../lib/media-url";
 import { AvailabilityCalendar } from "./availability-calendar";
 import { MatterportEmbed } from "./matterport-embed";
 import { BookingRequestPanel } from "./booking-request-panel";
 import { VisitBookingPanel } from "./visit-booking-panel";
+import { VenuePhotos } from "./venue-photos";
 import { SEARCH_PATH } from "../../lib/routes";
 
 const SECTION_TITLE = {
@@ -100,51 +100,8 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
         {venue.photos.length === 0 ? (
           <p style={{ color: "var(--ink-2)" }}>{t("photosNone")}</p>
         ) : (
-          <ul
-            aria-label={t("photos")}
-            style={{ display: "grid", gap: 10, listStyle: "none", padding: 0, margin: 0 }}
-          >
-            {/* `venue.photos` arrive DÉJÀ trié par sortOrder (contrat A4) et la
-                couverture est la première : rien à réordonner ici. */}
-            {venue.photos.map((photo, index) => (
-              <li
-                key={photo.id}
-                style={
-                  index === 0
-                    ? undefined
-                    : { display: "inline-block", marginInlineEnd: 10, verticalAlign: "top", maxInlineSize: 160 }
-                }
-              >
-                {/* « Agrandir » sans JavaScript : la version pleine taille est
-                    déjà servie par l'API, un lien suffit. Une visionneuse
-                    modale serait du JS pour un geste que le navigateur sait
-                    déjà faire. */}
-                <a href={mediaSrc(photo.url)} target="_blank" rel="noopener noreferrer" title={t("photoOpen")}>
-                  <img
-                    src={mediaSrc(index === 0 ? photo.url : photo.thumbUrl)}
-                    // L'alt saisi par le pro FAIT FOI. Vide, l'image est
-                    // décorative : mieux que de fabriquer « photo de la salle
-                    // 3 », qui pollue sans informer.
-                    alt={(ar ? photo.altAr : photo.altFr) ?? ""}
-                    // Ratio du LARGE en attributs : réserve la boîte, zéro CLS.
-                    width={photo.width}
-                    height={photo.height}
-                    // La couverture est l'image d'en-tête : elle ne doit PAS
-                    // être différée, c'est le plus grand élément affiché
-                    // (métrique LCP). Les suivantes, oui.
-                    loading={index === 0 ? "eager" : "lazy"}
-                    style={{
-                      inlineSize: "100%",
-                      blockSize: "auto",
-                      display: "block",
-                      borderRadius: "var(--radius)",
-                      background: "var(--bg-2)"
-                    }}
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
+          // FC-12 : la galerie et sa visionneuse ; chaque vignette reste un lien vers l'original (le repli sans JavaScript).
+          <VenuePhotos photos={venue.photos} />
         )}
       </section>
 

@@ -1575,3 +1575,56 @@
 .wz-head-actions .wz-head-reset {
   margin-inline-start: 0;
 }
+
+/* ── FC-12 (session `front-client`) — LA VISIONNEUSE DE PHOTOS d'une fiche ───────────────────────────────────────────────────
+   Un voile SOMBRE et des commandes CLAIRES, DANS LES DEUX THÈMES : la photo est le seul contenu, et un fond sombre la montre sans
+   la teinter. ⛔ AUCUNE COULEUR EN DUR (AGENTS.md) : les deux valeurs viennent de la palette PARTAGÉE (`--dark-bg`, `--dark-ink`,
+   `packages/ui/styles.css`), déclarée sur `:root` et donc présente dans les deux thèmes — elle ne bascule pas avec eux, et c'est
+   voulu ici. Contraste des commandes : `--dark-ink` (#f0f0f0) sur `--dark-bg` (#111) à 92 % au-dessus d'une page claire — au-delà
+   de 15:1 (AA demande 4,5:1).
+   Propriétés LOGIQUES (RTL) ; la boîte tient à 360 px (FC-2). */
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--dark-bg) 92%, transparent);
+  color: var(--dark-ink);
+}
+.photo-viewer-box {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  max-inline-size: min(1100px, 100%);
+  max-block-size: 100%;
+}
+.photo-viewer-img {
+  max-inline-size: 100%;
+  max-block-size: calc(100dvh - 160px);
+  inline-size: auto;
+  block-size: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+.photo-viewer-count {
+  margin: 0;
+  font-size: 14px;
+}
+.photo-viewer-nav {
+  display: flex;
+  gap: 12px;
+}
+.photo-viewer .btn {
+  color: var(--dark-ink);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--dark-ink) 70%, transparent);
+}
+.photo-viewer .btn:focus-visible {
+  outline: 2px solid var(--dark-ink);
+  outline-offset: 2px;
+}
+.photo-viewer-close {
+  justify-self: end;
+}
