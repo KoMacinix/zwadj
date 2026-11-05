@@ -1,0 +1,21 @@
+FC-9 — relevé STATIQUE des ancres des 3 campagnes que le tri sélectionne — tri calculé DEPUIS LE SHA DE DÉPART du lot (f4c9256), par les
+fonctions de lancer-campagnes.py : les fichiers du lot sont commités avant les campagnes —, par l'instrument versionné
+docs/preuves/front-client/outils/releve-ancres.py (calibré, rejoué ci-dessous), APRÈS les corrections et APRÈS les réorientations, AVANT de
+jouer les campagnes. AVANT la réorientation de solid-s7 S7-1 (extension 1), le même instrument rendait 1 ancre PÉRIMÉE par ce lot :
+solid-s7 S7-1 (apps/client/src/test-setup.ts ×0) ; e3d1-s8, réorienté sur l'étalon, avait déjà ses ancres.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+e3d1-s8        listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 0
+fc9            listées   2 · examinées   2 (avec ancre 2, sans ancre 0) · non reconnues 0 · écarts 0
+solid-s7       listées   2 · examinées   2 (avec ancre 2, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 3 (illisibles : 0, attendu 0) · cibles listées : 12 · examinées : 12 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 0 ancre(s) CRLF EN DUR (environnement)

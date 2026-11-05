@@ -69,10 +69,16 @@ MESURES = {
 
 CIBLES = [
     (
-        "S7-1. ⚠ LA LISTE D'EXEMPTIONS DU CLIENT EST VIDÉE — les 4 fichiers bruyants doivent tomber",
+        # ⛔ CIBLE RÉORIENTÉE (session `front-client`, FC-9), ET PAR ÉCRIT. Elle visait l'exemption de
+        # `venue-detail-view.test.tsx`, le plus bruyant des quatre fichiers exemptés du client. FC-9 a corrigé ses tests à la
+        # source et RETIRÉ les quatre exemptions : la liste ne couvre plus que l'ÉTALON du mécanisme,
+        # `src/test-setup-calibration.test.ts` (deux lignes émises exprès, exemptées à deux).
+        # ⚠ L'INTENTION DE LA CIBLE EST INCHANGÉE : « vider la liste d'exemptions du client doit faire tomber les fichiers qu'elle
+        # couvre » — aujourd'hui l'étalon, dont les deux lignes, non exemptées, font tomber la suite.
+        "S7-1. ⚠ LA LISTE D'EXEMPTIONS DU CLIENT EST VIDÉE — le fichier qu'elle couvre (l'étalon) doit tomber",
         GARDE_CLIENT,
-        '  "src/components/venue/venue-detail-view.test.tsx"',
-        '  "src/components/venue/PLUS_EXEMPTE.test.tsx"',
+        '  "src/test-setup-calibration.test.ts"',
+        '  "src/PLUS_EXEMPTE.test.ts"',
         1,
         ["client"],
     ),

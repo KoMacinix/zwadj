@@ -1,0 +1,16 @@
+# FC-9 — `python3 neutralisation/neutralize-e3d1-s8.py 6 8`, joué À LA MAIN après la réorientation de S8-1 à S8-3 et de la mesure de relevé sur
+# l'ÉTALON `src/test-setup-calibration.test.ts` (plus aucun fichier n'est exempté). Plage 6 à 8 = les trois cibles S8 ; E1 à E5 (E3d-1,
+# `--int`, le paiement) ne sont pas jouées : ce lot ne les touche pas. La série des campagnes les rejoue aussi (`campagnes.txt` : 3/3).
+
+✓ Pré-vol inversé : un run de relevé ROUGIT — releve
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, les cinq gardes de E3d-1 restent NON PROUVÉES : une contrainte
+  de table ne se mesure pas contre un faux magasin.
+
+✓ Pré-vol : 1 mesure(s) verte(s) — plafond
+
+✓ S8-1. ⛔ LE PLAFOND EST DÉPASSÉ ET RIEN NE TOMBE — le nombre redevient décoratif  [plafond]
+✓ S8-2. ⛔ L'EXEMPTION CESSE D'ÊTRE CIBLÉE — plus rien ne sépare un fichier bruyant d'un échec  [plafond]
+✓ S8-3. La sentinelle `A_RELEVER` cesse de mordre — un plafond deviné passerait  [plafond]
+
+3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
