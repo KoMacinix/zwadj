@@ -11,6 +11,8 @@ import {
   toApiQuery,
   toPublicQuery
 } from "../lib/search-query";
+// FC-8 : le module entier, pour lire PAR LEUR NOM les fonctions du mode guidé (voir le bloc FC-8, en fin de fichier).
+import * as sq from "../lib/search-query";
 
 describe("parseSearchParams", () => {
   it("l'URL nue donne l'état par défaut : tri « recent », page 1, aucun filtre", () => {
@@ -301,4 +303,48 @@ describe("BUDGET_TIERS — l'autorité unique des paliers", () => {
 
   // FC-7 : le test de RÉCIPROCITÉ `centsFromDinars` ↔ `dinarsFromCents` est retiré avec `dinarsFromCents` (elle ne servait
   // que le repli retiré). `centsFromDinars` reste confrontée au contrat de l'API, palier par palier, ci-dessus (`toApiQuery`).
+});
+
+// ── FC-8 (session `front-client`) — LE LOT ③ : L'ASSISTANT EST UN MODE DE `/salles` (D229, D230) ──────────────────────────────
+// ⚠ Les fonctions sont lues PAR LEUR NOM dans le module (`sq`, importé en tête) : absentes (avant FC-8), le rouge se lit en
+// ASSERTION (D304).
+
+type Etape = "city" | "guests" | "budget" | "taste";
+const fonctions = sq as unknown as Record<string, unknown>;
+const parseGuide = fonctions.parseGuide as ((raw: string | string[] | undefined) => Etape | null) | undefined;
+const guidedSearchQuery = fonctions.guidedSearchQuery as ((s: ReturnType<typeof parseSearchParams>, e: Etape | null) => string) | undefined;
+const nextGuideStep = fonctions.nextGuideStep as ((s: ReturnType<typeof parseSearchParams>, apres?: Etape) => Etape) | undefined;
+
+describe("FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230)", () => {
+  it("les trois fonctions existent", () => {
+    expect(typeof parseGuide).toBe("function");
+    expect(typeof guidedSearchQuery).toBe("function");
+    expect(typeof nextGuideStep).toBe("function");
+  });
+
+  it("une étape connue s'ouvre ; ⛔ toute AUTRE valeur ferme le panneau (l'ouvrir ferait croire qu'elle a été comprise)", () => {
+    expect(parseGuide?.("city")).toBe("city");
+    expect(parseGuide?.(["budget", "city"])).toBe("budget");
+    for (const inconnue of ["1", "true", "date", "CITY", "", undefined]) expect(parseGuide?.(inconnue)).toBe(null);
+  });
+
+  it("l'URL d'une étape = l'URL publique de l'état (`toPublicQuery`, la seule autorité des noms) + `guide`, page 1", () => {
+    const etat = parseSearchParams({ cityId: "c1", guests: "250", maxPrice: "500000", page: "4" });
+    const q = new URLSearchParams(guidedSearchQuery?.(etat, "taste") ?? "");
+    expect(q.get("guide")).toBe("taste");
+    expect(q.get("maxPrice")).toBe("500000");
+    expect(q.get("maxPriceCents")).toBe(null);
+    expect(q.get("page")).toBe(null);
+    expect(guidedSearchQuery?.(parseSearchParams({}), null)).toBe("");
+  });
+
+  it("l'étape suivante est la première SANS réponse APRÈS celle qu'on quitte — sinon la dernière (on n'y retombe pas en boucle)", () => {
+    const vide = parseSearchParams({});
+    expect(nextGuideStep?.(vide)).toBe("city");
+    expect(nextGuideStep?.(parseSearchParams({ cityId: "c1" }))).toBe("guests");
+    expect(nextGuideStep?.(parseSearchParams({ cityId: "c1", guests: "250", maxPrice: "500000" }))).toBe("taste");
+    // Passer TOUTES les questions ne ramène pas à la commune : la séquence se termine.
+    expect(nextGuideStep?.(vide, "budget")).toBe("taste");
+    expect(nextGuideStep?.(vide, "city")).toBe("guests");
+  });
 });

@@ -1,26 +1,26 @@
-// Assistant de filtres — lot Assistant.
+// Assistant de filtres — RÉÉCRIT par FC-8 (session `front-client`, le lot ③) : un MODE de `/salles` (D229), sans état local.
 //
-// ⚠ TESTS RE-DÉRIVÉS DU COMPORTEMENT. Ce qui compte ici n'est pas que l'écran
-// s'affiche, c'est que la séquence produise EXACTEMENT les paramètres du
-// contrat public, et qu'aucune question ne pose un critère que la page de
-// résultats ignorerait — la faute que la maquette commet deux fois.
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+// ⚠ CE QUI EST MESURÉ ICI. L'étape et les réponses viennent des PROPS — c'est-à-dire de l'URL, que la page lit (`parseGuide`,
+// `parseSearchParams`) ; chaque réponse POUSSE une URL de `/salles`, relue par le parseur RÉEL de la page d'arrivée, jamais
+// comparée à une chaîne écrite ici seulement ; aucune question ne pose un critère que la page ignorerait (la date — cinquième
+// étape — est HORS lot). La chrome de parcours PARTAGÉE (`@zwadj/ui/journey`) reste mesurée ici, côté client (D223) : rail,
+// liaison, carte remontée, « Modifier ».
+// ⚠ Les titres que des harnais d'autres rangs attendent sont CONSERVÉS là où leur sens tient (`neutralize-journey.py`,
+// `neutralize-r32.py` R-1, `neutralize-maxprice.py` M3 et M10).
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { formatDZD, messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueStyleDTO, WilayaDTO } from "@zwadj/types";
 import { FilterWizard } from "./filter-wizard";
-// ⚠ Le parseur RÉEL de la page d'arrivée, pas une copie : c'est la
-// confrontation des deux modules qui manquait, et qui a laissé passer D228.
-import { BUDGET_TIERS, centsFromDinars, parseSearchParams, toApiQuery } from "../lib/search-query";
+// ⚠ Le parseur RÉEL de la page d'arrivée, pas une copie : c'est la confrontation des deux modules qui manquait (D228).
+import { BUDGET_TIERS, centsFromDinars, parseSearchParams, toApiQuery, type SearchState } from "../lib/search-query";
 
 const push = vi.fn();
+const replace = vi.fn();
 vi.mock("../i18n/navigation", () => ({
-  useRouter: () => ({ push }),
+  useRouter: () => ({ push, replace }),
   Link: ({ children }: { children: React.ReactNode }) => <a href="#">{children}</a>
 }));
-
-const countVenues = vi.fn();
-vi.mock("../lib/api", () => ({ countVenues: (...a: unknown[]) => countVenues(...a) }));
 
 const WILAYAS: WilayaDTO[] = [
   {
@@ -34,9 +34,7 @@ const WILAYAS: WilayaDTO[] = [
     ]
   }
 ] as WilayaDTO[];
-// ⚠ DEUX styles ET deux équipements : avec un seul élément, `join(";")` rend
-// exactement la même chaîne que `join(",")`, et le séparateur ne se mesure pas.
-// Relevé par le harnais — la garde `styles` ne mordait pas pour cette raison.
+// ⚠ DEUX styles ET deux équipements : avec un seul élément, un séparateur faux ne se mesure pas.
 const STYLES: VenueStyleDTO[] = [
   { id: "s1", key: "moderne", nameFr: "Moderne", nameAr: "عصري" },
   { id: "s2", key: "traditionnel", nameFr: "Traditionnel", nameAr: "تقليدي" }
@@ -46,350 +44,293 @@ const AMENITIES: AmenityDTO[] = [
   { id: "a2", key: "wifi", nameFr: "Wifi", nameAr: "واي فاي" }
 ] as AmenityDTO[];
 
-function poser(locale: "fr" | "ar" = "fr") {
-  render(
+type Etape = "city" | "guests" | "budget" | "taste";
+const FR = messages.fr.wizard;
+
+/** ⚠ Le libellé du palier vient du FORMATEUR, jamais tapé à la main (espaces insécables étroites, D209 n° 6), et le montant de
+ *  l'AUTORITÉ (`BUDGET_TIERS`, D254). `Math.max` : le palier le plus haut, sans indexation par un calcul. */
+const PALIER = Math.max(...BUDGET_TIERS);
+const PALIER_TEXTE = formatDZD(centsFromDinars(PALIER), "fr");
+const REPONSES = { cityId: "c1", guests: "250", maxPrice: String(PALIER) };
+
+function element(step: Etape, raw: Record<string, string | string[]> = {}, locale: "fr" | "ar" = "fr", total: number | null = 7) {
+  return (
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
-      <FilterWizard wilayas={WILAYAS} styles={STYLES} amenities={AMENITIES} />
+      <FilterWizard step={step} state={parseSearchParams(raw)} total={total} wilayas={WILAYAS} styles={STYLES} amenities={AMENITIES} />
     </NextIntlClientProvider>
   );
 }
 
-/** ⚠ Le libellé du palier vient du FORMATEUR, jamais tapé à la main :
- *  `Intl` en `fr-DZ` insère des espaces insécables ÉTROITES (U+202F), et
- *  « 1 000 000 » écrit au clavier ne correspond à rien. Première version fautive,
- *  et c'est la même famille de défaut que la doctrine des valeurs relevées.
- *
- *  ⚠ ET LE MONTANT VIENT DE L'AUTORITÉ (D254), plus d'un nombre tapé ici.
- *  Un `100_000_000` écrit dans ce fichier resterait vert le jour où les
- *  paliers changent — sur un menu qui ne le propose plus. */
-// ⚠ `Math.max`, PAS `BUDGET_TIERS[length - 1]`. Sous
-// `noUncheckedIndexedAccess`, une indexation par un CALCUL rend
-// `number | undefined` même sur un tuple `as const` — TS2345, porte rouge
-// pendant que le test passait. Et ça dit mieux ce qu'on veut : LE PALIER LE
-// PLUS HAUT, sans dépendre de l'ordre de déclaration (garanti ailleurs, par
-// le test de croissance de `search-query.test.ts`).
-const PALIER = Math.max(...BUDGET_TIERS);
-const PALIER_1M = formatDZD(centsFromDinars(PALIER), "fr");
+function poser(step: Etape, raw: Record<string, string | string[]> = {}, locale: "fr" | "ar" = "fr", total: number | null = 7) {
+  return render(element(step, raw, locale, total));
+}
+
+/** Une URL poussée (`push` ou `replace`), relue par le parseur RÉEL de `/salles` — clés répétées comprises. */
+function relue(url: string): { chemin: string; params: URLSearchParams; etat: SearchState } {
+  const [chemin = "", q = ""] = url.split("?");
+  const params = new URLSearchParams(q);
+  const brut: Record<string, string | string[]> = {};
+  for (const cle of new Set(params.keys())) {
+    const valeurs = params.getAll(cle);
+    brut[cle] = valeurs.length > 1 ? valeurs : (valeurs[0] ?? "");
+  }
+  return { chemin, params, etat: parseSearchParams(brut) };
+}
+const poussee = (n = 0) => relue(push.mock.calls[n]?.[0] as string);
 
 const question = () => document.getElementById("wz-question")?.textContent;
-const recap = () => screen.getByRole("list", { name: "Réponses déjà données" });
+const recap = () => screen.getByRole("list", { name: FR.recapLabel });
 const rail = () => screen.getByRole("navigation", { name: /Avancement/ });
 
 beforeEach(() => {
   push.mockReset();
-  countVenues.mockReset().mockResolvedValue(7);
+  replace.mockReset();
 });
 
-async function repondreTout() {
-  fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-  fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-  fireEvent.change(screen.getByLabelText("Invités"), { target: { value: "250" } });
-  fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-  fireEvent.click(screen.getByRole("button", { name: PALIER_1M }));
-  await screen.findByRole("button", { name: "Moderne" });
-}
-
-describe("Quatre étapes, une question à la fois", () => {
-  it("s'ouvre sur la commune, et sur elle seule", () => {
-    poser();
-    expect(question()).toBe("Où célébrez-vous ?");
-    expect(screen.queryByLabelText("Invités")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Moderne" })).toBeNull();
+describe("FC-8 — l'étape vient de l'URL, une question à la fois", () => {
+  it("s'ouvre à l'étape DEMANDÉE, et sur elle seule", () => {
+    poser("guests");
+    expect(question()).toBe(FR.qGuests);
+    expect(screen.queryByLabelText(FR.stepCity)).toBe(null);
   });
 
-  it("⚠ l'étape répondue QUITTE l'écran", async () => {
-    poser();
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-    expect(question()).toBe("Combien d'invités ?");
-    expect(screen.queryByLabelText("Commune")).toBeNull();
-  });
-
-  it("⚠ ne pose AUCUNE question de date — le contrat public n'en porte pas", () => {
-    // La maquette la pose et jette la réponse. Ici, elle n'est pas posée : le
-    // client ne déclare pas une contrainte que les résultats violeraient.
-    poser();
-    expect(screen.queryByText(/date/i)).toBeNull();
-    expect(within(rail()).queryByText(/date/i)).toBeNull();
+  it("⚠ ne pose AUCUNE question de date — la cinquième étape est HORS lot", () => {
+    for (const etape of ["city", "guests", "budget", "taste"] as const) {
+      const { unmount } = poser(etape);
+      expect(/date/i.test(document.body.textContent ?? "")).toBe(false);
+      unmount();
+    }
   });
 
   it("les communes sont GROUPÉES par wilaya", () => {
-    poser();
-    const select = screen.getByLabelText("Commune") as HTMLSelectElement;
-    expect(select.querySelectorAll("optgroup")).toHaveLength(1);
-    expect(select.querySelector("optgroup")).toHaveAttribute("label", "Alger");
+    poser("city");
+    const select = screen.getByLabelText(FR.stepCity) as HTMLSelectElement;
+    expect(select.querySelectorAll("optgroup").length).toBe(1);
+    expect(select.querySelector("optgroup")?.getAttribute("label")).toBe("Alger");
+  });
+
+  it("le champ REPREND la réponse déjà donnée — elle est lue dans l'URL, pas dans une mémoire locale", () => {
+    const { unmount } = poser("city", { cityId: "c1" });
+    expect((screen.getByLabelText(FR.stepCity) as HTMLSelectElement).value).toBe("c1");
+    unmount();
+    poser("guests", { guests: "250" });
+    expect((screen.getByLabelText(FR.stepGuests) as HTMLInputElement).value).toBe("250");
   });
 });
 
-describe("Le récapitulatif ne se replie pas", () => {
-  it("garde les réponses quand on revient en arrière", async () => {
-    poser();
-    await repondreTout();
-    fireEvent.click(within(recap()).getByRole("button", { name: /Modifier.*Commune/ }));
+describe("FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229)", () => {
+  it("répondre à la commune pousse `/salles?cityId=…&guide=guests` (D229, mot pour mot)", () => {
+    poser("city");
+    fireEvent.change(screen.getByLabelText(FR.stepCity), { target: { value: "c1" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    const { chemin, params } = poussee();
+    expect(chemin).toBe("/salles");
+    expect([...params.entries()]).toEqual([
+      ["cityId", "c1"],
+      ["guide", "guests"]
+    ]);
+  });
+
+  it("les invités : la valeur tenue par le DOM part à « Continuer » (le seul champ non contrôlé, D229)", () => {
+    poser("guests", { cityId: "c1" });
+    fireEvent.change(screen.getByLabelText(FR.stepGuests), { target: { value: "250" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    const { params, etat } = poussee();
+    expect(etat.cityId).toBe("c1");
+    expect(etat.guests).toBe("250");
+    expect(params.get("guide")).toBe("budget");
+  });
+
+  it("⚠ « Passer » avance SANS réponse, et la séquence se TERMINE : on ne retombe jamais sur la commune", () => {
+    poser("guests");
+    fireEvent.click(screen.getByRole("button", { name: FR.skip }));
+    expect(poussee().params.get("guide")).toBe("budget");
+    expect(poussee().etat.guests).toBe("");
+  });
+
+  it.each([...BUDGET_TIERS])("le palier %s DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT", (palier) => {
+    poser("budget", { cityId: "c1" });
+    fireEvent.click(screen.getByRole("button", { name: formatDZD(centsFromDinars(palier), "fr") }));
+    const { params, etat } = poussee();
+    // L'URL PUBLIQUE porte des DINARS, sous le nom que la page LIT ; l'API en reçoit des CENTIMES par la SEULE conversion.
+    expect(params.get("maxPrice")).toBe(String(palier));
+    expect(params.get("maxPriceCents")).toBe(null);
+    expect(toApiQuery(etat).get("maxPriceCents")).toBe(String(centsFromDinars(palier)));
+    expect(params.get("guide")).toBe("taste");
+  });
+
+  it("« Sans limite » efface le plafond et passe aux goûts", () => {
+    poser("budget", { maxPrice: String(PALIER) });
+    fireEvent.click(screen.getByRole("button", { name: FR.budgetAny }));
+    expect(poussee().etat.maxPrice).toBe("");
+    expect(poussee().params.get("guide")).toBe("taste");
+  });
+
+  it("⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT", () => {
+    poser("taste", { ...REPONSES, styles: "moderne" });
+    // Cocher reste SUR l'étape : `replace`, pas `push` — le bouton retour recule d'une QUESTION, pas d'une coche (D230).
+    fireEvent.click(screen.getByRole("button", { name: "Traditionnel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Wifi" }));
+    const coche = relue(replace.mock.calls[0]?.[0] as string);
+    expect(coche.params.getAll("styles")).toEqual(["moderne", "traditionnel"]);
+    expect(coche.params.get("guide")).toBe("taste");
+    const wifi = relue(replace.mock.calls[1]?.[0] as string);
+    expect(wifi.params.getAll("amenities")).toEqual(["wifi"]);
+    // « Voir les salles » : la page de résultats, panneau FERMÉ, réponses intactes — relues par le parseur réel.
+    fireEvent.click(screen.getByRole("button", { name: /Voir/ }));
+    const { chemin, params, etat } = poussee();
+    expect(chemin).toBe("/salles");
+    expect(params.get("guide")).toBe(null);
+    expect(etat).toMatchObject({ cityId: "c1", guests: "250", maxPrice: String(PALIER), styles: ["moderne"] });
+  });
+
+  it("⚠ n'invente AUCUN paramètre absent du contrat", () => {
+    poser("taste", { ...REPONSES, styles: ["moderne", "traditionnel"], amenities: "parking" });
+    fireEvent.click(screen.getByRole("button", { name: /Voir/ }));
+    const permis = ["cityId", "guests", "maxPrice", "styles", "amenities"];
+    for (const [cle] of poussee().params) expect(permis.includes(cle)).toBe(true);
+  });
+
+  it("sans aucun critère, « Voir les salles » mène à /salles nu", () => {
+    poser("taste");
+    fireEvent.click(screen.getByRole("button", { name: /Voir/ }));
+    expect(push).toHaveBeenCalledWith("/salles");
+  });
+
+  it("« Fermer » rend la page de résultats SANS `guide`, réponses gardées", () => {
+    poser("budget", { cityId: "c1", guests: "250" });
+    fireEvent.click(screen.getByRole("button", { name: FR.close }));
+    const { params, etat } = poussee();
+    expect(params.get("guide")).toBe(null);
+    expect(etat.cityId).toBe("c1");
+  });
+
+  it("« Recommencer » repart de la commune, sans AUCUNE réponse", () => {
+    poser("taste", REPONSES);
+    fireEvent.click(screen.getByRole("button", { name: FR.reset }));
+    expect(push).toHaveBeenCalledWith("/salles?guide=city");
+  });
+});
+
+describe("Le compte vient du SERVEUR — le total de la page de résultats, jamais un filtrage local", () => {
+  it("à la dernière étape, il dit le total que la page a reçu", () => {
+    poser("taste", REPONSES, "fr", 7);
+    expect(screen.getByRole("status").textContent).toContain("7");
+  });
+
+  it("⚠ « je ne sais pas » ne se dit PAS « zéro salle »", () => {
+    poser("taste", REPONSES, "fr", null);
+    expect(screen.getByRole("status").textContent).toMatch(/indisponible/i);
+    expect(screen.getByRole("status").textContent).not.toMatch(/aucune salle/i);
+  });
+
+  it("zéro salle le dit, et propose d'élargir", () => {
+    poser("taste", REPONSES, "fr", 0);
+    expect(screen.getByRole("status").textContent).toMatch(/Aucune salle/);
+    expect(screen.getByText(/Décochez un critère/)).toBeInTheDocument();
+  });
+});
+
+describe("Le récapitulatif et le rail lisent l'URL — ils ne se replient pas", () => {
+  it("le récapitulatif garde TOUTES les réponses de l'URL, sauf l'étape en cours", () => {
+    poser("city", REPONSES);
     expect(recap().textContent).toContain("250");
-    expect(recap().textContent).toContain(PALIER_1M);
-  });
-
-  it("⚠ n'affiche PAS l'étape en cours dans le récapitulatif", async () => {
-    // Relevé par le harnais : sans revenir sur une étape DÉJÀ répondue, la
-    // garde ne pouvait pas se manifester — à l'étape « style », aucune réponse
-    // n'était à la fois donnée et courante.
-    poser();
-    await repondreTout();
-    fireEvent.click(within(recap()).getByRole("button", { name: /Modifier.*Commune/ }));
+    expect(recap().textContent).toContain(PALIER_TEXTE);
     expect(recap().textContent).not.toContain("Hydra");
-    expect(screen.getByLabelText("Commune")).toHaveValue("c1");
   });
 
-  it("cliquer le numéro du rail vaut « Modifier »", async () => {
-    poser();
-    await repondreTout();
+  it("cliquer le numéro du rail vaut « Modifier »", () => {
+    poser("taste", REPONSES);
     fireEvent.click(within(rail()).getByRole("button", { name: /Modifier.*Invités/ }));
-    expect(question()).toBe("Combien d'invités ?");
-    expect(screen.getByLabelText("Invités")).toHaveValue(250);
+    const { params, etat } = poussee();
+    expect(params.get("guide")).toBe("guests");
+    expect(etat.guests).toBe("250");
   });
 
   it("⚠ une étape sans réponse n'est pas cliquable dans le rail", () => {
-    poser();
+    poser("city");
     expect(within(rail()).queryAllByRole("button")).toHaveLength(0);
   });
 
-  // ── Rang 32 (D325) — le LIBELLÉ du rail est cliquable comme sa pastille (chrome partagée : garde côté Client ET côté Pro) ─────────────
-  it("⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille", async () => {
-    poser();
-    await repondreTout();
+  // ── Rang 32 (D325) — le LIBELLÉ du rail est cliquable comme sa pastille (chrome partagée : garde côté Client ET côté Pro) ──
+  it("⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille", () => {
+    poser("taste", REPONSES);
     fireEvent.click(within(rail()).getByText("Invités"));
-    expect(question()).toBe("Combien d'invités ?");
-    expect(screen.getByLabelText("Invités")).toHaveValue(250);
+    expect(poussee().params.get("guide")).toBe("guests");
   });
 
-  it("⚠ la pastille et le libellé sont UN seul bouton ; le libellé d'une étape sans réponse n'est dans aucun bouton (on ne saute pas une étape incomplète)", async () => {
-    poser();
-    await repondreTout();
+  it("⚠ la pastille et le libellé sont UN seul bouton ; le libellé d'une étape sans réponse n'est dans aucun bouton (on ne saute pas une étape incomplète)", () => {
+    poser("taste", { cityId: "c1", guests: "250" });
     expect(within(rail()).getAllByRole("button", { name: /Modifier.*Invités/ })).toHaveLength(1);
     expect(within(rail()).getByText("Invités").closest("button")).not.toBeNull();
-    // L'étape COURANTE n'est pas modifiable non plus : son libellé n'est dans aucun bouton.
     const courante = rail().querySelector("li.is-current .zj-rail-label");
     expect(courante).not.toBeNull();
     expect((courante as HTMLElement).closest("button")).toBeNull();
   });
 });
 
-describe("Le compteur vient du SERVEUR", () => {
-  it("n'apparaît qu'à la dernière étape", async () => {
-    poser();
-    expect(countVenues).not.toHaveBeenCalled();
-    await repondreTout();
-    await waitFor(() => expect(screen.getByRole("status").textContent).toContain("7"));
-  });
-
-  it("⚠ interroge le serveur avec les paramètres du CONTRAT, jamais un filtrage local", async () => {
-    poser();
-    await repondreTout();
-    await waitFor(() => expect(countVenues).toHaveBeenCalled());
-    const q = countVenues.mock.calls[0]?.[0] as URLSearchParams;
-    expect(q.get("cityId")).toBe("c1");
-    expect(q.get("guests")).toBe("250");
-    // ⚠ Ici, `maxPriceCents` est CORRECT : c'est la requête d'API, pas l'URL.
-    // Les deux constructeurs de l'assistant sont mesurés séparément, et c'est
-    // le point de leur séparation (D228).
-    expect(q.get("maxPriceCents")).toBe(String(centsFromDinars(PALIER)));
-    expect(q.get("maxPrice")).toBeNull();
-  });
-
-  it("⚠ « je ne sais pas » ne se dit PAS « zéro salle »", async () => {
-    countVenues.mockResolvedValue(null);
-    poser();
-    await repondreTout();
-    await waitFor(() => expect(screen.getByRole("status").textContent).toMatch(/indisponible/i));
-    expect(screen.getByRole("status").textContent).not.toMatch(/aucune salle/i);
-  });
-
-  it("zéro salle le dit, et propose d'élargir", async () => {
-    countVenues.mockResolvedValue(0);
-    poser();
-    await repondreTout();
-    await waitFor(() => expect(screen.getByRole("status").textContent).toMatch(/Aucune salle/));
-    expect(screen.getByText(/Décochez un critère/)).toBeInTheDocument();
-  });
-});
-
-describe("⛔ TOUS les paliers, pas seulement celui du parcours (D254)", () => {
-  // ⚠ L'ancien test n'exerçait QU'UN palier, et il était sous la butée. Les
-  // deux paliers morts — 2 000 000 et 4 000 000 DA — n'étaient couverts nulle
-  // part. Famille D219 : le test avait choisi le cas qui marche. On boucle
-  // donc sur L'AUTORITÉ entière. `it.each` et pas une boucle dans un `it` :
-  // le rendu doit être démonté entre deux paliers, sinon le second cliquerait
-  // dans l'écran du premier.
-  it.each([...BUDGET_TIERS])(
-    "le palier %s DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT",
-    async (palier) => {
-      poser();
-      fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-      fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-      fireEvent.change(screen.getByLabelText("Invités"), { target: { value: "250" } });
-      fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-      fireEvent.click(
-        screen.getByRole("button", { name: formatDZD(centsFromDinars(palier), "fr") })
-      );
-      await screen.findByRole("button", { name: "Moderne" });
-
-      // 1) LA REQUÊTE D'API — centimes, sous le nom de l'API.
-      await waitFor(() => expect(countVenues).toHaveBeenCalled());
-      const q = countVenues.mock.calls[0]?.[0] as URLSearchParams;
-      expect(q.get("maxPriceCents")).toBe(String(centsFromDinars(palier)));
-
-      // 2) L'URL PUBLIQUE — dinars, relue par le parseur RÉEL de la page
-      //    d'arrivée, pas comparée à une chaîne écrite dans ce fichier.
-      fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
-      const pousse = push.mock.calls[0]?.[0] as string;
-      const etat = parseSearchParams(
-        Object.fromEntries(new URLSearchParams(pousse.split("?")[1] ?? ""))
-      );
-      expect(etat.maxPrice).toBe(String(palier));
-
-      // 3) ⛔ LE POINT DU LOT. Les deux branches de l'assembleur sont
-      //    CONFRONTÉES : ce que le compteur a demandé et ce que la page de
-      //    résultats demandera doivent être le MÊME plafond. Sur 2 000 000 DA,
-      //    le compteur filtrait à `lte 200000000` pendant que la page, plafond
-      //    effacé par la butée, n'en demandait aucun — deux écrans, deux
-      //    vérités, invisible tant qu'aucune salle ne coûte plus que le palier.
-      expect(toApiQuery(etat).get("maxPriceCents")).toBe(q.get("maxPriceCents"));
-    }
-  );
-});
-
-describe("La séquence finit sur la page de résultats EXISTANTE", () => {
-  it("⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT", async () => {
-    poser();
-    await repondreTout();
-    fireEvent.click(screen.getByRole("button", { name: "Moderne" }));
-    fireEvent.click(screen.getByRole("button", { name: "Parking" }));
-    fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
-    // ⛔ CE TEST VALIDAIT LE DÉFAUT (D228, famille D219). Il assertait
-    // `maxPriceCents=100000000` — le contrat de l'API — sur une URL PUBLIQUE
-    // que `parseSearchParams` lit en dinars sous le nom `maxPrice`. Vert
-    // depuis la livraison, sur un budget jeté en silence.
-    // `styles` et `amenities` sont des clés SÉPARÉES PAR DES VIRGULES — relevé
-    // du schéma Zod, jamais deviné.
-    expect(push).toHaveBeenCalledWith(
-      `/salles?cityId=c1&guests=250&maxPrice=${PALIER}&styles=moderne&amenities=parking`
-    );
-    // ⚠ L'ALLER-RETOUR, et c'est lui qui compte : la chaîne ci-dessus est
-    // écrite à la main, donc elle peut être fausse des deux côtés à la fois.
-    // On relit l'URL poussée avec le parseur RÉEL de la page d'arrivée.
-    const pousse = push.mock.calls[0]?.[0] as string;
-    const etat = parseSearchParams(Object.fromEntries(new URLSearchParams(pousse.split("?")[1] ?? "")));
-    expect(etat.maxPrice).toBe(String(PALIER));
-    expect(etat.cityId).toBe("c1");
-    expect(etat.guests).toBe("250");
-    // ⚠ Avec DEUX valeurs, sinon un séparateur faux passerait inaperçu : un
-    // `join(";")` sur une liste d'un élément rend exactement la même chaîne.
-    // Le schéma Zod n'accepte que `^[a-z0-9-]+(?:,[a-z0-9-]+)*$` — relevé.
-    // `push` est un double : on reste sur la même étape, il suffit de cocher.
-    push.mockReset();
-    fireEvent.click(screen.getByRole("button", { name: "Wifi" }));
-    fireEvent.click(screen.getByRole("button", { name: "Traditionnel" }));
-    fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
-    const url = push.mock.calls[0]?.[0] as string;
-    expect(url).toContain("amenities=parking%2Cwifi");
-    expect(url).toContain("styles=moderne%2Ctraditionnel");
-  });
-
-  it("sans aucun critère, mène à /salles nu", () => {
-    poser();
-    fireEvent.click(screen.getByRole("button", { name: "Passer" }));
-    fireEvent.click(screen.getByRole("button", { name: "Passer" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sans limite" }));
-    fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
-    expect(push).toHaveBeenCalledWith("/salles");
-  });
-
-  it("⚠ n'invente AUCUN paramètre absent du contrat", async () => {
-    poser();
-    await repondreTout();
-    fireEvent.click(screen.getByRole("button", { name: "Voir les salles" }));
-    const url = push.mock.calls[0]?.[0] as string;
-    // ⚠ `maxPrice` : l'URL publique porte des DINARS (D228). `maxPriceCents`
-    // est le nom de l'API, il n'a rien à faire dans une adresse partagée.
-    const permis = ["cityId", "guests", "maxPrice", "styles", "amenities"];
-    for (const [cle] of new URLSearchParams(url.split("?")[1] ?? "")) {
-      expect(permis).toContain(cle);
-    }
+describe("FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre", () => {
+  it("la boîte est nommée par son titre, et la carte de la question reçoit le focus", () => {
+    poser("budget");
+    const boite = screen.getByRole("dialog");
+    expect(boite.getAttribute("aria-modal")).toBe("true");
+    expect(document.getElementById(boite.getAttribute("aria-labelledby") ?? "")?.textContent).toBe(FR.title);
+    expect(document.activeElement).toBe(document.querySelector(".zj-card"));
   });
 });
 
 describe("Arabe", () => {
   it("se rend sans clé manquante", () => {
-    poser("ar");
+    poser("taste", REPONSES, "ar");
     expect(document.body.textContent).not.toMatch(/wizard\./u);
   });
 });
 
-// ── Point D — chrome de parcours PARTAGÉE (`@zwadj/ui/journey`) ─────────────
-// ⚠ CE QUI EST MESURÉ ICI : que l'assistant client et l'assistant Pro rendent
-// la MÊME chrome, pas une chrome « inspirée ». Les quatre points de l'exigence
-// Ko, dans l'ordre : rail animé, carte remontée, bouton « Modifier » partagé,
-// trait de liaison.
+// ── Point D — chrome de parcours PARTAGÉE (`@zwadj/ui/journey`) ─────────────────────────────────────────────────────────────
+// ⚠ CE QUI EST MESURÉ ICI : que l'assistant client et l'assistant Pro rendent la MÊME chrome. Le rail, la carte remontée, le
+// bouton « Modifier » partagé, le trait de liaison.
 describe("Point D — chrome partagée", () => {
   it("⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation", () => {
-    // LE défaut du lot. `animation: zj-step-in` était déclarée depuis la
-    // première livraison, dans les DEUX applications, et n'a jamais rejoué :
-    // React réconciliait une `<section>` stable, le navigateur n'avait donc
-    // rien à réarmer. On mesure l'IDENTITÉ du nœud DOM, pas le style — jsdom ne
-    // calcule pas les animations, et un test sur la classe CSS aurait été vert
-    // pendant tout le temps où le défaut existait.
-    poser();
+    // On mesure l'IDENTITÉ du nœud DOM, pas le style — jsdom ne calcule pas les animations (D222). L'étape change par l'URL :
+    // la page se rend de nouveau avec une autre étape.
+    const { rerender } = poser("city");
     const avant = document.querySelector(".zj-card");
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    rerender(element("guests", { cityId: "c1" }));
     const apres = document.querySelector(".zj-card");
     expect(apres).not.toBeNull();
     expect(apres).not.toBe(avant);
   });
 
   it("la coche du rail est une ICÔNE, la même que côté Pro — plus un glyphe texte", () => {
-    // Le client rendait `✓` en texte, le Pro une icône `lucide`. Deux rendus
-    // pour le même signe, dans deux copies du même écran.
-    poser();
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    poser("guests", { cityId: "c1" });
     const faite = rail().querySelector("li.is-done .zj-rail-n");
     expect(faite?.querySelector("svg")).not.toBeNull();
     expect(faite?.textContent).toBe("");
   });
 
   it("⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite", () => {
-    poser();
+    const { rerender } = poser("city");
     expect(document.querySelector(".zj-connector")).toBeNull();
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    rerender(element("guests", { cityId: "c1" }));
     expect(document.querySelector(".zj-connector")).not.toBeNull();
   });
 
   it("le trait est DÉCORATIF : il ne dit rien à un lecteur d'écran", () => {
-    poser();
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
-    expect(document.querySelector(".zj-connector")).toHaveAttribute("aria-hidden", "true");
+    poser("guests", { cityId: "c1" });
+    expect(document.querySelector(".zj-connector")?.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("le bouton « Modifier » vient du composant partagé, et ramène bien à l'étape", () => {
-    poser();
-    fireEvent.change(screen.getByLabelText("Commune"), { target: { value: "c1" } });
-    fireEvent.click(screen.getByRole("button", { name: "Continuer" }));
+    poser("guests", { cityId: "c1" });
     const bouton = within(recap()).getByRole("button", { name: /Modifier/ });
-    expect(bouton).toHaveClass("zj-recap-edit");
+    expect(bouton.classList.contains("zj-recap-edit")).toBe(true);
     fireEvent.click(bouton);
-    expect(question()).toBe("Où célébrez-vous ?");
+    expect(poussee().params.get("guide")).toBe("city");
   });
 
   it("⚠ la MISE EN PAGE reste à l'application : `.wz-*` cohabite avec `.zj-*`", () => {
-    // La chrome est partagée, pas la grille : `grid-area` et la position
-    // collante restent propres à cet écran. Si la `className` d'app sautait, le
-    // rail se retrouverait dans le flux au lieu de sa colonne.
-    poser();
-    expect(rail()).toHaveClass("zj-rail");
-    expect(rail()).toHaveClass("wz-rail");
+    poser("city");
+    expect(rail().classList.contains("zj-rail")).toBe(true);
+    expect(rail().classList.contains("wz-rail")).toBe(true);
   });
 });

@@ -83,3 +83,17 @@ describe("la liste des paramètres de variante ne peut pas se désynchroniser", 
     }
   });
 });
+
+// ── FC-8 (session `front-client`) — LE MODE GUIDÉ DE `/salles` EST UNE VARIANTE (D230) ────────────────────────────────────────
+// ⚠ D230 disait « `guide` ET `maxPriceCents` entrent dans `isVariant` ». La seconde moitié est sans objet depuis FC-7 : le repli
+// `maxPriceCents` est retiré, le paramètre n'a plus d'effet sur la page — il n'en fait pas une seconde adresse.
+describe("FC-8 — `guide` fait d'une page de recherche une VARIANTE", () => {
+  it("`guide` est dans la liste, et une page qui le porte n'est pas indexable", () => {
+    expect(SEARCH_VARIANT_PARAMS as readonly string[]).toContain("guide");
+    expect(isVariant({ guide: "city" })).toBe(true);
+  });
+
+  it("`maxPriceCents` n'en fait PAS une (sans effet depuis FC-7)", () => {
+    expect(isVariant({ maxPriceCents: "50000000" })).toBe(false);
+  });
+});

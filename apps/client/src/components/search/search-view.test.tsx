@@ -15,7 +15,7 @@
 //     RATTACHEMENT, pas la position ;
 //   - le repli sur des salles fictives ne doit JAMAIS s'activer par défaut ni
 //     masquer l'état d'erreur d'une API muette.
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
@@ -502,5 +502,23 @@ describe("Lot `availableOn` — annotation par date", () => {
     renderView({ outcome: { kind: "unreachable" } }, "fr", { availableOn: "2099-06-02" });
     expect(screen.queryByText("Cette date est trop lointaine")).toBeNull();
     expect(screen.queryByText("Cette date est déjà passée")).toBeNull();
+  });
+});
+
+// ── FC-8 (session `front-client`) — LE MODE GUIDÉ : l'assistant se monte PAR-DESSUS les résultats réels (D229) ─────────────────
+// ⚠ `guide` est passé comme la page le passe (déjà lu par `parseGuide`) : une valeur inconnue y est déjà `null` (D230, mesuré dans
+// `search-query.test.ts`).
+describe("FC-8 — le mode guidé de `/salles`", () => {
+  it("`guide` connu : l'assistant s'ouvre, à l'étape DEMANDÉE, et les résultats RÉELS restent dessous", async () => {
+    renderView({ ...({ guide: "guests" } as object) }, "fr", { guide: "guests" });
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBe(null));
+    const boite = screen.getByRole("dialog");
+    expect(boite.querySelector("#wz-question")?.textContent).toBe(messages.fr.wizard.qGuests);
+    expect(screen.getAllByText("Salle 1").length).toBeGreaterThan(0);
+  });
+
+  it("sans `guide` : aucun assistant, la page de résultats seule", () => {
+    renderView();
+    expect(screen.queryByRole("dialog")).toBe(null);
   });
 });
