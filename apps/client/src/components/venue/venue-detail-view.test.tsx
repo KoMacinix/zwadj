@@ -192,7 +192,7 @@ describe("Détail salle — photos", () => {
     expect(images[1]).toHaveAttribute("loading", "lazy");
   });
 
-  it("« agrandir » est un simple lien vers l'original — aucune visionneuse JS", async () => {
+  it("« agrandir » RESTE un lien vers l'original : le repli sans JavaScript (FC-12 y ajoute la visionneuse)", async () => {
     await renderDetail();
     const liens = within(screen.getByRole("list", { name: "Photos" })).getAllByRole("link");
     expect(liens[0]).toHaveAttribute("href", "http://localhost:3001/api/v1/media/p1.webp");
@@ -208,6 +208,97 @@ describe("Détail salle — photos", () => {
   it("aucune photo : c'est dit, pas un trou dans la page", async () => {
     await renderDetail({ photos: [] });
     expect(screen.getByText("Cette salle n'a pas encore publié de photos.")).toBeInTheDocument();
+  });
+});
+
+// ── FC-12 (session `front-client`) — LA VISIONNEUSE : la galerie s'agrandit SANS quitter la page ──────────────────────────────────
+// ⚠ Par la fiche RENDUE (un composant livré mais non monté est un composant absent). Chaque test affirme d'abord que la boîte s'est
+// ouverte, par une assertion NATIVE : sans visionneuse (avant FC-12), le rouge se lit en assertion, pas en plantage (D304).
+// ⚠ Les libellés viennent des CATALOGUES (lus en dictionnaire : avant FC-12, la clé n'existe pas — elle se lit vide, sans planter).
+const TROIS_PHOTOS = [
+  photo(1, { altFr: "La grande salle", altAr: "القاعة الكبرى" }),
+  photo(2, { altFr: "Le jardin", altAr: "الحديقة" }),
+  photo(3)
+];
+const catalogue = (locale: "fr" | "ar") => messages[locale].venueDetail as unknown as Record<string, string | undefined>;
+const etiquette = (locale: "fr" | "ar", n: number, total: number) =>
+  String(catalogue(locale).viewerLabel ?? "").replace("{n}", String(n)).replace("{total}", String(total));
+const vignettes = (locale: "fr" | "ar" = "fr") =>
+  within(screen.getByRole("list", { name: messages[locale].venueDetail.photos })).getAllByRole("link");
+const boite = () => screen.queryByRole("dialog");
+
+describe("FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page", () => {
+  it("un clic sur une vignette ouvre la visionneuse sur CETTE photo, pleine taille, avec l'alt du pro dans la langue de la page", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    fireEvent.click(vignettes()[1]!);
+    expect(boite() !== null).toBe(true);
+    expect(boite()?.getAttribute("aria-label")).toBe(etiquette("fr", 2, 3));
+    expect(boite()?.querySelector("img")?.getAttribute("alt")).toBe("Le jardin");
+    expect(boite()?.querySelector("img")?.getAttribute("src")).toBe("http://localhost:3001/api/v1/media/p2.webp");
+  });
+
+  it("⛔ Échap ferme, et le focus REVIENT à la vignette qui l'a ouverte", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    const lien = vignettes()[2]!;
+    lien.focus();
+    fireEvent.click(lien);
+    expect(boite() !== null).toBe(true);
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(boite()).toBe(null);
+    expect(document.activeElement).toBe(lien);
+  });
+
+  it("le focus reste DANS la boîte : Tab depuis le dernier bouton revient au premier", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    fireEvent.click(vignettes()[0]!);
+    expect(boite() !== null).toBe(true);
+    const boutons = [...(boite()?.querySelectorAll("button") ?? [])];
+    expect(boutons.length).toBe(3);
+    boutons[2]!.focus();
+    fireEvent.keyDown(document, { key: "Tab" });
+    expect(document.activeElement).toBe(boutons[0]);
+  });
+
+  it("en français, la flèche DROITE mène à la photo suivante, la GAUCHE à la précédente — et la galerie boucle", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    fireEvent.click(vignettes()[0]!);
+    expect(boite() !== null).toBe(true);
+    fireEvent.keyDown(boite()!, { key: "ArrowRight" });
+    expect(boite()?.getAttribute("aria-label")).toBe(etiquette("fr", 2, 3));
+    fireEvent.keyDown(boite()!, { key: "ArrowLeft" });
+    fireEvent.keyDown(boite()!, { key: "ArrowLeft" });
+    expect(boite()?.getAttribute("aria-label")).toBe(etiquette("fr", 3, 3));
+  });
+
+  it("⛔ en arabe (RTL), les flèches sont INVERSÉES : la GAUCHE mène à la photo suivante", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS }, "ar");
+    fireEvent.click(vignettes("ar")[0]!);
+    expect(boite() !== null).toBe(true);
+    fireEvent.keyDown(boite()!, { key: "ArrowLeft" });
+    expect(boite()?.getAttribute("aria-label")).toBe(etiquette("ar", 2, 3));
+    expect(boite()?.querySelector("img")?.getAttribute("alt")).toBe("الحديقة");
+    fireEvent.keyDown(boite()!, { key: "ArrowRight" });
+    expect(boite()?.getAttribute("aria-label")).toBe(etiquette("ar", 1, 3));
+  });
+
+  it("un alt ABSENT reste vide dans la visionneuse (image décorative), jamais inventé", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    fireEvent.click(vignettes()[2]!);
+    expect(boite() !== null).toBe(true);
+    expect(boite()?.querySelector("img")?.getAttribute("alt")).toBe("");
+  });
+
+  it("une seule photo : la boîte n'a que « Fermer » — ni précédente ni suivante", async () => {
+    await renderDetail({ photos: [photo(1)] });
+    fireEvent.click(vignettes()[0]!);
+    expect(boite() !== null).toBe(true);
+    expect(boite()?.querySelectorAll("button").length).toBe(1);
+  });
+
+  it("un clic avec MODIFICATEUR (Ctrl) reste un lien : la visionneuse ne s'ouvre pas", async () => {
+    await renderDetail({ photos: TROIS_PHOTOS });
+    fireEvent.click(vignettes()[0]!, { ctrlKey: true });
+    expect(boite()).toBe(null);
   });
 });
 
