@@ -73,3 +73,13 @@ Motif : (1) le relevé statique des 13 campagnes que le tri sélectionne rend 3 
 M3, M4) ; (2) la suite du client rend « PLAFOND ABAISSABLE `filter-wizard.test.tsx` : 0 observé sous un plafond de 3 » — les cibles
 S8 de `neutralize-e3d1-s8.py`, qui prouvent le mécanisme de plafond SUR CE FICHIER, deviendraient muettes ; (3) la page `/salles`
 est un composant serveur : le passage de `guide` ne se mesure qu'en navigateur.
+
+## Extension 2 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 45 | `docs/preuves/front-client/FC-8/rouges/rouge-e2e-v2.txt` | le rouge e2e REJOUÉ contre l'état d'avant après une correction du test (`getByLabel` exact) | 2 ter |
+
+Motif : avec le code du lot, `getByLabel("Invités")` trouvait DEUX éléments dans la boîte — le champ, et la carte nommée par sa
+question (« Combien d'invités ? », correspondance partielle par défaut). La recherche devient exacte ; le code mis de côté, le rouge
+est rejoué : l'empreinte versée est celle du test livré.
