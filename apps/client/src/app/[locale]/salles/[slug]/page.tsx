@@ -8,7 +8,7 @@
 // depuis le cache — l'ISR utile, sans dépendance au build.
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { publicMetadata } from "../../../../lib/seo";
+import { absoluteUrl, jsonLdScript, publicMetadata, venueStructuredData } from "../../../../lib/seo";
 import { getTranslations } from "next-intl/server";
 import { VenueDetailView } from "../../../../components/venue/venue-detail-view";
 import { getVenueBySlug } from "../../../../lib/api";
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function VenueDetailPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const venue = await getVenueBySlug(slug);
 
   // `null` = slug inconnu, salle non publiée, salle HIDDEN (D33), ou API
@@ -67,5 +67,15 @@ export default async function VenueDetailPage({ params }: PageProps) {
   // servie en 200 : un soft-404 se fait indexer comme une vraie page.
   if (!venue) notFound();
 
-  return <VenueDetailView venue={venue} />;
+  // FC-10 — les DONNÉES STRUCTURÉES de la fiche (schema.org `EventVenue`), dans le HTML SERVI : un robot qui n'exécute pas de
+  // script les lit. La décision vit dans une fonction PURE (`venueStructuredData`, D205) ; l'URL est la `canonical` de la fiche
+  // (la même fonction que `publicMetadata`), les images passent par `mediaSrc`, qui rend des URL ABSOLUES. ⛔ `jsonLdScript`
+  // échappe `<`, `>`, `&` : les textes viennent du pro, et un nom contenant `</script>` fermerait sinon la balise.
+  const jsonLd = jsonLdScript(venueStructuredData(venue, locale, absoluteUrl(locale, venuePath(slug)), mediaSrc));
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
+      <VenueDetailView venue={venue} />
+    </>
+  );
 }
