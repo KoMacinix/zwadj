@@ -76,6 +76,22 @@
   --star: var(--dark-star);
 }
 
+/* ── FC-2 — la barre de session de l'en-tête PASSE À LA LIGNE au lieu de déborder ──
+   Mesuré (D321, puis FC-2) : à 360 px, en français, la barre (thème, « العربية »,
+   « Connexion », « Inscription ») mesure 344 px pour 320 offerts ; un conteneur flex
+   SANS retour à la ligne ne rétrécit pas sous la somme de ses enfants, et la page
+   entière glissait de 4 px sous le doigt (`scrollWidth` 364). Ici elle passe à la ligne,
+   à TOUTE largeur où elle ne tient plus — aucun seuil, aucun `@media` : un libellé plus
+   long demain, ou une autre langue, ne rouvre pas le défaut. `flex-end` est LOGIQUE :
+   à droite en français, à gauche en arabe.
+   ⚠ Portée : l'en-tête du CLIENT seul (`--stacked`) ; les deux en-têtes Pro partagent
+   `.header-auth` et ne bougent pas. Garde : `e2e/specs/fc2-debordement-360.e2e.ts`. */
+.site-header--stacked .header-auth {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 8px;
+}
+
 /* ── Bascule de langue (Lot UI-D2) ──────────────────────────────────────────
    Même gabarit que la bascule de thème pour qu'elles fassent paire, mais en
    pilule : l'étiquette est du texte, pas une icône. */
