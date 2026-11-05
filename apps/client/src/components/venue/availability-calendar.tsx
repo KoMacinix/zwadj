@@ -24,7 +24,7 @@
 // ne sont pas sélectionnables.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { formatSlotRange } from "@zwadj/types";
+import { formatSlotRange, intlLocale } from "@zwadj/types";
 import { MonthNextIcon, MonthPrevIcon } from "@zwadj/ui";
 import type { VenueAvailabilityDayDTO, VenueAvailabilityResponse } from "@zwadj/types";
 import { getVenueAvailability } from "../../lib/api";
@@ -44,7 +44,7 @@ import {
 const HORIZON_MONTHS = 18;
 
 const formatPrice = (cents: number, locale: string): string =>
-  new Intl.NumberFormat(locale === "ar" ? "ar-DZ" : "fr-DZ", { maximumFractionDigits: 0 }).format(cents / 100);
+  new Intl.NumberFormat(intlLocale(locale), { maximumFractionDigits: 0 }).format(cents / 100);
 
 export function AvailabilityCalendar({ slug }: { slug: string }) {
   const t = useTranslations("venueDetail.calendar");

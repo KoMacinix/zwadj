@@ -140,6 +140,8 @@ export function BookingRequestPanel({
   const tPhone = useTranslations("common.phone");
   const tError = useTranslations("booking.errors");
   const locale = useLocale();
+  /** FC-6 : la langue des montants — celle de la page (`ar` → `ar-DZ`, `intlLocale`). */
+  const langue = locale === "ar" ? "ar" : "fr";
   const champId = useId();
   /** ⛔ L36-1 (D337) — le texte « un numéro OU une adresse e-mail » est relié aux DEUX champs par `aria-describedby` (D32 : ni l'un ni l'autre n'est obligatoire SEUL). */
   const contactAideId = useId();
@@ -311,7 +313,7 @@ export function BookingRequestPanel({
                           setChosen({ date: day.date, slotTemplateId: slot.slotTemplateId, priceCents: slot.priceCents })
                         }
                       >
-                        <Nom nom={slotNames.get(slot.slotTemplateId)} /> · {formatDZD(slot.priceCents)}
+                        <Nom nom={slotNames.get(slot.slotTemplateId)} /> · {formatDZD(slot.priceCents, langue)}
                         {slot.status === "REQUESTED" ? ` · ${t("requested")}` : choisissable ? "" : ` · ${t("taken")}`}
                       </button>
                     </li>
@@ -402,11 +404,11 @@ export function BookingRequestPanel({
                     <Nom nom={nom} />{" "}
                     <span className="muted">
                       {service.pricingType === ServicePricingType.PER_GUEST
-                        ? t("perGuest", { amount: formatDZD(service.perGuestPriceCents ?? 0) })
+                        ? t("perGuest", { amount: formatDZD(service.perGuestPriceCents ?? 0, langue) })
                         : service.pricingType === ServicePricingType.PER_UNIT
-                          ? t("perUnit", { amount: formatDZD(service.perUnitPriceCents ?? 0), unit: nomLocalise(service.unitNameFr, service.unitNameAr, locale).texte })
+                          ? t("perUnit", { amount: formatDZD(service.perUnitPriceCents ?? 0, langue), unit: nomLocalise(service.unitNameFr, service.unitNameAr, locale).texte })
                           : service.pricingType === ServicePricingType.FIXED
-                            ? formatDZD(service.fixedPriceCents ?? 0)
+                            ? formatDZD(service.fixedPriceCents ?? 0, langue)
                             : ""}
                     </span>
                   </label>
@@ -433,7 +435,7 @@ export function BookingRequestPanel({
                         const palier = nomLocalise(tier.labelFr, tier.labelAr, locale);
                         return (
                           <option key={tier.id} value={tier.id} {...attributsDeLangue(palier)}>
-                            {palier.texte} — {formatDZD(tier.priceCents)}
+                            {palier.texte} — {formatDZD(tier.priceCents, langue)}
                           </option>
                         );
                       })}
@@ -468,8 +470,8 @@ export function BookingRequestPanel({
       {/* L'acompte s'affiche dès qu'une date est choisie, jamais après. */}
       {chosen !== null && deposit !== null ? (
         <p>
-          {t("total", { amount: formatDZD(total ?? chosen.priceCents) })} —{" "}
-          <strong>{t("deposit", { amount: formatDZD(deposit) })}</strong>
+          {t("total", { amount: formatDZD(total ?? chosen.priceCents, langue) })} —{" "}
+          <strong>{t("deposit", { amount: formatDZD(deposit, langue) })}</strong>
         </p>
       ) : null}
 

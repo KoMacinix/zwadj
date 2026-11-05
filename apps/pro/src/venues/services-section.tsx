@@ -43,7 +43,7 @@ const EMPTY: Draft = {
 };
 
 export function ServicesSection({ venueId }: { venueId: string }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const services = useServices();
   const toMessage = useApiErrorMessage();
   const toMessageRef = useRef(toMessage);
@@ -140,20 +140,23 @@ export function ServicesSection({ venueId }: { venueId: string }) {
     }
   }
 
+  /** FC-6 : la langue des montants — celle de la page (`ar` → `ar-DZ`, `intlLocale`). */
+  const langue = i18n.language === "ar" ? "ar" : "fr";
+
   function priceLabel(row: ServiceDTO): string {
     if (row.pricingType === ServicePricingType.TIERED) {
-      return row.tiers.map((tier) => `${tier.labelFr} ${formatDZD(tier.priceCents)}`).join(" · ");
+      return row.tiers.map((tier) => `${tier.labelFr} ${formatDZD(tier.priceCents, langue)}`).join(" · ");
     }
     if (row.pricingType === ServicePricingType.PER_GUEST) {
-      return t("venue.ui.services.perGuest", { amount: formatDZD(row.perGuestPriceCents ?? 0) });
+      return t("venue.ui.services.perGuest", { amount: formatDZD(row.perGuestPriceCents ?? 0, langue) });
     }
     if (row.pricingType === ServicePricingType.PER_UNIT) {
       return t("venue.ui.services.perUnit", {
-        amount: formatDZD(row.perUnitPriceCents ?? 0),
+        amount: formatDZD(row.perUnitPriceCents ?? 0, langue),
         unit: row.unitNameFr ?? ""
       });
     }
-    return formatDZD(row.fixedPriceCents ?? 0);
+    return formatDZD(row.fixedPriceCents ?? 0, langue);
   }
 
   return (

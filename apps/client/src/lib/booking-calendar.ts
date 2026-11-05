@@ -10,7 +10,7 @@
 //
 // ⛔ BORNE DE D316, INCHANGÉE : ce module ne lit AUCUN prix et n'en produit aucun. Il dit quel JOUR se choisit ; le
 // créneau, son prix et leur transport vers le calcul restent dans le panneau, à la ligne `setChosen` qui n'a pas bougé.
-import type { SlotAvailabilityStatus, VenueAvailabilityDayDTO } from "@zwadj/types";
+import { intlLocale, type SlotAvailabilityStatus, type VenueAvailabilityDayDTO } from "@zwadj/types";
 import { compareMonths, monthGrid, offsetInWeek, shiftMonth, type MonthCursor } from "./calendar";
 
 const DAY_MS = 86_400_000;
@@ -156,11 +156,11 @@ export function moveFocus(
  *  (WCAG 2.5.3), quelle que soit la numérotation de la locale. `Intl` est permis pour les DATES (D57 ne l'interdit que
  *  pour l'heure) ; `UTC` parce que la date civile est déjà celle d'Alger (D48). */
 export function dayNumber(date: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: "UTC" }).format(Date.parse(`${date}T00:00:00Z`));
+  return new Intl.DateTimeFormat(intlLocale(locale), { day: "numeric", timeZone: "UTC" }).format(Date.parse(`${date}T00:00:00Z`));
 }
 
 export function longDate(date: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     weekday: "long",
     day: "numeric",
     month: "long",

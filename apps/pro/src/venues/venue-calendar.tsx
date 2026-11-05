@@ -284,7 +284,7 @@ export function VenueCalendar({
                     <span>{i18n.language === "ar" ? meta?.nameAr : meta?.nameFr}</span>
                     {/* D57 — 24 h. Une soirée s'écrit « 20:00 – 02:00 ». */}
                     {meta && <span className="cal-slot-hours">{formatSlotRange(meta.startMinutes, meta.endMinutes)}</span>}
-                    <span className="cal-slot-price">{formatDZD(entry.priceCents)}</span>
+                    <span className="cal-slot-price">{formatDZD(entry.priceCents, i18n.language === "ar" ? "ar" : "fr")}</span>
                     <span className="cal-status">{t(`venue.ui.calendar.status.${entry.status}`)}</span>
                   </>
                 );

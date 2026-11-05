@@ -78,8 +78,10 @@ import { formatDZD } from "@zwadj/i18n";
 import {
   DEFAULT_PHONE_COUNTRY,
   PHONE_COUNTRIES,
+  QUOTE_AMOUNT_LOCALE,
   QUOTE_DOCUMENT_LOCALES,
   QUOTE_SENT_VIA_ORDER,
+  intlLocale,
   isPhoneComplete,
   isValidContactEmail,
   isValidPersonName,
@@ -143,7 +145,7 @@ type Done = { kind: "locked" | "standby"; date: string; client: string } | null;
 function longDate(civil: string, language: string): string {
   const [y, m, d] = civil.split("-").map(Number);
   if (!y || !m || !d) return civil;
-  return new Intl.DateTimeFormat(language, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
+  return new Intl.DateTimeFormat(intlLocale(language), { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
     new Date(Date.UTC(y, m - 1, d))
   );
 }
@@ -1296,9 +1298,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
 
                 <dl className="wk-amounts">
                   <dt>{t("venue.ui.walkin.basePrice")}</dt>
-                  <dd>{formatDZD(quote.basePriceCents)}</dd>
+                  <dd>{formatDZD(quote.basePriceCents, QUOTE_AMOUNT_LOCALE)}</dd>
                   <dt>{t("venue.ui.walkin.servicesTotal")}</dt>
-                  <dd>{formatDZD(quote.servicesTotalCents)}</dd>
+                  <dd>{formatDZD(quote.servicesTotalCents, QUOTE_AMOUNT_LOCALE)}</dd>
                 </dl>
 
                 {quote.lines.length === 0 ? null : (
@@ -1309,7 +1311,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                           {isAr ? line.nameAr : line.nameFr}
                           {line.quantity > 1 ? ` × ${line.quantity}` : ""}
                         </span>
-                        <span>{formatDZD(line.lineTotalCents)}</span>
+                        <span>{formatDZD(line.lineTotalCents, QUOTE_AMOUNT_LOCALE)}</span>
                       </li>
                     ))}
                   </ul>
@@ -1317,12 +1319,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
 
                 <div className="wk-grand">
                   <span>{t("venue.ui.walkin.total")}</span>
-                  <strong>{formatDZD(quote.totalCents)}</strong>
+                  <strong>{formatDZD(quote.totalCents, QUOTE_AMOUNT_LOCALE)}</strong>
                 </div>
 
                 <div className="wk-deposit">
                   <span>{t("venue.ui.walkin.deposit")}</span>
-                  <strong>{formatDZD(quote.depositCents)}</strong>
+                  <strong>{formatDZD(quote.depositCents, QUOTE_AMOUNT_LOCALE)}</strong>
                 </div>
 
                 {/* ⛔ L36-2 : un brouillon n'a NI coordonnées, NI canaux, NI issues — le bloc du brouillon les remplace ; la promotion rend le message de succès. */}

@@ -82,7 +82,7 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
       >
         <div>
           <dt style={{ fontSize: 12, color: "var(--ink-mute)" }}>{t("priceFrom")}</dt>
-          <dd style={{ margin: 0, fontWeight: 600, fontSize: 18 }}>{formatDZD(venue.basePriceCents)}</dd>
+          <dd style={{ margin: 0, fontWeight: 600, fontSize: 18 }}>{formatDZD(venue.basePriceCents, locale === "ar" ? "ar" : "fr")}</dd>
         </div>
         <div>
           <dt style={{ fontSize: 12, color: "var(--ink-mute)" }}>{t("capacity", { max: venue.capacityMax })}</dt>

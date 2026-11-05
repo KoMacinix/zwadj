@@ -23,7 +23,7 @@ import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmDialog } from "@zwadj/ui";
 import type { FieldErrors } from "@zwadj/api-client";
-import type { PricingRuleDTO, PricingRuleType, SlotTemplateDTO } from "@zwadj/types";
+import { intlLocale, type PricingRuleDTO, type PricingRuleType, type SlotTemplateDTO } from "@zwadj/types";
 import { useApiErrorMessage, useValidationMessage } from "../auth/auth-ui";
 import { useVenuePricingRules } from "./venue-client-context";
 import { venueFieldErrors } from "./venue-errors";
@@ -73,12 +73,12 @@ const draftOf = (rule: PricingRuleDTO): RuleDraft => ({
  *  clés i18n de plus seraient douze + sept occasions de divergence FR/AR, pour
  *  des libellés que la plateforme connaît déjà. */
 function monthNames(locale: string): string[] {
-  const fmt = new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" });
+  const fmt = new Intl.DateTimeFormat(intlLocale(locale), { month: "long", timeZone: "UTC" });
   return Array.from({ length: 12 }, (_, i) => fmt.format(new Date(Date.UTC(2026, i, 1))));
 }
 
 function weekdayNames(locale: string): string[] {
-  const fmt = new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" });
+  const fmt = new Intl.DateTimeFormat(intlLocale(locale), { weekday: "long", timeZone: "UTC" });
   // 2026-11-01 est un DIMANCHE : l'index 0 du contrat API tombe donc juste.
   return Array.from({ length: 7 }, (_, i) => fmt.format(new Date(Date.UTC(2026, 10, 1 + i))));
 }
