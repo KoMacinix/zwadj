@@ -40,14 +40,17 @@ function rendre(locale: Langue) {
   return screen.getByRole("grid");
 }
 
+// ⚠ FC-6 (session `front-client`) : dans la locale ARBITRÉE par Ko — « Les dates et les nombres en arabe se formatent en
+// ar-DZ » (04/10/2026) ; le français inchangé. Ce sont SES MOTS, pas `intlLocale` (qui rendrait l'attendu tautologique).
+const LOCALE_ATTENDUE: Record<Langue, string> = { fr: "fr", ar: "ar-DZ" };
 // ── Attendus tirés d'`Intl` DIRECTEMENT (jamais de `monthLabel`, `weekdayHeaders`, `longDate`) ────────────────────────
 const MOIS = (l: Langue) =>
-  new Intl.DateTimeFormat(l, { month: "long", year: "numeric", timeZone: "UTC" }).format(Date.UTC(2027, 7, 1));
+  new Intl.DateTimeFormat(LOCALE_ATTENDUE[l], { month: "long", year: "numeric", timeZone: "UTC" }).format(Date.UTC(2027, 7, 1));
 /** Le 1er août 2027 est un DIMANCHE (vérifié ci-dessous) : la colonne c de la grille algérienne (D56) est le jour 1 + c. */
 const JOUR = (l: Langue, c: number, format: "short" | "long") =>
-  new Intl.DateTimeFormat(l, { weekday: format, timeZone: "UTC" }).format(Date.UTC(2027, 7, 1 + c));
+  new Intl.DateTimeFormat(LOCALE_ATTENDUE[l], { weekday: format, timeZone: "UTC" }).format(Date.UTC(2027, 7, 1 + c));
 const DATE_LONGUE = (l: Langue, jour: number) =>
-  new Intl.DateTimeFormat(l, { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
+  new Intl.DateTimeFormat(LOCALE_ATTENDUE[l], { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
     Date.UTC(2027, 7, jour)
   );
 
@@ -113,7 +116,9 @@ const SOURCES = [
 function nomsCalendaires(): { exacts: Set<string>; longs: string[] } {
   const exacts = new Set<string>();
   const longs: string[] = [];
-  for (const l of ["fr", "ar"]) {
+  // FC-6 : `ar-DZ` AUSSI — la plateforme affiche désormais les noms de l'Algérie (« أوت », « جانفي ») ; `ar` reste, pour
+  // qu'un nom recopié de l'ancienne forme se voie encore.
+  for (const l of ["fr", "ar", "ar-DZ"]) {
     for (let j = 0; j < 7; j += 1) {
       for (const f of ["long", "short"] as const) {
         const n = new Intl.DateTimeFormat(l, { weekday: f, timeZone: "UTC" }).format(Date.UTC(2027, 7, 1 + j));

@@ -1272,9 +1272,11 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
     return outils;
   }
   const convertir = (status = "SENT") => vi.fn().mockResolvedValue(draft({ status: status as QuoteDTO["status"], bookingId: "b1" }));
-  /** La date de la fixture, en toutes lettres, dans la langue de la page — formatée par `Intl` seul, hors du composant. */
+  /** La date de la fixture, en toutes lettres, dans la langue de la page — formatée par `Intl` seul, hors du composant.
+   *  ⚠ FC-6 (session `front-client`) : en arabe, dans la locale ARBITRÉE par Ko (« ar-DZ », 04/10/2026) — ses mots, pas
+   *  `intlLocale` (qui rendrait l'attendu tautologique). */
   const dateLongue = (civil: string, langue: string) =>
-    new Intl.DateTimeFormat(langue, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${civil}T00:00:00Z`));
+    new Intl.DateTimeFormat(langue === "ar" ? "ar-DZ" : langue, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${civil}T00:00:00Z`));
 
   it("« Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est", async () => {
     await setup();
