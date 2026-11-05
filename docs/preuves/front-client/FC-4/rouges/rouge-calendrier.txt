@@ -1,0 +1,55 @@
+# FC-4 — ROUGE (calendrier), lu contre l'état d'AVANT, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 0c6f35e42d500c0f34f4e6c66bbb4edd83cd71e8 (tests non commités ; code et catalogues d'avant)
+# commande : (apps/client) npx vitest run src/lib/booking-calendar.test.ts — code de sortie 1
+# sha256 apps/client/src/lib/booking-calendar.test.ts : 663fcecdcfbefc3ce15b6e0cc39d46e36e4a8dcb884639b4628faf9252183418
+# sha256 apps/client/src/lib/booking-calendar.ts (état d'AVANT) : e29cf3b9f799fe892340151db22076783f65400a3842601acbad121d856d2bce
+# ⚠ les trois clés neuves n'existent pas avant le code : le test les lit avec un repli (« § clé absente du catalogue § »), pour que le rouge se lise en ASSERTION
+# lecture : 1 échec par AssertionError (un REQUESTED ne suffit pas à rendre un jour choisissable) ; C-b, inversé par l'arbitrage, reste vert avant comme après
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/booking-calendar.test.ts (14 tests | 1 failed) 26ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > couvre la fenêtre de 182 jours mois par mois, ni plus ni moins 2ms
+   ✓ booking-calendar — les mois de la fenêtre (MD C-c) > les bornes viennent des jours RENDUS, quel que soit leur ordre (D49) 1ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-a : un seul créneau AVAILABLE suffit — un jour à moitié pris reste choisissable 0ms
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > C-b : ni créneau AVAILABLE ni créneau REQUESTED, ou un jour absent de la réponse — inactif 0ms
+   × booking-calendar — quel jour se choisit (MD C-a, C-b) > FC-4 : un seul créneau REQUESTED suffit — le jour déjà DEMANDÉ se choisit (arbitrage de Ko) 6ms
+     → expected false to be true // Object.is equality
+   ✓ booking-calendar — quel jour se choisit (MD C-a, C-b) > le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris 1ms
+   ✓ booking-calendar — le clavier (MD C-e) > flèche droite = jour suivant de gauche à droite, jour PRÉCÉDENT en arabe (la grille se lit à l'envers) 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > une date inactive est SAUTÉE dans le sens du mouvement 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > rien hors de la fenêtre : au premier jour, reculer ne bouge pas 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Début / Fin : la ligne commence DIMANCHE et finit samedi (D56) 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > Page suivante : premier jour libre du mois d'après 0ms
+   ✓ booking-calendar — le clavier (MD C-e) > l'arrêt de tabulation : le jour vu s'il est libre dans ce mois, sinon le premier jour libre 0ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > fr : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 11ms
+   ✓ booking-calendar — ce que lit un lecteur d'écran (MD C-f) > ar : la date longue CONTIENT le numéro affiché (WCAG 2.5.3) 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/booking-calendar.test.ts > booking-calendar — quel jour se choisit (MD C-a, C-b) > FC-4 : un seul créneau REQUESTED suffit — le jour déjà DEMANDÉ se choisit (arbitrage de Ko)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/lib/booking-calendar.test.ts:65:83
+     63| 
+     64|   it("FC-4 : un seul créneau REQUESTED suffit — le jour déjà DEMANDÉ s…
+     65|     expect(isDaySelectable(jour("2027-08-16", "BOOKED", "REQUESTED", "…
+       |                                                                                   ^
+     66|     expect(isDaySelectable(jour("2027-08-18", "REQUESTED"))).toBe(true…
+     67|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  05:08:45
+   Duration  1.39s (transform 436ms, setup 82ms, collect 705ms, tests 26ms, environment 332ms, prepare 63ms)
+

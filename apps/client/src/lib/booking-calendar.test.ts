@@ -53,10 +53,17 @@ describe("booking-calendar — quel jour se choisit (MD C-a, C-b)", () => {
     expect(isDaySelectable(jour("2027-08-15", "BOOKED", "AVAILABLE"))).toBe(true);
   });
 
-  it("C-b : aucun créneau AVAILABLE, ou un jour absent de la réponse — inactif", () => {
-    expect(isDaySelectable(jour("2027-08-16", "BOOKED", "REQUESTED", "BLOCKED"))).toBe(false);
+  // ⚠ INVERSION ÉCRITE (FC-4, arbitrage de Ko du 04/10/2026) : ce test exigeait qu'un jour « BOOKED, REQUESTED, BLOCKED » soit
+  // INACTIF. Un REQUESTED ne verrouille rien (moteur de disponibilité) : le jour qui en porte un se CHOISIT désormais.
+  it("C-b : ni créneau AVAILABLE ni créneau REQUESTED, ou un jour absent de la réponse — inactif", () => {
+    expect(isDaySelectable(jour("2027-08-16", "BOOKED", "BLOCKED"))).toBe(false);
     expect(isDaySelectable(jour("2027-08-17"))).toBe(false);
     expect(isDaySelectable(undefined)).toBe(false);
+  });
+
+  it("FC-4 : un seul créneau REQUESTED suffit — le jour déjà DEMANDÉ se choisit (arbitrage de Ko)", () => {
+    expect(isDaySelectable(jour("2027-08-16", "BOOKED", "REQUESTED", "BLOCKED"))).toBe(true);
+    expect(isDaySelectable(jour("2027-08-18", "REQUESTED"))).toBe(true);
   });
 
   it("le mois ouvert d'abord est celui du premier jour LIBRE, pas un mois tout pris", () => {
