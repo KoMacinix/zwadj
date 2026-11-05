@@ -39,6 +39,7 @@ import {
 } from "@zwadj/types";
 import type { CookieOptions, Request, Response } from "express";
 import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
+import { StaffExempt } from "../staff/staff-decorators";
 import { AUTH } from "./auth.constants";
 import { CurrentUser, Public } from "./auth.decorators";
 import { AUTH_THROTTLE } from "./auth.throttle";
@@ -126,6 +127,9 @@ export class AuthController {
     return response;
   }
 
+  // Rang 44 (D341, MP-20) : l'état du COMPTE COMMUN ne dépend pas d'une session de personnel — c'est la route
+  // qui dit à l'application Pro qui est connecté, avant même qu'un membre se soit identifié.
+  @StaffExempt()
   @Get("me")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Profil de l'utilisateur authentifié (lecture BDD fraîche — source du bandeau D1)" })

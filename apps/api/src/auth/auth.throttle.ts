@@ -68,5 +68,11 @@ export const AUTH_THROTTLE = {
   /** Google (Lot 8) : 5 / 15 min / IP — la route peut CRÉER un compte, même
    *  budget que register (cadrage OAuth : « ordre de grandeur register »).
    *  Un utilisateur légitime ne la sollicite qu'une fois par session. */
-  google: { limit: num("THROTTLE_GOOGLE_LIMIT", 5), ttl: TTL }
+  google: { limit: num("THROTTLE_GOOGLE_LIMIT", 5), ttl: TTL },
+  /** Activation de la couche du personnel (rang 44, D341, MP-36) : 5 / 15 min / IP — budget `register` : la
+   *  route CRÉE un membre et paie un hachage argon2 (64 Mio). Le MÊME levier de test que les autres (D128). */
+  staffActivate: { limit: num("THROTTLE_STAFF_ACTIVATE_LIMIT", 5), ttl: TTL },
+  /** Connexion du personnel (rang 44, D341, MP-36) : 10 / 15 min / IP — budget `login`. Complète la pause par
+   *  membre (5 échecs / 15 min, jamais définitive) : l'une borne une IP, l'autre un compte. */
+  staffLogin: { limit: num("THROTTLE_STAFF_LOGIN_LIMIT", 10), ttl: TTL }
 } as const;

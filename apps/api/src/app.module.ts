@@ -17,6 +17,8 @@ import { HealthModule } from "./health/health.module";
 import { MediaModule } from "./media/media.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { ReferentialsModule } from "./referentials/referentials.module";
+import { StaffModule } from "./staff/staff.module";
+import { StaffSessionGuard } from "./staff/staff-session.guard";
 import { VenuesModule } from "./venues/venues.module";
 
 @Module({
@@ -63,17 +65,24 @@ import { VenuesModule } from "./venues/venues.module";
     // Rang 33 (D326) — le PDF du devis. Enregistré dans le même geste que son contrôleur (leçon R1).
     DocumentsModule,
     // Rang 41 (D336) — la FICHE CLIENT d'un pro (K-1 à K-3b). Enregistré dans le même geste que son contrôleur (leçon R1).
-    ProClientsModule
+    ProClientsModule,
+    // Rang 44 (D341) — la COUCHE DU PERSONNEL (K-14 à K-18) : activation, connexion, état, déconnexion, mot de passe. Enregistrée dans le même geste que son contrôleur ET que son garde global (leçon R1) ;
+    // elle EXPORTE `STAFF_STORE`, que le quatrième garde ci-dessous résout depuis ce contexte racine.
+    StaffModule
   ],
   providers: [
     // Guards GLOBAUX — l'ordre d'enregistrement EST l'ordre d'exécution (D6) :
     // 1. Throttler : le rate-limiting s'applique aussi aux routes publiques
     //    (login/register sont précisément les plus attaquées) ;
     // 2. JwtAuthGuard : fermé par défaut, @Public() pour ouvrir ;
-    // 3. RolesGuard : lit request.user posé par le guard précédent.
+    // 3. RolesGuard : lit request.user posé par le guard précédent ;
+    // 4. StaffSessionGuard (rang 44, D341, S-98) : FERMÉ PAR DÉFAUT — un PRO dont la salle a activé la couche du
+    //    personnel doit présenter une session de personnel sur toute route non exemptée. Il COMPLÈTE le Bearer :
+    //    il s'exécute donc APRÈS les trois autres, qui posent l'identité et le rôle qu'il lit.
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
-    { provide: APP_GUARD, useClass: RolesGuard }
+    { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_GUARD, useClass: StaffSessionGuard }
   ]
 })
 export class AppModule {}
