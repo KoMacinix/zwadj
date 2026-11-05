@@ -11,7 +11,7 @@ import { useAuth } from "../../lib/auth/auth-context";
 import { issuesToFieldErrors, validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { GoogleSignIn } from "./google-signin";
-import { LOGIN_PATH } from "../../lib/routes";
+import { LOGIN_PATH, PRIVACY_PATH, TERMS_PATH } from "../../lib/routes";
 
 // Le schéma API (source de vérité) + deux contrôles PUREMENT front :
 // confirmation et acceptation CGU — l'API ne les reçoit pas (contrat Lot 1).
@@ -189,11 +189,11 @@ export function RegisterForm() {
           <input type="checkbox" checked={form.accept} onChange={(e) => set("accept", e.target.checked)} />
           <span>
             {t("signup.acceptPrefix")}
-            <Link href="/cgu" className="link-accent">
+            <Link href={TERMS_PATH} className="link-accent">
               {t("signup.terms")}
             </Link>
             {t("signup.acceptMiddle")}
-            <Link href="/confidentialite" className="link-accent">
+            <Link href={PRIVACY_PATH} className="link-accent">
               {t("signup.privacy")}
             </Link>
             {t("signup.acceptSuffix")}

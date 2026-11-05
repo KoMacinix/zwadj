@@ -4,10 +4,10 @@
 // bundles séparés : partager ce module exigerait de le remonter dans un paquet
 // (`@zwadj/types` n'a pas de place pour une grille d'affichage, `@zwadj/ui` n'a
 // pas de logique). Le coût du partage dépasse aujourd'hui celui de la copie —
-// mais la DÉCISION, elle, n'est pas dupliquée : `WEEK_START_DAY` vaut 0 ici
-// pour la raison écrite ci-dessous, et si elle change, elle change aux deux
-// endroits. Les deux fichiers sont testés séparément, ce qui rend une dérive
-// visible immédiatement.
+// mais la DÉCISION, elle, n'est pas dupliquée : ⛔ FC-5 — la semaine (`WEEK_START_DAY`,
+// `WEEKEND_DAYS`) vient de `@zwadj/types`, UNE définition pour les deux applications ;
+// la grille d'affichage, elle, reste copiée (bundles séparés). Les deux fichiers sont
+// testés séparément, et confrontés à l'autorité commune.
 //
 // ── La décision qui gouverne ce module (D56) ─────────────────────────────────
 // En Algérie, le repos hebdomadaire est **vendredi-samedi**, et le premier jour
@@ -34,14 +34,11 @@
 // Vendredi vaut 5 et samedi 6 dans les deux ; dimanche vaut 0 en JS et 7 en
 // ISO. Tout ce module raisonne en numérotation JS (0 = dimanche).
 
-/** Dimanche, en numérotation JS. Premier jour ouvré et d'école en Algérie,
- *  donc tête de grille. */
-export const WEEK_START_DAY = 0;
-
-/** Vendredi et samedi, en numérotation JS. Le repos hebdomadaire algérien — et
- *  le PIC de la demande en salle des fêtes, pas un creux à griser. Avec un
- *  départ dimanche, ces deux jours ferment naturellement chaque ligne. */
-export const WEEKEND_DAYS: readonly number[] = [5, 6];
+// ⛔ FC-5 (session `front-client`) — `WEEK_START_DAY` et `WEEKEND_DAYS` vivent dans `@zwadj/types` (`packages/types/src/week.ts`),
+// UNE fois pour le client et le pro (arbitrage de Ko du 04/10/2026 : « Le week-end : une seule définition, partagée par le client
+// et le pro »). Ils étaient déclarés ici ET dans l'autre application ; la garde `apps/client/src/lib/semaine-source-unique.test.ts`
+// rougit si l'un des deux calendriers en redéclare une.
+import { WEEKEND_DAYS, WEEK_START_DAY } from "@zwadj/types";
 
 const DAY_MS = 86_400_000;
 

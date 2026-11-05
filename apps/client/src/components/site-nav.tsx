@@ -20,6 +20,7 @@
 // casserait l'état actif en arabe, et personne ne s'en apercevrait côté FR.
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../i18n/navigation";
+import { SEARCH_PATH } from "../lib/routes";
 
 interface NavEntry {
   key: string;
@@ -29,7 +30,7 @@ interface NavEntry {
 
 const ENTRIES: NavEntry[] = [
   { key: "home", href: "/" },
-  { key: "venues", href: "/salles" },
+  { key: "venues", href: SEARCH_PATH },
   { key: "providers", href: null },
   { key: "inspirations", href: null },
   { key: "tools", href: null },

@@ -19,6 +19,7 @@ import { createVisitBookingsClient, type VisitBookingsClient } from "@zwadj/api-
 import { formatSlotRange, VISIT_DURATION_MINUTES, type VisitBookingDTO } from "@zwadj/types";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
+import { venuePath } from "../../lib/routes";
 
 export function VisitBookingsSection({ client }: { client?: VisitBookingsClient }) {
   const t = useTranslations("account.ui.visits");
@@ -99,7 +100,7 @@ export function VisitBookingsSection({ client }: { client?: VisitBookingsClient 
                   opacity: cancelled || past ? 0.6 : 1
                 }}
               >
-                <Link href={`/salles/${row.venueSlug}`}>
+                <Link href={venuePath(row.venueSlug)}>
                   {locale === "ar" ? row.venueNameAr : row.venueNameFr}
                 </Link>
                 <span style={{ textDecoration: cancelled ? "line-through" : "none" }}>

@@ -19,7 +19,7 @@ import { NextIntlClientProvider } from "next-intl";
 import ts from "typescript";
 import { messages } from "@zwadj/i18n";
 import type { VenueAvailabilityDayDTO } from "@zwadj/types";
-import { WEEKEND_DAYS } from "../../lib/calendar";
+import { WEEKEND_DAYS } from "@zwadj/types";
 import { BookingDatePicker } from "./booking-date-picker";
 
 type Langue = "fr" | "ar";

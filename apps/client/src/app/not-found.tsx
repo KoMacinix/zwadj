@@ -41,6 +41,7 @@
 // Le dossier `app/` n'a pas de layout racine (le seul `<html>` du dépôt est
 // celui de `[locale]/layout.tsx`), donc cette page doit porter les siens.
 import Link from "next/link";
+import { localeHomePath } from "../lib/routes";
 
 const ROOT_NOT_FOUND_CSS = `
   :root { color-scheme: light; }
@@ -95,7 +96,7 @@ export default function RootNotFound() {
               ⚠ `next/link`, pas le `Link` de `i18n/navigation` : ce dernier
               préfixerait la locale courante, et il n'y en a pas ici. */}
             <nav className="root-notfound-actions" aria-label="Choix de la langue / اختيار اللغة">
-              <Link href="/fr" className="root-notfound-link root-notfound-link--primary">
+              <Link href={localeHomePath("fr")} className="root-notfound-link root-notfound-link--primary">
                 Français
               </Link>
               {/* ⚠ `dir="rtl"` MÊME SUR UN MOT SEUL. L'algorithme bidi s'en
@@ -103,7 +104,7 @@ export default function RootNotFound() {
                   que TOUT élément `lang="ar"` de cette page déclare sa
                   direction : une règle universelle se vérifie, une règle
                   « sauf quand ça se voit pas » ne se vérifie pas. */}
-              <Link href="/ar" lang="ar" dir="rtl" className="root-notfound-link">
+              <Link href={localeHomePath("ar")} lang="ar" dir="rtl" className="root-notfound-link">
                 العربية
               </Link>
             </nav>

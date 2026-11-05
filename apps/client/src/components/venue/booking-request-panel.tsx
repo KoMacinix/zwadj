@@ -40,7 +40,7 @@ import { getVenueAvailability } from "../../lib/api";
 import { mergeAvailabilityWindows, splitAvailabilityWindow } from "../../lib/availability-windows";
 import { isSlotChoosable, longDate } from "../../lib/booking-calendar";
 import { attributsDeLangue, nomLocalise, type NomLocalise } from "../../lib/nom-localise";
-import { LOGIN_PATH } from "../../lib/routes";
+import { ACCOUNT_PATH, LOGIN_PATH } from "../../lib/routes";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
 import { Field } from "../auth/auth-ui";
@@ -256,7 +256,7 @@ export function BookingRequestPanel({
         {/* Ce que le client doit comprendre : ce n'est pas confirmé. La salle
             doit répondre, et il peut suivre l'état depuis son compte. */}
         <p className="muted">{t("sentHint")}</p>
-        <Link href="/compte">{t("seeMine")}</Link>
+        <Link href={ACCOUNT_PATH}>{t("seeMine")}</Link>
       </section>
     );
   }

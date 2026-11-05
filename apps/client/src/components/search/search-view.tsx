@@ -62,6 +62,7 @@ import {
   toPublicQuery,
   type SearchState
 } from "../../lib/search-query";
+import { SEARCH_PATH } from "../../lib/routes";
 
 /** Le tri vit hors du `<form>` mais lui APPARTIENT (attribut HTML `form`).
  *  L'identifiant est donc partagé entre les deux, et déclaré une seule fois. */
@@ -235,7 +236,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
             <h2>{t(refus === "past" ? "availableOn.pastTitle" : "availableOn.horizonTitle")}</h2>
             <p>{t(refus === "past" ? "availableOn.pastBody" : "availableOn.horizonBody")}</p>
             <p>
-              <Link href={`/salles${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
+              <Link href={`${SEARCH_PATH}${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
                 {t("availableOn.clearDateAction")}
               </Link>
             </p>
@@ -291,7 +292,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
                 <ul style={{ display: "flex", flexWrap: "wrap", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
                   {state.page > 1 ? (
                     <li>
-                      <Link href={`/salles${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
+                      <Link href={`${SEARCH_PATH}${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
                         {t("pagination.previous")}
                       </Link>
                     </li>
@@ -305,7 +306,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
                     ) : (
                       <li key={page}>
                         <Link
-                          href={`/salles${toPublicQuery(state, page)}`}
+                          href={`${SEARCH_PATH}${toPublicQuery(state, page)}`}
                           className={page === state.page ? "btn btn-accent" : "btn btn-ghost"}
                           aria-label={
                             page === state.page ? t("pagination.current", { page }) : t("pagination.page", { page })
@@ -320,7 +321,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
 
                   {state.page < totalPages ? (
                     <li>
-                      <Link href={`/salles${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
+                      <Link href={`${SEARCH_PATH}${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
                         {t("pagination.next")}
                       </Link>
                     </li>
@@ -379,7 +380,7 @@ function SearchFilters({
     <form method="get" id={FILTERS_FORM_ID} className="filters">
       <div className="filters-head">
         <h2 className="filters-title">{t("filters.legend")}</h2>
-        <Link href="/salles" className="filters-reset">
+        <Link href={SEARCH_PATH} className="filters-reset">
           {t("filters.reset")}
         </Link>
       </div>

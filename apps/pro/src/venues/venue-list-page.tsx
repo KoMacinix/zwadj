@@ -23,6 +23,7 @@ import { useProVenues } from "../shell/pro-venues-context";
 import { venuesLabelKey } from "../shell/venues-label";
 import { useReferentialsData, useVenueCrud } from "./venue-client-context";
 import { PublicationBadge, StatusSelect } from "./venue-form";
+import { NEW_VENUE_PATH, venuePath } from "../routes";
 
 export function VenueListPage() {
   const { t, i18n } = useTranslation();
@@ -132,7 +133,7 @@ export function VenueListPage() {
           <div className="state-panel">
             <h2>{t("venue.ui.list.empty.title")}</h2>
             <p>{t("venue.ui.list.empty.body")}</p>
-            <Link to="/salles/nouvelle" className="btn btn-accent">
+            <Link to={NEW_VENUE_PATH} className="btn btn-accent">
               {t("venue.ui.list.empty.cta")}
             </Link>
           </div>
@@ -215,7 +216,7 @@ export function VenueListPage() {
                       </div>
 
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                        <Link to={`/salles/${venue.id}`} className="btn btn-ghost">
+                        <Link to={venuePath(venue.id)} className="btn btn-ghost">
                           {t("venue.ui.list.edit")}
                         </Link>
                         <button type="button" className="btn btn-danger" onClick={() => setPendingDelete(venue)}>

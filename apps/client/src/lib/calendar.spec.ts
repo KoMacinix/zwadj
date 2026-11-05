@@ -4,8 +4,6 @@
 // silencieusement — personne en France ne le verrait.
 import { describe, expect, it } from "vitest";
 import {
-  WEEKEND_DAYS,
-  WEEK_START_DAY,
   compareMonths,
   currentMonth,
   daysBetween,
@@ -18,6 +16,15 @@ import {
   shiftMonth,
   weekdayHeaders
 } from "./calendar";
+// FC-5 — la semaine se lit dans l'AUTORITÉ commune (`packages/types/src/week.ts`), pas dans le module testé.
+import { WEEKEND_DAYS, WEEK_START_DAY } from "@zwadj/types";
+
+describe("FC-5 — la grille de CETTE application suit la semaine de `@zwadj/types`", () => {
+  it("chaque jour de la semaine : week-end ici ⇔ week-end dans l'autorité ; la grille commence au jour de l'autorité", () => {
+    for (let jour = 0; jour < 7; jour += 1) expect(isWeekend(jour)).toBe(WEEKEND_DAYS.includes(jour));
+    expect(offsetInWeek(WEEK_START_DAY)).toBe(0);
+  });
+});
 
 describe("D56 — la semaine algérienne", () => {
   it("commence le DIMANCHE : premier jour ouvré et d'école en Algérie", () => {

@@ -27,6 +27,7 @@ import { AvailabilityCalendar } from "./availability-calendar";
 import { MatterportEmbed } from "./matterport-embed";
 import { BookingRequestPanel } from "./booking-request-panel";
 import { VisitBookingPanel } from "./visit-booking-panel";
+import { SEARCH_PATH } from "../../lib/routes";
 
 const SECTION_TITLE = {
   fontSize: 13,
@@ -49,7 +50,7 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
 
   return (
     <main style={{ padding: 20, maxInlineSize: 900, marginInline: "auto" }}>
-      <Link href="/salles" className="backlink">
+      <Link href={SEARCH_PATH} className="backlink">
         <ArrowBackIcon />
         {t("backToSearch")}
       </Link>

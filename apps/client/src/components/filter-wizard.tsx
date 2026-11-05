@@ -37,6 +37,7 @@ import { JourneyCard, JourneyConnector, JourneyRail, JourneyRecap } from "@zwadj
 import { useRouter } from "../i18n/navigation";
 import { countVenues } from "../lib/api";
 import { BUDGET_TIERS, centsFromDinars } from "../lib/search-query";
+import { SEARCH_PATH } from "../lib/routes";
 
 /** ⚠ QUATRE ÉTAPES, dans l'ordre du filtre EXISTANT (`SearchFilters`) : ville,
  *  capacité, budget, styles, équipements. Rien de réinventé — les deux derniers
@@ -211,7 +212,7 @@ export function FilterWizard({ wilayas, styles, amenities }: FilterWizardProps) 
    *  neuve : les filtres y restent ajustables comme aujourd'hui. */
   const voirLesSalles = () => {
     const q = publicParams().toString();
-    router.push(q === "" ? "/salles" : `/salles?${q}`);
+    router.push(q === "" ? SEARCH_PATH : `${SEARCH_PATH}?${q}`);
   };
 
   const toggle = (liste: string[], set: (v: string[]) => void, key: string) =>

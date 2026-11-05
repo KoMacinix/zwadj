@@ -8,7 +8,7 @@ import { ApiError, CLIENT_SITE_URL } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
-import { LOGIN_PATH } from "../routes";
+import { CLIENT_PRIVACY_PATH, CLIENT_TERMS_PATH, LOGIN_PATH } from "../routes";
 
 // Schéma API (source de vérité) + contrôles purement front (confirmation, CGU).
 const registerProFormSchema = registerProSchema
@@ -180,11 +180,11 @@ export function RegisterPage() {
           <input type="checkbox" checked={form.accept} onChange={(e) => set("accept", e.target.checked)} />
           <span>
             {t("auth.ui.signup.acceptPrefix")}
-            <a href={`${CLIENT_SITE_URL}/${lang}/cgu`} className="link-accent" target="_blank" rel="noreferrer">
+            <a href={`${CLIENT_SITE_URL}/${lang}${CLIENT_TERMS_PATH}`} className="link-accent" target="_blank" rel="noreferrer">
               {t("auth.ui.signup.terms")}
             </a>
             {t("auth.ui.signup.acceptMiddle")}
-            <a href={`${CLIENT_SITE_URL}/${lang}/confidentialite`} className="link-accent" target="_blank" rel="noreferrer">
+            <a href={`${CLIENT_SITE_URL}/${lang}${CLIENT_PRIVACY_PATH}`} className="link-accent" target="_blank" rel="noreferrer">
               {t("auth.ui.signup.privacy")}
             </a>
             {t("auth.ui.signup.acceptSuffix")}

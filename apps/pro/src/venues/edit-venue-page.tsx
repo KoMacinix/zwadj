@@ -40,6 +40,7 @@ import { GuardedSection } from "./guarded-section";
 import { DepositSection } from "./deposit-section";
 import { ServicesSection } from "./services-section";
 import { VirtualTourSection } from "./virtual-tour-section";
+import { CALENDAR_PATH, VENUES_PATH } from "../routes";
 
 type LoadState =
   | { kind: "loading" }
@@ -162,7 +163,7 @@ export function EditVenuePage() {
       // ⛔ Rang 37 (D331) : la salle est SUPPRIMÉE — le fournisseur relit AVANT qu'on arrive sur la liste (sinon elle montrait, et le libellé comptait, la salle qu'on vient de supprimer :
       // relevé 4 de D327, S6). La relecture est VOULUE (visible) : la carte périmée ne doit jamais être montrée comme présente. Une suppression refusée (`catch`) ne relit rien.
       reloadVenues();
-      void navigate("/salles");
+      void navigate(VENUES_PATH);
     } catch {
       setFormError(t("venue.ui.delete.error"));
     }
@@ -190,7 +191,7 @@ export function EditVenuePage() {
             {/* ⚠ `/salles` : l'écran « salle introuvable » renvoyait sur « / »,
                 devenu le tableau de bord depuis UIP-A. Le troisième lien de ce
                 fichier à corriger — l'audit du zip les a comptés, pas moi. */}
-            <Link to="/salles" className="btn btn-accent">
+            <Link to={VENUES_PATH} className="btn btn-accent">
               <ArrowBackIcon />
               {t("venue.ui.notFound.back")}
             </Link>
@@ -384,7 +385,7 @@ export function EditVenuePage() {
     <>
       <ProHeader />
       <main style={{ padding: 20, maxInlineSize: 960, marginInline: "auto" }}>
-        <Link to="/salles" className="backlink">
+        <Link to={VENUES_PATH} className="backlink">
           <ArrowBackIcon />
           {t("venue.ui.form.back")}
         </Link>
@@ -447,13 +448,13 @@ export function EditVenuePage() {
               COURANTE du sélecteur de portée : le lien y SÉLECTIONNE la salle éditée, sans quoi « Calendrier de la salle »
               montrerait, dès deux salles, celui d'une autre. Gardé par `calendar-link.test.tsx` (la cible est une route
               déclarée, sur la bonne salle) ; vérifié dans un navigateur par `docs/preuves/D322/navigateur/`. */}
-          <Link to="/calendrier" className="btn" onClick={() => selectVenue(venue.id)}>
+          <Link to={CALENDAR_PATH} className="btn" onClick={() => selectVenue(venue.id)}>
             {t("venue.ui.calendar.title")}
           </Link>
           {/* ⚠ `/salles` et non `/` : depuis UIP-A, « / » est le tableau de bord.
               Un lien nommé « Retour à mes salles » qui ouvre autre chose est un
               mensonge de libellé. */}
-          <Link to="/salles" className="btn">
+          <Link to={VENUES_PATH} className="btn">
             <ArrowBackIcon />
             {t("venue.ui.form.back")}
           </Link>

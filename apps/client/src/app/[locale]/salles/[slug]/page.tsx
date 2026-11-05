@@ -13,6 +13,7 @@ import { getTranslations } from "next-intl/server";
 import { VenueDetailView } from "../../../../components/venue/venue-detail-view";
 import { getVenueBySlug } from "../../../../lib/api";
 import { mediaSrc } from "../../../../lib/media-url";
+import { venuePath } from "../../../../lib/routes";
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // indexable — et jusqu'à ce lot, cette page n'avait aucune canonical alors
     // qu'elle est atteignable depuis autant d'URL de recherche qu'il existe de
     // combinaisons de filtres.
-    ...publicMetadata({ locale, canonicalPath: `/salles/${slug}`, indexable: true })
+    ...publicMetadata({ locale, canonicalPath: venuePath(slug), indexable: true })
   };
 }
 

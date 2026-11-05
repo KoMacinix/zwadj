@@ -34,6 +34,7 @@ import {
   type VenueFormValues
 } from "./venue-form";
 import { VenueWizard } from "./venue-wizard";
+import { venuePath, VENUES_PATH } from "../routes";
 
 export function CreateVenuePage() {
   const { t } = useTranslation();
@@ -78,7 +79,7 @@ export function CreateVenuePage() {
       // La salle existe : on demande au fournisseur de RELIRE la liste (⛔ rang 33 : sans cela « Ma salle » restait celle d'avant, jusqu'à un rechargement de la page) —
       // puis l'assistant reprend à l'étape 2, sur un id réel. ⚠ Ni avant la création (rien à relire), ni quand elle échoue (le `catch` ci-dessous).
       reloadVenues();
-      void navigate(`/salles/${created.id}?etape=2`);
+      void navigate(`${venuePath(created.id)}?etape=2`);
     } catch (err) {
       const mapped = venueFieldErrors(err);
       if (mapped) setFieldErrors(mapped);
@@ -92,7 +93,7 @@ export function CreateVenuePage() {
     <>
       <ProHeader />
       <main style={{ padding: 20, maxInlineSize: 960, marginInline: "auto" }}>
-        <Link to="/salles" className="backlink">
+        <Link to={VENUES_PATH} className="backlink">
           <ArrowBackIcon />
           {t("venue.ui.form.back")}
         </Link>
@@ -145,7 +146,7 @@ export function CreateVenuePage() {
               invalidHint={t("venue.ui.wizard.step1Invalid")}
             />
 
-            <Link to="/salles" className="btn">
+            <Link to={VENUES_PATH} className="btn">
               <ArrowBackIcon />
               {t("venue.ui.form.back")}
             </Link>

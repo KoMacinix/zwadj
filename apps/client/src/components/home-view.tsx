@@ -44,6 +44,7 @@ import type { VenueCardData } from "../lib/preview-venues";
 import { BUDGET_TIERS, centsFromDinars } from "../lib/search-query";
 import { VENDOR_CATEGORIES } from "../lib/vendor-categories";
 import { VenueCard } from "./venue-card";
+import { ASSISTANT_PATH, SEARCH_PATH } from "../lib/routes";
 
 export interface HomeViewProps {
   /** `sort=recent`. `null` = API injoignable, distinct d'une liste vide. */
@@ -114,7 +115,7 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
             `maxPriceCents`, le nom de l'API. `parseSearchParams` ne lit que
             `maxPrice`, donc le budget choisi ici était jeté en silence et le
             visiteur recevait le catalogue entier. */}
-        <form className="hm-search" action="/salles" method="get">
+        <form className="hm-search" action={SEARCH_PATH} method="get">
           <fieldset>
             <legend className="sr-only">{t("search.legend")}</legend>
 
@@ -165,7 +166,7 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
             une recherche complète, et c'est un LIEN — pas un bouton piloté par
             un gestionnaire de clic, qui ne mènerait nulle part sans JS. */}
         <p className="hm-assistant">
-          <Link href="/assistant">{t("search.assistant")}</Link>
+          <Link href={ASSISTANT_PATH}>{t("search.assistant")}</Link>
         </p>
       </section>
 
@@ -192,7 +193,7 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null }: H
               {t("venues.title")}
             </h2>
           </div>
-          <Link href="/salles" className="hm-btn">
+          <Link href={SEARCH_PATH} className="hm-btn">
             {t("venues.all")}
           </Link>
         </div>

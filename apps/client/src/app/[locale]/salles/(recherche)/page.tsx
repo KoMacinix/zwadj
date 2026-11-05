@@ -11,6 +11,7 @@ import { previewVenuesFor } from "../../../../lib/preview-venues";
 import { getAmenities, getVenueStyles, getWilayas, searchVenues } from "../../../../lib/api";
 import { parseSearchParams, toApiQuery, type RawSearchParams } from "../../../../lib/search-query";
 import { isVariant, publicMetadata } from "../../../../lib/seo";
+import { SEARCH_PATH } from "../../../../lib/routes";
 
 // Rendu à la demande, EXPLICITE. La page l'est déjà de fait — elle attend
 // `searchParams`, une API dynamique de Next 15 — et le manifeste de prérendu le
@@ -49,7 +50,7 @@ export async function generateMetadata({
     // portant `?maxCapacity=500` deviendrait indexable après normalisation
     // alors qu'elle est bien une seconde adresse pour la même page — ce que la
     // règle veut précisément éviter.
-    ...publicMetadata({ locale, canonicalPath: "/salles", indexable: !isVariant(await searchParams) })
+    ...publicMetadata({ locale, canonicalPath: SEARCH_PATH, indexable: !isVariant(await searchParams) })
   };
 }
 
