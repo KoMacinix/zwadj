@@ -81,3 +81,14 @@ Ordre des commits : (1) cette table seule ; (2) les ROUGES — les quatre gardes
 
 Conditionnels : un harnais d'un autre rang dont une ANCRE serait périmée par ce lot (le tri des campagnes le dira) — déclaré
 par une extension, commitée seule, avant sa réorientation. Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 70 | `docs/preuves/front-client/FC-5/rouges/rouge-client-v2.txt` | les rouges du client REJOUÉS contre l'état d'avant après une correction de TYPAGE de `routes.test.ts` | 2 bis |
+| 71 | `docs/preuves/front-client/FC-5/rouges/rouge-pro-v2.txt` | le rouge du pro REJOUÉ après la même correction de `routes.test.tsx` | 2 bis |
+
+Motif : les deux tests commités avec les rouges passaient sous vitest mais ne compilaient pas (`tsc`, TS2677 : un prédicat `v is
+string` sur une union de littéraux) ; corrigés AVANT le commit du code, le code mis de côté (stash), et les rouges rejoués sur
+l'état d'avant — pour que l'empreinte des rouges soit celle des tests livrés. Même faute qu'en FC-3, même réparation.
