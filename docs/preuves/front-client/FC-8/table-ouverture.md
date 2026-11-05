@@ -55,3 +55,21 @@ Conditionnels, avec leur condition : les harnais d'autres rangs qui MESURENT l'a
 `neutralisation/neutralize-e3d1-s8.py` (S8-1 à S8-3, le plafond d'avertissements de `filter-wizard.test.tsx`) — si une ancre, un
 titre ou une mesure y est périmé par ce lot (le relevé et les campagnes le diront) : déclaré par une extension, commitée seule,
 avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
+
+## Extension 1 — commitée SEULE, avant les fichiers qu'elle déclare (les conditionnels se sont réalisés)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 37 | `e2e/specs/fc8-mode-guide.e2e.ts` | NEUF — le mode guidé dans un VRAI navigateur : la page serveur passe `guide` (D205 : invisible aux tests unitaires), chaque réponse pousse l'URL, une valeur inconnue ne l'ouvre pas, sans JavaScript la page de résultats reste entière, « Li hwas lqa » l'ouvre en arabe | 2 bis |
+| 38 | `docs/preuves/front-client/FC-8/rouges/rouge-e2e.txt` | sa sortie contre l'état d'avant (code mis de côté) + sha256, lignes `[WebServer]` retirées | 2 bis |
+| 39 | `neutralisation/neutralize-available-on.py` | cible 7 RÉORIENTÉE : la liste des variantes de `seo.ts` porte désormais `guide` après `page` (même faute : `page` n'est plus une variante) | 4 |
+| 40 | `neutralisation/neutralize-maxprice.py` | M3 RÉORIENTÉE (l'assistant pousse des CENTIMES dans l'URL publique — le facteur 100), M4 RETIRÉE par écrit (le compteur d'API n'existe plus) | 4 |
+| 41 | `neutralisation/neutralize-e3d1-s8.py` | S8-1 à S8-3 et leurs mesures DÉPLACÉES sur `venue-detail-view.test.tsx` : `filter-wizard.test.tsx` n'émet plus aucun avertissement `act`, le plafond n'y peut plus rien mesurer | 4 |
+| 42 | `docs/preuves/front-client/FC-8/crlf/available-on.txt` | `neutralize-available-on.py` joué sous CRLF simulé (ancres 6 et 7 en CRLF) | 4 |
+| 43 | `docs/preuves/front-client/FC-8/crlf/horizon.txt` | `neutralize-horizon.py` joué sous CRLF simulé (ancre H6 en CRLF ; le tri la sélectionne) | 4 |
+| 44 | `docs/preuves/front-client/FC-8/e3d1-s8.txt` | `neutralize-e3d1-s8.py` joué À LA MAIN après réorientation (le tri ne la sélectionne pas : elle lit un fichier de test, pas un fichier de code du lot) | 4 |
+
+Motif : (1) le relevé statique des 13 campagnes que le tri sélectionne rend 3 ancres PÉRIMÉES par ce lot (available-on 7, maxprice
+M3, M4) ; (2) la suite du client rend « PLAFOND ABAISSABLE `filter-wizard.test.tsx` : 0 observé sous un plafond de 3 » — les cibles
+S8 de `neutralize-e3d1-s8.py`, qui prouvent le mécanisme de plafond SUR CE FICHIER, deviendraient muettes ; (3) la page `/salles`
+est un composant serveur : le passage de `guide` ne se mesure qu'en navigateur.
