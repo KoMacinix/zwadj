@@ -2668,3 +2668,159 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
     expect(la(screen.queryByText(FR.draftOfficialDone)), "le message de la promotion").toBe(true);
   });
 });
+
+// ── FP-1 (session `front-client`) — LE PALIER (TIERED) ET LA QUANTITÉ (PER_UNIT) SE SAISISSENT AU COMPTOIR ─────────────────────────
+// ⚠ Méthode RENFORCÉE : `docs/preuves/front-client/FP-1/modes-de-defaillance.md` (MD-1 à MD-11). La règle elle-même est mesurée, pure,
+// par `walkin-services.test.ts` ; ici l'ÉCRAN : ce qu'il propose, ce qu'il bloque, ce qu'il ENVOIE. Aucun montant n'est lu à l'écran
+// avant le devis : le serveur le calcule (règle des montants, D325).
+// ⚠ Chaque test affirme d'abord que le champ existe, par une assertion NATIVE : sans lui (avant FP-1), le rouge se lit en assertion.
+// ⚠ Les libellés neufs sont lus dans le CATALOGUE en dictionnaire : avant FP-1, la clé n'existe pas — elle se lit vide, sans planter.
+const ID_DECOR = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+const ID_TABLES = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+const PALIER_SIMPLE = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const PALIER_RETIRE = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+const CATALOGUE_FP1 = [
+  {
+    id: ID_DECOR,
+    nameFr: "Fleurs et décor",
+    nameAr: "زهور وديكور",
+    pricingType: "TIERED",
+    isActive: true,
+    minUnits: null,
+    maxUnits: null,
+    unitNameFr: null,
+    unitNameAr: null,
+    tiers: [
+      { id: PALIER_SIMPLE, labelFr: "Formule simple", labelAr: "صيغة بسيطة", priceCents: 1_000_000, sortOrder: 0, isActive: true },
+      { id: PALIER_RETIRE, labelFr: "Formule retirée", labelAr: "صيغة مسحوبة", priceCents: 2_000_000, sortOrder: 1, isActive: false }
+    ]
+  },
+  {
+    id: ID_TABLES,
+    nameFr: "Tables rondes",
+    nameAr: "طاولات مستديرة",
+    pricingType: "PER_UNIT",
+    isActive: true,
+    tiers: [],
+    unitNameFr: "table",
+    unitNameAr: "طاولة",
+    minUnits: 2,
+    maxUnits: 30
+  }
+];
+const W_FP1 = messages.fr.venue.ui.walkin as unknown as Record<string, string | undefined>;
+
+async function jusquAuxPrestations(quotesOver: Parameters<typeof makeQuotesDouble>[0] = {}) {
+  const r = await setup({ quotes: quotesOver, services: { listForVenue: vi.fn().mockResolvedValue(CATALOGUE_FP1) } });
+  await repondreClient();
+  await repondreDate();
+  await repondreCreneau();
+  await screen.findByRole("checkbox", { name: /Fleurs et décor/ });
+  return r;
+}
+/** La liste des paliers d'une prestation : le `<select>` dont le libellé porte son nom. */
+const listeDesPaliers = (nom: RegExp = /Fleurs et décor/) =>
+  screen.queryAllByLabelText(nom).find((e) => e.tagName === "SELECT") as HTMLSelectElement | undefined;
+/** Le champ de quantité d'une prestation : l'entrée NUMÉRIQUE dont le libellé porte son nom. */
+const champQuantite = (nom: RegExp = /Tables rondes/) =>
+  screen.queryAllByLabelText(nom).find((e) => (e as HTMLInputElement).type === "number") as HTMLInputElement | undefined;
+const voirLeDevis = () => screen.getByRole("button", { name: "Voir le devis" });
+
+describe("FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)", () => {
+  it("⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    const liste = listeDesPaliers();
+    expect(liste !== undefined).toBe(true);
+    const libelles = [...(liste?.options ?? [])].map((o) => o.textContent);
+    expect(libelles.includes("Formule simple")).toBe(true);
+    expect(libelles.includes("Formule retirée")).toBe(false);
+    expect(liste?.value).toBe("");
+  });
+
+  it("⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+    const raison = String(W_FP1.servicesMissing ?? "").replace("{names}", "Fleurs et décor");
+    expect(raison !== "" && (document.body.textContent ?? "").includes(raison)).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(false);
+  });
+
+  it("⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    const champ = champQuantite();
+    expect(champ !== undefined).toBe(true);
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+    for (const [saisie, actif] of [["1", false], ["31", false], ["2", true], ["30", true]] as const) {
+      fireEvent.change(champ!, { target: { value: saisie } });
+      expect(voirLeDevis().hasAttribute("disabled"), `quantité ${saisie}`).toBe(!actif);
+    }
+    expect(champ?.getAttribute("min")).toBe("2");
+    expect(champ?.getAttribute("max")).toBe("30");
+  });
+
+  it("⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision", async () => {
+    const { quotes } = await jusquAuxPrestations({
+      create: vi.fn().mockResolvedValue(draft()),
+      revise: vi.fn().mockResolvedValue(draft({ version: 2 }))
+    });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    expect(listeDesPaliers() !== undefined).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    fireEvent.change(champQuantite()!, { target: { value: "12" } });
+    fireEvent.click(voirLeDevis());
+    fireEvent.click(await screen.findByRole("button", { name: "Calculer le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.create).mock.calls.length).toBe(1));
+    const attendu = [
+      { serviceId: ID_DECOR, tierId: PALIER_SIMPLE },
+      { serviceId: ID_TABLES, quantity: 12 }
+    ];
+    expect((vi.mocked(quotes.create).mock.calls[0]![1] as { services?: unknown }).services).toEqual(attendu);
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.revise).mock.calls.length).toBe(1));
+    expect((vi.mocked(quotes.revise).mock.calls[0]![1] as { services?: unknown }).services).toEqual(attendu);
+  });
+
+  it("⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier", async () => {
+    await jusquAuxPrestations();
+    const caseDecor = screen.getByRole("checkbox", { name: /Fleurs et décor/ });
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers() !== undefined).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers()).toBe(undefined);
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers()?.value).toBe("");
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+  });
+
+  it("⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer", async () => {
+    await jusquAuxPrestations({ create: vi.fn().mockResolvedValue(draft()) });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    expect(champQuantite() !== undefined).toBe(true);
+    fireEvent.change(champQuantite()!, { target: { value: "12" } });
+    fireEvent.click(voirLeDevis());
+    fireEvent.click(await screen.findByRole("button", { name: "Calculer le devis" }));
+    await screen.findByRole("button", { name: "Modifier le devis" });
+    modifierDepuisRecap(/Prestations/);
+    fireEvent.change(champQuantite()!, { target: { value: "13" } });
+    fireEvent.click(voirLeDevis());
+    expect(screen.queryByText(FR.staleTotal) !== null).toBe(true);
+  });
+
+  it("MD-10 : en arabe, le palier et l'unité s'écrivent en arabe", async () => {
+    await jusquAuxPrestations();
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    fireEvent.click(screen.getByRole("checkbox", { name: /زهور وديكور/ }));
+    const liste = listeDesPaliers(/زهور وديكور/);
+    expect(liste !== undefined).toBe(true);
+    expect([...(liste?.options ?? [])].map((o) => o.textContent).includes("صيغة بسيطة")).toBe(true);
+    fireEvent.click(screen.getByRole("checkbox", { name: /طاولات مستديرة/ }));
+    const champ = champQuantite(/طاولات مستديرة/);
+    expect((champ?.labels?.[0]?.textContent ?? "").includes("طاولة")).toBe(true);
+  });
+});
