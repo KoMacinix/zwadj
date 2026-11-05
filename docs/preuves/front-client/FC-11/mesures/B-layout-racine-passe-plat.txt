@@ -1,0 +1,21 @@
+# FC-11 — ESSAI B (temporaire, retiré) : apps/client/src/app/layout.tsx = « export default function RootLayout({ children }) { return children; } » — le <html lang dir> RESTE dans [locale]/layout.tsx ; production (build B, « Ready », seul serveur sur le port — une première mesure, servie par le processus de l'état A resté en vie, est ÉCARTÉE)
+# instrument : node docs/preuves/front-client/FC-11/mesures/mesure-404.mjs <base> (témoin : l'accueil, qui DOIT porter du texte ; texte visible = document servi sans <script>, <style>, <template>, commentaires)
+# Next 15.5.20 · React 19.2.7 · sur eb98ee7 + le seul fichier d'essai
+
+témoin : l'accueil FR (doit porter du texte)
+  GET /fr → 200 (attendu 200) · <html> normal · lang=fr dir=ltr
+  texte visible : 1872 caractère(s) · <h1> servi : "La salle de vos noces, choisie sans y courir"
+404 localisée FR (attrape-tout)
+  GET /fr/nimportequoi → 404 (attendu 404) · <html> id=__next_error__ · lang=∅ dir=∅
+  texte visible : 0 caractère(s) · <h1> servi : AUCUN · « Cette page n'existe pas » ABSENTE
+404 localisée AR (attrape-tout)
+  GET /ar/nimportequoi → 404 (attendu 404) · <html> id=__next_error__ · lang=∅ dir=∅
+  texte visible : 0 caractère(s) · <h1> servi : AUCUN · « هذه الصفحة غير موجودة » ABSENTE
+404 localisée FR (fiche inconnue)
+  GET /fr/salles/salle-qui-nexiste-pas → 404 (attendu 404) · <html> id=__next_error__ · lang=∅ dir=∅
+  texte visible : 0 caractère(s) · <h1> servi : AUCUN · « Cette page n'existe pas » ABSENTE
+404 racine (chemin à point, hors intergiciel)
+  GET /wp-login.php → 404 (attendu 404) · <html> id=__next_error__ · lang=∅ dir=∅
+  texte visible : 0 caractère(s) · <h1> servi : AUCUN · « Cette page n’existe pas » ABSENTE
+
+cas parcourus : 5 · statuts inattendus : 0 (attendu 0)
