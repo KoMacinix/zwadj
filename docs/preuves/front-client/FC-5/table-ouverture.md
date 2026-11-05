@@ -104,3 +104,32 @@ l'état d'avant — pour que l'empreinte des rouges soit celle des tests livrés
 
 Motif : relevé statique des ancres des campagnes que le tri sélectionne (`ancres-campagnes.txt`) — trois ancres périmées par ce
 lot ; la quatrième ligne signalée (`neutralize-journey.py` D2, ×2) est VOULUE ×2 par son harnais, elle n'est pas touchée.
+
+## Extension 3 — commitée SEULE, avant les fichiers qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 76 | `neutralisation/neutralize-404.py` | cible C5 RÉORIENTÉE : la sortie « les salles » de la 404 localisée lie par `SEARCH_PATH` (même faute mutée : les deux sorties inversées) | 4 |
+| 77 | `docs/preuves/front-client/outils/releve-ancres.py` | NEUF — l'instrument du relevé statique des ancres, versionné, calibré à deux bras (D286) | 4 |
+| 78 | `docs/preuves/front-client/outils/crlf-simule.py` | NEUF — joue une commande sur des fichiers ramenés TEMPORAIREMENT en CRLF, les fins de ligne du poste de Ko | 4 |
+| 79 | `docs/preuves/front-client/FC-5/crlf/404.txt` | `neutralize-404.py` joué sous CRLF simulé | 4 |
+| 80 | `docs/preuves/front-client/FC-5/crlf/available-on.txt` | `neutralize-available-on.py` joué sous CRLF simulé | 4 |
+| 81 | `docs/preuves/front-client/FC-5/crlf/horizon.txt` | `neutralize-horizon.py` joué sous CRLF simulé | 4 |
+| 82 | `docs/preuves/front-client/FC-5/crlf/maxprice.txt` | `neutralize-maxprice.py` joué sous CRLF simulé | 4 |
+| 83 | `docs/preuves/front-client/FC-5/crlf/r30.txt` | `neutralize-r30.py` joué sous CRLF simulé | 4 |
+| 84 | `docs/preuves/front-client/FC-5/crlf/gardes.txt` | les gardes de SOURCE écrites par la session (FC-1, FC-5) jouées sur des sources ramenées en CRLF | 4 |
+
+Motif, en quatre points :
+1. `neutralize-404.py` s'est arrêtée en « ERREUR DE SCRIPT » sur C4 : ses ancres multi-lignes sont assemblées en CRLF (`L(...)`),
+   introuvables dans ce conteneur, extrait en LF. Et sa cible C5 vise `<Link href="/salles" …>`, que FC-5 a remplacé par
+   `SEARCH_PATH` : PÉRIMÉE PAR CE LOT, en plus de l'environnement.
+2. Le relevé statique de l'extension 2 l'avait déclarée SANS écart : son extracteur, écrit en ligne, lisait la clé `fichier` seule,
+   et les 12 cibles de 404 (clé `chemin`) ont été sautées en silence ET comptées comme examinées — « 12 cibles · 0 écart » (D290 :
+   un compteur rend ce qu'il a parcouru). Il entre au dépôt comme instrument (D286), corrigé, calibré sur ce cas même ; le relevé
+   #75 est REPRODUIT par lui.
+3. Cinq campagnes que ce lot touche portent des ancres CRLF en dur (404, available-on, horizon, maxprice, r30) : ici elles
+   s'arrêtent à la première, et les cibles suivantes — dont trois que ce lot réoriente (404 C5, available-on 10, r30 R30-7) — n'y
+   seraient jamais jouées. `crlf-simule.py` les joue sur leurs fichiers ramenés en CRLF, puis rendus en LF à l'identique
+   (empreintes sha256 vérifiées).
+4. Les gardes de source écrites par la session tourneront sur le poste de Ko, en CRLF : elles y sont jouées sur des sources
+   converties, avant de les déclarer prêtes.
