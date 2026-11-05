@@ -32,3 +32,12 @@ sa garde se prouve par le harnais) et le panneau ; (4) le harnais, les campagnes
 | 21 | `docs/preuves/front-client/FC-3/rapport.md` | le rapport du lot | 4 |
 
 Conditionnels : aucun. Aucune clé de message n'est ajoutée (les noms viennent des DTO) ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 22 | `docs/preuves/front-client/FC-3/rouges/rouge-panneau-v2.txt` | le rouge REJOUÉ contre l'état d'avant après une correction de TYPAGE du test (`as const` → type du contrat), avec la nouvelle empreinte du fichier de test | 2 bis |
+
+Motif : le test commité avec les rouges passait sous vitest mais ne compilait pas (`tsc`) ; corrigé AVANT le commit du code, le
+code mis de côté (stash), et le rouge rejoué sur l'état d'avant — pour que l'empreinte des rouges soit celle du test livré.
