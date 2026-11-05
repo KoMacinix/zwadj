@@ -1,0 +1,124 @@
+# FC-6 — `python3 neutralisation/lancer-campagnes.py`, joué AVANT le commit du code (le tri lit `git diff HEAD` et les fichiers non
+# suivis), APRÈS la réorientation de fc5 W-1/W-2 et r30 R30-1 à R30-4 (extension 1), Playwright par le shim du conteneur. La sortie
+# brute suit, INCHANGÉE. Ce qu'elle dit :
+#   · 427 mordues sur les campagnes jouées — dont fc6 12/12, fc5 11/11 (W-1/W-2 réorientées mordent), r29 15/15, r32 65/65,
+#     r38 46/46, r39 35/35, r41 54/54, r42 22/22, r43 52/52, journey 7/7, fc3 8/8, fc4 7/7 ;
+#   · r30 (sortie 2) : pré-vol arrêté sur R30-4 — ancre CRLF en dur, ENVIRONNEMENT ; la campagne ENTIÈRE est rejouée sous CRLF
+#     simulé : `crlf/r30.txt` — 8/8, dont R30-1 à R30-4 réorientées par ce lot ;
+#   · r33 (sortie 1) : M-12 MUETTE — garde de fuseau muette sur un serveur en UTC (prouvé en FC-4, point 3 de
+#     `docs/preuves/front-client/FC-4/ancres-campagnes.txt`). Pas ce lot ;
+#   · r25 (sortie 3) : 4 cibles hors de la commande par défaut (R25-8 `--int`, R25-E1 à E3 `--e2e`), comme en FC-4 et FC-5 ; ce lot
+#     ne touche ni le lien de connexion ni la suppression de compte côté API.
+#
+22 fichier(s) modifié(s) depuis HEAD → 15 campagne(s) concernée(s) sur 46.
+  · neutralize-fc3.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-fc4.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-fc5.py  (2 fichier(s) en commun)
+      apps/client/src/lib/calendar.ts
+      apps/pro/src/venues/pro-calendar.ts
+  · neutralize-fc6.py  (9 fichier(s) en commun)
+      apps/client/src/components/account/account-settings-view.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-journey.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r25.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r29.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/booking-calendar.ts
+  · neutralize-r30.py  (2 fichier(s) en commun)
+      apps/client/src/lib/booking-calendar.ts
+      apps/client/src/lib/calendar.ts
+  · neutralize-r32.py  (4 fichier(s) en commun)
+      apps/client/src/components/account/account-settings-view.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/pro/src/account/account-settings-page.tsx
+  · neutralize-r33.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r39.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r41.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r42.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r43.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+
+[1/15] neutralisation/neutralize-fc3.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/15] neutralisation/neutralize-fc4.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/15] neutralisation/neutralize-fc5.py …
+    sortie=0  11 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/15] neutralisation/neutralize-fc6.py …
+    sortie=0  12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/15] neutralisation/neutralize-journey.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/15] neutralisation/neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[7/15] neutralisation/neutralize-r29.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/15] neutralisation/neutralize-r30.py …
+    sortie=2  0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[9/15] neutralisation/neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[10/15] neutralisation/neutralize-r33.py …
+    sortie=1  86 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[11/15] neutralisation/neutralize-r38.py …
+    sortie=0  46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[12/15] neutralisation/neutralize-r39.py …
+    sortie=0  35 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[13/15] neutralisation/neutralize-r41.py …
+    sortie=0  54 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[14/15] neutralisation/neutralize-r42.py …
+    sortie=0  22 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[15/15] neutralisation/neutralize-r43.py …
+    sortie=0  52 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-fc3.py                       0     8     8     0     0    44
+neutralize-fc4.py                       0     7     7     0     0    50
+neutralize-fc5.py                       0    11    11     0     0    61
+neutralize-fc6.py                       0    12    12     0     0    64
+neutralize-journey.py                   0     —     7     0     0   336
+neutralize-r25.py                       3     7     7     0     4    71
+neutralize-r29.py                       0    15    15     0     0   119
+neutralize-r30.py                       2     —     0     1     0     0
+neutralize-r32.py                       0    65    65     0     0   710
+neutralize-r33.py                       1    86    86     1     0   913
+neutralize-r38.py                       0    46    46     0     0   548
+neutralize-r39.py                       0    35    35     0     0   346
+neutralize-r41.py                       0    54    54     0     0   745
+neutralize-r42.py                       0    22    22     0     0   220
+neutralize-r43.py                       0    52    52     0     0  1153
+================================================================================================
+MESURÉ : 427 garde(s) mordue(s) · 2 muette(s)/erreur(s) · 4 non mesurée(s) · 15 campagne(s) · 5380s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-r25.py → sortie 3
+  ⚠ neutralisation/neutralize-r30.py → sortie 2
+  ⚠ neutralisation/neutralize-r33.py → sortie 1
+lancer-campagnes exit=1

@@ -1,0 +1,209 @@
+# journal brut hors dépôt : sha256 1997717132346884a28cc3135eed6ce96f23d29f22f6a9c0b4617dcbea13bc66 · lignes [WebServer] retirées · « token= » restants : 0 (attendu 0)
+
+> zwadj@ test:e2e /home/user/zwadj
+> pnpm --filter @zwadj/e2e test:e2e
+
+
+> @zwadj/e2e@ test:e2e /home/user/zwadj/e2e
+> playwright test
+
+
+> @zwadj/api@0.0.0 prisma:migrate /home/user/zwadj/apps/api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+32 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 70 tests using 2 workers
+
+  ✓  1 [warmup] › specs/warmup.setup.ts:57:5 › préchauffe les routes des deux applications (19.5s)
+  ✓  3 [chromium] › specs/a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token) (2.4s)
+  ✓  2 [chromium] › specs/a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh (2.5s)
+  ✓  5 [chromium] › specs/a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh (3.4s)
+  ✓  4 [chromium] › specs/a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas (4.2s)
+  ✓  6 [chromium] › specs/a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session (3.9s)
+  ✓  7 [chromium] › specs/a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities (3.9s)
+  ✓  8 [chromium] › specs/a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle (3.4s)
+  ✓  9 [chromium] › specs/a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles (3.4s)
+  ✓  11 [chromium] › specs/a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings (2.9s)
+  ✓  10 [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins (4.4s)
+  ✓  12 [chromium] › specs/a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings (3.0s)
+  ✓  13 [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins (4.8s)
+  ✓  14 [chromium] › specs/a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session (3.2s)
+  ✓  15 [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins (4.4s)
+  ✓  16 [chromium] › specs/a2-mount-effects.e2e.ts:166:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée (6.7s)
+  ✓  17 [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins (4.1s)
+  ✓  18 [chromium] › specs/b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé (2.4s)
+  -  19 [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+  ✓  20 [chromium] › specs/b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé (2.3s)
+  ✓  22 [chromium] › specs/b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé (1.4s)
+  ✓  21 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation (3.9s)
+  ✓  23 [chromium] › specs/b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé (1.5s)
+  ✓  25 [chromium] › specs/b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème (3ms)
+  ✓  24 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation (3.4s)
+  ✓  26 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, accueil : à 360 px, la page tient dans la fenêtre (2.5s)
+  ✓  27 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation (3.4s)
+  ✓  28 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, recherche : à 360 px, la page tient dans la fenêtre (3.0s)
+  ✓  29 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (3.7s)
+  ✓  30 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, fiche salle : à 360 px, la page tient dans la fenêtre (3.1s)
+  ✓  31 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation (4.3s)
+  ✓  32 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, accueil : à 360 px, la page tient dans la fenêtre (2.7s)
+  ✓  33 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation (2.6s)
+  ✓  34 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, recherche : à 360 px, la page tient dans la fenêtre (2.6s)
+  ✓  35 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation (2.8s)
+  ✓  36 [chromium] › specs/fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, fiche salle : à 360 px, la page tient dans la fenêtre (2.6s)
+  ✓  37 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation (3.0s)
+  ✓  39 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation (2.9s)
+  ✓  40 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation (3.3s)
+  ✓  38 [chromium] › specs/r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation (6.5s)
+  ✓  41 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation (3.0s)
+  ✓  43 [chromium] › specs/b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon (2ms)
+  ✓  44 [chromium] › specs/r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur (3.1s)
+  ✓  42 [chromium] › specs/r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle (5.7s)
+  ✓  45 [chromium] › specs/r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente (3.8s)
+  ✓  47 [chromium] › specs/r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur (1.6s)
+  ✓  48 [chromium] › specs/r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente (2.2s)
+  ✓  46 [chromium] › specs/r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle (5.3s)
+  ✓  50 [chromium] › specs/r33-remise-devis.e2e.ts:92:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (6.9s)
+  ✓  49 [chromium] › specs/r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée (12.5s)
+  ✓  51 [chromium] › specs/r33-remise-devis.e2e.ts:92:7 › « EMAIL », page fr, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (7.1s)
+  ✓  53 [chromium] › specs/r33-remise-devis.e2e.ts:92:7 › « SMS », page ar, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT (6.8s)
+  ✓  52 [chromium] › specs/r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus (12.4s)
+  ✓  54 [chromium] › specs/r33-remise-devis.e2e.ts:153:5 › ⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun canal (7.7s)
+  ✓  55 [chromium] › specs/r37-ma-salle.e2e.ts:100:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER : la salle créée est dans la liste quand on revient à « Ma salle » (menu du haut), sans rechargement (2.3s)
+  ✓  57 [chromium] › specs/r37-ma-salle.e2e.ts:113:7 › R37 — « Ma salle » est relue sans rechargement › MODIFIER : le nouveau nom est dans la liste quand on revient par « Retour à mes salles », sans rechargement (et le nom de l'assistant est celui du SERVEUR) (2.9s)
+  ✓  56 [chromium] › specs/r33-remise-devis.e2e.ts:189:5 › le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'est téléchargé tant qu'il est grisé (5.3s)
+  ✓  58 [chromium] › specs/r37-ma-salle.e2e.ts:131:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER puis CORRIGER dans la même session (S8 de D327) : la liste porte le nom corrigé, pas celui de la création (2.9s)
+  ✓  60 [chromium] › specs/r37-ma-salle.e2e.ts:148:7 › R37 — « Ma salle » est relue sans rechargement › SUPPRIMER depuis l'assistant : la salle supprimée n'est plus dans la liste, et le libellé du menu repasse au singulier, sans rechargement (3.2s)
+  ✓  59 [chromium] › specs/r33-remise-devis.e2e.ts:209:5 › ⛔ une révision rend le PDF de l'ancienne version REFUSÉ (409) et celui de la nouvelle servi — la décision 1, de bout en bout (6.5s)
+  ✓  61 [chromium] › specs/r37-ma-salle.e2e.ts:168:7 › R37 — « Ma salle » est relue sans rechargement › PUBLIER (par un autre compte, pendant que le pro est dans l'application) : l'entrée dans « Ma salle » montre « Publiée », sans rechargement (2.8s)
+  ✓  62 [chromium] › specs/r33-remise-devis.e2e.ts:230:5 › ⛔ rang 39 — un DEUXIÈME devis de la même salle prend le numéro SUIVANT, avec le même numéro de salle et la version 1 ; la référence de la liste est celle de la création (5.5s)
+  ✓  63 [chromium] › specs/r41-fiche-client.e2e.ts:65:5 › ⛔ le CONTACT d'abord : sans fiche, elle se CRÉE au « Continuer » de l'étape Client ; le devis porte la fiche et la COPIE du nom ; la conversion PRÉREMPLIE envoie ce que l'écran affiche, et la fiche n'est pas réécrite (5.1s)
+  ✓  64 [chromium] › specs/r42-reservation-email-seul.e2e.ts:25:5 › un client réserve avec son e-mail SEUL : le bouton s'ouvre, la demande part, et la base garde l'e-mail sans numéro (5.8s)
+  ✓  65 [chromium] › specs/r41-fiche-client.e2e.ts:113:5 › ⛔ un second passage du même numéro RETROUVE la fiche (aucune seconde fiche) ; la boîte de langue DEMANDE le nom arabe, le complète sur le devis ET sur la fiche (C-C3), PUIS télécharge le PDF en arabe (6.5s)
+  ✓  66 [chromium] › specs/r42-reservation-email-seul.e2e.ts:71:5 › un e-mail SAISI et invalide retient le bouton, même avec un numéro valide — l'e-mail n'est pas une formalité (4.7s)
+  ✓  67 [chromium] › specs/r41-fiche-client.e2e.ts:170:5 › ⛔ MD-4 — le numéro du PRO lui-même est refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis (3.5s)
+  ✓  68 [chromium] › specs/r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écran sous le même numéro, puis REMIS (7.0s)
+  ✓  69 [chromium] › specs/r43-devis-brouillon.e2e.ts:85:7 › ⛔ (ar) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écran sous le même numéro, puis REMIS (7.0s)
+  ✓  70 [chromium] › specs/r43-devis-brouillon.e2e.ts:185:5 › ⛔ le chemin ORDINAIRE ne crée jamais un brouillon : « Continuer » du contact, la fiche, les noms ⇒ un devis OFFICIEL `DEVIS-…`, avec sa fiche (4.6s)
+
+  Slow test file: [chromium] › specs/r33-remise-devis.e2e.ts (45.7s)
+  Slow test file: [chromium] › specs/b8-accessibility.e2e.ts (36.3s)
+  Slow test file: [chromium] › specs/a2-mount-effects.e2e.ts (29.5s)
+  Slow test file: [chromium] › specs/r26-parcours-reservation.e2e.ts (25.0s)
+  Slow test file: [chromium] › specs/a5-cold-reload-vs-spa.e2e.ts (19.8s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 skipped
+  69 passed (3.6m)
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report
+

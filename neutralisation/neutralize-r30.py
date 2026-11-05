@@ -71,21 +71,23 @@ T_FR = "fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la lan
 
 CIBLES = [
     # ── Noms — en arabe ET en français (N-a), chaque formateur dans les deux sens où il peut se tromper.
+    # ⚠ R30-1 À R30-4 : ANCRES RÉORIENTÉES (session `front-client`, FC-6) — les formateurs passent par `intlLocale` (`ar` →
+    # `ar-DZ`) ; la mutation écrit toujours une langue EN DUR à la place : même faute, même titre attendu.
     {"libelle": "R30-1. N-a : les en-têtes de jours ignorent la langue de la page — toujours en FRANÇAIS (vu en arabe)",
-     "fichier": GRILLE, "avant": 'const fmt = new Intl.DateTimeFormat(locale, { weekday: format, timeZone: "UTC" });',
+     "fichier": GRILLE, "avant": 'const fmt = new Intl.DateTimeFormat(intlLocale(locale), { weekday: format, timeZone: "UTC" });',
      "apres": 'const fmt = new Intl.DateTimeFormat("fr", { weekday: format, timeZone: "UTC" });',
      "mesure": "calendrier-noms", "titre": T_AR},
     {"libelle": "R30-2. N-a : les en-têtes de jours ignorent la langue de la page — toujours en ARABE (vu en français)",
-     "fichier": GRILLE, "avant": 'const fmt = new Intl.DateTimeFormat(locale, { weekday: format, timeZone: "UTC" });',
+     "fichier": GRILLE, "avant": 'const fmt = new Intl.DateTimeFormat(intlLocale(locale), { weekday: format, timeZone: "UTC" });',
      "apres": 'const fmt = new Intl.DateTimeFormat("ar", { weekday: format, timeZone: "UTC" });',
      "mesure": "calendrier-noms", "titre": T_FR},
     {"libelle": "R30-3. N-a : le nom du mois sort toujours en ARABE (vu en français)",
      "fichier": GRILLE,
-     "avant": 'return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(',
+     "avant": 'return new Intl.DateTimeFormat(intlLocale(locale), { month: "long", year: "numeric", timeZone: "UTC" }).format(',
      "apres": 'return new Intl.DateTimeFormat("ar", { month: "long", year: "numeric", timeZone: "UTC" }).format(',
      "mesure": "calendrier-noms", "titre": T_FR},
     {"libelle": "R30-4. N-a : la date longue — le nom accessible d'un jour — sort toujours en FRANÇAIS (vu en arabe)",
-     "fichier": MODULE, "avant": 'DateTimeFormat(locale, {\r\n    weekday: "long",',
+     "fichier": MODULE, "avant": 'DateTimeFormat(intlLocale(locale), {\r\n    weekday: "long",',
      "apres": 'DateTimeFormat("fr", {\r\n    weekday: "long",',
      "mesure": "calendrier-noms", "titre": T_AR},
     {"libelle": "R30-5. ⛔ N-b : une LISTE de jours écrite en dur dans la vue — juste en français, fausse en arabe",

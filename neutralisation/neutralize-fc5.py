@@ -43,8 +43,10 @@ campagne = socle.Campagne("fc5", {
     "routes-pro": socle.vitest("@zwadj/pro", "src/routes.test.tsx"),
 })
 
-IMPORT = 'import { WEEKEND_DAYS, WEEK_START_DAY } from "@zwadj/types";'
-LOCALE = "const WEEK_START_DAY = 0;\nconst WEEKEND_DAYS: readonly number[] = [5, 6];"
+# ⚠ ANCRES RÉORIENTÉES (session `front-client`, FC-6) : l'import de la semaine porte aussi `intlLocale` (la règle de mise en
+# forme) ; la mutation garde cet import et redéclare la semaine — même faute, W-1 et W-2.
+IMPORT = 'import { WEEKEND_DAYS, WEEK_START_DAY, intlLocale } from "@zwadj/types";'
+LOCALE = 'import { intlLocale } from "@zwadj/types";\nconst WEEK_START_DAY = 0;\nconst WEEKEND_DAYS: readonly number[] = [5, 6];'
 
 campagne.cible("W-1. le calendrier du CLIENT redéclare la semaine au lieu de l'importer", CAL_CLIENT, IMPORT, LOCALE,
                {"semaine": "apps/client/src/lib/calendar.ts ne redéclare ni WEEK_START_DAY ni WEEKEND_DAYS",
