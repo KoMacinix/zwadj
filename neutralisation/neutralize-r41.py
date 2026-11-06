@@ -320,7 +320,8 @@ cible("J-5. ⛔ K-12 — les retouches du pro à la conversion sont ignorées (l
       "saisie: identifiant, langue }), ...retouches };", "saisie: identifiant, langue }) };", {"pro-parcours": "MD-9 — la conversion est PRÉREMP"})
 cible("J-6. ⛔ K-4 — le devis part sans la fiche ni la copie des noms", PARCOURS,
       # ⛔ RÉORIENTÉE (rang 43, D339) : la condition porte aussi `sansCoordonnees || chaineBrouillon` (un brouillon ne porte ni fiche ni nom) ; même faute — le devis part sans la fiche ni la copie des noms.
-      "...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))", "...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : {})", {"pro-parcours": "une fiche ABSENTE se CRÉE (K-2) au"})
+      # ⛔ RÉORIENTÉE de nouveau (FP-3, session `front-client`) : le corps passe par `copiePourRevision` et la ligne tient sur trois lignes ; même faute — la copie est remplacée par RIEN.
+      "      : copiePourRevision(nomsEffectifs, fiche, chainQuoteId !== null && versionRendue.current?.id === chainQuoteId ? versionRendue.current : null))", "      : {})", {"pro-parcours": "une fiche ABSENTE se CRÉE (K-2) au"})
 cible("J-7. ⛔ K-5 — le choix de la langue remet tout de suite, même sans la copie du nom de cette langue", PARCOURS,
       "    if (nomManquant(quote, documentLocale)) {\n      setNomDe({ canal, locale: documentLocale });", "    if (quote.id === \"\") {\n      setNomDe({ canal, locale: documentLocale });",
       {"pro-parcours": "K-5 — la boîte de langue DEMANDE"})
