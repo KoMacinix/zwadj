@@ -1,0 +1,25 @@
+D341 — tri différentiel de l'audit de secrets « d » (AVANT le commit des pièces de clôture, deuxième partie : les journaux des quatre campagnes de l'union et leur rapport, l'outillage du complément, la passe D277 « avant », le contrôle de fin de lot, le lister des tests corrigés après les rouges)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341c.txt docs/preuves/D341/audit-secrets-d341d.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341d.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) — l'audit porte sur `docs/preuves/` seul, pas sur le code :
+  · précédente (d341c) : 4 646 fichiers parcourus, 4 513 audités, 133 exclus, 1 086 alertes.
+  · nouvelle (d341d)   : 4 662 fichiers parcourus, 4 528 audités, 134 exclus, 1 096 alertes. Contrôle de l'outil : audités + exclus = 4 662 (attendu 4 662).
+  · RAPPROCHEMENT — l'arithmétique FERME ENTIÈREMENT (16 = 14 + 2) : +16 fichiers parcourus = 14 fichiers non suivis de `docs/preuves/D341/` au moment de l'audit (les cinq journaux et rapports de l'union, les trois fichiers du complément, l'outil qui les fabrique, la passe D277 et sa sortie « avant », le contrôle de fin de lot, le lister des tests corrigés et sa sortie ; comptés par `git ls-files --others` : 15 non suivis à la fin, moins la sortie scellée « d » elle-même, écrite après son audit) + 2 écrits après l'audit « c » (la sortie scellée « c » et son tri).
+    Audités +15 (4 513 → 4 528) : les 14 non suivis, plus le tri « c ». Exclus +1 (133 → 134) : la sortie scellée « c », désormais épinglée par son sceau. Alertes +10 (1 086 → 1 096) : exactement les dix du tri ci-dessous.
+
+Résultat du tri différentiel : 10 alertes ABSENTES de la sortie précédente — 5 du motif « mot-de-passe » et 5 du motif « jeton » (lignes 3201 et 3397 à 3413 de la sortie scellée d341d).
+
+Tri au contexte — LU, pas déduit (les contextes sont dans la sortie scellée aux lignes citées ; ils ne sont pas recopiés ici, une sortie qui les recopierait serait un écho non scellé, et cette sortie-ci évite jusqu'aux mots qui déclenchent le motif) :
+  · 1 alerte « mot-de-passe » dans `neutralisation/journal-neutralize-r44.txt` (ligne 3201 de la sortie scellée ; ligne 454 du journal) : le message d'une assertion imprimé par le harnais, qui cite un nom de colonne SQL et une valeur booléenne masquée de cinq caractères — du texte de test, sans valeur.
+  · 4 alertes « mot-de-passe » dans `tri-audit-d341c.txt` (lignes 3397, 3399, 3401 et 3403 de la sortie scellée ; lignes 21, 22, 24 et 25 du tri) : MA PROSE du tri précédent, écrite après l'audit « c » et auditée ici pour la première fois ; elle cite des titres de tests existants, des fixtures et des noms de colonnes — des noms, pas des valeurs.
+  · 5 alertes « jeton » dans `tri-audit-d341c.txt` (lignes 3405, 3407, 3409, 3411 et 3413 de la sortie scellée ; lignes 17 (deux fois : deux portions de la même ligne), 18, 19 et 20 du tri) : MA PROSE, qui décrit la FORME d'une adresse de vérification d'e-mail dans la pièce masquée de l'e2e et le comptage qui montre qu'aucune valeur n'y est nue. Le mot qui déclenche le motif y est cité pour dire qu'il ne précède aucune valeur.
+  · Total : 1 + 4 + 5 = 10, les dix du tri différentiel.
+  · Aucune valeur : « valeur déjà présente » ou « trop courte pour une recherche » partout où l'audit a tenté de la rechercher.
+  · Les 13 autres pièces neuves (trois journaux de campagne, le rapport de l'union, l'outillage du complément, la passe D277 « avant », le contrôle de fin de lot, le lister des tests et sa sortie) n'ont rendu AUCUNE alerte : les journaux ne portent que des lignes de cibles (identifiant, libellé, mesure) et des résumés de comptes.
+
+Contrôle dédié « 0 valeur réelle sur N fichiers » (D299, règle de Ko du 21/09/2026) : fait en CLÔTURE sur l'arbre entier, `aucune-valeur-reelle.txt` ; ce tri répond à une question plus étroite — « les alertes NOUVELLES sont-elles des mots, ou des valeurs ? ». Réponse : des mots.
+⛔ Ce que ce tri ne dit PAS : que la sortie brute de l'e2e, gardée HORS dépôt, ne porte pas de jetons — elle en porte 79, d'une base jetable ; c'est pourquoi la pièce versée est masquée (voir le tri « c »). Il ne dit rien non plus des fichiers hors `docs/preuves/` : l'audit n'y regarde pas.
+⚠ Écrit pour le prochain tri (« e ») : ce fichier-ci sera audité à son tour. Il n'y a volontairement ni citation d'un titre de test, ni forme d'adresse, ni mot de déclenchement entre guillemets.

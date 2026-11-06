@@ -1,0 +1,743 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 236 déclarées · 236 jouées · 0 non jouée(s) (sans --int) · 16 mesure(s) distincte(s) · 14 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 7 · en échec 0
+  pré-vol contrat : code 0 · passés 22 · en échec 0
+  pré-vol cookies : code 0 · passés 17 · en échec 0
+  pré-vol garde : code 0 · passés 19 · en échec 0
+  pré-vol int-activation : code 0 · passés 17 · en échec 0
+  pré-vol int-connexion : code 0 · passés 34 · en échec 0
+  pré-vol int-debit : code 0 · passés 10 · en échec 0
+  pré-vol int-garde : code 0 · passés 18 · en échec 0
+  pré-vol int-migration : code 0 · passés 31 · en échec 0
+  pré-vol int-schema : code 0 · passés 21 · en échec 0
+  pré-vol magasin : code 0 · passés 41 · en échec 0
+  pré-vol mdp : code 0 · passés 18 · en échec 0
+  pré-vol nom : code 0 · passés 53 · en échec 0
+  pré-vol politique : code 0 · passés 25 · en échec 0
+  pré-vol service : code 0 · passés 30 · en échec 0
+  pré-vol sources : code 0 · passés 15 · en échec 0
+✓ G-1. ⛔ une route @Public() n'est plus ignorée par le garde du personnel (un PRO muni d'un Bearer sur `/auth/login` devrait présenter une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ G-2. ⛔ la liste blanche des exemptions n'est plus lue (activer, se connecter et lire l'état exigeraient une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 18 · en échec 1 · AssertionError: promise rejected "UnauthorizedException: staff.errors.sessi… { …(3) }" instead of resolving
+✓ G-3. ⛔ MP-34 — un CLIENT ou un ADMIN déclenche la lecture du drapeau (le garde ne s'arrête plus avant la base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 16 · en échec 3 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ G-4. ⛔ un PRO sans profil n'est plus laissé passer (le garde invente un refus que l'API n'a jamais rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 18 · en échec 1 · AssertionError: promise rejected "TypeError: Cannot read properties of null…" instead of resolving
+✓ G-5. ⛔ MP-35 — la couche ÉTEINTE n'ouvre plus la porte (toute route Pro exigerait une session avant toute activation)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 17 · en échec 2 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ G-6. ⛔ MP-7 — le drapeau est lu à l'envers (la couche activée laisse passer, la couche éteinte exige)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 10 · en échec 9 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ G-7. ⛔ le cookie de session est lu sous le nom du cookie de RAFRAÎCHISSEMENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 1 · passés 15 · en échec 3 · AssertionError: routes refusées malgré une session valide :
+✓ G-8. ⛔ l'absence de cookie n'est plus refusée par le garde (le hachage d'un jeton absent part au magasin)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 15 · en échec 4 · AssertionError: expected TypeError: The "data" argument must be of… { code: '…' } to be an instance of UnauthorizedException
+✓ G-9. ⛔ MP-11 — le jeton part au magasin EN CLAIR (seul son SHA-256 doit voyager)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 17 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+✓ G-10. ⛔ MP-18 — la salle du magasin n'est plus celle du PROFIL du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+✓ G-11. ⛔ un refus du magasin n'est plus un refus (la session d'une autre salle passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 17 · en échec 2 · AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of UnauthorizedException
+✓ G-12. ⛔ le contexte posé sur la requête porte l'identifiant de SESSION à la place de celui du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 18 · en échec 1 · AssertionError: expected { sessionId: 's1', …(5) } to deeply equal { sessionId: 's1', …(5) }
+✓ G-13. ⛔ le refus du garde change de CODE (le client ne reconnaît plus « session requise »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 16 · en échec 3 · AssertionError: expected { …(2) } to deeply equal { Object (code, message) }
+✓ P-1. ⛔ `guardVerdict` — un ADMIN ou un CLIENT doit présenter une session (le rôle n'est plus regardé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 22 · en échec 3 · AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+✓ P-2. ⛔ `guardVerdict` — une route exemptée exige une session (on ne pourrait plus s'identifier)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 23 · en échec 2 · AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+✓ P-3. ⛔ `guardVerdict` — la couche éteinte exige une session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 23 · en échec 2 · AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+✓ P-4. ⛔ la session d'une AUTRE salle est TERMINÉE par le refus (on termine la session d'autrui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { reason: 'foreign', endWith: 'IDLE' } to deeply equal { reason: 'foreign', endWith: null }
+✓ P-5. ⛔ une session déjà terminée se voit réécrire une fin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { Object (reason, endWith) } to deeply equal { reason: 'ended', endWith: null }
+✓ P-6. ⛔ la désactivation d'un membre n'écrit plus la fin DISABLED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { reason: 'disabled', endWith: null } to deeply equal { reason: 'disabled', …(1) }
+✓ P-7. ⛔ le PLAFOND atteint écrit une fin IDLE (l'énumération n'a pas de valeur « plafond »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { reason: 'capped', endWith: 'IDLE' } to deeply equal { reason: 'capped', endWith: null }
+✓ P-8. ⛔ L'ORDRE — plafond ET inactivité : l'inactivité l'emporte (le plafond doit passer avant, rien ne s'écrit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected 'idle' to be 'capped' // Object.is equality
+✓ P-9. ⛔ l'inactivité n'écrit plus la fin IDLE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { reason: 'idle', endWith: null } to deeply equal { reason: 'idle', endWith: 'IDLE' }
+✓ P-10. ⛔ une session VIVANTE est classée « inactive » au lieu de LEVER (l'appelant écrirait IDLE sur une session vivante)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected [Function] to throw an error
+✓ P-11. ⛔ R-3 / MP-17 — pendant la PAUSE (tentative non réservée) le VRAI hachage est vérifié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 23 · en échec 2 · AssertionError: expected 'real' to be 'dummy' // Object.is equality
+✓ P-12. ⛔ un membre DÉSACTIVÉ paie le vrai hachage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected 2 to be 1 // Object.is equality
+✓ P-13. ⛔ MP-3 — l'appareil d'un AUTRE membre est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 23 · en échec 2 · AssertionError: expected { id: 'd1', memberId: 'autre', …(3) } to be null
+✓ P-14. ⛔ MP-3 — l'appareil d'une AUTRE salle est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { id: 'd1', …(4) } to be null
+✓ P-15. ⛔ un appareil RÉVOQUÉ est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 23 · en échec 2 · AssertionError: expected { id: 'd1', …(4) } to be null
+✓ P-16. ⛔ un appareil EXPIRÉ est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · passés 24 · en échec 1 · AssertionError: expected { id: 'd1', …(4) } to be null
+✓ W-1. ⛔ R-5 — la liste n'est plus mise en minuscules (un mot courant en majuscules passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · passés 17 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ W-2. ⛔ R-5 — le mot de passe saisi n'est plus mis en minuscules avant la comparaison
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · passés 15 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ W-3. ⛔ un mot de passe courant n'est plus refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · passés 16 · en échec 2 · AssertionError: expected null to be 'common' // Object.is equality
+✓ W-4. ⛔ la réutilisation du mot de passe actuel n'est plus refusée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · passés 17 · en échec 1 · AssertionError: expected null to be 'reused' // Object.is equality
+✓ K-1. ⛔ le cookie de session prend le NOM du cookie de rafraîchissement (`zwadj_rt`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 13 · en échec 4 · AssertionError: expected 'zwadj_rt' to be 'zwadj_ss' // Object.is equality
+✓ K-2. ⛔ S-99 — le cookie de session n'est plus `SameSite=Strict`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected 'lax' to be 'strict' // Object.is equality
+✓ K-3. ⛔ S-99 — le cookie de session n'est plus `HttpOnly`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ K-4. ⛔ le cookie de session prend le CHEMIN des cookies d'appareil
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected '/api/v1/pro/staff' to be '/api/v1' // Object.is equality
+✓ K-5. ⛔ le cookie de session reçoit une échéance côté navigateur (sa durée de vie n'est plus côté serveur seul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: la durée de vie est côté serveur: expected 7776000000 to be undefined
+✓ K-6. ⛔ S-99 — le cookie d'appareil n'est plus `SameSite=Strict`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected 'lax' to be 'strict' // Object.is equality
+✓ K-7. ⛔ R-6 — l'échéance du cookie d'appareil est comptée en secondes au lieu de millisecondes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected 90000 to be 7776000000 // Object.is equality
+✓ K-8. ⛔ le cookie d'appareil prend le chemin du cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected '/api/v1' to be '/api/v1/pro/staff' // Object.is equality
+✓ K-9. ⛔ un nom de cookie d'appareil se construit avec n'importe quel suffixe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected [Function] to throw an error
+✓ K-10. ⛔ un cookie de session qui n'a pas la forme d'un jeton part en requête SQL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected 'court' to be undefined
+✓ K-11. ⛔ MP-28 — la borne de huit cookies d'appareil n'est plus tenue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected [ { …(2) }, { …(2) }, { …(2) }, …(9) ] to have a length of 8 but got 12
+✓ K-12. ⛔ tout cookie est lu comme un cookie d'appareil (le préfixe n'est plus exigé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { name: 'zwadj_dv_abcd1234', …(1) } ]
+✓ K-13. ⛔ le suffixe d'un cookie d'appareil n'est plus contrôlé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected [ …(4) ] to deeply equal [ { name: 'zwadj_dv_abcd1234', …(1) } ]
+✓ K-14. ⛔ la valeur d'un cookie d'appareil n'a plus à ressembler à un jeton
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 16 · en échec 1 · AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+✓ K-15. ⛔ la forme d'un jeton n'est plus de 43 caractères
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 15 · en échec 2 · AssertionError: expected 'court' to be undefined
+✓ K-16. ⛔ le suffixe d'un nom de cookie n'est plus de 8 caractères
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 15 · en échec 2 · AssertionError: abc: expected [Function] to throw an error
+✓ K-18. ⛔ MP-43 — une durée écrite EN DUR s'introduit dans le module des cookies (un second levier de la durée)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: fichiers qui écrivent une durée en dur : staff-cookies.ts: expected [ 'staff-cookies.ts' ] to deeply equal []
+✓ K-17. ⛔ le préfixe des cookies d'appareil change (la lecture ne retrouve plus ce que la pose a écrit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · passés 11 · en échec 6 · AssertionError: expected 'zwadj_dd_' to be 'zwadj_dv_' // Object.is equality
+✓ S-1. ⛔ MP-24 — l'activation accepte un mot de passe COURANT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: un refus était attendu
+✓ S-2. ⛔ MP-9 — la clé du nom n'est plus normalisée à l'activation (« AMINE » et « amine » feraient deux comptes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected { actor: { …(2) }, …(6) } to match object { actor: { …(2) }, …(4) }
+✓ S-3. ⛔ MP-9 — la connexion cherche le membre par le nom TEL QUE TAPÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ …(2) ]
+✓ S-4. ⛔ MP-4 — une tentative est RÉSERVÉE pour un membre désactivé (on compte des échecs sur un compte éteint)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ S-5. ⛔ MP-8 — un compte inconnu ne paie plus le hachage FACTICE (oracle de durée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 26 · en échec 4 · AssertionError: expected "spy" to be called 1 times, but got 0 times
+✓ S-6. ⛔ MP-8 — le mot de passe est vérifié contre une autre valeur que celle saisie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'HASH-ACTUEL', 'Motdepasse1' ]
+✓ S-7. ⛔ le seuil de la pause n'est plus transmis à la ligne d'audit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+✓ S-8. ⛔ l'échec de connexion est consigné sous l'action du changement de mot de passe
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service] code 1 · passés 28 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+✓ S-9. ⛔ MP-3 — les cookies d'appareil partent au magasin EN CLAIR
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected [ Array(2) ] to deeply equal [ 'sha(valeur-claire-1)', …(1) ]
+✓ S-10. ⛔ une désactivation entre la réservation et l'ouverture ouvre quand même la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: un refus était attendu
+✓ S-11. ⛔ MP-3 — un appareil réutilisé reçoit quand même un cookie d'appareil neuf
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected { suffix: 'jeton-00', …(1) } to be undefined
+✓ S-12. ⛔ K-16 — la déconnexion ne demande plus l'effacement du cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected undefined to be null
+✓ S-13. ⛔ K-16 — la déconnexion termine la session désignée par l'identifiant du MEMBRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(2) } ]
+✓ S-14. ⛔ K-17 — la couche éteinte est annoncée allumée dès qu'un profil existe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected { enabled: true, member: null, …(1) } to deeply equal { enabled: false, member: null, …(1) }
+✓ S-15. ⛔ K-17 — l'état PROLONGE la session (il passe par `touchSession`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+✓ S-16. ⛔ K-17 — les cookies d'appareil de l'état partent EN CLAIR
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+✓ S-17. ⛔ MP-24 — le nouveau mot de passe COURANT n'est plus refusé avant la réservation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { code: 'STAFF_PASSWORD_COMMON', …(1) }
+✓ S-18. ⛔ S-102 — le changement réserve la tentative d'un AUTRE identifiant (le compteur n'est plus partagé avec la connexion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'm1' ]
+✓ S-19. ⛔ pendant la pause, le changement de mot de passe ne paie plus le factice
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 0 times
+✓ S-20. ⛔ l'échec d'un changement est consigné sous l'action de la connexion
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+✓ S-21. ⛔ MP-24 — la réutilisation du mot de passe actuel n'est plus détectée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: un refus était attendu
+✓ S-22. ⛔ le bon mot de passe actuel, refusé pour réutilisation, laisse le compteur monté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'm1' ]
+✓ S-23. ⛔ MP-5 — le changement désigne la session d'un autre identifiant comme « courante » (la courante serait terminée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 28 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+✓ S-24. ⛔ le remplacement n'est plus conditionné au hachage LU
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+✓ S-25. ⛔ un remplacement concurrent perdu n'est plus refusé (le service répond comme s'il avait réussi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: un refus était attendu
+✓ S-26. ⛔ R-3 — l'identifiant refusé porte le code du mot de passe ACTUEL faux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 25 · en échec 5 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ S-27. ⛔ le mot de passe actuel faux porte le code des identifiants refusés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 27 · en échec 3 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ S-28. ⛔ « courant » et « réutilisé » échangent leurs codes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 27 · en échec 3 · AssertionError: expected { code: 'STAFF_PASSWORD_REUSED', …(1) } to deeply equal { code: 'STAFF_PASSWORD_COMMON', …(1) }
+✓ S-29. ⛔ « déjà activée » répond 400 au lieu de 409
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 28 · en échec 2 · AssertionError: déjà activée: expected 400 to be 409 // Object.is equality
+✓ S-30. ⛔ MP-23 — « e-mail non vérifié » répond 409 au lieu de 403
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 28 · en échec 2 · AssertionError: e-mail non vérifié: expected 409 to be 403 // Object.is equality
+✓ S-31. ⛔ « nom déjà pris » répond 400 au lieu de 409
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: nom déjà pris: expected 400 to be 409 // Object.is equality
+✓ S-33. ⛔ MP-41 — une HORLOGE de l'API s'introduit dans le service du personnel (le temps se décide dans la base)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal [
+✓ S-34. ⛔ MP-11 — le service du personnel écrit dans le JOURNAL (un mot de passe pourrait y arriver)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: fichiers qui journalisent : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal []
+✓ S-32. ⛔ un PRO sans profil reçoit un 409 au lieu de la réponse « interdit » de l'API
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 29 · en échec 1 · AssertionError: sans profil: expected 409 to be 403 // Object.is equality
+✓ A-1. ⛔ `readLayer` cherche le profil par son identifiant au lieu de celui du compte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+✓ A-2. ⛔ MP-7 — `readLayer` rend toujours « couche éteinte »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ A-3. ⛔ MP-23 — l'activation ne refuse plus un e-mail non vérifié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_profiles SET staff_layer_enabled_at = now(), updated_at = now() WHERE id = ?::uuid AND 
+✓ A-4. ⛔ MP-22 — le compte du drapeau n'est plus exigé (dix activations feraient dix Managers)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash
+✓ A-5. ⛔ MP-22 — le drapeau se repose sans condition (le check-and-set perd son prédicat)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_profiles SET staff_layer_e…' to match /WHERE id = \?::uuid AND staff_layer_e…/
+✓ A-6. ⛔ l'insertion du Manager ne tolère plus un nom déjà pris (le conflit remonte en erreur de base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to contain 'ON CONFLICT (pro_profile_id, account_…'
+✓ A-7. ⛔ MP-40 — un nom déjà pris n'ANNULE plus la transaction (le drapeau resterait posé sans Manager)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ 'validée' ] to deeply equal [ 'annulée' ]
+✓ A-8. ⛔ l'annulation interne de l'activation n'est plus traduite en refus métier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 16 · en échec 1 · AssertionError: expected 500 to be 409 // Object.is equality
+✓ A-9. ⛔ l'activation crée un EMPLOYÉ au lieu d'un Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to contain '\'MANAGER\''
+✓ A-10. ⛔ MP-40 — l'audit de l'activation s'écrit HORS de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 6 · en échec 11 · AssertionError: expected 500 to be 201 // Object.is equality
+✓ A-11. ⛔ MP-43 — l'échéance de l'appareil de l'activation n'est plus la durée du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(4) ] to include 90
+✓ A-12. ⛔ MP-43 — le plafond de la session de l'activation n'est plus le plafond du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(4) ] to include 12
+✓ A-13. ⛔ MP-43 — l'échéance du mot de passe de l'activation n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(5) ] to include 90
+✓ A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ A-15. ⛔ MP-16 / MP-17 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'FOR UPDATE'
+✓ A-16. ⛔ MP-4 — la réservation compte aussi sur un membre DÉSACTIVÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'status = \'ACTIVE\''
+✓ A-17. ⛔ MP-16 — la pause devient DÉFINITIVE (une pause échue refuse toujours)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'password_locked_until IS NULL OR pass…'
+✓ A-18. ⛔ MP-16 — le compteur ne REPART plus de zéro après une pause
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: le compteur repart après l'échéance de la pause: expected 'WITH cur AS ( SELECT id, password_fai…' to match /password_locked
+✓ A-19. ⛔ le seuil de la pause est dépassé d'une tentative (6 au lieu de 5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 30 · en échec 4 · AssertionError: MP-17 : au plus cinq vérifications du VRAI hachage: expected [ [ …(2) ], [ …(2) ], [ …(2) ], …(3) ] to have a length of 5 bu
+✓ A-20. ⛔ MP-43 — la durée de la pause n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(3) ] to include 15
+✓ A-21. ⛔ la réservation ne dit plus si CETTE tentative a déclenché la pause
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+✓ A-22. ⛔ la réservation n'INCRÉMENTE plus le compteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 29 · en échec 5 · AssertionError: MP-17 : au plus cinq vérifications du VRAI hachage: expected [ [ …(2) ], [ …(2) ], [ …(2) ], …(17) ] to have a length of 5 b
+✓ A-23. ⛔ le compte d'échecs rendu n'est plus celui de la ligne mise à jour
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { reserved: true, …(3) } to deeply equal { reserved: true, …(3) }
+✓ A-24. ⛔ la ligne de PAUSE n'est jamais écrite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected [ 'staff.login_failed' ] to deeply equal [ 'staff.login_failed', …(1) ]
+✓ A-25. ⛔ la ligne de pause change de nom d'action
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ 'staff.login_failed', …(1) ] to deeply equal [ 'staff.login_failed', …(1) ]
+✓ A-26. ⛔ MP-33 — la ligne d'échec porte un champ de plus que le compte d'échecs
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { failedCount: 2, …(1) } to deeply equal { failedCount: 2 }
+✓ A-27. ⛔ la remise à zéro de la pause ne lève plus la pause (seul le compteur retombe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to match /^UPDATE pro_staff_members SET passwor…/
+✓ A-28. ⛔ une connexion réussie ne remet plus les compteurs à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'password_failed_count = 0'
+✓ A-29. ⛔ D305 — le CAS de la connexion n'exige plus un membre ACTIF
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'status = \'ACTIVE\''
+✓ A-30. ⛔ MP-18 — le CAS de la connexion n'exige plus la salle du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'pro_profile_id ='
+✓ A-31. ⛔ D305 — un CAS refusé (compte 0) n'arrête plus la connexion
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : SELECT d.id::text AS id, d.member_id::text AS "memberId", m.pro_profile_id::text AS "proProfileId"
+✓ A-32. ⛔ MP-3 — n'importe quel appareil présenté est réutilisé (la politique n'est plus consultée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { ok: true, member: { …(4) }, …(2) } to match object { ok: true, deviceReused: false }
+✓ A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_devices SET last_use…' to match /^UPDATE pro_staff_devices SET last_us…/
+✓ A-34. ⛔ la ligne d'audit de la connexion ne dit plus si l'appareil était reconnu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { Object (memberId) } to deeply equal { …(2) }
+✓ A-35. ⛔ MP-43 — l'échéance de l'appareil neuf de la connexion n'est plus la durée du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(4) ] to include 90
+✓ A-36. ⛔ MP-43 — le plafond de la session de la connexion n'est plus celui du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ …(4) ] to include 12
+✓ A-37. ⛔ MP-13 — la session ne GLISSE plus (l'activité n'est pas rafraîchie par la requête)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to match /SET last_activity_at = now\(\)/
+✓ A-38. ⛔ MP-18 — la requête du garde n'exige plus la salle du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.pro_profile_id ='
+✓ A-39. ⛔ MP-4 — la requête du garde n'exige plus un membre ACTIF
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.status = \'ACTIVE\''
+✓ A-40. ⛔ MP-19 — la requête du garde accepte une session TERMINÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 's.ended_at IS NULL'
+✓ A-41. ⛔ MP-13 — la requête du garde ignore le PLAFOND absolu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 's.expires_at > now()'
+✓ A-42. ⛔ MP-13 — la requête du garde ignore l'INACTIVITÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to match /s\.last_activity_at > now\(\) - make_…/
+✓ A-43. ⛔ MP-18 — la sonde dit toujours « même salle » (on terminerait la session d'une autre salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 1 · passés 17 · en échec 1 · AssertionError: la session de A n'a pas été terminée par la requête de B: expected 2026-11-06T05:47:11.469Z to be null
+✓ A-44. ⛔ MP-4 — la sonde dit toujours « membre actif » (la fin DISABLED ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: expected null to be 'DISABLED' // Object.is equality
+✓ A-45. ⛔ MP-13 — la sonde dit toujours « pas inactive » (la fin IDLE ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: expected null to be 'IDLE' // Object.is equality
+✓ A-46. ⛔ MP-13 — la fin d'une session refusée n'est jamais écrite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected [ { type: 'query', …(2) }, …(1) ] to have a length of 3 but got 2
+✓ A-47. ⛔ jamais deux fins — l'écriture de la fin n'est plus conditionnée à `ended_at IS NULL`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to match /WHERE id = \?::uuid AND ended_at IS N…/
+✓ A-48. ⛔ K-17 — l'état ÉCRIT (la lecture prolonge la session)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: réponse non prévue pour : UPDATE pro_staff_sessions SET last_activity_at = now() WHERE token_hash = ?
+✓ A-49. ⛔ K-17 — l'état ignore l'inactivité (une session inactive est rendue comme vivante)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected 'SELECT s.id::text AS "sessionId", m.i…' to match /s\.last_activity_at > now\(\) - make_…/
+✓ A-50. ⛔ K-16 — la fin LOGOUT n'est plus conditionnée à `ended_at IS NULL`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to match /WHERE id = \?::uuid AND ended_at IS N…/
+✓ A-51. ⛔ K-16 — l'audit de la déconnexion s'écrit même si la session n'a pas été terminée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ { data: { …(7) } } ] to have a length of +0 but got 1
+✓ A-52. ⛔ K-16 — l'audit de la déconnexion désigne le membre à la place de la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { …(7) } to match object { action: 'staff.logout', …(3) }
+✓ A-53. ⛔ K-18 — le remplacement du mot de passe n'est plus conditionné au hachage LU
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'password_hash = ? AND'
+✓ A-54. ⛔ K-18 — le membre n'est plus VERROUILLÉ avant le remplacement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'SELECT id::text AS id FROM pro_staff_…' to match /FOR UPDATE/
+✓ A-55. ⛔ MP-5 — les autres sessions prennent la fin « déconnexion » au lieu de « mot de passe changé »
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to match /^UPDATE pro_staff_sessions SET ended_…/
+✓ A-56. ⛔ MP-5 — le changement termine la session COURANTE et laisse les autres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to match /WHERE member_id = \?::uuid AND id <> …/
+✓ A-57. ⛔ K-18 — le changement laisse `must_change_password` levé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'must_change_password = false'
+✓ A-58. ⛔ MP-43 — l'échéance du nouveau mot de passe n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected [ 'H-NEUF', 15, …(2) ] to include 90
+✓ A-59. ⛔ MP-33 — la ligne d'audit du changement porte un champ de plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected { otherSessionsEnded: 2, …(1) } to deeply equal { otherSessionsEnded: 2 }
+✓ A-60. ⛔ K-18 — un membre introuvable ou éteint ne refuse plus le changement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET password_hash = ?, password_changed_at = now(), password_expires_at =
+✓ A-61. ⛔ K-18 — un remplacement sans ligne (le hachage a changé) n'est plus refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'PASSWORD_CHANGED' WHERE member_id = 
+✓ A-62. ⛔ K-17 — sans cookie d'appareil, la base est interrogée quand même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: réponse non prévue pour : SELECT DISTINCT m.id::text AS id, m.account_name AS "accountName", m.role::text AS role FROM pro_s
+✓ A-63. ⛔ MP-3 — un appareil RÉVOQUÉ reconnaît encore son membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'd.revoked_at IS NULL'
+✓ A-64. ⛔ MP-3 — un appareil EXPIRÉ reconnaît encore son membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'd.expires_at > now()'
+✓ A-65. ⛔ MP-3 — les membres reconnus viennent de TOUTES les salles
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'm.pro_profile_id ='
+✓ A-66. ⛔ MP-4 — un membre désactivé est encore « reconnu » sur ce poste
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'm.status = \'ACTIVE\''
+✓ A-67. ⛔ MP-33 — la ligne d'audit n'a plus le membre pour acteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 38 · en échec 3 · AssertionError: expected { …(7) } to match object { …(6) }
+✓ A-68. ⛔ MP-33 — la ligne d'audit n'a plus le compte commun pour acteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 39 · en échec 2 · AssertionError: expected { actorId: null, …(6) } to match object { …(6) }
+✓ A-69. ⛔ MP-33 — la ligne d'audit porte un champ de plus (`before`)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [magasin] code 1 · passés 40 · en échec 1 · AssertionError: staff.activate: expected [ 'action', 'actorId', …(6) ] to deeply equal [ 'action', 'actorId', …(5) ]
+✓ T-1. ⛔ MP-43 — le levier de l'inactivité change de valeur (10 → 11 minutes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 11 to be 10 // Object.is equality
+✓ T-2. ⛔ MP-43 — le plafond de session change de valeur (12 → 24 heures)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 24 to be 12 // Object.is equality
+✓ T-3. ⛔ MP-43 — la durée de la pause change de valeur (15 → 5 minutes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 5 to be 15 // Object.is equality
+✓ T-4. ⛔ MP-43 — le seuil de la pause change de valeur (5 → 3 échecs)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 3 to be 5 // Object.is equality
+✓ T-5. ⛔ MP-28 — la borne des cookies d'appareil change de valeur (8 → 9)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 9 to be 8 // Object.is equality
+✓ T-6. ⛔ R-6 — le levier de la validité du PIN change de valeur (90 → 30 jours) : l'échéance des appareils suit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 30 to be 90 // Object.is equality
+✓ T-7. ⛔ le libellé constant d'un appareil change
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected 'Mon poste' to be 'Poste' // Object.is equality
+✓ T-8. ⛔ MP-39 — la clé de message de « session requise » n'existe pas dans les catalogues
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 20 · en échec 2 · AssertionError: staff.errors.sessionRequis (fr): expected undefined to be truthy
+   [garde] code 1 · passés 16 · en échec 3 · AssertionError: expected { Object (code, message) } to deeply equal { Object (code, message) }
+✓ T-9. ⛔ MP-39 — la clé de message des identifiants refusés n'existe pas dans les catalogues
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 20 · en échec 2 · AssertionError: staff.errors.identifiantsRefuses (fr): expected undefined to be truthy
+   [service] code 1 · passés 25 · en échec 5 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ T-10. ⛔ l'activation accepte une clé inconnue (un `role` saisi serait ignoré en silence)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 20 · en échec 2 · AssertionError: activation, clé inconnue: expected true to be false // Object.is equality
+✓ T-11. ⛔ la connexion accepte une clé inconnue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: connexion, clé inconnue: expected true to be false // Object.is equality
+✓ T-12. ⛔ le changement de mot de passe accepte une clé inconnue (un `memberId` saisi serait ignoré en silence)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: changement, clé inconnue: expected true to be false // Object.is equality
+✓ T-13. ⛔ le nom de compte n'est plus rogné avant les bornes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected { accountName: ' Amine ', …(1) } to deeply equal { accountName: 'Amine', …(1) }
+✓ T-14. ⛔ D55 — la borne basse du nom de compte disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: activation, nom trop court: expected true to be false // Object.is equality
+✓ T-15. ⛔ D55 — la borne haute du nom de compte disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: activation, nom trop long: expected true to be false // Object.is equality
+✓ T-16. ⛔ le nom de compte admet des chevrons (`<b>`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: activation, nom invalide: expected true to be false // Object.is equality
+✓ T-17. ⛔ un nom qui se normalise en chaîne VIDE est accepté (la clé serait vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: "́́": expected true to be false // Object.is equality
+✓ T-18. ⛔ la connexion révèle la politique (un mot de passe vide n'est plus refusé de la même façon)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: connexion, mot de passe vide: expected true to be false // Object.is equality
+✓ T-19. ⛔ le nom de compte de la connexion perd sa borne haute
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 21 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ N-1. ⛔ R-4 — plus de NFKC (pleine chasse, ligatures, présentations arabes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 52 · en échec 1 · AssertionError: expected 'ａｍｉｎｅ' to be 'amine' // Object.is equality
+✓ N-2. ⛔ R-4 — les caractères invisibles deviennent des espaces au lieu de disparaître
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 50 · en échec 3 · AssertionError: expected 'ca isse' to be 'caisse' // Object.is equality
+✓ N-3. ⛔ la clé dépend de la casse (majuscules)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 51 · en échec 2 · AssertionError: chiffre arabe-indien 0: expected 'A0' to be 'a0' // Object.is equality
+✓ N-4. ⛔ les diacritiques latins ne sont plus retirés (« Âmine » ≠ « amine »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 48 · en échec 5 · AssertionError: expected 'rené' to be 'rene' // Object.is equality
+✓ N-5. ⛔ les voyelles brèves et le tatweel arabes ne sont plus retirés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 51 · en échec 2 · AssertionError: expected 'مُحَمَّد' to be 'محمد' // Object.is equality
+✓ N-6. ⛔ les lettres arabes ne sont plus ramenées l'une à l'autre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 45 · en échec 8 · AssertionError: expected 'أمين' to be 'امين' // Object.is equality
+✓ N-7. ⛔ R-4 — les chiffres arabes-indiens et persans ne sont plus ramenés à 0–9
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 50 · en échec 3 · AssertionError: expected 'caisse٣' to be 'caisse3' // Object.is equality
+✓ N-8. ⛔ les blancs ne sont plus comprimés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 51 · en échec 2 · AssertionError: expected 'amine    benali' to be 'amine benali' // Object.is equality
+✓ N-9. ⛔ les bords ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 51 · en échec 2 · AssertionError: expected ' amine ' to be 'amine' // Object.is equality
+✓ N-10. ⛔ le ta marbouta (ة) n'est plus ramené au ha (ه)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 50 · en échec 3 · AssertionError: expected 'امنة' to be 'امنه' // Object.is equality
+✓ N-11. ⛔ R-4 — le waw hamza (ؤ) n'est plus ramené au waw (و)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 52 · en échec 1 · AssertionError: expected 'مؤمن' to be 'مومن' // Object.is equality
+✓ N-12. ⛔ R-4 — le kaf persan (ک) n'est plus ramené au kaf arabe (ك)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 52 · en échec 1 · AssertionError: expected 'کريم' to be 'كريم' // Object.is equality
+✓ N-13. ⛔ R-4 — les chiffres persans sont convertis comme des chiffres arabes-indiens (décalage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · passés 50 · en échec 3 · AssertionError: expected 'caisseÃ' to be 'caisse3' // Object.is equality
+✓ L-1. ⛔ S-98 — le garde du personnel passe AVANT `RolesGuard` (il lirait un rôle pas encore contrôlé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected [ 'ThrottlerGuard', …(3) ] to deeply equal [ 'ThrottlerGuard', …(3) ]
+✓ L-2. ⛔ leçon R1 — le module du personnel n'est plus importé par l'application
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /imports:\s*\[[\s\S]*\bStaffModule\b[\…/
+✓ L-3. ⛔ R-7 / SIG-1 — le `Set-Cookie` de réponse n'est plus masqué dans le journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /redact:\s*\[[^\]]*req\.headers\.autho…/
+✓ L-4. ⛔ MP-20 — l'état de session n'est plus exempté (l'écran de verrouillage ne pourrait plus le lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+✓ L-5. ⛔ MP-20 — l'activation n'est plus exemptée (on ne pourrait plus activer la couche)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+✓ L-6. ⛔ MP-20 — la connexion n'est plus exemptée (on ne pourrait plus ouvrir de session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+✓ L-7. ⛔ MP-20 — la déconnexion devient exemptée (la liste blanche s'allonge sans décision)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+✓ L-8. ⛔ MP-34 — le contrôleur du personnel admet aussi un CLIENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 16 · en échec 1 · AssertionError: client POST /api/v1/pro/staff/login: expected 401 to be 403 // Object.is equality
+✓ L-9. ⛔ les routes de membre n'exigent plus le contexte du garde (une couche éteinte les laisse tomber en erreur 500)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: expected 500 to be 401 // Object.is equality
+✓ L-10. ⛔ K-14 — l'activation répond 200 au lieu de 201
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 12 · en échec 5 · AssertionError: expected 200 to be 201 // Object.is equality
+✓ L-11. ⛔ K-15 — la connexion répond 201 au lieu de 200
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 25 · en échec 9 · AssertionError: expected 201 to be 200 // Object.is equality
+✓ L-12. ⛔ MP-36 — l'activation emprunte la limite de la CONNEXION (10 au lieu de 5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · passés 9 · en échec 1 · AssertionError: expected 401 to be 429 // Object.is equality
+✓ L-13. ⛔ MP-36 — la connexion emprunte la limite de l'ACTIVATION (5 au lieu de 10)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [int-debit] code 1 · passés 9 · en échec 1 · AssertionError: expected 429 to be 401 // Object.is equality
+✓ L-14. ⛔ MP-36 — la limite d'activation passe de 5 à 50
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · passés 9 · en échec 1 · AssertionError: expected 50 to be 5 // Object.is equality
+✓ L-15. ⛔ MP-36 — la limite de connexion passe de 10 à 100
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · passés 9 · en échec 1 · AssertionError: expected 100 to be 10 // Object.is equality
+✓ L-16. ⛔ D128 — la limite d'activation n'est plus pilotée par son levier de test (un second mécanisme, ou aucun)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 5 · en échec 12 · AssertionError: expected [ 429, 429, 429, 429, 429, 429, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+✓ L-17. ⛔ MP-20 — l'état du COMPTE COMMUN (`GET /auth/me`) n'est plus exempté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected { …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+✓ L-18. ⛔ S-99 — l'activation pose le cookie de session avec les attributs de l'APPAREIL (échéance)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 16 · en échec 1 · AssertionError: expected '/api/v1/pro/staff' to be '/api/v1' // Object.is equality
+✓ L-19. ⛔ K-16 — la déconnexion n'efface plus le cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · passés 33 · en échec 1 · AssertionError: le pot a absorbé l'effacement: expected '6Jlq_YOvvHvWj8vAPStFehf_hGVnRsAN0uzg_…' to be undefined
+✓ L-20. ⛔ le cookie d'appareil n'est jamais posé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · passés 15 · en échec 2 · AssertionError: expected [] to have a length of 1 but got +0
+✓ L-21. ⛔ MP-37 — `Secure` ne suit plus le levier existant (`AUTH_COOKIE_SECURE`) : valeur écrite en dur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 14 · en échec 1 · AssertionError: expected '\n\n\n\n\n\nimport { Body, Controller…' to match /getOrThrow<boolean>\(\s*"AUTH_COOKIE_…/
+✓ C-1. ⛔ D182 — l'activation appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal [ { …(2) } ]
+✓ C-2. ⛔ D182 — la connexion appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { path: '/pro/staff/login', …(1) } ]
+✓ C-3. ⛔ D182 — la déconnexion appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { path: '/pro/staff/logout', …(1) } ]
+✓ C-4. ⛔ D182 — l'état appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { path: '/pro/staff/etat', …(1) } ] to deeply equal [ Array(1) ]
+✓ C-5. ⛔ D182 — le changement de mot de passe appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+✓ C-6. ⛔ la déconnexion passe par une autre méthode HTTP
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { path: '/pro/staff/logout', …(1) } ] to deeply equal [ { path: '/pro/staff/logout', …(1) } ]
+✓ C-7. ⛔ l'état est demandé en POST (il ne doit être qu'une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+✓ C-8. ⛔ la connexion n'envoie plus le corps
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 6 · en échec 1 · AssertionError: expected [ { path: '/pro/staff/login', …(1) } ] to deeply equal [ { path: '/pro/staff/login', …(1) } ]
+✓ M-1. ⛔ D186 — l'unicité (salle, clé de nom) devient un index ordinaire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_account_name_key_key »: expected '' to contain 'pro_staff_members_
+✓ M-2. ⛔ MP-11 — le jeton d'appareil n'est plus unique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_devices_token_hash_key »: expected '' to contain 'pro_staff_devices_token_hash_key'
+✓ M-3. ⛔ MP-11 — le jeton de session n'est plus unique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_sessions_token_hash_key »: expected '' to contain 'pro_staff_sessions_token_hash_key'
+✓ M-4. ⛔ (e) la CHECK du compteur de PIN (0 à 3) disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_pin_failed_count_range »: expected '' to contain 'pro_staff_members_pin_failed_co
+✓ M-5. ⛔ (a) un membre désactivé peut ne pas avoir de date de désactivation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '' to contain 'pro_staff_members_status_disa
+✓ M-6. ⛔ (b) `pin_generated_at` n'est plus lié à `pin_hash`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '' to contain 'pro_staff_members_pin_triple_coher
+✓ M-7. ⛔ (b) `pin_expires_at` n'est plus lié à `pin_hash`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '' to contain 'pro_staff_members_pin_triple_coher
+✓ M-8. ⛔ (e) le compteur de mot de passe peut être négatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_password_failed_count_nonneg »: expected '' to contain 'pro_staff_members_passwor
+✓ M-9. ⛔ (f) la clé de nom peut être vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_account_name_key_present »: expected '' to contain 'pro_staff_members_account_nam
+✓ M-10. ⛔ (d) l'échéance d'un appareil peut précéder sa création
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_devices_expires_after_created »: expected '' to contain 'pro_staff_devices_expires_after_
+✓ M-11. ⛔ (d) l'échéance d'une session peut précéder sa création
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_sessions_expires_after_created »: expected '' to contain 'pro_staff_sessions_expires_afte
+✓ M-12. ⛔ (c) une session peut finir sans raison (ou une raison sans fin)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_sessions_ended_coherent »: expected '' to contain 'pro_staff_sessions_ended_coherent'
+✓ M-13. ⛔ le journal ne survit plus à son auteur (la suppression d'un membre supprime ses lignes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: expected [] to deeply equal [ { a: null } ]
+✓ M-14. ⛔ un membre peut être SUPPRIMÉ alors qu'il a des sessions (la clé étrangère n'est plus RESTRICT)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_sessions_member_id_fkey »: expected '' to contain 'pro_staff_sessions_member_id_fkey'
+✓ M-15. ⛔ une salle peut être SUPPRIMÉE alors qu'elle a des membres (la clé étrangère n'est plus RESTRICT)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '' to contain 'pro_staff_members_pro_profile_id_f
+✓ M-16. ⛔ l'énumération des rôles admet un rôle de plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: expected [ { t: 'StaffRole', …(1) }, …(2) ] to deeply equal [ { t: 'StaffRole', …(1) }, …(2) ]
+✓ M-17. ⛔ un membre naît DÉSACTIVÉ par défaut
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 5 · en échec 16 · AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to conta
+✓ M-18. ⛔ un membre naît avec le changement de mot de passe obligatoire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: expected { status: 'ACTIVE', …(11) } to deeply equal { status: 'ACTIVE', …(11) }
+✓ M-19. ⛔ MP-35 / MP-38 — la migration ALLUME la couche de toute salle existante (le drapeau naît avec un défaut) : la base NON VIDE la traverse inchangée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · passés 30 · en échec 1 · AssertionError: la migration n'active aucune salle: expected [ { actif: true }, { actif: true } ] to deeply equal [ { actif: false }, { acti
+✓ M-20. ⛔ le journal n'est plus indexé par auteur-membre sous le nom attendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: expected [ …(3) ] to deeply equal [ …(4) ]
+✓ M-21. ⛔ le compteur de mot de passe d'un membre naît à 1
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · passés 20 · en échec 1 · AssertionError: expected { status: 'ACTIVE', …(11) } to deeply equal { status: 'ACTIVE', …(11) }
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+236 garde(s) mordue(s) sur 236 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 236 sur 236, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+
