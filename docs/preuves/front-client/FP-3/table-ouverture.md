@@ -57,3 +57,20 @@ identifiants) ; sans test, les retirer est une mutation « équivalente » par o
 vide mais la version gardée ne l'est pas : seule une création pour la MÊME fiche (le double rend toujours « fiche-1 ») le montre. Le test est
 VERT sur l'état d'avant (la création n'a jamais repris de copie) : il n'a donc pas de rouge à lire, il est rejoué à vide, et c'est la cible du
 harnais qui le fait mordre (rapport). Il vient après le commit du code : la règle « les rouges avant le code » ne peut pas s'y appliquer, et le rapport le dit.
+
+## Extension 2 — commitée SEULE, avant les fichiers qu'elle déclare (harnais d'AUTRES rangs, périmés par ce lot)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 23 | `neutralisation/neutralize-r41.py` | la cible J-6 (« le devis part sans la fiche ni la copie des noms ») : son ancre — la ligne du corps du devis — est réécrite sur trois lignes par ce lot ; RÉORIENTÉE, même faute | 4 bis |
+| 24 | `neutralisation/neutralize-r43.py` | la cible P-3 (« la révision d'un brouillon porte la fiche et les noms ») : même ancre périmée, même réorientation | 4 bis |
+| 25 | `neutralisation/neutralize-act-plafonds.py` | la constante `NB_TESTS_ATTENDU` (158) : le fichier de tests en compte 175 (FP-1 +7, FP-2 +5, FP-3 +5) ; « la constante SEULE change » | 4 bis |
+| 26 | `neutralisation/neutralize-horloge.py` | la même constante, la même valeur | 4 bis |
+
+Motif : la série de campagnes du tri (14 sur 54, joués par le tri calculé depuis le SHA de départ) a rendu 1 ou 2 pour ces quatre harnais, SANS
+jouer leurs cibles : deux s'arrêtent sur le contrôle du nombre de tests (D144 — un filtre qui ne correspond plus rend 0 et se lit « la garde est
+inutile »), deux sur « ARBRE NON CONFORME AU DÉPART : ancre ×0 ». Le relevé statique (`outils/releve-ancres.py`) le confirme : 2 ancres
+périmées sur les 12 harnais qu'il lit, aucune autre. `act-plafonds` et `horloge` sont d'anciens harnais que l'instrument ne sait pas importer
+(il lève sur `sys.stdout.reconfigure`) : ils sont relevés par leur contrôle de comptage, qui est précisément ce qui les arrête. Les constantes
+étaient périmées DEPUIS FP-1 : ces deux harnais n'avaient pas été sélectionnés par le tri de FP-1 et FP-2 (les tests y étaient déjà commités).
+Les quatre campagnes sont rejouées en entier après la correction ; leurs sorties entrent dans `campagnes.txt`.
