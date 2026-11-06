@@ -1,0 +1,50 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 233 déclarées · 6 jouées · 0 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 4 fichier(s) muté(s)
+  pré-vol int-activation : code 0 · passés 17 · en échec 0
+  pré-vol int-debit : code 0 · passés 10 · en échec 0
+  pré-vol int-garde : code 0 · passés 18 · en échec 0
+  pré-vol int-schema : code 0 · passés 21 · en échec 0
+■ A-43. ⛔ MP-18 — la sonde dit toujours « même salle » (on terminerait la session d'une autre salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  test/int/staff-session-guard.int-spec.ts > MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'e
+         ↳ AssertionError: la session de A n'a pas été terminée par la requête de B: expected 2026-11-05T03:16:26.346Z to be null
+■ L-8. ⛔ MP-34 — le contrôleur du personnel admet aussi un CLIENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ MP-34 — les CINQ routes du personnel sont réservées au PRO : un CLIENT et un ADMIN reçoivent 403 `FORBIDDEN` sur chacune (l'état 
+         ↳ AssertionError: client POST /api/v1/pro/staff/login: expected 401 to be 403 // Object.is equality
+■ L-14. ⛔ MP-36 — la limite d'activation passe de 5 à 50
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune variable définie, D128) : activation 5, connexion 10 — ce
+         ↳ AssertionError: expected 50 to be 5 // Object.is equality
+■ L-15. ⛔ MP-36 — la limite de connexion passe de 10 à 100
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune variable définie, D128) : activation 5, connexion 10 — ce
+         ↳ AssertionError: expected 100 to be 10 // Object.is equality
+■ M-14. ⛔ un membre peut être SUPPRIMÉ alors qu'il a des sessions (la clé étrangère n'est plus RESTRICT)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ RESTRICT sur `pro_staff_sessions.member_id`, ISOLÉ : un membre qui porte une session ne se supprime pas — la session pointe l'
+         ↳ AssertionError: attendu : un refus par « pro_staff_sessions_member_id_fkey »: expected '' to contain 'pro_staff_sessions_member_id_fkey'
+■ M-20. ⛔ le journal n'est plus indexé par auteur-membre sous le nom attendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 20 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > les index simples existent sous les noms que `schema.prisma` leur donne (sinon dérive permanente, D186) : appareils et sessions 
+         ↳ AssertionError: expected [ …(3) ] to deeply equal [ …(4) ]
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 6 cible(s) jouée(s) sur 233, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

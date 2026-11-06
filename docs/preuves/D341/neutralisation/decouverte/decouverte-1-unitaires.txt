@@ -1,0 +1,1159 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 233 déclarées · 198 jouées · 0 non jouée(s) (sans --int) · 10 mesure(s) distincte(s) · 12 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 7 · en échec 0
+  pré-vol contrat : code 0 · passés 20 · en échec 0
+  pré-vol cookies : code 0 · passés 15 · en échec 0
+  pré-vol garde : code 0 · passés 18 · en échec 0
+  pré-vol magasin : code 0 · passés 40 · en échec 0
+  pré-vol mdp : code 0 · passés 17 · en échec 0
+  pré-vol nom : code 0 · passés 53 · en échec 0
+  pré-vol politique : code 0 · passés 25 · en échec 0
+  pré-vol service : code 0 · passés 29 · en échec 0
+  pré-vol sources : code 0 · passés 14 · en échec 0
+■ G-1. ⛔ une route @Public() n'est plus ignorée par le garde du personnel (un PRO muni d'un Bearer sur `/auth/login` devrait présenter une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 0 · VERT — passés 18 · en échec 0
+■ G-2. ⛔ la liste blanche des exemptions n'est plus lue (activer, se connecter et lire l'état exigeraient une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@StaffExempt()` passe pour un PRO, SANS lecture (activer, se connecter et lire l'état
+         ↳ AssertionError: promise rejected "UnauthorizedException: staff.errors.sessi… { …(3) }" instead of resolving
+■ G-3. ⛔ MP-34 — un CLIENT ou un ADMIN déclenche la lecture du drapeau (le garde ne s'arrête plus avant la base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 15 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un CLIENT passe SANS lecture, même avec un cookie de session : le garde ne concerne qu
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un ADMIN passe SANS lecture
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@StaffExempt()` passe pour un PRO, SANS lecture (activer, se connecter et lire l'état
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+■ G-4. ⛔ un PRO sans profil n'est plus laissé passer (le garde invente un refus que l'API n'a jamais rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > un PRO sans profil (donnée incohérente) passe comme couche éteinte : 
+         ↳ AssertionError: promise rejected "TypeError: Cannot read properties of null…" instead of resolving
+■ G-5. ⛔ MP-35 — la couche ÉTEINTE n'ouvre plus la porte (toute route Pro exigerait une session avant toute activation)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 16 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > ⛔ drapeau nul : passe, et LA SEULE lecture est celle du drapeau (aucu
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-7 — le drapeau est RELU à chaque requête, jamais gardé :
+         ↳ AssertionError: promise rejected "UnauthorizedException: staff.errors.sessi… { …(3) }" instead of resolving
+■ G-6. ⛔ MP-7 — le drapeau est lu à l'envers (la couche activée laisse passer, la couche éteinte exige)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 9 · en échec 9
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > ⛔ drapeau nul : passe, et LA SEULE lecture est celle du drapeau (aucu
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lectu
+         ↳ Error: le garde devait refuser
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans
+         ↳ Error: le garde devait refuser
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant)
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du p
+         ↳ AssertionError: expected undefined to deeply equal { sessionId: 's1', …(5) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre sa
+         ↳ Error: le garde devait refuser
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > les trois refus (pas de cookie, cookie mal formé, session ref
+         ↳ Error: le garde devait refuser
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-7 — le drapeau est RELU à chaque requête, jamais gardé :
+         ↳ AssertionError: promise rejected "UnauthorizedException: staff.errors.sessi… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un refus du magasin n'est jamais avalé : une EXCEPTION du mag
+         ↳ AssertionError: promise resolved "true" instead of rejecting
+■ G-8. ⛔ l'absence de cookie n'est plus refusée par le garde (le hachage d'un jeton absent part au magasin)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 14 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lectu
+         ↳ AssertionError: expected TypeError: The "data" argument must be of… { code: '…' } to be an instance of UnauthorizedException
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans
+         ↳ AssertionError: expected TypeError: The "data" argument must be of… { code: '…' } to be an instance of UnauthorizedException
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > les trois refus (pas de cookie, cookie mal formé, session ref
+         ↳ AssertionError: expected TypeError: The "data" argument must be of… { code: '…' } to be an instance of UnauthorizedException
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-7 — le drapeau est RELU à chaque requête, jamais gardé :
+         ↳ AssertionError: expected TypeError: The "data" argument must be of… { code: '…' } to be an instance of UnauthorizedException
+■ G-9. ⛔ MP-11 — le jeton part au magasin EN CLAIR (seul son SHA-256 doit voyager)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 16 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant)
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > le jeton n'est JAMAIS transmis en clair au magasin (seul son 
+         ↳ AssertionError: expected '[[{"tokenHash":"aaaaaaaaaaaaaaaaaaaaa…' not to contain 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…'
+■ G-10. ⛔ MP-18 — la salle du magasin n'est plus celle du PROFIL du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant)
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+■ G-11. ⛔ un refus du magasin n'est plus un refus (la session d'une autre salle passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 16 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre sa
+         ↳ AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of UnauthorizedException
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > les trois refus (pas de cookie, cookie mal formé, session ref
+         ↳ AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of UnauthorizedException
+■ G-12. ⛔ le contexte posé sur la requête porte l'identifiant de SESSION à la place de celui du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du p
+         ↳ AssertionError: expected { sessionId: 's1', …(5) } to deeply equal { sessionId: 's1', …(5) }
+■ G-13. ⛔ le refus du garde change de CODE (le client ne reconnaît plus « session requise »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 15 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lectu
+         ↳ AssertionError: expected { …(2) } to deeply equal { Object (code, message) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans
+         ↳ AssertionError: expected { …(2) } to deeply equal { Object (code, message) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre sa
+         ↳ AssertionError: expected { …(2) } to deeply equal { Object (code, message) }
+■ P-1. ⛔ `guardVerdict` — un ADMIN ou un CLIENT doit présenter une session (le rôle n'est plus regardé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 22 · en échec 3
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > ⛔ MP-34 — ni un CLIENT ni un ADMIN ne sont jamais concernés, même couche activée et r
+         ↳ AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > une requête sans rôle (route publique, identité absente) passe : ce garde n'authentif
+         ↳ AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > la table complète : seul le croisement (PRO, non exempté, couche activée) exige une s
+         ↳ AssertionError: expected { role: 'CLIENT', exempt: false, …(1) } to deeply equal { role: 'PRO', exempt: false, …(1) }
+■ P-2. ⛔ `guardVerdict` — une route exemptée exige une session (on ne pourrait plus s'identifier)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > une route déclarée `@StaffExempt()` passe, la couche activée ou non (activer, se conn
+         ↳ AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > la table complète : seul le croisement (PRO, non exempté, couche activée) exige une s
+         ↳ AssertionError: expected { role: 'PRO', exempt: true, …(1) } to deeply equal { role: 'PRO', exempt: false, …(1) }
+■ P-3. ⛔ `guardVerdict` — la couche éteinte exige une session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > ⛔ MP-35 — la couche ÉTEINTE : le garde laisse passer (l'app Pro marche comme avant l'
+         ↳ AssertionError: expected 'requireSession' to be 'pass' // Object.is equality
+      FAIL  src/staff/staff-session-policy.spec.ts > guardVerdict — le quatrième garde global, FERMÉ PAR DÉFAUT (S-98) > la table complète : seul le croisement (PRO, non exempté, couche activée) exige une s
+         ↳ AssertionError: expected { role: 'PRO', exempt: false, …(1) } to deeply equal { role: 'PRO', exempt: false, …(1) }
+■ P-4. ⛔ la session d'une AUTRE salle est TERMINÉE par le refus (on termine la session d'autrui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > ⛔ MP-18 — la session d'une AUTRE salle : `foreign`, et surtout RIEN n
+         ↳ AssertionError: expected { reason: 'foreign', endWith: 'IDLE' } to deeply equal { reason: 'foreign', endWith: null }
+■ P-5. ⛔ une session déjà terminée se voit réécrire une fin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > ⛔ MP-19 — une session déjà terminée (déconnexion, désactivation, chan
+         ↳ AssertionError: expected { Object (reason, endWith) } to deeply equal { reason: 'ended', endWith: null }
+■ P-6. ⛔ la désactivation d'un membre n'écrit plus la fin DISABLED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > ⛔ MP-4 — le membre est DÉSACTIVÉ alors que la session est ouverte : `
+         ↳ AssertionError: expected { reason: 'disabled', endWith: null } to deeply equal { reason: 'disabled', …(1) }
+■ P-7. ⛔ le PLAFOND atteint écrit une fin IDLE (l'énumération n'a pas de valeur « plafond »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > ⛔ MP-13 — le PLAFOND absolu atteint : `capped`, et RIEN ne s'écrit (l
+         ↳ AssertionError: expected { reason: 'capped', endWith: 'IDLE' } to deeply equal { reason: 'capped', endWith: null }
+■ P-8. ⛔ L'ORDRE — plafond ET inactivité : l'inactivité l'emporte (le plafond doit passer avant, rien ne s'écrit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > l'ordre des causes (la plus précise d'abord) : une autre salle l'empo
+         ↳ AssertionError: expected 'idle' to be 'capped' // Object.is equality
+■ P-9. ⛔ l'inactivité n'écrit plus la fin IDLE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > ⛔ MP-13 — inactive depuis plus de la durée d'inactivité : `idle`, et 
+         ↳ AssertionError: expected { reason: 'idle', endWith: null } to deeply equal { reason: 'idle', endWith: 'IDLE' }
+■ P-10. ⛔ une session VIVANTE est classée « inactive » au lieu de LEVER (l'appelant écrirait IDLE sur une session vivante)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > classifySessionRefusal — POURQUOI une session est refusée, et si ce refus s'écrit > une session vivante n'a pas de refus : l'appelant ne doit pas classer
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-11. ⛔ R-3 — pendant la PAUSE (tentative non réservée) le VRAI hachage est vérifié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/staff/staff-session-policy.spec.ts > loginVerification — le VRAI hachage ou le FACTICE (D5, R-3 (D341), MP-8, MP-17) > ⛔ R-3 (D341) — PAUSE : la réservation a été refusée, donc le factice — 
+         ↳ AssertionError: expected 'real' to be 'dummy' // Object.is equality
+      FAIL  src/staff/staff-session-policy.spec.ts > loginVerification — le VRAI hachage ou le FACTICE (D5, R-3 (D341), MP-8, MP-17) > la table complète des huit combinaisons : le vrai hachage dans une seul
+         ↳ AssertionError: expected 2 to be 1 // Object.is equality
+■ P-12. ⛔ un membre DÉSACTIVÉ paie le vrai hachage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > loginVerification — le VRAI hachage ou le FACTICE (D5, R-3 (D341), MP-8, MP-17) > la table complète des huit combinaisons : le vrai hachage dans une seul
+         ↳ AssertionError: expected 2 to be 1 // Object.is equality
+■ P-13. ⛔ MP-3 — l'appareil d'un AUTRE membre est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > ⛔ l'appareil d'un autre MEMBRE de la même salle n'
+         ↳ AssertionError: expected { id: 'd1', memberId: 'autre', …(3) } to be null
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > parmi plusieurs, rend le PREMIER qui convient (l'o
+         ↳ AssertionError: expected { id: 'x', memberId: 'autre', …(3) } to be { id: 'bon', …(4) } // Object.is equality
+■ P-14. ⛔ MP-3 — l'appareil d'une AUTRE salle est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > ⛔ l'appareil d'une autre SALLE n'est pas réutilisé
+         ↳ AssertionError: expected { id: 'd1', …(4) } to be null
+■ P-15. ⛔ un appareil RÉVOQUÉ est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 23 · en échec 2
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > un appareil révoqué ou expiré n'est pas réutilisé
+         ↳ AssertionError: expected { id: 'd1', …(4) } to be null
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > parmi plusieurs, rend le PREMIER qui convient (l'o
+         ↳ AssertionError: expected { id: 'y', …(4) } to be { id: 'bon', …(4) } // Object.is equality
+■ P-16. ⛔ un appareil EXPIRÉ est réutilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [politique] code 1 · ROUGE — passés 24 · en échec 1
+      FAIL  src/staff/staff-session-policy.spec.ts > pickReusableDevice — MP-3 : l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est jamais réutilisé > un appareil révoqué ou expiré n'est pas réutilisé
+         ↳ AssertionError: expected { id: 'd1', …(4) } to be null
+■ W-1. ⛔ R-5 — la liste n'est plus mise en minuscules (un mot courant en majuscules passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 0 · VERT — passés 17 · en échec 0
+■ W-2. ⛔ R-5 — le mot de passe saisi n'est plus mis en minuscules avant la comparaison
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/staff/staff-password-policy.spec.ts > isCommonPassword — la comparaison se fait APRÈS mise en minuscules (R-5 (D341)) > ⛔ R-5 (D341) — refusé AUSSI en majuscules et en casse mêlée : la compa
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-password-policy.spec.ts > isCommonPassword — la comparaison se fait APRÈS mise en minuscules (R-5 (D341)) > accepte une liste injectée (le module reste pur : aucune dépendance ca
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ W-3. ⛔ un mot de passe courant n'est plus refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · ROUGE — passés 15 · en échec 2
+      FAIL  src/staff/staff-password-policy.spec.ts > passwordViolation — la raison d'un refus, dans l'ordre d'ÉVALUATION (le courant d'abord : il ne coûte aucun argon2) > ⛔ MP-24 — un mot de passe courant 
+         ↳ AssertionError: expected null to be 'common' // Object.is equality
+      FAIL  src/staff/staff-password-policy.spec.ts > passwordViolation — la raison d'un refus, dans l'ordre d'ÉVALUATION (le courant d'abord : il ne coûte aucun argon2) > courant ET réutilisé ⇒ `common` (l
+         ↳ AssertionError: expected 'reused' to be 'common' // Object.is equality
+■ W-4. ⛔ la réutilisation du mot de passe actuel n'est plus refusée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [mdp] code 1 · ROUGE — passés 16 · en échec 1
+      FAIL  src/staff/staff-password-policy.spec.ts > passwordViolation — la raison d'un refus, dans l'ordre d'ÉVALUATION (le courant d'abord : il ne coûte aucun argon2) > ⛔ MP-24 — un mot de passe réutilis
+         ↳ AssertionError: expected null to be 'reused' // Object.is equality
+■ K-1. ⛔ le cookie de session prend le NOM du cookie de rafraîchissement (`zwadj_rt`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 11 · en échec 4
+      FAIL  src/staff/staff-cookies.spec.ts > noms et chemins > la session est `zwadj_ss` sur `/api/v1` ; l'appareil `zwadj_dv_<suffixe>` sur `/api/v1/pro/staff`
+         ↳ AssertionError: expected 'zwadj_rt' to be 'zwadj_ss' // Object.is equality
+      FAIL  src/staff/staff-cookies.spec.ts > noms et chemins > le nom du cookie de rafraîchissement n'est jamais celui d'un cookie du personnel (aucune collision, ni de nom ni de préfixe)
+         ↳ AssertionError: expected 'zwadj_rt' not to be 'zwadj_rt' // Object.is equality
+      FAIL  src/staff/staff-cookies.spec.ts > readSessionCookie > rend le jeton quand il a la forme d'un jeton opaque (43 caractères base64url)
+         ↳ AssertionError: expected undefined to be 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…' // Object.is equality
+      FAIL  src/staff/staff-cookies.spec.ts > readSessionCookie > ne lit JAMAIS le cookie de rafraîchissement ni un cookie d'appareil à la place de la session
+         ↳ AssertionError: expected 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…' to be undefined
+■ K-2. ⛔ S-99 — le cookie de session n'est plus `SameSite=Strict`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffSessionCookieOptions (MP-37) > HttpOnly, SameSite=Strict, chemin `/api/v1`, `Secure` suit le paramètre — et AUCUNE échéance (cookie de session du navigateu
+         ↳ AssertionError: expected 'lax' to be 'strict' // Object.is equality
+■ K-3. ⛔ S-99 — le cookie de session n'est plus `HttpOnly`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffSessionCookieOptions (MP-37) > HttpOnly, SameSite=Strict, chemin `/api/v1`, `Secure` suit le paramètre — et AUCUNE échéance (cookie de session du navigateu
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ K-4. ⛔ le cookie de session prend le CHEMIN des cookies d'appareil
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffSessionCookieOptions (MP-37) > HttpOnly, SameSite=Strict, chemin `/api/v1`, `Secure` suit le paramètre — et AUCUNE échéance (cookie de session du navigateu
+         ↳ AssertionError: expected '/api/v1/pro/staff' to be '/api/v1' // Object.is equality
+■ K-5. ⛔ le cookie de session reçoit une échéance côté navigateur (sa durée de vie n'est plus côté serveur seul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffSessionCookieOptions (MP-37) > HttpOnly, SameSite=Strict, chemin `/api/v1`, `Secure` suit le paramètre — et AUCUNE échéance (cookie de session du navigateu
+         ↳ AssertionError: la durée de vie est côté serveur: expected 7776000000 to be undefined
+■ K-6. ⛔ S-99 — le cookie d'appareil n'est plus `SameSite=Strict`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieOptions (MP-37, R-6 (D341)) > HttpOnly, SameSite=Strict, chemin `/api/v1/pro/staff`, `Secure` suit le paramètre
+         ↳ AssertionError: expected 'lax' to be 'strict' // Object.is equality
+■ K-7. ⛔ R-6 — l'échéance du cookie d'appareil est comptée en secondes au lieu de millisecondes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieOptions (MP-37, R-6 (D341)) > ⛔ R-6 (D341) — l'échéance du cookie d'appareil est la durée du PIN (même levier), en millisecondes, dérivée de `S
+         ↳ AssertionError: expected 90000 to be 7776000000 // Object.is equality
+■ K-8. ⛔ le cookie d'appareil prend le chemin du cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieOptions (MP-37, R-6 (D341)) > HttpOnly, SameSite=Strict, chemin `/api/v1/pro/staff`, `Secure` suit le paramètre
+         ↳ AssertionError: expected '/api/v1' to be '/api/v1/pro/staff' // Object.is equality
+■ K-9. ⛔ un nom de cookie d'appareil se construit avec n'importe quel suffixe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieName > refuse un suffixe qui n'est pas de 8 caractères base64url (un nom de cookie ne se construit pas avec n'importe quoi)
+         ↳ AssertionError: expected [Function] to throw an error
+■ K-10. ⛔ un cookie de session qui n'a pas la forme d'un jeton part en requête SQL
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > readSessionCookie > rend `undefined` pour une valeur absente, trop courte, trop longue, mal formée ou qui n'est pas une chaîne (aucune requête SQL pour un déche
+         ↳ AssertionError: expected 'court' to be undefined
+■ K-11. ⛔ MP-28 — la borne de huit cookies d'appareil n'est plus tenue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > readDeviceCookies (MP-28, borne dure de 8) > ⛔ lit AU PLUS `STAFF_LIMITS.DEVICE_COOKIES_MAX` cookies d'appareil et ignore le reste (une requête ne force pas une
+         ↳ AssertionError: expected [ { …(2) }, { …(2) }, { …(2) }, …(9) ] to have a length of 8 but got 12
+■ K-12. ⛔ tout cookie est lu comme un cookie d'appareil (le préfixe n'est plus exigé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 0 · VERT — passés 15 · en échec 0
+■ K-13. ⛔ le suffixe d'un cookie d'appareil n'est plus contrôlé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 0 · VERT — passés 15 · en échec 0
+■ K-14. ⛔ la valeur d'un cookie d'appareil n'a plus à ressembler à un jeton
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > readDeviceCookies (MP-28, borne dure de 8) > ne retient que les cookies de préfixe `zwadj_dv_` dont la valeur a la forme d'un jeton, avec leur nom
+         ↳ AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+■ K-15. ⛔ la forme d'un jeton n'est plus de 43 caractères
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 13 · en échec 2
+      FAIL  src/staff/staff-cookies.spec.ts > readSessionCookie > rend `undefined` pour une valeur absente, trop courte, trop longue, mal formée ou qui n'est pas une chaîne (aucune requête SQL pour un déche
+         ↳ AssertionError: expected 'court' to be undefined
+      FAIL  src/staff/staff-cookies.spec.ts > readDeviceCookies (MP-28, borne dure de 8) > ne retient que les cookies de préfixe `zwadj_dv_` dont la valeur a la forme d'un jeton, avec leur nom
+         ↳ AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+■ K-16. ⛔ le suffixe d'un nom de cookie n'est plus de 8 caractères
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieName > refuse un suffixe qui n'est pas de 8 caractères base64url (un nom de cookie ne se construit pas avec n'importe quoi)
+         ↳ AssertionError: abc: expected [Function] to throw an error
+■ K-17. ⛔ le préfixe des cookies d'appareil change (la lecture ne retrouve plus ce que la pose a écrit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [cookies] code 1 · ROUGE — passés 11 · en échec 4
+      FAIL  src/staff/staff-cookies.spec.ts > noms et chemins > la session est `zwadj_ss` sur `/api/v1` ; l'appareil `zwadj_dv_<suffixe>` sur `/api/v1/pro/staff`
+         ↳ AssertionError: expected 'zwadj_dd_' to be 'zwadj_dv_' // Object.is equality
+      FAIL  src/staff/staff-cookies.spec.ts > staffDeviceCookieName > préfixe le suffixe aléatoire
+         ↳ AssertionError: expected 'zwadj_dd_abcd1234' to be 'zwadj_dv_abcd1234' // Object.is equality
+      FAIL  src/staff/staff-cookies.spec.ts > readDeviceCookies (MP-28, borne dure de 8) > ne retient que les cookies de préfixe `zwadj_dv_` dont la valeur a la forme d'un jeton, avec leur nom
+         ↳ AssertionError: expected [] to deeply equal [ { …(2) }, { …(2) } ]
+      FAIL  src/staff/staff-cookies.spec.ts > readDeviceCookies (MP-28, borne dure de 8) > ⛔ lit AU PLUS `STAFF_LIMITS.DEVICE_COOKIES_MAX` cookies d'appareil et ignore le reste (une requête ne force pas une
+         ↳ AssertionError: expected [] to have a length of 8 but got +0
+■ S-1. ⛔ MP-24 — l'activation accepte un mot de passe COURANT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tou
+         ↳ Error: un refus était attendu
+■ S-2. ⛔ MP-9 — la clé du nom n'est plus normalisée à l'activation (« AMINE » et « amine » feraient deux comptes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, session ET appareil dans la même d
+         ↳ AssertionError: expected { actor: { …(2) }, …(6) } to match object { actor: { …(2) }, …(4) }
+■ S-3. ⛔ MP-9 — la connexion cherche le membre par le nom TEL QUE TAPÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > la recherche du membre se fait par la CLÉ normalisée du nom, dans la salle du Bearer (ja
+         ↳ AssertionError: expected "spy" to be called with arguments: [ …(2) ]
+■ S-4. ⛔ MP-4 — une tentative est RÉSERVÉE pour un membre désactivé (on compte des échecs sur un compte éteint)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservat
+         ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+■ S-5. ⛔ MP-8 — un compte inconnu ne paie plus le hachage FACTICE (oracle de durée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 25 · en échec 4
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucun
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > un PRO sans profil (aucune salle) est traité comme un compte inconnu : factice, même ref
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservat
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hacha
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+■ S-6. ⛔ MP-8 — le mot de passe est vérifié contre une autre valeur que celle saisie
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, AUCUN factice ; le membre est ren
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'HASH-ACTUEL', 'Motdepasse1' ]
+■ S-7. ⛔ le seuil de la pause n'est plus transmis à la ligne d'audit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 0 · VERT — passés 29 · en échec 0
+■ S-8. ⛔ l'échec de connexion est consigné sous l'action du changement de mot de passe
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la 
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+■ S-9. ⛔ MP-3 — les cookies d'appareil partent au magasin EN CLAIR
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et qua
+         ↳ AssertionError: expected [ Array(2) ] to deeply equal [ 'sha(valeur-claire-1)', …(1) ]
+■ S-10. ⛔ une désactivation entre la réservation et l'ouverture ouvre quand même la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouvertur
+         ↳ Error: un refus était attendu
+■ S-11. ⛔ MP-3 — un appareil réutilisé reçoit quand même un cookie d'appareil neuf
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et qua
+         ↳ AssertionError: expected { suffix: 'jeton-00', …(1) } to be undefined
+■ S-12. ⛔ K-16 — la déconnexion ne demande plus l'effacement du cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste
+         ↳ AssertionError: expected undefined to be null
+■ S-13. ⛔ K-16 — la déconnexion termine la session désignée par l'identifiant du MEMBRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(2) } ]
+■ S-14. ⛔ K-17 — la couche éteinte est annoncée allumée dès qu'un profil existe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > couche éteinte : `enabled: false`, aucun membre, et AUCUNE autre lecture
+         ↳ AssertionError: expected { enabled: true, member: null, …(1) } to deeply equal { enabled: false, member: null, …(1) }
+■ S-15. ⛔ K-17 — l'état PROLONGE la session (il passe par `touchSession`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais p
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+■ S-16. ⛔ K-17 — les cookies d'appareil de l'état partent EN CLAIR
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > couche activée, sans cookie de session : `member: null` (jamais un 401), les membres reconnus sur ce poste so
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { …(2) } ]
+■ S-17. ⛔ MP-24 — le nouveau mot de passe COURANT n'est plus refusé avant la réservation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation
+         ↳ AssertionError: expected { …(2) } to deeply equal { code: 'STAFF_PASSWORD_COMMON', …(1) }
+■ S-18. ⛔ S-102 — le changement réserve la tentative d'un AUTRE identifiant (le compteur n'est plus partagé avec la connexion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel 
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'm1' ]
+■ S-19. ⛔ pendant la pause, le changement de mot de passe ne paie plus le factice
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucu
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+■ S-20. ⛔ l'échec d'un changement est consigné sous l'action de la connexion
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'éche
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+■ S-21. ⛔ MP-24 — la réutilisation du mot de passe actuel n'est plus détectée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD
+         ↳ Error: un refus était attendu
+■ S-22. ⛔ le bon mot de passe actuel, refusé pour réutilisation, laisse le compteur monté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'm1' ]
+■ S-23. ⛔ MP-5 — le changement désigne la session d'un autre identifiant comme « courante » (la courante serait terminée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 27 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel 
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, 
+         ↳ AssertionError: expected 'm1' to be 's1' // Object.is equality
+■ S-24. ⛔ le remplacement n'est plus conditionné au hachage LU
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel 
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(4) } ]
+■ S-25. ⛔ un remplacement concurrent perdu n'est plus refusé (le service répond comme s'il avait réussi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant)
+         ↳ Error: un refus était attendu
+■ S-26. ⛔ R-3 — l'identifiant refusé porte le code du mot de passe ACTUEL faux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 24 · en échec 5
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucun
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservat
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la 
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hacha
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouvertur
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ S-27. ⛔ le mot de passe actuel faux porte le code des identifiants refusés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 26 · en échec 3
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'éche
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucu
+         ↳ AssertionError: expected 'STAFF_INVALID_CREDENTIALS' to be 'STAFF_CURRENT_PASSWORD_INVALID' // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant)
+         ↳ AssertionError: expected 'STAFF_INVALID_CREDENTIALS' to be 'STAFF_CURRENT_PASSWORD_INVALID' // Object.is equality
+■ S-28. ⛔ « courant » et « réutilisé » échangent leurs codes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 26 · en échec 3
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tou
+         ↳ AssertionError: expected { code: 'STAFF_PASSWORD_REUSED', …(1) } to deeply equal { code: 'STAFF_PASSWORD_COMMON', …(1) }
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD
+         ↳ AssertionError: expected { code: 'STAFF_PASSWORD_COMMON', …(1) } to deeply equal { code: 'STAFF_PASSWORD_REUSED', …(1) }
+      FAIL  src/staff/staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation
+         ↳ AssertionError: expected { code: 'STAFF_PASSWORD_REUSED', …(1) } to deeply equal { code: 'STAFF_PASSWORD_COMMON', …(1) }
+■ S-29. ⛔ « déjà activée » répond 400 au lieu de 409
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 27 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérif
+         ↳ AssertionError: déjà activée: expected 400 to be 409 // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit ri
+         ↳ AssertionError: expected BadRequestException: staff.errors.already… { …(3) } to be an instance of ConflictException
+■ S-30. ⛔ MP-23 — « e-mail non vérifié » répond 409 au lieu de 403
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 27 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérif
+         ↳ AssertionError: e-mail non vérifié: expected 409 to be 403 // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit ri
+         ↳ AssertionError: expected ConflictException: staff.errors.emailNotV… { …(3) } to be an instance of ForbiddenException
+■ S-31. ⛔ « nom déjà pris » répond 400 au lieu de 409
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérif
+         ↳ AssertionError: nom déjà pris: expected 400 to be 409 // Object.is equality
+■ S-32. ⛔ un PRO sans profil reçoit un 409 au lieu de la réponse « interdit » de l'API
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 28 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérif
+         ↳ AssertionError: sans profil: expected 409 to be 403 // Object.is equality
+■ A-1. ⛔ `readLayer` cherche le profil par son identifiant au lieu de celui du compte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-2. ⛔ MP-7 — `readLayer` rend toujours « couche éteinte »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > lit le profil du compte (id et drapeau) et ne fait aucune requête brute
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ A-3. ⛔ MP-23 — l'activation ne refuse plus un e-mail non vérifié
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-23 — un e-mail non vérifié : refusé avant toute é
+         ↳ Error: réponse non prévue pour : UPDATE pro_profiles SET staff_layer_enabled_at = now(), updated_at = now() WHERE id = ?::uuid AND staff_layer_enabled
+■ A-4. ⛔ MP-22 — le compte du drapeau n'est plus exigé (dix activations feraient dix Managers)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ le drapeau déjà posé (compte 0) : AUCUNE écriture ne
+         ↳ Error: réponse non prévue pour : INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash, password_changed_
+■ A-5. ⛔ MP-22 — le drapeau se repose sans condition (le check-and-set perd son prédicat)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-6. ⛔ l'insertion du Manager ne tolère plus un nom déjà pris (le conflit remonte en erreur de base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-22 — l'ordre : lecture du profil, CAS du drapeau 
+         ↳ AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to contain 'ON CONFLICT (pro_profile_id, account_…'
+■ A-7. ⛔ MP-40 — un nom déjà pris n'ANNULE plus la transaction (le drapeau resterait posé sans Manager)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ un nom de compte déjà pris (insertion sans ligne) : 
+         ↳ AssertionError: expected [ 'validée' ] to deeply equal [ 'annulée' ]
+■ A-9. ⛔ l'activation crée un EMPLOYÉ au lieu d'un Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-22 — l'ordre : lecture du profil, CAS du drapeau 
+         ↳ AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to contain '\'MANAGER\''
+■ A-10. ⛔ MP-40 — l'audit de l'activation s'écrit HORS de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-11. ⛔ MP-43 — l'échéance de l'appareil de l'activation n'est plus la durée du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTR
+         ↳ AssertionError: expected [ …(4) ] to include 90
+■ A-12. ⛔ MP-43 — le plafond de la session de l'activation n'est plus le plafond du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTR
+         ↳ AssertionError: expected [ …(4) ] to include 12
+■ A-13. ⛔ MP-43 — l'échéance du mot de passe de l'activation n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTR
+         ↳ AssertionError: expected [ …(5) ] to include 90
+■ A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-15. ⛔ MP-16 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDA
+         ↳ AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'FOR UPDATE'
+■ A-16. ⛔ MP-4 — la réservation compte aussi sur un membre DÉSACTIVÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDA
+         ↳ AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'status = \'ACTIVE\''
+■ A-17. ⛔ MP-16 — la pause devient DÉFINITIVE (une pause échue refuse toujours)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDA
+         ↳ AssertionError: expected 'WITH cur AS ( SELECT id, CASE WHEN pa…' to contain 'password_locked_until IS NULL OR pass…'
+■ A-18. ⛔ MP-16 — le compteur ne REPART plus de zéro après une pause
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDA
+         ↳ AssertionError: le compteur repart après l'échéance de la pause: expected 'WITH cur AS ( SELECT id, password_fai…' to match /password_locked_until IS 
+■ A-19. ⛔ le seuil de la pause est dépassé d'une tentative (6 au lieu de 5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-20. ⛔ MP-43 — la durée de la pause n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-43 — le seuil et la durée de pause sont d
+         ↳ AssertionError: expected [ …(3) ] to include 15
+■ A-21. ⛔ la réservation ne dit plus si CETTE tentative a déclenché la pause
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-22. ⛔ la réservation n'INCRÉMENTE plus le compteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-23. ⛔ le compte d'échecs rendu n'est plus celui de la ligne mise à jour
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > une ligne rendue ⇒ le hachage à vérifier, le c
+         ↳ AssertionError: expected { reserved: true, …(3) } to deeply equal { reserved: true, …(3) }
+■ A-24. ⛔ la ligne de PAUSE n'est jamais écrite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_paus
+         ↳ AssertionError: expected [ 'staff.login_failed' ] to deeply equal [ 'staff.login_failed', …(1) ]
+      FAIL  src/staff/staff-store.prisma.spec.ts > l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33, MP-11) > ⛔ toute ligne d'audit porte les clés autorisées, et aucune valeur secrète ne pe
+         ↳ AssertionError: expected 4 to be greater than or equal to 5
+■ A-25. ⛔ la ligne de pause change de nom d'action
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_paus
+         ↳ AssertionError: expected [ 'staff.login_failed', …(1) ] to deeply equal [ 'staff.login_failed', …(1) ]
+■ A-26. ⛔ MP-33 — la ligne d'échec porte un champ de plus que le compte d'échecs
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_paus
+         ↳ AssertionError: expected { failedCount: 2, …(1) } to deeply equal { failedCount: 2 }
+■ A-27. ⛔ la remise à zéro de la pause ne lève plus la pause (seul le compteur retombe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > resetPasswordAttempts : remet le compteur et la pause à zéro, sous condition du mem
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET password…' to match /^UPDATE pro_staff_members SET passwor…/
+■ A-28. ⛔ une connexion réussie ne remet plus les compteurs à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'password_failed_count = 0'
+■ A-29. ⛔ D305 — le CAS de la connexion n'exige plus un membre ACTIF
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'status = \'ACTIVE\''
+■ A-30. ⛔ MP-18 — le CAS de la connexion n'exige plus la salle du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'pro_profile_id ='
+■ A-31. ⛔ D305 — un CAS refusé (compte 0) n'arrête plus la connexion
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ Error: réponse non prévue pour : SELECT d.id::text AS id, d.member_id::text AS "memberId", m.pro_profile_id::text AS "proProfileId", (d.revoked_at IS 
+■ A-32. ⛔ MP-3 — n'importe quel appareil présenté est réutilisé (la politique n'est plus consultée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-3 — l'appareil d'un AUTRE membre ou d'une AUTRE sal
+         ↳ AssertionError: expected { ok: true, member: { …(4) }, …(2) } to match object { ok: true, deviceReused: false }
+■ A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ un appareil reconnu (lui-même, sa salle, ni révoqué ni
+         ↳ AssertionError: expected 'UPDATE pro_staff_devices SET last_use…' to match /^UPDATE pro_staff_devices SET last_us…/
+■ A-34. ⛔ la ligne d'audit de la connexion ne dit plus si l'appareil était reconnu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, san
+         ↳ AssertionError: expected { Object (memberId) } to deeply equal { …(2) }
+■ A-35. ⛔ MP-43 — l'échéance de l'appareil neuf de la connexion n'est plus la durée du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est
+         ↳ AssertionError: expected [ …(4) ] to include 90
+■ A-36. ⛔ MP-43 — le plafond de la session de la connexion n'est plus celui du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est
+         ↳ AssertionError: expected [ …(4) ] to include 12
+■ A-37. ⛔ MP-13 — la session ne GLISSE plus (l'activité n'est pas rafraîchie par la requête)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to match /SET last_activity_at = now\(\)/
+■ A-38. ⛔ MP-18 — la requête du garde n'exige plus la salle du Bearer
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.pro_profile_id ='
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-43 — la durée d'inactivité est le PARAMÈTR
+         ↳ AssertionError: expected [ 'h', 10 ] to include '018f0000-0000-7000-8000-0000000000b1'
+■ A-39. ⛔ MP-4 — la requête du garde n'exige plus un membre ACTIF
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.status = \'ACTIVE\''
+■ A-40. ⛔ MP-19 — la requête du garde accepte une session TERMINÉE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 's.ended_at IS NULL'
+■ A-41. ⛔ MP-13 — la requête du garde ignore le PLAFOND absolu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 's.expires_at > now()'
+■ A-42. ⛔ MP-13 — la requête du garde ignore l'INACTIVITÉ
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊ
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to match /s\.last_activity_at > now\(\) - make_…/
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-43 — la durée d'inactivité est le PARAMÈTR
+         ↳ AssertionError: expected [ 'h', …(1) ] to include 10
+■ A-43. ⛔ MP-18 — la sonde dit toujours « même salle » (on terminerait la session d'une autre salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-44. ⛔ MP-4 — la sonde dit toujours « membre actif » (la fin DISABLED ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-45. ⛔ MP-13 — la sonde dit toujours « pas inactive » (la fin IDLE ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-46. ⛔ MP-13 — la fin d'une session refusée n'est jamais écrite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — inactive : la fin IDLE s'écrit, condi
+         ↳ AssertionError: expected [ { type: 'query', …(2) }, …(1) ] to have a length of 3 but got 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-4 — membre désactivé, session ouverte : la
+         ↳ TypeError: Cannot read properties of undefined (reading 'valeurs')
+■ A-47. ⛔ jamais deux fins — l'écriture de la fin n'est plus conditionnée à `ended_at IS NULL`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-48. ⛔ K-17 — l'état ÉCRIT (la lecture prolonge la session)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ n'émet AUCUN `UPDATE` ni `INSERT` : une lecture, avec les MÊMES pr
+         ↳ Error: réponse non prévue pour : UPDATE pro_staff_sessions SET last_activity_at = now() WHERE token_hash = ?
+      FAIL  src/staff/staff-store.prisma.spec.ts > peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ MP-43 — même durée d'inactivité (paramètre), même séparation : le 
+         ↳ Error: réponse non prévue pour : UPDATE pro_staff_sessions SET last_activity_at = now() WHERE token_hash = ?
+■ A-49. ⛔ K-17 — l'état ignore l'inactivité (une session inactive est rendue comme vivante)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ n'émet AUCUN `UPDATE` ni `INSERT` : une lecture, avec les MÊMES pr
+         ↳ AssertionError: expected 'SELECT s.id::text AS "sessionId", m.i…' to match /s\.last_activity_at > now\(\) - make_…/
+      FAIL  src/staff/staff-store.prisma.spec.ts > peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ MP-43 — même durée d'inactivité (paramètre), même séparation : le 
+         ↳ AssertionError: expected [ 'h', …(1) ] to include 10
+■ A-50. ⛔ K-16 — la fin LOGOUT n'est plus conditionnée à `ended_at IS NULL`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-51. ⛔ K-16 — l'audit de la déconnexion s'écrit même si la session n'a pas été terminée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est 
+         ↳ AssertionError: expected [ { data: { …(7) } } ] to have a length of +0 but got 1
+■ A-52. ⛔ K-16 — l'audit de la déconnexion désigne le membre à la place de la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est 
+         ↳ AssertionError: expected { …(7) } to match object { action: 'staff.logout', …(3) }
+■ A-53. ⛔ K-18 — le remplacement du mot de passe n'est plus conditionné au hachage LU
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'password_hash = ? AND'
+■ A-54. ⛔ K-18 — le membre n'est plus VERROUILLÉ avant le remplacement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected 'SELECT id::text AS id FROM pro_staff_…' to match /FOR UPDATE/
+■ A-55. ⛔ MP-5 — les autres sessions prennent la fin « déconnexion » au lieu de « mot de passe changé »
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to match /^UPDATE pro_staff_sessions SET ended_…/
+■ A-56. ⛔ MP-5 — le changement termine la session COURANTE et laisse les autres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'id <>'
+■ A-57. ⛔ K-18 — le changement laisse `must_change_password` levé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'must_change_password = false'
+■ A-58. ⛔ MP-43 — l'échéance du nouveau mot de passe n'est plus celle du levier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected [ 'H-NEUF', 15, …(2) ] to include 90
+■ A-59. ⛔ MP-33 — la ligne d'audit du changement porte un champ de plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hacha
+         ↳ AssertionError: expected { otherSessionsEnded: 2, …(1) } to deeply equal { otherSessionsEnded: 2 }
+■ A-60. ⛔ K-18 — un membre introuvable ou éteint ne refuse plus le changement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 40 · en échec 0
+■ A-61. ⛔ K-18 — un remplacement sans ligne (le hachage a changé) n'est plus refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > changePassword : le hachage lu n'est plus le courant ⇒ `changedConcurrently`, RIEN 
+         ↳ Error: réponse non prévue pour : UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'PASSWORD_CHANGED' WHERE member_id = ?::uuid AND id <> ?
+■ A-62. ⛔ K-17 — sans cookie d'appareil, la base est interrogée quand même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif 
+         ↳ Error: réponse non prévue pour : SELECT DISTINCT m.id::text AS id, m.account_name AS "accountName", m.role::text AS role FROM pro_staff_devices d JOIN
+■ A-63. ⛔ MP-3 — un appareil RÉVOQUÉ reconnaît encore son membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif 
+         ↳ AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'd.revoked_at IS NULL'
+■ A-64. ⛔ MP-3 — un appareil EXPIRÉ reconnaît encore son membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif 
+         ↳ AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'd.expires_at > now()'
+■ A-65. ⛔ MP-3 — les membres reconnus viennent de TOUTES les salles
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif 
+         ↳ AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'm.pro_profile_id ='
+■ A-66. ⛔ MP-4 — un membre désactivé est encore « reconnu » sur ce poste
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif 
+         ↳ AssertionError: expected 'SELECT DISTINCT m.id::text AS id, m.a…' to contain 'm.status = \'ACTIVE\''
+■ A-67. ⛔ MP-33 — la ligne d'audit n'a plus le membre pour acteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 37 · en échec 3
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-33 — la ligne d'audit est écrite DANS la transact
+         ↳ AssertionError: expected { …(7) } to match object { …(6) }
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, san
+         ↳ AssertionError: expected { …(7) } to match object { …(5) }
+      FAIL  src/staff/staff-store.prisma.spec.ts > closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est 
+         ↳ AssertionError: expected { …(7) } to match object { action: 'staff.logout', …(3) }
+■ A-68. ⛔ MP-33 — la ligne d'audit n'a plus le compte commun pour acteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 38 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-33 — la ligne d'audit est écrite DANS la transact
+         ↳ AssertionError: expected { actorId: null, …(6) } to match object { …(6) }
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, san
+         ↳ AssertionError: expected { actorId: null, …(6) } to match object { …(5) }
+■ A-69. ⛔ MP-33 — la ligne d'audit porte un champ de plus (`before`)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [magasin] code 1 · ROUGE — passés 39 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33, MP-11) > ⛔ toute ligne d'audit porte les clés autorisées, et aucune valeur secrète ne pe
+         ↳ AssertionError: staff.activate: expected [ 'action', 'actorId', …(6) ] to deeply equal [ 'action', 'actorId', …(5) ]
+■ T-1. ⛔ MP-43 — le levier de l'inactivité change de valeur (10 → 11 minutes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot d
+         ↳ AssertionError: expected 11 to be 10 // Object.is equality
+■ T-2. ⛔ MP-43 — le plafond de session change de valeur (12 → 24 heures)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot d
+         ↳ AssertionError: expected 24 to be 12 // Object.is equality
+■ T-3. ⛔ MP-43 — la durée de la pause change de valeur (15 → 5 minutes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot d
+         ↳ AssertionError: expected 5 to be 15 // Object.is equality
+■ T-4. ⛔ MP-43 — le seuil de la pause change de valeur (5 → 3 échecs)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot d
+         ↳ AssertionError: expected 3 to be 5 // Object.is equality
+■ T-5. ⛔ MP-28 — la borne des cookies d'appareil change de valeur (8 → 9)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun app
+         ↳ AssertionError: expected 9 to be 8 // Object.is equality
+■ T-6. ⛔ R-6 — le levier de la validité du PIN change de valeur (90 → 30 jours) : l'échéance des appareils suit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot d
+         ↳ AssertionError: expected 30 to be 90 // Object.is equality
+■ T-7. ⛔ le libellé constant d'un appareil change
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais
+         ↳ AssertionError: expected 'Mon poste' to be 'Poste' // Object.is equality
+■ T-8. ⛔ MP-39 — la clé de message de « session requise » n'existe pas dans les catalogues
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 18 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET da
+         ↳ AssertionError: staff.errors.sessionRequis (fr): expected undefined to be truthy
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raiso
+         ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+   [garde] code 1 · ROUGE — passés 15 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lectu
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { Object (code, message) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { Object (code, message) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre sa
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { Object (code, message) }
+■ T-9. ⛔ MP-39 — la clé de message des identifiants refusés n'existe pas dans les catalogues
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 18 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET da
+         ↳ AssertionError: staff.errors.identifiantsRefuses (fr): expected undefined to be truthy
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en fra
+         ↳ AssertionError: expected undefined to be 'Nom de compte ou mot de passe incorre…' // Object.is equality
+   [service] code 1 · ROUGE — passés 24 · en échec 5
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucun
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservat
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la 
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hacha
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouvertur
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ T-10. ⛔ l'activation accepte une clé inconnue (un `role` saisi serait ignoré en silence)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 18 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: activation, clé inconnue: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé in
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ T-11. ⛔ la connexion accepte une clé inconnue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: connexion, clé inconnue: expected true to be false // Object.is equality
+■ T-12. ⛔ le changement de mot de passe accepte une clé inconnue (un `memberId` saisi serait ignoré en silence)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: changement, clé inconnue: expected true to be false // Object.is equality
+■ T-13. ⛔ le nom de compte n'est plus rogné avant les bornes
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné
+         ↳ AssertionError: expected { accountName: ' Amine ', …(1) } to deeply equal { accountName: 'Amine', …(1) }
+■ T-14. ⛔ D55 — la borne basse du nom de compte disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: activation, nom trop court: expected true to be false // Object.is equality
+■ T-15. ⛔ D55 — la borne haute du nom de compte disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: activation, nom trop long: expected true to be false // Object.is equality
+■ T-16. ⛔ le nom de compte admet des chevrons (`<b>`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: activation, nom invalide: expected true to be false // Object.is equality
+■ T-17. ⛔ un nom qui se normalise en chaîne VIDE est accepté (la clé serait vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 0 · VERT — passés 20 · en échec 0
+■ T-18. ⛔ la connexion révèle la politique (un mot de passe vide n'est plus refusé de la même façon)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 19 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: connexion, mot de passe vide: expected true to be false // Object.is equality
+■ T-19. ⛔ le nom de compte de la connexion perd sa borne haute
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 0 · VERT — passés 20 · en échec 0
+■ N-1. ⛔ R-4 — plus de NFKC (pleine chasse, ligatures, présentations arabes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 52 · en échec 1
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ＡＭＩＮＥ" ≡ "amine" (la pleine 
+         ↳ AssertionError: expected 'ａｍｉｎｅ' to be 'amine' // Object.is equality
+■ N-2. ⛔ R-4 — les caractères invisibles deviennent des espaces au lieu de disparaître
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 50 · en échec 3
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "ca​isse" ≡ "caisse" (R-4 : e
+         ↳ AssertionError: expected 'ca isse' to be 'caisse' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "am‏ine" ≡ "amine" (R-4 : mar
+         ↳ AssertionError: expected 'am ine' to be 'amine' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marqu
+         ↳ AssertionError: U+200B doit disparaître: expected 'ab cd' to be 'abcd' // Object.is equality
+■ N-3. ⛔ la clé dépend de la casse (majuscules)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 51 · en échec 2
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marqu
+         ↳ AssertionError: chiffre arabe-indien 0: expected 'A0' to be 'a0' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > les blancs spéciaux (insécable, pleine chasse) valent un espace puis sont co
+         ↳ AssertionError: expected 'AMINE BENALI' to be 'amine benali' // Object.is equality
+■ N-4. ⛔ les diacritiques latins ne sont plus retirés (« Âmine » ≠ « amine »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 48 · en échec 5
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (un diacritiq
+         ↳ AssertionError: expected 'rené' to be 'rene' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "René" ≡ "rene" (le même dia
+         ↳ AssertionError: expected 'rené' to be 'rene' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Éloïse" ≡ "eloise" (deux dia
+         ↳ AssertionError: expected 'éloïse' to be 'eloise' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > une chaîne qui ne contient que des marques invisibles ou des diacritiques do
+         ↳ AssertionError: expected '́̀' to be '' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > staffAccountNameSchema — ce que l'écran et le serveur acceptent d'un nom de compte (bornes : 2 à 40 caractères) > refuse un nom dont la CLÉ serait vide (q
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ N-5. ⛔ les voyelles brèves et le tatweel arabes ne sont plus retirés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 51 · en échec 2
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مُحَمَّد" ≡ "محمد" (les voye
+         ↳ AssertionError: expected 'مُحَمَّد' to be 'محمد' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مـحـمـد" ≡ "محمد" (le tatwee
+         ↳ AssertionError: expected 'مـحـمـد' to be 'محمد' // Object.is equality
+■ N-6. ⛔ les lettres arabes ne sont plus ramenées l'une à l'autre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 45 · en échec 8
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "أمين" ≡ "امين" (alef avec ha
+         ↳ AssertionError: expected 'أمين' to be 'امين' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "إسماعيل" ≡ "اسماعيل" (alef a
+         ↳ AssertionError: expected 'إسماعيل' to be 'اسماعيل' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "آمنة" ≡ "امنه" (alef madda →
+         ↳ AssertionError: expected 'آمنة' to be 'امنه' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "فاطمة" ≡ "فاطمه" (ta marbout
+         ↳ AssertionError: expected 'فاطمة' to be 'فاطمه' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "موسى" ≡ "موسي" (alef maksura
+         ↳ AssertionError: expected 'موسى' to be 'موسي' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مؤمن" ≡ "مومن" (R-4 : waw av
+         ↳ AssertionError: expected 'مؤمن' to be 'مومن' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "عائشة" ≡ "عايشه" (R-4 : ya a
+         ↳ AssertionError: expected 'عائشة' to be 'عايشه' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "کریم" ≡ "كريم" (R-4 : kaf et
+         ↳ AssertionError: expected 'کریم' to be 'كريم' // Object.is equality
+■ N-7. ⛔ R-4 — les chiffres arabes-indiens et persans ne sont plus ramenés à 0–9
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 50 · en échec 3
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse٣" ≡ "caisse3" (R-4 : 
+         ↳ AssertionError: expected 'caisse٣' to be 'caisse3' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse۳" ≡ "caisse3" (R-4 : 
+         ↳ AssertionError: expected 'caisse۳' to be 'caisse3' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marqu
+         ↳ AssertionError: chiffre arabe-indien 0: expected 'a٠' to be 'a0' // Object.is equality
+■ N-8. ⛔ les blancs ne sont plus comprimés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 51 · en échec 2
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "Amine    Benali" ≡ "amine be
+         ↳ AssertionError: expected 'amine    benali' to be 'amine benali' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > les blancs spéciaux (insécable, pleine chasse) valent un espace puis sont co
+         ↳ AssertionError: expected 'amine  benali' to be 'amine benali' // Object.is equality
+■ N-9. ⛔ les bords ne sont plus rognés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 51 · en échec 2
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "  Amine  " ≡ "amine" (les es
+         ↳ AssertionError: expected ' amine ' to be 'amine' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > une chaîne qui ne contient que des marques invisibles ou des diacritiques do
+         ↳ AssertionError: expected ' ' to be '' // Object.is equality
+■ N-10. ⛔ le ta marbouta (ة) n'est plus ramené au ha (ه)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 50 · en échec 3
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "آمنة" ≡ "امنه" (alef madda →
+         ↳ AssertionError: expected 'امنة' to be 'امنه' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "فاطمة" ≡ "فاطمه" (ta marbout
+         ↳ AssertionError: expected 'فاطمة' to be 'فاطمه' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "عائشة" ≡ "عايشه" (R-4 : ya a
+         ↳ AssertionError: expected 'عايشة' to be 'عايشه' // Object.is equality
+■ N-11. ⛔ R-4 — le waw hamza (ؤ) n'est plus ramené au waw (و)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 52 · en échec 1
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "مؤمن" ≡ "مومن" (R-4 : waw av
+         ↳ AssertionError: expected 'مؤمن' to be 'مومن' // Object.is equality
+■ N-12. ⛔ R-4 — le kaf persan (ک) n'est plus ramené au kaf arabe (ك)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 52 · en échec 1
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "کریم" ≡ "كريم" (R-4 : kaf et
+         ↳ AssertionError: expected 'کريم' to be 'كريم' // Object.is equality
+■ N-13. ⛔ R-4 — les chiffres persans sont convertis comme des chiffres arabes-indiens (décalage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [nom] code 1 · ROUGE — passés 50 · en échec 3
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > deux écritures d'un même nom donnent UNE clé : "caisse۳" ≡ "caisse3" (R-4 : 
+         ↳ AssertionError: expected 'caisseÃ' to be 'caisse3' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > la clé est IDEMPOTENTE : normaliser une clé ne la change pas (sans quoi l'un
+         ↳ AssertionError: caisse۳: expected 'caissea' to be 'caisseÃ' // Object.is equality
+      FAIL  src/common/staff-account-name.spec.ts > normalizeStaffAccountName — la clé d'unicité du nom de compte (S-110 + R-4) > R-4 — NFKC ne ramène NI les chiffres arabes-indiens et persans, NI les marqu
+         ↳ AssertionError: chiffre persan 0: expected 'aÀ' to be 'a0' // Object.is equality
+■ L-1. ⛔ S-98 — le garde du personnel passe AVANT `RolesGuard` (il lirait un rôle pas encore contrôlé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistremen
+         ↳ AssertionError: expected [ 'ThrottlerGuard', …(3) ] to deeply equal [ 'ThrottlerGuard', …(3) ]
+■ L-2. ⛔ leçon R1 — le module du personnel n'est plus importé par l'application
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quan
+         ↳ AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /imports:\s*\[[\s\S]*\bStaffModule\b[\…/
+■ L-3. ⛔ R-7 / SIG-1 — le `Set-Cookie` de réponse n'est plus masqué dans le journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la ga
+         ↳ AssertionError: expected 'import { Module } from "@nestjs/commo…' to match /redact:\s*\[[^\]]*req\.headers\.autho…/
+■ L-4. ⛔ MP-20 — l'état de session n'est plus exempté (l'écran de verrouillage ne pourrait plus le lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+■ L-5. ⛔ MP-20 — l'activation n'est plus exemptée (on ne pourrait plus activer la couche)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+■ L-6. ⛔ MP-20 — la connexion n'est plus exemptée (on ne pourrait plus ouvrir de session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+■ L-7. ⛔ MP-20 — la déconnexion devient exemptée (la liste blanche s'allonge sans décision)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+■ L-17. ⛔ MP-20 — l'état du COMPTE COMMUN (`GET /auth/me`) n'est plus exempté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 13 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+■ L-21. ⛔ MP-37 — `Secure` ne suit plus le levier existant (`AUTH_COOKIE_SECURE`) : valeur écrite en dur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 0 · VERT — passés 14 · en échec 0
+■ C-1. ⛔ D182 — l'activation appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-14 : `activate` POSTE le nom de compte et le mot de passe sur `/pro/staff/activate`
+         ↳ AssertionError: expected [ Array(1) ] to deeply equal [ { …(2) } ]
+■ C-2. ⛔ D182 — la connexion appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login`
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { path: '/pro/staff/login', …(1) } ]
+■ C-3. ⛔ D182 — la déconnexion appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { path: '/pro/staff/logout', …(1) } ]
+■ C-4. ⛔ D182 — l'état appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps)
+         ↳ AssertionError: expected [ { path: '/pro/staff/etat', …(1) } ] to deeply equal [ Array(1) ]
+■ C-5. ⛔ D182 — le changement de mot de passe appelle un autre chemin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-18 : `changePassword` POSTE l'actuel et le nouveau sur `/pro/staff/password`
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+■ C-6. ⛔ la déconnexion passe par une autre méthode HTTP
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps
+         ↳ AssertionError: expected [ { path: '/pro/staff/logout', …(1) } ] to deeply equal [ { path: '/pro/staff/logout', …(1) } ]
+■ C-7. ⛔ l'état est demandé en POST (il ne doit être qu'une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps)
+         ↳ AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+■ C-8. ⛔ la connexion n'envoie plus le corps
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login`
+         ↳ AssertionError: expected [ { path: '/pro/staff/login', …(1) } ] to deeply equal [ { path: '/pro/staff/login', …(1) } ]
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 198 cible(s) jouée(s) sur 233, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit=0

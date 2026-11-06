@@ -1,0 +1,28 @@
+D341 — MP-42 : la sonde de dérive de D334 (`docs/preuves/D334/session-adverse/adverse_derive.py`), REJOUÉE SANS MODIFICATION le 04/11/2026 sur le code de `40b7380` (migration `20261104170000_staff_layer` appliquée sur la copie).
+Comment elle lit la base : `CREATE DATABASE zwadj_adverse_derive TEMPLATE zwadj` (COPIE de la base de développement de Ko — une LECTURE de `zwadj`, aucune écriture), `prisma migrate deploy` sur la COPIE seule, `prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`, puis suppression de la copie.
+⛔ Aucune écriture sur `zwadj` : la migration du lot n'est PAS appliquée à la base de développement de Ko par ce lot.
+
+LECTURE DE LA SESSION (la sortie brute commence à la ligne « == SONDE 6 ») : le diff complet ci-dessous ne cite AUCUN des objets de L36-3a-1 — ni `pro_staff_members`, `pro_staff_devices`, `pro_staff_sessions`, ni `staff_layer_enabled_at`, ni `actor_member_id`, ni les énumérations `StaffRole`, `StaffStatus`, `StaffSessionEndReason`, ni les index `*_member_id_idx`, `*_device_id_idx`, `audit_logs_actor_member_id_idx`. Il ne propose de supprimer que ce que la doctrine range HORS de Prisma et que D334 avait déjà relevé (la clé composite B2, `quotes_chain_head_fkey`, la séquence des salles et le défaut de `venues.number`). Entre `schema.prisma` et la base migrée, la tranche du personnel ne dérive pas.
+⚠ Ce que la sonde ne voit PAS : les `CHECK` (Prisma ne les exprime pas, donc ne les compare pas) et les noms des contraintes uniques composites ; ils sont gardés par `staff-schema.int-spec.ts` (par le NOM de la contrainte refusante) et par `migration-non-empty.int-spec.ts`.
+⚠ Le contrôle de l'unicité (salle, clé de nom) : `pro_staff_members_pro_profile_id_account_name_key_key` est l'index unique COMPLET au nom que Prisma donne à `@@unique([proProfileId, accountNameKey])` — c'est pourquoi le diff n'en dit rien.
+
+=== SORTIE BRUTE DE LA SONDE (octets tels que rendus) ===
+
+== SONDE 6 — dérive entre schema.prisma et la base migrée (objets de L35-3)
+✓ DR-0       base migrée — attendu 0 · mesuré 0
+   code 0 ; 13 ligne(s) de sortie
+   le diff COMPLET (de la base migrée vers schema.prisma) :
+     | -- DropForeignKey
+     | ALTER TABLE "pricing_rules" DROP CONSTRAINT "pricing_rules_slot_belongs_to_venue";
+     | -- DropForeignKey
+     | ALTER TABLE "quotes" DROP CONSTRAINT "quotes_chain_head_fkey";
+     | -- AlterTable
+     | ALTER TABLE "venues" ALTER COLUMN "number" SET DEFAULT nextval('venue_number_seq'::regclass),
+     | ALTER COLUMN "number" DROP DEFAULT;
+     | DROP SEQUENCE "venue_number_seq";
+     | Loaded Prisma config from prisma.config.ts.
+✓ DR-1       le diff s'exécute et ne propose, pour les objets de L35-3, que ce que la doctrine range HORS de Prisma : la clé composite des versions, la séquence des salles et son défaut (+ la clé B2 d'avant) — attendu {'venue_number_seq', 'pricing_rules_slot_belongs_to_venue', 'quotes_chain_head_fkey', '"number" DROP DEFAULT'} · mesuré {'venue_number_seq', 'pricing_rules_slot_belongs_to_venue', 'quotes_chain_head_fkey', '"number" DROP DEFAULT'}
+· DR-C1      CONSTAT : si `prisma migrate dev` tournait (il est interdit, AGENTS.md), il proposerait de SUPPRIMER `quotes_chain_head_fkey` et la séquence `venue_number_seq` avec le défaut de `venues.number` : deux objets de plus que la liste « Migrations — `prisma migrate dev` est INTERDIT » d'AGENTS.md ne nomme pas (elle nomme l'EXCLUDE, les index partiels, `pricing_rules_slot_belongs_to_venue`, les CHECK). Documentaire, non bloquant : la doctrine tient (la migration est l'autorité), la liste est à compléter
+
+== BILAN : 2 ✓ · 0 ✗ [] · 1 constat(s) ['DR-C1']
+exit=0

@@ -1,0 +1,19 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-source-guards.spec.ts (15 tests) 62ms
+ ✓ src/common/staff-contract.spec.ts (22 tests) 16ms
+ ✓ src/common/staff-account-name.spec.ts (53 tests) 28ms
+ ✓ src/staff/staff-cookies.spec.ts (17 tests) 15ms
+ ✓ src/staff/staff-session-policy.spec.ts (25 tests) 17ms
+ ✓ src/staff/staff-session.service.spec.ts (30 tests) 49ms
+ ✓ src/staff/staff-password-policy.spec.ts (18 tests) 760ms
+   ✓ la liste — fidélité à sa SOURCE VERSÉE (R-5 (D341) : au moins 10 000 entrées, source, licence, empreinte) > toutes les entrées sont des chaînes non vides, sans espace de bord ni saut de ligne (le format d'une liste à une entrée par ligne)  708ms
+ ✓ src/staff/staff-session.guard.spec.ts (19 tests) 24ms
+ ✓ src/staff/staff-store.prisma.spec.ts (41 tests) 29ms
+
+ Test Files  9 passed (9)
+      Tests  240 passed (240)
+   Start at  22:47:11
+   Duration  2.99s (transform 1.51s, setup 0ms, collect 8.45s, tests 999ms, environment 3ms, prepare 4.48s)
+

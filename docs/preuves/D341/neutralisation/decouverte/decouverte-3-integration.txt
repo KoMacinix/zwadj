@@ -1,0 +1,338 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 233 déclarées · 43 jouées · 0 non jouée(s) (sans --int) · 6 mesure(s) distincte(s) · 5 fichier(s) muté(s)
+  pré-vol int-activation : code 0 · passés 16 · en échec 0
+  pré-vol int-connexion : code 0 · passés 34 · en échec 0
+  pré-vol int-debit : code 0 · passés 9 · en échec 0
+  pré-vol int-garde : code 0 · passés 17 · en échec 0
+  pré-vol int-migration : code 0 · passés 31 · en échec 0
+  pré-vol int-schema : code 0 · passés 19 · en échec 0
+■ G-7. ⛔ le cookie de session est lu sous le nom du cookie de RAFRAÎCHISSEMENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 1 · ROUGE — passés 14 · en échec 3
+      FAIL  test/int/staff-session-guard.int-spec.ts > la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STA
+         ↳ AssertionError: routes refusées malgré une session valide :
+      FAIL  test/int/staff-session-guard.int-spec.ts > la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > le cookie de session n'est lu que sous SON nom : la même valeur posée sous le no
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-session-guard.int-spec.ts > MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même 
+         ↳ AssertionError: expected null to be 'IDLE' // Object.is equality
+■ A-8. ⛔ l'annulation interne de l'activation n'est plus traduite en refus métier
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ la transaction est ATOMIQUE : si l'insertion du Manager échoue (un membre de même clé existe, drapeau éteint par une intervention
+         ↳ AssertionError: expected 500 to be 409 // Object.is equality
+■ A-10. ⛔ MP-40 — l'audit de l'activation s'écrit HORS de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 5 · en échec 11
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > 201 : le Manager est rendu ; le drapeau de la salle est posé ; UN membre MANAGER ACTIF, UN appareil, UNE session ; le mot d
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-40 — Manager, appareil et session sont liés : la session pointe l'appareil créé, qui pointe le Manager ; les trois éch
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ S-99 / MP-37 — le cookie de SESSION : `HttpOnly`, `SameSite=Strict`, chemin `/api/v1`, AUCUNE échéance côté navigateur ; 
+         ↳ AssertionError: expected undefined to be defined
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ S-99 / R-6 (D341) / MP-37 — le cookie d'APPAREIL : un par membre, `zwadj_dv_<suffixe>`, `HttpOnly`, `SameSite=Strict`, ch
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-11 — AUCUN jeton ni mot de passe en clair en base : ni la session, ni l'appareil, ni le mot de passe du Manager ne fig
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-33 — UNE ligne d'audit `staff.activate`, écrite par la même transaction : l'acteur est le compte commun ET le Manager 
+         ↳ TypeError: Cannot read properties of undefined (reading 'id')
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 500, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 2) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 500, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 3) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 500, 500, 500, 500, 500, 500, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > une seconde activation APRÈS la première : 409 `STAFF_ALREADY_ACTIVATED` (le drapeau ne se repose pas), et rien n'est a
+         ↳ AssertionError: expected 500 to be 409 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'activation d'UN pro n'affecte pas les autres > la couche d'une salle n'allume pas celle d'une autre : l'autre salle reste éteinte
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ A-19. ⛔ le seuil de la pause est dépassé d'une tentative (6 au lieu de 5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 30 · en échec 4
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ VINGT connexions parallèles au mauvais mot de passe : exactement CINQ comptées, au plus CIN
+         ↳ AssertionError: MP-17 : au plus cinq vérifications du VRAI hachage: expected [ [ …(2) ], [ …(2) ], [ …(2) ], …(3) ] to have a length of 5 but got 6
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ PENDANT la pause, le BON mot de passe est refusé du même refus, sans vérifier le vrai hacha
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ la pause n'est JAMAIS définitive : une fois son échéance passée (vieillissement SQL), le bo
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ A-21. ⛔ la réservation ne dit plus si CETTE tentative a déclenché la pause
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ VINGT connexions parallèles au mauvais mot de passe : exactement CINQ comptées, au plus CIN
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+■ A-22. ⛔ la réservation n'INCRÉMENTE plus le compteur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 29 · en échec 5
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ VINGT connexions parallèles au mauvais mot de passe : exactement CINQ comptées, au plus CIN
+         ↳ AssertionError: MP-17 : au plus cinq vérifications du VRAI hachage: expected [ [ …(2) ], [ …(2) ], [ …(2) ], …(17) ] to have a length of 5 but got 20
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ PENDANT la pause, le BON mot de passe est refusé du même refus, sans vérifier le vrai hacha
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ la pause n'est JAMAIS définitive : une fois son échéance passée (vieillissement SQL), le bo
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ après l'échéance, un mauvais mot de passe REPART du début (1 échec, pas 6) : le compteur ne
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ A-43. ⛔ MP-18 — la sonde dit toujours « même salle » (on terminerait la session d'une autre salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 0 · VERT — passés 17 · en échec 0
+■ A-44. ⛔ MP-4 — la sonde dit toujours « membre actif » (la fin DISABLED ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > K-16 — la déconnexion, MP-19 — le jeton rejoué > ⛔ MP-4 — un membre DÉSACTIVÉ pendant que sa session est ouverte : la requête suivante est refusée (401) et la 
+         ↳ AssertionError: expected null to be 'DISABLED' // Object.is equality
+■ A-45. ⛔ MP-13 — la sonde dit toujours « pas inactive » (la fin IDLE ne s'écrit plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ JUSTE APRÈS le seuil (10 min 30 s) : 401 `STAFF_SESSION_REQUIRED`, et la fin `IDLE` 
+         ↳ AssertionError: expected null to be 'IDLE' // Object.is equality
+■ L-8. ⛔ MP-34 — le contrôleur du personnel admet aussi un CLIENT
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 0 · VERT — passés 16 · en échec 0
+■ L-9. ⛔ les routes de membre n'exigent plus le contexte du garde (une couche éteinte les laisse tomber en erreur 500)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > K-16 — la déconnexion, MP-19 — le jeton rejoué > se déconnecter AVANT toute activation : 401 `STAFF_SESSION_REQUIRED` (il n'y a rien à fermer ; la route n'est 
+         ↳ AssertionError: expected 500 to be 401 // Object.is equality
+■ L-10. ⛔ K-14 — l'activation répond 200 au lieu de 201
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 11 · en échec 5
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > 201 : le Manager est rendu ; le drapeau de la salle est posé ; UN membre MANAGER ACTIF, UN appareil, UNE session ; le mot d
+         ↳ AssertionError: expected 200 to be 201 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-11 — AUCUN jeton ni mot de passe en clair en base : ni la session, ni l'appareil, ni le mot de passe du Manager ne fig
+         ↳ AssertionError: expected 200 to be 201 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 200, 409, 409, 409, 409, 409, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 2) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 200, 409, 409, 409, 409, 409, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 3) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 200, 409, 409, 409, 409, 409, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+■ L-11. ⛔ K-15 — la connexion répond 201 au lieu de 200
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 25 · en échec 9
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > 200 : le membre est rendu, une SESSION neuve est ouverte et son cookie posé, `last_login_at` est écrit, les compteurs sont à zér
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > la recherche du membre se fait sur la CLÉ normalisée : « AMINE », « amine » et « Âmine » ouvrent le même compte
+         ↳ AssertionError: AMINE: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > ⛔ MP-3 — un poste déjà reconnu (son cookie d'appareil) RÉUTILISE l'appareil : aucun cookie d'appareil neuf, aucune ligne d'appar
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'un AUTRE MEMBRE de la même salle n'est pas réutilisé : un appareil neuf est créé, l'appareil de 
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'une AUTRE SALLE n'est pas réutilisé, même pour le même nom de compte
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > K-15 — la connexion nominale > ⛔ MP-8 — un mot de passe juste ne paie QU'UN hachage réel, aucun factice
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ la pause n'est JAMAIS définitive : une fois son échéance passée (vieillissement SQL), le bo
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > quatre échecs ne font PAS de pause ; un bon mot de passe les remet à zéro (échecs CONSÉCUTIFS
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+      FAIL  test/int/staff-login.int-spec.ts > MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle
+         ↳ AssertionError: expected 201 to be 200 // Object.is equality
+■ L-12. ⛔ MP-36 — l'activation emprunte la limite de la CONNEXION (10 au lieu de 5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est r
+         ↳ AssertionError: expected 401 to be 429 // Object.is equality
+■ L-13. ⛔ MP-36 — la connexion emprunte la limite de l'ACTIVATION (5 au lieu de 10)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [int-debit] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PA
+         ↳ AssertionError: expected 429 to be 401 // Object.is equality
+■ L-14. ⛔ MP-36 — la limite d'activation passe de 5 à 50
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 0 · VERT — passés 9 · en échec 0
+■ L-15. ⛔ MP-36 — la limite de connexion passe de 10 à 100
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 0 · VERT — passés 9 · en échec 0
+■ L-16. ⛔ D128 — la limite d'activation n'est plus pilotée par son levier de test (un second mécanisme, ou aucun)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 5 · en échec 11
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-33 — UNE ligne d'audit `staff.activate`, écrite par la même transaction : l'acteur est le compte commun ET le Manager 
+         ↳ TypeError: Cannot read properties of undefined (reading 'id')
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 429, 429, 429, 429, 429, 429, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 2) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 429, 429, 429, 429, 429, 429, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 3) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; u
+         ↳ AssertionError: expected [ 429, 429, 429, 429, 429, 429, …(4) ] to deeply equal [ 201, 409, 409, 409, 409, 409, …(4) ]
+      FAIL  test/int/staff-activation.int-spec.ts > MP-22 — l'activation CONCURRENTE > une seconde activation APRÈS la première : 409 `STAFF_ALREADY_ACTIVATED` (le drapeau ne se repose pas), et rien n'est a
+         ↳ AssertionError: expected 429 to be 409 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ MP-23 — e-mail NON vérifié (changé depuis la connexion) : 403 `STAFF_EMAIL_NOT_VERIFIED`, RIEN n'est créé, le drapeau reste étein
+         ↳ AssertionError: expected 429 to be 403 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ MP-23 — un CLIENT, un ADMIN : 403 `FORBIDDEN` (le rôle) ; sans Bearer : 401 `UNAUTHENTICATED` ; rien n'est créé
+         ↳ AssertionError: client: expected 429 to be 403 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ MP-24 — un mot de passe COURANT (une entrée de la liste qui passe déjà le schéma, dérivée de la liste) : 400 `STAFF_PASSWORD_COMM
+         ↳ AssertionError: expected 429 to be 400 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > la validation du corps : mot de passe trop faible, nom invalide, clé inconnue (`role`), corps vide → 400 avec les clés localisables
+         ↳ AssertionError: mot de passe trop court: expected 429 to be 400 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'ACTIVATION REFUSÉE > ⛔ la transaction est ATOMIQUE : si l'insertion du Manager échoue (un membre de même clé existe, drapeau éteint par une intervention
+         ↳ AssertionError: expected 429 to be 409 // Object.is equality
+      FAIL  test/int/staff-activation.int-spec.ts > l'activation d'UN pro n'affecte pas les autres > la couche d'une salle n'allume pas celle d'une autre : l'autre salle reste éteinte
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ L-18. ⛔ S-99 — l'activation pose le cookie de session avec les attributs de l'APPAREIL (échéance)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ S-99 / MP-37 — le cookie de SESSION : `HttpOnly`, `SameSite=Strict`, chemin `/api/v1`, AUCUNE échéance côté navigateur ; 
+         ↳ AssertionError: expected '/api/v1/pro/staff' to be '/api/v1' // Object.is equality
+■ L-19. ⛔ K-16 — la déconnexion n'efface plus le cookie de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-connexion] code 1 · ROUGE — passés 33 · en échec 1
+      FAIL  test/int/staff-login.int-spec.ts > K-16 — la déconnexion, MP-19 — le jeton rejoué > 200 `{ status: 'ok' }` : la session courante prend `LOGOUT`, le cookie de session est EFFACÉ, l'APPAREIL reste
+         ↳ AssertionError: le pot a absorbé l'effacement: expected 'Ju4cWc0RfzRTsjNTkNIzxaXGqr7KrBmBk7Dtl…' to be undefined
+■ L-20. ⛔ le cookie d'appareil n'est jamais posé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-activation] code 1 · ROUGE — passés 14 · en échec 2
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ S-99 / R-6 (D341) / MP-37 — le cookie d'APPAREIL : un par membre, `zwadj_dv_<suffixe>`, `HttpOnly`, `SameSite=Strict`, ch
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-activation.int-spec.ts > K-14 — l'activation nominale > ⛔ MP-11 — AUCUN jeton ni mot de passe en clair en base : ni la session, ni l'appareil, ni le mot de passe du Manager ne fig
+         ↳ TypeError: Cannot read properties of undefined (reading 'value')
+■ M-1. ⛔ D186 — l'unicité (salle, clé de nom) devient un index ordinaire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle p
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_account_name_key_key »: expected '' to contain 'pro_staff_members_pro_profil
+■ M-2. ⛔ MP-11 — le jeton d'appareil n'est plus unique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions
+         ↳ AssertionError: attendu : un refus par « pro_staff_devices_token_hash_key »: expected '' to contain 'pro_staff_devices_token_hash_key'
+■ M-3. ⛔ MP-11 — le jeton de session n'est plus unique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions
+         ↳ AssertionError: attendu : un refus par « pro_staff_sessions_token_hash_key »: expected '' to contain 'pro_staff_sessions_token_hash_key'
+■ M-4. ⛔ (e) la CHECK du compteur de PIN (0 à 3) disparaît
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pin_failed_count_range »: expected '' to contain 'pro_staff_members_pin_failed_count_ra…'
+■ M-5. ⛔ (a) un membre désactivé peut ne pas avoir de date de désactivation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec da
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '' to contain 'pro_staff_members_status_disabled_coh…'
+■ M-6. ⛔ (b) `pin_generated_at` n'est plus lié à `pin_hash`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des tr
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '' to contain 'pro_staff_members_pin_triple_coherent'
+■ M-7. ⛔ (b) `pin_expires_at` n'est plus lié à `pin_hash`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des tr
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pin_triple_coherent »: expected '' to contain 'pro_staff_members_pin_triple_coherent'
+■ M-8. ⛔ (e) le compteur de mot de passe peut être négatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_password_failed_count_nonneg »: expected '' to contain 'pro_staff_members_password_failed_c
+■ M-9. ⛔ (f) la clé de nom peut être vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (f) `account_name_key <> ''` : une clé vide est refusée
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_account_name_key_present »: expected '' to contain 'pro_staff_members_account_name_key_pr…'
+■ M-10. ⛔ (d) l'échéance d'un appareil peut précéder sa création
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refu
+         ↳ AssertionError: attendu : un refus par « pro_staff_devices_expires_after_created »: expected '' to contain 'pro_staff_devices_expires_after_creat…'
+■ M-11. ⛔ (d) l'échéance d'une session peut précéder sa création
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refu
+         ↳ AssertionError: attendu : un refus par « pro_staff_sessions_expires_after_created »: expected '' to contain 'pro_staff_sessions_expires_after_crea…'
+■ M-12. ⛔ (c) une session peut finir sans raison (ou une raison sans fin)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé
+         ↳ AssertionError: attendu : un refus par « pro_staff_sessions_ended_coherent »: expected '' to contain 'pro_staff_sessions_ended_coherent'
+■ M-13. ⛔ le journal ne survit plus à son auteur (la suppression d'un membre supprime ses lignes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne 
+         ↳ AssertionError: expected [] to deeply equal [ { a: null } ]
+■ M-14. ⛔ un membre peut être SUPPRIMÉ alors qu'il a des sessions (la clé étrangère n'est plus RESTRICT)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 0 · VERT — passés 19 · en échec 0
+■ M-15. ⛔ une salle peut être SUPPRIMÉE alors qu'elle a des membres (la clé étrangère n'est plus RESTRICT)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un a
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '' to contain 'pro_staff_members_pro_profile_id_fkey'
+■ M-16. ⛔ l'énumération des rôles admet un rôle de plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la co
+         ↳ AssertionError: expected [ { t: 'StaffRole', …(1) }, …(2) ] to deeply equal [ { t: 'StaffRole', …(1) }, …(2) ]
+■ M-17. ⛔ un membre naît DÉSACTIVÉ par défaut
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 4 · en échec 15
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` f
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle p
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > clés étrangères : un membre sans salle, un appareil sans membre, une session sans appareil sont refusés
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_pro_profile_id_fkey »: expected '\nInvalid `prisma.$executeRawUnsafe()…' to contain 'pro_st
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche ratifiée — ses garanties > ⛔ les énumérations refusent une valeur hors schéma — chacune PAR SON NOM (un rôle `ADMIN`, un statut `ARCHIVED`, une fin
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec da
+         ↳ AssertionError: attendu : un refus par « pro_staff_members_status_disabled_coherent »: expected '' to contain 'pro_staff_members_status_disabled_coh…'
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des tr
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refu
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > 1 b — les SIX garanties de base adoptées par la consigne > ⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas une garde de base (§ 3.2 du cadrage) 
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne 
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un a
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-schema.int-spec.ts > l'audit et les suppressions > `created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactive
+         ↳ PrismaClientKnownRequestError:
+■ M-18. ⛔ un membre naît avec le changement de mot de passe obligatoire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` f
+         ↳ AssertionError: expected { status: 'ACTIVE', …(11) } to deeply equal { status: 'ACTIVE', …(11) }
+■ M-19. ⛔ MP-35 — la migration ALLUME la couche de toute salle existante (le drapeau naît avec un défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-migration] code 1 · ROUGE — passés 30 · en échec 1
+      FAIL  test/int/migration-non-empty.int-spec.ts > ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > ⛔ la migration passe sur la
+         ↳ AssertionError: la migration n'active aucune salle: expected [ { actif: true }, { actif: true } ] to deeply equal [ { actif: false }, { actif: false }
+■ M-20. ⛔ le journal n'est plus indexé par auteur-membre sous le nom attendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 0 · VERT — passés 19 · en échec 0
+■ M-21. ⛔ le compteur de mot de passe d'un membre naît à 1
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-schema] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/staff-schema.int-spec.ts > la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` f
+         ↳ AssertionError: expected { status: 'ACTIVE', …(11) } to deeply equal { status: 'ACTIVE', …(11) }
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 43 cible(s) jouée(s) sur 233, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit=0

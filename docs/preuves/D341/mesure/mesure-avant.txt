@@ -1,0 +1,5 @@
+variante « avant » — 3 passes (alternées A B A B A B ; « avant » = le quatrième garde retiré de app.module.ts, « après » = le code livré)
+  passe 1 : médiane 15.651 ms · p95 19.092 ms · moyenne 15.996 ms · min 12.685 · max 25.387 · 600 requêtes · 600 réponses 200
+  passe 2 : médiane 15.673 ms · p95 18.716 ms · moyenne 15.905 ms · min 12.803 · max 27.369 · 600 requêtes · 600 réponses 200
+  passe 3 : médiane 16.162 ms · p95 20.754 ms · moyenne 16.681 ms · min 13.462 · max 27.895 · 600 requêtes · 600 réponses 200
+  médiane des médianes : 15.673 ms · étendue entre passes : 15.651 à 16.162 ms

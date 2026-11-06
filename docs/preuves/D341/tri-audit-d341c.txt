@@ -1,0 +1,29 @@
+D341 — tri différentiel de l'audit de secrets « c » (AVANT le commit des pièces de clôture : les six portes sur secteur, les trois sorties vertes, la mesure, la sonde de dérive, les outils et les relevés du harnais, la carte des modes)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341b.txt docs/preuves/D341/audit-secrets-d341c.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341c.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) — l'audit porte sur `docs/preuves/` seul, pas sur le code :
+  · précédente (d341b) : 4 610 fichiers parcourus, 4 478 audités, 132 exclus, 995 alertes.
+  · nouvelle (d341c)   : 4 646 fichiers parcourus, 4 513 audités, 133 exclus, 1 086 alertes. Contrôle de l'outil : audités + exclus = 4 646 (attendu 4 646).
+  · RAPPROCHEMENT — l'arithmétique FERME ENTIÈREMENT (36 = 35 + 1) : +36 fichiers parcourus = les 36 fichiers de `docs/preuves/D341/` ajoutés depuis l'audit « b », comptés par `git` : 2 ajoutés par les commits depuis `0d9f09b` (le LISEZ-MOI et le générateur de la liste de mots de passe),
+    32 non suivis au moment de l'audit, et la sortie scellée et le tri de « b » eux-mêmes (2), écrits après leur audit ; les 16 fichiers de code et de harnais que ces commits ont aussi ajoutés ne sont pas sous `docs/preuves/` : ils ne comptent pas ici.
+    Audités +35 (4 478 → 4 513) : tout sauf la sortie scellée d341b. Exclus +1 (132 → 133) : cette sortie scellée d341b, désormais épinglée par son sceau. Alertes +91 (995 → 1 086) : exactement les quatre-vingt-onze du tri ci-dessous.
+
+Résultat du tri différentiel : 91 alertes ABSENTES de la sortie précédente — 81 du motif « jeton », 9 du motif « mot-de-passe », 1 du motif « valeur-nommee-secrete » (lignes 3190 à 3390 de la sortie scellée d341c).
+
+Tri au contexte — LU, pas déduit (les contextes sont dans la sortie scellée aux lignes citées ; ils ne sont pas recopiés ici, une sortie qui les recopierait serait un écho non scellé) :
+  · 79 « jeton » dans `portes/test-e2e.txt` (lignes 3198 à 3354 de la sortie scellée, une ligne sur deux) : TOUS de la forme `http://localhost:5273/auth/verification-email?token=<jeton masqué #N (43 car.)>`. La valeur qui suit `token=` est le MARQUEUR de masquage
+    (la pièce est MASQUÉE : `masquer-jetons.py`), pas un jeton. Preuve par comptage sur le fichier versé : `token=` y apparaît 79 fois, et 79 fois suivi de `<` (aucune valeur nue) ; le même fichier ne contient AUCUNE suite de 43 caractères base64url mêlant minuscules,
+    majuscules et chiffres (écrit par la procédure : « restantes après masquage : 0 »). Les 79 alertes sont les 79 suites distinctes de la sortie brute : une alerte par jeton masqué, le motif ne regardant pas ce qui suit `token=`.
+  · 1 « jeton » dans `portes/test-int.txt` (ligne 3358) : un TITRE DE TEST (« compte supprimé après émission du token : … ») — de la prose d'un test existant, sans valeur.
+  · 1 « mot-de-passe » dans `portes/test-int.txt` (ligne 3356) : un TITRE DE TEST (« forgot-password : réponse CONSTANTE, mais aucun e-mail ne part ») — de la prose.
+  · 4 « mot-de-passe » et 1 « valeur-nommee-secrete » dans `tri-audit-d341b.txt` (lignes 3380 à 3388) : MA PROSE, écrite après l'audit « b » et auditée ici pour la première fois ; elle cite des fixtures de test (« x », « Ancien1motdepasse »), un type (`password: string`) et le nom d'une constante.
+  · 1 « jeton » dans `tri-audit-d341b.txt` (ligne 3390) : MA PROSE, qui cite la FORME d'une URL de vérification.
+  · 2 « mot-de-passe » dans `neutralisation/decouverte/decouverte-1-unitaires.txt` (lignes 3190 et 3192) et 2 dans `decouverte-2-unitaires-apres-correctifs.txt` (lignes 3194 et 3196) : des TITRES de tests du magasin (« changePassword : le hachage lu n'est plus le courant… »)
+    et une ligne d'assertion (« expected 'UPDATE pro_staff_members SET password… to contain 'must_change_password = false' ») — des noms de colonnes et de tests, sans valeur.
+  · Aucune valeur : « valeur déjà présente » ou « trop courte pour une recherche » partout où l'audit a tenté de la rechercher.
+
+Contrôle dédié « 0 valeur réelle sur N fichiers » (D299, règle de Ko du 21/09/2026) : fait en CLÔTURE sur l'arbre entier, `aucune-valeur-reelle.txt` ; ce tri répond à une question plus étroite — « les alertes NOUVELLES sont-elles des mots, ou des valeurs ? » — et la réponse est : des mots (titres de tests, prose, marqueurs de masquage).
+⛔ Ce que ce tri ne dit PAS : que la sortie brute de l'e2e, gardée HORS dépôt, ne porte pas de jetons — elle en porte 79, d'une base jetable (`zwadj_e2e`, recréée à chaque lancement). C'est pourquoi la pièce versée est masquée.

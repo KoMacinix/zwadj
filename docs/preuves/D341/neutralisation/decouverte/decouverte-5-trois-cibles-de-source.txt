@@ -1,0 +1,32 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 236 déclarées · 3 jouées · 0 non jouée(s) (sans --int) · 1 mesure(s) distincte(s) · 2 fichier(s) muté(s)
+  pré-vol sources : code 0 · passés 15 · en échec 0
+■ K-18. ⛔ MP-43 — une durée écrite EN DUR s'introduit dans le module des cookies (un second levier de la durée)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes
+         ↳ AssertionError: fichiers qui écrivent une durée en dur : staff-cookies.ts: expected [ 'staff-cookies.ts' ] to deeply equal []
+■ S-33. ⛔ MP-41 — une HORLOGE de l'API s'introduit dans le service du personnel (le temps se décide dans la base)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`
+         ↳ AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal []
+■ S-34. ⛔ MP-11 — le service du personnel écrit dans le JOURNAL (un mot de passe pourrait y arriver)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 14 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut 
+         ↳ AssertionError: fichiers qui journalisent : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal []
+  empreintes : 14 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 3 cible(s) jouée(s) sur 236, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

@@ -1,0 +1,123 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-login.int-spec.ts (34 tests) 31185ms
+   ✓ K-15 — la connexion nominale > 200 : le membre est rendu, une SESSION neuve est ouverte et son cookie posé, `last_login_at` est écrit, les compteurs sont à zéro, UNE ligne d'audit `staff.login`  1104ms
+   ✓ K-15 — la connexion nominale > la recherche du membre se fait sur la CLÉ normalisée : « AMINE », « amine » et « Âmine » ouvrent le même compte  1177ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — un poste déjà reconnu (son cookie d'appareil) RÉUTILISE l'appareil : aucun cookie d'appareil neuf, aucune ligne d'appareil de plus, `last_used_at` écrit  692ms
+   ✓ K-15 — la connexion nominale > un poste NEUF (aucun cookie d'appareil) reçoit un appareil neuf et son cookie  696ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'un AUTRE MEMBRE de la même salle n'est pas réutilisé : un appareil neuf est créé, l'appareil de l'autre n'est pas touché  652ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'une AUTRE SALLE n'est pas réutilisé, même pour le même nom de compte  1130ms
+   ✓ K-15 — la connexion nominale > un appareil RÉVOQUÉ ou EXPIRÉ n'est pas réutilisé  815ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-8 — un mot de passe juste ne paie QU'UN hachage réel, aucun factice  717ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ compte inconnu, mauvais mot de passe, membre désactivé, salle sans couche : même statut 401, même code `STAFF_INVALID_CREDENTIALS`, même corps (hors horodatage)  1650ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ MP-4 — un membre DÉSACTIVÉ n'accumule AUCUN échec et ne paie qu'un hachage FACTICE (compte éteint = compte inconnu)  630ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ MP-18 — le nom d'un membre d'une AUTRE salle est inconnu ici : 401 identique, aucun compteur de l'autre salle ne bouge  1527ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ VINGT connexions parallèles au mauvais mot de passe : exactement CINQ comptées, au plus CINQ vérifications du VRAI hachage, les quinze autres paient le factice ; vingt corps identiques ; la pause court  1914ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ PENDANT la pause, le BON mot de passe est refusé du même refus, sans vérifier le vrai hachage, sans toucher aux compteurs — et la pause ne se prolonge pas  1412ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ la pause n'est JAMAIS définitive : une fois son échéance passée (vieillissement SQL), le bon mot de passe ouvre une session et remet les compteurs à zéro  1456ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ après l'échéance, un mauvais mot de passe REPART du début (1 échec, pas 6) : le compteur ne survit pas à la pause  1425ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > quatre échecs ne font PAS de pause ; un bon mot de passe les remet à zéro (échecs CONSÉCUTIFS)  1910ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle  1815ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ JUSTE AVANT le seuil (9 min 30 s) : la requête passe ET l'activité est rafraîchie (la fenêtre glisse)  541ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ JUSTE APRÈS le seuil (10 min 30 s) : 401 `STAFF_SESSION_REQUIRED`, et la fin `IDLE` est ÉCRITE sur la ligne de la session  548ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ le PLAFOND absolu atteint (12 h), activité récente : 401, et RIEN n'est écrit (l'énumération des fins n'a pas de valeur « plafond »)  556ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > une session inactive ne ressuscite pas : une fois refusée, un second essai est refusé aussi (la fin est écrite)  577ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > 200 `{ status: 'ok' }` : la session courante prend `LOGOUT`, le cookie de session est EFFACÉ, l'APPAREIL reste, UNE ligne d'audit `staff.logout`  556ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > ⛔ MP-19 — rejouer l'ANCIEN cookie après la déconnexion : 401 `STAFF_SESSION_REQUIRED` à l'instant (révocable à l'instant)  588ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > se déconnecter deux fois : la seconde est refusée (la session n'existe plus) ; aucune seconde ligne d'audit  542ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > ⛔ MP-4 — un membre DÉSACTIVÉ pendant que sa session est ouverte : la requête suivante est refusée (401) et la session prend la fin `DISABLED`  542ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > se déconnecter AVANT toute activation : 401 `STAFF_SESSION_REQUIRED` (il n'y a rien à fermer ; la route n'est pas exemptée)  360ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > avant l'activation : `{ enabled: false, member: null, knownMembers: [] }`  389ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > activée, session valide et poste reconnu : le membre de la session ET les membres reconnus sur ce poste (identifiant, nom de compte, rôle — RIEN d'autre)  546ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > activée, SANS cookie de session : 200 (jamais 401), `member: null` ; les membres reconnus viennent des cookies d'appareil seuls  529ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > ⛔ une session TERMINÉE n'est pas rendue comme vivante (200, `member: null`) — et le poste reste reconnu  569ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > ⛔ la lecture de l'état NE PROLONGE PAS la session : une session inactive depuis 9 minutes l'est toujours après la lecture  550ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > ⛔ MP-3 — seuls les membres de CETTE salle sont reconnus : le cookie d'appareil d'une autre salle n'ajoute personne ; un appareil révoqué ou expiré non plus  1030ms
+   ✓ MP-11 — AUCUN jeton du personnel dans la sortie RÉELLE du journal des requêtes > ⛔ activer, se connecter, se déconnecter, lire l'état, changer son mot de passe : les valeurs des cookies posés et les mots de passe ne sont NULLE PART dans la sortie, et chaque route a bien été journalisée  1257ms
+ ✓ test/int/staff-session-guard.int-spec.ts (18 tests) 14900ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`  1746ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint  855ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas  687ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)  623ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)  1003ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)  898ms
+   ✓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`  3618ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > ⛔ le MÊME Bearer : la requête d'avant passe, la requête d'APRÈS l'activation est refusée (le drapeau est relu à chaque requête, jamais mis dans le jeton)  538ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > le jeton d'accès NE PORTE PAS le drapeau : ses claims sont toujours { sub, role } (D4) — un jeton émis avant l'activation reste valable après  371ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session terminée par SQL (fin `LOGOUT` posée à la main) est refusée à la requête suivante, sans attendre  495ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée  1006ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)  976ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > le hachage SHA-256 du cookie est ce qui est cherché : un cookie dont le hachage a été retiré de la base est refusé  522ms
+ ✓ test/int/staff-password.int-spec.ts (13 tests) 15342ms
+   ✓ K-18 — le changement nominal > 200 : le membre est rendu ; le hachage est REMPLACÉ (argon2id) ; les dates sont réécrites (changé maintenant, expire dans 90 jours) ; `mustChangePassword` est faux ; UNE ligne d'audit  1574ms
+   ✓ K-18 — le changement nominal > le nouveau mot de passe ouvre une session ; l'ancien ne l'ouvre plus  1548ms
+   ✓ K-18 — le changement nominal > ⛔ MP-5 / S-105 — les AUTRES sessions du membre prennent `PASSWORD_CHANGED` ; la session courante et l'appareil RESTENT ; la requête de l'autre poste est refusée à l'instant (MP-19)  1429ms
+   ✓ K-18 — le changement nominal > les sessions d'un AUTRE membre ou d'une autre salle ne sont pas touchées  1397ms
+   ✓ K-18 — les refus > ⛔ un mot de passe ACTUEL faux : 400 `STAFF_CURRENT_PASSWORD_INVALID`, UN échec compté, une ligne d'audit `staff.password_change_failed`, le hachage est INCHANGÉ, les autres sessions aussi  715ms
+   ✓ K-18 — les refus > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le hachage est inchangé, et le compteur est REMIS À ZÉRO (le bon mot de passe actuel n'est pas un échec)  1127ms
+   ✓ K-18 — les refus > ⛔ MP-24 — un nouveau mot de passe COURANT (une entrée de la liste qui passe le schéma, dérivée de la liste) : 400 `STAFF_PASSWORD_COMMON`, AUCUN essai consommé  533ms
+   ✓ K-18 — les refus > la validation du corps : nouveau mot de passe trop faible, actuel manquant, clé inconnue → 400  600ms
+   ✓ K-18 — les refus > sans session de personnel (couche activée, pas de cookie) : 401 `STAFF_SESSION_REQUIRED` ; couche éteinte : 401 aussi (le changement est celui d'un MEMBRE, il en faut un)  863ms
+   ✓ S-102 — le compteur est PARTAGÉ avec la connexion > ⛔ trois connexions fausses et deux changements faux = cinq comptés : la pause court ; ensuite le BON mot de passe est refusé des deux côtés (même refus, vrai hachage non vérifié)  1748ms
+   ✓ S-102 — le compteur est PARTAGÉ avec la connexion > ⛔ un changement réussi remet la pause et les compteurs à zéro  1173ms
+   ✓ la CONCURRENCE du remplacement > ⛔ deux changements simultanés avec le MÊME mot de passe actuel : UN réussit (200), l'autre est refusé (400 `STAFF_CURRENT_PASSWORD_INVALID`) — le hachage lu est la condition du remplacement, jamais deux remplacements  1193ms
+   ✓ les comptes d'argon2 d'un changement réussi > ⛔ un seul hachage réel de l'ACTUEL, un second pour la comparaison de RÉUTILISATION (contre le même hachage), un seul `hash` du nouveau — et aucun factice  945ms
+ ✓ test/int/staff-activation.int-spec.ts (17 tests) 12025ms
+   ✓ K-14 — l'activation nominale > 201 : le Manager est rendu ; le drapeau de la salle est posé ; UN membre MANAGER ACTIF, UN appareil, UNE session ; le mot de passe est haché en argon2id  964ms
+   ✓ K-14 — l'activation nominale > ⛔ MP-40 — Manager, appareil et session sont liés : la session pointe l'appareil créé, qui pointe le Manager ; les trois échéances sont celles du levier (mot de passe 90 jours, appareil 90 jours, session 12 h)  509ms
+   ✓ K-14 — l'activation nominale > ⛔ S-99 / MP-37 — le cookie de SESSION : `HttpOnly`, `SameSite=Strict`, chemin `/api/v1`, AUCUNE échéance côté navigateur ; son hachage SHA-256 est celui de la base  533ms
+   ✓ K-14 — l'activation nominale > ⛔ S-99 / R-6 (D341) / MP-37 — le cookie d'APPAREIL : un par membre, `zwadj_dv_<suffixe>`, `HttpOnly`, `SameSite=Strict`, chemin `/api/v1/pro/staff`, échéance = la durée du PIN ; son hachage est celui de la base  499ms
+   ✓ K-14 — l'activation nominale > ⛔ MP-11 — AUCUN jeton ni mot de passe en clair en base : ni la session, ni l'appareil, ni le mot de passe du Manager ne figurent dans une seule colonne des tables du personnel ni de l'audit  527ms
+   ✓ K-14 — l'activation nominale > ⛔ MP-33 — UNE ligne d'audit `staff.activate`, écrite par la même transaction : l'acteur est le compte commun ET le Manager créé ; la charge utile ne porte que le rôle  530ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  973ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 2) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  1044ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 3) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  1045ms
+   ✓ MP-22 — l'activation CONCURRENTE > une seconde activation APRÈS la première : 409 `STAFF_ALREADY_ACTIVATED` (le drapeau ne se repose pas), et rien n'est ajouté  686ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-23 — e-mail NON vérifié (changé depuis la connexion) : 403 `STAFF_EMAIL_NOT_VERIFIED`, RIEN n'est créé, le drapeau reste éteint  531ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-23 — un CLIENT, un ADMIN : 403 `FORBIDDEN` (le rôle) ; sans Bearer : 401 `UNAUTHENTICATED` ; rien n'est créé  703ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-34 — les CINQ routes du personnel sont réservées au PRO : un CLIENT et un ADMIN reçoivent 403 `FORBIDDEN` sur chacune (l'état et la déconnexion comprises), un anonyme 401 `UNAUTHENTICATED`  769ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-24 — un mot de passe COURANT (une entrée de la liste qui passe déjà le schéma, dérivée de la liste) : 400 `STAFF_PASSWORD_COMMON`, rien n'est créé  371ms
+   ✓ l'ACTIVATION REFUSÉE > la validation du corps : mot de passe trop faible, nom invalide, clé inconnue (`role`), corps vide → 400 avec les clés localisables  420ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ la transaction est ATOMIQUE : si l'insertion du Manager échoue (un membre de même clé existe, drapeau éteint par une intervention manuelle), le drapeau posé une instruction plus tôt est DÉFAIT — 409 `STAFF_ACCOUNT_NAME_TAKEN`, drapeau toujours éteint  549ms
+   ✓ l'activation d'UN pro n'affecte pas les autres > la couche d'une salle n'allume pas celle d'une autre : l'autre salle reste éteinte  876ms
+ ✓ test/int/migration-non-empty.int-spec.ts (31 tests) 10477ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  560ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > prépare : rend cohérentes les deux lignes fautives de D282, applique D282 (qui PASSE désormais), sème les salles et les devis du lot  445ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  673ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)  641ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL  531ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de huit devis dans CHAQUE état (hérités compris), d'une fiche, et de deux réservations (l'une rattachée à un devis)  1014ms
+   ✓ ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur)  623ms
+ ✓ test/int/staff-schema.int-spec.ts (21 tests) 9849ms
+   ✓ la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la colonne d'audit  775ms
+   ✓ la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > ⛔ 1 a — la NULLABILITÉ du § 5.2 du cadrage, colonne par colonne (la table est celle du cadrage, lue ici comme une donnée à confronter à la base)  402ms
+   ✓ la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > les défauts du § 5.2 : statut ACTIVE, `must_change_password` faux, compteurs à 0, aucun PIN, aucune pause ; la session naît active à l'instant  365ms
+   ✓ la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle passe  785ms
+   ✓ la tranche ratifiée — ses garanties > CHECK pin_failed_count entre 0 et 3 : -1 et 4 refusés, 0 à 3 acceptés  409ms
+   ✓ la tranche ratifiée — ses garanties > UNIQUE (token_hash) sur les appareils ET sur les sessions  443ms
+   ✓ la tranche ratifiée — ses garanties > clés étrangères : un membre sans salle, un appareil sans membre, une session sans appareil sont refusés  454ms
+   ✓ la tranche ratifiée — ses garanties > ⛔ les énumérations refusent une valeur hors schéma — chacune PAR SON NOM (un rôle `ADMIN`, un statut `ARCHIVED`, une fin `INCONNUE`) : un refus pour une autre raison (une table absente) ne prouverait rien  445ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (a) `status = 'DISABLED'` ⇔ `disabled_at IS NOT NULL` : DISABLED sans date refusé, ACTIVE avec date refusé, DISABLED avec date accepté  409ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des trois, isolé, est refusé ; les trois ensemble sont acceptés  494ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (c) `ended_at` et `end_reason` : tous deux nuls ou tous deux non nuls — chacun isolé est refusé  434ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (d) `expires_at > created_at` sur les sessions ET sur les appareils : égalité et antériorité refusées  446ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (e) `password_failed_count >= 0` : -1 refusé ; 0 et une valeur au-delà du seuil de pause acceptés (le seuil est une règle du service, pas de la base)  431ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (f) `account_name_key <> ''` : une clé vide est refusée  385ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ 1 b — AUCUN déclencheur : « jamais zéro Manager » n'est pas une garde de base (§ 3.2 du cadrage) ; la table n'en porte aucun, et un dernier Manager peut être désactivé en SQL  365ms
+   ✓ l'audit et les suppressions > ⛔ `audit_logs.actor_member_id` est une clé étrangère : un membre inexistant est refusé  350ms
+   ✓ l'audit et les suppressions > ⛔ `ON DELETE SET NULL` : supprimer un membre (sans appareil ni session) met `actor_member_id` à NULL dans le journal — la ligne d'audit SURVIT, sans son auteur  388ms
+   ✓ l'audit et les suppressions > ⛔ RESTRICT : une salle qui porte un membre ne se supprime pas en dur ; un membre qui porte un appareil ne se supprime pas ; un appareil qui porte une session non plus  429ms
+   ✓ l'audit et les suppressions > ⛔ RESTRICT sur `pro_staff_sessions.member_id`, ISOLÉ : un membre qui porte une session ne se supprime pas — la session pointe l'appareil d'un AUTRE membre, pour que ce ne soit pas la clé de l'appareil qui refuse à sa place  388ms
+   ✓ l'audit et les suppressions > les index simples existent sous les noms que `schema.prisma` leur donne (sinon dérive permanente, D186) : appareils et sessions par membre, sessions par appareil, journal par auteur-membre  377ms
+   ✓ l'audit et les suppressions > `created_by_member_id` : une clé étrangère RESTRICT — le créateur d'un autre membre ne se supprime pas (les membres se désactivent, ils ne se suppriment jamais)  359ms
+ ✓ test/int/throttle.int-spec.ts (10 tests) 5598ms
+   ✓ Rate limiting /auth (limites réelles) > resend-verification : 3 requêtes passent, la 4e est rejetée en 429 avec Retry-After  332ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  1566ms
+ ✓ test/int/log-set-cookie.int-spec.ts (6 tests) 1809ms
+
+ Test Files  8 passed (8)
+      Tests  150 passed (150)
+   Start at  22:47:19
+   Duration  126.88s (transform 2.96s, setup 185ms, collect 21.97s, tests 101.18s, environment 1ms, prepare 1.28s)
+
