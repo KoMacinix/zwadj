@@ -1,0 +1,28 @@
+liste versée : 5 campagne(s) · jouées dans ce lancement : 5
+
+[1] neutralize-r4.py …
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit)
+
+[2] neutralize-r41.py --int …
+    sortie=0 · 70 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 70 garde(s) mordue(s) sur 70 cible
+
+[3] neutralize-r42.py --int …
+    sortie=0 · 28 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 28 garde(s) mordue(s) sur 28 cible
+
+[4] neutralize-r43.py --int …
+    sortie=0 · 87 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 87 garde(s) mordue(s) sur 87 cible
+
+[5] neutralize-s11b.py --int …
+    sortie=0 · 13 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 13 garde(s) mordue(s) sur 13 cible
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-r4.py                        0     2     0     0   177  — (aucun résumé écrit)
+neutralize-r41.py --int                 0    70     0     0  2305  70 garde(s) mordue(s) sur 70 cible
+neutralize-r42.py --int                 0    28     0     0  1045  28 garde(s) mordue(s) sur 28 cible
+neutralize-r43.py --int                 0    87     0     0  4604  87 garde(s) mordue(s) sur 87 cible
+neutralize-s11b.py --int                0    13     0     0   577  13 garde(s) mordue(s) sur 13 cible
+========================================================================================================================
+PARCOURU : 5 passage(s) pour 5 campagne(s) (attendu : autant que de campagnes ; `r33`, `r39` et `r44` sont jouées UNE fois, avec --int) · 8708s
+MESURÉ : 200 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 0 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+exit=0

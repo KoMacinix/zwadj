@@ -1,0 +1,17 @@
+D341 — tri différentiel de l'audit de secrets « e » (AVANT le commit des pièces du complément : les cinq journaux de campagne et leur rapport)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341d.txt docs/preuves/D341/audit-secrets-d341e.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341e.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) — l'audit porte sur `docs/preuves/` seul, pas sur le code :
+  · précédente (d341d) : 4 662 fichiers parcourus, 4 528 audités, 134 exclus, 1 096 alertes.
+  · nouvelle (d341e)   : 4 670 fichiers parcourus, 4 535 audités, 135 exclus, 1 096 alertes. Contrôle de l'outil : audités + exclus = 4 670 (attendu 4 670).
+  · RAPPROCHEMENT — l'arithmétique FERME ENTIÈREMENT (8 = 6 + 2) : +8 fichiers parcourus = les 6 fichiers non suivis de `docs/preuves/D341/` au moment de l'audit (les cinq journaux du complément et leur rapport, comptés par `git ls-files --others`) + 2 écrits après l'audit « d » (la sortie scellée « d » et son tri). Audités +7 (4 528 → 4 535) : les 6 non suivis et le tri « d ». Exclus +1 (134 → 135) : la sortie scellée « d », épinglée par son sceau. Alertes +0.
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente (ventilation par motif : aucune). Il n'y a donc aucun contexte à lire : le zéro est celui d'un tri qui a parcouru les 1 096 contextes de chacune des deux sorties.
+Ce zéro est ATTENDU et a une cause lisible : le tri « d » a été écrit sans citer de titre de test, de forme d'adresse ni de mot de déclenchement (c'était sa dernière phrase), alors que le tri « c » en citait et avait fait naître dix alertes dans l'audit « d ». Les journaux du complément ne portent que des lignes de cibles et des résumés de comptes.
+
+Contrôle dédié « 0 valeur réelle sur N fichiers » (D299) : fait en CLÔTURE sur l'arbre entier, `aucune-valeur-reelle.txt`.
+⛔ Ce que ce tri ne dit PAS : que les fichiers hors `docs/preuves/` n'en portent pas — l'audit n'y regarde pas.
+⚠ Pour le tri « f » : même consigne que le « d » a donnée à celui-ci — ce fichier-ci sera audité à son tour, et il n'a volontairement ni citation, ni forme d'adresse, ni mot de déclenchement entre guillemets.
