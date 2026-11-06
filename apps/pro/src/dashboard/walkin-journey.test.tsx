@@ -3016,6 +3016,20 @@ describe("FP-3 — la révision reprend la copie du nom complétée sur la versi
     expect(corps.clientNameAr).toBe(COPIE_AR);
   });
 
+  it("⛔ « Annuler » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    expect(vi.mocked(quotes.create).mock.calls.length).toBe(2);
+    expect(vi.mocked(quotes.revise).mock.calls.length).toBe(0);
+    const corps = vi.mocked(quotes.create).mock.calls[1]?.[1] as unknown as Record<string, unknown>;
+    expect(corps.clientRecordId).toBe("fiche-1");
+    expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")).toBe(false);
+  });
+
   it("⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409)", async () => {
     const quotes = doublesDuServeur({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" });
     await setup({ quotes, clients: { lookup: vi.fn().mockResolvedValue({ found: true, record: ficheLiee() }) } });
