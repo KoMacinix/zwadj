@@ -43,3 +43,15 @@ joue pas dans cette session : elle est DUE à l'intégration, et le rapport le d
 
 Conditionnels : un harnais d'un autre rang dont une ancre ou une mesure serait périmée par ce lot (le relevé et les campagnes le
 diront) — déclaré par une extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 27 | `docs/preuves/front-client/FP-1/rouges/rouge-pro-v2.txt` | les ROUGES REJOUÉS contre l'état d'avant après la correction d'un test (deux saisies EN bornes ajoutées) ; empreintes des fichiers de test livrés | 3 bis |
+
+Motif : la cible P-3 du harnais (ligne 12 de la table) — « la quantité n'est plus un entier strict » — rend MUETTE : sa mutation laisse
+passer « 1e3 », que la borne HAUTE du catalogue (30) rattrape ; le test de la règle (ligne 3) ne distinguait donc pas un entier strict
+d'un `Number()`. Seule une saisie qui reste DANS les bornes le peut (« 1e1 » = 10, « 0x10 » = 16). Le test change après ses rouges :
+ils sont rejoués avec le test livré, le code mis de côté, pour que l'empreinte versée soit celle du test livré (précédents : FC-8,
+extensions 2 et 5 ; FC-12, extension 1).
