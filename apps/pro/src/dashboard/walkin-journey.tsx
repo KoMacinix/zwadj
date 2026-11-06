@@ -81,6 +81,7 @@ import {
   QUOTE_AMOUNT_LOCALE,
   QUOTE_DOCUMENT_LOCALES,
   QUOTE_SENT_VIA_ORDER,
+  QuoteErrorCode,
   ServicePricingType,
   intlLocale,
   isPhoneComplete,
@@ -97,6 +98,7 @@ import {
 } from "@zwadj/types";
 import { ChoiceDialog, JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField, useDismissLayer } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
+import { ApiError } from "../lib/auth-client";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useProClients, useQuotes, useServices } from "../venues/venue-client-context";
 import { VenueCalendar } from "../venues/venue-calendar";
@@ -794,6 +796,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * ⛔ Rang 41 (D336, K-5) — la question du nom a reçu sa réponse : la copie se COMPLÈTE sur le devis (`POST /quotes/:id/client-name` ; c'est le
    * SERVEUR qui complète aussi la fiche, quand C-C3 le permet), PUIS la remise part dans cette langue, sur le devis que le serveur a rendu.
    * Un refus (409 : la copie a été complétée entre-temps) est DIT, et rien n'est remis ni téléchargé.
+   * ⛔ FP-2 — ET le devis est RELU : le 409 dit que la copie de cette langue EXISTE déjà sur le serveur ; sans elle, le devis local la croirait
+   * encore manquante et chaque remise suivante reposerait la question pour se heurter au même 409. Le serveur ne remplace jamais une copie
+   * (M-6) : l'écran n'écrit rien de plus, il GARDE celle du serveur. Aucun `GET /quotes/:id` n'existe — la relecture passe par la liste des devis
+   * de la salle (`listForVenue`, déjà au client d'API). Elle est un CONFORT : si elle échoue, ou ne retrouve pas le devis, l'écran reste tel qu'il
+   * était (le refus dit, la question se repose) — la copie n'est jamais inventée. Seul CE 409 la justifie : un autre refus ne relit rien.
    */
   const completerLeNom = (nom: string) => {
     const attente = nomDe;
@@ -808,6 +815,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         complete = await quotes.completeClientName(devis.id, { locale: attente.locale, name: nom });
       } catch (cause) {
         setError(toMessageRef.current(cause));
+        if (cause instanceof ApiError && cause.code === QuoteErrorCode.QUOTE_CLIENT_NAME_ALREADY_SET) {
+          try {
+            // Pas de `Array.isArray` ici (D133) : sous ce `try`, une réponse mal formée lève au `find` et laisse l'écran inchangé.
+            const relu = (await quotes.listForVenue(venue.id)).find((ligne) => ligne.id === devis.id);
+            if (relu !== undefined) setQuote(relu);
+          } catch {
+            /* la relecture est un confort : le refus reste dit, l'écran inchangé */
+          }
+        }
         setBusy(false);
         return;
       }
