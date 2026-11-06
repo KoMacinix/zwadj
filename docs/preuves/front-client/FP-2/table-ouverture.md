@@ -39,3 +39,14 @@ Ordre des commits : (1) cette table seule ; (2) les tests et leurs ROUGES — lu
 Conditionnels : un harnais d'un autre rang dont une ancre ou une mesure serait périmée par ce lot (le relevé et les campagnes le
 diront) — déclaré par une extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
 Aucune chaîne visible n'est ajoutée : le refus garde son message (`quote.errors.clientNameAlreadySet`) ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 20 | `docs/preuves/front-client/FP-2/rouges/rouge-pro-v2.txt` | le ROUGE REJOUÉ contre l'état d'avant après la correction d'un test (le bouton du canal vérifié par une assertion, plus par une requête qui lève) ; empreinte du test livré | 2 bis |
+
+Motif : la cible A-5 du harnais (ligne 5 de la table) — « une relecture qui échoue VIDE le devis local » — se lit PAS-ASSERTION : sous la
+mutation, l'assistant de test du bloc FP-2 (ligne 2) échoue par `getByRole("button", { name: "Imprimé et remis" })` — une erreur de
+REQUÊTE (le bouton n'existe plus, le devis est vidé), que le lecteur strict ne compte pas comme une morsure (D304, D316). Le test change
+après son rouge : le bouton est vérifié par `queryByRole` + une assertion native, puis cliqué ; le rouge est rejoué avec le test livré.
