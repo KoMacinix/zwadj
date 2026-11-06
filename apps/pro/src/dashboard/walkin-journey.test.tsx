@@ -2836,8 +2836,12 @@ describe("FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE
   const refus409 = () => new ApiError(409, "QUOTE_CLIENT_NAME_ALREADY_SET", "quote.errors.clientNameAlreadySet", []);
   const dialogueDuNom = () => screen.queryByRole("dialog", { name: FR.nameDialogTitleAr });
   async function cliquerCanalArabe() {
+    // ⚠ Le bouton du canal est vérifié par une ASSERTION native : `getByRole` qui lève serait une erreur de REQUÊTE, pas une morsure (D304, D316) —
+    // c'est ce que la cible A-5 du harnais a montré (le devis vidé, le bouton introuvable).
+    const canal = screen.queryByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string });
+    expect(canal !== null).toBe(true);
     await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string }));
+      fireEvent.click(canal as HTMLElement);
     });
     const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
     expect(boite !== null).toBe(true);
