@@ -1,0 +1,83 @@
+# FP-2 — `python3 neutralisation/lancer-campagnes.py`, joué AVANT le commit du code (le tri lit `git diff HEAD` et les fichiers non suivis),
+# Playwright par le shim du conteneur. Ce que la série dit : 11 campagnes sur 53, 403 mordues · 1 muette · 0 non mesurée · 4 726 s ;
+#   · fp2 6/6 (rejouée après l'extension 1), fp1 18/18, fc6 12/12, journey 7/7, r32 65/65, r38 46/46, r39 35/35, r41 54/54, r42 22/22, r43 52/52 ;
+#   · r33 (sortie 1) : M-12 MUETTE — garde de fuseau muette sur un serveur en UTC (prouvé en FC-4, point 3 de
+#     `docs/preuves/front-client/FC-4/ancres-campagnes.txt`), comme en FC-6, FC-8, FC-12 et FP-1 : ce lot ne touche pas la date d'un événement.
+
+3 fichier(s) modifié(s) depuis HEAD → 11 campagne(s) concernée(s) sur 53.
+  · neutralize-fc6.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-fp1.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-fp2.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-journey.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r32.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r33.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r39.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r41.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r42.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+  · neutralize-r43.py  (1 fichier(s) en commun)
+      apps/pro/src/dashboard/walkin-journey.tsx
+
+[1/11] neutralisation/neutralize-fc6.py …
+    sortie=0  12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/11] neutralisation/neutralize-fp1.py …
+    sortie=0  18 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/11] neutralisation/neutralize-fp2.py …
+    sortie=0  6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/11] neutralisation/neutralize-journey.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/11] neutralisation/neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/11] neutralisation/neutralize-r33.py …
+    sortie=1  86 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[7/11] neutralisation/neutralize-r38.py …
+    sortie=0  46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/11] neutralisation/neutralize-r39.py …
+    sortie=0  35 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[9/11] neutralisation/neutralize-r41.py …
+    sortie=0  54 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[10/11] neutralisation/neutralize-r42.py …
+    sortie=0  22 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[11/11] neutralisation/neutralize-r43.py …
+    sortie=0  52 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-fc6.py                       0    12    12     0     0    45
+neutralize-fp1.py                       0    18    18     0     0   494
+neutralize-fp2.py                       0     6     6     0     0   210
+neutralize-journey.py                   0     —     7     0     0   256
+neutralize-r32.py                       0    65    65     0     0   551
+neutralize-r33.py                       1    86    86     1     0   756
+neutralize-r38.py                       0    46    46     0     0   445
+neutralize-r39.py                       0    35    35     0     0   274
+neutralize-r41.py                       0    54    54     0     0   594
+neutralize-r42.py                       0    22    22     0     0   166
+neutralize-r43.py                       0    52    52     0     0   935
+================================================================================================
+MESURÉ : 403 garde(s) mordue(s) · 1 muette(s)/erreur(s) · 0 non mesurée(s) · 11 campagne(s) · 4726s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-r33.py → sortie 1
+CODE_SORTIE=1

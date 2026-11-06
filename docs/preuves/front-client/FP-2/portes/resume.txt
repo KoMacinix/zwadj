@@ -1,0 +1,8 @@
+# HEAD 401fd580537c439d96a26affa582ace383cdea03 · arbre : 5 entrée(s) non commitée(s) · 2026-11-06T07:22:32Z
+typecheck exit=0 duree=14s
+lint exit=0 duree=8s
+test exit=0 duree=64s
+build exit=0 duree=30s
+test:int exit=1 duree=216s
+test:e2e exit=0 duree=170s
+FINI · journaux bruts : /tmp/tmp.Okofc1YqR8

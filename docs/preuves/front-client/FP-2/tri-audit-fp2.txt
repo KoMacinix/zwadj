@@ -1,0 +1,18 @@
+
+FP-2 — tri différentiel de l'audit de secrets « fp2 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FP-2/audit-secrets-fp2.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 864 fichiers (89 075 817 octets),
+audités 4 719, exclus 145, alertes 1 049 ; audités + exclus = 4 864 (attendu 4 864).
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FP-1/audit-secrets-fp1.txt
+docs/preuves/front-client/FP-2/audit-secrets-fp2.txt — calibration à deux bras tenue. Précédente : 1 045 contextes ; nouvelle :
+1 049 ⇒ alertes ABSENTES de la précédente : 4 (jeton = 3 · mot-de-passe = 1), lues aux lignes 3338 à 3344 de la sortie scellée.
+  · [jeton] FP-1/rapport.md l. 65 : la phrase qui COMPTE les « token= » restants (0) — écrite après l'audit de FP-1 (limite écrite
+    là-bas), elle entre ici.
+  · [mot-de-passe] FP-1/tri-audit-fp1.txt l. 11 : la phrase qui CITE un titre de test (« hasPassword=false : « Définir » … ») —
+    un nom de champ et un booléen, aucune valeur ; écrite après l'audit de FP-1.
+  · [jeton] FP-1/tri-audit-fp1.txt l. 9 : la phrase qui COMPTE les « token= » restants (0) — écrite après l'audit de FP-1.
+  · [jeton] FP-2/portes/test-e2e.txt l. 1 : l'en-tête du pilote des portes, qui compte le paramètre de jeton restant (0 ; le journal
+    brut reste hors dépôt, ses lignes [WebServer] retirées).
+Résultat du tri : 4 alertes lues, 0 valeur réelle. Contrôle complémentaire : `git grep -E "token=[A-Za-z0-9_-]{16,}"` sur HEAD,
+à la clôture. Limite écrite : ce fichier, controle.txt et rapport.md sont écrits après l'audit.
