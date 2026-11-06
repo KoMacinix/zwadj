@@ -2916,3 +2916,124 @@ describe("FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE
     expect(listForVenue.mock.calls.length).toBe(0);
   });
 });
+
+
+// ── FP-3 (session `front-client`) — UNE RÉVISION REPREND LA COPIE DU NOM DE LA VERSION COURANTE ──────────────────────────────────────
+// La règle elle-même est mesurée, pure, par `walkin-revision.test.ts` ; ici l'ÉCRAN : ce que la révision ENVOIE après que la boîte de langue
+// (K-5) a complété la copie en arabe sur la version précédente. ⛔ Ne touche ni L36-2 (un brouillon n'a ni fiche ni nom) ni K-5.
+// ⚠ Les verdicts passent par des assertions NATIVES (D304) ; les libellés viennent du CATALOGUE.
+describe("FP-3 — la révision reprend la copie du nom complétée sur la version précédente", () => {
+  const COPIE_AR = "أمين بلقاسم";
+  const dialogueDuNomAr = () => screen.queryByRole("dialog", { name: FR.nameDialogTitleAr });
+  const ficheLiee = (): ClientRecordDTO => ({
+    id: "fiche-9",
+    phone: "+213550000002",
+    email: null,
+    nameAr: null,
+    nameLatin: "Amina Bensalem",
+    linked: true,
+    createdAt: "2026-10-22T10:00:00.000Z",
+    updatedAt: "2026-10-22T10:00:00.000Z"
+  });
+  async function remiseEnArabe() {
+    const canal = screen.queryByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string });
+    expect(canal !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(canal as HTMLElement);
+    });
+    const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
+    expect(boite !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: FR.langArabic }));
+    });
+    await laisserRetomber();
+    const dialogue = dialogueDuNomAr();
+    expect(dialogue !== null).toBe(true);
+    fireEvent.change(within(dialogue as HTMLElement).getByLabelText(FR.nameAr), { target: { value: COPIE_AR } });
+    await act(async () => {
+      fireEvent.click(within(dialogue as HTMLElement).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+  const doublesDuServeur = (over: Partial<QuoteDTO> = {}) => ({
+    create: vi.fn().mockResolvedValue(draft(over)),
+    revise: vi.fn().mockResolvedValue(draft({ id: "q2", version: 2, clientNameAr: COPIE_AR, ...over })),
+    completeClientName: vi.fn().mockResolvedValue(draft({ clientNameAr: COPIE_AR, ...over })),
+    deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", clientNameAr: COPIE_AR, ...over })),
+    document: vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" }))
+  });
+  /** Le devis calculé, puis la remise en arabe : la copie arabe est COMPLÉTÉE sur la version 1. */
+  async function jusquALaCopieCompletee(quotes: ReturnType<typeof doublesDuServeur>) {
+    const r = await setup({ quotes });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await remiseEnArabe();
+    return r;
+  }
+  const corpsDeLaRevision = (quotes: ReturnType<typeof doublesDuServeur>) => vi.mocked(quotes.revise).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+  const modifierLeDevis = async (quotes: ReturnType<typeof doublesDuServeur>) => {
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.revise).mock.calls.length).toBe(1));
+  };
+
+  it("⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientRecordId).toBe("fiche-1");
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+    expect(corps.clientNameLatin).toBe("Amine Belkacem");
+  });
+
+  it("⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    modifierDepuisRecap(/étape Client/);
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "150" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.guests).toBe(150);
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+  });
+
+  it("⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    modifierDepuisRecap(/étape Client/);
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "Amine Haddad" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientNameLatin).toBe("Amine Haddad");
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+  });
+
+  it("⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409)", async () => {
+    const quotes = doublesDuServeur({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" });
+    await setup({ quotes, clients: { lookup: vi.fn().mockResolvedValue({ found: true, record: ficheLiee() }) } });
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "200" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await repondreDate();
+    await repondreCreneau();
+    await repondrePrestations();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await remiseEnArabe();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientRecordId).toBe("fiche-9");
+    expect(corps.clientNameLatin).toBe("Amina Bensalem");
+    expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")).toBe(false);
+  });
+});

@@ -1,0 +1,451 @@
+# FP-3 — ROUGE (pro), lu contre l'état d'AVANT (une révision ne reprend pas la copie du nom de la version courante), session front-client, 06/11/2026
+# HEAD au moment de la mesure : 2efecd1921c52336ebd837d91b472a752c059edd (tests non commités ; code d'avant — aucune ligne de apps/pro/src hors tests n'est modifiée)
+# commande : (apps/pro) npx vitest run src/dashboard/walkin-revision.test.ts src/dashboard/walkin-journey.test.tsx — code de sortie 1
+# sha256 apps/pro/src/dashboard/walkin-revision.test.ts : 5aaec18026ccf0df338227a7d8ed8c5a1dfd12da77af3d9a0cd2f5dea05b8128
+# sha256 apps/pro/src/dashboard/walkin-journey.test.tsx : 7eda8ec5c0114fd952a03f27fe91c9f7b9581e29bf0763763280d8bd2518d2bc
+# lecture : 11 échecs sur les 12 tests neufs, TOUS AssertionError — la règle absente (expected 'undefined' to be 'function' ; 7 × { regleAbsente: true } au lieu du corps attendu)
+#   et, à l'écran, la révision ne porte pas la copie arabe (expected undefined to be 'أمين بلقاسم', 3 fois) ; le 12e (une fiche LIÉE n'en reçoit rien) est VERT À VIDE —
+#   bras de calibration : l'ancien code n'envoie déjà que les noms de la fiche, et le harnais le mordra en retirant la clause « fiche liée ». Les 170 tests d'avant, verts.
+#   Un premier essai avait un nom de test avec un point (« Amine B. Haddad ») que la règle de nom refuse : l'échec était alors une requête qui lève, pas une assertion ;
+#   le nom a été corrigé (« Amine Haddad ») AVANT cette mesure, qui est la seule versée.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+ ❯ src/dashboard/walkin-revision.test.ts (8 tests | 8 failed) 16ms
+   × FP-3 — la règle existe > `copiePourRevision` est exportée par `walkin-client` 7ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × FP-3 — une révision reprend la copie du nom de la version courante > ⛔ un nom ABSENT de l'écran est repris de la version courante — celui que la boîte de langue y a complété 3ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > ⛔ un nom TAPÉ l'emporte sur celui de la version (les noms corrigés vont au devis) ; l'autre écriture est reprise 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > un champ d'écran en BLANC compte pour absent ; la valeur reprise est ROGNÉE 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > une copie de la version VIDE ou en blanc n'est pas reprise : la clé reste ABSENTE (le contrat refuse la chaîne vide) 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > ⛔ une fiche LIÉE n'en reçoit RIEN : le serveur refuse (409) un nom que la fiche n'a pas — elle impose les siens 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > ⛔ une AUTRE fiche n'en reçoit rien : la copie de l'ancien client ne passe pas au nouveau 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+   × FP-3 — une révision reprend la copie du nom de la version courante > SANS version (la première création) : exactement la copie des noms de l'écran — `copiePourDevis` 1ms
+     → expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/dashboard/walkin-journey.test.tsx (174 tests | 3 failed) 28838ms
+   ✓ Flux par étapes — une seule question à l'écran > s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule 103ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité 113ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré 180ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte 23ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations 41ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — des cases nues ne se distinguent pas 32ms
+   ✓ Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran 67ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif 60ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis 134ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran 117ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer 184ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette 152ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse 169ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier » 132ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ une étape SANS réponse n'est pas cliquable dans le rail 13ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question 119ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien 227ms
+   ✓ Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux 92ms
+   ✓ Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois 129ms
+   ✓ La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide 117ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question 207ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite 162ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse 213ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite 161ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur) 1ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus 191ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré 140ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près 165ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge 201ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > ⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé 8ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition 64ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois 41ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille 187ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien 195ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée » 197ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135) 216ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33) 183ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours 230ms
+   ✓ La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée 162ms
+   ✓ La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133) 133ms
+   ✓ Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation 54ms
+   ✓ Point D — chrome partagée > le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro 10ms
+   ✓ Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client 57ms
+   ✓ Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite 50ms
+   ✓ Point D — chrome partagée > la coche du rail est une icône, la même que côté client 53ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas 12ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle 64ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi 22ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > le texte d'aide dit la longueur du modèle (plus de « 8 à 9 ») 8ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion 186ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit 32ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur 28ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction 22ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison 18ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143) 166ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne 8ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > le même exemple existe en ARABE, pour chacun des champs 0ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby` 26ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre 26ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle 30ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active 33ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé) 28ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe 42ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer 114ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation 53ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton 52ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas 50ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer 102ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT 137ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique) 110ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit 178ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est 10ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé 205ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert` 210ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise 248ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation 182ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre 184ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client 178ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue 212ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran 246ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS 157ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone 207ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF 181ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  1050ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle 189ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  395ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF 218ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée) 200ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché ») 230ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé 220ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise 215ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus) 217ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé » 226ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1024ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons 151ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  955ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré 253ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements 200ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran 215ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte 203ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  884ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  583ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr` 243ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois 209ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule 181ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu 228ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir` 180ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe) 1ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact 8ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail 47ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN 156ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE 151ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés 156ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > un AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client 42ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE 153ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis 41ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise 238ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN 189ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  308ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi 180ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite 174ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite 180ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail » 176ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont 195ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue 225ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine) 239ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé 194ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part 185ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé 200ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > le récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant 55ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ Q1 — l'étape Contact porte UN SECOND bouton, à côté de « Continuer » ; il s'ouvre sans rien taper, n'appelle NI la recherche NI la création de fiche, et mène à l'étape Client 16ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-20 (Q2) — l'étape Client d'un brouillon n'a AUCUN champ de nom et A le champ des invités ; « Continuer » reste grisé sans invités, et la fiche n'est ni cherchée ni créée 43ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le récapitulatif DIT que le contact n'a pas été donné (`draftSummary`) — l'étape Contact est répondue, pas oubliée 38ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact 149ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion 171ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom 164ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN 177ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé » 160ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée 208ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre 216ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit 236ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît 221ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms 291ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial` 152ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe 230ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français 1ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion 261ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1) 183ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Continuer » du contact QUITTE le mode « sans coordonnées » : revenu au contact par « Précédent », un numéro tapé rend l'étape Client COMPLÈTE (les champs des noms, plus le texte du brouillon) 36ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche) 229ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le SECOND bouton est offert à l'étape Contact 10ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche) 154ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route 126ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le récapitulatif DIT que le contact n'a pas été donné 36ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — « Continuer » de l'étape Client d'un brouillon est GRISÉ sans invités et OFFERT avec, sans aucun nom 22ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu 159ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée 178ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — après la promotion, le message « officiel » est rendu 197ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance 137ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active 154ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif 175ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision 233ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier 157ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer 223ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > MD-10 : en arabe, le palier et l'unité s'écrivent en arabe 158ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien 210ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro 230ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant 233ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > une relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée) 234ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ un AUTRE refus (500) ne relit PAS la liste : seul le 409 de la copie déjà là la justifie 197ms
+   × FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin 256ms
+     → expected undefined to be 'أمين بلقاسم' // Object.is equality
+   × FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état) 244ms
+     → expected undefined to be 'أمين بلقاسم' // Object.is equality
+   × FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise 274ms
+     → expected undefined to be 'أمين بلقاسم' // Object.is equality
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409) 238ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin
+AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+
+- Expected: 
+"أمين بلقاسم"
+
++ Received: 
+undefined
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2987:32
+    2985|     const corps = corpsDeLaRevision(quotes);
+    2986|     expect(corps.clientRecordId).toBe("fiche-1");
+    2987|     expect(corps.clientNameAr).toBe(COPIE_AR);
+       |                                ^
+    2988|     expect(corps.clientNameLatin).toBe("Amine Belkacem");
+    2989|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)
+AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+
+- Expected: 
+"أمين بلقاسم"
+
++ Received: 
+undefined
+
+ ❯ src/dashboard/walkin-journey.test.tsx:3002:32
+    3000|     const corps = corpsDeLaRevision(quotes);
+    3001|     expect(corps.guests).toBe(150);
+    3002|     expect(corps.clientNameAr).toBe(COPIE_AR);
+       |                                ^
+    3003|   });
+    3004| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise
+AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+
+- Expected: 
+"أمين بلقاسم"
+
++ Received: 
+undefined
+
+ ❯ src/dashboard/walkin-journey.test.tsx:3016:32
+    3014|     const corps = corpsDeLaRevision(quotes);
+    3015|     expect(corps.clientNameLatin).toBe("Amine Haddad");
+    3016|     expect(corps.clientNameAr).toBe(COPIE_AR);
+       |                                ^
+    3017|   });
+    3018| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — la règle existe > `copiePourRevision` est exportée par `walkin-client`
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/dashboard/walkin-revision.test.ts:22:38
+     20| describe("FP-3 — la règle existe", () => {
+     21|   it("`copiePourRevision` est exportée par `walkin-client`", () => {
+     22|     expect(typeof copiePourRevision).toBe("function");
+       |                                      ^
+     23|   });
+     24| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > ⛔ un nom ABSENT de l'écran est repris de la version courante — celui que la boîte de langue y a complété
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameAr": "أمين بلقاسم",
+-   "clientNameLatin": "Amine Belkacem",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:28:72
+     26| describe("FP-3 — une révision reprend la copie du nom de la version co…
+     27|   it("⛔ un nom ABSENT de l'écran est repris de la version courante — c…
+     28|     expect(regle({ ar: "", latin: "Amine Belkacem" }, FICHE, VERSION))…
+       |                                                                        ^
+     29|       clientRecordId: FICHE.id,
+     30|       clientNameAr: COPIE_AR,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > ⛔ un nom TAPÉ l'emporte sur celui de la version (les noms corrigés vont au devis) ; l'autre écriture est reprise
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameAr": "أمين بلقاسم",
+-   "clientNameLatin": "Amine Haddad",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:36:70
+     34| 
+     35|   it("⛔ un nom TAPÉ l'emporte sur celui de la version (les noms corrig…
+     36|     expect(regle({ ar: "", latin: "Amine Haddad" }, FICHE, VERSION)).t…
+       |                                                                      ^
+     37|       clientRecordId: FICHE.id,
+     38|       clientNameAr: COPIE_AR,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > un champ d'écran en BLANC compte pour absent ; la valeur reprise est ROGNÉE
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameAr": "أمين بلقاسم",
+-   "clientNameLatin": "Amine Belkacem",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:50:63
+     48|   it("un champ d'écran en BLANC compte pour absent ; la valeur reprise…
+     49|     const version: Version = { ...VERSION, clientNameAr: `  ${COPIE_AR…
+     50|     expect(regle({ ar: "   ", latin: "\t" }, FICHE, version)).toEqual({
+       |                                                               ^
+     51|       clientRecordId: FICHE.id,
+     52|       clientNameAr: COPIE_AR,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > une copie de la version VIDE ou en blanc n'est pas reprise : la clé reste ABSENTE (le contrat refuse la chaîne vide)
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameLatin": "Amine Belkacem",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:61:19
+     59|     const corps = regle({ ar: "", latin: "Amine Belkacem" }, FICHE, ve…
+     60|     expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")…
+     61|     expect(corps).toEqual({ clientRecordId: FICHE.id, clientNameLatin:…
+       |                   ^
+     62|   });
+     63| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > ⛔ une fiche LIÉE n'en reçoit RIEN : le serveur refuse (409) un nom que la fiche n'a pas — elle impose les siens
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameLatin": "Amina Bensalem",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:67:19
+     65|     const corps = regle({ ar: "", latin: "Amina Bensalem" }, { id: FIC…
+     66|     expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")…
+     67|     expect(corps).toEqual({ clientRecordId: FICHE.id, clientNameLatin:…
+       |                   ^
+     68|   });
+     69| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > ⛔ une AUTRE fiche n'en reçoit rien : la copie de l'ancien client ne passe pas au nouveau
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameLatin": "Karim Haddad",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:74:19
+     72|     const corps = regle({ ar: "", latin: "Karim Haddad" }, FICHE, autr…
+     73|     expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")…
+     74|     expect(corps).toEqual({ clientRecordId: FICHE.id, clientNameLatin:…
+       |                   ^
+     75|   });
+     76| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  src/dashboard/walkin-revision.test.ts > FP-3 — une révision reprend la copie du nom de la version courante > SANS version (la première création) : exactement la copie des noms de l'écran — `copiePourDevis`
+AssertionError: expected { regleAbsente: true } to deeply equal { clientRecordId: 'fiche-9', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "clientNameLatin": "Amine Belkacem",
+-   "clientRecordId": "fiche-9",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-revision.test.ts:79:38
+     77|   it("SANS version (la première création) : exactement la copie des no…
+     78|     const noms = { ar: "", latin: "Amine Belkacem" };
+     79|     expect(regle(noms, FICHE, null)).toEqual(module.copiePourDevis(nom…
+       |                                      ^
+     80|   });
+     81| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  11 failed | 171 passed (182)
+   Start at  07:36:42
+   Duration  30.68s (transform 1.03s, setup 151ms, collect 1.57s, tests 28.85s, environment 698ms, prepare 134ms)
+
