@@ -106,7 +106,9 @@ describe("FP-1 — un choix par type de tarification, conforme au contrat", () =
   });
 
   it("⛔ MD-2 : PER_UNIT sans quantité, ou une saisie qui n'est pas un entier — AUCUN choix", () => {
-    for (const saisie of [undefined, "", "  ", "3,5", "2.5", "-4", "douze", "1e3"]) {
+    // ⚠ « 1e1 » (= 10) et « 0x10 » (= 16) restent DANS les bornes du catalogue (2 à 30) : seuls des cas en bornes distinguent un entier
+    // STRICT d'un `Number()` — « 1e3 » est rattrapée par la borne haute, et la cible P-3 du harnais l'avait montré (extension 1).
+    for (const saisie of [undefined, "", "  ", "3,5", "2.5", "-4", "douze", "1e3", "1e1", "0x10"]) {
       expect(regle(UNITES, saisie === undefined ? undefined : { quantite: saisie })).toBe(null);
     }
   });
