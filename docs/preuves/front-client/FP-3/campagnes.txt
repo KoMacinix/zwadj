@@ -1,0 +1,82 @@
+# FP-3 — `python3 neutralisation/lancer-campagnes.py`, joué APRÈS le commit du code (D334 item 5 : les rouges, puis le code ; le tri lit `git diff HEAD`, qui est
+# donc VIDE), Playwright par le shim du conteneur. PROCÉDURE, écrite : le MÊME `main` de l'outil, avec `modifies` remplacée par le diff DU LOT depuis son SHA de
+# départ (`git diff --name-only 8432070..HEAD` + les fichiers non suivis) — comme en FC-9. Il sélectionne 14 campagnes sur 54 (les 11 de FP-2 plus `fp3`, et
+# `act-plafonds` et `horloge`, que le fichier de tests modifié fait entrer).
+
+## 1. La série du tri (14 campagnes, 3 768 s)
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-act-plafonds.py              1     —     0     0     0    32
+neutralize-fc6.py                       0    12    12     0     0    47
+neutralize-fp1.py                       0    18    18     0     0   526
+neutralize-fp2.py                       0     6     6     0     0   223
+neutralize-fp3.py                       0    10    10     0     0   269
+neutralize-horloge.py                   1     —     0     0     0    31
+neutralize-journey.py                   0     —     7     0     0   261
+neutralize-r32.py                       0    65    65     0     0   582
+neutralize-r33.py                       1    86    86     1     0   823
+neutralize-r38.py                       0    46    46     0     0   488
+neutralize-r39.py                       0    35    35     0     0   305
+neutralize-r41.py                       2     —     0     1     0     0
+neutralize-r42.py                       0    22    22     0     0   181
+neutralize-r43.py                       2     —     0     1     0     0
+================================================================================================
+MESURÉ : 307 garde(s) mordue(s) · 3 muette(s)/erreur(s) · 0 non mesurée(s) · 14 campagne(s) · 3768s
+
+Lecture : 10 campagnes jouées en entier et mordues sans reste (fc6 12/12, fp1 18/18, fp2 6/6, fp3 10/10, journey 7/7, r32 65/65, r38 46/46, r39 35/35, r42 22/22,
+r33 86/86) — 307 gardes mordues ; r33 sort en 1 pour une seule cible, **M-12 MUETTE** (la date d'un événement dérive du fuseau du serveur : une garde de fuseau est
+muette sur un serveur en UTC, prouvé d'environnement en FC-4, comme à FC-6, FC-8, FC-12, FP-1 et FP-2 — ce lot ne touche pas la date d'un événement).
+QUATRE campagnes n'ont mordu RIEN, et ce n'est pas une garde muette — aucune de leurs cibles n'a été jouée :
+  · `act-plafonds` et `horloge` : « ERREUR DE SCRIPT : 158 tests attendus » (D144) — le fichier de tests en compte 175 depuis FP-1, FP-2 et FP-3 cumulés ;
+  · `r41` (J-6) et `r43` (P-3) : « ARBRE NON CONFORME AU DÉPART : ancre ×0 » — la ligne du corps du devis tient sur trois lignes depuis FP-3.
+Le relevé statique des ancres l'avait prévu pour les deux dernières (ancres-campagnes.txt). Les quatre sont déclarées par l'extension 2 de la table, corrigées
+(commit f0ee431) et REJOUÉES EN ENTIER.
+
+## 2. Le rejeu des quatre, après leur correction
+Procédure : le même `main` de `lancer-campagnes.py`, `--tout`, `campagnes()` réduite à ces quatre scripts.
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-act-plafonds.py              1     —     0     0     0    36
+neutralize-horloge.py                   1     —     0     0     0    33
+neutralize-r41.py                       0    54    54     0     0   643
+neutralize-r43.py                       0    52    52     0     0   993
+================================================================================================
+MESURÉ : 106 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 4 campagne(s) · 1705s
+
+`r41` 54/54 et `r43` 52/52 : mordues sans reste. `act-plafonds` et `horloge` rendent encore 1 : AUCUNE cible jouée — « fins de ligne mixtes dans la source » ;
+ces deux anciens harnais EXIGENT des fichiers entièrement en CRLF (les fins de ligne du poste de Ko, `core.autocrlf=true`), ce que ce conteneur, qui extrait le
+dépôt en LF, ne donne pas : écart d'ENVIRONNEMENT, la classe que `crlf-simule.py` existe pour lever (FC-5). Rejoués sous CRLF simulé :
+
+### act-plafonds, sous CRLF simulé (`crlf-simule.py` sur walkin-journey.test.tsx et test-setup.ts)
+CRLF simulé : 2 fichier(s) convertis, 3389 ligne(s)
+pre-vol : le spec n'est plus exempte dans PLAFONDS
+temoin (aucune mutation)
+✓ C1  la fenetre act du socle de montage est retiree  (attendu rouge, obtenu rouge)
+✓ C2  la fenetre act du montage du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C3  la fenetre act du second effet du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C4  meme retrait que C1, mais l'exemption PLAFONDS est remise  (attendu vert, obtenu vert)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu a son etat de depart : verifie.
+rendus en LF à l'identique : 2 sur 2 (attendu 2)
+commande : sortie 0
+
+### horloge, sous CRLF simulé (`crlf-simule.py` sur walkin-journey.test.tsx)
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 1 fichier(s) convertis, 3053 ligne(s)
+temoin (aucune mutation)
+✓ C1  le gel d'horloge est retire  (attendu rouge, obtenu rouge)
+✓ C2  l'ancre MAINTENANT est deplacee de dix ans  (attendu vert, obtenu vert)
+
+2 garde(s) mordue(s) sur 2 cible(s).
+arbre rendu a son etat de depart : verifie.
+rendus en LF à l'identique : 1 sur 1 (attendu 1)
+commande : sortie 0
+
+## 3. Le compte du lot
+**419 gardes mordues · 1 muette (M-12 de r33, d'environnement) · 0 non mesurée** : 307 (série) + 54 (r41) + 52 (r43) + 4 (act-plafonds) + 2 (horloge).
+Chaque campagne est comptée UNE fois, dans le passage où elle a été jouée en entier. La somme des secondes (3 768 + 1 705 + deux rejeux CRLF) n'est pas écrite :
+elle n'entre dans aucune comparaison (D290).
