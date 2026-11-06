@@ -2824,3 +2824,91 @@ describe("FP-1 — le palier et la quantité se saisissent au comptoir (méthode
     expect((champ?.labels?.[0]?.textContent ?? "").includes("طاولة")).toBe(true);
   });
 });
+
+// ── FP-2 (session `front-client`) — APRÈS LE 409 DE K-5, L'ÉCRAN GARDE LA COPIE DU NOM QUI EXISTE DÉJÀ ──────────────────────────────
+// Le serveur ne remplace JAMAIS une copie de nom (M-6) : un 409 `QUOTE_CLIENT_NAME_ALREADY_SET` dit que la copie de CETTE langue a été
+// complétée entre-temps (un autre onglet, un autre poste). Avant FP-2, l'écran gardait le devis SANS cette copie : chaque remise suivante
+// dans la langue reposait la question du nom et se heurtait au même 409. Maintenant il RELIT le devis (la liste des devis de la salle —
+// aucun `GET /quotes/:id` n'existe) et garde la copie du serveur ; il ne remet RIEN de lui-même, et n'écrit jamais ce que le pro a tapé.
+// ⚠ Les verdicts passent par des assertions NATIVES (D304) ; les libellés viennent du CATALOGUE, les messages d'erreur aussi.
+describe("FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question", () => {
+  const COPIE_DU_SERVEUR = "أمين بلقاسم";
+  const refus409 = () => new ApiError(409, "QUOTE_CLIENT_NAME_ALREADY_SET", "quote.errors.clientNameAlreadySet", []);
+  const dialogueDuNom = () => screen.queryByRole("dialog", { name: FR.nameDialogTitleAr });
+  async function cliquerCanalArabe() {
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string }));
+    });
+    const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
+    expect(boite !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: FR.langArabic }));
+    });
+    await laisserRetomber();
+  }
+  /** Le parcours jusqu'au refus : un devis calculé, la remise en arabe, le nom tapé, le serveur répond 409. */
+  async function jusquAuRefus(quotesOver: Parameters<typeof makeQuotesDouble>[0]) {
+    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", clientNameAr: COPIE_DU_SERVEUR }));
+    const document = vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" }));
+    const r = await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document, ...quotesOver } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanalArabe();
+    const dialogue = dialogueDuNom();
+    expect(dialogue !== null).toBe(true);
+    fireEvent.change(within(dialogue as HTMLElement).getByLabelText(FR.nameAr), { target: { value: "اسم مختلف تماما" } });
+    await act(async () => {
+      fireEvent.click(within(dialogue as HTMLElement).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+    return { ...r, deliver, document };
+  }
+  const alertes = () => screen.queryAllByRole("alert").map((e) => e.textContent);
+
+  it("⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]);
+    const { deliver, document } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue });
+    expect(listForVenue.mock.calls.length).toBe(1);
+    expect(listForVenue.mock.calls[0]?.[0]).toBe(VENUE.id);
+    expect(alertes().includes(messages.fr.quote.errors.clientNameAlreadySet)).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+    expect(document.mock.calls.length).toBe(0);
+  });
+
+  it("⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro", async () => {
+    const completeClientName = vi.fn().mockRejectedValue(refus409());
+    const { deliver, document } = await jusquAuRefus({ completeClientName, listForVenue: vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]) });
+    await cliquerCanalArabe();
+    expect(dialogueDuNom()).toBe(null);
+    expect(deliver.mock.calls.length).toBe(1);
+    expect(deliver.mock.calls[0]).toEqual(["q1", { sentVia: QUOTE_SENT_VIA.PRINT }]);
+    expect(document.mock.calls[0]).toEqual(["q1", "ar"]);
+    // M-6 : la copie n'est jamais remplacée — le nom tapé n'est écrit qu'UNE fois, et refusé.
+    expect(completeClientName.mock.calls.length).toBe(1);
+  });
+
+  it("⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ id: "autre-devis", clientNameAr: COPIE_DU_SERVEUR })]);
+    const { deliver } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue });
+    await cliquerCanalArabe();
+    expect(dialogueDuNom() !== null).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+  });
+
+  it("une relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée)", async () => {
+    const { deliver } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue: vi.fn().mockRejectedValue(new Error("réseau")) });
+    expect(alertes().includes(messages.fr.quote.errors.clientNameAlreadySet)).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+    await cliquerCanalArabe();
+    expect(dialogueDuNom() !== null).toBe(true);
+  });
+
+  it("⛔ un AUTRE refus (500) ne relit PAS la liste : seul le 409 de la copie déjà là la justifie", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]);
+    const autre = new ApiError(500, "INTERNAL", "common.errors.unexpected", []);
+    await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(autre), listForVenue });
+    expect(listForVenue.mock.calls.length).toBe(0);
+  });
+});
