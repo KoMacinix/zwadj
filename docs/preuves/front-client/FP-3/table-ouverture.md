@@ -45,3 +45,15 @@ Ordre des commits : (1) cette table seule ; (2) les tests et leurs ROUGES — lu
 Conditionnels : un harnais d'un autre rang dont une ancre ou une mesure serait périmée par ce lot (le relevé et les campagnes le diront)
 — déclaré par une extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
 Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 22 | `docs/preuves/front-client/FP-3/rouges/rouge-pro-v2.txt` | la pièce du test ajouté APRÈS le code (« Annuler » puis un nouveau devis pour la même fiche) : rejoué contre l'état d'AVANT (vert à vide — bras de calibration) ; empreinte du test livré | 3 bis |
+
+Motif : la version gardée à part (ligne 6 de la table) porte DEUX gardes de lien à la chaîne en cours (`chainQuoteId !== null` et l'égalité des
+identifiants) ; sans test, les retirer est une mutation « équivalente » par omission, pas par construction. Après « Annuler », la chaîne est
+vide mais la version gardée ne l'est pas : seule une création pour la MÊME fiche (le double rend toujours « fiche-1 ») le montre. Le test est
+VERT sur l'état d'avant (la création n'a jamais repris de copie) : il n'a donc pas de rouge à lire, il est rejoué à vide, et c'est la cible du
+harnais qui le fait mordre (rapport). Il vient après le commit du code : la règle « les rouges avant le code » ne peut pas s'y appliquer, et le rapport le dit.
