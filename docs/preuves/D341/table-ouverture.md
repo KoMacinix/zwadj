@@ -215,3 +215,26 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D341/neutralisation/decouverte/decouverte-5-trois-cibles-de-source.txt` | le relevé des trois cibles de SOURCE ajoutées ensuite (S-33, S-34, K-18) |
 
 ⚠ **Écart dit** : `docs/preuves/D341/mesure/vitest.mesure.config.ts`, déclaré à l'ouverture, **N'EST PAS PRODUIT**. `mesurer.py` copie le script de mesure dans `apps/api/test/int/` et emploie `vitest.config.int.ts` tel quel (hachage vérifié, copie retirée ensuite) : une configuration de plus aurait été un second moyen de jouer la même chose, et la résolution de `unplugin-swc` depuis `docs/` n'est pas garantie.
+
+**Extension 2** (06/11/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D341/` aux chemins complets de cette table, après l'union des quatre campagnes : seize fichiers à déclarer, dont dix nés d'un DÉFAUT D'OUTIL trouvé pendant la clôture — l'angle mort du tri de `lancer-campagnes.py` : cinq campagnes lisent `test/int/migration-non-empty.int-spec.ts` en chemin RELATIF à `apps/api`, fichier que ce lot a modifié, et le tri ne les retient pas ; leur complément est CALCULÉ par rapport au diff, versé, puis joué ; les journaux des cinq campagnes du complément sont déclarés ICI, avant d'exister) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D341/rouges/lister-corrections.py` | l'instrument qui liste les fichiers de test dont l'empreinte a CHANGÉ depuis les rouges (D334 item 5), calibré à deux bras, qui imprime ce qu'il a examiné ; PREUVE, jamais promue en instrument (D291) |
+| `docs/preuves/D341/rouges/corrections-apres-rouges.md` | sa sortie : les 13 fichiers de test modifiés après les rouges (sha256 au moment des rouges, sha256 actuel, octets), sur 22 examinés |
+| `docs/preuves/D341/neutralisation/calculer-complement.py` | calcule le COMPLÉMENT de l'union : les campagnes dont les sources écrivent un chemin de test RELATIF à `apps/api` que le diff a modifié, moins l'union déjà versée ; calibré à deux bras (un chemin relatif connu retient `neutralize-r43.py`, un chemin fabriqué n'en retient aucune) |
+| `docs/preuves/D341/neutralisation/complement-sortie.txt` | le complément CALCULÉ et VERSÉ avant de jouer : la dernière ligne `UNION: …` est ce que `jouer-complement.py` lit |
+| `docs/preuves/D341/neutralisation/outils/fabriquer-complement.py` | fabrique `jouer-complement.py` en LISANT `jouer-union.py` (aucune ligne du moteur n'est retapée) ; chaque remplacement est compté puis son marqueur relu |
+| `docs/preuves/D341/neutralisation/jouer-complement.py` | le joueur du complément (COPIE de `jouer-union.py`, seuls la liste lue, le dossier des journaux et les campagnes jouées avec `--int` changent) |
+| `docs/preuves/D341/neutralisation/complement-rapport.txt` | le rapport de `jouer-complement.py` : par campagne, la sortie, les gardes mordues / muettes / non mesurées, la durée |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r4.txt` | la sortie entière de `neutralize-r4.py` (complément) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r41.txt` | la sortie entière de `neutralize-r41.py --int` (complément) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r42.txt` | la sortie entière de `neutralize-r42.py --int` (complément) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-r43.txt` | la sortie entière de `neutralize-r43.py --int` (complément) |
+| `docs/preuves/D341/neutralisation/journal-neutralize-s11b.txt` | la sortie entière de `neutralize-s11b.py --int` (complément) |
+| `docs/preuves/D341/audit-secrets-d341e.txt` | audit de secrets scellé, AVANT le commit des journaux du complément et de leur rapport |
+| `docs/preuves/D341/tri-audit-d341e.txt` | son tri différentiel contre `audit-secrets-d341d.txt` |
+| `docs/preuves/D341/audit-secrets-d341f.txt` | audit de secrets scellé, AVANT le dernier commit de pièces et les `.md` d'autorité de la clôture |
+| `docs/preuves/D341/tri-audit-d341f.txt` | son tri différentiel contre `audit-secrets-d341e.txt` |
+
+Ordre des audits de la clôture, qui suit l'ordre des commits : « d » (déclaré à l'ouverture) précède le commit des pièces de la clôture (journaux de l'union, outils du complément, passe D277 « avant », contrôle de fin de lot) ; « e » précède le commit des journaux du complément ; « f » précède le dernier commit de pièces et les `.md` d'autorité, avec `aucune-valeur-reelle.txt`. Aucune lettre n'est sautée.
