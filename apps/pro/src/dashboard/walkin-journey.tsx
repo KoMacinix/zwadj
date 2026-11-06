@@ -121,6 +121,7 @@ import {
 } from "./walkin-contact";
 import {
   copiePourDevis,
+  copiePourRevision,
   nomManquant,
   nomsDeLaFiche,
   nomsPourFiche,
@@ -342,6 +343,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   /** ⛔ FP-1 — le palier (TIERED) et la quantité (PER_UNIT) SAISIS pour chaque prestation cochée ; la règle pure les juge. */
   const [details, setDetails] = useState<Record<string, DetailSaisi>>({});
   const [quote, setQuote] = useState<QuoteDTO | null>(null);
+  /** ⛔ FP-3 — la DERNIÈRE version que le serveur a rendue pour la chaîne, gardée à part : `invalidate` jette le devis AFFICHÉ (`quote` redevient `null`)
+   *  à chaque modification, alors que la copie du nom qu'elle porte — celle que la boîte de langue a complétée — doit survivre à la révision. */
+  const versionRendue = useRef<QuoteDTO | null>(null);
+  useEffect(() => {
+    if (quote !== null) versionRendue.current = quote;
+  }, [quote]);
   /** ⚠ Survit à l'invalidation : c'est lui qui fait que le clic suivant RÉVISE
    *  au lieu de créer un devis de plus. */
   const [chainQuoteId, setChainQuoteId] = useState<string | null>(null);
@@ -674,7 +681,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     ...(prestationsDuDevis.choix.length === 0 ? {} : { services: prestationsDuDevis.choix }),
     // ⛔ Rang 41 (D336, K-4) : la fiche et la COPIE des noms de l'écran — ceux de la fiche quand elle est liée (MD-6).
     // ⛔ L36-2 (R-1) : ni fiche ni nom pour un brouillon, ni à la création ni dans une révision (la promotion est le seul geste qui les inscrit).
-    ...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))
+    ...(fiche === null || sansCoordonnees || chaineBrouillon
+      ? {}
+      : copiePourRevision(nomsEffectifs, fiche, chainQuoteId !== null && versionRendue.current?.id === chainQuoteId ? versionRendue.current : null))
   });
 
   const compute = () => {

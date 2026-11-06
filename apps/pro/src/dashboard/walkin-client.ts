@@ -104,6 +104,28 @@ export function copiePourDevis(noms: Noms, ficheId: string): { clientRecordId: s
   return { clientRecordId: ficheId, ...(ar === "" ? {} : { clientNameAr: ar }), ...(latin === "" ? {} : { clientNameLatin: latin }) };
 }
 
+/**
+ * ⛔ FP-3 — ce que la RÉVISION reçoit : comme `copiePourDevis`, mais un nom ABSENT de l'écran est REPRIS de la version courante — celui que la boîte de
+ * langue (K-5) y a complété. Le serveur l'attend (`QuotesService.revise` : « une révision porte le corps ENTIER, la copie du nom comprise, celle que l'écran
+ * a préremplie du devis précédent », DB-17) et ne substitue PAS la fiche vivante : sans cette reprise, la version N+1 perd la copie et K-5 repose sa question.
+ * Un nom TAPÉ à l'écran l'emporte (les noms corrigés vont au devis). ⚠ Deux cas où la version n'est JAMAIS reprise : une fiche LIÉE (le serveur refuse, 409
+ * `CLIENT_RECORD_LINKED`, un nom qu'elle n'a pas — `copieDuNomPourDevis`) et une AUTRE fiche que celle de la version (la copie de l'ancien client).
+ */
+export function copiePourRevision(
+  noms: Noms,
+  fiche: Pick<ClientRecordDTO, "id" | "linked">,
+  version: (CopieDuDevis & Pick<QuoteDTO, "clientRecordId">) | null
+): { clientRecordId: string; clientNameAr?: string; clientNameLatin?: string } {
+  if (version === null || fiche.linked || version.clientRecordId !== fiche.id) return copiePourDevis(noms, fiche.id);
+  return copiePourDevis(
+    {
+      ar: noms.ar.trim() !== "" ? noms.ar : (present(version.clientNameAr) ?? ""),
+      latin: noms.latin.trim() !== "" ? noms.latin : (present(version.clientNameLatin) ?? "")
+    },
+    fiche.id
+  );
+}
+
 /** K-2 — les noms que la fiche reçoit à sa CRÉATION : non vides, rognés, la clé absente d'un nom vide. */
 export function nomsPourFiche(noms: Noms): { nameAr?: string; nameLatin?: string } {
   const ar = noms.ar.trim();
