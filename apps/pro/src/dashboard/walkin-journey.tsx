@@ -66,7 +66,7 @@
 // `VenueCalendar` rend la disponibilité réelle, le tarif du jour calculé par le
 // moteur (B2/B3) et les créneaux avec leur prix. Une date déjà vendue ne peut
 // pas être saisie à la main.
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 // ⚠ `lucide-react` N'EST PLUS IMPORTÉ ICI. La coche du rail vivait dans ce
@@ -81,6 +81,7 @@ import {
   QUOTE_AMOUNT_LOCALE,
   QUOTE_DOCUMENT_LOCALES,
   QUOTE_SENT_VIA_ORDER,
+  ServicePricingType,
   intlLocale,
   isPhoneComplete,
   isValidContactEmail,
@@ -128,6 +129,7 @@ import {
 import { channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
 import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
+import { choixDuDevis, type DetailSaisi } from "./walkin-services";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
 
@@ -335,6 +337,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [slotId, setSlotId] = useState<string | null>(null);
   const [guests, setGuests] = useState("");
   const [picks, setPicks] = useState<string[]>([]);
+  /** ⛔ FP-1 — le palier (TIERED) et la quantité (PER_UNIT) SAISIS pour chaque prestation cochée ; la règle pure les juge. */
+  const [details, setDetails] = useState<Record<string, DetailSaisi>>({});
   const [quote, setQuote] = useState<QuoteDTO | null>(null);
   /** ⚠ Survit à l'invalidation : c'est lui qui fait que le clic suivant RÉVISE
    *  au lieu de créer un devis de plus. */
@@ -487,6 +491,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setSlotId(null);
     setGuests("");
     setPicks([]);
+    setDetails({});
     setQuote(null);
     setChainQuoteId(null);
     setStale(false);
@@ -527,6 +532,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   };
 
   const togglePick = (serviceId: string) => {
+    // ⛔ FP-1 (MD-7) — décocher EFFACE le détail saisi : recocher ne renverrait pas un palier ou une quantité d'avant.
+    if (picks.includes(serviceId)) setDetails((avant) => Object.fromEntries(Object.entries(avant).filter(([id]) => id !== serviceId)));
     setPicks((current) =>
       current.includes(serviceId) ? current.filter((id) => id !== serviceId) : [...current, serviceId]
     );
@@ -559,6 +566,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const confirmStep = () => {
     const etat = { ...answered };
     if (step === "services") {
+      // ⛔ FP-1 (MD-1, MD-2) — un palier ou une quantité qui manque RETIENT l'étape : le bouton est inactif, et cette garde aussi.
+      if (prestationsIncompletes) return;
       setServicesAnswered(true);
       etat.services = true;
     }
@@ -642,11 +651,25 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     }
   }
 
+  /** ⛔ FP-1 (MD-6) — un palier ou une quantité changés JETTENT le devis affiché : il ne dirait plus ce que l'écran montre. */
+  const setDetail = (serviceId: string, patch: DetailSaisi) => {
+    setDetails((avant) => ({ ...avant, [serviceId]: { ...avant[serviceId], ...patch } }));
+    invalidate();
+  };
+  // ⛔ FP-1 — le corps du devis passe par la règle PURE (`walkin-services.ts`, D187) : le choix tel que le contrat l'attend — palier
+  // en TIERED, quantité en PER_UNIT, rien d'autre ailleurs — ou ce qui manque. AUCUN montant n'est calculé ici (règle des montants).
+  const lignes = catalogue.kind === "ready" ? catalogue.rows : [];
+  const prestationsDuDevis = choixDuDevis(picks, lignes, details);
+  const nomsManquants = prestationsDuDevis.manquants
+    .map((id) => lignes.find((ligne) => ligne.id === id))
+    .map((ligne) => (ligne === undefined ? "?" : isAr ? ligne.nameAr : ligne.nameFr));
+  const prestationsIncompletes = prestationsDuDevis.manquants.length > 0;
+
   const body = () => ({
     eventDate: eventDate as string,
     slotTemplateId: slotId as string,
     guests: Number(guests),
-    ...(picks.length === 0 ? {} : { services: picks.map((serviceId) => ({ serviceId })) }),
+    ...(prestationsDuDevis.choix.length === 0 ? {} : { services: prestationsDuDevis.choix }),
     // ⛔ Rang 41 (D336, K-4) : la fiche et la COPIE des noms de l'écran — ceux de la fiche quand elle est liée (MD-6).
     // ⛔ L36-2 (R-1) : ni fiche ni nom pour un brouillon, ni à la création ni dans une révision (la promotion est le seul geste qui les inscrit).
     ...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))
@@ -1246,22 +1269,92 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                 <legend className="sr-only">{t("venue.ui.walkin.services")}</legend>
                 {catalogue.rows.map((service) => {
                   const on = picks.includes(service.id);
+                  const nom = isAr ? service.nameAr : service.nameFr;
+                  const unite = isAr ? service.unitNameAr : service.unitNameFr;
+                  const bornes =
+                    service.minUnits !== null && service.maxUnits !== null
+                      ? t("venue.ui.walkin.quantityRange", { min: service.minUnits, max: service.maxUnits })
+                      : service.minUnits !== null
+                        ? t("venue.ui.walkin.quantityMin", { min: service.minUnits })
+                        : service.maxUnits !== null
+                          ? t("venue.ui.walkin.quantityMax", { max: service.maxUnits })
+                          : null;
                   return (
-                    <label key={service.id} className={on ? "wk-service is-on" : "wk-service"}>
-                      <input type="checkbox" checked={on} onChange={() => togglePick(service.id)} />
-                      <span className="wk-service-name">{isAr ? service.nameAr : service.nameFr}</span>
-                      {/* AUCUN prix ici : selon le mode de tarification il dépend
-                          des invités ou d'un palier. Le montant juste est celui
-                          que le serveur rendra dans les lignes du devis. */}
-                      <span className="wk-service-type">{t(`venue.ui.walkin.pt_${service.pricingType}`)}</span>
-                    </label>
+                    <Fragment key={service.id}>
+                      <label className={on ? "wk-service is-on" : "wk-service"}>
+                        <input type="checkbox" checked={on} onChange={() => togglePick(service.id)} />
+                        <span className="wk-service-name">{nom}</span>
+                        {/* AUCUN prix ici : selon le mode de tarification il dépend
+                            des invités ou d'un palier. Le montant juste est celui
+                            que le serveur rendra dans les lignes du devis. */}
+                        <span className="wk-service-type">{t(`venue.ui.walkin.pt_${service.pricingType}`)}</span>
+                      </label>
+                      {/* ⛔ FP-1 — le DÉTAIL qu'exige le contrat, saisi SOUS la prestation cochée : un palier (TIERED, les seuls ACTIFS,
+                          aucun choisi d'avance — MD-1, MD-11) ou une quantité (PER_UNIT, bornes du CATALOGUE — MD-2, MD-3). Aucun prix. */}
+                      {on && service.pricingType === ServicePricingType.TIERED ? (
+                        <div className="wk-service-detail">
+                          <label htmlFor={`wk-palier-${service.id}`}>{t("venue.ui.walkin.tierLabel", { name: nom })}</label>
+                          <select
+                            id={`wk-palier-${service.id}`}
+                            className="wk-input"
+                            value={details[service.id]?.tierId ?? ""}
+                            onChange={(event) => setDetail(service.id, { tierId: event.target.value })}
+                          >
+                            <option value="">{t("venue.ui.walkin.tierChoose")}</option>
+                            {service.tiers
+                              .filter((palier) => palier.isActive)
+                              .map((palier) => (
+                                <option key={palier.id} value={palier.id}>
+                                  {isAr ? palier.labelAr : palier.labelFr}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      ) : null}
+                      {on && service.pricingType === ServicePricingType.PER_UNIT ? (
+                        <div className="wk-service-detail">
+                          <label htmlFor={`wk-quantite-${service.id}`}>
+                            {unite
+                              ? t("venue.ui.walkin.quantityLabel", { name: nom, unit: unite })
+                              : t("venue.ui.walkin.quantityLabelNoUnit", { name: nom })}
+                          </label>
+                          <input
+                            id={`wk-quantite-${service.id}`}
+                            className="wk-input"
+                            type="number"
+                            inputMode="numeric"
+                            min={service.minUnits ?? 1}
+                            max={service.maxUnits ?? undefined}
+                            value={details[service.id]?.quantite ?? ""}
+                            aria-describedby={bornes === null ? undefined : `wk-bornes-${service.id}`}
+                            onChange={(event) => setDetail(service.id, { quantite: event.target.value })}
+                          />
+                          {bornes === null ? null : (
+                            <p id={`wk-bornes-${service.id}`} className="wk-hint">
+                              {bornes}
+                            </p>
+                          )}
+                        </div>
+                      ) : null}
+                    </Fragment>
                   );
                 })}
               </fieldset>
             )}
+            {prestationsIncompletes ? (
+              <p id="wk-services-manque" className="wk-hint" role="status">
+                {t("venue.ui.walkin.servicesMissing", { names: nomsManquants.join(isAr ? "، " : ", ") })}
+              </p>
+            ) : null}
             <div className="wk-actions">
               {previousButton}
-              <button type="button" className="wk-btn wk-btn-primary wk-btn-next" onClick={confirmStep}>
+              <button
+                type="button"
+                className="wk-btn wk-btn-primary wk-btn-next"
+                onClick={confirmStep}
+                disabled={prestationsIncompletes}
+                aria-describedby={prestationsIncompletes ? "wk-services-manque" : undefined}
+              >
                 {t("venue.ui.walkin.seeQuote")}
               </button>
             </div>
@@ -1275,12 +1368,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               <button
                 type="button"
                 className="wk-btn wk-btn-primary"
-                disabled={busy || !termsReady || conclu}
+                disabled={busy || !termsReady || conclu || prestationsIncompletes}
                 onClick={compute}
               >
                 {chainQuoteId === null ? t("venue.ui.walkin.compute") : t("venue.ui.walkin.editQuote")}
               </button>
               {termsReady ? null : <p className="wk-hint">{t("venue.ui.walkin.computeBlocked")}</p>}
+              {prestationsIncompletes ? (
+                <p className="wk-hint">{t("venue.ui.walkin.servicesMissing", { names: nomsManquants.join(isAr ? "، " : ", ") })}</p>
+              ) : null}
               {stale && quote === null ? (
                 <p className="wk-hint" role="status">
                   {t("venue.ui.walkin.staleTotal")}
