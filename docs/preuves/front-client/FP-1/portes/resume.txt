@@ -1,0 +1,8 @@
+# HEAD 0778bb61601521aefa2d46372efb561038315634 · arbre : 6 entrée(s) non commitée(s) · 2026-11-06T05:39:42Z
+typecheck exit=0 duree=19s
+lint exit=0 duree=9s
+test exit=0 duree=66s
+build exit=0 duree=33s
+test:int exit=1 duree=224s
+test:e2e exit=0 duree=180s
+FINI · journaux bruts : /tmp/tmp.bqA88fi0KO

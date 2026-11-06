@@ -1,0 +1,14 @@
+FP-1 — tri différentiel de l'audit de secrets « fp1 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FP-1/audit-secrets-fp1.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 847 fichiers (88 464 485 octets),
+audités 4 703, exclus 144, alertes 1 045.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FC-12/audit-secrets-fc12.txt
+docs/preuves/front-client/FP-1/audit-secrets-fp1.txt — calibration à deux bras tenue. Précédente : 1 041 contextes ; nouvelle :
+1 045 ⇒ alertes ABSENTES de la précédente : 4 (jeton = 3 · mot-de-passe = 1), lues aux lignes 3264 à 3332 de la sortie scellée.
+  · [jeton] FC-12/rapport.md l. 50 et FC-12/tri-audit-fc12.txt l. 9 : deux phrases qui COMPTENT les « token= » restants (0) — écrites
+    après l'audit de FC-12 (limite écrite là-bas), elles entrent ici.
+  · [mot-de-passe] FC-12/tri-audit-fc12.txt l. 14 : la phrase qui CITE un titre de test (« hasPassword=false : « Définir » … ») —
+    un nom de champ et un booléen, aucune valeur ; écrite après l'audit de FC-12.
+  · [jeton] FP-1/portes/test-e2e.txt l. 1 : l'en-tête du pilote des portes, qui compte le paramètre de jeton restant (0).
+Résultat du tri : 4 alertes lues, 0 valeur réelle. Limite écrite : ce fichier, controle.txt et rapport.md sont écrits après l'audit.
