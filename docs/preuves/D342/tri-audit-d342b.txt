@@ -1,0 +1,52 @@
+D342 — tri différentiel de l'audit de secrets « b » (AVANT la fusion : l'arbre de la fusion à blanc, les 311 fichiers de docs/preuves/front-client/ compris)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D342/audit-secrets-d342a.txt docs/preuves/D342/audit-secrets-d342b.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D342/audit-secrets-d342b.txt, lancé dans une COPIE DE TRAVAIL JETABLE hors dépôt (`git worktree add --detach` sur 75eee79, puis
+`git merge --no-ff --no-commit origin/front-client` : 440 fichiers indexés, 0 conflit, 311 fichiers de docs/preuves/front-client/ sur disque). La copie est supprimée après usage ; le dépôt principal n'a jamais
+porté la fusion à ce stade (HEAD = 75eee79, arbre propre). La sortie scellée a été recopiée OCTET POUR OCTET dans le dépôt : 436 919 octets, 0 CR, 3 657 lignes ; sceau RECALCULÉ À LA MAIN
+(sha256 de tout ce qui précède la ligne de sceau) = celui que la sortie porte.
+
+Calibration : dans la copie, 4 bras sur 5 imprimés — le 5ᵉ, « cas réel », n'a PAS été rejoué (« .neutralisation-journaux/rang15-e2e.log absent (hors dépôt) ; les bras construits font foi » : ce journal est
+ignoré par git, donc absent d'une copie de travail). Le bras a été REJOUÉ SÉPARÉMENT dans le dépôt principal, où le journal existe : `python3 -I neutralisation/audit-secrets.py --calibration-seule` →
+« calibration : 5 bras passent sur 5 imprimés, 0 manqué(s) · cas réel : rejoué » (24 jetons de 43 caractères comptés, attendu 24). L'instrument est donc calibré à 5 bras ; la PASSE b, elle, ne l'a été qu'à 4 dans
+sa propre exécution. Tri : calibration à deux bras tenue (négatif « D298 contre elle-même », 0 nouvelle ; positif « D298 contre D297 », 2 nouvelles).
+
+Ce que l'audit a parcouru (D290 : le total se lit à côté de ce qui a été parcouru) :
+  · précédente (d342a) : 4 688 fichiers parcourus, 4 551 audités, 137 exclus, 1 096 alertes (1 096 contextes lus par le tri).
+  · nouvelle (d342b)   : 4 993 fichiers parcourus, 4 837 audités, 156 exclus, 1 180 alertes (1 180 contextes). Contrôle de l'outil : audités + exclus = 4 993 (attendu 4 993, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec l'index : 4 993 = 4 681 fichiers suivis sous docs/preuves à 75eee79 + 311 fichiers de docs/preuves/front-client/ (le nombre exact des fichiers de ce dossier à 43996e2 et
+    dans le diff de la fusion) + `.gitattributes` (que l'outil ajoute). L'arithmétique ferme, à l'unité. Écart avec la précédente : +305 = +311 − 8 `__pycache__/*.pyc` ignorés par git (présents dans le
+    dépôt principal, absents de la copie) + 2 fichiers de D342 ajoutés au commit 75eee79 (l'audit « a » et son tri) = 305.
+  · Exclus : 156 contre 137, soit 19 de plus — des sorties scellées et des sorties de prédécesseurs que la branche apporte et que l'outil épingle par l'identité de leurs octets (il imprime chaque exclusion
+    avec ce qu'elle aurait rendu : 41 196 alertes d'écho non comptées, contre 23 396 pour l'audit « a »).
+
+Résultat du tri différentiel : **84 alertes ABSENTES de la sortie précédente** — jeton = 62, mot-de-passe = 22 — **toutes sous docs/preuves/front-client/** (aucune dans un fichier de D342 ni dans une pièce de main).
+
+Tri au contexte — LU, pas déduit : les 84 contextes sont dans la sortie scellée, aux lignes 3 489 à 3 655 (une ligne sur deux), valeurs MASQUÉES par l'outil ; ils ne sont pas recopiés ici (ce fichier serait un écho non
+scellé de plus). Chacun a été lu, puis rangé par un classement en CODE (aucune alerte n'est restée hors famille : « HORS FAMILLE : 0 ») :
+  · 51  prose ou en-tête de pièce qui COMPTE les « token= » restants — « … token= <1 car. masques> restants : 0 (attendu 0) » (en-têtes des FC-n/portes/test-e2e.txt, rapports de lot, tris de la branche) : la
+        valeur masquée fait 1 ou 2 caractères, jamais une suite ; l'audit répond « valeur trop courte pour une recherche ».
+  ·  3  script `outils/portes.sh` (lignes 14, 33, 34) : le commentaire qui décrit le compte, `grep -c 'token='` (le motif cherché, sans valeur : « <0 car. masques> »), et la chaîne d'en-tête que le script ÉCRIT.
+  · 15  titre d'un test d'intégration EXISTANT, « …forgot-password : <réponse> CONSTANTE, mais aucun e-mail ne part » (FC-n et FP-3 /portes/test-int.txt, et trois phrases de tri qui le CITENT avec le
+        gabarit littéral `<mot>`) : 12 de ces valeurs sont déjà présentes dans des fichiers suivis hors preuves (c'est le titre d'un test du dépôt) ; 3 non — lues à leur source, c'est le gabarit `<mot>`.
+  ·  5  titre d'un test d'intégration existant, « …compte supprimé après émission du token : <…> (l'identité n'existe plus) » : valeur déjà présente dans des fichiers suivis hors preuves (5 sur 5).
+  ·  7  titre d'un test unitaire du client (ou phrase qui le cite), « …hasPassword=<5 car.> : « Définir »… » : valeur déjà présente dans des fichiers suivis hors preuves (7 sur 7).
+  ·  2  expression régulière CITÉE dans une phrase, `git grep -E "token=[A-Za-z0-9_-]{16,}"` (FP-2/rapport.md ligne 59 et FP-2/tri-audit-fp2.txt ligne 17) : lues à leur source ; la « valeur » est le texte de
+        l'expression (16 caractères), absente des fichiers suivis parce que c'est une phrase.
+  ·  1  etat-entree-e2e.md ligne 12 : de la prose (« …ses lignes [WebServer] portent des jetons de vérification d'e-mail… »).
+  Total : 51 + 3 + 15 + 5 + 7 + 2 + 1 = 84 (attendu 84). Plus grande valeur masquée : 16 caractères (l'expression régulière), plus petite : 0.
+
+Contrôle INDÉPENDANT, mécanique (l'autre regard que le jugement de qui lit) : `docs/preuves/D342/balayage-forme-jeton.py origin/front-client origin/main...origin/front-client` — la forme exacte d'un jeton opaque du
+dépôt (43 caractères base64url mêlant minuscules, majuscules et chiffres), avec ou sans `token=`, et `token=` suivi de 16 caractères ou plus, dans CHAQUE fichier texte des 440 de la fusion :
+439 fichiers texte lus (12 912 598 octets), 0 binaire, 1 absent (supprimé par la fusion) → **0 occurrence, 0 fichier** (attendu 0 · 0). Calibré sur ses deux bras (positif : 2 suites de forme jeton et 1 `token=`
+VUS ; négatif : 42 caractères, 43 sans chiffre, 43 sans majuscule, `token=` de 8 caractères : 0 vu). Le script et ses deux sorties (état final avant la fusion, historique) sont versés avec l'audit « c » (ils
+n'existaient pas à l'audit « b » : une pièce neuve ne se verse qu'après un audit qui la couvre).
+
+Conclusion : 84 alertes lues, **0 valeur réelle**. ⚠ Ce que ce tri ne couvre pas, écrit pour ne pas se lire comme tenu : le contrôle dédié « 0 valeur réelle sur N fichiers » (D299) cherche les valeurs d'un
+JOURNAL nommé ; les journaux bruts de la branche (sur la machine cloud) n'existent pas sur ce poste, il ne peut donc pas les chercher pour les 311 fichiers de la branche — il se rejoue à la clôture contre les
+journaux bruts de CETTE session (la base jetable de l'e2e). Pour la branche, ce qui tient lieu de contrôle est le balayage de forme ci-dessus, qui prouve l'absence de la FORME d'un jeton, pas l'absence de tout secret.
+L'incident de FC-10 (une pièce commitée avec des jetons d'une base jetable, vue avant toute poussée, corrigée en local — `42dbf3a` → `a1296dd` selon son rapport) est vérifié ici DEUX fois, parce que la fusion
+--no-ff importe 107 commits et pas seulement l'état final : (1) l'état final, 0 suite de forme jeton dans les 439 fichiers à 43996e2 (ci-dessus) ; (2) l'HISTOIRE, `balayage-forme-jeton.py --historique
+e40c141..origin/front-client` : 107 commits dans la plage, 107 lus dans la sortie de `git log -p`, 134 751 lignes AJOUTÉES parcourues (11 863 770 caractères de patch), **0 occurrence dans 0 commit** — et le commit
+fautif `42dbf3a` n'est PAS un objet de ce dépôt (`git cat-file -t 42dbf3a` : « Not a valid object name »), alors que son remplaçant `a1296dd` est ancêtre de la branche. Ce que cela prouve, et pas plus : aucune
+suite de FORME jeton n'est entrée dans l'histoire que la fusion importe ; ce n'est pas l'absence de tout secret (voir ci-dessus).
