@@ -1,0 +1,9 @@
+D343 — mesure de la minuterie d'inactivité du CLIENT (undici) — 07/11/2026 12:47:38
+SHA du dépôt: 06b645454721af39ab90792d7ab6ee531068444e · node v22.14.0 · undici 6.21.1
+serveur: le VRAI serveur d'API (node apps/api/dist/main.js, même programme que 'nest start'), lancé à la main sur le port 3191, qui annonce « Keep-Alive: timeout=5 » (voir mesure-keepalive-sortie.txt)
+commande, une par valeur, un processus NEUF chacune: node docs/preuves/D343/reproduction/mesure-minuterie-client.mjs http://localhost:3191 <ms>
+inactivité asynchrone 1500 ms → connexions établies par les 3 premiers appels : 2 · connexions NEUVES ouvertes par l'appel suivant : 0
+inactivité asynchrone 2500 ms → connexions établies par les 3 premiers appels : 2 · connexions NEUVES ouvertes par l'appel suivant : 0
+inactivité asynchrone 3000 ms → connexions établies par les 3 premiers appels : 2 · connexions NEUVES ouvertes par l'appel suivant : 0
+inactivité asynchrone 3500 ms → connexions établies par les 3 premiers appels : 2 · connexions NEUVES ouvertes par l'appel suivant : 1
+inactivité asynchrone 4500 ms → connexions établies par les 3 premiers appels : 2 · connexions NEUVES ouvertes par l'appel suivant : 1

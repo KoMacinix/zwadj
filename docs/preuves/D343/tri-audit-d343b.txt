@@ -1,0 +1,34 @@
+D343 — tri différentiel de l'audit de secrets « b » (AVANT le commit des pièces de rouge de la reproduction de D265, et de l'audit lui-même)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D343/audit-secrets-d343a.txt docs/preuves/D343/audit-secrets-d343b.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D343/audit-secrets-d343b.txt, lancé dans le dépôt principal (HEAD = commit de l'extension 3 de la table).
+Sortie scellée : 493 513 octets, 0 CR, 4 109 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau, 493 322 octets) = celui que la sortie porte (1374416036b9…) ;
+relue identique, sceau vérifié à la relecture par l'outil lui-même.
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d343a) : 5 048 fichiers parcourus, 4 889 audités, 159 exclus, 1 388 alertes (1 388 contextes).
+  · nouvelle (d343b)   : 5 065 fichiers parcourus, 4 905 audités, 160 exclus, 1 390 alertes (1 390 contextes). Contrôle de l'outil : audités + exclus = 5 065 (attendu 5 065, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 065 fichiers sous docs/preuves/ après l'audit = 5 041 suivis (index) + 16 non suivis hors __pycache__ + 8 __pycache__/*.pyc ignorés. Les 5 065 de
+    l'audit = ces 5 065 moins sa propre sortie scellée (écrite APRÈS lui) plus .gitattributes, que l'outil ajoute : 5 065 − 1 + 1 = 5 065. L'arithmétique ferme.
+  · Exclus : 160 contre 159, soit un de plus — la sortie scellée « a » de ce lot, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif « D298 contre elle-même » → 0 nouvelle (attendu 0) ; positif « D298 contre D297 » → 2 nouvelles (attendu 2).
+  · Les 16 fichiers non suivis (les pièces de rouge de la reproduction, l'extension 3 en est déjà commitée) étaient sur le disque pendant l'audit : l'audit les a lus.
+
+Résultat du tri différentiel : 2 alertes ABSENTES de la sortie précédente — jeton = 2 — réparties en DEUX fichiers (2 contextes lus, attendu 2), aux lignes 3 937 et 3 939 de la sortie scellée :
+  · 1  docs/preuves/D343/reproduction/lancer-repro.sh ligne 43 — le CONTRÔLE DE RESTE : une commande qui refuse de verser la sortie filtrée si elle contient la forme d'un jeton de vérification. L'alerte est
+       le TEXTE de l'expression régulière (la partie qui suit le mot « token » : une classe de caractères et un quantificateur, 16 caractères de syntaxe), jamais une valeur ; l'outil le dit
+       lui-même : « valeur déjà présente dans 0 fichier(s) suivi(s) hors preuves ».
+  · 1  docs/preuves/D343/tri-audit-d343a.txt ligne 22 — MA PROSE, écrite après l'audit « a » : elle décrit le gabarit de masque d'une sortie e2e (l'adresse de vérification d'e-mail suivie du mot
+       « token » puis d'un marqueur « jeton masqué »). La « valeur » masquée est de 6 caractères (le début du gabarit), et l'outil dit « valeur déjà présente dans 0 fichier(s) suivi(s) ».
+  Total : 1 + 1 = 2 (attendu 2). Plus grande valeur masquée : 16 caractères (la syntaxe d'une expression régulière), plus petite : 6.
+
+Conclusion : 2 alertes lues, 0 valeur réelle.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier, la sortie scellée « b » et les pièces ajoutées après l'audit n'ont pas été audités avant leur commit (ils n'existaient pas) ; l'audit suivant (« c ») les couvrira.
+  · LES SORTIES DE PLAYWRIGHT VERSÉES ICI SONT FILTRÉES : le lanceur retire les lignes [WebServer] (les journaux du serveur d'API, qui portent des jetons de vérification d'e-mail, D200). Le brut est
+    gardé HORS dépôt ; chaque pièce porte son empreinte sha256, sa taille et le nombre de lignes retirées. Le contrôle de reste (ci-dessus) refuse de verser une pièce où une forme de jeton subsiste.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes : il ne voit PAS les fichiers .env du poste, ignorés par git (D200, D298). Pendant ce lot, un relevé de leurs NOMS de variables a
+    imprimé dans le terminal une ligne de commentaire qui contient une valeur de forme secrète : elle n'est écrite dans aucun fichier du dépôt, et le rapport de fin de lot la signale à Ko.
+  · le contrôle dédié « 0 valeur réelle » (D299) n'est pas rejoué ici : il cherche les valeurs d'un JOURNAL à valeurs réelles ; il sera rejoué à la clôture contre les journaux bruts des deux passes de
+    l'e2e et de la passe des six portes.

@@ -1,0 +1,17 @@
+D343 — mesure du délai réel de fermeture d'une connexion inactive — 07/11/2026 12:39:05
+SHA du dépôt: 06b645454721af39ab90792d7ab6ee531068444e · node v22.14.0
+serveur mesuré: le VRAI serveur d'API, code compilé de apps/api (node apps/api/dist/main.js, même programme que 'nest start'), lancé à la main sur le port 3191 avec l'environnement de la suite (limiteurs relâchés, base zwadj_e2e) — l'API ne fixe ni keepAliveTimeout ni headersTimeout ni requestTimeout (git grep : 0 ligne)
+commande 1: node docs/preuves/D343/reproduction/mesure-keepalive.mjs --calibrer
+CALIBRATION — serveur node:http, keepAliveTimeout imposé = 2000 ms → mesuré 3005 ms · en-tête annoncé « timeout=2 »
+calibration tenue (dans [1 900 ; 3 500] ms).
+code de sortie: 0
+
+commande 2: node docs/preuves/D343/reproduction/mesure-keepalive.mjs 127.0.0.1 3191 3
+node v22.14.0 · 127.0.0.1:3191 · 3 essai(s) · socket TCP brute
+essai 1: {"statut":"200","entete_connection":"keep-alive","entete_keep_alive":"timeout=5","ms_inactif_avant_fermeture":6010,"fermeture_avec_erreur":false}
+essai 2: {"statut":"200","entete_connection":"keep-alive","entete_keep_alive":"timeout=5","ms_inactif_avant_fermeture":6004,"fermeture_avec_erreur":false}
+essai 3: {"statut":"200","entete_connection":"keep-alive","entete_keep_alive":"timeout=5","ms_inactif_avant_fermeture":6015,"fermeture_avec_erreur":false}
+
+commande 3: node docs/preuves/D343/reproduction/mesure-keepalive.mjs ::1 3191 1   (la même mesure en IPv6 : 'localhost' du fixture peut résoudre l'une ou l'autre adresse)
+node v22.14.0 · ::1:3191 · 1 essai(s) · socket TCP brute
+essai 1: {"statut":"200","entete_connection":"keep-alive","entete_keep_alive":"timeout=5","ms_inactif_avant_fermeture":6018,"fermeture_avec_erreur":false}

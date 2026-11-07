@@ -1,0 +1,165 @@
+D343 — rouge-avant — cible « repro-d265 » — 07/11/2026 12:41:48
+SHA: 06b645454721af39ab90792d7ab6ee531068444e
+arbre (git status --short): [?? docs/preuves/D343/reproduction/;]
+état machine AVANT: 12:40:18 | SECTEUR | RAM libre 3,319 Mo | chrome 0 | headless_shell 0 | node 0
+état machine APRÈS: 12:41:47 | SECTEUR | RAM libre 3,279 Mo | chrome 0 | headless_shell 0 | node 0
+node v22.14.0 · playwright 1.50.1 · undici 6.21.1
+commande: cd e2e && pnpm exec playwright test --config ../docs/preuves/D343/reproduction/repro.config.ts repro-d265
+code de sortie de Playwright: 1
+brut (HORS dépôt): 63924 octets, sha256 3d8486d5dc638039777542505f471687a7d3f212edb4ad868d154b7ba3880709
+lignes [WebServer] retirées de cette pièce (jetons, D200): 322 · « Nest application successfully started »: 1 (attendu 1) · « File change detected »: 0 (attendu 0)
+────────────────────────────────────────────────────────────────
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 8 tests using 1 worker
+
+MESURE delai_fermeture_inactive_ms=6011 (api=http://localhost:3101, node v22.14.0)
+  ok 1 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:84:5 › MESURE — le délai après lequel le serveur d'API ferme une connexion inactive (6.1s)
+  ok 2 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:91:5 › A — NÉGATIF — aucun blocage : le premier appel après le pool réussit (1.1s)
+  ok 3 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:96:5 › B — NÉGATIF — attente ASYNCHRONE plus longue que la fermeture serveur : réussit (la boucle tourne) (15.5s)
+  ok 4 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:103:5 › C — NÉGATIF — blocage synchrone PUIS un tour de boucle complet : réussit (15.5s)
+  x  5 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:112:7 › D1 — POSITIF — blocage synchrone plus long que la fermeture serveur, premier appel IMMÉDIAT (15.2s)
+  -  6 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:112:7 › D2 — POSITIF — blocage synchrone plus long que la fermeture serveur, premier appel IMMÉDIAT
+  -  7 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:112:7 › D3 — POSITIF — blocage synchrone plus long que la fermeture serveur, premier appel IMMÉDIAT
+  -  8 [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:120:5 › E — POSITIF — le VRAI seedReferentials() après 1,5 s libre
+
+
+  1) [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:112:7 › D1 — POSITIF — blocage synchrone plus long que la fermeture serveur, premier appel IMMÉDIAT 
+
+    Error: expect(received).resolves.toMatchObject()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [Error: POST http://localhost:3101/api/v1/auth/register a échoué après 15 ms.
+    Chaîne des causes (la DERNIÈRE est la vraie) :
+      TypeError: fetch failed
+      Error [ECONNRESET]: read ECONNRESET]
+
+      79 |
+      80 | async function premierAppel(raison: string): Promise<void> {
+    > 81 |   await expect(createVerifiedAccount("CLIENT"), raison).resolves.toMatchObject({ role: "CLIENT" });
+         |               ^
+      82 | }
+      83 |
+      84 | test("MESURE — le délai après lequel le serveur d'API ferme une connexion inactive", async () => {
+        at premierAppel (C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D343\reproduction\repro-d265.repro.ts:81:15)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\docs\preuves\D343\reproduction\repro-d265.repro.ts:116:11
+
+  1 failed
+    [repro] › ..\docs\preuves\D343\reproduction\repro-d265.repro.ts:112:7 › D1 — POSITIF — blocage synchrone plus long que la fermeture serveur, premier appel IMMÉDIAT 
+  3 did not run
+  4 passed (1.4m)

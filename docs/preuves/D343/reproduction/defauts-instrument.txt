@@ -1,0 +1,27 @@
+D343 — REPRODUCTION DE D265 — DÉFAUTS DE L'INSTRUMENT RELEVÉS À LA PREMIÈRE PASSE (le comportement ne démentait rien : la reproduction a MORDU dès la première passe)
+
+Instrument : docs/preuves/D343/reproduction/repro-d265.repro.ts (avec repro.config.ts et lancer-repro.sh)
+Première passe, gardée TELLE QUELLE : docs/preuves/D343/reproduction/rouge-avant-passe-1-AVANT-CORRECTIFS.txt (+ ses empreintes)
+Passe corrigée, rejouée EN ENTIER : docs/preuves/D343/reproduction/rouge-avant.txt (+ ses empreintes) ; sa lecture : docs/preuves/D343/reproduction/lecture-rouge-avant.md
+
+Règle appliquée (D298, ratifiée par Ko le 21/09/2026) : un défaut d'INSTRUMENT découvert à un point d'arrêt arrête la MESURE, pas le lot — l'instrument est réparé, la passe est
+REJOUÉE EN ENTIER (calibration comprise : les bras négatifs A, B, C rejoués avec les positifs), et le défaut s'écrit ici avec la sortie brute qui l'a montré.
+
+Défaut n° 1 — le mode `serial` a sauté trois bras après le premier échec
+  Sortie brute de la passe 1 : « x  5 … D1 — POSITIF … (15.2s) / -  6 … D2 / -  7 … D3 / -  8 … E » puis « 1 failed · 3 did not run · 4 passed (1.4m) ».
+  La spec déclarait `test.describe.configure({ mode: "serial" })`. En mode serial, l'échec d'un test SAUTE les suivants : D2, D3 et E n'ont rien mesuré. Un bras « qui n'a pas tourné »
+  n'est pas un bras négatif ni positif — il est absent (D312 : une mesure qui ne démarre pas n'est jamais une morsure). La passe 1 avait pourtant déjà montré l'essentiel — A, B, C verts,
+  D1 rouge par la chaîne de production — mais elle ne montrait pas que D se REPRODUIT (trois fois), ni le bras E (le vrai semis), ni aucun test d'`apiCall`.
+  Réparation : plus de mode serial ; les bras sont indépendants (un échec ne saute aucun autre).
+
+Défaut n° 2 — la mesure du délai vivait dans un TEST, donc dans la mémoire d'UN worker
+  Dans le même défaut : un test en échec fait redémarrer le worker de Playwright, et la variable qui portait le délai mesuré (« delaiServeurMs ») aurait été remise à zéro dans le worker
+  suivant — D2, D3, E auraient alors bloqué 1 000 ms au lieu de 7 000 : ils auraient PASSÉ, pour une mauvaise raison (une mesure confondue, D209 n° 1).
+  Réparation : la mesure est faite par un `beforeAll`, rejoué dans chaque worker, et imprimée à chaque fois (« MESURE delai_fermeture_inactive_ms=… »).
+
+Ajout (pas un défaut) — le bras F
+  La table d'ouverture et la lecture adverse (contrôle 2.7) relèvent DEUX fonctions du harnais qui appellent le `fetch` global : `postJson` et `apiCall`. La passe 1 n'exerçait que la première.
+  Le bras F fait la même chose avec `apiCall`. Un bras de plus change la passe : elle est donc rejouée en entier, pas complétée.
+
+Ce que ces défauts ont en commun : un montage qui s'arrête ou qui oublie son état au premier échec mesure moins que ce qu'il annonce. C'est le détail de la sortie brute (« 3 did not run »)
+qui l'a montré, jamais une relecture du code.
