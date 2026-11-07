@@ -1,0 +1,79 @@
+D341 — CONTRÔLE DE FIN DE LOT — SHA de départ e40c141 — f81d772 = HEAD au moment du contrôle
+calibration : chemin déclaré connu → ✓ ; chemin fabriqué → ✗ ; prose ≠ déclaration, tableau = déclaration ; texte sain → 0 mojibake ; texte cassé → 1 ; ligne de table copiée → ✓, ligne fabriquée → ✗ — les bras tiennent (144 chemins complets lus dans la table).
+
+commits du lot (19, du plus ancien au plus récent) :
+  ed30944  docs(rang-44): D341 — table d'ouverture, SEULE : L36-3a-1 (la couche et son Manager), le code, chemins complet
+  00aca64  test(rang-44): D341 — la consigne en pièce, la lecture adverse de la consigne (56 contrôles : 47 ✓ · 5 ≈ · 0 ✗
+  c3b7797  docs(rang-44): D341 — PREMIÈRE écriture d'autorité : l'arbitrage du rang 44 (suite, L36-3a-1), sections 1 et 2
+  0d9f09b  test(rang-44): D341 — les ROUGES de L36-3a-1 (D334 item 5) : 22 fichiers de test écrits AVANT le code, 109 éch
+  56b0fd8  fix(api): D341 — SIG-1 : le Set-Cookie de RÉPONSE n'est plus journalisé (R-7 (D341), premier commit de code du
+  c7c0e1b  feat(types): D341 — le contrat de la couche du personnel : STAFF_LIMITS (UN levier de durées), codes d'erreur 
+  f181d3f  feat(api): D341 — la migration écrite à la main de TOUTE la tranche [L36-3] (trois tables, trois énumérations,
+  4b7d291  feat(api): D341 — la liste des mots de passe courants (R-5) : module GÉNÉRÉ depuis SecLists (MIT, 10 001 entré
+  141399c  feat(api): D341 — le module du personnel : K-14 à K-18 (activer, se connecter, se déconnecter, l'état, changer
+  44f9a4e  test(rang-44): D341 — les tests corrigés ou ajoutés APRÈS les rouges et APRÈS le code : chaque fichier modifié
+  40b7380  test(rang-44): D341 — le harnais neutralisation/neutralize-r44.py : 233 cibles (garde, décisions pures, cookie
+  de8d138  test(rang-44): D341 — neutralize-r44.py à 236 cibles : trois cibles de SOURCE ajoutées (horloge MP-41, journal
+  95e06bb  docs(rang-44): D341 — extension 1 de la table d'ouverture, SEULE, avant les pièces qu'elle déclare : dix-neuf 
+  331bd4a  test(rang-44): D341 — pièces de clôture, première partie : les six portes sur secteur (toutes à 0, e2e MASQUÉE
+  2afd556  docs(rang-44): D341 — extension 2 de la table d'ouverture, SEULE, avant les pièces qu'elle déclare : seize fic
+  76662e2  test(rang-44): D341 — pièces de clôture, deuxième partie : l'union des quatre campagnes JOUÉE (r33 95/95, r38 
+  0f06e85  test(rang-44): D341 — pièces de clôture, troisième partie : le complément de l'angle mort du tri JOUÉ (r4 2/2,
+  d86726e  docs(rang-44): D341 — extension 3 de la table d'ouverture, SEULE, avant les pièces qu'elle déclare : les deux 
+  f81d772  docs(rang-44): D341 — CLÔTURE du rang 44 (suite) sur le code, L36-3a-1 : la section D341, le point d'entrée (t
+
+1. LOCAL ET DISTANT SUR LE MÊME SHA (D288)
+  ✓ HEAD = f81d7720ff9cd83730714b404ad3b85e216337ca · origin/main = f81d7720ff9cd83730714b404ad3b85e216337ca (après `git fetch` fait avant ce contrôle) — examinés : 2 SHA
+  ✓ `git status --short` = vide ; `git stash list` = vide
+
+2. LE PREMIER COMMIT DU LOT EST LA TABLE SEULE (D328, point 1)
+  ✓ ed30944 : parent e40c141, fichiers = ['docs/preuves/D341/table-ouverture.md'] — examinés : 1 fichier(s)
+
+3. DIFF ⊆ TABLE, CHEMINS COMPLETS, EXTENSIONS COMPRISES (D328)
+  ✓ 137 fichiers au diff e40c141..HEAD, 144 chemins complets déclarés ; non déclarés : aucun
+     commits qui modifient la table après le premier : 3
+  ✓ l'extension du commit n°13 (95e06bb) est SEULE (['docs/preuves/D341/table-ouverture.md']) et précède les 19 fichier(s) qu'elle déclare ; déjà commités avant ou avec elle : aucun
+  ✓ l'extension du commit n°15 (2afd556) est SEULE (['docs/preuves/D341/table-ouverture.md']) et précède les 16 fichier(s) qu'elle déclare ; déjà commités avant ou avec elle : aucun
+  ✓ l'extension du commit n°18 (d86726e) est SEULE (['docs/preuves/D341/table-ouverture.md']) et précède les 4 fichier(s) qu'elle déclare ; déjà commités avant ou avec elle : aucun
+
+4. AUCUN ÉCRAN, AUCUN E2E, AUCUN FICHIER HORS DU PÉRIMÈTRE DU LOT (le lot n'a aucun écran : gestes de Ko vides)
+  ✓ 137 fichiers examinés ; sous apps/pro, apps/client, e2e, paiements ou administration : aucun
+
+5. L'ORDRE DES COMMITS (D328, points 2 à 4 ; D334 item 5)
+  ✓ la sortie de la lecture adverse (commit n°2) précède le premier `.md` d'autorité (commit n°3) — examinés : 19 commits
+  ✓ la PREMIÈRE écriture d'autorité (c3b7797) ne contient que ZWADJ_CONTINUITE.md : ['ZWADJ_CONTINUITE.md']
+  ✓ le commit des rouges (n°4, 22 fichiers de test à empreinte) précède le premier commit de code de production (n°5) — D334 item 5
+  ✓ le premier commit de code de production (56b0fd8) est SIG-1 SEUL : ['apps/api/src/app.module.ts'] (R-7)
+  ✓ les pièces de clôture (portes, passe D277 : commit n°14) précèdent les `.md` de clôture (dernier : commit n°19)
+
+6. LE REGISTRE
+  ✓ 295 lignes de registre examinées ; les deux dernières : | D340 | A |…, | D341 | A |…
+
+7. L'ARBRE, LES FINS DE LIGNE, L'ENCODAGE (D289 : relire ce qu'on a ÉCRIT, pas le compte rendu de l'outil)
+  ✓ ZWADJ_CONTINUITE.md : 25160 CRLF, 0 LF nu(s) — examiné : 3152127 octets
+  ✓ AGENTS.md : 1669 CRLF, 0 LF nu(s) — examiné : 238335 octets
+  ✓ ZWADJ_BACKLOG.md : 5666 CRLF, 0 LF nu(s) — examiné : 703991 octets
+  ✓ 88 pièces de docs/preuves/D341 relues en UTF-8 : mojibake / U+FFFD = aucun
+
+8. LES JETONS ATTENDUS SONT DANS LES FICHIERS (D289 : on cherche les jetons, on ne constate pas qu'une écriture a eu lieu)
+  ✓ ZWADJ_CONTINUITE.md : 10 jetons cherchés dans le texte APLATI ; manquants : aucun
+  ✓ AGENTS.md : 5 jetons cherchés dans le texte APLATI ; manquants : aucun
+  ✓ ZWADJ_BACKLOG.md : 5 jetons cherchés dans le texte APLATI ; manquants : aucun
+
+9. LA TABLE D'OUVERTURE EST RECOPIÉE À L'IDENTIQUE DANS ZWADJ_CONTINUITE.md (D328, point 3)
+  ✓ 187 lignes de contenu de la table examinées (titres, lignes vides et filets exclus) ; absentes de la copie : 0
+
+10. LES DÉCISIONS DU CHAT ONT ATTERRI DANS UN FICHIER (corollaire de fin de session de CLAUDE.md) — chaque ligne est vérifiée par la famille 8
+     · la consigne (R-1 à R-10, 1 a, 1 b) : ZWADJ_CONTINUITE.md, bloc « ARBITRÉ LE 04/11/2026 PAR KO — LE RANG 44 (SUITE) » (première écriture d'autorité) ; la consigne entière : docs/preuves/D341/consigne.md ;
+     · les décisions prises par la session seule (S-113 à S-129), À RATIFIER : ZWADJ_CONTINUITE.md, section D341, § 4 ;
+     · SIG-1 (réparé) et les entrées neuves (S-104, angle mort du tri, rafale de connexions, coût de la couche activée, relecture arabe) : ZWADJ_BACKLOG.md ;
+     · le compteur QUATRE, l'invariant de la couche du personnel, la contrainte de mise en service de `SameSite=Strict` : AGENTS.md ;
+     · rien ne vit seulement dans ce fil.
+
+11. CE QUE CE CONTRÔLE NE DIT PAS
+     · Il ne dit rien de la CORRECTION du code : ce sont les portes (docs/preuves/D341/portes/), le harnais (docs/preuves/D341/neutralisation/) et le relecteur.
+     · Il ne rejoue pas les portes : leurs sorties sont versées ; elles datent du SHA 40b7380, et le diff depuis ne touche que des pièces et des .md (famille 3).
+     · La famille 5 compare des POSITIONS de commits : elle ne dit pas ce que chaque commit contient au-delà des noms de fichiers.
+     · Le « sur secteur » des portes est relevé par le pilote (41 relevés sur 41) ; ce contrôle ne le recontrôle pas.
+
+RÉSULTAT : 0 échec(s) sur les familles 1 à 9 (attendu 0).
