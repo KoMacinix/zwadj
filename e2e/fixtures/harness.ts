@@ -24,32 +24,33 @@ export interface Account {
 const PASSWORD = "Motdepasse1";
 
 /**
- * ⚠ RENDRE `TypeError: fetch failed` LISIBLE — D265. CE N'EST PAS UN CORRECTIF.
+ * ⛔ D265 — NOMMÉ PAR LA MESURE (D343), PUIS RÉPARÉ ICI. L'ancienne version de ce commentaire disait « on ne corrige pas une panne qu'on n'a pas nommée » ; elle l'est.
  *
- * Le run du 28/08 a produit DOUZE échecs `TypeError: fetch failed` sur
- * `/auth/register`, et ce message ne dit RIEN : `fetch` de Node est une
- * enveloppe qui masque l'erreur réelle dans `.cause`. `ECONNREFUSED` (serveur
- * mort), `ECONNRESET` / `UND_ERR_SOCKET` (socket keep-alive fermée côté
- * serveur pendant que le client la réutilise) et `UND_ERR_HEADERS_TIMEOUT`
- * (réponse trop lente) portent le même texte et appellent trois corrections
- * différentes.
+ * LA CAUSE. Le `fetch` global (undici) garde les connexions HTTP ouvertes dans un pool. Quand la boucle d'événements du worker est BLOQUÉE — `seedReferentials()` fait un `execFileSync` de
+ * quelques secondes — plus longtemps que le serveur d'API ne garde une connexion inactive, le serveur ferme ses connexions pendant le blocage (MESURÉ : l'en-tête annonce `timeout=5`, la fermeture
+ * a lieu à ≈ 6,0 s) ; le client, dont la boucle est figée, ne l'apprend pas. À la reprise, le PREMIER appel prend une connexion MORTE du pool : `fetch failed` ← `ECONNRESET`, en quelques ms.
+ * Il faut au moins deux connexions libres dans le pool (trois appels successifs en laissent deux ; avec une seule, undici la tient encore pour « occupée » et en ouvre une neuve — c'est pourquoi
+ * les montages de D322 et de D325, qui n'en avaient qu'une, n'ont rien reproduit). Pièces : `docs/preuves/D343/reproduction/`.
  *
- * ⛔ ON NE CORRIGE PAS UNE PANNE QU'ON N'A PAS NOMMÉE. Cette enveloppe-ci ne
- * change aucun comportement : elle déplie la chaîne des causes, mesure la durée
- * et pose une échéance explicite. Le prochain run dira LAQUELLE des trois.
+ * LA RÉPARATION. Les appels de PRÉPARATION n'emploient aucune connexion réutilisable : `connection: close`. Un appel qui ouvre sa propre connexion ne peut pas prendre une connexion morte.
+ * Ce n'est PAS une nouvelle tentative : aucun appel n'est jamais rejoué ici, et `playwright.config.ts` garde `retries: 0` (arbitrage de Ko, 04/10/2026 : « aucune nouvelle tentative
+ * automatique »). Le coût est une connexion TCP locale par appel. UNE seule fonction, `appelHttp`, fait l'appel pour `postJson` ET pour `apiCall` : deux sites qui appellent le `fetch` global
+ * se seraient corrigés chacun, et auraient fini par diverger.
  *
- * ⚠ AUCUNE NOUVELLE TENTATIVE ICI, délibérément. `playwright.config.ts` pose
- * `retries: 0` avec un motif écrit ; réessayer en douce dans le harnais
- * contournerait cette décision par la petite porte. Si l'instabilité est réelle,
- * elle doit rester visible.
+ * ⚠ ELLE GARDE LA LISIBILITÉ DE D265 : `fetch failed` est une enveloppe, la vraie erreur est dans `.cause`. `appelHttp` déplie la chaîne, mesure la durée et pose une échéance explicite — pour
+ * les DEUX fonctions (`apiCall` ne dépliait rien : un `TypeError: fetch failed` seul ne dit pas LAQUELLE des trois pannes — ECONNREFUSED, ECONNRESET / UND_ERR_SOCKET, UND_ERR_HEADERS_TIMEOUT).
+ *
+ * ⚠ CE QUE CETTE RÉPARATION NE COUVRE PAS : `loginContext` passe par `context.request` de Playwright, un AUTRE client HTTP, qui n'a pas été mesuré ici ; et un serveur réellement
+ * indisponible reste une panne (ECONNREFUSED), qui doit rester visible. Garde : `specs/d265-socket-perimee.e2e.ts` ; mutation : `neutralisation/neutralize-r45.py`.
  */
-async function postJson(url: string, body: unknown): Promise<Response> {
+const SANS_REUTILISATION = { connection: "close" } as const;
+
+async function appelHttp(url: string, init: { method: string; headers?: Record<string, string>; body?: string }): Promise<Response> {
   const debut = Date.now();
   try {
     return await fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(body),
+      ...init,
+      headers: { ...init.headers, ...SANS_REUTILISATION },
       // Sans échéance, `fetch` attend jusqu'au timeout du TEST : le message
       // parle alors de la spec et jamais de l'appel qui n'a pas fini.
       signal: AbortSignal.timeout(30_000)
@@ -63,11 +64,15 @@ async function postJson(url: string, body: unknown): Promise<Response> {
       courante = courante.cause;
     }
     throw new Error(
-      `POST ${url} a échoué après ${Date.now() - debut} ms.\n` +
+      `${init.method} ${url} a échoué après ${Date.now() - debut} ms.\n` +
         `Chaîne des causes (la DERNIÈRE est la vraie) :\n  ${causes.join("\n  ")}`,
       { cause: erreur }
     );
   }
+}
+
+async function postJson(url: string, body: unknown): Promise<Response> {
+  return appelHttp(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
 }
 
 /**
@@ -279,11 +284,10 @@ export async function apiCall(
   token?: string,
   body?: unknown
 ): Promise<{ status: number; text: string; json: unknown }> {
-  const res = await fetch(`${API}/api/v1${path}`, {
+  const res = await appelHttp(`${API}/api/v1${path}`, {
     method,
     headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) },
-    body: body === undefined ? undefined : JSON.stringify(body),
-    signal: AbortSignal.timeout(30_000)
+    body: body === undefined ? undefined : JSON.stringify(body)
   });
   const text = await res.text();
   let json: unknown = undefined;
