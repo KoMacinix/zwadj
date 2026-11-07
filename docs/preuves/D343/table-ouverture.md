@@ -118,3 +118,9 @@ La table de D342 les déclarait déjà ; elles n'existaient pas à l'arrêt de l
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (07/11/2026, commitée SEULE, AVANT le commit de la pièce qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/` aux chemins complets de cette table : 5 fichiers sur disque, 1 hors table). La table déclarait `lecture-adverse/defauts-instrument.txt` (pièce conditionnelle, B.3) mais pas la sortie de la première passe qu'il cite ; D342 avait versé la sienne de la même façon (extension 1 de sa table).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : trois défauts d'instrument (un détail qui contredit son verdict, un motif cherché au mauvais endroit, un texte qui dit l'inverse de son compte) ; le comportement du dépôt ne démentait pas la consigne |
