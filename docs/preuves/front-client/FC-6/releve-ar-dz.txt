@@ -1,0 +1,79 @@
+FC-6 — relevé navigateur ar / ar-DZ (témoins fr / fr-DZ) · 2026-11-05T07:44:38.899Z
+moteur : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36
+
+calibration ✓ positif : fr nomme le mois 8 « août »
+calibration ✓ négatif : ar ne le nomme pas « août »
+calibration : 2 bras · 0 manqué(s) (attendu 0)
+
+== fr
+   jourNum    15
+   dateLong   dimanche 15 août 2027
+   jourCourt  dim. lun. mar. mer. jeu. ven. sam.
+   jourLong   dimanche lundi mardi mercredi jeudi vendredi samedi
+   moisAn     août 2027
+   mois       janvier février mars avril mai juin juillet août septembre octobre novembre décembre
+   jma        15 août 2027
+   dateNum    15/08/2027
+   pdf        15 août 2027
+   prix       235 000 DZD
+   nombre     1 234 567
+   note       4,90
+   semaine    {"firstDay":1,"weekend":[6,7]}
+== fr-DZ
+   jourNum    15
+   dateLong   dimanche 15 août 2027
+   jourCourt  dim. lun. mar. mer. jeu. ven. sam.
+   jourLong   dimanche lundi mardi mercredi jeudi vendredi samedi
+   moisAn     août 2027
+   mois       janvier février mars avril mai juin juillet août septembre octobre novembre décembre
+   jma        15 août 2027
+   dateNum    15/08/2027
+   pdf        15 août 2027
+   prix       235 000 DA
+   nombre     1 234 567
+   note       4,90
+   semaine    {"firstDay":6,"weekend":[5,6]}
+== ar
+   jourNum    15
+   dateLong   الأحد، 15 أغسطس 2027
+   jourCourt  الأحد الاثنين الثلاثاء الأربعاء الخميس الجمعة السبت
+   jourLong   الأحد الاثنين الثلاثاء الأربعاء الخميس الجمعة السبت
+   moisAn     أغسطس 2027
+   mois       يناير فبراير مارس أبريل مايو يونيو يوليو أغسطس سبتمبر أكتوبر نوفمبر ديسمبر
+   jma        15 أغسطس 2027
+   dateNum    15‏/8‏/2027
+   pdf        15 أغسطس 2027
+   prix       ‏235,000 د.ج.‏
+   nombre     1,234,567
+   note       4.90
+   semaine    {"firstDay":6,"weekend":[5,6]}
+== ar-DZ
+   jourNum    15
+   dateLong   الأحد، 15 أوت 2027
+   jourCourt  الأحد الاثنين الثلاثاء الأربعاء الخميس الجمعة السبت
+   jourLong   الأحد الاثنين الثلاثاء الأربعاء الخميس الجمعة السبت
+   moisAn     أوت 2027
+   mois       جانفي فيفري مارس أفريل ماي جوان جويلية أوت سبتمبر أكتوبر نوفمبر ديسمبر
+   jma        15 أوت 2027
+   dateNum    15‏/8‏/2027
+   pdf        15 أوت 2027
+   prix       ‏235.000 د.ج.‏
+   nombre     1.234.567
+   note       4,90
+   semaine    {"firstDay":6,"weekend":[5,6]}
+
+ÉGALITÉS, format par format (les octets, pas l'œil) :
+   jourNum    fr = fr-DZ : OUI · ar = ar-DZ : OUI
+   dateLong   fr = fr-DZ : OUI · ar = ar-DZ : NON
+   jourCourt  fr = fr-DZ : OUI · ar = ar-DZ : OUI
+   jourLong   fr = fr-DZ : OUI · ar = ar-DZ : OUI
+   moisAn     fr = fr-DZ : OUI · ar = ar-DZ : NON
+   mois       fr = fr-DZ : OUI · ar = ar-DZ : NON
+   jma        fr = fr-DZ : OUI · ar = ar-DZ : NON
+   dateNum    fr = fr-DZ : OUI · ar = ar-DZ : OUI
+   pdf        fr = fr-DZ : OUI · ar = ar-DZ : NON
+   prix       fr = fr-DZ : NON · ar = ar-DZ : NON
+   nombre     fr = fr-DZ : OUI · ar = ar-DZ : NON
+   note       fr = fr-DZ : OUI · ar = ar-DZ : NON
+   semaine    fr = fr-DZ : NON · ar = ar-DZ : OUI
+   dates : fr = fr-DZ sur 9 format(s) de 9 examiné(s)

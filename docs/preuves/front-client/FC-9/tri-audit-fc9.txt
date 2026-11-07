@@ -1,0 +1,14 @@
+FC-9 — tri différentiel de l'audit de secrets « fc9 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FC-9/audit-secrets-fc9.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 778 fichiers (86 195 139 octets),
+audités 4 638, exclus 140, alertes 1 026.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FC-8/audit-secrets-fc8.txt
+docs/preuves/front-client/FC-9/audit-secrets-fc9.txt — calibration à deux bras tenue. Précédente : 1 022 contextes ; nouvelle :
+1 026 ⇒ alertes ABSENTES de la précédente : 4 (jeton = 3 · mot-de-passe = 1), lues aux lignes 3271 à 3277 de la sortie scellée.
+  · [jeton] FC-8/rapport.md l. 108 et FC-8/tri-audit-fc8.txt l. 9 : deux phrases qui COMPTENT les « token= » restants (0) — écrites
+    après l'audit de FC-8 (limite écrite là-bas), elles entrent ici.
+  · [jeton] FC-9/portes/test-e2e.txt l. 1 : l'en-tête du pilote des portes, qui compte le paramètre de jeton restant (0).
+  · [mot-de-passe] FC-9/portes/test-int.txt l. 337 : un TITRE de test d'intégration (« forgot-password … CONSTANTE »), la forme déjà
+    triée par FC-1 et les lots suivants.
+Résultat du tri : 4 alertes lues, 0 valeur réelle. Limite écrite : ce fichier, controle.txt et rapport.md sont écrits après l'audit.

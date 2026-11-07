@@ -73,10 +73,13 @@ MESURES = {
 
 CIBLES = [
     # ── Calendrier — le module pur.
-    {"libelle": "R29-1. C-b : un jour TOUT PRIS redevient choisissable (« au moins un créneau » au lieu de « un créneau LIBRE »)",
-     "fichier": MODULE, "avant": 'return day !== undefined && day.slots.some((slot) => slot.status === "AVAILABLE");',
-     "apres": "return day !== undefined && day.slots.length > 0;",
-     "mesure": "calendrier", "titre": "C-b : aucun créneau AVAILABLE"},
+    # ⛔ RÉORIENTÉE (FC-4, session `front-client`) : la règle du jour choisissable vit désormais dans `dayState` (un jour qui porte
+    # un créneau LIBRE ou DEMANDÉ se choisit, arbitrage de Ko du 04/10/2026) ; même faute mutée — « au moins un créneau » au lieu
+    # d'« un créneau choisissable » —, nouveau site ; le titre de C-b a suivi l'inversion écrite de FC-4.
+    {"libelle": "R29-1. C-b : un jour TOUT PRIS redevient choisissable (« au moins un créneau » au lieu de « un créneau LIBRE ou DEMANDÉ »)",
+     "fichier": MODULE, "avant": 'return day.slots.some((slot) => isSlotChoosable(slot.status)) ? "requested" : "full";',
+     "apres": 'return day.slots.length > 0 ? "requested" : "full";',
+     "mesure": "calendrier", "titre": "C-b : ni créneau AVAILABLE ni créneau REQUESTED"},
     {"libelle": "R29-2. C-e : en arabe, la flèche droite AVANCE — elle va à l'envers de ce que l'œil voit",
      "fichier": MODULE, "avant": "return walk(addDays(from, rtl ? -1 : 1), rtl ? -1 : 1);",
      "apres": "return walk(addDays(from, 1), 1);",
@@ -96,7 +99,8 @@ CIBLES = [
      "fichier": PICKER, "avant": "disabled={!ok}", "apres": "disabled={false}",
      "mesure": "panneau", "titre": "une date PRISE reste affichée, désactivée"},
     {"libelle": "R29-7. C-f : un jour ne se nomme plus que par son numéro — ni la date entière, ni son état",
-     "fichier": PICKER, "avant": 'aria-label={t(ok ? "dayFree" : "dayFull", { date: longDate(date, locale) })}',
+     # ⛔ RÉORIENTÉE (FC-4) : le nom du jour passe par `NOM_DU_JOUR[etat]` (trois états) ; même faute mutée, nouveau site.
+     "fichier": PICKER, "avant": 'aria-label={t(NOM_DU_JOUR[etat], { date: longDate(date, locale) })}',
      "apres": "aria-label={dayNumber(date, locale)}",
      "mesure": "panneau", "titre": "C-e : UN arrêt de tabulation dans la grille"},
     {"libelle": "R29-8. C-e : chaque jour est un arrêt de tabulation — la grille se traverse au Tab, jour par jour",

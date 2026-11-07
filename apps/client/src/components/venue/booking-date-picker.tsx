@@ -26,14 +26,19 @@ import {
   dayNumber,
   focusTarget,
   initialMonth,
+  dayState,
   isDaySelectable,
   longDate,
   monthOf,
   moveFocus,
   windowBounds,
   windowMonths,
+  type DayState,
   type GridKey
 } from "../../lib/booking-calendar";
+
+/** FC-4 — le NOM accessible d'un jour suit son état ; trois états, trois messages (D209 n° 5 : le nom porte l'état). */
+const NOM_DU_JOUR = { free: "dayFree", requested: "dayRequested", full: "dayFull" } as const satisfies Record<DayState, string>;
 
 export interface BookingDatePickerProps {
   /** Les jours de la fenêtre, TELS QUE le serveur les a rendus (le panneau les a réunis). */
@@ -139,6 +144,8 @@ export function BookingDatePicker({ days, selected, onSelect }: BookingDatePicke
                 if (cell.date === null) return <td key={`vide-${i}`} className="cal-pad" />;
                 const date = cell.date;
                 const ok = libre(date);
+                // FC-4 — trois états, trois noms : libre, DEMANDÉ (choisissable, d'autres demandes attendent), complet.
+                const etat = dayState(byDate.get(date));
                 return (
                   <td key={date} className={cell.isWeekend ? "cal-cell is-weekend" : "cal-cell"}>
                     <button
@@ -147,13 +154,15 @@ export function BookingDatePicker({ days, selected, onSelect }: BookingDatePicke
                         else boutons.current.set(date, el);
                       }}
                       type="button"
-                      className={selected === date ? "cal-day is-selected" : "cal-day"}
+                      className={["cal-day", selected === date ? "is-selected" : "", etat === "requested" ? "is-requested" : ""]
+                        .filter(Boolean)
+                        .join(" ")}
                       // Une date sans créneau libre RESTE dans la grille, inactive : voir qu'elle est prise aide à en
                       // choisir une autre (principe 3 du panneau).
                       disabled={!ok}
                       aria-pressed={selected === date}
                       tabIndex={date === arret ? 0 : -1}
-                      aria-label={t(ok ? "dayFree" : "dayFull", { date: longDate(date, locale) })}
+                      aria-label={t(NOM_DU_JOUR[etat], { date: longDate(date, locale) })}
                       onClick={() => {
                         setFocused(date);
                         onSelect(date);

@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import type { VenueProDTO } from "@zwadj/types";
 import { useProVenues } from "./pro-venues-context";
+import { NEW_VENUE_PATH } from "../routes";
 
 export function VenueScope({ children }: { children: (venue: VenueProDTO) => React.ReactNode }) {
   const { t, i18n } = useTranslation();
@@ -50,7 +51,7 @@ export function VenueScope({ children }: { children: (venue: VenueProDTO) => Rea
     return (
       <div className="state-panel">
         <p>{t("venue.ui.scope.none")}</p>
-        <Link className="btn btn-accent" to="/salles/nouvelle">
+        <Link className="btn btn-accent" to={NEW_VENUE_PATH}>
           {t("venue.ui.scope.create")}
         </Link>
       </div>

@@ -929,6 +929,16 @@
 .wk-service.is-on .wk-service-type {
   color: var(--accent);
 }
+/* ⛔ FP-1 — le DÉTAIL d'une prestation cochée (le palier d'une prestation PAR FORMULE, la quantité d'une prestation À L'UNITÉ),
+   rangé SOUS sa ligne et décalé d'un retrait LOGIQUE (RTL) ; les champs reprennent `.wk-input`, aucune couleur en dur. */
+.wk-service-detail {
+  display: grid;
+  gap: 4px;
+  margin-inline-start: 28px;
+  margin-block: 2px 8px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
 
 /* ⚠ LA CASE RESTE UN VRAI `input[type=checkbox]`, seulement redessiné.
    La maquette dessine un `<span>` de 16px et gère l'état à la main ; refaire

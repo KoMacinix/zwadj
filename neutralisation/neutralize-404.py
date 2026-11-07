@@ -132,10 +132,13 @@ CIBLES = [
     },
     {
         "libelle": "C5. Les deux sorties sont INVERSÉES (le cas fréquent renvoyé à la case départ)",
+        # ⚠ ANCRE RÉORIENTÉE (session `front-client`, FC-5) : la sortie « les salles » nomme sa page par `SEARCH_PATH` —
+        # une adresse de page ne s'écrit plus que dans la table de routes (`apps/client/src/lib/routes.ts`). Même faute
+        # mutée (les deux sorties inversées), même titre attendu.
         "genre": "remplacer",
         "chemin": LOCALISEE,
         "avant": L(
-            '          <Link href="/salles" className="btn btn-accent">',
+            '          <Link href={SEARCH_PATH} className="btn btn-accent">',
             '            {t("venues")}',
             "          </Link>",
             '          <Link href="/" className="btn btn-ghost">',
@@ -146,7 +149,7 @@ CIBLES = [
             '          <Link href="/" className="btn btn-ghost">',
             '            {t("home")}',
             "          </Link>",
-            '          <Link href="/salles" className="btn btn-accent">',
+            '          <Link href={SEARCH_PATH} className="btn btn-accent">',
             '            {t("venues")}',
             "          </Link>",
         ),

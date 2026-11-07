@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { ThemeToggle, ZwadjLogo } from "@zwadj/ui";
 import { ApiError, NetworkError } from "../lib/auth-client";
-import { LOGIN_PATH } from "../routes";
+import { LOGIN_PATH, REGISTER_PATH } from "../routes";
 
 export function LangToggle() {
   const { t, i18n } = useTranslation();
@@ -72,7 +72,7 @@ export function ProAuthShell({
               <Link to={LOGIN_PATH} className="tab" aria-current={active === "login" ? "page" : undefined}>
                 {t("auth.ui.header.login")}
               </Link>
-              <Link to="/auth/inscription" className="tab" aria-current={active === "signup" ? "page" : undefined}>
+              <Link to={REGISTER_PATH} className="tab" aria-current={active === "signup" ? "page" : undefined}>
                 {t("auth.ui.header.signup")}
               </Link>
             </nav>

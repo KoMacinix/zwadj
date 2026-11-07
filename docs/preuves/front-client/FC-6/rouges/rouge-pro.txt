@@ -1,0 +1,309 @@
+# FC-6 — ROUGE (pro), lu contre l'état d'AVANT, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 90d3ae2684dc4fee7e17a66ac0ba81e6ac8470ad (tests non commités ; code d'avant)
+# commande : (apps/pro) npx vitest run src/venues/quote-amount.test.ts src/venues/intl-locale-pro.test.ts src/dashboard/walkin-journey.test.tsx — code de sortie 1
+# sha256 apps/pro/src/venues/quote-amount.test.ts : b5746e2a1ead70dd7210a1adac80633426e0c2c53e6db014e8ee5e4ad0ab4f03
+# sha256 apps/pro/src/venues/intl-locale-pro.test.ts : 0abb435b20d40ce50aa37b3cdc1909c374b2b4f7726355d0f59aaa6b08c89aac
+# sha256 apps/pro/src/dashboard/walkin-journey.test.tsx : b49c6691d11a7efe90f1229bfaa7e6e6a8b213158dddc26e7b9c6eb7e981a1d3
+# lecture : 5 échecs, TOUS par AssertionError — QUOTE_AMOUNT_LOCALE absente (1) ; les écrans du devis passent un montant SANS langue (walkin-journey 5 appels, quotes-section 2) (2) ; le mois du pro en « أغسطس » (1) ; la date de la fenêtre de confirmation en arabe (1). Vert attendu et LU : « le PDF imprime ses montants par formatDZD SANS langue » (le bras qui relie l'écran au PDF tient avant comme après).
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+ ❯ src/venues/intl-locale-pro.test.ts (3 tests | 1 failed) 28ms
+   ✓ FC-6 — le calendrier du pro > calibration : ce moteur distingue `ar` et `ar-DZ` pour le mois d'août 18ms
+   × FC-6 — le calendrier du pro > page arabe : le mois est celui de l'Algérie (`ar-DZ`) 8ms
+     → expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+   ✓ FC-6 — le calendrier du pro > page française : rien ne change 1ms
+ ❯ src/venues/quote-amount.test.ts (5 tests | 3 failed) 148ms
+   ✓ FC-6 — l'instrument (calibration à deux bras, D286) > bras rouge : un appel sans langue se voit ; bras vert : un commentaire ne se voit pas, la langue se lit 10ms
+   ✓ FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > le PDF imprime ses montants par `formatDZD` SANS langue — relu dans sa source 23ms
+   × FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > `QUOTE_AMOUNT_LOCALE` existe et rend ce que rend le PDF (le défaut de `formatDZD`) 9ms
+     → expected undefined to be defined
+   × FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > apps/pro/src/dashboard/walkin-journey.tsx : chaque montant du devis passe `QUOTE_AMOUNT_LOCALE` 87ms
+     → expected [ Array(5) ] to deeply equal []
+   × FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > apps/pro/src/venues/quotes-section.tsx : chaque montant du devis passe `QUOTE_AMOUNT_LOCALE` 18ms
+     → expected [ Array(2) ] to deeply equal []
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/dashboard/walkin-journey.test.tsx (158 tests | 1 failed) 34638ms
+   ✓ Flux par étapes — une seule question à l'écran > s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule 123ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité 164ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré 271ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte 38ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations 71ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — des cases nues ne se distinguent pas 61ms
+   ✓ Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran 124ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif 115ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis 176ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran 170ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer 188ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette 167ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse 205ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier » 187ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ une étape SANS réponse n'est pas cliquable dans le rail 20ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question 157ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  324ms
+   ✓ Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux 151ms
+   ✓ Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois 171ms
+   ✓ La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide 194ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question  321ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite 227ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  334ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite 245ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur) 1ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus 243ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré 178ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près 232ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge  328ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > ⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé 17ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition 104ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois 49ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille 253ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien 272ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée » 279ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135) 240ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33) 226ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours 278ms
+   ✓ La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée 154ms
+   ✓ La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133) 141ms
+   ✓ Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation 92ms
+   ✓ Point D — chrome partagée > le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro 15ms
+   ✓ Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client 76ms
+   ✓ Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite 102ms
+   ✓ Point D — chrome partagée > la coche du rail est une icône, la même que côté client 104ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas 18ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle 80ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi 37ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > le texte d'aide dit la longueur du modèle (plus de « 8 à 9 ») 16ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion 284ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit 65ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur 64ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction 47ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison 36ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143) 225ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne 12ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > le même exemple existe en ARABE, pour chacun des champs 1ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby` 46ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre 50ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle 51ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active 45ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé) 58ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe 69ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer 178ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation 63ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton 62ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas 53ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer 118ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT 188ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique) 205ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit 288ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est 19ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé  367ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`  302ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise  320ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation 231ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre 234ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client 209ms
+   × Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue 298ms
+     → expected 'تم تسجيل التاريختم تسجيل تاريخ 15 أغس…' to contain '15 أوت 2026'
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran 273ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS 210ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone 295ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF 248ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  1317ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle  303ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  517ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF  334ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée) 243ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  309ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé 270ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise  304ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)  368ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé » 248ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1387ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons 183ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  1210ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré 238ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements 300ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran  346ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte 250ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  1337ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  777ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`  345ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois  305ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule 249ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu  310ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`  413ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe) 1ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact 13ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail 62ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN 200ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE 223ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés 219ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > un AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client 74ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE 231ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis 52ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise  307ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN 266ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  457ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi 256ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite 203ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite 213ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail » 224ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont 264ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue 241ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine) 233ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé 271ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part 212ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé 250ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > le récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant 63ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ Q1 — l'étape Contact porte UN SECOND bouton, à côté de « Continuer » ; il s'ouvre sans rien taper, n'appelle NI la recherche NI la création de fiche, et mène à l'étape Client 20ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-20 (Q2) — l'étape Client d'un brouillon n'a AUCUN champ de nom et A le champ des invités ; « Continuer » reste grisé sans invités, et la fiche n'est ni cherchée ni créée 50ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le récapitulatif DIT que le contact n'a pas été donné (`draftSummary`) — l'étape Contact est répondue, pas oubliée 46ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact 162ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion 190ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom 223ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN 214ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé » 212ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée 270ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre 289ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit  313ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît 287ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms  362ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial` 236ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe  331ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français 2ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion  364ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1) 247ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Continuer » du contact QUITTE le mode « sans coordonnées » : revenu au contact par « Précédent », un numéro tapé rend l'étape Client COMPLÈTE (les champs des noms, plus le texte du brouillon) 34ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche) 274ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le SECOND bouton est offert à l'étape Contact 15ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche) 183ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route 180ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le récapitulatif DIT que le contact n'a pas été donné 47ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — « Continuer » de l'étape Client d'un brouillon est GRISÉ sans invités et OFFERT avec, sans aucun nom 34ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu 198ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée 240ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — après la promotion, le message « officiel » est rendu 256ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue
+AssertionError: expected 'تم تسجيل التاريختم تسجيل تاريخ 15 أغس…' to contain '15 أوت 2026'
+
+Expected: "15 أوت 2026"
+Received: "تم تسجيل التاريختم تسجيل تاريخ 15 أغسطس 2026 باسم Amine Belkacem دون حجزه.إغلاق"
+
+ ❯ src/dashboard/walkin-journey.test.tsx:1368:33
+    1366|     fireEvent.click(screen.getByRole("button", { name: AR.standby }));
+    1367|     const fenetre = await screen.findByRole("dialog", { name: AR.doneT…
+    1368|     expect(fenetre.textContent).toContain(dateLongue(LIBRE, "ar"));
+       |                                 ^
+    1369|   });
+    1370| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/venues/intl-locale-pro.test.ts > FC-6 — le calendrier du pro > page arabe : le mois est celui de l'Algérie (`ar-DZ`)
+AssertionError: expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+
+Expected: "أوت 2027"
+Received: "أغسطس 2027"
+
+ ❯ src/venues/intl-locale-pro.test.ts:19:56
+     17| 
+     18|   it("page arabe : le mois est celui de l'Algérie (`ar-DZ`)", () => {
+     19|     expect(monthLabel({ year: 2027, month: 8 }, "ar")).toBe(moteur("ar…
+       |                                                        ^
+     20|   });
+     21| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/venues/quote-amount.test.ts > FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > `QUOTE_AMOUNT_LOCALE` existe et rend ce que rend le PDF (le défaut de `formatDZD`)
+AssertionError: expected undefined to be defined
+ ❯ src/venues/quote-amount.test.ts:56:29
+     54| 
+     55|   it("`QUOTE_AMOUNT_LOCALE` existe et rend ce que rend le PDF (le défa…
+     56|     expect(LANGUE_DU_DEVIS).toBeDefined();
+       |                             ^
+     57|     // Calibration : un montant que les deux langues mettent en forme …
+     58|     expect(types.formatDZD(18_900_000, "ar")).not.toBe(types.formatDZD…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/venues/quote-amount.test.ts > FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > apps/pro/src/dashboard/walkin-journey.tsx : chaque montant du devis passe `QUOTE_AMOUNT_LOCALE`
+AssertionError: expected [ Array(5) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++ ]
+
+ ❯ src/venues/quote-amount.test.ts:66:69
+     64|       const vus = appels(ecran, lire(ecran));
+     65|       expect(vus.length).toBeGreaterThan(0);
+     66|       expect(vus.filter((a) => a.langue !== "QUOTE_AMOUNT_LOCALE")).to…
+       |                                                                     ^
+     67|     });
+     68|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/venues/quote-amount.test.ts > FC-6 — l'écran du devis met ses montants en forme comme le PDF les imprime (D326, décision 1) > apps/pro/src/venues/quotes-section.tsx : chaque montant du devis passe `QUOTE_AMOUNT_LOCALE`
+AssertionError: expected [ Array(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++   {
++     "arguments": 1,
++     "langue": null,
++   },
++ ]
+
+ ❯ src/venues/quote-amount.test.ts:66:69
+     64|       const vus = appels(ecran, lire(ecran));
+     65|       expect(vus.length).toBeGreaterThan(0);
+     66|       expect(vus.filter((a) => a.langue !== "QUOTE_AMOUNT_LOCALE")).to…
+       |                                                                     ^
+     67|     });
+     68|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  5 failed | 161 passed (166)
+   Start at  07:45:15
+   Duration  37.59s (transform 1.30s, setup 436ms, collect 3.16s, tests 34.81s, environment 1.59s, prepare 306ms)
+

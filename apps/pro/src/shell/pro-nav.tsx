@@ -31,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
 import { useProVenues } from "./pro-venues-context";
 import { venuesLabelKey } from "./venues-label";
+import { BOOKINGS_PATH, CALENDAR_PATH, REQUESTS_PATH, VENUES_PATH } from "../routes";
 
 interface NavEntry {
   to: string;
@@ -46,10 +47,10 @@ export function ProNav() {
 
   const entries: NavEntry[] = [
     { to: "/", label: t("venue.ui.nav.dashboard"), end: true },
-    { to: "/salles", label: t(venuesLabelKey(count)) },
-    { to: "/demandes", label: t("venue.ui.nav.requests") },
-    { to: "/calendrier", label: t("venue.ui.nav.calendar") },
-    { to: "/reservations", label: t("venue.ui.nav.bookings") }
+    { to: VENUES_PATH, label: t(venuesLabelKey(count)) },
+    { to: REQUESTS_PATH, label: t("venue.ui.nav.requests") },
+    { to: CALENDAR_PATH, label: t("venue.ui.nav.calendar") },
+    { to: BOOKINGS_PATH, label: t("venue.ui.nav.bookings") }
   ];
 
   return (

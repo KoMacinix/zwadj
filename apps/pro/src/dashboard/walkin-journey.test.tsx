@@ -1272,9 +1272,11 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
     return outils;
   }
   const convertir = (status = "SENT") => vi.fn().mockResolvedValue(draft({ status: status as QuoteDTO["status"], bookingId: "b1" }));
-  /** La date de la fixture, en toutes lettres, dans la langue de la page — formatée par `Intl` seul, hors du composant. */
+  /** La date de la fixture, en toutes lettres, dans la langue de la page — formatée par `Intl` seul, hors du composant.
+   *  ⚠ FC-6 (session `front-client`) : en arabe, dans la locale ARBITRÉE par Ko (« ar-DZ », 04/10/2026) — ses mots, pas
+   *  `intlLocale` (qui rendrait l'attendu tautologique). */
   const dateLongue = (civil: string, langue: string) =>
-    new Intl.DateTimeFormat(langue, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${civil}T00:00:00Z`));
+    new Intl.DateTimeFormat(langue === "ar" ? "ar-DZ" : langue, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${civil}T00:00:00Z`));
 
   it("« Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est", async () => {
     await setup();
@@ -2664,5 +2666,388 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
     });
     await laisserRetomber();
     expect(la(screen.queryByText(FR.draftOfficialDone)), "le message de la promotion").toBe(true);
+  });
+});
+
+// ── FP-1 (session `front-client`) — LE PALIER (TIERED) ET LA QUANTITÉ (PER_UNIT) SE SAISISSENT AU COMPTOIR ─────────────────────────
+// ⚠ Méthode RENFORCÉE : `docs/preuves/front-client/FP-1/modes-de-defaillance.md` (MD-1 à MD-11). La règle elle-même est mesurée, pure,
+// par `walkin-services.test.ts` ; ici l'ÉCRAN : ce qu'il propose, ce qu'il bloque, ce qu'il ENVOIE. Aucun montant n'est lu à l'écran
+// avant le devis : le serveur le calcule (règle des montants, D325).
+// ⚠ Chaque test affirme d'abord que le champ existe, par une assertion NATIVE : sans lui (avant FP-1), le rouge se lit en assertion.
+// ⚠ Les libellés neufs sont lus dans le CATALOGUE en dictionnaire : avant FP-1, la clé n'existe pas — elle se lit vide, sans planter.
+const ID_DECOR = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+const ID_TABLES = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+const PALIER_SIMPLE = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const PALIER_RETIRE = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+const CATALOGUE_FP1 = [
+  {
+    id: ID_DECOR,
+    nameFr: "Fleurs et décor",
+    nameAr: "زهور وديكور",
+    pricingType: "TIERED",
+    isActive: true,
+    minUnits: null,
+    maxUnits: null,
+    unitNameFr: null,
+    unitNameAr: null,
+    tiers: [
+      { id: PALIER_SIMPLE, labelFr: "Formule simple", labelAr: "صيغة بسيطة", priceCents: 1_000_000, sortOrder: 0, isActive: true },
+      { id: PALIER_RETIRE, labelFr: "Formule retirée", labelAr: "صيغة مسحوبة", priceCents: 2_000_000, sortOrder: 1, isActive: false }
+    ]
+  },
+  {
+    id: ID_TABLES,
+    nameFr: "Tables rondes",
+    nameAr: "طاولات مستديرة",
+    pricingType: "PER_UNIT",
+    isActive: true,
+    tiers: [],
+    unitNameFr: "table",
+    unitNameAr: "طاولة",
+    minUnits: 2,
+    maxUnits: 30
+  }
+];
+const W_FP1 = messages.fr.venue.ui.walkin as unknown as Record<string, string | undefined>;
+
+async function jusquAuxPrestations(quotesOver: Parameters<typeof makeQuotesDouble>[0] = {}) {
+  const r = await setup({ quotes: quotesOver, services: { listForVenue: vi.fn().mockResolvedValue(CATALOGUE_FP1) } });
+  await repondreClient();
+  await repondreDate();
+  await repondreCreneau();
+  await screen.findByRole("checkbox", { name: /Fleurs et décor/ });
+  return r;
+}
+/** La liste des paliers d'une prestation : le `<select>` dont le libellé porte son nom. */
+const listeDesPaliers = (nom: RegExp = /Fleurs et décor/) =>
+  screen.queryAllByLabelText(nom).find((e) => e.tagName === "SELECT") as HTMLSelectElement | undefined;
+/** Le champ de quantité d'une prestation : l'entrée NUMÉRIQUE dont le libellé porte son nom. */
+const champQuantite = (nom: RegExp = /Tables rondes/) =>
+  screen.queryAllByLabelText(nom).find((e) => (e as HTMLInputElement).type === "number") as HTMLInputElement | undefined;
+const voirLeDevis = () => screen.getByRole("button", { name: "Voir le devis" });
+
+describe("FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)", () => {
+  it("⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    const liste = listeDesPaliers();
+    expect(liste !== undefined).toBe(true);
+    const libelles = [...(liste?.options ?? [])].map((o) => o.textContent);
+    expect(libelles.includes("Formule simple")).toBe(true);
+    expect(libelles.includes("Formule retirée")).toBe(false);
+    expect(liste?.value).toBe("");
+  });
+
+  it("⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+    const raison = String(W_FP1.servicesMissing ?? "").replace("{names}", "Fleurs et décor");
+    expect(raison !== "" && (document.body.textContent ?? "").includes(raison)).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(false);
+  });
+
+  it("⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif", async () => {
+    await jusquAuxPrestations();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    const champ = champQuantite();
+    expect(champ !== undefined).toBe(true);
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+    for (const [saisie, actif] of [["1", false], ["31", false], ["2", true], ["30", true]] as const) {
+      fireEvent.change(champ!, { target: { value: saisie } });
+      expect(voirLeDevis().hasAttribute("disabled"), `quantité ${saisie}`).toBe(!actif);
+    }
+    expect(champ?.getAttribute("min")).toBe("2");
+    expect(champ?.getAttribute("max")).toBe("30");
+  });
+
+  it("⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision", async () => {
+    const { quotes } = await jusquAuxPrestations({
+      create: vi.fn().mockResolvedValue(draft()),
+      revise: vi.fn().mockResolvedValue(draft({ version: 2 }))
+    });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et décor/ }));
+    expect(listeDesPaliers() !== undefined).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    fireEvent.change(champQuantite()!, { target: { value: "12" } });
+    fireEvent.click(voirLeDevis());
+    fireEvent.click(await screen.findByRole("button", { name: "Calculer le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.create).mock.calls.length).toBe(1));
+    const attendu = [
+      { serviceId: ID_DECOR, tierId: PALIER_SIMPLE },
+      { serviceId: ID_TABLES, quantity: 12 }
+    ];
+    expect((vi.mocked(quotes.create).mock.calls[0]![1] as { services?: unknown }).services).toEqual(attendu);
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.revise).mock.calls.length).toBe(1));
+    expect((vi.mocked(quotes.revise).mock.calls[0]![1] as { services?: unknown }).services).toEqual(attendu);
+  });
+
+  it("⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier", async () => {
+    await jusquAuxPrestations();
+    const caseDecor = screen.getByRole("checkbox", { name: /Fleurs et décor/ });
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers() !== undefined).toBe(true);
+    fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIMPLE } });
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers()).toBe(undefined);
+    fireEvent.click(caseDecor);
+    expect(listeDesPaliers()?.value).toBe("");
+    expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+  });
+
+  it("⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer", async () => {
+    await jusquAuxPrestations({ create: vi.fn().mockResolvedValue(draft()) });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Tables rondes/ }));
+    expect(champQuantite() !== undefined).toBe(true);
+    fireEvent.change(champQuantite()!, { target: { value: "12" } });
+    fireEvent.click(voirLeDevis());
+    fireEvent.click(await screen.findByRole("button", { name: "Calculer le devis" }));
+    await screen.findByRole("button", { name: "Modifier le devis" });
+    modifierDepuisRecap(/Prestations/);
+    fireEvent.change(champQuantite()!, { target: { value: "13" } });
+    fireEvent.click(voirLeDevis());
+    expect(screen.queryByText(FR.staleTotal) !== null).toBe(true);
+  });
+
+  it("MD-10 : en arabe, le palier et l'unité s'écrivent en arabe", async () => {
+    await jusquAuxPrestations();
+    await act(async () => void (await i18next.changeLanguage("ar")));
+    fireEvent.click(screen.getByRole("checkbox", { name: /زهور وديكور/ }));
+    const liste = listeDesPaliers(/زهور وديكور/);
+    expect(liste !== undefined).toBe(true);
+    expect([...(liste?.options ?? [])].map((o) => o.textContent).includes("صيغة بسيطة")).toBe(true);
+    fireEvent.click(screen.getByRole("checkbox", { name: /طاولات مستديرة/ }));
+    const champ = champQuantite(/طاولات مستديرة/);
+    expect((champ?.labels?.[0]?.textContent ?? "").includes("طاولة")).toBe(true);
+  });
+});
+
+// ── FP-2 (session `front-client`) — APRÈS LE 409 DE K-5, L'ÉCRAN GARDE LA COPIE DU NOM QUI EXISTE DÉJÀ ──────────────────────────────
+// Le serveur ne remplace JAMAIS une copie de nom (M-6) : un 409 `QUOTE_CLIENT_NAME_ALREADY_SET` dit que la copie de CETTE langue a été
+// complétée entre-temps (un autre onglet, un autre poste). Avant FP-2, l'écran gardait le devis SANS cette copie : chaque remise suivante
+// dans la langue reposait la question du nom et se heurtait au même 409. Maintenant il RELIT le devis (la liste des devis de la salle —
+// aucun `GET /quotes/:id` n'existe) et garde la copie du serveur ; il ne remet RIEN de lui-même, et n'écrit jamais ce que le pro a tapé.
+// ⚠ Les verdicts passent par des assertions NATIVES (D304) ; les libellés viennent du CATALOGUE, les messages d'erreur aussi.
+describe("FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question", () => {
+  const COPIE_DU_SERVEUR = "أمين بلقاسم";
+  const refus409 = () => new ApiError(409, "QUOTE_CLIENT_NAME_ALREADY_SET", "quote.errors.clientNameAlreadySet", []);
+  const dialogueDuNom = () => screen.queryByRole("dialog", { name: FR.nameDialogTitleAr });
+  async function cliquerCanalArabe() {
+    // ⚠ Le bouton du canal est vérifié par une ASSERTION native : `getByRole` qui lève serait une erreur de REQUÊTE, pas une morsure (D304, D316) —
+    // c'est ce que la cible A-5 du harnais a montré (le devis vidé, le bouton introuvable).
+    const canal = screen.queryByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string });
+    expect(canal !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(canal as HTMLElement);
+    });
+    const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
+    expect(boite !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: FR.langArabic }));
+    });
+    await laisserRetomber();
+  }
+  /** Le parcours jusqu'au refus : un devis calculé, la remise en arabe, le nom tapé, le serveur répond 409. */
+  async function jusquAuRefus(quotesOver: Parameters<typeof makeQuotesDouble>[0]) {
+    const deliver = vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", clientNameAr: COPIE_DU_SERVEUR }));
+    const document = vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" }));
+    const r = await setup({ quotes: { create: vi.fn().mockResolvedValue(draft()), deliver, document, ...quotesOver } });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await cliquerCanalArabe();
+    const dialogue = dialogueDuNom();
+    expect(dialogue !== null).toBe(true);
+    fireEvent.change(within(dialogue as HTMLElement).getByLabelText(FR.nameAr), { target: { value: "اسم مختلف تماما" } });
+    await act(async () => {
+      fireEvent.click(within(dialogue as HTMLElement).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+    return { ...r, deliver, document };
+  }
+  const alertes = () => screen.queryAllByRole("alert").map((e) => e.textContent);
+
+  it("⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]);
+    const { deliver, document } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue });
+    expect(listForVenue.mock.calls.length).toBe(1);
+    expect(listForVenue.mock.calls[0]?.[0]).toBe(VENUE.id);
+    expect(alertes().includes(messages.fr.quote.errors.clientNameAlreadySet)).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+    expect(document.mock.calls.length).toBe(0);
+  });
+
+  it("⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro", async () => {
+    const completeClientName = vi.fn().mockRejectedValue(refus409());
+    const { deliver, document } = await jusquAuRefus({ completeClientName, listForVenue: vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]) });
+    await cliquerCanalArabe();
+    expect(dialogueDuNom()).toBe(null);
+    expect(deliver.mock.calls.length).toBe(1);
+    expect(deliver.mock.calls[0]).toEqual(["q1", { sentVia: QUOTE_SENT_VIA.PRINT }]);
+    expect(document.mock.calls[0]).toEqual(["q1", "ar"]);
+    // M-6 : la copie n'est jamais remplacée — le nom tapé n'est écrit qu'UNE fois, et refusé.
+    expect(completeClientName.mock.calls.length).toBe(1);
+  });
+
+  it("⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ id: "autre-devis", clientNameAr: COPIE_DU_SERVEUR })]);
+    const { deliver } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue });
+    await cliquerCanalArabe();
+    expect(dialogueDuNom() !== null).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+  });
+
+  it("une relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée)", async () => {
+    const { deliver } = await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(refus409()), listForVenue: vi.fn().mockRejectedValue(new Error("réseau")) });
+    expect(alertes().includes(messages.fr.quote.errors.clientNameAlreadySet)).toBe(true);
+    expect(deliver.mock.calls.length).toBe(0);
+    await cliquerCanalArabe();
+    expect(dialogueDuNom() !== null).toBe(true);
+  });
+
+  it("⛔ un AUTRE refus (500) ne relit PAS la liste : seul le 409 de la copie déjà là la justifie", async () => {
+    const listForVenue = vi.fn().mockResolvedValue([draft({ clientNameAr: COPIE_DU_SERVEUR })]);
+    const autre = new ApiError(500, "INTERNAL", "common.errors.unexpected", []);
+    await jusquAuRefus({ completeClientName: vi.fn().mockRejectedValue(autre), listForVenue });
+    expect(listForVenue.mock.calls.length).toBe(0);
+  });
+});
+
+
+// ── FP-3 (session `front-client`) — UNE RÉVISION REPREND LA COPIE DU NOM DE LA VERSION COURANTE ──────────────────────────────────────
+// La règle elle-même est mesurée, pure, par `walkin-revision.test.ts` ; ici l'ÉCRAN : ce que la révision ENVOIE après que la boîte de langue
+// (K-5) a complété la copie en arabe sur la version précédente. ⛔ Ne touche ni L36-2 (un brouillon n'a ni fiche ni nom) ni K-5.
+// ⚠ Les verdicts passent par des assertions NATIVES (D304) ; les libellés viennent du CATALOGUE.
+describe("FP-3 — la révision reprend la copie du nom complétée sur la version précédente", () => {
+  const COPIE_AR = "أمين بلقاسم";
+  const dialogueDuNomAr = () => screen.queryByRole("dialog", { name: FR.nameDialogTitleAr });
+  const ficheLiee = (): ClientRecordDTO => ({
+    id: "fiche-9",
+    phone: "+213550000002",
+    email: null,
+    nameAr: null,
+    nameLatin: "Amina Bensalem",
+    linked: true,
+    createdAt: "2026-10-22T10:00:00.000Z",
+    updatedAt: "2026-10-22T10:00:00.000Z"
+  });
+  async function remiseEnArabe() {
+    const canal = screen.queryByRole("button", { name: (messages.fr.venue.ui.quotes as Record<string, string>)[`sv_${QUOTE_SENT_VIA.PRINT}`] as string });
+    expect(canal !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(canal as HTMLElement);
+    });
+    const boite = screen.queryByRole("dialog", { name: FR.langDialogTitle });
+    expect(boite !== null).toBe(true);
+    await act(async () => {
+      fireEvent.click(within(boite as HTMLElement).getByRole("button", { name: FR.langArabic }));
+    });
+    await laisserRetomber();
+    const dialogue = dialogueDuNomAr();
+    expect(dialogue !== null).toBe(true);
+    fireEvent.change(within(dialogue as HTMLElement).getByLabelText(FR.nameAr), { target: { value: COPIE_AR } });
+    await act(async () => {
+      fireEvent.click(within(dialogue as HTMLElement).getByRole("button", { name: FR.nameDialogConfirm }));
+    });
+    await laisserRetomber();
+    await laisserRetomber();
+  }
+  const doublesDuServeur = (over: Partial<QuoteDTO> = {}) => ({
+    create: vi.fn().mockResolvedValue(draft(over)),
+    revise: vi.fn().mockResolvedValue(draft({ id: "q2", version: 2, clientNameAr: COPIE_AR, ...over })),
+    completeClientName: vi.fn().mockResolvedValue(draft({ clientNameAr: COPIE_AR, ...over })),
+    deliver: vi.fn().mockResolvedValue(draft({ sentVia: "PRINT", clientNameAr: COPIE_AR, ...over })),
+    document: vi.fn().mockResolvedValue(new Blob(["%PDF-1.4"], { type: "application/pdf" }))
+  });
+  /** Le devis calculé, puis la remise en arabe : la copie arabe est COMPLÉTÉE sur la version 1. */
+  async function jusquALaCopieCompletee(quotes: ReturnType<typeof doublesDuServeur>) {
+    const r = await setup({ quotes });
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await remiseEnArabe();
+    return r;
+  }
+  const corpsDeLaRevision = (quotes: ReturnType<typeof doublesDuServeur>) => vi.mocked(quotes.revise).mock.calls[0]?.[1] as unknown as Record<string, unknown>;
+  const modifierLeDevis = async (quotes: ReturnType<typeof doublesDuServeur>) => {
+    fireEvent.click(await screen.findByRole("button", { name: "Modifier le devis" }));
+    await waitFor(() => expect(vi.mocked(quotes.revise).mock.calls.length).toBe(1));
+  };
+
+  it("⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientRecordId).toBe("fiche-1");
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+    expect(corps.clientNameLatin).toBe("Amine Belkacem");
+  });
+
+  it("⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    modifierDepuisRecap(/étape Client/);
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "150" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.guests).toBe(150);
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+  });
+
+  it("⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    modifierDepuisRecap(/étape Client/);
+    fireEvent.change(screen.getByLabelText(FR.nameLatin), { target: { value: "Amine Haddad" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientNameLatin).toBe("Amine Haddad");
+    expect(corps.clientNameAr).toBe(COPIE_AR);
+  });
+
+  it("⛔ « Annuler » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)", async () => {
+    const quotes = doublesDuServeur();
+    await jusquALaCopieCompletee(quotes);
+    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    await allerAuDevis();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    expect(vi.mocked(quotes.create).mock.calls.length).toBe(2);
+    expect(vi.mocked(quotes.revise).mock.calls.length).toBe(0);
+    const corps = vi.mocked(quotes.create).mock.calls[1]?.[1] as unknown as Record<string, unknown>;
+    expect(corps.clientRecordId).toBe("fiche-1");
+    expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")).toBe(false);
+  });
+
+  it("⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409)", async () => {
+    const quotes = doublesDuServeur({ clientRecordId: "fiche-9", clientNameLatin: "Amina Bensalem" });
+    await setup({ quotes, clients: { lookup: vi.fn().mockResolvedValue({ found: true, record: ficheLiee() }) } });
+    await repondreContact();
+    fireEvent.change(screen.getByLabelText(FR.guests), { target: { value: "200" } });
+    fireEvent.click(screen.getByRole("button", { name: FR.continue }));
+    await laisserRetomber();
+    await laisserRetomber();
+    await repondreDate();
+    await repondreCreneau();
+    await repondrePrestations();
+    fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
+    await screen.findByText(montant(478_600_000));
+    await remiseEnArabe();
+    await modifierLeDevis(quotes);
+    const corps = corpsDeLaRevision(quotes);
+    expect(corps.clientRecordId).toBe("fiche-9");
+    expect(corps.clientNameLatin).toBe("Amina Bensalem");
+    expect(Object.prototype.hasOwnProperty.call(corps, "clientNameAr")).toBe(false);
   });
 });

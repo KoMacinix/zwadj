@@ -16,7 +16,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "../i18n/navigation";
 import { useAuth } from "../lib/auth/auth-context";
 import { SiteNav } from "./site-nav";
-import { LOGIN_PATH } from "../lib/routes";
+import { ACCOUNT_PATH, LOGIN_PATH, REGISTER_PATH } from "../lib/routes";
 
 export function SiteHeader() {
   const t = useTranslations("auth.ui.header");
@@ -47,7 +47,7 @@ export function SiteHeader() {
             triggerLabel={tAccount("trigger")}
             items={
               [
-                { key: "settings", label: tAccount("settings"), onSelect: () => router.push("/compte") },
+                { key: "settings", label: tAccount("settings"), onSelect: () => router.push(ACCOUNT_PATH) },
                 { key: "logout", label: t("logout"), onSelect: () => void logout(), destructive: true }
               ] satisfies AccountMenuItem[]
             }
@@ -57,7 +57,7 @@ export function SiteHeader() {
             <Link href={LOGIN_PATH} className="btn btn-ghost">
               {t("login")}
             </Link>
-            <Link href="/auth/inscription" className="btn btn-accent" style={{ paddingBlock: 8, paddingInline: 14 }}>
+            <Link href={REGISTER_PATH} className="btn btn-accent" style={{ paddingBlock: 8, paddingInline: 14 }}>
               {t("signup")}
             </Link>
           </>

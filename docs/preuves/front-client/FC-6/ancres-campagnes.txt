@@ -1,0 +1,36 @@
+FC-6 — relevé STATIQUE des ancres des 15 campagnes que le tri sélectionne (`lancer-campagnes.py --liste`), par l'instrument
+versionné `docs/preuves/front-client/outils/releve-ancres.py` (calibré, rejoué ci-dessous), APRÈS le code du lot et APRÈS la
+réorientation de fc5 W-1/W-2 et r30 R30-1 à R30-4 (extension 1), AVANT de jouer les campagnes.
+AVANT la réorientation, le même instrument rendait 6 ancres PÉRIMÉES par ce lot, toutes ramenées en LF ×0 : fc5 W-1
+(apps/client/src/lib/calendar.ts), W-2 (apps/pro/src/venues/pro-calendar.ts), r30 R30-1, R30-2, R30-3 (apps/client/src/lib/calendar.ts),
+R30-4 (apps/client/src/lib/booking-calendar.ts) — et 0 ancre CRLF : R30-4 étant périmée, son écriture en CRLF ne se voyait pas.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+fc3            listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 0
+fc4            listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+fc5            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+fc6            listées  12 · examinées  12 (avec ancre 12, sans ancre 0) · non reconnues 0 · écarts 0
+journey        listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+r25            listées  11 · examinées  11 (avec ancre 11, sans ancre 0) · non reconnues 0 · écarts 0
+r29            listées  15 · examinées  15 (avec ancre 15, sans ancre 0) · non reconnues 0 · écarts 0
+r30            listées   8 · examinées   8 (avec ancre 8, sans ancre 0) · non reconnues 0 · écarts 1
+     R30-4. N-a : la date longue — le nom accessible d'un jour — sort | apps/client/src/lib/booking-calendar.ts | attendu ×1 · ramenée en LF ×1 · brute ×0 — CRLF EN DUR (environnement)
+r32            listées  65 · examinées  65 (avec ancre 65, sans ancre 0) · non reconnues 0 · écarts 0
+r33            listées  95 · examinées  95 (avec ancre 95, sans ancre 0) · non reconnues 0 · écarts 0
+r38            listées  46 · examinées  46 (avec ancre 46, sans ancre 0) · non reconnues 0 · écarts 0
+r39            listées  51 · examinées  51 (avec ancre 51, sans ancre 0) · non reconnues 0 · écarts 0
+r41            listées  70 · examinées  70 (avec ancre 70, sans ancre 0) · non reconnues 0 · écarts 0
+r42            listées  28 · examinées  28 (avec ancre 28, sans ancre 0) · non reconnues 0 · écarts 0
+r43            listées  87 · examinées  87 (avec ancre 87, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 15 (illisibles : 0, attendu 0) · cibles listées : 521 · examinées : 521 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 1 ancre(s) CRLF EN DUR (environnement)
+sortie de l'instrument : 1 (0 aucun écart · 1 au moins un écart · 2 non reconnue)

@@ -25,14 +25,11 @@
 // Vendredi vaut 5 et samedi 6 dans les deux ; dimanche vaut 0 en JS et 7 en
 // ISO. Tout ce module raisonne en numérotation JS (0 = dimanche).
 
-/** Dimanche, en numérotation JS. Premier jour ouvré et d'école en Algérie,
- *  donc tête de grille. */
-export const WEEK_START_DAY = 0;
-
-/** Vendredi et samedi, en numérotation JS. Le repos hebdomadaire algérien — et
- *  le PIC de la demande en salle des fêtes, pas un creux à griser. Avec un
- *  départ dimanche, ces deux jours ferment naturellement chaque ligne. */
-export const WEEKEND_DAYS: readonly number[] = [5, 6];
+// ⛔ FC-5 (session `front-client`) — `WEEK_START_DAY` et `WEEKEND_DAYS` vivent dans `@zwadj/types` (`packages/types/src/week.ts`),
+// UNE fois pour le client et le pro (arbitrage de Ko du 04/10/2026 : « Le week-end : une seule définition, partagée par le client
+// et le pro »). Ils étaient déclarés ici ET dans l'autre application ; la garde `apps/client/src/lib/semaine-source-unique.test.ts`
+// rougit si l'un des deux calendriers en redéclare une.
+import { WEEKEND_DAYS, WEEK_START_DAY, intlLocale } from "@zwadj/types";
 
 const DAY_MS = 86_400_000;
 
@@ -49,7 +46,7 @@ export function offsetInWeek(dayOfWeek: number): number {
  *  des libellés que la plateforme connaît déjà, et deux jeux de noms de jours
  *  finiraient par diverger. */
 export function weekdayHeaders(locale: string, format: "short" | "long" = "short"): string[] {
-  const fmt = new Intl.DateTimeFormat(locale, { weekday: format, timeZone: "UTC" });
+  const fmt = new Intl.DateTimeFormat(intlLocale(locale), { weekday: format, timeZone: "UTC" });
   // 2026-11-01 est un DIMANCHE (jour 0) : ancre de la numérotation JS, et
   // aussi le premier jour de la grille algérienne.
   return Array.from({ length: 7 }, (_, column) => {
@@ -125,7 +122,7 @@ export function currentMonth(nowMs: number): MonthCursor {
 /** Nom du mois dans la langue demandée, via `Intl` — même raison que pour les
  *  jours : la plateforme les connaît déjà. */
 export function monthLabel(cursor: MonthCursor, locale: string): string {
-  return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(
+  return new Intl.DateTimeFormat(intlLocale(locale), { month: "long", year: "numeric", timeZone: "UTC" }).format(
     new Date(Date.UTC(cursor.year, cursor.month - 1, 1))
   );
 }

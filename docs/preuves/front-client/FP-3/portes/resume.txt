@@ -1,0 +1,8 @@
+# HEAD f0ee4316d85ef27c30ded185d10f7d5d413bd35f · arbre : 1 entrée(s) non commitée(s) · 2026-11-06T09:40:38Z
+typecheck exit=0 duree=18s
+lint exit=0 duree=8s
+test exit=0 duree=73s
+build exit=0 duree=27s
+test:int exit=1 duree=231s
+test:e2e exit=0 duree=181s
+FINI · journaux bruts : /tmp/tmp.zJkokkAily

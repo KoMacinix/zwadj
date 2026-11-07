@@ -2,7 +2,7 @@
 // injoignable en bac à sable — limite connue du cadrage Lot 8) : on capture le
 // callback passé à initialize() et on le déclenche à la main, exactement ce
 // que ferait le vrai bouton GIS après le consentement de l'utilisateur.
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -100,9 +100,18 @@ describe("GoogleSignIn (Lot 9)", () => {
     vi.clearAllMocks();
   });
 
-  it("SANS NEXT_PUBLIC_GOOGLE_CLIENT_ID : ne rend RIEN et ne charge PAS le script Google (feature OFF)", () => {
+  it("SANS NEXT_PUBLIC_GOOGLE_CLIENT_ID : ne rend RIEN et ne charge PAS le script Google (feature OFF)", async () => {
     vi.stubEnv("NEXT_PUBLIC_GOOGLE_CLIENT_ID", "");
-    const { container } = renderGoogle(makeClient());
+    const client = makeClient();
+    // ⚠ FC-9 — le rendu DANS `act`, attendu : l'amorçage de session (`bootstrap`, résolu) écrit son état AVANT la fin du test. Rendu
+    // nu, il l'écrivait APRÈS : le « not wrapped in act » que le plafond de ce fichier tolérait (relevé de FC-9). Rien ne s'affiche
+    // ici — feature OFF —, donc l'état final ne se lit pas à l'écran : c'est l'appel d'amorçage, terminé dans `act`, qui le marque.
+    let rendu: ReturnType<typeof renderGoogle> | undefined;
+    await act(async () => {
+      rendu = renderGoogle(client);
+    });
+    expect(vi.mocked(client.bootstrap).mock.calls.length).toBe(1);
+    const { container } = rendu!;
 
     expect(container).toBeEmptyDOMElement();
     expect(loadGisMock).not.toHaveBeenCalled();

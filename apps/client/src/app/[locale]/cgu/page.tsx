@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { publicMetadata } from "../../../lib/seo";
+import { TERMS_PATH } from "../../../lib/routes";
 
 // Placeholder « Bientôt disponible » (motif de la décision produit n°11) :
 // cible du lien CGU de l'inscription. Le document existe (référentiel projet),
@@ -12,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `${t("cgu")} — Zwadj`,
     // Page légale : INDEXABLE. Elle est stable, unique, et sa présence
     // dans l'index est un signal de sérieux pour un marchand.
-    ...publicMetadata({ locale, canonicalPath: "/cgu", indexable: true })
+    ...publicMetadata({ locale, canonicalPath: TERMS_PATH, indexable: true })
   };
 }
 

@@ -1,0 +1,58 @@
+# FC-5 — ROUGE (pro), lu contre l'état d'AVANT, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 612925519a234a81f1146d2fa1df8eb372709137 (tests non commités ; code d'avant)
+# commande : (apps/pro) npx vitest run src/routes.test.tsx — code de sortie 1
+# sha256 apps/pro/src/routes.test.tsx : 1ca85c09daeb727d4e3e1902cef4e28e82956daaeedad855ba750e6ae8929e72
+# lecture : 2 échecs par AssertionError : la table du pro réduite à la connexion, `venuePath` absente ; 4 verts (LOGIN_PATH, bras négatifs)
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/routes.test.tsx (6 tests | 2 failed) 220ms
+   ✓ LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > à LOGIN_PATH, la page de connexion se rend, et l'adresse RESTE celle demandée 133ms
+   ✓ LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > calibration, bras négatif : une adresse SANS route est quittée (l'ancienne cible `/connexion` du client) 37ms
+   × FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > la table porte plus que la connexion (D290 : un zéro sur zéro ne mesure rien) 5ms
+     → expected 1 to be greater than 8
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > LOGIN_PATH (« /auth/connexion ») : la page s'y rend, et l'adresse RESTE celle demandée 18ms
+   × FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > venuePath(id) — l'assistant d'une salle : la page s'y rend, et l'adresse RESTE celle demandée 3ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > calibration, bras négatif CONNECTÉ : une adresse sans route est quittée (renvoyée au tableau de bord) 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/routes.test.tsx > FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > la table porte plus que la connexion (D290 : un zéro sur zéro ne mesure rien)
+AssertionError: expected 1 to be greater than 8
+ ❯ src/routes.test.tsx:137:36
+    135| describe("FC-5 — chaque adresse de la table du Pro est une route DÉCLA…
+    136|   it("la table porte plus que la connexion (D290 : un zéro sur zéro ne…
+    137|     expect(ADRESSES_DU_PRO.length).toBeGreaterThan(8);
+       |                                    ^
+    138|   });
+    139| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/routes.test.tsx > FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > venuePath(id) — l'assistant d'une salle : la page s'y rend, et l'adresse RESTE celle demandée
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/routes.test.tsx:152:30
+    150|     // Lue par son nom : absente (avant FC-5), le rouge se lit en ASSE…
+    151|     const venuePath = (ROUTES as Record<string, unknown>).venuePath;
+    152|     expect(typeof venuePath).toBe("function");
+       |                              ^
+    153|     const adresse = (venuePath as (id: string) => string)(SALLE_EXEMPL…
+    154|     rendreConnecteA(adresse);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  06:11:55
+   Duration  2.13s (transform 798ms, setup 70ms, collect 1.28s, tests 220ms, environment 307ms, prepare 62ms)
+

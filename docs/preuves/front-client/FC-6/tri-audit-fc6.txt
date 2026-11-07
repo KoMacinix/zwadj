@@ -1,0 +1,14 @@
+FC-6 — tri différentiel de l'audit de secrets « fc6 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FC-6/audit-secrets-fc6.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 711 fichiers (83 593 475 octets),
+audités 4 574, exclus 137, alertes 1 010.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FC-5/audit-secrets-fc5.txt
+docs/preuves/front-client/FC-6/audit-secrets-fc6.txt — calibration à deux bras tenue. Précédente : 1 007 contextes ; nouvelle :
+1 010 ⇒ alertes ABSENTES de la précédente : 3 (jeton = 2 · mot-de-passe = 1), lues aux lignes 3223 à 3227 de la sortie scellée.
+  · [jeton] FC-5/rapport.md l. 72 : la phrase du rapport de FC-5 qui COMPTE les « token= » restants du journal e2e (0) — le
+    rapport de FC-5 a été écrit après son audit (limite écrite là-bas), il entre ici.
+  · [jeton] FC-6/portes/test-e2e.txt l. 1 : l'en-tête du pilote des portes, qui compte le paramètre de jeton restant (0).
+  · [mot-de-passe] FC-6/portes/test-int.txt : le TITRE d'un test d'intégration (la route d'oubli de mot de passe), la forme déjà
+    triée par FC-1, FC-4 et FC-5 ; « valeur déjà présente dans 140 fichiers suivis ».
+Résultat du tri : 3 alertes lues, 0 valeur réelle. Limite écrite : ce fichier et rapport.md sont écrits après l'audit.

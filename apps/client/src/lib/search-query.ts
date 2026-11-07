@@ -135,31 +135,13 @@ function atCeiling(value: string, ceiling: number): string {
   return value === "" || Number(value) >= ceiling ? "" : value;
 }
 
-/* ── REPLI DE TRANSITION `maxPriceCents` → `maxPrice` (D228) ─────────────────
-   ⛔ DETTE DATÉE AU 19/11/2026. Ce bloc a une date de péremption ; passée
-   celle-ci, les liens partagés portant l'ancien nom sont assez vieux pour
-   qu'on cesse de les servir, et tout ce paragraphe se retire.
+/* ⛔ FC-7 (session `front-client`) — LE REPLI `maxPriceCents` → `maxPrice` EST RETIRÉ. Il rattrapait les liens écrits avec le
+   nom de l'API (D228) ; c'était une dette datée au 19/11/2026, « un repli sans date de retrait devient un second nom
+   officiel ». Depuis, l'URL publique ne porte que `maxPrice`, en DINARS ; `?maxPriceCents=` n'a plus d'effet (garde :
+   `search-query.test.ts`). Le front ne divise plus jamais par 100 : la seule conversion est `centsFromDinars`, à l'aller. */
 
-   ⚠ LE DÉFAUT QU'IL RATTRAPE, mesuré avant correction : l'URL publique porte
-   des DINARS (`maxPrice`), l'API des CENTIMES (`maxPriceCents`) — et les deux
-   formulaires du front écrivaient le nom de l'API dans l'URL. Résultat :
-       ?maxPriceCents=50000000 → state.maxPrice="" → requête API SANS plafond.
-   Un visiteur qui choisit « 500 000 DA » recevait le catalogue entier. */
-
-/** Centimes → dinars. `""` si la valeur ne peut pas être rendue EXACTEMENT.
- *
- *  ⚠ SEUL ENDROIT DU FRONT QUI DIVISE PAR 100, en regard du seul endroit qui
- *  multiplie (`toApiQuery`). Deux copies du facteur, c'est un jour où l'une
- *  change sans l'autre — et un facteur 100 sur un prix ne se voit pas à
- *  l'écran, il se voit sur la facture.
- *
- *  ⚠ MULTIPLES DE 100 SEULEMENT (D228). Ce sont les seules valeurs que nos
- *  propres formulaires ont produites. Un reste non nul vient d'une URL
- *  bricolée : on l'ABANDONNE plutôt que d'inventer un arrondi que personne
- *  n'a décidé. Un plafond arrondi en silence est un plafond que le visiteur
- *  n'a pas demandé. */
-/** Dinars → centimes. ⚠ SEUL ENDROIT DU FRONT QUI MULTIPLIE PAR 100, en regard
- *  du seul qui divise (`dinarsFromCents`, juste en dessous). Il était jusqu'ici
+/** Dinars → centimes. ⚠ SEUL ENDROIT DU FRONT QUI MULTIPLIE PAR 100 — et, depuis FC-7, la SEULE conversion du front (la
+ *  réciproque, `dinarsFromCents`, servait le repli retiré). Il était jusqu'ici
  *  écrit à la main dans `toApiQuery` ; l'assistant en avait besoin aussi, et une
  *  seconde multiplication recopiée est exactement le facteur 100 qui ne se voit
  *  pas à l'écran mais se voit sur la facture.
@@ -169,29 +151,6 @@ function atCeiling(value: string, ceiling: number): string {
  *  deviendrait une seconde autorité de validation à côté du parseur. */
 export function centsFromDinars(dinars: string | number): number {
   return Number(dinars) * 100;
-}
-
-export function dinarsFromCents(cents: string): string {
-  if (!/^\d+$/.test(cents)) return "";
-  const value = Number(cents);
-  if (!Number.isSafeInteger(value) || value % 100 !== 0) return "";
-  return String(value / 100);
-}
-
-/** Le plafond porté par l'URL, en dinars.
- *
- *  ⚠ LA PRÉSENCE DE LA CLÉ DÉCIDE DE LA BRANCHE, SA VALIDITÉ DÉCIDE DE LA
- *  VALEUR (D228). `?maxPrice=` VIDE compte comme présent, et c'est le point :
- *  un `<form method="get">` soumet ses champs vides, donc un visiteur qui
- *  choisit « peu importe » écrit exactement cela. Replier là-dessus lui
- *  ressusciterait le plafond qu'il vient d'effacer.
- *
- *  ⚠ JAMAIS DANS L'AUTRE SENS : `maxPriceCents` ne corrige jamais un
- *  `maxPrice` malformé. Sans quoi le mauvais nom deviendrait une source
- *  normale, et la dette ne se paierait jamais. */
-function maxPriceFromRaw(raw: RawSearchParams): string {
-  if (raw.maxPrice !== undefined) return first(raw.maxPrice);
-  return dinarsFromCents(first(raw.maxPriceCents));
 }
 
 export function parseSearchParams(raw: RawSearchParams): SearchState {
@@ -220,13 +179,12 @@ export function parseSearchParams(raw: RawSearchParams): SearchState {
     atFloor(positiveInteger(first(raw.guests)), CAPACITY_FLOOR),
     atCeiling(positiveInteger(first(raw.maxCapacity)), CAPACITY_CEILING)
   );
-  // ⚠ Pas de repli symétrique pour `minPrice` : aucun formulaire du dépôt
-  // n'a jamais émis `minPriceCents` dans une URL (vérifié sur tout
-  // `apps/client`). Un chemin de transition que personne n'emprunte est du
-  // code mort qu'il faudra retirer un jour — on ne l'écrit pas.
+  // ⚠ AUCUN repli de nom : ni `minPriceCents` (aucun formulaire du dépôt ne l'a jamais émis dans une URL — vérifié sur tout
+  // `apps/client`), ni, depuis FC-7, `maxPriceCents` (le repli de D228, dette datée au 19/11/2026, est retiré). L'URL ne
+  // porte que des DINARS, sous `minPrice` et `maxPrice`.
   const [minPrice, maxPrice] = ordered(
     atFloor(positiveInteger(first(raw.minPrice)), BUDGET_FLOOR),
-    atCeiling(positiveInteger(maxPriceFromRaw(raw)), BUDGET_CEILING)
+    atCeiling(positiveInteger(first(raw.maxPrice)), BUDGET_CEILING)
   );
 
   // ⚠ D55 — le cas RÉEL avant la borne : `2026-06-02` doit passer, et
@@ -300,6 +258,51 @@ export function toPublicQuery(state: SearchState, page = state.page): string {
   if (page > 1) query.set("page", String(page));
   const serialized = query.toString();
   return serialized ? `?${serialized}` : "";
+}
+
+/* ── FC-8 (session `front-client`) — LE LOT ③ : L'ASSISTANT EST UN MODE DE `/salles` (D229, D230) ───────────────────────
+   ⚠ AUCUN ÉTAT LOCAL : l'étape et les réponses vivent dans l'URL. Ces fonctions sont PURES — la page (serveur) lit l'étape, le
+   composant (client) construit l'URL de la réponse suivante — et elles passent par `toPublicQuery`, la seule autorité des noms
+   de l'URL publique. La date (cinquième étape) est HORS lot. */
+
+/** Les étapes de l'assistant, dans l'ordre du filtre existant : commune, invités, budget, goûts (styles et équipements). */
+export const GUIDE_STEPS = ["city", "guests", "budget", "taste"] as const;
+export type GuideStep = (typeof GUIDE_STEPS)[number];
+
+/** `?guide=` → l'étape, ou `null`. ⛔ Toute valeur inconnue FERME le panneau (D230) : l'ouvrir sur la première étape ferait
+ *  croire que la valeur a été comprise. */
+export function parseGuide(raw: string | string[] | undefined): GuideStep | null {
+  const valeur = first(raw);
+  return (GUIDE_STEPS as readonly string[]).includes(valeur) ? (valeur as GuideStep) : null;
+}
+
+/** La query de `/salles` (avec son « ? », ou vide) pour un état et une étape : l'URL PUBLIQUE de l'état, page 1 — une réponse
+ *  change les résultats —, puis `guide`. Sans étape : la page de résultats, panneau fermé. */
+export function guidedSearchQuery(state: SearchState, step: GuideStep | null): string {
+  const query = new URLSearchParams(toPublicQuery(state, 1));
+  if (step !== null) query.set("guide", step);
+  const serialized = query.toString();
+  return serialized ? `?${serialized}` : "";
+}
+
+/** Les réponses DÉJÀ données, lues dans l'état — jamais une mémoire locale. « Aucun goût » et « pas encore répondu » sont
+ *  indiscernables dans l'URL : les goûts ne comptent comme répondus que cochés. */
+export function guideAnswered(state: SearchState): Record<GuideStep, boolean> {
+  return {
+    city: state.cityId !== "",
+    guests: state.guests !== "",
+    budget: state.maxPrice !== "",
+    taste: state.styles.length > 0 || state.amenities.length > 0
+  };
+}
+
+/** L'étape suivante : la PREMIÈRE sans réponse APRÈS `apres` (exclue ; sans `apres`, depuis le début), sinon la dernière.
+ *  ⚠ « Après », et non « la première du parcours » : un visiteur qui PASSE toutes les questions retomberait sinon
+ *  indéfiniment sur la commune, sans jamais atteindre les résultats (défaut réel de l'assistant d'avant, gardé). */
+export function nextGuideStep(state: SearchState, apres?: GuideStep): GuideStep {
+  const depuis = apres === undefined ? 0 : GUIDE_STEPS.indexOf(apres) + 1;
+  const repondu = guideAnswered(state);
+  return GUIDE_STEPS.slice(depuis).find((etape) => !repondu[etape]) ?? "taste";
 }
 
 /** Fenêtre de pagination : bornes toujours présentes, voisins de la courante,

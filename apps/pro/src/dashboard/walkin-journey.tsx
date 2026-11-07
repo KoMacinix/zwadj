@@ -66,7 +66,7 @@
 // `VenueCalendar` rend la disponibilité réelle, le tarif du jour calculé par le
 // moteur (B2/B3) et les créneaux avec leur prix. Une date déjà vendue ne peut
 // pas être saisie à la main.
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 // ⚠ `lucide-react` N'EST PLUS IMPORTÉ ICI. La coche du rail vivait dans ce
@@ -78,8 +78,12 @@ import { formatDZD } from "@zwadj/i18n";
 import {
   DEFAULT_PHONE_COUNTRY,
   PHONE_COUNTRIES,
+  QUOTE_AMOUNT_LOCALE,
   QUOTE_DOCUMENT_LOCALES,
   QUOTE_SENT_VIA_ORDER,
+  QuoteErrorCode,
+  ServicePricingType,
+  intlLocale,
   isPhoneComplete,
   isValidContactEmail,
   isValidPersonName,
@@ -94,6 +98,7 @@ import {
 } from "@zwadj/types";
 import { ChoiceDialog, JourneyCard, JourneyConnector, JourneyRail, JourneyRecap, NoticeDialog, PhoneField, useDismissLayer } from "@zwadj/ui";
 import { useApiErrorMessage } from "../auth/auth-ui";
+import { ApiError } from "../lib/auth-client";
 import { revealAndFocus } from "../lib/reveal";
 import { useBookingsPro, useProClients, useQuotes, useServices } from "../venues/venue-client-context";
 import { VenueCalendar } from "../venues/venue-calendar";
@@ -116,6 +121,7 @@ import {
 } from "./walkin-contact";
 import {
   copiePourDevis,
+  copiePourRevision,
   nomManquant,
   nomsDeLaFiche,
   nomsPourFiche,
@@ -126,6 +132,7 @@ import {
 import { channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
 import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
+import { choixDuDevis, type DetailSaisi } from "./walkin-services";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
 
@@ -143,7 +150,7 @@ type Done = { kind: "locked" | "standby"; date: string; client: string } | null;
 function longDate(civil: string, language: string): string {
   const [y, m, d] = civil.split("-").map(Number);
   if (!y || !m || !d) return civil;
-  return new Intl.DateTimeFormat(language, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
+  return new Intl.DateTimeFormat(intlLocale(language), { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
     new Date(Date.UTC(y, m - 1, d))
   );
 }
@@ -333,7 +340,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [slotId, setSlotId] = useState<string | null>(null);
   const [guests, setGuests] = useState("");
   const [picks, setPicks] = useState<string[]>([]);
+  /** ⛔ FP-1 — le palier (TIERED) et la quantité (PER_UNIT) SAISIS pour chaque prestation cochée ; la règle pure les juge. */
+  const [details, setDetails] = useState<Record<string, DetailSaisi>>({});
   const [quote, setQuote] = useState<QuoteDTO | null>(null);
+  /** ⛔ FP-3 — la DERNIÈRE version que le serveur a rendue pour la chaîne, gardée à part : `invalidate` jette le devis AFFICHÉ (`quote` redevient `null`)
+   *  à chaque modification, alors que la copie du nom qu'elle porte — celle que la boîte de langue a complétée — doit survivre à la révision. */
+  const versionRendue = useRef<QuoteDTO | null>(null);
+  useEffect(() => {
+    if (quote !== null) versionRendue.current = quote;
+  }, [quote]);
   /** ⚠ Survit à l'invalidation : c'est lui qui fait que le clic suivant RÉVISE
    *  au lieu de créer un devis de plus. */
   const [chainQuoteId, setChainQuoteId] = useState<string | null>(null);
@@ -485,6 +500,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     setSlotId(null);
     setGuests("");
     setPicks([]);
+    setDetails({});
     setQuote(null);
     setChainQuoteId(null);
     setStale(false);
@@ -525,6 +541,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   };
 
   const togglePick = (serviceId: string) => {
+    // ⛔ FP-1 (MD-7) — décocher EFFACE le détail saisi : recocher ne renverrait pas un palier ou une quantité d'avant.
+    if (picks.includes(serviceId)) setDetails((avant) => Object.fromEntries(Object.entries(avant).filter(([id]) => id !== serviceId)));
     setPicks((current) =>
       current.includes(serviceId) ? current.filter((id) => id !== serviceId) : [...current, serviceId]
     );
@@ -557,6 +575,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const confirmStep = () => {
     const etat = { ...answered };
     if (step === "services") {
+      // ⛔ FP-1 (MD-1, MD-2) — un palier ou une quantité qui manque RETIENT l'étape : le bouton est inactif, et cette garde aussi.
+      if (prestationsIncompletes) return;
       setServicesAnswered(true);
       etat.services = true;
     }
@@ -640,14 +660,30 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
     }
   }
 
+  /** ⛔ FP-1 (MD-6) — un palier ou une quantité changés JETTENT le devis affiché : il ne dirait plus ce que l'écran montre. */
+  const setDetail = (serviceId: string, patch: DetailSaisi) => {
+    setDetails((avant) => ({ ...avant, [serviceId]: { ...avant[serviceId], ...patch } }));
+    invalidate();
+  };
+  // ⛔ FP-1 — le corps du devis passe par la règle PURE (`walkin-services.ts`, D187) : le choix tel que le contrat l'attend — palier
+  // en TIERED, quantité en PER_UNIT, rien d'autre ailleurs — ou ce qui manque. AUCUN montant n'est calculé ici (règle des montants).
+  const lignes = catalogue.kind === "ready" ? catalogue.rows : [];
+  const prestationsDuDevis = choixDuDevis(picks, lignes, details);
+  const nomsManquants = prestationsDuDevis.manquants
+    .map((id) => lignes.find((ligne) => ligne.id === id))
+    .map((ligne) => (ligne === undefined ? "?" : isAr ? ligne.nameAr : ligne.nameFr));
+  const prestationsIncompletes = prestationsDuDevis.manquants.length > 0;
+
   const body = () => ({
     eventDate: eventDate as string,
     slotTemplateId: slotId as string,
     guests: Number(guests),
-    ...(picks.length === 0 ? {} : { services: picks.map((serviceId) => ({ serviceId })) }),
+    ...(prestationsDuDevis.choix.length === 0 ? {} : { services: prestationsDuDevis.choix }),
     // ⛔ Rang 41 (D336, K-4) : la fiche et la COPIE des noms de l'écran — ceux de la fiche quand elle est liée (MD-6).
     // ⛔ L36-2 (R-1) : ni fiche ni nom pour un brouillon, ni à la création ni dans une révision (la promotion est le seul geste qui les inscrit).
-    ...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))
+    ...(fiche === null || sansCoordonnees || chaineBrouillon
+      ? {}
+      : copiePourRevision(nomsEffectifs, fiche, chainQuoteId !== null && versionRendue.current?.id === chainQuoteId ? versionRendue.current : null))
   });
 
   const compute = () => {
@@ -769,6 +805,11 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * ⛔ Rang 41 (D336, K-5) — la question du nom a reçu sa réponse : la copie se COMPLÈTE sur le devis (`POST /quotes/:id/client-name` ; c'est le
    * SERVEUR qui complète aussi la fiche, quand C-C3 le permet), PUIS la remise part dans cette langue, sur le devis que le serveur a rendu.
    * Un refus (409 : la copie a été complétée entre-temps) est DIT, et rien n'est remis ni téléchargé.
+   * ⛔ FP-2 — ET le devis est RELU : le 409 dit que la copie de cette langue EXISTE déjà sur le serveur ; sans elle, le devis local la croirait
+   * encore manquante et chaque remise suivante reposerait la question pour se heurter au même 409. Le serveur ne remplace jamais une copie
+   * (M-6) : l'écran n'écrit rien de plus, il GARDE celle du serveur. Aucun `GET /quotes/:id` n'existe — la relecture passe par la liste des devis
+   * de la salle (`listForVenue`, déjà au client d'API). Elle est un CONFORT : si elle échoue, ou ne retrouve pas le devis, l'écran reste tel qu'il
+   * était (le refus dit, la question se repose) — la copie n'est jamais inventée. Seul CE 409 la justifie : un autre refus ne relit rien.
    */
   const completerLeNom = (nom: string) => {
     const attente = nomDe;
@@ -783,6 +824,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
         complete = await quotes.completeClientName(devis.id, { locale: attente.locale, name: nom });
       } catch (cause) {
         setError(toMessageRef.current(cause));
+        if (cause instanceof ApiError && cause.code === QuoteErrorCode.QUOTE_CLIENT_NAME_ALREADY_SET) {
+          try {
+            // Pas de `Array.isArray` ici (D133) : sous ce `try`, une réponse mal formée lève au `find` et laisse l'écran inchangé.
+            const relu = (await quotes.listForVenue(venue.id)).find((ligne) => ligne.id === devis.id);
+            if (relu !== undefined) setQuote(relu);
+          } catch {
+            /* la relecture est un confort : le refus reste dit, l'écran inchangé */
+          }
+        }
         setBusy(false);
         return;
       }
@@ -1244,22 +1294,92 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                 <legend className="sr-only">{t("venue.ui.walkin.services")}</legend>
                 {catalogue.rows.map((service) => {
                   const on = picks.includes(service.id);
+                  const nom = isAr ? service.nameAr : service.nameFr;
+                  const unite = isAr ? service.unitNameAr : service.unitNameFr;
+                  const bornes =
+                    service.minUnits !== null && service.maxUnits !== null
+                      ? t("venue.ui.walkin.quantityRange", { min: service.minUnits, max: service.maxUnits })
+                      : service.minUnits !== null
+                        ? t("venue.ui.walkin.quantityMin", { min: service.minUnits })
+                        : service.maxUnits !== null
+                          ? t("venue.ui.walkin.quantityMax", { max: service.maxUnits })
+                          : null;
                   return (
-                    <label key={service.id} className={on ? "wk-service is-on" : "wk-service"}>
-                      <input type="checkbox" checked={on} onChange={() => togglePick(service.id)} />
-                      <span className="wk-service-name">{isAr ? service.nameAr : service.nameFr}</span>
-                      {/* AUCUN prix ici : selon le mode de tarification il dépend
-                          des invités ou d'un palier. Le montant juste est celui
-                          que le serveur rendra dans les lignes du devis. */}
-                      <span className="wk-service-type">{t(`venue.ui.walkin.pt_${service.pricingType}`)}</span>
-                    </label>
+                    <Fragment key={service.id}>
+                      <label className={on ? "wk-service is-on" : "wk-service"}>
+                        <input type="checkbox" checked={on} onChange={() => togglePick(service.id)} />
+                        <span className="wk-service-name">{nom}</span>
+                        {/* AUCUN prix ici : selon le mode de tarification il dépend
+                            des invités ou d'un palier. Le montant juste est celui
+                            que le serveur rendra dans les lignes du devis. */}
+                        <span className="wk-service-type">{t(`venue.ui.walkin.pt_${service.pricingType}`)}</span>
+                      </label>
+                      {/* ⛔ FP-1 — le DÉTAIL qu'exige le contrat, saisi SOUS la prestation cochée : un palier (TIERED, les seuls ACTIFS,
+                          aucun choisi d'avance — MD-1, MD-11) ou une quantité (PER_UNIT, bornes du CATALOGUE — MD-2, MD-3). Aucun prix. */}
+                      {on && service.pricingType === ServicePricingType.TIERED ? (
+                        <div className="wk-service-detail">
+                          <label htmlFor={`wk-palier-${service.id}`}>{t("venue.ui.walkin.tierLabel", { name: nom })}</label>
+                          <select
+                            id={`wk-palier-${service.id}`}
+                            className="wk-input"
+                            value={details[service.id]?.tierId ?? ""}
+                            onChange={(event) => setDetail(service.id, { tierId: event.target.value })}
+                          >
+                            <option value="">{t("venue.ui.walkin.tierChoose")}</option>
+                            {service.tiers
+                              .filter((palier) => palier.isActive)
+                              .map((palier) => (
+                                <option key={palier.id} value={palier.id}>
+                                  {isAr ? palier.labelAr : palier.labelFr}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      ) : null}
+                      {on && service.pricingType === ServicePricingType.PER_UNIT ? (
+                        <div className="wk-service-detail">
+                          <label htmlFor={`wk-quantite-${service.id}`}>
+                            {unite
+                              ? t("venue.ui.walkin.quantityLabel", { name: nom, unit: unite })
+                              : t("venue.ui.walkin.quantityLabelNoUnit", { name: nom })}
+                          </label>
+                          <input
+                            id={`wk-quantite-${service.id}`}
+                            className="wk-input"
+                            type="number"
+                            inputMode="numeric"
+                            min={service.minUnits ?? 1}
+                            max={service.maxUnits ?? undefined}
+                            value={details[service.id]?.quantite ?? ""}
+                            aria-describedby={bornes === null ? undefined : `wk-bornes-${service.id}`}
+                            onChange={(event) => setDetail(service.id, { quantite: event.target.value })}
+                          />
+                          {bornes === null ? null : (
+                            <p id={`wk-bornes-${service.id}`} className="wk-hint">
+                              {bornes}
+                            </p>
+                          )}
+                        </div>
+                      ) : null}
+                    </Fragment>
                   );
                 })}
               </fieldset>
             )}
+            {prestationsIncompletes ? (
+              <p id="wk-services-manque" className="wk-hint" role="status">
+                {t("venue.ui.walkin.servicesMissing", { names: nomsManquants.join(isAr ? "، " : ", ") })}
+              </p>
+            ) : null}
             <div className="wk-actions">
               {previousButton}
-              <button type="button" className="wk-btn wk-btn-primary wk-btn-next" onClick={confirmStep}>
+              <button
+                type="button"
+                className="wk-btn wk-btn-primary wk-btn-next"
+                onClick={confirmStep}
+                disabled={prestationsIncompletes}
+                aria-describedby={prestationsIncompletes ? "wk-services-manque" : undefined}
+              >
                 {t("venue.ui.walkin.seeQuote")}
               </button>
             </div>
@@ -1273,12 +1393,15 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
               <button
                 type="button"
                 className="wk-btn wk-btn-primary"
-                disabled={busy || !termsReady || conclu}
+                disabled={busy || !termsReady || conclu || prestationsIncompletes}
                 onClick={compute}
               >
                 {chainQuoteId === null ? t("venue.ui.walkin.compute") : t("venue.ui.walkin.editQuote")}
               </button>
               {termsReady ? null : <p className="wk-hint">{t("venue.ui.walkin.computeBlocked")}</p>}
+              {prestationsIncompletes ? (
+                <p className="wk-hint">{t("venue.ui.walkin.servicesMissing", { names: nomsManquants.join(isAr ? "، " : ", ") })}</p>
+              ) : null}
               {stale && quote === null ? (
                 <p className="wk-hint" role="status">
                   {t("venue.ui.walkin.staleTotal")}
@@ -1296,9 +1419,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
 
                 <dl className="wk-amounts">
                   <dt>{t("venue.ui.walkin.basePrice")}</dt>
-                  <dd>{formatDZD(quote.basePriceCents)}</dd>
+                  <dd>{formatDZD(quote.basePriceCents, QUOTE_AMOUNT_LOCALE)}</dd>
                   <dt>{t("venue.ui.walkin.servicesTotal")}</dt>
-                  <dd>{formatDZD(quote.servicesTotalCents)}</dd>
+                  <dd>{formatDZD(quote.servicesTotalCents, QUOTE_AMOUNT_LOCALE)}</dd>
                 </dl>
 
                 {quote.lines.length === 0 ? null : (
@@ -1309,7 +1432,7 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
                           {isAr ? line.nameAr : line.nameFr}
                           {line.quantity > 1 ? ` × ${line.quantity}` : ""}
                         </span>
-                        <span>{formatDZD(line.lineTotalCents)}</span>
+                        <span>{formatDZD(line.lineTotalCents, QUOTE_AMOUNT_LOCALE)}</span>
                       </li>
                     ))}
                   </ul>
@@ -1317,12 +1440,12 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
 
                 <div className="wk-grand">
                   <span>{t("venue.ui.walkin.total")}</span>
-                  <strong>{formatDZD(quote.totalCents)}</strong>
+                  <strong>{formatDZD(quote.totalCents, QUOTE_AMOUNT_LOCALE)}</strong>
                 </div>
 
                 <div className="wk-deposit">
                   <span>{t("venue.ui.walkin.deposit")}</span>
-                  <strong>{formatDZD(quote.depositCents)}</strong>
+                  <strong>{formatDZD(quote.depositCents, QUOTE_AMOUNT_LOCALE)}</strong>
                 </div>
 
                 {/* ⛔ L36-2 : un brouillon n'a NI coordonnées, NI canaux, NI issues — le bloc du brouillon les remplace ; la promotion rend le message de succès. */}

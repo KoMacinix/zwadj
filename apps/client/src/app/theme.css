@@ -76,6 +76,22 @@
   --star: var(--dark-star);
 }
 
+/* ── FC-2 — la barre de session de l'en-tête PASSE À LA LIGNE au lieu de déborder ──
+   Mesuré (D321, puis FC-2) : à 360 px, en français, la barre (thème, « العربية »,
+   « Connexion », « Inscription ») mesure 344 px pour 320 offerts ; un conteneur flex
+   SANS retour à la ligne ne rétrécit pas sous la somme de ses enfants, et la page
+   entière glissait de 4 px sous le doigt (`scrollWidth` 364). Ici elle passe à la ligne,
+   à TOUTE largeur où elle ne tient plus — aucun seuil, aucun `@media` : un libellé plus
+   long demain, ou une autre langue, ne rouvre pas le défaut. `flex-end` est LOGIQUE :
+   à droite en français, à gauche en arabe.
+   ⚠ Portée : l'en-tête du CLIENT seul (`--stacked`) ; les deux en-têtes Pro partagent
+   `.header-auth` et ne bougent pas. Garde : `e2e/specs/fc2-debordement-360.e2e.ts`. */
+.site-header--stacked .header-auth {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 8px;
+}
+
 /* ── Bascule de langue (Lot UI-D2) ──────────────────────────────────────────
    Même gabarit que la bascule de thème pour qu'elles fassent paire, mais en
    pilule : l'étiquette est du texte, pas une icône. */
@@ -132,7 +148,8 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* FC-1 — 12 px sur le fond de la barre de filtres : `--accent` y tombait à 4,16:1 (D264). */
+  color: var(--accent-text);
   text-decoration: none;
 }
 
@@ -221,7 +238,8 @@
 .range-value {
   margin: 0;
   font-size: 13px;
-  color: var(--accent);
+  /* FC-1 — même règle que `.filters-reset`, même mesure. */
+  color: var(--accent-text);
 }
 
 /* ── Puces (styles, type de mariage) ────────────────────────────────────────
@@ -417,10 +435,14 @@
   color: var(--ink-2);
 }
 
-/* Accent en TEXTE : légitime ici et seulement ici, parce que `.search-results`
-   est sur blanc pur (voir ② en tête de bloc). */
+/* FC-1 — le nombre ACCENTUÉ du design, en `--accent-text` (D264). Le commentaire qui
+   était ici disait « légitime ici et seulement ici, parce que `.search-results` est sur
+   blanc pur » : une règle qui dépend du fond SUPPOSÉ ne tient qu'aussi longtemps que
+   personne ne touche au fond — et B8 ne la voyait pas (le compteur n'existe qu'avec au
+   moins une salle). `apps/client/src/app/theme-contrast.test.ts` exige désormais 4,5:1
+   sur CHAQUE fond neutre des deux thèmes. */
 .results-count-n {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -1306,7 +1328,8 @@
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* FC-1 — 12 px sur le fond de l'assistant ; l'ornement suit (`currentColor`). */
+  color: var(--accent-text);
   inline-size: 100%;
 }
 .wz-ornament {
@@ -1499,4 +1522,109 @@
   .wz-rail li:not(:last-child)::before {
     display: none;
   }
+}
+
+/* ── FC-4 — le jour et le créneau DÉJÀ DEMANDÉS (REQUESTED) ──────────────────
+   Arbitrage de Ko du 04/10/2026 : un jour qui ne porte qu'une demande en attente
+   se CHOISIT, avec un avis. Son nom accessible le dit (« demandes en attente ») ;
+   ici l'œil le voit aussi : un bord POINTILLÉ en `--ink-2` (contraste d'élément
+   non textuel ≥ 3:1 sur `--surface`, WCAG 1.4.11), sans couleur d'accent.
+   L'avis est du TEXTE : encre normale (`--ink`), jamais l'accent (AGENTS.md, AA). */
+.cal-day.is-requested {
+  border-style: dashed;
+  border-color: var(--ink-2);
+}
+
+.booking-requested-notice {
+  margin-block: 8px 12px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  border-inline-start: 3px solid var(--star);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+}
+
+/* ── FC-8 (session `front-client`) — l'assistant, MODE de `/salles` : un panneau PAR-DESSUS les résultats réels (D229) ───────
+   Le voile et le panneau reprennent ceux du dialogue partagé (`.dialog-overlay`, `.dialog-panel` de `@zwadj/ui`) : les mêmes
+   tokens, donc les deux thèmes ; propriétés LOGIQUES (RTL) ; à 360 px le panneau prend la largeur (FC-2). Le panneau défile en
+   lui-même : la page de résultats, dessous, ne bouge pas. */
+.wz-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  padding: clamp(8px, 3vw, 32px);
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+.wz-overlay .wz {
+  max-inline-size: 960px;
+  margin-inline: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-modal);
+}
+.wz-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+.wz-head-actions .wz-head-reset {
+  margin-inline-start: 0;
+}
+
+/* ── FC-12 (session `front-client`) — LA VISIONNEUSE DE PHOTOS d'une fiche ───────────────────────────────────────────────────
+   Un voile SOMBRE et des commandes CLAIRES, DANS LES DEUX THÈMES : la photo est le seul contenu, et un fond sombre la montre sans
+   la teinter. ⛔ AUCUNE COULEUR EN DUR (AGENTS.md) : les deux valeurs viennent de la palette PARTAGÉE (`--dark-bg`, `--dark-ink`,
+   `packages/ui/styles.css`), déclarée sur `:root` et donc présente dans les deux thèmes — elle ne bascule pas avec eux, et c'est
+   voulu ici. Contraste des commandes : `--dark-ink` (#f0f0f0) sur `--dark-bg` (#111) à 92 % au-dessus d'une page claire — au-delà
+   de 15:1 (AA demande 4,5:1).
+   Propriétés LOGIQUES (RTL) ; la boîte tient à 360 px (FC-2). */
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--dark-bg) 92%, transparent);
+  color: var(--dark-ink);
+}
+.photo-viewer-box {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  max-inline-size: min(1100px, 100%);
+  max-block-size: 100%;
+}
+.photo-viewer-img {
+  max-inline-size: 100%;
+  max-block-size: calc(100dvh - 160px);
+  inline-size: auto;
+  block-size: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+.photo-viewer-count {
+  margin: 0;
+  font-size: 14px;
+}
+.photo-viewer-nav {
+  display: flex;
+  gap: 12px;
+}
+.photo-viewer .btn {
+  color: var(--dark-ink);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--dark-ink) 70%, transparent);
+}
+.photo-viewer .btn:focus-visible {
+  outline: 2px solid var(--dark-ink);
+  outline-offset: 2px;
+}
+.photo-viewer-close {
+  justify-self: end;
 }

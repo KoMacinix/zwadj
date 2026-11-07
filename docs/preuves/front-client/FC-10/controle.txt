@@ -1,0 +1,13 @@
+  calibration ✓ extracteur, positif : les deux chemins des lignes de table : True (attendu True)
+  calibration ✓ extracteur, négatif : le chemin cité en prose n'est PAS dans la table : False (attendu False)
+  calibration ✓ classement : un composant est du code de produit : True (attendu True)
+  calibration ✓ classement : un test n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une pièce n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une feuille de style est du code de produit : True (attendu True)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+lot FC-10 · départ 669cdae · HEAD 9ea0649 · commits parcourus : 4
+✓ 1. premier commit = la table SEULE : cccd671 → ['docs/preuves/front-client/FC-10/table-ouverture.md']
+✓ 2. extensions de la table, chacune SEULE : 1 commit(s) examiné(s), 0 mêlé(s) à d'autres fichiers (attendu 0)
+✓ 3. rouges avant le code : premier commit de rouges a1296dd (rang 1) · premier commit de code 9ea0649 (rang 3)
+✓ 4. diff ⊆ table : 24 fichier(s) examiné(s) (8 commités, 16 non commités) contre 24 chemin(s) de la table · hors table : 0 (attendu 0)
+  (information) chemins de la table absents du diff : 0

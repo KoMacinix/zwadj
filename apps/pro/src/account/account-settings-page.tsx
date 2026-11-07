@@ -19,6 +19,7 @@ import {
   DEFAULT_PHONE_COUNTRY,
   changeEmailSchema,
   changePasswordSchema,
+  formatInstantDate,
   nationalDigitsOf,
   profileUpdateSchema,
   toE164,
@@ -408,7 +409,7 @@ function PasswordSection({ client }: { client: AccountClient }) {
 
 // ── Section 4 : suppression (D37 + D41, TROIS états) ────────────────────────
 function DeletionSection({ client }: { client: AccountClient }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const toMessage = useSubmitError();
 
   const [loading, setLoading] = useState(true);
@@ -471,7 +472,7 @@ function DeletionSection({ client }: { client: AccountClient }) {
           <Banner
             kind="ok"
             text={t("account.ui.deletion.pending", {
-              date: new Date(current.requestedAt).toLocaleDateString()
+              date: formatInstantDate(current.requestedAt, i18n.language)
             })}
           />
           <button

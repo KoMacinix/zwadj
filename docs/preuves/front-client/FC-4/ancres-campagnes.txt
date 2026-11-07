@@ -1,0 +1,27 @@
+FC-4 — ce que le tri des campagnes a arrêté, et pourquoi (lancer-campagnes.py, avant le commit du code)
+
+1. neutralize-r29.py — sortie 2, « ARBRE NON CONFORME AU DÉPART : R29-1 ancre ×0 ; R29-7 ancre ×0 ». PÉRIMÉES PAR CE LOT.
+   · R29-1 visait `return day !== undefined && day.slots.some((slot) => slot.status === "AVAILABLE");` dans
+     apps/client/src/lib/booking-calendar.ts ; FC-4 a déplacé la règle dans `dayState`. RÉORIENTÉE : même faute (« au moins un
+     créneau » au lieu d'« un créneau choisissable »), nouveau site `return day.slots.some((slot) => isSlotChoosable(slot.status))
+     ? "requested" : "full";` ; titre attendu : le C-b inversé par FC-4 (« C-b : ni créneau AVAILABLE ni créneau REQUESTED »).
+   · R29-7 visait `aria-label={t(ok ? "dayFree" : "dayFull", …)}` dans booking-date-picker.tsx ; FC-4 nomme le jour par
+     `NOM_DU_JOUR[etat]`. RÉORIENTÉE : même faute (le jour ne se nomme plus que par son numéro), nouveau site.
+   · Rejouée après réorientation : « 15 garde(s) mordue(s) sur 15 cible(s) jouée(s) », arbre rendu à son état de départ.
+
+2. neutralize-r30.py — sortie 2, « ARBRE NON CONFORME AU DÉPART : R30-4 ancre ×0 ». PAS CE LOT : ENVIRONNEMENT.
+   · L'ancre de R30-4 est écrite avec un retour chariot EN DUR (`'DateTimeFormat(locale, {\r\n    weekday: "long",'`). Le poste
+     de Ko a `core.autocrlf=true` (fichiers en CRLF) ; ce conteneur extrait le dépôt en LF. Relevé : ancre brute ×0, la même ancre
+     ramenée en LF ×1 dans booking-calendar.ts. FC-4 ne touche pas `longDate`. Les 7 autres ancres de r30 : ×1 chacune (relevé
+     par lecture du module, sans exécution). ⇒ r30 n'est PAS jouable dans ce conteneur ; à jouer à l'intégration.
+   · Défaut de portabilité du harnais (le socle de la session adapte les fins de ligne ; r30 non) : rapporté, non corrigé (hors lot).
+
+3. neutralize-r33.py — sortie 1, 86 mordues, 1 MUETTE : M-12 (« la date d'un événement dérive du fuseau du serveur »). PAS CE LOT :
+   ENVIRONNEMENT (fuseau). La mutation retire `timeZone: "UTC"` du formatage de la date dans apps/api/src/documents/quote-document.ts
+   (FC-4 ne touche pas apps/api ; r33 est tiré par les catalogues). Rejouée en DÉCOUVERTE sur la seule cible M-12 :
+     TZ non défini (UTC, ce conteneur) : VERT 61/61 — muette ;
+     TZ=Africa/Algiers (UTC+1)          : VERT 61/61 — muette ;
+     TZ=Pacific/Kiritimati (UTC+14)     : VERT 61/61 — muette ;
+     TZ=America/Los_Angeles (UTC−8)     : ROUGE, « AssertionError: expected '4 décembre 2026' to match /5\s+décembre\s+2026/ ».
+   ⇒ la garde ne mord que si le serveur de test est À L'OUEST de Greenwich (la leçon de S11-a, « une garde de fuseau est muette sur un
+   serveur en UTC » : sa spec n'épingle pas `process.env.TZ`). Rapporté, non corrigé (apps/api : hors session).

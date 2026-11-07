@@ -145,7 +145,8 @@ cible("E-2. ⛔ la relecture part AVANT la réponse du serveur (F-4) : elle lit 
       "const updated = await venuesApi.update(state.venue.id, diff.data);", "reloadVenues();\n      const updated = await venuesApi.update(state.venue.id, diff.data);",
       {"pro-relecture": T_EDITION_APRES}, genre="insertion")
 cible("E-3. ⛔ la suppression réussie ne fait plus relire la liste avant d'y arriver : la salle supprimée y est montrée (S6 de D327)", EDITION,
-      'reloadVenues();\n      void navigate("/salles");', 'void 0;\n      void navigate("/salles");', {"pro-relecture": T_SUPPR_HONNETE})
+      # ⛔ RÉORIENTÉE (FC-5) : le retour à la liste passe par `VENUES_PATH` (table de routes du pro) ; même faute, nouveau site.
+      'reloadVenues();\n      void navigate(VENUES_PATH);', 'void 0;\n      void navigate(VENUES_PATH);', {"pro-relecture": T_SUPPR_HONNETE})
 cible("E-4. la relecture part AVANT la réponse de la suppression : elle part même quand le serveur REFUSE", EDITION,
       "await venuesApi.softDelete(state.venue.id);", "reloadVenues();\n      await venuesApi.softDelete(state.venue.id);", {"pro-relecture": T_SUPPR_REFUSEE, "pro-relecture#2": T_SUPPR_APRES}, genre="insertion")
 cible("E-5. un enregistrement SANS rien à enregistrer relit quand même la liste", EDITION,

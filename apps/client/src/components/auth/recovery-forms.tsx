@@ -10,7 +10,7 @@ import { ApiError } from "../../lib/auth/auth-client";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { z } from "zod";
 import { ArrowBackIcon } from "@zwadj/ui";
-import { LOGIN_PATH } from "../../lib/routes";
+import { FORGOT_PASSWORD_PATH, LOGIN_PATH } from "../../lib/routes";
 
 export function ForgotForm() {
   const t = useTranslations("auth.ui");
@@ -119,7 +119,7 @@ export function ResetForm({ token }: { token: string | null }) {
       <AuthShell mode="reset">
         <div className="state-panel">
           <h1>{t("reset.missingToken")}</h1>
-          <Link href="/auth/mot-de-passe-oublie" className="btn btn-accent">
+          <Link href={FORGOT_PASSWORD_PATH} className="btn btn-accent">
             {t("reset.requestNew")}
           </Link>
         </div>

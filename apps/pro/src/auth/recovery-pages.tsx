@@ -8,7 +8,7 @@ import { ApiError } from "../lib/auth-client";
 import { issuesToFieldErrors, validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
-import { LOGIN_PATH } from "../routes";
+import { FORGOT_PASSWORD_PATH, LOGIN_PATH } from "../routes";
 
 export function ForgotPage() {
   const { t } = useTranslation();
@@ -112,7 +112,7 @@ export function ResetPage() {
       <ProAuthShell title={t("auth.ui.shell.resetTitle")} subtitle={t("auth.ui.shell.resetSubtitle")}>
         <div className="state-panel">
           <h1>{t("auth.ui.reset.missingToken")}</h1>
-          <Link to="/auth/mot-de-passe-oublie" className="btn btn-accent">
+          <Link to={FORGOT_PASSWORD_PATH} className="btn btn-accent">
             {t("auth.ui.reset.requestNew")}
           </Link>
         </div>

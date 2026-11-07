@@ -1,0 +1,27 @@
+# FC-11 — UNE APPLICATION NEXT MINIMALE, HORS DÉPÔT : le défaut est-il celui de l'application ou celui de Next ?
+# Mêmes versions que le client (Next 15.5.20, React 19.2.7 : son node_modules, lié), AUCUN next-intl, AUCUN intergiciel, la structure
+# STANDARD de la documentation de Next : un layout racine qui rend <html>, une not-found racine, une page, un attrape-tout qui appelle
+# notFound(). Construite (`next build`, code 0), servie (`next start --port 3310`, « Ready », seule sur le port), mesurée sur le HTML
+# SERVI (même extraction que mesure-404.mjs : sans <script>, <style>, <template>, commentaires).
+#
+# Sources, mot pour mot :
+#   app/layout.jsx         : export default function RootLayout({ children }) { return (<html lang="fr"><body>{children}</body></html>); }
+#   app/not-found.jsx      : export default function NotFound() { return (<main><h1>Cette page n'existe pas</h1></main>); }
+#   app/page.jsx           : export default function Home() { return (<main><h1>Accueil</h1></main>); }
+#   app/[...rest]/page.jsx : import { notFound } from "next/navigation"; export default function CatchAll() { notFound(); }
+#   next.config.js         : module.exports = {};
+
+== 1. la structure standard
+/ → 200 · <html> normal · texte visible : "Accueil"
+/nimportequoi → 404 · <html id=__next_error__> · texte visible : ""
+/wp-login.php → 404 · <html id=__next_error__> · texte visible : ""
+
+== 2. la même, avec `experimental.globalNotFound` (Next ≥ 15.4) et un `app/global-not-found.jsx` qui rend son propre <html>
+#   next.config.js             : module.exports = { experimental: { globalNotFound: true } };
+#   app/global-not-found.jsx   : export default function GlobalNotFound() { return (<html lang="fr"><body><main><h1>Page globale introuvable</h1></main></body></html>); }
+/ → 200 · <html> normal · texte visible : "Accueil"
+/nimportequoi → 404 · <html id=__next_error__> · texte visible : ""
+/wp-login.php → 404 · <html id=__next_error__> · texte visible : ""
+
+⇒ Dans les deux cas : la page sert son texte ("Accueil") ; les DEUX 404 — un notFound() levé par une page, et une route inconnue —
+  servent <html id="__next_error__"> et AUCUN texte visible. Le défaut n'est pas celui de l'application : c'est le rendu des 404 de Next 15.5.20.

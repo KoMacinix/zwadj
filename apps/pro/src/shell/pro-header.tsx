@@ -20,6 +20,7 @@ import { AccountMenu, ThemeToggle, ZwadjLogo, type AccountMenuItem } from "@zwad
 import { useAuth } from "../auth/auth-context";
 import { LangToggle } from "../auth/auth-ui";
 import { ProNav } from "./pro-nav";
+import { ACCOUNT_PATH, NEW_VENUE_PATH } from "../routes";
 
 export function ProHeader() {
   const { t } = useTranslation();
@@ -27,8 +28,8 @@ export function ProHeader() {
   const navigate = useNavigate();
 
   const items: AccountMenuItem[] = [
-    { key: "add-venue", label: t("venue.ui.list.new"), onSelect: () => navigate("/salles/nouvelle") },
-    { key: "settings", label: t("account.ui.menu.settings"), onSelect: () => navigate("/compte") },
+    { key: "add-venue", label: t("venue.ui.list.new"), onSelect: () => navigate(NEW_VENUE_PATH) },
+    { key: "settings", label: t("account.ui.menu.settings"), onSelect: () => navigate(ACCOUNT_PATH) },
     { key: "logout", label: t("auth.ui.header.logout"), onSelect: () => void logout(), destructive: true }
   ];
 

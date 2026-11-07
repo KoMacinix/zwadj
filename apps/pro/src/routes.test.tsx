@@ -11,7 +11,17 @@ import { messages } from "@zwadj/i18n";
 import type { AuthClient } from "./lib/auth-client";
 import { initI18n } from "./i18n";
 import { AppProviders, AppRoutes } from "./App";
+import type { VenueProDTO } from "@zwadj/types";
+import * as ROUTES from "./routes";
 import { LOGIN_PATH } from "./routes";
+import {
+  makeAuthDouble,
+  makeBookingsProDouble,
+  makeQuotesDouble,
+  makeReferentialsDouble,
+  makeServicesDouble,
+  makeVenueClientDouble
+} from "./test-support/client-doubles";
 
 initI18n();
 
@@ -58,5 +68,97 @@ describe("LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321)", () =
     rendreA("/connexion");
     await screen.findByRole("heading", { level: 1, name: messages.fr.auth.ui.login.title });
     expect(screen.getByText(/^adresse=/).textContent).not.toBe("adresse=/connexion");
+  });
+});
+
+// ── FC-5 (session `front-client`) — CHAQUE constante de la table est une route DÉCLARÉE ─────────────────────────────────────
+// La table de routes RÉELLE (`AppRoutes`) y rend une page, et l'adresse RESTE celle demandée — patron de D322 et du test de
+// LOGIN_PATH ci-dessus : une adresse inconnue est quittée (bras négatif). Les constantes sont lues dans le MODULE, pas recopiées :
+// une constante ajoutée demain est vérifiée sans toucher ce test. Les pages d'ENTRÉE (`/auth/…`) se jouent sans session — elles
+// sont fermées à une session ouverte (D148) ; les autres, avec une session PRO et tous les doubles (patron de `calendar-link`).
+const SALLE_EXEMPLE = {
+  id: "v1",
+  slug: "salle-v1",
+  cityId: "11111111-1111-4111-8111-111111111111",
+  nameFr: "Salle Une",
+  nameAr: "قاعة",
+  taglineFr: null,
+  taglineAr: null,
+  descriptionFr: null,
+  descriptionAr: null,
+  districtFr: null,
+  districtAr: null,
+  address: null,
+  lat: null,
+  lng: null,
+  capacityMax: 400,
+  basePriceCents: 15_000_000,
+  bookingMode: "SINGLE_SLOT",
+  depositRateBps: 3000,
+  depositAmountCents: null,
+  status: "ACTIVE",
+  publicationStatus: "DRAFT",
+  amenityIds: [],
+  styleIds: [],
+  ceremonyType: null,
+  photos: [],
+  slotTemplates: [],
+  matterportModelId: null
+} as unknown as VenueProDTO;
+
+function rendreConnecteA(chemin: string) {
+  render(
+    <MemoryRouter initialEntries={[chemin]}>
+      <AppProviders
+        client={makeAuthDouble()}
+        venues={makeVenueClientDouble(SALLE_EXEMPLE)}
+        referentials={makeReferentialsDouble()}
+        bookingsPro={makeBookingsProDouble()}
+        servicesClient={makeServicesDouble()}
+        quotesClient={makeQuotesDouble()}
+      >
+        <AppRoutes />
+        <Adresse />
+      </AppProviders>
+    </MemoryRouter>
+  );
+}
+
+/** Les adresses de la table qui sont des routes DU PRO : chaînes, hors pages du client liées depuis le pro (`CLIENT_…`), hors
+ *  le motif paramétré (vérifié par `venuePath` ci-dessous), hors `/` (une adresse inconnue y est renvoyée : « rester sur `/` »
+ *  ne distinguerait rien). */
+// La table lue comme un dictionnaire NON typé (unions de littéraux : un prédicat `[string, string]` ne s'y applique pas, TS2677).
+const ADRESSES_DU_PRO = Object.entries(ROUTES as Record<string, unknown>).filter(
+  (entree): entree is [string, string] =>
+    typeof entree[1] === "string" && !entree[0].startsWith("CLIENT_") && entree[0] !== "VENUE_PATH_PATTERN" && entree[1] !== "/"
+);
+
+describe("FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322)", () => {
+  it("la table porte plus que la connexion (D290 : un zéro sur zéro ne mesure rien)", () => {
+    expect(ADRESSES_DU_PRO.length).toBeGreaterThan(8);
+  });
+
+  for (const [nom, adresse] of ADRESSES_DU_PRO) {
+    it(`${nom} (« ${adresse} ») : la page s'y rend, et l'adresse RESTE celle demandée`, async () => {
+      if (adresse.startsWith("/auth/")) rendreA(adresse);
+      else rendreConnecteA(adresse);
+      await waitFor(() => expect(screen.queryByRole("heading", { level: 1 })).not.toBeNull());
+      expect(screen.getByText(/^adresse=/).textContent).toBe(`adresse=${adresse}`);
+    });
+  }
+
+  it("venuePath(id) — l'assistant d'une salle : la page s'y rend, et l'adresse RESTE celle demandée", async () => {
+    // Lue par son nom : absente (avant FC-5), le rouge se lit en ASSERTION (D304) et le fichier compile avant comme après.
+    const venuePath = (ROUTES as Record<string, unknown>).venuePath;
+    expect(typeof venuePath).toBe("function");
+    const adresse = (venuePath as (id: string) => string)(SALLE_EXEMPLE.id);
+    rendreConnecteA(adresse);
+    await waitFor(() => expect(screen.queryByRole("heading", { level: 1 })).not.toBeNull());
+    expect(screen.getByText(/^adresse=/).textContent).toBe(`adresse=${adresse}`);
+  });
+
+  it("calibration, bras négatif CONNECTÉ : une adresse sans route est quittée (renvoyée au tableau de bord)", async () => {
+    rendreConnecteA("/salles/v1/calendrier");
+    await waitFor(() => expect(screen.getByText(/^adresse=/).textContent).not.toBe("adresse=/salles/v1/calendrier"));
   });
 });

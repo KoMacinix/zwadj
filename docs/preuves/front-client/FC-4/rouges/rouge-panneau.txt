@@ -1,0 +1,1536 @@
+# FC-4 — ROUGE (panneau), lu contre l'état d'AVANT, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 0c6f35e42d500c0f34f4e6c66bbb4edd83cd71e8 (tests non commités ; code et catalogues d'avant)
+# commande : (apps/client) npx vitest run src/components/venue/booking-request-panel-demande.test.tsx — code de sortie 1
+# sha256 apps/client/src/components/venue/booking-request-panel-demande.test.tsx : ee351fe70ab2c9e003dfe4fed2414a670f667c45884a8e953e0dab66407d6d06
+# sha256 apps/client/src/components/venue/booking-request-panel.tsx (état d'AVANT) : 4ecb8ee556ca198cc1183de815bf7204e4dc09de3c98f76f431d84fed34d1148
+# ⚠ les trois clés neuves n'existent pas avant le code : le test les lit avec un repli (« § clé absente du catalogue § »), pour que le rouge se lise en ASSERTION
+# lecture : 5 échecs par AssertionError (le 16 inactif et mal nommé ; ses créneaux, l'avis et le prix inatteignables) ; 2 verts de non-régression (le 17 fermé ; un créneau LIBRE sans avis)
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx (7 tests | 5 failed) 4613ms
+   × FC-4 — le JOUR seulement demandé se choisit, et son nom le dit > le 16 (un créneau demandé, un fermé) : choisissable, nommé « demandes en attente » 183ms
+     → expected true to be false // Object.is equality
+   ✓ FC-4 — le JOUR seulement demandé se choisit, et son nom le dit > le 17 (réservé et fermé) : reste inactif, nommé « indisponible » 62ms
+   × FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau demandé est actif, et son libellé dit « demandes en attente » 1069ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_b_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_b_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+   × FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau FERMÉ du même jour reste inactif 1062ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_f_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_f_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+   × FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le choisir fait paraître l'AVIS : d'autres demandes sont en attente 1060ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_j_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_j_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+   × FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le prix affiché du créneau demandé est celui du SERVEUR (formaté, jamais recalculé) 1070ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_n_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_n_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > un créneau LIBRE choisi n'affiche PAS l'avis 106ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/booking-request-panel-demande.test.tsx > FC-4 — le JOUR seulement demandé se choisit, et son nom le dit > le 16 (un créneau demandé, un fermé) : choisissable, nommé « demandes en attente »
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx:107:43
+    105|     rendre();
+    106|     const jour = await jourNumero("16");
+    107|     expect(jour.hasAttribute("disabled")).toBe(false);
+       |                                           ^
+    108|     expect(jour.getAttribute("aria-label")).toBe(nom(M.dayRequested, "…
+    109|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/components/venue/booking-request-panel-demande.test.tsx > FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau demandé est actif, et son libellé dit « demandes en attente »
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_b_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_b_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx:99:96
+     97| async function ouvrir(numero: string, date: string): Promise<HTMLEleme…
+     98|   fireEvent.click(await jourNumero(numero));
+     99|   await waitFor(() => expect(screen.queryByRole("group", { name: nom(C…
+       |                                                                                                ^
+    100|   return screen.getByRole("group", { name: nom(C.slotsFor, date) });
+    101| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/components/venue/booking-request-panel-demande.test.tsx > FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau FERMÉ du même jour reste inactif
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_f_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_f_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx:99:96
+     97| async function ouvrir(numero: string, date: string): Promise<HTMLEleme…
+     98|   fireEvent.click(await jourNumero(numero));
+     99|   await waitFor(() => expect(screen.queryByRole("group", { name: nom(C…
+       |                                                                                                ^
+    100|   return screen.getByRole("group", { name: nom(C.slotsFor, date) });
+    101| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/components/venue/booking-request-panel-demande.test.tsx > FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le choisir fait paraître l'AVIS : d'autres demandes sont en attente
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_j_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_j_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx:99:96
+     97| async function ouvrir(numero: string, date: string): Promise<HTMLEleme…
+     98|   fireEvent.click(await jourNumero(numero));
+     99|   await waitFor(() => expect(screen.queryByRole("group", { name: nom(C…
+       |                                                                                                ^
+    100|   return screen.getByRole("group", { name: nom(C.slotsFor, date) });
+    101| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/components/venue/booking-request-panel-demande.test.tsx > FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le prix affiché du créneau demandé est celui du SERVEUR (formaté, jamais recalculé)
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div>
+      <section
+        aria-labelledby="booking-request-heading"
+        class="card"
+      >
+        <h2
+          id="booking-request-heading"
+        >
+          Demander cette salle
+        </h2>
+        <p
+          class="muted"
+        >
+          Choisissez une date, puis envoyez votre demande. La salle répond ; rien n'est débité maintenant.
+        </p>
+        <div
+          class="booking-calendar"
+        >
+          <div
+            class="cal-head"
+          >
+            <button
+              aria-label="Mois précédent"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-left"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m15 18-6-6 6-6"
+                />
+              </svg>
+            </button>
+            <strong
+              aria-live="polite"
+              id="_r_n_"
+            >
+              août 2027
+            </strong>
+            <button
+              aria-label="Mois suivant"
+              class="btn btn-ghost btn-icon"
+              disabled=""
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-right"
+                data-mirror-rtl=""
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <table
+            aria-labelledby="_r_n_"
+            class="cal-grid"
+            role="grid"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    dim.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    dimanche
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    lun.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    lundi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mar.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mardi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    mer.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    mercredi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    jeu.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    jeudi
+                  </span>
+                </th>
+                <th
+                  scope="col"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ven.
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    vendredi
+                  </span>
+                </th>
+                <th
+                  [3...
+ ❯ src/components/venue/booking-request-panel-demande.test.tsx:99:96
+     97| async function ouvrir(numero: string, date: string): Promise<HTMLEleme…
+     98|   fireEvent.click(await jourNumero(numero));
+     99|   await waitFor(() => expect(screen.queryByRole("group", { name: nom(C…
+       |                                                                                                ^
+    100|   return screen.getByRole("group", { name: nom(C.slotsFor, date) });
+    101| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 2 passed (7)
+   Start at  05:08:39
+   Duration  5.87s (transform 379ms, setup 65ms, collect 668ms, tests 4.61s, environment 300ms, prepare 52ms)
+

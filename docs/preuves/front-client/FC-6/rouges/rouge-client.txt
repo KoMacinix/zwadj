@@ -1,0 +1,255 @@
+# FC-6 — ROUGE (client), lu contre l'état d'AVANT, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 90d3ae2684dc4fee7e17a66ac0ba81e6ac8470ad (tests non commités ; code d'avant)
+# commande : (apps/client) npx vitest run src/lib/intl-locale-guard.test.ts src/lib/intl-locale.test.ts src/components/venue/booking-request-panel-montants.test.tsx src/components/venue/booking-date-picker.test.tsx — code de sortie 1
+# sha256 apps/client/src/lib/intl-locale-guard.test.ts : abbd06cec9078af1c7a310a5013d2fe08994aaaca86cf3f8073f4a7ce4330514
+# sha256 apps/client/src/lib/intl-locale.test.ts : 0394270cde488207e00fd98d5808c4627e53b1887a95c965481cf957e41abd9d
+# sha256 apps/client/src/components/venue/booking-request-panel-montants.test.tsx : a238c7efd2a0a0964a981cfea69372c541b6e13c493a21bebc7796bf6643fcb3
+# sha256 apps/client/src/components/venue/booking-date-picker.test.tsx : fcc20e46d459a472a8efc8bcaa946f55ac98afb151c72d55209be02f7de886cb
+# lecture : 9 échecs, TOUS par AssertionError — la règle absente (2) ; le mois et la date longue du client en « أغسطس » au lieu de « أوت » (2) ; 34 fautes de source (20 montants sans langue, 12 formateurs Intl hors de la règle, 2 toLocaleDateString) ; les montants du panneau arabe en format français (3) ; le sélecteur de date en arabe (1). Verts attendus : les calibrations (le moteur distingue ar / ar-DZ ; fr = fr-DZ), la page française.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/intl-locale-guard.test.ts (4 tests | 1 failed) 504ms
+   ✓ FC-6 — l'instrument (calibration à deux bras, D286) > bras ROUGE : les quatre fautes se voient, chacune à sa ligne 20ms
+   ✓ FC-6 — l'instrument (calibration à deux bras, D286) > bras VERT : la langue donnée, la règle employée, le fuseau écrit, un commentaire — rien 4ms
+   ✓ FC-6 — la langue de la page passe à chaque formateur de date et de nombre > le relevé a parcouru les deux applications et les paquets (D290 : un zéro sur zéro ne mesure rien) 1ms
+   × FC-6 — la langue de la page passe à chaque formateur de date et de nombre > aucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul 478ms
+     → expected [ …(34) ] to deeply equal []
+ ❯ src/components/venue/booking-date-picker.test.tsx (11 tests | 1 failed) 386ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > les attendus discriminent : le 1er août 2027 est un dimanche, et chaque nom diffère entre français et arabe 5ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 195ms
+   × Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page 30ms
+     → expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > arabe : aucun nom de mois ni de jour en lettres latines — un contrôle qui ne doit rien à `Intl` 32ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > français : aucun nom en écriture arabe — le bras symétrique 26ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras ROUGE : une liste de jours en français, un mois en arabe, un nom dans un gabarit et dans du texte JSX se voient 11ms
+   ✓ N-b — calibration du relevé des noms écrits en dur, deux bras (D286) > bras VERT : un commentaire qui cite les jours, des mots voisins, des clés — rien 9ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > le relevé a lu les cinq fichiers, et des littéraux dans chacun (D290) 1ms
+   ✓ N-b — aucun nom de jour ni de mois écrit en dur dans le code du calendrier (rang 30, D322) > N-b : aucun littéral ne porte un nom de jour ou de mois — ils viennent d'`Intl`, dans la langue de la page 1ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > fr : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 35ms
+   ✓ Calendrier du panneau — le WEEK-END mis en avant est celui du produit, `WEEKEND_DAYS` (D56 ; W-a, W-b, W-d) > ar : chaque jour d'août 2027 porte « is-weekend » si et seulement si l'autorité le dit 39ms
+ ❯ src/lib/intl-locale.test.ts (7 tests | 4 failed) 34ms
+   ✓ FC-6 — calibration : ce moteur DISTINGUE `ar` et `ar-DZ` (sinon rien ici ne mesure) > le mois d'août : « ar » et « ar-DZ » rendent deux noms différents 16ms
+   ✓ FC-6 — calibration : ce moteur DISTINGUE `ar` et `ar-DZ` (sinon rien ici ne mesure) > et `fr` / `fr-DZ` rendent les mêmes octets (le relevé du navigateur : la règle ne change rien en français) 2ms
+   × FC-6 — la règle > `intlLocale` existe dans `@zwadj/types` 6ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × FC-6 — la règle > l'arabe se met en forme en `ar-DZ`, le français en `fr-DZ` (la règle des montants, déjà celle de `formatDZD`) 5ms
+     → expected undefined to be 'ar-DZ' // Object.is equality
+   × FC-6 — les dates du client, dans une page arabe, sont celles qu'on lit en Algérie > le mois du calendrier 1ms
+     → expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+   × FC-6 — les dates du client, dans une page arabe, sont celles qu'on lit en Algérie > la date longue — le nom accessible d'un jour 1ms
+     → expected 'الأحد، 15 أغسطس 2027' to be 'الأحد، 15 أوت 2027' // Object.is equality
+   ✓ FC-6 — les dates du client, dans une page arabe, sont celles qu'on lit en Algérie > dans une page française, rien ne change 1ms
+ ❯ src/components/venue/booking-request-panel-montants.test.tsx (5 tests | 3 failed) 789ms
+   ✓ FC-6 — page ARABE : les montants du serveur, en ar-DZ > calibration : la forme arabe et la forme française du même montant diffèrent (sinon rien ici ne mesure) 14ms
+   × FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix du créneau 366ms
+     → expected false to be true // Object.is equality
+   × FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix d'une prestation, à côté de sa case 134ms
+     → expected false to be true // Object.is equality
+   × FC-6 — page ARABE : les montants du serveur, en ar-DZ > le total, sans prestation choisie : le prix du créneau du serveur 123ms
+     → expected false to be true // Object.is equality
+   ✓ FC-6 — page FRANÇAISE : rien ne change > le prix du créneau et le total, en format français 150ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/intl-locale-guard.test.ts > FC-6 — la langue de la page passe à chaque formateur de date et de nombre > aucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul
+AssertionError: expected [ …(34) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "apps/client/src/components/account/account-settings-view.tsx:411 — toLocale…String",
++   "apps/client/src/components/venue/availability-calendar.tsx:47 — formateur Intl sans intlLocale",
++   "apps/client/src/components/venue/booking-request-panel.tsx:314 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:405 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:407 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:409 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:436 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:471 — montant ou note sans langue",
++   "apps/client/src/components/venue/booking-request-panel.tsx:472 — montant ou note sans langue",
++   "apps/client/src/components/venue/venue-detail-view.tsx:85 — montant ou note sans langue",
++   "apps/client/src/lib/booking-calendar.ts:159 — formateur Intl sans intlLocale",
++   "apps/client/src/lib/booking-calendar.ts:163 — formateur Intl sans intlLocale",
++   "apps/client/src/lib/calendar.ts:49 — formateur Intl sans intlLocale",
++   "apps/client/src/lib/calendar.ts:125 — formateur Intl sans intlLocale",
++   "apps/pro/src/account/account-settings-page.tsx:474 — toLocale…String",
++   "apps/pro/src/dashboard/walkin-journey.tsx:146 — formateur Intl sans intlLocale",
++   "apps/pro/src/dashboard/walkin-journey.tsx:1299 — montant ou note sans langue",
++   "apps/pro/src/dashboard/walkin-journey.tsx:1301 — montant ou note sans langue",
++   "apps/pro/src/dashboard/walkin-journey.tsx:1312 — montant ou note sans langue",
++   "apps/pro/src/dashboard/walkin-journey.tsx:1320 — montant ou note sans langue",
++   "apps/pro/src/dashboard/walkin-journey.tsx:1325 — montant ou note sans langue",
++   "apps/pro/src/venues/pricing-rules-editor.tsx:76 — formateur Intl sans intlLocale",
++   "apps/pro/src/venues/pricing-rules-editor.tsx:81 — formateur Intl sans intlLocale",
++   "apps/pro/src/venues/pro-calendar.ts:58 — formateur Intl sans intlLocale",
++   "apps/pro/src/venues/pro-calendar.ts:134 — formateur Intl sans intlLocale",
++   "apps/pro/src/venues/quotes-section.tsx:182 — montant ou note sans langue",
++   "apps/pro/src/venues/quotes-section.tsx:184 — montant ou note sans langue",
++   "apps/pro/src/venues/services-section.tsx:145 — montant ou note sans langue",
++   "apps/pro/src/venues/services-section.tsx:148 — montant ou note sans langue",
++   "apps/pro/src/venues/services-section.tsx:152 — montant ou note sans langue",
++   "apps/pro/src/venues/services-section.tsx:156 — montant ou note sans langue",
++   "apps/pro/src/venues/venue-calendar.tsx:287 — montant ou note sans langue",
++   "packages/i18n/src/format.ts:29 — formateur Intl sans intlLocale",
++   "packages/types/src/money.ts:17 — formateur Intl sans intlLocale",
++ ]
+
+ ❯ src/lib/intl-locale-guard.test.ts:135:20
+    133|   it("aucun formateur de date ou de nombre ne choisit sa langue — ni s…
+    134|     const toutes = parcourus.flatMap((p) => fautes(p, readFileSync(joi…
+    135|     expect(toutes).toEqual([]);
+       |                    ^
+    136|   });
+    137| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/lib/intl-locale.test.ts > FC-6 — la règle > `intlLocale` existe dans `@zwadj/types`
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/lib/intl-locale.test.ts:33:26
+     31| describe("FC-6 — la règle", () => {
+     32|   it("`intlLocale` existe dans `@zwadj/types`", () => {
+     33|     expect(typeof regle).toBe("function");
+       |                          ^
+     34|   });
+     35| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/lib/intl-locale.test.ts > FC-6 — la règle > l'arabe se met en forme en `ar-DZ`, le français en `fr-DZ` (la règle des montants, déjà celle de `formatDZD`)
+AssertionError: expected undefined to be 'ar-DZ' // Object.is equality
+
+- Expected: 
+"ar-DZ"
+
++ Received: 
+undefined
+
+ ❯ src/lib/intl-locale.test.ts:37:27
+     35| 
+     36|   it("l'arabe se met en forme en `ar-DZ`, le français en `fr-DZ` (la r…
+     37|     expect(regle?.("ar")).toBe("ar-DZ");
+       |                           ^
+     38|     expect(regle?.("fr")).toBe("fr-DZ");
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/lib/intl-locale.test.ts > FC-6 — les dates du client, dans une page arabe, sont celles qu'on lit en Algérie > le mois du calendrier
+AssertionError: expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+
+Expected: "أوت 2027"
+Received: "أغسطس 2027"
+
+ ❯ src/lib/intl-locale.test.ts:44:56
+     42| describe("FC-6 — les dates du client, dans une page arabe, sont celles…
+     43|   it("le mois du calendrier", () => {
+     44|     expect(monthLabel({ year: 2027, month: 8 }, "ar")).toBe(moteur("ar…
+       |                                                        ^
+     45|   });
+     46| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/lib/intl-locale.test.ts > FC-6 — les dates du client, dans une page arabe, sont celles qu'on lit en Algérie > la date longue — le nom accessible d'un jour
+AssertionError: expected 'الأحد، 15 أغسطس 2027' to be 'الأحد، 15 أوت 2027' // Object.is equality
+
+Expected: "الأحد، 15 أوت 2027"
+Received: "الأحد، 15 أغسطس 2027"
+
+ ❯ src/lib/intl-locale.test.ts:48:42
+     46| 
+     47|   it("la date longue — le nom accessible d'un jour", () => {
+     48|     expect(longDate("2027-08-15", "ar")).toBe(moteur("ar-DZ", DATE_LON…
+       |                                          ^
+     49|   });
+     50| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/components/venue/booking-date-picker.test.tsx > Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > ar : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page
+AssertionError: expected 'أغسطس 2027' to be 'أوت 2027' // Object.is equality
+
+Expected: "أوت 2027"
+Received: "أغسطس 2027"
+
+ ❯ src/components/venue/booking-date-picker.test.tsx:72:32
+     70|     expect(grille.getAttribute("aria-labelledby") !== null).toBe(true);
+     71|     const titre = document.getElementById(grille.getAttribute("aria-la…
+     72|     expect(titre?.textContent).toBe(MOIS(l));
+       |                                ^
+     73|     const entetes = Array.from(grille.querySelectorAll("th"));
+     74|     expect(entetes.map((th) => th.querySelector("[aria-hidden='true']"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/components/venue/booking-request-panel-montants.test.tsx > FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix du créneau
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/booking-request-panel-montants.test.tsx:118:62
+    116|     rendre("ar");
+    117|     const texte = await choisirLeCreneau("ar");
+    118|     expect(texte.includes(formatDZD(PRIX_DU_CRENEAU, "ar"))).toBe(true…
+       |                                                              ^
+    119|     expect(texte.includes(formatDZD(PRIX_DU_CRENEAU, "fr"))).toBe(fals…
+    120|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  src/components/venue/booking-request-panel-montants.test.tsx > FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix d'une prestation, à côté de sa case
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/booking-request-panel-montants.test.tsx:126:70
+    124|     await choisirLeCreneau("ar");
+    125|     const libelle = screen.getAllByRole("checkbox").map((c) => c.close…
+    126|     expect(libelle.includes(formatDZD(PRIX_DE_LA_PRESTATION, "ar"))).t…
+       |                                                                      ^
+    127|     expect(libelle.includes(formatDZD(PRIX_DE_LA_PRESTATION, "fr"))).t…
+    128|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  src/components/venue/booking-request-panel-montants.test.tsx > FC-6 — page ARABE : les montants du serveur, en ar-DZ > le total, sans prestation choisie : le prix du créneau du serveur
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/venue/booking-request-panel-montants.test.tsx:134:62
+    132|     await choisirLeCreneau("ar");
+    133|     const ligne = ligneDuTotal("ar");
+    134|     expect(ligne.includes(formatDZD(PRIX_DU_CRENEAU, "ar"))).toBe(true…
+       |                                                              ^
+    135|     expect(ligne.includes(formatDZD(PRIX_DU_CRENEAU, "fr"))).toBe(fals…
+    136|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  9 failed | 18 passed (27)
+   Start at  07:45:11
+   Duration  3.04s (transform 871ms, setup 378ms, collect 3.76s, tests 1.71s, environment 1.76s, prepare 412ms)
+

@@ -1,0 +1,54 @@
+# FC-1 — ROUGE unitaire, lu contre l'état d'AVANT (theme.css non modifié), session front-client, 05/11/2026
+# HEAD au moment de la mesure : aee7bc4b302be4c9ee2ce09f3979166d79f1f6c6 (le test neuf et la référence resserrée ne sont pas encore commités)
+# commande : (apps/client) npx vitest run src/app/theme-contrast.test.ts — code de sortie 1
+# sha256 apps/client/src/app/theme-contrast.test.ts : 4801f6a5b435aff3cf75a1831f0bd82513880361a48033ce37d22873d39f518c
+# sha256 apps/client/src/app/theme.css (état d'AVANT) : 27308e8dc8a6373d00c78183e3d79f0a2cad7f1c174a34fe97d1029941c1ad57
+# sha256 packages/ui/styles.css (lu par le test) : bb712f8f45ce8dbc28bc6fef7f1d15c8d32398af71435f39fa165dc951b1e545
+# lecture : 4 échecs attendus (les quatre sélecteurs, thème CLAIR), chacun par AssertionError ; les 10 autres verts (calibration, déclaration, sombre)
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/app/theme-contrast.test.ts (14 tests | 4 failed) 23ms
+   ✓ FC-1 — l'instrument de contraste (calibration à deux bras) > bras positif : noir sur blanc rend 21:1, une couleur sur elle-même 1:1 (valeurs de la définition WCAG) 2ms
+   ✓ FC-1 — l'instrument de contraste (calibration à deux bras) > bras négatif : `var(--accent)` en clair ÉCHOUE sur `--bg` — la garde sait voir un texte qui ne passe pas 1ms
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .filters-reset : il DÉCLARE une couleur de texte dans theme.css (sinon la garde ne mesurerait rien) 1ms
+   × FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .filters-reset — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 7ms
+     → expected 4.16473772086103 to be greater than or equal to 4.5
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .filters-reset — sombre : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 2ms
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .range-value : il DÉCLARE une couleur de texte dans theme.css (sinon la garde ne mesurerait rien) 0ms
+   × FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .range-value — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+     → expected 4.16473772086103 to be greater than or equal to 4.5
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .range-value — sombre : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .results-count-n : il DÉCLARE une couleur de texte dans theme.css (sinon la garde ne mesurerait rien) 1ms
+   × FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .results-count-n — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+     → expected 4.16473772086103 to be greater than or equal to 4.5
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .results-count-n — sombre : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .wz-eyebrow : il DÉCLARE une couleur de texte dans theme.css (sinon la garde ne mesurerait rien) 0ms
+   × FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .wz-eyebrow — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+     → expected 4.16473772086103 to be greater than or equal to 4.5
+   ✓ FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .wz-eyebrow — sombre : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/theme-contrast.test.ts > FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .filters-reset — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2
+ FAIL  src/app/theme-contrast.test.ts > FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .range-value — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2
+ FAIL  src/app/theme-contrast.test.ts > FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .results-count-n — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2
+ FAIL  src/app/theme-contrast.test.ts > FC-1 — chaque texte accentué passe AA sur chaque fond neutre, dans les deux thèmes > .wz-eyebrow — clair : son texte passe AA (≥ 4,5:1) sur --bg, --surface et --bg-2
+AssertionError: expected 4.16473772086103 to be greater than or equal to 4.5
+ ❯ src/app/theme-contrast.test.ts:130:36
+    128|           Math.min(...FONDS.map((fond) => contraste(resoudre(couleur, …
+    129|         );
+    130|         expect(Math.min(...pires)).toBeGreaterThanOrEqual(SEUIL_AA);
+       |                                    ^
+    131|       });
+    132|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 10 passed (14)
+   Start at  03:43:10
+   Duration  939ms (transform 81ms, setup 102ms, collect 37ms, tests 23ms, environment 471ms, prepare 86ms)
+

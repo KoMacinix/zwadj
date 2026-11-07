@@ -95,56 +95,24 @@ CIBLES = [
         "titre": "chaque palier de budget SURVIT",
     },
     {
-        "libelle": "M3. L'assistant réémet le nom de l'API dans l'URL publique",
+        # ⚠ M3 RÉORIENTÉE (session `front-client`, FC-8). L'assistant est devenu un MODE de `/salles` (D229) : il ne construit
+        # plus sa querystring à la main — il pousse un ÉTAT par `guidedSearchQuery`, donc par `toPublicQuery` (M8 garde ses noms).
+        # La faute qui reste possible À L'ASSISTANT est d'y mettre des CENTIMES : le facteur 100 dans l'URL publique.
+        "libelle": "M3. L'assistant pousse des CENTIMES dans l'URL publique (le facteur 100)",
         "fichier": ASSISTANT,
-        "avant": '          q.set("maxPrice", budget);',
-        "apres": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
+        "avant": "onClick={() => repondre({ ...state, maxPrice: String(dinars) })}",
+        "apres": "onClick={() => repondre({ ...state, maxPrice: String(centsFromDinars(dinars)) })}",
         "occurrences": 1,
         "suite": "assistant",
-        "titre": "les noms et l'encodage que `/salles` LIT",
+        "titre": "arrive intact à l'API ET à l'URL",
     },
-    {
-        "libelle": "M4. Les deux contrats se remélangent : le compteur passe en dinars",
-        # Prouve que la séparation est mesurée DES DEUX CÔTÉS. Une garde qui ne
-        # regarderait que l'URL laisserait la requête d'API se tromper d'unité.
-        "fichier": ASSISTANT,
-        "avant": '          q.set("maxPriceCents", String(centsFromDinars(budget)));',
-        "apres": '          q.set("maxPriceCents", budget);',
-        "occurrences": 1,
-        "suite": "assistant",
-        "titre": "interroge le serveur avec les paramètres du CONTRAT",
-    },
-    {
-        "libelle": "M5. Le repli disparaît : les anciens liens partagés reperdent leur plafond",
-        "fichier": MODULE,
-        "avant": "  return dinarsFromCents(first(raw.maxPriceCents));",
-        "apres": '  return "";',
-        "occurrences": 1,
-        "suite": "module",
-        "titre": "un ancien lien partagé retrouve son plafond",
-    },
-    {
-        "libelle": "M6. ⛔ LE REPLI PART DANS L'AUTRE SENS (`maxPriceCents` corrige `maxPrice`)",
-        "fichier": MODULE,
-        "avant": "  if (raw.maxPrice !== undefined) return first(raw.maxPrice);",
-        "apres": '  const direct = first(raw.maxPrice);\r\n  if (direct !== "") return direct;',
-        "occurrences": 1,
-        "suite": "module",
-        # ⚠ Cette neutralisation est SUBTILE : elle laisse passer le cas nominal
-        # et ne casse que les deux cas de bord — plafond effacé par le visiteur,
-        # valeur malformée sous le bon nom. C'est exactement la forme qu'aurait
-        # prise une « simplification » bien intentionnée.
-        "titre": "coupe le repli",
-    },
-    {
-        "libelle": "M7. L'arrondi s'invente : un reste non nul passe quand même",
-        "fichier": MODULE,
-        "avant": "  if (!Number.isSafeInteger(value) || value % 100 !== 0) return \"\";\r\n  return String(value / 100);",
-        "apres": '  if (!Number.isSafeInteger(value)) return "";\r\n  return String(Math.round(value / 100));',
-        "occurrences": 1,
-        "suite": "module",
-        "titre": "ABANDONNÉ, jamais arrondi",
-    },
+    # ⛔ M4 RETIRÉE PAR ÉCRIT (FC-8) : elle mutait le second constructeur de query de l'assistant, celui de son COMPTEUR d'API
+    # (`countVenues`, en centimes). L'assistant n'interroge plus l'API : le compte est le total de la page de résultats qu'il
+    # recouvre (D229). La cause structurelle de D228 — une querystring pour deux contrats — a disparu avec lui.
+    # ⛔ M5, M6 ET M7 RETIRÉES PAR ÉCRIT (session `front-client`, FC-7). Elles mutaient le REPLI `maxPriceCents` → `maxPrice`
+    # (`maxPriceFromRaw`, `dinarsFromCents`) : FC-7 l'a RETIRÉ, la dette datée au 19/11/2026 (D228). Une cible devenue sans objet
+    # se retire ou se réoriente, par écrit (AGENTS.md) : la faute possible n'est plus « le repli disparaît » mais « le repli
+    # REVIENT » — `neutralisation/neutralize-fc7.py` (P-1, P-2) la mesure, contre la garde qui exige son ABSENCE.
     {
         "libelle": "M8. L'ancien nom se remet à NAÎTRE dans l'URL publique",
         "fichier": MODULE,
@@ -152,7 +120,9 @@ CIBLES = [
         "apres": '  if (state.maxPrice) query.set("maxPriceCents", String(Number(state.maxPrice) * 100));',
         "occurrences": 1,
         "suite": "module",
-        "titre": "ne réémet JAMAIS l'ancien nom",
+        # ⚠ TITRE RÉALIGNÉ (session `front-client`, FC-7) : le bloc de tests du repli est devenu la garde de son absence, et ce
+        # test s'y nomme « l'URL publique n'émet JAMAIS l'ancien nom » — même assertion, même mutation.
+        "titre": "n'émet JAMAIS l'ancien nom",
     },
     {
         "libelle": "M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)",
@@ -231,8 +201,9 @@ def verifier_arbre(moment: str) -> bool:
     if '<option value="50000000">' in accueil:
         ecarts.append("les paliers d'accueil sont restés en centimes")
     module = io.open(MODULE, encoding="utf-8", newline="").read()
-    if "dinarsFromCents" not in module:
-        ecarts.append("`dinarsFromCents` absent du module")
+    # ⚠ FC-7 : le repli est RETIRÉ ; ce contrôle exigeait sa présence, il exige désormais son absence.
+    if "raw.maxPriceCents" in module:
+        ecarts.append("le repli `maxPriceCents` est revenu dans le module")
     if ecarts:
         print(f"✗ ARBRE NON CONFORME {moment} : " + " ; ".join(ecarts))
         return False

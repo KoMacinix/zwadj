@@ -40,6 +40,7 @@ import type { QuoteConversionDTO, VenueProDTO } from "@zwadj/types";
 import { BookingsIcon, CalendarIcon, RequestsIcon, VenueIcon } from "@zwadj/ui";
 import { algiersToday } from "../lib/algiers-date";
 import { useBookingsPro, useQuotes, useVenueVisits } from "../venues/venue-client-context";
+import { BOOKINGS_PATH, CALENDAR_PATH, REQUESTS_PATH, VENUES_PATH } from "../routes";
 
 type CountState = { kind: "loading" } | { kind: "error" } | { kind: "ready"; value: number };
 
@@ -162,10 +163,10 @@ export function DashboardAside({ venue, nowMs }: { venue: VenueProDTO; nowMs?: n
    *  (`aria-hidden` dans `@zwadj/ui`), sinon les quatre onglets deviendraient
    *  indiscernables à la voix. */
   const entries = [
-    { to: "/salles", label: t("venue.ui.nav.myVenue"), icon: <VenueIcon /> },
-    { to: "/demandes", label: t("venue.ui.nav.requests"), icon: <RequestsIcon /> },
-    { to: "/calendrier", label: t("venue.ui.nav.calendar"), icon: <CalendarIcon /> },
-    { to: "/reservations", label: t("venue.ui.nav.bookings"), icon: <BookingsIcon /> }
+    { to: VENUES_PATH, label: t("venue.ui.nav.myVenue"), icon: <VenueIcon /> },
+    { to: REQUESTS_PATH, label: t("venue.ui.nav.requests"), icon: <RequestsIcon /> },
+    { to: CALENDAR_PATH, label: t("venue.ui.nav.calendar"), icon: <CalendarIcon /> },
+    { to: BOOKINGS_PATH, label: t("venue.ui.nav.bookings"), icon: <BookingsIcon /> }
   ];
 
   return (

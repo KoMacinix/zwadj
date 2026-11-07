@@ -1,0 +1,53 @@
+# FC-7 — `python3 neutralisation/lancer-campagnes.py`, joué AVANT le commit du code (le tri lit `git diff HEAD` et les fichiers non
+# suivis), Playwright par le shim du conteneur. La sortie brute suit, INCHANGÉE, puis le REJEU de maxprice. Ce qu'elle dit :
+#   · fc7 (sortie 0) : 2/2 ;
+#   · available-on (sortie 2) : arrêt sur la cible 6 — ancre CRLF en dur, ENVIRONNEMENT ; rejouée entière sous CRLF simulé :
+#     `crlf/available-on.txt`, 10/10 ;
+#   · maxprice (sortie 1) : M8 « rouge, mais aucun échec ne porte « ne réémet JAMAIS l'ancien nom » » — PAS une garde muette : CE
+#     LOT a renommé le test (« l'URL publique n'émet JAMAIS l'ancien nom », dans le bloc devenu la garde de l'absence du repli) ;
+#     le titre attendu de M8 est RÉALIGNÉ dans `neutralisation/neutralize-maxprice.py` (note sur place), et maxprice REJOUÉE :
+#     7/7 (ci-dessous) ; puis sous CRLF simulé : `crlf/maxprice.txt`, 7/7. M5, M6, M7 sont RETIRÉES par écrit (elles mutaient le
+#     code retiré ; la faute devenue possible — le repli qui revient — est mesurée par fc7).
+#
+5 fichier(s) modifié(s) depuis HEAD → 3 campagne(s) concernée(s) sur 47.
+  · neutralize-available-on.py  (1 fichier(s) en commun)
+      apps/client/src/lib/search-query.ts
+  · neutralize-fc7.py  (1 fichier(s) en commun)
+      apps/client/src/lib/search-query.ts
+  · neutralize-maxprice.py  (1 fichier(s) en commun)
+      apps/client/src/lib/search-query.ts
+
+[1/3] neutralisation/neutralize-available-on.py …
+    sortie=2  5 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/3] neutralisation/neutralize-fc7.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/3] neutralisation/neutralize-maxprice.py …
+    sortie=1  6 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-available-on.py              2     —     5     1     0   136
+neutralize-fc7.py                       0     2     2     0     0     7
+neutralize-maxprice.py                  1     —     6     1     0   174
+================================================================================================
+MESURÉ : 13 garde(s) mordue(s) · 2 muette(s)/erreur(s) · 0 non mesurée(s) · 3 campagne(s) · 317s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-available-on.py → sortie 2
+  ⚠ neutralisation/neutralize-maxprice.py → sortie 1
+lancer-campagnes exit=1
+
+== REJEU de neutralisation/neutralize-maxprice.py après le réalignement du titre de M8 ==
+✓ M1. ⛔ LE DÉFAUT D'ORIGINE : le formulaire d'accueil réémet `maxPriceCents`
+✓ M2. ⛔ LE FACTEUR 100 : les paliers d'accueil repassent en centimes
+✓ M3. L'assistant réémet le nom de l'API dans l'URL publique
+✓ M4. Les deux contrats se remélangent : le compteur passe en dinars
+✓ M8. L'ancien nom se remet à NAÎTRE dans l'URL publique
+✓ M9. ⛔ D254 — UN PALIER REMONTE AU-DESSUS DE LA BUTÉE (le défaut B lui-même)
+✓ M10. ⛔ D254 — LES DEUX BRANCHES DE L'ASSISTANT SE REMETTENT À DIVERGER
+
+7 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.

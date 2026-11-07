@@ -39,6 +39,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "../../i18n/navigation";
+import { SEARCH_PATH } from "../../lib/routes";
 
 export default function LocaleNotFound() {
   const t = useTranslations("notFound");
@@ -69,7 +70,7 @@ export default function LocaleNotFound() {
             les salles » sert à qui cherchait une salle et a suivi un lien mort
             — c'est le cas le plus fréquent, une fiche dépubliée. */}
         <div className="notfound-actions">
-          <Link href="/salles" className="btn btn-accent">
+          <Link href={SEARCH_PATH} className="btn btn-accent">
             {t("venues")}
           </Link>
           <Link href="/" className="btn btn-ghost">

@@ -1,0 +1,37 @@
+# FC-9 — les campagnes que le lot TOUCHE, jouées par les fonctions de `neutralisation/lancer-campagnes.py` avec un tri calculé DEPUIS LE
+# SHA DE DÉPART du lot (`f4c9256`) et non `HEAD` : les fichiers du lot (tests, `test-setup.ts`) sont commités avant les campagnes —
+# l'outil, tel quel, n'aurait rien sélectionné (procédure : un script hors dépôt qui remplace la seule fonction `modifies`).
+# Ce qu'elles disent : fc9 2/2 ; solid-s7 2/2 (S7-1 réorientée sur l'étalon, extension 1) ; e3d1-s8 3/3 (S8 réorientées sur l'étalon) et
+# 5 non mesurées — E1 à E5, `--int`, le paiement : hors de ce que ce lot touche.
+
+# tri calculé depuis f4c925622526024c7054f46082ba351c356f6fc2 (fonctions de neutralisation/lancer-campagnes.py, `modifies` remplacée)
+14 fichier(s) modifié(s) depuis HEAD → 3 campagne(s) concernée(s) sur 49.
+  · neutralize-e3d1-s8.py  (1 fichier(s) en commun)
+      apps/client/src/test-setup.ts
+  · neutralize-fc9.py  (2 fichier(s) en commun)
+      apps/client/src/components/auth/google-signin.test.tsx
+      apps/client/src/components/venue/venue-detail-view.test.tsx
+  · neutralize-solid-s7.py  (1 fichier(s) en commun)
+      apps/client/src/test-setup.ts
+
+[1/3] neutralisation/neutralize-e3d1-s8.py …
+    sortie=3  3 mordue(s), 0 muette(s)/erreur(s), 5 non mesurée(s)
+
+[2/3] neutralisation/neutralize-fc9.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/3] neutralisation/neutralize-solid-s7.py …
+    sortie=0  2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-e3d1-s8.py                   3     3     3     0     5    10
+neutralize-fc9.py                       0     2     2     0     0    15
+neutralize-solid-s7.py                  0     —     2     0     0   136
+================================================================================================
+MESURÉ : 7 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 5 non mesurée(s) · 3 campagne(s) · 160s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-e3d1-s8.py → sortie 3
+CODE_SORTIE=1

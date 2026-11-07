@@ -40,7 +40,7 @@ import { DashboardPage } from "./dashboard/dashboard-page";
 import { RequestsPage } from "./venues/requests-page";
 import { CalendarPage } from "./venues/calendar-page";
 import { BookingsPage } from "./venues/bookings-page";
-import { LOGIN_PATH } from "./routes";
+import { ACCOUNT_PATH, BOOKINGS_PATH, CALENDAR_PATH, DASHBOARD_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH, NEW_VENUE_PATH, REGISTER_PATH, REQUESTS_PATH, RESET_PASSWORD_PATH, VENUE_PATH_PATTERN, VENUES_PATH, VERIFY_EMAIL_PATH } from "./routes";
 
 export function AppProviders({
   children,
@@ -100,7 +100,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/auth/inscription"
+        path={REGISTER_PATH}
         element={
           <RedirectIfSession>
             <RegisterPage />
@@ -108,7 +108,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/auth/mot-de-passe-oublie"
+        path={FORGOT_PASSWORD_PATH}
         element={
           <RedirectIfSession>
             <ForgotPage />
@@ -119,10 +119,10 @@ export function AppRoutes() {
           consomment un jeton reçu par e-mail. La vérification d'adresse est même
           atteinte APRÈS un changement d'e-mail, donc en étant connecté — la
           fermer casserait le parcours qu'elle sert. */}
-      <Route path="/auth/reinitialisation" element={<ResetPage />} />
-      <Route path="/auth/verification-email" element={<VerifyEmailPage />} />
+      <Route path={RESET_PASSWORD_PATH} element={<ResetPage />} />
+      <Route path={VERIFY_EMAIL_PATH} element={<VerifyEmailPage />} />
       <Route
-        path="/"
+        path={DASHBOARD_PATH}
         element={
           <RequireProSession>
             <DashboardPage />
@@ -130,7 +130,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/demandes"
+        path={REQUESTS_PATH}
         element={
           <RequireProSession>
             <RequestsPage />
@@ -138,7 +138,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/calendrier"
+        path={CALENDAR_PATH}
         element={
           <RequireProSession>
             <CalendarPage />
@@ -146,7 +146,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/reservations"
+        path={BOOKINGS_PATH}
         element={
           <RequireProSession>
             <BookingsPage />
@@ -154,7 +154,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/compte"
+        path={ACCOUNT_PATH}
         element={
           <RequireProSession>
             <AccountSettingsPage />
@@ -163,7 +163,7 @@ export function AppRoutes() {
       />
       {/* UIP-A — la liste, désormais DÉCLARÉE. */}
       <Route
-        path="/salles"
+        path={VENUES_PATH}
         element={
           <RequireProSession>
             <VenueListPage />
@@ -173,7 +173,7 @@ export function AppRoutes() {
       {/* STATIQUE AVANT PARAM : sans cet ordre, /salles/nouvelle serait capté
           par /salles/:id et partirait chercher une salle d'id « nouvelle ». */}
       <Route
-        path="/salles/nouvelle"
+        path={NEW_VENUE_PATH}
         element={
           <RequireProSession>
             <CreateVenuePage />
@@ -181,7 +181,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/salles/:id"
+        path={VENUE_PATH_PATTERN}
         element={
           <RequireProSession>
             <EditVenuePage />

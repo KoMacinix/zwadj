@@ -29,7 +29,7 @@ import { PhoneField } from "@zwadj/ui";
 import { getVisitSlots } from "../../lib/api";
 import { useAuth } from "../../lib/auth/auth-context";
 import { Link } from "../../i18n/navigation";
-import { LOGIN_PATH } from "../../lib/routes";
+import { ACCOUNT_PATH, LOGIN_PATH } from "../../lib/routes";
 
 /** Fenêtre proposée. Trente jours : au-delà, un rendez-vous de visite se
  *  reprogramme plus souvent qu'il ne se tient. */
@@ -125,7 +125,7 @@ export function VisitBookingPanel({ slug, client }: { slug: string; client?: Vis
       <section className="card">
         <h2>{t("title")}</h2>
         <p role="status">{t("confirmed")}</p>
-        <Link href="/compte">{t("seeMine")}</Link>
+        <Link href={ACCOUNT_PATH}>{t("seeMine")}</Link>
       </section>
     );
   }

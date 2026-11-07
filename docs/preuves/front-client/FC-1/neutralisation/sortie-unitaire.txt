@@ -1,0 +1,44 @@
+# FC-1 — sortie du harnais : python3 neutralisation/neutralize-fc1.py — code de sortie 3
+# lignes : 41 ; gardées 41 (lignes [WebServer] retirées) ; « token= » gardés : 0 (attendu 0)
+
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 6 déclarées · 4 jouées (unit) · 2 hors exécution · 1 mesure(s) distincte(s) · 1 fichier(s) muté(s)
+  pré-vol contraste : code 0 · passés 14 · en échec 0
+✓ C-1. `.filters-reset` repasse en `var(--accent)`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contraste] code 1 · passés 13 · en échec 1 · AssertionError: expected 4.16473772086103 to be greater than or equal to 4.5
+✓ C-2. `.range-value` repasse en `var(--accent)`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contraste] code 1 · passés 13 · en échec 1 · AssertionError: expected 4.16473772086103 to be greater than or equal to 4.5
+✓ C-3. `.results-count-n` repasse en `var(--accent)`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contraste] code 1 · passés 13 · en échec 1 · AssertionError: expected 4.16473772086103 to be greater than or equal to 4.5
+✓ C-4. `.wz-eyebrow` repasse en `var(--accent)`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contraste] code 1 · passés 13 · en échec 1 · AssertionError: expected 4.16473772086103 to be greater than or equal to 4.5
+  NON MESURÉE : E-1. `.filters-reset` repasse en `var(--accent)` : B8 « client recherche de salles » rougit — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-2. `.range-value` repasse en `var(--accent)` : B8 « client recherche de salles » rougit — cible e2e, relancer avec --e2e
+  empreintes : 1 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+4 garde(s) mordue(s) sur 4 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 2 hors exécution (attendu : 4 sur 4, 0, 0)
+arbre rendu à son état de départ : vérifié.

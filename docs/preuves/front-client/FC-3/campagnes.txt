@@ -1,0 +1,46 @@
+# FC-3 — python3 neutralisation/lancer-campagnes.py, lancé AVANT le commit du code (le tri lit `git diff HEAD`)
+# ⚠ sortie 1 : neutralize-r25.py en 3 — ses 4 cibles e2e ne se jouent qu'avec --e2e ; elles mutent la fenêtre de disponibilités et le lien de connexion (D316), que FC-3 ne touche pas
+# lignes gardées 42 (lignes [WebServer] retirées) · jetons gardés : 0 (attendu 0)
+
+5 fichier(s) modifié(s) depuis HEAD → 5 campagne(s) concernée(s) sur 43.
+  · neutralize-fc3.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/nom-localise.ts
+  · neutralize-r25.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r29.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r32.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-r42.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+
+[1/5] neutralisation/neutralize-fc3.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/5] neutralisation/neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[3/5] neutralisation/neutralize-r29.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/5] neutralisation/neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/5] neutralisation/neutralize-r42.py …
+    sortie=0  22 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-fc3.py                       0     8     8     0     0    35
+neutralize-r25.py                       3     7     7     0     4    62
+neutralize-r29.py                       0    15    15     0     0   104
+neutralize-r32.py                       0    65    65     0     0   563
+neutralize-r42.py                       0    22    22     0     0   178
+================================================================================================
+MESURÉ : 117 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 4 non mesurée(s) · 5 campagne(s) · 943s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-r25.py → sortie 3
+lancer-campagnes exit=1

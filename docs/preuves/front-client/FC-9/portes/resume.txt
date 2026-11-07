@@ -1,0 +1,8 @@
+# HEAD 8a7dde916f9866836ed0165fb9b380e4529a51c5 · arbre : 8 entrée(s) non commitée(s) · 2026-11-05T14:20:42Z
+typecheck exit=0 duree=20s
+lint exit=0 duree=10s
+test exit=0 duree=83s
+build exit=0 duree=32s
+test:int exit=1 duree=314s
+test:e2e exit=0 duree=202s
+FINI · journaux bruts : /tmp/tmp.kSD4bai3ul

@@ -8,6 +8,7 @@ import { useAuth } from "../../lib/auth/auth-context";
 import { validate, type FieldErrors } from "../../lib/auth/form-validation";
 import { AuthShell, Field, FormError, PasswordField, useApiErrorMessage } from "./auth-ui";
 import { GoogleSignIn } from "./google-signin";
+import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../../lib/routes";
 
 export function LoginForm() {
   const t = useTranslations("auth.ui");
@@ -88,7 +89,7 @@ export function LoginForm() {
             />
             {t("login.remember")}
           </label>
-          <Link href="/auth/mot-de-passe-oublie" className="link-accent" style={{ fontSize: 12.5 }}>
+          <Link href={FORGOT_PASSWORD_PATH} className="link-accent" style={{ fontSize: 12.5 }}>
             {t("login.forgot")}
           </Link>
         </div>
@@ -102,7 +103,7 @@ export function LoginForm() {
 
         <p className="form-foot">
           {t("login.noAccount")}{" "}
-          <Link href="/auth/inscription" className="link-accent">
+          <Link href={REGISTER_PATH} className="link-accent">
             {t("login.goSignup")}
           </Link>
         </p>

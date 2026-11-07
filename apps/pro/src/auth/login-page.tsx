@@ -6,6 +6,7 @@ import { ApiError } from "../lib/auth-client";
 import { validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
+import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../routes";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -106,7 +107,7 @@ export function LoginPage() {
         />
 
         <div style={{ textAlign: "end" }}>
-          <Link to="/auth/mot-de-passe-oublie" className="link-accent" style={{ fontSize: 12.5 }}>
+          <Link to={FORGOT_PASSWORD_PATH} className="link-accent" style={{ fontSize: 12.5 }}>
             {t("auth.ui.login.forgot")}
           </Link>
         </div>
@@ -117,7 +118,7 @@ export function LoginPage() {
 
         <p className="form-foot">
           {t("auth.ui.login.noAccount")}{" "}
-          <Link to="/auth/inscription" className="link-accent">
+          <Link to={REGISTER_PATH} className="link-accent">
             {t("auth.ui.login.goSignup")}
           </Link>
         </p>

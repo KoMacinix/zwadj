@@ -440,7 +440,7 @@
       "cta": "Ouvrir l'espace gestionnaire"
     },
     "search": {
-      "assistant": "Répondre à quatre questions guidées",
+      "assistant": "Li hwas lqa",
       "budget": "Budget maximum",
       "budgetAny": "Sans limite",
       "city": "Où",
@@ -1208,6 +1208,14 @@
         "pt_FIXED": "Forfait",
         "pt_PER_GUEST": "Par invité",
         "pt_PER_UNIT": "À l'unité",
+        "tierLabel": "Formule — {name}",
+        "tierChoose": "Choisir une formule",
+        "quantityLabel": "Quantité — {name} ({unit})",
+        "quantityLabelNoUnit": "Quantité — {name}",
+        "quantityRange": "De {min} à {max}.",
+        "quantityMin": "Au moins {min}.",
+        "quantityMax": "Au plus {max}.",
+        "servicesMissing": "Il manque une formule ou une quantité : {names}.",
         "pt_TIERED": "Par formule",
         "qClient": "Qui est le client ?",
         "qClientHint": "Client présent sur place · réservation directe",
@@ -1362,6 +1370,10 @@
     "photos": "Photos",
     "photosNone": "Cette salle n'a pas encore publié de photos.",
     "photoOpen": "Ouvrir la photo en grand",
+    "viewerLabel": "Photo {n} sur {total}",
+    "viewerClose": "Fermer",
+    "viewerPrevious": "Photo précédente",
+    "viewerNext": "Photo suivante",
     "tour": "Visite virtuelle",
     "tourLoad": "Lancer la visite virtuelle",
     "tourNotice": "La visite est hébergée par Matterport et ne se charge qu'à votre demande : elle consomme des données.",
@@ -1429,6 +1441,9 @@
       "quantity": "Quantité",
       "dayFree": "{date}, disponible",
       "dayFull": "{date}, indisponible",
+      "dayRequested": "{date}, demandes en attente",
+      "requested": "demandes en attente",
+      "requestedNotice": "D'autres demandes sont déjà en attente pour ce créneau. La salle choisit entre les demandes : vous pouvez envoyer la vôtre.",
       "chosen": "Votre choix : {date} · {slot}"
     },
     "bookingHint": "Envoyez votre demande ci-dessous : la salle vous répond, rien n'est débité maintenant."
@@ -1451,6 +1466,7 @@
   },
   "wizard": {
     "amenities": "Équipements",
+    "close": "Fermer l'assistant",
     "budgetAny": "Sans limite",
     "cityAll": "Toute l'Algérie",
     "continue": "Continuer",

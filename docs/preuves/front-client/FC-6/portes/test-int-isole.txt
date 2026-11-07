@@ -1,0 +1,115 @@
+# FC-6 — rejeu ISOLÉ des deux fichiers de concurrence de test:int, sur le code du lot (HEAD 610a477, code = 43c938e) · 2026-11-05T09:33:56Z
+# commande : (apps/api) PLAYWRIGHT_BROWSERS_PATH=<shim> npx vitest run -c vitest.config.int.ts test/int/quote-numbering.int-spec.ts test/int/pro-clients.int-spec.ts
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/api
+
+(node:13358) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/quote-numbering.int-spec.ts (20 tests | 4 failed) 10089ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié  653ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références  547ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence  367ms
+   × F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20 532ms
+     → read ECONNRESET
+   ✓ F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent  542ms
+   ✓ F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1  581ms
+   × F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts 554ms
+     → read ECONNRESET
+   × F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant 1033ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40P01`. Message: `deadlock detected`
+   × F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année 1055ms
+     → 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40P01`. Message: `deadlock detected`
+   ✓ F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro consommé par une transaction ANNULÉE laisse un TROU ; les numéros restent strictement croissants dans l'ordre de création  392ms
+   ✓ F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ un numéro de salle déjà pris est REFUSÉ par la base (`UNIQUE`), même inséré en direct  323ms
+   ✓ F-6 — la séquence des salles : un saut est admis, une répétition jamais > ⛔ le prochain numéro de salle SUIT le plus grand existant (le `setval` de la migration n'est pas en retard)  391ms
+   ✓ F-7 — un échec au milieu de la transaction ne fait pas avancer le compteur > ⛔ une insertion refusée APRÈS l'incrément (créneau inexistant ⇒ clé étrangère) : le compteur et le numéro suivant n'ont pas bougé — pas de trou dans les devis  393ms
+   ✓ F-8 — le numéro d'une salle ne se modifie pas > ⛔ `UPDATE venues SET number` est REFUSÉ par la base ; une autre colonne reste modifiable  300ms
+   ✓ F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`)  420ms
+   ✓ F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ deux TÊTES de même (salle, année, numéro) : REFUSÉES (`quotes_reference_head_unique`) ; une VERSION 2 qui reprend le numéro de sa tête est ACCEPTÉE (le filtre `version = 1`)  302ms
+   ✓ F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ les bornes de la base : un numéro de devis ≤ 0 et une année hors de 2000-9999 sont REFUSÉS (`CHECK`)  314ms
+   ✓ F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe  390ms
+   ✓ ⛔ L36-2 (D339, D-8) — un BROUILLON passe par le MÊME compteur, dans la MÊME transaction : un échec rend son numéro > ⛔ une création de brouillon refusée APRÈS l'incrément (créneau fantôme) : le compteur n'a pas bougé, le brouillon suivant prend le numéro suivant — aucun trou  395ms
+   ✓ ⛔ L36-2 (D339, D-8) — un BROUILLON passe par le MÊME compteur, dans la MÊME transaction : un échec rend son numéro > ⚠ la référence d'un brouillon porte le MÊME numéro de salle et la même année qu'un devis officiel de la même salle  349ms
+ ❯ test/int/pro-clients.int-spec.ts (32 tests | 2 failed) 10039ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche absente : 200 et `{ found: false }`, sans aucune autre clé  518ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE : le numéro d'un COMPTE Zwadj et un numéro inconnu rendent la même réponse (statut, type, corps à l'octet)  384ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE pour l'e-mail : celui d'un COMPTE et un inconnu rendent la même réponse  327ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la réponse est celle d'un numéro inconnu  492ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche du pro est trouvée par son numéro (sous toute forme normalisable) et par son e-mail (sous toute casse) 283ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > EXACTEMENT un identifiant : les deux, aucun, ou une clé inconnue sont refusés (400) 254ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-5 — un numéro fixe, étranger, ou écrit TOUT en chiffres arabo-indiens est refusé (400), à la recherche comme à la création 274ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche LIÉE se trouve, `linked` vaut vrai — et RIEN du compte n'apparaît dans la réponse (S-53, consigne v3 § 2 d)  334ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > crée la fiche : le numéro sous sa forme CANONIQUE, l'e-mail normalisé, les noms rognés, non liée 240ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > une fiche par e-mail SEUL et une fiche par numéro SEUL sont admises (au moins l'un des deux) 240ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > refuse une fiche sans identifiant, ou sans aucun nom (400) — et n'écrit rien 233ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⚠ IDEMPOTENT : la même fiche est RENDUE, et une fiche rendue n'est PAS modifiée (ni nom, ni e-mail) 261ms
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qui portent le MÊME identifiant, une seule « créée » 313ms
+     → read ECONNRESET
+   × K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes : UNE ligne 308ms
+     → read ECONNRESET
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-2 — le numéro et l'e-mail désignent DEUX fiches différentes : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, et RIEN n'est fusionné 290ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-3 — l'e-mail est normalisé par UNE fonction (rogné, NFKC, minuscules) : la casse et la pleine chasse retrouvent la même fiche 254ms
+   ✓ K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-4 — le numéro du pro, son SECOND numéro et son e-mail de compte sont refusés : 400 CLIENT_IS_PRO_CONTACT, rien n'est écrit 278ms
+   ✓ K-3 — COMPLÈTE un nom manquant, ne remplace jamais > complète le nom arabe d'une fiche qui n'avait que le latin : 200, le latin intact 257ms
+   ✓ K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-7 — un nom PRÉSENT n'est jamais remplacé : 409 CLIENT_RECORD_NAME_ALREADY_SET, la fiche intacte (même si l'autre nom manquait) 268ms
+   ✓ K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED  383ms
+   ✓ K-3 — COMPLÈTE un nom manquant, ne remplace jamais > un corps sans nom, ou avec une clé inconnue, est refusé (400) 256ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > modifie le numéro, l'e-mail et un nom : 200, valeurs normalisées comme à la création 295ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_RECORD_LINKED, la fiche intacte  340ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-2 — le numéro ou l'e-mail d'une AUTRE fiche du pro : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT, rien n'est fusionné 270ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-4 — K-3b refuse aussi le contact du pro : 400 CLIENT_IS_PRO_CONTACT 264ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > un corps vide, une valeur nulle ou une clé inconnue sont refusés (400) — K-3b change une valeur, il n'en retire aucune 209ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > K-3 et K-3b sur la fiche d'un autre pro rendent le MÊME 404 qu'un identifiant inexistant, et la fiche reste intacte  400ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > un CLIENT connecté n'atteint aucune route des fiches (403)  405ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 (S-50) — l'expression du CHECK de forme accepte et refuse EXACTEMENT ce que `DZ_MOBILE_E164` accepte et refuse 240ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > ⛔ MD-14 — la base REFUSE une écriture non canonique, même hors de l'API 231ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les CHECK : un identifiant au moins, un nom au moins, un lien cohérent (compte ET date, ou ni l'un ni l'autre)  316ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux fiches sans e-mail ; jamais deux fois le même numéro chez un pro  416ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — DIX créations SIMULTANÉES du même numéro : UNE ligne, dix réponses qui portent le MÊME identifiant, une seule « créée »
+ FAIL  test/int/pro-clients.int-spec.ts > K-2 — crée ou REND la fiche, idempotent sur (pro, numéro) et sur (pro, e-mail) > ⛔ MD-1 — dix créations SIMULTANÉES du même e-mail, sous des casses différentes : UNE ligne
+ FAIL  test/int/quote-numbering.int-spec.ts > F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20
+ FAIL  test/int/quote-numbering.int-spec.ts > F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts
+Error: read ECONNRESET
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant
+ FAIL  test/int/quote-numbering.int-spec.ts > F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40P01`. Message: `deadlock detected`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react-dom@19.2.3_@types+react@19.2.17__@types+_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react-dom@19.2.3_@types+react@19.2.17__@types+_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react-dom@19.2.3_@types+react@19.2.17__@types+_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react-dom@19.2.3_@types+react@19.2.17__@types+_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ truncateAll test/int/helpers.ts:80:3
+     78|   if (rows.length === 0) return;
+     79|   const list = rows.map((r) => `"${r.tablename}"`).join(", ");
+     80|   await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${list} RESTART IDENT…
+       |   ^
+     81| }
+     82| 
+ ❯ test/int/quote-numbering.int-spec.ts:95:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 46 passed (52)
+   Start at  09:33:57
+   Duration  26.61s (transform 1.64s, setup 64ms, collect 4.61s, tests 20.13s, environment 0ms, prepare 151ms)
+
+exit=1

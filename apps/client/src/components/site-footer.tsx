@@ -14,6 +14,7 @@
 // première divergence de style.
 import { useTranslations } from "next-intl";
 import { Link } from "../i18n/navigation";
+import { PRIVACY_PATH, TERMS_PATH } from "../lib/routes";
 
 export function SiteFooter() {
   const t = useTranslations("footer");
@@ -28,10 +29,10 @@ export function SiteFooter() {
         <nav aria-label={t("navLabel")}>
           <ul>
             <li>
-              <Link href="/cgu">{t("terms")}</Link>
+              <Link href={TERMS_PATH}>{t("terms")}</Link>
             </li>
             <li>
-              <Link href="/confidentialite">{t("privacy")}</Link>
+              <Link href={PRIVACY_PATH}>{t("privacy")}</Link>
             </li>
           </ul>
         </nav>

@@ -1,0 +1,34 @@
+# FC-2 — PLAYWRIGHT_BROWSERS_PATH=<pont hors dépôt> python3 neutralisation/lancer-campagnes.py, lancé AVANT le commit du code
+# ⚠ sortie 1 : fc1 et fc2 sortent en 3 (leurs cibles e2e ne se jouent qu'avec --e2e) ; fc2 --e2e joué à part : 1 sur 1 (neutralisation/sortie-e2e.txt)
+# lignes gardées 30 (lignes [WebServer] retirées) · jetons gardés : 0 (attendu 0)
+
+3 fichier(s) modifié(s) depuis HEAD → 3 campagne(s) concernée(s) sur 42.
+  · neutralize-b7.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc1.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc2.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+
+[1/3] neutralisation/neutralize-b7.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/3] neutralisation/neutralize-fc1.py …
+    sortie=3  4 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s)
+
+[3/3] neutralisation/neutralize-fc2.py …
+    sortie=3  0 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-b7.py                        0     3     3     0     0   216
+neutralize-fc1.py                       3     4     4     0     2    12
+neutralize-fc2.py                       3     0     0     0     1     0
+================================================================================================
+MESURÉ : 7 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 3 non mesurée(s) · 3 campagne(s) · 228s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-fc1.py → sortie 3
+  ⚠ neutralisation/neutralize-fc2.py → sortie 3
+lancer-campagnes exit=1

@@ -1,0 +1,76 @@
+# FP-3 — UNE RÉVISION REPREND LA COPIE DU NOM DE LA VERSION COURANTE — table d'ouverture (premier commit du lot, SEUL)
+
+SHA de départ : `843207022a1a0ddd9e6ba89d9ff30d786a6abaf9` (dernier commit de FP-2, poussé, local = origin vérifié). Méthode : NORMALE (aucun montant : la copie du nom d'un
+devis est une donnée d'identité ; l'écran n'envoie que des noms que le pro a tapés). Consigne : « au moment de réviser un devis,
+préremplir la copie du nom depuis la version courante (ne touche ni L36-2 ni K-5) ».
+**La prémisse est vérifiée AVANT cette table** (lecture du code, D231) : le serveur l'ÉCRIT lui-même — `QuotesService.revise` : « une révision
+porte le corps ENTIER, la copie du nom comprise (celle que l'écran a préremplie du devis précédent, DB-17) : le serveur n'y substitue PAS la
+fiche vivante ». Le défaut, lu : l'écran bâtit le corps d'une révision depuis ses propres champs (`copiePourDevis(nomsEffectifs, fiche.id)`),
+qui ne connaissent pas la copie que K-5 (la boîte de langue) a COMPLÉTÉE sur la version précédente ; la version N+1 perd donc la copie et
+K-5 repose sa question à la prochaine remise dans cette langue. ⚠ Et un devis jeté par une modification (`invalidate`) n'est plus dans l'état :
+la version précédente doit être gardée à part.
+**Une limite du SERVEUR, lue et écrite avant le code** : `copieDuNomPourDevis` (`apps/api/src/clients/pro-client-policy.ts`) REFUSE (409
+`CLIENT_RECORD_LINKED`) un nom que la fiche LIÉE n'a pas — « le nom manquant d'une fiche liée se complète sur le DEVIS seulement, par la boîte
+de langue ». ⇒ Pour une fiche liée la copie complétée par K-5 ne peut PAS être reprise par une révision sans changer cette règle (`apps/api`,
+hors session) : le lot ne la reprend que pour une fiche NON liée, et le rapport dit le reste.
+Ordre des commits : (1) cette table seule ; (2) les tests et leurs ROUGES — lus contre l'état d'avant, empreintes sha256 ; (3) le code ;
+(4) le harnais, les campagnes, les portes, l'audit, le contrôle, le rapport.
+
+## Fichiers du lot — chemins complets
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 1 | `docs/preuves/front-client/FP-3/table-ouverture.md` | cette table | 1 |
+| 2 | `apps/pro/src/dashboard/walkin-revision.test.ts` | NEUF — la règle PURE `copiePourRevision` : un nom absent de l'écran est repris de la version courante, un nom tapé l'emporte, une fiche liée et un autre client n'en reçoivent rien | 2 |
+| 3 | `apps/pro/src/dashboard/walkin-journey.test.tsx` | l'écran : la révision porte la copie complétée par la boîte de langue (devis affiché ou jeté), le nom tapé l'emporte, la fiche liée ne reçoit pas de nom que le serveur refuserait | 2 |
+| 4 | `docs/preuves/front-client/FP-3/rouges/rouge-pro.txt` | sortie des tests contre l'état d'avant + sha256 | 2 |
+| 5 | `apps/pro/src/dashboard/walkin-client.ts` | `copiePourRevision` — la règle pure | 3 |
+| 6 | `apps/pro/src/dashboard/walkin-journey.tsx` | la dernière version rendue par le serveur est gardée à part ; le corps d'une révision passe par la règle | 3 |
+| 7 | `neutralisation/neutralize-fp3.py` | NEUF — le harnais du lot | 4 |
+| 8 | `docs/preuves/front-client/FP-3/neutralisation/sortie.txt` | sortie du harnais | 4 |
+| 9 | `docs/preuves/front-client/FP-3/ancres-campagnes.txt` | relevé statique des ancres des campagnes concernées | 4 |
+| 10 | `docs/preuves/front-client/FP-3/campagnes.txt` | sortie de `lancer-campagnes.py` | 4 |
+| 11 | `docs/preuves/front-client/FP-3/portes/typecheck.txt` | journal de porte | 4 |
+| 12 | `docs/preuves/front-client/FP-3/portes/lint.txt` | journal de porte | 4 |
+| 13 | `docs/preuves/front-client/FP-3/portes/test.txt` | journal de porte | 4 |
+| 14 | `docs/preuves/front-client/FP-3/portes/build.txt` | journal de porte | 4 |
+| 15 | `docs/preuves/front-client/FP-3/portes/test-int.txt` | journal de porte | 4 |
+| 16 | `docs/preuves/front-client/FP-3/portes/test-e2e.txt` | journal de porte | 4 |
+| 17 | `docs/preuves/front-client/FP-3/portes/resume.txt` | journal de porte | 4 |
+| 18 | `docs/preuves/front-client/FP-3/audit-secrets-fp3.txt` | audit de secrets scellé | 4 |
+| 19 | `docs/preuves/front-client/FP-3/tri-audit-fp3.txt` | son tri | 4 |
+| 20 | `docs/preuves/front-client/FP-3/controle.txt` | sortie du contrôle de fin de lot | 4 |
+| 21 | `docs/preuves/front-client/FP-3/rapport.md` | le rapport du lot | 4 |
+
+Conditionnels : un harnais d'un autre rang dont une ancre ou une mesure serait périmée par ce lot (le relevé et les campagnes le diront)
+— déclaré par une extension, commitée seule, avant sa réorientation ; et sa sortie sous CRLF simulé s'il porte des ancres CRLF.
+Aucune chaîne visible n'est ajoutée ⇒ aucune clé arabe à relire.
+
+## Extension 1 — commitée SEULE, avant le fichier qu'elle déclare
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 22 | `docs/preuves/front-client/FP-3/rouges/rouge-pro-v2.txt` | la pièce du test ajouté APRÈS le code (« Annuler » puis un nouveau devis pour la même fiche) : rejoué contre l'état d'AVANT (vert à vide — bras de calibration) ; empreinte du test livré | 3 bis |
+
+Motif : la version gardée à part (ligne 6 de la table) porte DEUX gardes de lien à la chaîne en cours (`chainQuoteId !== null` et l'égalité des
+identifiants) ; sans test, les retirer est une mutation « équivalente » par omission, pas par construction. Après « Annuler », la chaîne est
+vide mais la version gardée ne l'est pas : seule une création pour la MÊME fiche (le double rend toujours « fiche-1 ») le montre. Le test est
+VERT sur l'état d'avant (la création n'a jamais repris de copie) : il n'a donc pas de rouge à lire, il est rejoué à vide, et c'est la cible du
+harnais qui le fait mordre (rapport). Il vient après le commit du code : la règle « les rouges avant le code » ne peut pas s'y appliquer, et le rapport le dit.
+
+## Extension 2 — commitée SEULE, avant les fichiers qu'elle déclare (harnais d'AUTRES rangs, périmés par ce lot)
+
+| # | fichier | rôle | commit |
+|---|---|---|---|
+| 23 | `neutralisation/neutralize-r41.py` | la cible J-6 (« le devis part sans la fiche ni la copie des noms ») : son ancre — la ligne du corps du devis — est réécrite sur trois lignes par ce lot ; RÉORIENTÉE, même faute | 4 bis |
+| 24 | `neutralisation/neutralize-r43.py` | la cible P-3 (« la révision d'un brouillon porte la fiche et les noms ») : même ancre périmée, même réorientation | 4 bis |
+| 25 | `neutralisation/neutralize-act-plafonds.py` | la constante `NB_TESTS_ATTENDU` (158) : le fichier de tests en compte 175 (FP-1 +7, FP-2 +5, FP-3 +5) ; « la constante SEULE change » | 4 bis |
+| 26 | `neutralisation/neutralize-horloge.py` | la même constante, la même valeur | 4 bis |
+
+Motif : la série de campagnes du tri (14 sur 54, joués par le tri calculé depuis le SHA de départ) a rendu 1 ou 2 pour ces quatre harnais, SANS
+jouer leurs cibles : deux s'arrêtent sur le contrôle du nombre de tests (D144 — un filtre qui ne correspond plus rend 0 et se lit « la garde est
+inutile »), deux sur « ARBRE NON CONFORME AU DÉPART : ancre ×0 ». Le relevé statique (`outils/releve-ancres.py`) le confirme : 2 ancres
+périmées sur les 12 harnais qu'il lit, aucune autre. `act-plafonds` et `horloge` sont d'anciens harnais que l'instrument ne sait pas importer
+(il lève sur `sys.stdout.reconfigure`) : ils sont relevés par leur contrôle de comptage, qui est précisément ce qui les arrête. Les constantes
+étaient périmées DEPUIS FP-1 : ces deux harnais n'avaient pas été sélectionnés par le tri de FP-1 et FP-2 (les tests y étaient déjà commités).
+Les quatre campagnes sont rejouées en entier après la correction ; leurs sorties entrent dans `campagnes.txt`.

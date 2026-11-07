@@ -14,12 +14,13 @@
 // duplication réelle se limite au balisage — la logique, elle, vit dans
 // `AccountClient` (partagé) et dans l'API.
 import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { createAccountClient, type AccountClient } from "@zwadj/api-client";
 import { BrandLoader, ConfirmDialog, PhoneField } from "@zwadj/ui";
 import {
   DEFAULT_PHONE_COUNTRY,
   changeEmailSchema,
+  formatInstantDate,
   changePasswordSchema,
   nationalDigitsOf,
   profileUpdateSchema,
@@ -352,6 +353,7 @@ function PasswordSection({ client }: { client: AccountClient }) {
 // ── Suppression (D37 + D41, trois états) ───────────────────────────────────
 function DeletionSection({ client }: { client: AccountClient }) {
   const t = useTranslations();
+  const locale = useLocale();
   const toMessage = useSubmitError();
 
   const [loading, setLoading] = useState(true);
@@ -408,7 +410,7 @@ function DeletionSection({ client }: { client: AccountClient }) {
         <>
           <Banner
             kind="ok"
-            text={t("account.ui.deletion.pending", { date: new Date(current.requestedAt).toLocaleDateString() })}
+            text={t("account.ui.deletion.pending", { date: formatInstantDate(current.requestedAt, locale) })}
           />
           <button
             type="button"

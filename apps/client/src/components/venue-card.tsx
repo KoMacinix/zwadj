@@ -20,6 +20,7 @@ import { HeartIcon, StarIcon } from "@zwadj/ui";
 import { Link } from "../i18n/navigation";
 import { mediaSrc } from "../lib/media-url";
 import type { VenueCardData } from "../lib/preview-venues";
+import { venuePath } from "../lib/routes";
 
 export function VenueCard({
   venue,
@@ -56,7 +57,7 @@ export function VenueCard({
     <li className={unavailableOn === null ? "venue-card" : "venue-card is-unavailable"}>
       {/* La destination du détail est A8 : le lien pointe la route par SLUG
           (décision Flux A). */}
-      <Link href={`/salles/${venue.slug}`} className="venue-card-link">
+      <Link href={venuePath(venue.slug)} className="venue-card-link">
         <div className="venue-card-media">
           {venue.coverThumbUrl ? (
             // `<img>` nu, PAS `next/image` : la vignette est déjà générée à la

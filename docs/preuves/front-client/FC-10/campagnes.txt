@@ -1,0 +1,37 @@
+# FC-10 — `python3 neutralisation/lancer-campagnes.py`, joué AVANT le commit du code (le tri lit `git diff HEAD` et les fichiers non suivis),
+# Playwright par le shim du conteneur. Ce que la série dit : fc8 10/10 + 2 non mesurées (G-7, G-8 : `--e2e`, sur la page de recherche,
+# que ce lot ne touche pas) ; fc10 4/4 + 1 non mesurée (S-5, `--e2e` : jouée avec, `neutralisation/sortie.txt`, 5/5) ;
+# available-on (sortie 2) : arrêt sur la cible 6 — ancre CRLF en dur, ENVIRONNEMENT ; rejouée entière sous CRLF simulé : `crlf/available-on.txt`, 10/10.
+
+4 fichier(s) modifié(s) depuis HEAD → 3 campagne(s) concernée(s) sur 50.
+  · neutralize-available-on.py  (1 fichier(s) en commun)
+      apps/client/src/lib/seo.ts
+  · neutralize-fc10.py  (2 fichier(s) en commun)
+      apps/client/src/app/[locale]/salles/[slug]/page.tsx
+      apps/client/src/lib/seo.ts
+  · neutralize-fc8.py  (1 fichier(s) en commun)
+      apps/client/src/lib/seo.ts
+
+[1/3] neutralisation/neutralize-available-on.py …
+    sortie=2  5 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/3] neutralisation/neutralize-fc10.py …
+    sortie=3  4 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s)
+
+[3/3] neutralisation/neutralize-fc8.py …
+    sortie=3  10 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-available-on.py              2     —     5     1     0   117
+neutralize-fc10.py                      3     4     4     0     1     9
+neutralize-fc8.py                       3    10    10     0     2    43
+================================================================================================
+MESURÉ : 19 garde(s) mordue(s) · 1 muette(s)/erreur(s) · 3 non mesurée(s) · 3 campagne(s) · 169s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-available-on.py → sortie 2
+  ⚠ neutralisation/neutralize-fc10.py → sortie 3
+  ⚠ neutralisation/neutralize-fc8.py → sortie 3
+CODE_SORTIE=1

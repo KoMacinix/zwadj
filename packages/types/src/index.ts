@@ -15,3 +15,5 @@ export * from "./staff";
 export * from "./account";
 export * from "./media";
 export * from "./referentials";
+export * from "./week";
+export * from "./intl-locale";

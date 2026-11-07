@@ -37,6 +37,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDZD } from "@zwadj/i18n";
 import {
+  QUOTE_AMOUNT_LOCALE,
   QUOTE_SENT_VIA_ORDER,
   isQuoteOpen,
   type QuoteConversionDTO,
@@ -179,9 +180,9 @@ export function QuotesSection({ venueId }: { venueId: string }) {
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
                   <strong>{t("venue.ui.quotes.version", { n: latest.version })}</strong>
                   <span>{latest.eventDate}</span>
-                  <span>{formatDZD(latest.totalCents)}</span>
+                  <span>{formatDZD(latest.totalCents, QUOTE_AMOUNT_LOCALE)}</span>
                   <span className="field-hint">
-                    {t("venue.ui.quotes.deposit", { amount: formatDZD(latest.depositCents) })}
+                    {t("venue.ui.quotes.deposit", { amount: formatDZD(latest.depositCents, QUOTE_AMOUNT_LOCALE) })}
                   </span>
                   <span className="field-hint">{t(`venue.ui.quotes.st_${latest.status}`)}</span>
                 </div>

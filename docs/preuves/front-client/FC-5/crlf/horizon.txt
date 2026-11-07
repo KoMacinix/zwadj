@@ -1,0 +1,25 @@
+# FC-5 — neutralisation/neutralize-horizon.py joué sous CRLF SIMULÉ · 2026-11-05T07:23:45Z
+# commande : PLAYWRIGHT_BROWSERS_PATH=<shim> python3 docs/preuves/front-client/outils/crlf-simule.py <les fichiers ci-dessous> -- python3 neutralisation/neutralize-horizon.py
+# fichiers ramenés en CRLF le temps de la campagne (releve-ancres.py --fichiers horizon) : 3
+#   apps/api/src/venues/venues-public.service.ts
+#   apps/client/src/components/search/search-view.tsx
+#   apps/client/src/lib/api.ts
+
+calibration ✓ positif : une ancre CRLF est introuvable dans le fichier LF
+calibration ✓ positif : la même ancre est trouvée une fois après conversion
+calibration ✓ négatif : l'aller-retour rend les mêmes octets
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 3 fichier(s) convertis, 1405 ligne(s)
+✓ H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres
+✓ H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé
+✓ H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée
+✓ H4. Le client range le nouveau refus avec l'ancien
+✓ H5. L'écran affiche « cette date est déjà passée » pour une date de 2099
+✓ H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté
+
+6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+rendus en LF à l'identique : 3 sur 3 (attendu 3)
+commande : sortie 0
+crlf-simule exit=0

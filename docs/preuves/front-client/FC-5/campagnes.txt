@@ -1,0 +1,144 @@
+# FC-5 — `python3 neutralisation/lancer-campagnes.py`, joué AVANT le commit du code (le tri lit `git diff HEAD` et les fichiers non
+# suivis), Playwright par le shim du conteneur. La sortie brute suit, INCHANGÉE. Ce qu'elle dit, campagne par campagne :
+#   · 404 (sortie 1) : C4 « ERREUR DE SCRIPT » — ses ancres multi-lignes sont assemblées en CRLF (`L(...)`), introuvables dans ce
+#     conteneur extrait en LF : ENVIRONNEMENT. Et C5 était, EN PLUS, périmée par ce lot (`href="/salles"` → `SEARCH_PATH`) :
+#     réorientée (extension 3). La campagne ENTIÈRE est rejouée sous CRLF simulé : `crlf/404.txt`.
+#   · available-on (sortie 2) : cible 6 — CRLF en dur (environnement, déjà relevé en FC-4) ; rejouée sous CRLF : `crlf/available-on.txt`
+#     (la cible 10, réorientée par ce lot, n'est jouée QUE là : l'arrêt sur 6 tait les suivantes).
+#   · horizon (sortie 1) : H6 — CRLF en dur ; `crlf/horizon.txt`.
+#   · maxprice (sortie 1) : M7 — CRLF en dur ; `crlf/maxprice.txt`.
+#   · r25 (sortie 3) : 4 cibles hors de la commande par défaut (R25-8 `--int`, R25-E1 à E3 `--e2e`) — non jouées ici ; R25-7,
+#     l'unitaire de la même ancre que R25-E2 (le lien de connexion du panneau, que FC-5 touche), MORD ; la porte e2e de ce lot joue la
+#     spec `r25-lien-connexion` (chemin nominal).
+#   · r30 (sortie 2) : pré-vol arrêté sur R30-4 — CRLF en dur ; `crlf/r30.txt` (R30-7, réorientée par ce lot, n'est jouée que là).
+#   · r33 (sortie 1) : M-12 MUETTE — la garde de fuseau ne mord que sur un serveur à l'ouest de Greenwich ; ce conteneur est en UTC.
+#     Prouvé en FC-4 (`docs/preuves/front-client/FC-4/ancres-campagnes.txt`, point 3 : rouge sous `TZ=America/Los_Angeles`). Pas ce lot.
+#   · toutes les autres : 0, tout joué, tout mordu (r29 15/15, r32 65/65, r37 21/21 dont E-3 réorientée, r38 46/46, r42 22/22,
+#     journey 7/7, fc3 8/8, fc4 7/7, fc5 11/11).
+#
+53 fichier(s) modifié(s) depuis HEAD → 16 campagne(s) concernée(s) sur 45.
+  · neutralize-404.py  (2 fichier(s) en commun)
+      apps/client/src/app/[locale]/not-found.tsx
+      apps/client/src/app/not-found.tsx
+  · neutralize-available-on.py  (2 fichier(s) en commun)
+      apps/client/src/components/search/search-view.tsx
+      apps/client/src/components/venue-card.tsx
+  · neutralize-fc3.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-fc4.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+  · neutralize-fc5.py  (8 fichier(s) en commun)
+      apps/client/src/components/site-footer.tsx
+      apps/client/src/lib/calendar.ts
+      apps/client/src/lib/routes.ts
+  · neutralize-horizon.py  (1 fichier(s) en commun)
+      apps/client/src/components/search/search-view.tsx
+  · neutralize-journey.py  (1 fichier(s) en commun)
+      apps/client/src/components/filter-wizard.tsx
+  · neutralize-maxprice.py  (2 fichier(s) en commun)
+      apps/client/src/components/filter-wizard.tsx
+      apps/client/src/components/home-view.tsx
+  · neutralize-r25.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/lib/routes.ts
+  · neutralize-r29.py  (4 fichier(s) en commun)
+      apps/client/src/components/site-chrome.tsx
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/pro/src/App.tsx
+  · neutralize-r30.py  (2 fichier(s) en commun)
+      apps/client/src/lib/calendar.ts
+      apps/pro/src/venues/edit-venue-page.tsx
+  · neutralize-r32.py  (3 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+      apps/client/src/components/venue/visit-booking-panel.tsx
+      apps/pro/src/venues/edit-venue-page.tsx
+  · neutralize-r33.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/create-venue-page.tsx
+  · neutralize-r37.py  (2 fichier(s) en commun)
+      apps/pro/src/venues/edit-venue-page.tsx
+      apps/pro/src/venues/venue-list-page.tsx
+  · neutralize-r38.py  (2 fichier(s) en commun)
+      apps/pro/src/shell/pro-nav.tsx
+      apps/pro/src/venues/venue-list-page.tsx
+  · neutralize-r42.py  (1 fichier(s) en commun)
+      apps/client/src/components/venue/booking-request-panel.tsx
+
+[1/16] neutralisation/neutralize-404.py …
+    sortie=1  3 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/16] neutralisation/neutralize-available-on.py …
+    sortie=2  5 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/16] neutralisation/neutralize-fc3.py …
+    sortie=0  8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[4/16] neutralisation/neutralize-fc4.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[5/16] neutralisation/neutralize-fc5.py …
+    sortie=0  11 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[6/16] neutralisation/neutralize-horizon.py …
+    sortie=1  5 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[7/16] neutralisation/neutralize-journey.py …
+    sortie=0  7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[8/16] neutralisation/neutralize-maxprice.py …
+    sortie=1  6 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[9/16] neutralisation/neutralize-r25.py …
+    sortie=3  7 mordue(s), 0 muette(s)/erreur(s), 4 non mesurée(s)
+
+[10/16] neutralisation/neutralize-r29.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[11/16] neutralisation/neutralize-r30.py …
+    sortie=2  0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[12/16] neutralisation/neutralize-r32.py …
+    sortie=0  65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[13/16] neutralisation/neutralize-r33.py …
+    sortie=1  86 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s)
+
+[14/16] neutralisation/neutralize-r37.py …
+    sortie=0  21 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[15/16] neutralisation/neutralize-r38.py …
+    sortie=0  46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[16/16] neutralisation/neutralize-r42.py …
+    sortie=0  22 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-404.py                       1     —     3     1     0    61
+neutralize-available-on.py              2     —     5     1     0   102
+neutralize-fc3.py                       0     8     8     0     0    40
+neutralize-fc4.py                       0     7     7     0     0    45
+neutralize-fc5.py                       0    11    11     0     0    53
+neutralize-horizon.py                   1     —     5     1     0    79
+neutralize-journey.py                   0     —     7     0     0   282
+neutralize-maxprice.py                  1     —     6     1     0   133
+neutralize-r25.py                       3     7     7     0     4    68
+neutralize-r29.py                       0    15    15     0     0   113
+neutralize-r30.py                       2     —     0     1     0     0
+neutralize-r32.py                       0    65    65     0     0   667
+neutralize-r33.py                       1    86    86     1     0   883
+neutralize-r37.py                       0    21    21     0     0   164
+neutralize-r38.py                       0    46    46     0     0   535
+neutralize-r42.py                       0    22    22     0     0   207
+================================================================================================
+MESURÉ : 314 garde(s) mordue(s) · 6 muette(s)/erreur(s) · 4 non mesurée(s) · 16 campagne(s) · 3434s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-404.py → sortie 1
+  ⚠ neutralisation/neutralize-available-on.py → sortie 2
+  ⚠ neutralisation/neutralize-horizon.py → sortie 1
+  ⚠ neutralisation/neutralize-maxprice.py → sortie 1
+  ⚠ neutralisation/neutralize-r25.py → sortie 3
+  ⚠ neutralisation/neutralize-r30.py → sortie 2
+  ⚠ neutralisation/neutralize-r33.py → sortie 1
+lancer-campagnes exit=1

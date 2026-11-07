@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "../../i18n/navigation";
 import { ZwadjLogo } from "@zwadj/ui";
 import { ApiError, NetworkError } from "../../lib/auth/auth-client";
-import { LOGIN_PATH } from "../../lib/routes";
+import { LOGIN_PATH, REGISTER_PATH } from "../../lib/routes";
 
 /** Cible du lien « Accès entreprises » (7.2) : connexion de la SPA Pro.
  *  Même motif de repli que NEXT_PUBLIC_API_URL (lib/api.ts). Exportée depuis
@@ -56,7 +56,7 @@ export function AuthShell({
               <Link href={LOGIN_PATH} className="tab" aria-current={mode === "login" ? "page" : undefined}>
                 {t("header.login")}
               </Link>
-              <Link href="/auth/inscription" className="tab" aria-current={mode === "signup" ? "page" : undefined}>
+              <Link href={REGISTER_PATH} className="tab" aria-current={mode === "signup" ? "page" : undefined}>
                 {t("header.signup")}
               </Link>
             </nav>

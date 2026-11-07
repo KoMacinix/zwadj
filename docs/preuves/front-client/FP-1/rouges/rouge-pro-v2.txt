@@ -1,0 +1,558 @@
+# FP-1 — ROUGES (pro) REJOUÉS (v2) contre l'état d'AVANT, après la correction d'un test (deux saisies EN bornes ajoutées, extension 1) — session front-client, 06/11/2026
+# HEAD au moment de la mesure : f54f6b59f7b73aef9feba04f6c1f6aaf73c4e6ee (code du lot mis de côté : git stash des 4 fichiers modifiés, la règle neuve écartée ; test livré)
+# commande : (apps/pro) npx vitest run src/dashboard/walkin-journey.test.tsx src/dashboard/walkin-services.test.ts — code de sortie 1
+# sha256 apps/pro/src/dashboard/walkin-services.test.ts : 04c28709a694cb310af2868841792fb9f0547ae611d59d8bfc1f486f716a2dd3
+# sha256 apps/pro/src/dashboard/walkin-journey.test.tsx : ee483576608ceb97a78bf8563bf157fb463cc54b4dc960f30c9a2ab7fb9b4241
+# lecture : même rouge que la v1 — 17 échecs sur 175, EXACTEMENT les 17 tests de FP-1, TOUS AssertionError ; les 158 d'avant, verts.
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+ ❯ src/dashboard/walkin-services.test.ts (10 tests | 10 failed) 22ms
+   × FP-1 — la règle existe > `choixDePrestation` est exportée par `walkin-services` 7ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × FP-1 — un choix par type de tarification, conforme au contrat > FIXED et PER_GUEST : la prestation SEULE — ni palier ni quantité 3ms
+     → expected { regleAbsente: true } to deeply equal { Object (serviceId) }
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-4 : un détail saisi pour une prestation qui n'en veut pas N'EST PAS envoyé (le contrat l'interdit) 1ms
+     → expected { regleAbsente: true } to deeply equal { Object (serviceId) }
+   × FP-1 — un choix par type de tarification, conforme au contrat > TIERED : le palier CHOISI, et lui seul 1ms
+     → expected { regleAbsente: true } to deeply equal { …(2) }
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-1 : TIERED sans palier — AUCUN choix (jamais un palier par défaut) 1ms
+     → expected { regleAbsente: true } to be null // Object.is equality
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-11 : un palier INACTIF, ou d'une autre prestation, n'est pas un choix 1ms
+     → expected { regleAbsente: true } to be null // Object.is equality
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-5 : PER_UNIT — la quantité ENVOYÉE est la quantité SAISIE, en nombre entier 1ms
+     → expected { regleAbsente: true } to deeply equal { …(2) }
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-2 : PER_UNIT sans quantité, ou une saisie qui n'est pas un entier — AUCUN choix 1ms
+     → expected { regleAbsente: true } to be null // Object.is equality
+   × FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-3 : PER_UNIT — les bornes sont CELLES DU CATALOGUE (`minUnits`, `maxUnits`), bornes incluses 1ms
+     → expected { regleAbsente: true } to be null // Object.is equality
+   × FP-1 — un choix par type de tarification, conforme au contrat > PER_UNIT sans borne au catalogue : tout entier ≥ 1 passe, 0 non (le contrat exige une quantité positive) 1ms
+     → expected { regleAbsente: true } to deeply equal { …(2) }
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/dashboard/walkin-journey.test.tsx (165 tests | 7 failed) 25735ms
+   ✓ Flux par étapes — une seule question à l'écran > s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule 96ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité 112ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré 179ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ ne laisse pas passer un client incomplet — le bouton reste inerte 20ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations 38ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque champ client porte un LABEL visible — des cases nues ne se distinguent pas 30ms
+   ✓ Flux par étapes — une seule question à l'écran > le fil de progression NOMME l'étape courante pour un lecteur d'écran 62ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > fige la réponse validée en ligne de récapitulatif 57ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis 136ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran 118ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer 116ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette 134ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse 160ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier » 118ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ une étape SANS réponse n'est pas cliquable dans le rail 11ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question 115ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien 228ms
+   ✓ Date et créneau sont DEUX écrans > l'étape date montre la grille du mois, jamais les créneaux 94ms
+   ✓ Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois 122ms
+   ✓ La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide 122ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question 206ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite 165ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse 216ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite 168ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur) 1ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus 191ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré 143ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près 168ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge 189ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > ⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé 7ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > emmène le focus sur la carte de l'étape à chaque transition 59ms
+   ✓ Le focus suit la question (R2d, désormais structurel) > fait aussi défiler, en une seule fois 20ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille 185ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien 188ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée » 187ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135) 183ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33) 164ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours 194ms
+   ✓ La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée 131ms
+   ✓ La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133) 128ms
+   ✓ Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation 51ms
+   ✓ Point D — chrome partagée > le rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro 10ms
+   ✓ Point D — chrome partagée > le bouton « Modifier » est le composant partagé, identique au client 39ms
+   ✓ Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite 48ms
+   ✓ Point D — chrome partagée > la coche du rail est une icône, la même que côté client 51ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > l'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas 10ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > seuls les chiffres passent, au plus la longueur du modèle 54ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi 20ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > le texte d'aide dit la longueur du modèle (plus de « 8 à 9 ») 9ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion 186ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > ⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit 36ms
+   ✓ Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' » > le français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur 39ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > le champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction 29ms
+   ✓ Point 3 — l'e-mail : la règle du contrat, importée > vide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison 23ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143) 174ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > ⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne 8ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > le même exemple existe en ARABE, pour chacun des champs 0ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby` 24ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > ⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre 19ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > un numéro INCOMPLET se dit avec la longueur du modèle 17ms
+   ✓ Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton > tout répondu : plus de liste, plus de description, le bouton s'active 23ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé) 20ms
+   ✓ Libellés liés aux champs — en arabe aussi > ⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe 26ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer 90ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation 37ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > ⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton 37ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > l'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas 36ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer 108ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT 155ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique) 125ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit 215ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est 13ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé 223ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert` 204ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise 217ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation 181ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre 185ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client 183ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue 215ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran 211ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS 176ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone 202ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF 175ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  979ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle 197ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  398ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF 207ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée) 204ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché ») 208ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé 204ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise 207ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus) 210ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé » 203ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1043ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons 162ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  962ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré 187ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements 199ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran 215ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte 201ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  862ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  563ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr` 239ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois 213ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule 176ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu 188ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir` 163ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe) 1ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact 9ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail 47ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN 158ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE 151ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés 160ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > un AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client 41ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE 153ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis 37ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise 230ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN 193ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  338ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi 181ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite 173ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite 178ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail » 163ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont 179ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue 215ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine) 201ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé 175ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part 186ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé 188ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > le récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant 47ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ Q1 — l'étape Contact porte UN SECOND bouton, à côté de « Continuer » ; il s'ouvre sans rien taper, n'appelle NI la recherche NI la création de fiche, et mène à l'étape Client 17ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-20 (Q2) — l'étape Client d'un brouillon n'a AUCUN champ de nom et A le champ des invités ; « Continuer » reste grisé sans invités, et la fiche n'est ni cherchée ni créée 40ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le récapitulatif DIT que le contact n'a pas été donné (`draftSummary`) — l'étape Contact est répondue, pas oubliée 35ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact 149ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion 172ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom 155ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN 182ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé » 171ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée 214ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre 215ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit 295ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît 250ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms 286ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial` 151ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe 228ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français 2ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion 258ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1) 163ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Continuer » du contact QUITTE le mode « sans coordonnées » : revenu au contact par « Précédent », un numéro tapé rend l'étape Client COMPLÈTE (les champs des noms, plus le texte du brouillon) 32ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche) 221ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le SECOND bouton est offert à l'étape Contact 12ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche) 149ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route 124ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le récapitulatif DIT que le contact n'a pas été donné 34ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — « Continuer » de l'étape Client d'un brouillon est GRISÉ sans invités et OFFERT avec, sans aucun nom 22ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu 160ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée 193ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — après la promotion, le message « officiel » est rendu 200ms
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance 139ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active 142ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif 129ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision 122ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier 133ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer 132ms
+     → expected false to be true // Object.is equality
+   × FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > MD-10 : en arabe, le palier et l'unité s'écrivent en arabe 143ms
+     → expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2734:33
+    2732|     fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et dé…
+    2733|     const liste = listeDesPaliers();
+    2734|     expect(liste !== undefined).toBe(true);
+       |                                 ^
+    2735|     const libelles = [...(liste?.options ?? [])].map((o) => o.textCont…
+    2736|     expect(libelles.includes("Formule simple")).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2744:52
+    2742|     await jusquAuxPrestations();
+    2743|     fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et dé…
+    2744|     expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+       |                                                    ^
+    2745|     const raison = String(W_FP1.servicesMissing ?? "").replace("{names…
+    2746|     expect(raison !== "" && (document.body.textContent ?? "").includes…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2755:33
+    2753|     fireEvent.click(screen.getByRole("checkbox", { name: /Tables ronde…
+    2754|     const champ = champQuantite();
+    2755|     expect(champ !== undefined).toBe(true);
+       |                                 ^
+    2756|     expect(voirLeDevis().hasAttribute("disabled")).toBe(true);
+    2757|     for (const [saisie, actif] of [["1", false], ["31", false], ["2", …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2771:45
+    2769|     });
+    2770|     fireEvent.click(screen.getByRole("checkbox", { name: /Fleurs et dé…
+    2771|     expect(listeDesPaliers() !== undefined).toBe(true);
+       |                                             ^
+    2772|     fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIM…
+    2773|     fireEvent.click(screen.getByRole("checkbox", { name: /Tables ronde…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2792:45
+    2790|     const caseDecor = screen.getByRole("checkbox", { name: /Fleurs et …
+    2791|     fireEvent.click(caseDecor);
+    2792|     expect(listeDesPaliers() !== undefined).toBe(true);
+       |                                             ^
+    2793|     fireEvent.change(listeDesPaliers()!, { target: { value: PALIER_SIM…
+    2794|     fireEvent.click(caseDecor);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2804:43
+    2802|     await jusquAuxPrestations({ create: vi.fn().mockResolvedValue(draf…
+    2803|     fireEvent.click(screen.getByRole("checkbox", { name: /Tables ronde…
+    2804|     expect(champQuantite() !== undefined).toBe(true);
+       |                                           ^
+    2805|     fireEvent.change(champQuantite()!, { target: { value: "12" } });
+    2806|     fireEvent.click(voirLeDevis());
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  src/dashboard/walkin-journey.test.tsx > FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > MD-10 : en arabe, le palier et l'unité s'écrivent en arabe
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/dashboard/walkin-journey.test.tsx:2820:33
+    2818|     fireEvent.click(screen.getByRole("checkbox", { name: /زهور وديكور/…
+    2819|     const liste = listeDesPaliers(/زهور وديكور/);
+    2820|     expect(liste !== undefined).toBe(true);
+       |                                 ^
+    2821|     expect([...(liste?.options ?? [])].map((o) => o.textContent).inclu…
+    2822|     fireEvent.click(screen.getByRole("checkbox", { name: /طاولات مستدي…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — la règle existe > `choixDePrestation` est exportée par `walkin-services`
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/dashboard/walkin-services.test.ts:71:38
+     69| describe("FP-1 — la règle existe", () => {
+     70|   it("`choixDePrestation` est exportée par `walkin-services`", () => {
+     71|     expect(typeof choixDePrestation).toBe("function");
+       |                                      ^
+     72|   });
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > FIXED et PER_GUEST : la prestation SEULE — ni palier ni quantité
+AssertionError: expected { regleAbsente: true } to deeply equal { Object (serviceId) }
+
+- Expected
++ Received
+
+  {
+-   "serviceId": "11111111-1111-4111-8111-111111111111",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-services.test.ts:77:25
+     75| describe("FP-1 — un choix par type de tarification, conforme au contra…
+     76|   it("FIXED et PER_GUEST : la prestation SEULE — ni palier ni quantité…
+     77|     expect(regle(FIXE)).toEqual({ serviceId: FIXE.id });
+       |                         ^
+     78|     expect(regle(PAR_INVITE)).toEqual({ serviceId: PAR_INVITE.id });
+     79|     expect(conforme(regle(FIXE))).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-4 : un détail saisi pour une prestation qui n'en veut pas N'EST PAS envoyé (le contrat l'interdit)
+AssertionError: expected { regleAbsente: true } to deeply equal { Object (serviceId) }
+
+- Expected
++ Received
+
+  {
+-   "serviceId": "11111111-1111-4111-8111-111111111111",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-services.test.ts:83:66
+     81| 
+     82|   it("⛔ MD-4 : un détail saisi pour une prestation qui n'en veut pas N…
+     83|     expect(regle(FIXE, { tierId: PALIER_ACTIF, quantite: "3" })).toEqu…
+       |                                                                  ^
+     84|   });
+     85| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > TIERED : le palier CHOISI, et lui seul
+AssertionError: expected { regleAbsente: true } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "serviceId": "33333333-3333-4333-8333-333333333333",
+-   "tierId": "33333333-3333-4333-8333-33333333aaaa",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-services.test.ts:88:19
+     86|   it("TIERED : le palier CHOISI, et lui seul", () => {
+     87|     const choix = regle(PALIERS, { tierId: PALIER_ACTIF });
+     88|     expect(choix).toEqual({ serviceId: PALIERS.id, tierId: PALIER_ACTI…
+       |                   ^
+     89|     expect(conforme(choix)).toBe(true);
+     90|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-1 : TIERED sans palier — AUCUN choix (jamais un palier par défaut)
+AssertionError: expected { regleAbsente: true } to be null // Object.is equality
+
+- Expected: 
+null
+
++ Received: 
+{
+  "regleAbsente": true,
+}
+
+ ❯ src/dashboard/walkin-services.test.ts:93:28
+     91| 
+     92|   it("⛔ MD-1 : TIERED sans palier — AUCUN choix (jamais un palier par …
+     93|     expect(regle(PALIERS)).toBe(null);
+       |                            ^
+     94|     expect(regle(PALIERS, {})).toBe(null);
+     95|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-11 : un palier INACTIF, ou d'une autre prestation, n'est pas un choix
+AssertionError: expected { regleAbsente: true } to be null // Object.is equality
+
+- Expected: 
+null
+
++ Received: 
+{
+  "regleAbsente": true,
+}
+
+ ❯ src/dashboard/walkin-services.test.ts:98:56
+     96| 
+     97|   it("⛔ MD-11 : un palier INACTIF, ou d'une autre prestation, n'est pa…
+     98|     expect(regle(PALIERS, { tierId: PALIER_INACTIF })).toBe(null);
+       |                                                        ^
+     99|     expect(regle(PALIERS, { tierId: "99999999-9999-4999-8999-999999999…
+    100|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-5 : PER_UNIT — la quantité ENVOYÉE est la quantité SAISIE, en nombre entier
+AssertionError: expected { regleAbsente: true } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "quantity": 12,
+-   "serviceId": "44444444-4444-4444-8444-444444444444",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-services.test.ts:104:19
+    102|   it("⛔ MD-5 : PER_UNIT — la quantité ENVOYÉE est la quantité SAISIE, …
+    103|     const choix = regle(UNITES, { quantite: "12" });
+    104|     expect(choix).toEqual({ serviceId: UNITES.id, quantity: 12 });
+       |                   ^
+    105|     expect(conforme(choix)).toBe(true);
+    106|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-2 : PER_UNIT sans quantité, ou une saisie qui n'est pas un entier — AUCUN choix
+AssertionError: expected { regleAbsente: true } to be null // Object.is equality
+
+- Expected: 
+null
+
++ Received: 
+{
+  "regleAbsente": true,
+}
+
+ ❯ src/dashboard/walkin-services.test.ts:112:86
+    110|     // STRICT d'un `Number()` — « 1e3 » est rattrapée par la borne hau…
+    111|     for (const saisie of [undefined, "", "  ", "3,5", "2.5", "-4", "do…
+    112|       expect(regle(UNITES, saisie === undefined ? undefined : { quanti…
+       |                                                                                      ^
+    113|     }
+    114|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > ⛔ MD-3 : PER_UNIT — les bornes sont CELLES DU CATALOGUE (`minUnits`, `maxUnits`), bornes incluses
+AssertionError: expected { regleAbsente: true } to be null // Object.is equality
+
+- Expected: 
+null
+
++ Received: 
+{
+  "regleAbsente": true,
+}
+
+ ❯ src/dashboard/walkin-services.test.ts:119:58
+    117|     const min = UNITES.minUnits as number;
+    118|     const max = UNITES.maxUnits as number;
+    119|     expect(regle(UNITES, { quantite: String(min - 1) })).toBe(null);
+       |                                                          ^
+    120|     expect(regle(UNITES, { quantite: String(min) })).toEqual({ service…
+    121|     expect(regle(UNITES, { quantite: String(max) })).toEqual({ service…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+ FAIL  src/dashboard/walkin-services.test.ts > FP-1 — un choix par type de tarification, conforme au contrat > PER_UNIT sans borne au catalogue : tout entier ≥ 1 passe, 0 non (le contrat exige une quantité positive)
+AssertionError: expected { regleAbsente: true } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+  {
+-   "quantity": 1,
+-   "serviceId": "44444444-4444-4444-8444-444444444444",
++   "regleAbsente": true,
+  }
+
+ ❯ src/dashboard/walkin-services.test.ts:127:45
+    125|   it("PER_UNIT sans borne au catalogue : tout entier ≥ 1 passe, 0 non …
+    126|     const libre: ServiceDTO = { ...UNITES, minUnits: null, maxUnits: n…
+    127|     expect(regle(libre, { quantite: "1" })).toEqual({ serviceId: UNITE…
+       |                                             ^
+    128|     expect(regle(libre, { quantite: "0" })).toBe(null);
+    129|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/17]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  17 failed | 158 passed (175)
+   Start at  04:17:23
+   Duration  27.40s (transform 991ms, setup 125ms, collect 1.45s, tests 25.76s, environment 559ms, prepare 118ms)
+
+code=1

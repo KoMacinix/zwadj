@@ -1,3 +1,4 @@
+import { intlLocale } from "@zwadj/types";
 import type { AppLocale } from "./index";
 
 /**
@@ -23,10 +24,10 @@ export { formatDZD } from "@zwadj/types";
  * AM/PM selon la locale du moteur), jamais sur les nombres. La locale suit
  * celle de `formatDZD` — `ar-DZ` rend des chiffres latins, comme partout en
  * Algérie ; c'est déjà le comportement des prix, on ne le contredit pas ici.
+ * ⛔ FC-6 : cette locale est `intlLocale` (`@zwadj/types`), UNE règle pour les dates et les nombres.
  */
 export function formatRating(rating: number, locale: AppLocale = "fr"): string {
-  const intlLocale = locale === "ar" ? "ar-DZ" : "fr-DZ";
-  return new Intl.NumberFormat(intlLocale, {
+  return new Intl.NumberFormat(intlLocale(locale), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(rating);

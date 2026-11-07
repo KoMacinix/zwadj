@@ -1,0 +1,131 @@
+LECTURE ADVERSE DE LA CONSIGNE « SESSION CLOUD — LOTS FRONTEND » — contre le dépôt, AVANT le premier lot
+Session `front-client` · 05/11/2026 · départ : origin/main = e40c14150881716448afc0a94334556370641716 (relevé par `git fetch`,
+pas repris de la consigne) · arbre propre · branche `front-client` créée depuis origin/main et poussée vide (même SHA).
+
+Légende : ✓ conforme au dépôt · ≈ inexact sans effet sur le lot (écrit, le lot part) · ✗ faux ⇒ le lot passe « ARRÊTÉ —
+prémisse fausse » · ? non vérifiable ici (dit, le lot le vérifie à sa prémisse).
+Méthode : chaque chemin ouvert, chaque symbole cherché par `grep -n` dans les sources (hors node_modules), chaque entrée de
+backlog relue à sa ligne. Les lignes citées sont celles de e40c141.
+
+══ § 0 et § 1 — cadre ══════════════════════════════════════════════════════════════════════════════════════════════════
+C0-1 ✓ origin/main = e40c141 (« attendu e40c141 ou plus récent ») : `git rev-parse origin/main` après `git fetch origin main`.
+C0-2 ✓ « une autre session (L36-3a-1, rang 44) » : ZWADJ_CONTINUITE.md l. 2325, « RANG 44 : OUVERT, CADRAGE POUSSÉ, RÈGLE
+      D'ARRÊT JOUÉE » ; la découpe L36-3a-1 / L36-3a-2 / L36-3b est proposée par le cadrage de D340 (l. 2327). Dernier rang
+      écrit : « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » (l. 2327).
+C0-3 ✓ « comme D311 » : AGENTS.md porte l'exception bornée de D311 (« L'exception ne crée pas de précédent »).
+C0-4 ✓ D192 (prisma generate) : joué tel quel avec une URL factice — « Generated Prisma Client (7.8.0) » ; le contournement
+      PRISMA_SCHEMA_ENGINE_BINARY n'a PAS été nécessaire ici (aucun 403).
+C0-5 ✓ PostgreSQL : `docker compose up -d` → PostgreSQL 18.6, après démarrage du démon Docker (`dockerd`) dans le conteneur.
+      `test:int` et `test:e2e` SE JOUENT ICI (relevé d'entrée : etat-entree.md).
+C0-6 ≈ Playwright : la suite e2e épingle @playwright/test 1.50.1 (navigateur attendu chromium-1155) ; le conteneur fournit
+      chromium-1243 seulement. Aucun fichier du dépôt n'est touché : un dossier hors dépôt (scratchpad) fait correspondre les
+      noms attendus aux binaires présents (liens symboliques), via PLAYWRIGHT_BROWSERS_PATH. Chromium 153 piloté par
+      Playwright 1.50.1 : essai de fumée vert. ⚠ Écart d'environnement DIT : la version du moteur n'est pas celle du poste de
+      Ko ; une e2e verte ici n'est pas la mesure de l'intégration.
+
+══ § 2 — forme ═════════════════════════════════════════════════════════════════════════════════════════════════════════
+C2-1 ✓ « D334, item 5 » (rouges avant le code) : AGENTS.md, ordre des commits d'un lot, item 5.
+C2-2 ✓ « D270 » (porte rouge sur du code non touché) : AGENTS.md, « AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE ».
+C2-3 ✓ « D231 » (vérifier la prémisse) : AGENTS.md, leçon « VÉRIFIER LA PRÉMISSE AVANT DE CODER LA DEMANDE ».
+C2-4 ✓ `python3 neutralisation/lancer-campagnes.py` existe ; il croise `git diff --name-only HEAD` avec les fichiers lus.
+
+══ § 3 — FC-1 CONTRASTE ════════════════════════════════════════════════════════════════════════════════════════════════
+FC1-1 ≈ « Cinq textes en --accent » : l'entrée [A11Y][P0] (ZWADJ_BACKLOG.md l. 2067) s'intitule « CINQ AUTRES TEXTES » mais
+       n'en nomme QUE QUATRE (`.filters-reset`, `.range-value`, `.results-count-n`, `.wz-eyebrow`) ; le cinquième de son
+       texte est `.locale-switch:hover`, mesuré CONFORME (« elle est sur `--surface` »). La consigne nomme les quatre mêmes.
+       ⇒ Le lot porte QUATRE sélecteurs ; « cinq » est recopié du titre de l'entrée.
+FC1-2 ✓ les quatre sélecteurs sont encore en `color: var(--accent)` dans apps/client/src/app/theme.css : l. 131-136
+       (`.filters-reset`), l. 221-225 (`.range-value`), l. 422-425 (`.results-count-n`), l. 1301-1309 (`.wz-eyebrow`).
+       ⚠ Les numéros de ligne du backlog (104, 194, 395, 1270) sont périmés ; les sélecteurs, eux, sont là.
+FC1-3 ✓ `--accent-text` existe (D264) : theme.css l. 28 (clair, #b32c36) et l. 59/71 (sombre, dérivé de --dark-accent).
+FC1-4 ✓ a11y.json tolère `color-contrast @ .filters-reset` (l. 14) et `color-contrast @ .range-value` (l. 16), page
+       « client recherche de salles » ; `.results-count-n` et `.wz-eyebrow` n'y figurent PAS (l'entrée [A11Y][P1] le dit).
+       ⇒ « retirer leurs tolérances, et seulement elles » = DEUX entrées.
+FC1-5 ✓ D129 : aucun token partagé à déplacer, `--accent-text` est le token dédié.
+
+══ FC-2 DÉBORDEMENT À 360 px ═══════════════════════════════════════════════════════════════════════════════════════════
+FC2-1 ✓ docs/preuves/D321/captures/debordement.txt : « fr : fenêtre 360 px · scrollWidth 364 px », « <div class="header-auth">
+       20→364 ». En AR : scrollWidth 360 (0 débordement de page). Les éléments « hors panneau » de la navigation n'élargissent
+       pas la page (seul `.header-auth` porte la droite à 364).
+
+══ FC-3 NOMS EN ARABE ══════════════════════════════════════════════════════════════════════════════════════════════════
+FC3-1 ✓ booking-request-panel.tsx lit `service.nameFr` (l. 387, 404, 427), `service.unitNameFr` (l. 392), `tier.labelFr`
+       (l. 419) quelle que soit la locale.
+FC3-2 ≈ La consigne ne nomme pas le nom du CRÉNEAU : l. 197, `map.set(slot.id, slot.nameFr)` — même défaut, même panneau,
+       même DTO (`VenueAvailabilitySlotDTO` porte `nameAr`, packages/types/src/venue.ts l. 1052). Il entre dans le lot
+       (« lit nameFr … même en arabe » le couvre à la lettre).
+FC3-3 ✓ le DTO porte `nameAr`, `labelAr`, `unitNameAr` (packages/types/src/service.ts l. 171, 181, 192).
+
+══ FC-4 REQUESTED CHOISISSABLE ═════════════════════════════════════════════════════════════════════════════════════════
+FC4-1 ✓ arbitrage de Ko du 04/10/2026, mot pour mot dans ZWADJ_BACKLOG.md l. 2840-2842 (« avec un avis indiquant que d'autres
+       demandes sont en attente »).
+FC4-2 ✓ prédicat du jour : apps/client/src/lib/booking-calendar.ts l. 51-52, `isDaySelectable` exige un créneau AVAILABLE.
+FC4-3 ✓ prédicat du créneau : booking-request-panel.tsx l. 295, `const free = slot.status === "AVAILABLE";`.
+FC4-4 ✓ availability-engine.ts : apps/api/src/venues/availability-engine.ts l. 16-19 et 163 — REQUESTED = au moins une
+       demande PENDING dont la plage HORAIRE recouvre le créneau (pas l'identité du créneau) ; « elle ne verrouille RIEN ».
+       ⚠ Le moteur ne sait pas QUI a demandé : la demande en attente peut être celle du visiteur lui-même. L'avis ne peut donc
+       pas promettre « d'AUTRES personnes » ; il dira « une ou plusieurs demandes sont déjà en attente pour ce créneau » —
+       ce que la donnée porte, sans plus (décision de la session, dite au rapport du lot).
+FC4-5 ≈ « e2e r25, r26, r29 à relire » : e2e/specs porte r25-demande-reservation, r25-lien-connexion,
+       r25-suppression-compte, r26-parcours-reservation ; il n'existe AUCUNE spec e2e « r29 » (neutralize-r29.py garde la
+       configuration de l'e2e, pas une spec). La liste est recopiée de l'entrée du backlog. ⇒ relire r25 et r26.
+
+══ FC-5 SOURCE UNIQUE ══════════════════════════════════════════════════════════════════════════════════════════════════
+FC5-1 ✓ `WEEK_START_DAY` / `WEEKEND_DAYS` vivent dans apps/client/src/lib/calendar.ts et apps/pro/src/venues/pro-calendar.ts
+       (et leurs specs calendar.spec.ts, pro-calendar.spec.ts) ; aucun dans @zwadj/types.
+FC5-2 ✓ docs/preuves/D321/adresses/releve.txt : 38 occurrences / 13 adresses (client), 40 / 15 (pro).
+FC5-3 ✓ « comme LOGIN_PATH (D321) » : apps/client/src/lib/routes.ts et apps/pro/src/routes.ts ; « patron de D322 » : la
+       constante est vérifiée contre la route DÉCLARÉE (client : nom de fichier de la page, routes.test.ts ; pro : la table
+       de routes rend la page à cette adresse sans la quitter, routes.test.tsx).
+
+══ FC-6 ar-DZ ══════════════════════════════════════════════════════════════════════════════════════════════════════════
+FC6-1 ✓ arbitrage de Ko du 04/10/2026 mot pour mot : ZWADJ_BACKLOG.md l. 2849-2851.
+FC6-2 ✓ D56, D57, D307 : AGENTS.md (calendrier jamais dérivé de la locale ; 24 h par formatWallClock ; direction DEPUIS le
+       serveur hors du chemin de l'argent).
+
+══ FC-7 maxPrice ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+FC7-1 ✓ `BUDGET_CEILING` est à search-query.ts:49.
+FC7-2 ✓ le repli `maxPriceCents` vit dans search-query.ts l. 138-195 (`maxPriceFromRaw`), « DETTE DATÉE AU 19/11/2026 » ;
+       `SEARCH_VARIANT_PARAMS` vit dans apps/client/src/lib/seo.ts l. 47.
+FC7-3 ? « Le test qui assertait maxPriceCents dans l'URL » : à relever au lot (D228 l'avait corrigé ; l'entrée du lot ③ dit
+       qu'il « doit devenir une garde sur maxPrice »). Prémisse vérifiée à l'ouverture du lot.
+FC7-4 ≈ ÉCHÉANCE : le code date le retrait au 19/11/2026 ; nous sommes le 05/11/2026. Le lot est PRÊT À INTÉGRER ; son
+       intégration ne devrait pas précéder la date écrite dans le code (dit au rapport du lot et au bilan). Aucun
+       déploiement n'a eu lieu (AGENTS.md, D321 : « AUCUN DÉPLOIEMENT TANT QUE… ») : aucun lien public ne porte l'ancien nom.
+
+══ FC-8 LOT ③ ══════════════════════════════════════════════════════════════════════════════════════════════════════════
+FC8-1 ✓ entrée [CLIENT][P1] « Lot ③ complet, entièrement cadré » : ZWADJ_BACKLOG.md l. 1519.
+FC8-2 ✓ D229, D230, D231 : ZWADJ_CONTINUITE.md l. 23291, 23309, 23318, tous « ⛔ NON LIVRÉ ».
+FC8-3 ✓ la route `apps/client/src/app/[locale]/assistant/page.tsx` existe.
+FC8-4 ? « Si le cadrage écrit contredit le code actuel : ARRÊTÉ » — le cadrage date du 22/08 ; le code a bougé depuis (D232 :
+       incident d'intégrité ; D254 ; rangs 25-29 sur l'accueil et la recherche). À confronter à l'ouverture du lot.
+
+══ FC-9 act(...) ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+FC9-1 ✓ apps/client/src/test-setup.ts porte la garde (collecte des console.error, plafonds par fichier, `UPDATE_CONSOLE_CEILINGS`).
+
+══ FC-10 schema.org ════════════════════════════════════════════════════════════════════════════════════════════════════
+FC10-1 ✓ aucune donnée structurée dans apps/client/src (`application/ld+json`, `schema.org` : 0) ; entrée « Données structurées
+       schema.org sur le détail » ouverte (ZWADJ_BACKLOG.md l. 803).
+
+══ FC-11 404 ═══════════════════════════════════════════════════════════════════════════════════════════════════════════
+FC11-1 ✓ entrée [FRONT][P1] l. 1362 : « Le HTML initial des deux pages 404 est VIDE … décision de structure, non prise ».
+FC11-2 ✓ D249, D250 : AGENTS.md.
+
+══ FC-12 galerie ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+FC12-1 ✓ « Magazine gallery (5 photos) + lightbox [CLIENT][P0] » ouverte, ZWADJ_BACKLOG.md l. 643.
+FC12-2 ✓ la fiche rend les photos existantes (venue-detail-view.tsx l. 98-130), chacune ouverte dans un nouvel onglet.
+
+══ FP-1 à FP-5 ═════════════════════════════════════════════════════════════════════════════════════════════════════════
+FP1-1 ✓ walkin-journey.tsx l. 647 : `services: picks.map((serviceId) => ({ serviceId }))` ; `bookingServiceChoiceSchema`
+       (packages/types/src/service.ts) porte `tierId` et `quantity`.
+FP2-1 ✓ « relire la liste des devis de la salle (route existante) » : `GET /pro/venues/:id/quotes`
+       (apps/api/src/venues/quotes.controller.ts l. 43), « toutes versions » ; `GET /quotes/:id` n'existe pas.
+FP3-1 ✓ la révision du comptoir passe par `quotes.revise(chainQuoteId, body())` (walkin-journey.tsx l. 658).
+FP4-1 ✓ limite S-4 de D331 : ZWADJ_CONTINUITE.md l. 4023 et ZWADJ_BACKLOG.md l. 2634 ; ma-salle-relecture.test.tsx existe.
+FP5-1 ✓ entrée [PRO][P2] (D180) l. 1768 ; la route `GET /pro/venues/:id/quotes` rend TOUTES les versions, triées par chaîne
+       puis version.
+
+══ BILAN ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════
+Contrôles : 48 lignes parcourues (compte refait par script sur ce fichier, attendu = lignes écrites) · ✓ 41 · ≈ 5 (C0-6,
+FC1-1, FC3-2, FC4-5, FC7-4) · ✗ 0 · ? 2 (FC7-3, FC8-4 : vérifiés à l'ouverture de leur lot). Aucune affirmation fausse ⇒
+aucun lot n'est arrêté par cette lecture ; chaque lot revérifie sa prémisse à son ouverture (D231), au SHA où il part.

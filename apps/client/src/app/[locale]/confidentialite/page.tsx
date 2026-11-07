@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { publicMetadata } from "../../../lib/seo";
+import { PRIVACY_PATH } from "../../../lib/routes";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -9,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: `${t("privacy")} — Zwadj`,
     // Page légale : INDEXABLE. Elle est stable, unique, et sa présence
     // dans l'index est un signal de sérieux pour un marchand.
-    ...publicMetadata({ locale, canonicalPath: "/confidentialite", indexable: true })
+    ...publicMetadata({ locale, canonicalPath: PRIVACY_PATH, indexable: true })
   };
 }
 

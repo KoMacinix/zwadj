@@ -1,0 +1,49 @@
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 7 déclarées · 7 jouées (unit) · 0 hors exécution · 1 mesure(s) distincte(s) · 1 fichier(s) muté(s)
+  pré-vol fiche : code 0 · passés 28 · en échec 0
+✓ V-1. ⛔ la boîte n'est plus branchée sur le piège de focus partagé : Échap ne ferme rien, Tab en sort
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 26 · en échec 2 · AssertionError: expected <div class="photo-viewer-box" …(3)>…(4)</div> to be null // Object.is equality
+   [fiche#2] code 1 · passés 26 · en échec 2 · AssertionError: expected <button type="button" …(2)>…(1)</button> to be <button type="button" …(1)></button> // Object.is equality
+✓ V-2. ⛔ la boîte ne sait plus d'où elle vient : le focus ne revient pas à la vignette (clic sans focus, macOS)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected <body style><div>…(1)</div></body> to be <a …(4)><img alt …(5)></img></a> // Object.is equality
+✓ V-3. ⛔ les flèches ne suivent plus la lecture : en arabe, la gauche recule
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected 'الصورة 3 من 3' to be 'الصورة 2 من 3' // Object.is equality
+✓ V-4. l'alt de la visionneuse ne suit plus la langue de la page
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected 'Le jardin' to be 'الحديقة' // Object.is equality
+✓ V-5. un clic avec modificateur ouvre la boîte : le lien cesse d'être un lien
+   ancre 1→0 · genre suppression (marqueur sans objet)
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected <div class="photo-viewer-box" …(3)>…(4)</div> to be null // Object.is equality
+✓ V-6. « précédente » et « suivante » s'affichent pour une seule photo
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected 3 to be 1 // Object.is equality
+✓ V-7. la galerie ne boucle plus : « précédente » s'arrête à la première
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [fiche] code 1 · passés 27 · en échec 1 · AssertionError: expected 'Photo 1 sur 3' to be 'Photo 3 sur 3' // Object.is equality
+  empreintes : 1 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+7 garde(s) mordue(s) sur 7 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 7 sur 7, 0, 0)
+arbre rendu à son état de départ : vérifié.

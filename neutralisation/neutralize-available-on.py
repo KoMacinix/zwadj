@@ -86,9 +86,11 @@ CIBLES = [
     ),
     (
         "7. La règle SEO ne voit plus la pagination comme une variante",
+        # ⚠ ANCRE RÉORIENTÉE (session `front-client`, FC-8) : la liste porte désormais `guide` APRÈS `page` (le mode guidé, D230).
+        # Même faute mutée — `page` n'est plus une variante —, écrite comme cette campagne écrit ses ancres (CRLF).
         "apps/client/src/lib/seo.ts",
-        '  "sort",\r\n  "page"\r\n] as const;',
-        '  "sort"\r\n] as const;',
+        '  "sort",\r\n  "page",\r\n',
+        '  "sort",\r\n  // page retirée\r\n',
         1,
         "PROBLÈME EXISTAIT DÉJÀ",
         "src/lib/seo.test.ts",
@@ -114,7 +116,8 @@ CIBLES = [
     (
         "10. La carte grisée cesse d'être un lien",
         "apps/client/src/components/venue-card.tsx",
-        '<Link href={`/salles/${venue.slug}`} className="venue-card-link">',
+        # ⛔ RÉORIENTÉE (FC-5, session `front-client`) : l'adresse de la fiche passe par `venuePath` (table de routes du client).
+        '<Link href={venuePath(venue.slug)} className="venue-card-link">',
         '<Link href="" className="venue-card-link">',
         1,
         "RESTE UN LIEN",

@@ -34,7 +34,7 @@
 //  - **Le cartouche de carte a quitté le bas de page** : il n'y est pas dans le
 //    design, et il annonçait un report sous des résultats qui n'en parlaient
 //    pas. Il EST maintenant la vue carte.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
 import { CEREMONY_TYPE_FILTERS, type AmenityDTO, type VenueStyleDTO, type WilayaDTO } from "@zwadj/types";
@@ -44,6 +44,7 @@ import { Link } from "../../i18n/navigation";
 // rend les mêmes salles, et deux copies auraient divergé à la première
 // correction. Le rendu est inchangé — ses tests n'ont pas bougé.
 import { VenueCard } from "../venue-card";
+import { FilterWizard } from "../filter-wizard";
 // ⚠ `import type` et NON un import de valeur : le type est effacé à la
 // compilation, la DONNÉE ne l'est pas. Importer `PREVIEW_VENUES` ici la
 // ferait entrer dans le bundle NAVIGATEUR — le `tree-shaking` ne peut pas la
@@ -60,8 +61,10 @@ import {
   CAPACITY_STEP,
   pageWindow,
   toPublicQuery,
+  type GuideStep,
   type SearchState
 } from "../../lib/search-query";
+import { SEARCH_PATH } from "../../lib/routes";
 
 /** Le tri vit hors du `<form>` mais lui APPARTIENT (attribut HTML `form`).
  *  L'identifiant est donc partagé entre les deux, et déclaré une seule fois. */
@@ -113,13 +116,19 @@ export interface SearchViewProps {
    *  Fournie par la page serveur en développement seulement. Par défaut `null` :
    *  une consommation oubliée ne peut pas faire fuiter de fausses salles. */
   previewVenues?: readonly VenueCardData[] | null;
+  /** FC-8 — le mode guidé (D229, D230) : l'étape de l'assistant, lue par la page (`parseGuide`) ; `null` : panneau fermé. */
+  guide?: GuideStep | null;
 }
 
-export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null }: SearchViewProps) {
+export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null, guide = null }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
   const ar = locale === "ar";
   const [view, setView] = useState<ResultView>("grid");
+  // FC-8 — l'assistant se MONTE côté client seulement : sans JavaScript, `/salles?guide=…` rend la page de résultats et son
+  // formulaire, entiers — un panneau qui ne répondrait pas masquerait une page qui marche.
+  const [monte, setMonte] = useState(false);
+  useEffect(() => setMonte(true), []);
 
   const results = outcome.kind === "ok" ? outcome.data : null;
   const refus = refusDeDate(outcome);
@@ -235,7 +244,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
             <h2>{t(refus === "past" ? "availableOn.pastTitle" : "availableOn.horizonTitle")}</h2>
             <p>{t(refus === "past" ? "availableOn.pastBody" : "availableOn.horizonBody")}</p>
             <p>
-              <Link href={`/salles${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
+              <Link href={`${SEARCH_PATH}${toPublicQuery({ ...state, availableOn: "" })}`} className="btn btn-accent">
                 {t("availableOn.clearDateAction")}
               </Link>
             </p>
@@ -291,7 +300,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
                 <ul style={{ display: "flex", flexWrap: "wrap", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
                   {state.page > 1 ? (
                     <li>
-                      <Link href={`/salles${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
+                      <Link href={`${SEARCH_PATH}${toPublicQuery(state, state.page - 1)}`} className="btn btn-ghost">
                         {t("pagination.previous")}
                       </Link>
                     </li>
@@ -305,7 +314,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
                     ) : (
                       <li key={page}>
                         <Link
-                          href={`/salles${toPublicQuery(state, page)}`}
+                          href={`${SEARCH_PATH}${toPublicQuery(state, page)}`}
                           className={page === state.page ? "btn btn-accent" : "btn btn-ghost"}
                           aria-label={
                             page === state.page ? t("pagination.current", { page }) : t("pagination.page", { page })
@@ -320,7 +329,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
 
                   {state.page < totalPages ? (
                     <li>
-                      <Link href={`/salles${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
+                      <Link href={`${SEARCH_PATH}${toPublicQuery(state, state.page + 1)}`} className="btn btn-ghost">
                         {t("pagination.next")}
                       </Link>
                     </li>
@@ -331,6 +340,10 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
           </>
         )}
       </section>
+      {/* FC-8 — le mode guidé : l'assistant PAR-DESSUS les résultats RÉELS (D229), au total que la page a reçu. */}
+      {monte && guide !== null ? (
+        <FilterWizard step={guide} state={state} total={results?.total ?? null} wilayas={wilayas} styles={styles} amenities={amenities} />
+      ) : null}
     </main>
   );
 }
@@ -379,7 +392,7 @@ function SearchFilters({
     <form method="get" id={FILTERS_FORM_ID} className="filters">
       <div className="filters-head">
         <h2 className="filters-title">{t("filters.legend")}</h2>
-        <Link href="/salles" className="filters-reset">
+        <Link href={SEARCH_PATH} className="filters-reset">
           {t("filters.reset")}
         </Link>
       </div>

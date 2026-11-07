@@ -1,0 +1,14 @@
+FC-2 — tri différentiel de l'audit de secrets « fc2 » (APRÈS les pièces du lot, AVANT le commit de clôture)
+
+Instrument : neutralisation/audit-secrets.py --sortie docs/preuves/front-client/FC-2/audit-secrets-fc2.txt (scellée ; code 1 dès
+qu'il rend des alertes ; il garantit l'absence de VALEURS, pas de mots, D299). Parcouru : 4 625 fichiers (80 983 722 octets),
+audités 4 492, exclus 133, alertes 999.
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/front-client/FC-1/audit-secrets-fc1.txt
+docs/preuves/front-client/FC-2/audit-secrets-fc2.txt — calibration à deux bras tenue. Précédente : 997 contextes ; nouvelle : 999
+⇒ alertes ABSENTES de la précédente : 2 (jeton = 1 · mot-de-passe = 1), lues aux lignes 3190 et 3192 de la sortie scellée.
+  · [jeton] portes/test-e2e.txt l. 1 : l'en-tête écrit par le pilote des portes, qui COMPTE le paramètre de jeton restant (0).
+  · [mot-de-passe] portes/test-int.txt l. 369 : un TITRE de test d'intégration (la route d'oubli de mot de passe), même forme que
+    les tris de D340 et de FC-1 ; « valeur déjà présente dans 139 fichiers suivis hors preuves ».
+Résultat du tri : 2 alertes lues, 0 valeur réelle. Les autres pièces de FC-2 écrivent « jetons gardés : 0 » sans nommer le
+paramètre : elles ne produisent plus l'écho que le tri de FC-1 a lu.
+Limite écrite : ce fichier et rapport.md sont écrits après l'audit ; l'audit du lot suivant les couvre.

@@ -9,10 +9,11 @@
 //     nulle part ;
 //   · aucun lauréat d'award n'est nommé ;
 //   · la recherche fonctionne SANS JavaScript.
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { NextIntlClientProvider } from "next-intl";
 import { messages } from "@zwadj/i18n";
-import type { VenueListResponse, VenueSummaryDTO } from "@zwadj/types";
+import type { VenueListResponse, VenueSummaryDTO, WilayaDTO } from "@zwadj/types";
 import { HomeView } from "../../components/home-view";
 import { PREVIEW_VENUES, previewVenuesFor } from "../../lib/preview-venues";
 import { VENDOR_CATEGORIES } from "../../lib/vendor-categories";
@@ -263,5 +264,57 @@ describe("Accueil — arabe", () => {
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/[\u0600-\u06FF]/u);
     // Une clé absente rendrait son chemin brut (« home.vendors.title »).
     expect(document.body.textContent).not.toMatch(/home\./u);
+  });
+});
+
+// ── FC-8 (session `front-client`) — LE LOT ③ À L'ACCUEIL (D231) : TROIS champs, et l'entrée de l'assistant (D229) ─────────────
+// ⚠ « Sans JavaScript » se mesure sur le HTML du SERVEUR (`renderToString` : aucun effet ne s'y exécute) — un rendu jsdom exécute
+// les effets, il montrerait la page AVEC JavaScript.
+const WILAYAS = [
+  { id: "w16", code: 16, nameFr: "Alger", nameAr: "الجزائر", cities: [{ id: "c1", nameFr: "Hydra", nameAr: "حيدرة" }] }
+] as unknown as WilayaDTO[];
+
+function htmlServeur(locale: "fr" | "ar" = "fr"): Document {
+  const html = renderToString(
+    <NextIntlClientProvider locale={locale} messages={messages[locale]}>
+      <HomeView recent={liste([salle()])} affordable={liste([])} proUrl={null} {...({ wilayas: WILAYAS } as object)} />
+    </NextIntlClientProvider>
+  );
+  return new DOMParser().parseFromString(html, "text/html");
+}
+
+describe("FC-8 — l'accueil : TROIS champs aux noms du contrat (D231)", () => {
+  it("sans JavaScript, le formulaire soumet la commune, les invités et le budget — et rien d'autre", () => {
+    const form = htmlServeur().querySelector("form.hm-search");
+    const noms = [...(form?.querySelectorAll("[name]") ?? [])].map((e) => e.getAttribute("name"));
+    expect(noms).toEqual(["cityId", "guests", "maxPrice"]);
+  });
+
+  it("la commune est GROUPÉE par wilaya, « Toute l'Algérie » d'abord", () => {
+    const select = htmlServeur().querySelector('form.hm-search select[name="cityId"]');
+    expect(select?.querySelector("option")?.getAttribute("value")).toBe("");
+    expect(select?.querySelector("optgroup")?.getAttribute("label")).toBe("Alger");
+    expect(select?.querySelector('optgroup option[value="c1"]')?.textContent).toBe("Hydra");
+  });
+
+  it("⚠ avec JavaScript, le même formulaire devient l'ÉTAPE 1 : il porte l'étape SUIVANTE de l'assistant (`guide`)", async () => {
+    poser({ ...({ wilayas: WILAYAS } as object) });
+    const form = document.querySelector("form.hm-search") as HTMLFormElement;
+    await waitFor(() => expect(form.querySelector('input[name="guide"]')).not.toBe(null));
+    fireEvent.change(form.querySelector('select[name="cityId"]') as HTMLSelectElement, { target: { value: "c1" } });
+    fireEvent.submit(form);
+    // La commune répondue, la suite est la PREMIÈRE question sans réponse : les invités (D229).
+    expect((form.querySelector('input[name="guide"]') as HTMLInputElement).value).toBe("guests");
+  });
+});
+
+describe("FC-8 — « Li hwas lqa » : l'entrée de l'assistant mène au mode guidé de `/salles` (D229)", () => {
+  it("le libellé est celui que D229 décide, et le lien ouvre l'assistant à sa première étape", () => {
+    expect(messages.fr.home.search.assistant).toBe("Li hwas lqa");
+    poser();
+    const lien = screen.getByRole("link", { name: messages.fr.home.search.assistant });
+    const url = new URL(lien.getAttribute("href") ?? "", "http://localhost");
+    expect(url.pathname.endsWith("/salles")).toBe(true);
+    expect([...url.searchParams.entries()]).toEqual([["guide", "city"]]);
   });
 });

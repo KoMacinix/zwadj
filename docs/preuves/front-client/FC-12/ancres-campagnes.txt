@@ -1,0 +1,23 @@
+FC-12 — relevé STATIQUE des ancres des 7 campagnes que le tri sélectionne (`lancer-campagnes.py --liste`, dont `neutralize-fc12.py`), par
+l'instrument versionné docs/preuves/front-client/outils/releve-ancres.py (calibré, rejoué ci-dessous), APRÈS le code du lot, AVANT de jouer
+les campagnes : 0 ancre périmée, 0 CRLF en dur — aucune simulation CRLF nécessaire.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+b7             listées   3 · examinées   3 (avec ancre 3, sans ancre 0) · non reconnues 0 · écarts 0
+fc1            listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+fc12           listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+fc2            listées   1 · examinées   1 (avec ancre 1, sans ancre 0) · non reconnues 0 · écarts 0
+r33            listées  95 · examinées  95 (avec ancre 95, sans ancre 0) · non reconnues 0 · écarts 0
+r38            listées  46 · examinées  46 (avec ancre 46, sans ancre 0) · non reconnues 0 · écarts 0
+r39            listées  51 · examinées  51 (avec ancre 51, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 7 (illisibles : 0, attendu 0) · cibles listées : 209 · examinées : 209 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 0 ancre(s) CRLF EN DUR (environnement)

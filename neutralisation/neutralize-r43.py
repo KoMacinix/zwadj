@@ -330,8 +330,9 @@ cible("P-2. ⛔ le bandeau du brouillon n'est jamais rendu (ni téléchargement,
       "quote === null || quote.isOfficial !== false ? null : (", "quote === null || quote.isOfficial !== false || true ? null : (",
       {"pro-parcours": "⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le"})
 cible("P-3. ⛔ R-1 — la révision d'un brouillon porte la fiche et les noms (le serveur la refuserait)", PARCOURS,
-      "...(fiche === null || sansCoordonnees || chaineBrouillon ? {} : copiePourDevis(nomsEffectifs, fiche.id))",
-      "...(fiche === null || sansCoordonnees ? {} : copiePourDevis(nomsEffectifs, fiche.id))",
+      # ⛔ RÉORIENTÉE (FP-3, session `front-client`) : la condition tient maintenant sur trois lignes (le corps passe par `copiePourRevision`) ; même faute — `chaineBrouillon` retiré de la condition.
+      "    ...(fiche === null || sansCoordonnees || chaineBrouillon\n      ? {}",
+      "    ...(fiche === null || sansCoordonnees\n      ? {}",
       {"pro-parcours": "⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVI"})
 cible("P-4. ⛔ l'état de la chaîne ne vient plus du SERVEUR (`isOfficial` de la réponse ignoré)", PARCOURS,
       "setChaineBrouillon(next.isOfficial === false);", "setChaineBrouillon(false);",

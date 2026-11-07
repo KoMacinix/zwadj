@@ -1,0 +1,27 @@
+FP-2 — relevé STATIQUE des ancres des 11 campagnes que le tri sélectionne (`lancer-campagnes.py --liste`, dont `neutralize-fp2.py`), par
+l'instrument versionné docs/preuves/front-client/outils/releve-ancres.py (calibré, rejoué ci-dessous), APRÈS le code du lot, AVANT de jouer
+les campagnes : 0 ancre périmée, 0 CRLF en dur — aucune simulation CRLF nécessaire.
+
+calibration ✓ rouge : clé `chemin`, ancre absente → écart (défaut de la première version)
+calibration ✓ rouge : ancre CRLF dans un fichier LF → écart d'environnement
+calibration ✓ rouge : attendu ×2, trouvé ×1 → écart
+calibration ✓ rouge : `creer` sur un fichier existant → écart
+calibration ✓ rouge : ni fichier ni ancre → non reconnue
+calibration ✓ vert : clé `fichier`, ancre présente → pas d'écart
+calibration ✓ vert : `creer` sur un chemin libre → examinée sans écart
+calibration : 7 bras · 0 manqué(s) (attendu 0)
+
+fc6            listées  12 · examinées  12 (avec ancre 12, sans ancre 0) · non reconnues 0 · écarts 0
+fp1            listées  18 · examinées  18 (avec ancre 18, sans ancre 0) · non reconnues 0 · écarts 0
+fp2            listées   6 · examinées   6 (avec ancre 6, sans ancre 0) · non reconnues 0 · écarts 0
+journey        listées   7 · examinées   7 (avec ancre 7, sans ancre 0) · non reconnues 0 · écarts 0
+r32            listées  65 · examinées  65 (avec ancre 65, sans ancre 0) · non reconnues 0 · écarts 0
+r33            listées  95 · examinées  95 (avec ancre 95, sans ancre 0) · non reconnues 0 · écarts 0
+r38            listées  46 · examinées  46 (avec ancre 46, sans ancre 0) · non reconnues 0 · écarts 0
+r39            listées  51 · examinées  51 (avec ancre 51, sans ancre 0) · non reconnues 0 · écarts 0
+r41            listées  70 · examinées  70 (avec ancre 70, sans ancre 0) · non reconnues 0 · écarts 0
+r42            listées  28 · examinées  28 (avec ancre 28, sans ancre 0) · non reconnues 0 · écarts 0
+r43            listées  87 · examinées  87 (avec ancre 87, sans ancre 0) · non reconnues 0 · écarts 0
+
+campagnes parcourues : 11 (illisibles : 0, attendu 0) · cibles listées : 485 · examinées : 485 · non reconnues : 0 (attendu 0)
+écarts : 0 ancre(s) PÉRIMÉE(S) ou fichier(s) absent(s) · 0 ancre(s) CRLF EN DUR (environnement)

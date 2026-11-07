@@ -1,0 +1,26 @@
+# FC-5 — les gardes de SOURCE de la session (FC-1 contraste, FC-5 semaine, adresses, routes) sur des sources en CRLF · 2026-11-05T07:30:06Z
+# commande : python3 docs/preuves/front-client/outils/crlf-simule.py <les fichiers> -- pnpm --filter @zwadj/client exec vitest run src/lib/adresses-guard.test.ts src/lib/semaine-source-unique.test.ts src/lib/routes.test.ts src/app/theme-contrast.test.ts
+# fichiers ramenés en CRLF : 133 (git ls-files des sources non-test de apps/client/src, apps/pro/src, packages/types/src, + packages/ui/styles.css et apps/client/src/app/theme.css)
+
+calibration ✓ positif : une ancre CRLF est introuvable dans le fichier LF
+calibration ✓ positif : la même ancre est trouvée une fois après conversion
+calibration ✓ négatif : l'aller-retour rend les mêmes octets
+calibration ✓ négatif : un fichier qui contient déjà un retour chariot est refusé
+calibration : 4 bras · 0 manqué(s) (attendu 0)
+CRLF simulé : 133 fichier(s) convertis, 25688 ligne(s)
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ✓ src/app/theme-contrast.test.ts (14 tests) 29ms
+ ✓ src/lib/routes.test.ts (8 tests) 14ms
+ ✓ src/lib/semaine-source-unique.test.ts (6 tests) 66ms
+ ✓ src/lib/adresses-guard.test.ts (5 tests) 10ms
+
+ Test Files  4 passed (4)
+      Tests  33 passed (33)
+   Start at  07:30:08
+   Duration  2.71s (transform 401ms, setup 297ms, collect 2.20s, tests 119ms, environment 1.79s, prepare 383ms)
+
+rendus en LF à l'identique : 133 sur 133 (attendu 133)
+commande : sortie 0
+crlf-simule exit=0

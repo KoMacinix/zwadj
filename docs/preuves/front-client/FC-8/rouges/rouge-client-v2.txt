@@ -1,0 +1,101 @@
+# FC-8 — ROUGE (client) du COMPLÉMENT, lu contre le code du lot SANS le piège de focus partagé, session front-client, 05/11/2026
+# HEAD au moment de la mesure : 09aa55fbc9c9d0a047022ff90636593ac3b14d8e (code du lot NON commité, sans `useDismissLayer` ; les deux tests ajoutés, non commités)
+# commande : (apps/client) npx vitest run src/components/filter-wizard.test.tsx — code de sortie 1
+# sha256 apps/client/src/components/filter-wizard.test.tsx : 29b7b8357f382dcb4de372e0ed58db521bfc309190c32b61ca0a15b230e19bdf
+# lecture : blocs « FAIL … > titre » lus : 2 (attendu 2 : « ⛔ Échap FERME l'assistant », « ⛔ Tab reste DANS le panneau ») · lignes AssertionError : 2 (attendu ≥ 2) — voir le détail ci-dessous
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+stdout | src/components/filter-wizard.test.tsx
+PLAFOND ABAISSABLE  "src/components/filter-wizard.test.tsx": 0 observé(s) sous un plafond de 3. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ❯ src/components/filter-wizard.test.tsx (34 tests | 2 failed) 663ms
+   ✓ FC-8 — l'étape vient de l'URL, une question à la fois > s'ouvre à l'étape DEMANDÉE, et sur elle seule 52ms
+   ✓ FC-8 — l'étape vient de l'URL, une question à la fois > ⚠ ne pose AUCUNE question de date — la cinquième étape est HORS lot 39ms
+   ✓ FC-8 — l'étape vient de l'URL, une question à la fois > les communes sont GROUPÉES par wilaya 24ms
+   ✓ FC-8 — l'étape vient de l'URL, une question à la fois > le champ REPREND la réponse déjà donnée — elle est lue dans l'URL, pas dans une mémoire locale 15ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > répondre à la commune pousse `/salles?cityId=…&guide=guests` (D229, mot pour mot) 49ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > les invités : la valeur tenue par le DOM part à « Continuer » (le seul champ non contrôlé, D229) 22ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > ⚠ « Passer » avance SANS réponse, et la séquence se TERMINE : on ne retombe jamais sur la commune 19ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > le palier 500000 DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT 17ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > le palier 750000 DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT 20ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > le palier 1000000 DA arrive intact à l'API ET à l'URL, et les deux CONCORDENT 20ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > « Sans limite » efface le plafond et passe aux goûts 16ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > ⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT 41ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > ⚠ n'invente AUCUN paramètre absent du contrat 22ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > sans aucun critère, « Voir les salles » mène à /salles nu 19ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > « Fermer » rend la page de résultats SANS `guide`, réponses gardées 20ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > « Recommencer » repart de la commune, sans AUCUNE réponse 25ms
+   ✓ Le compte vient du SERVEUR — le total de la page de résultats, jamais un filtrage local > à la dernière étape, il dit le total que la page a reçu 12ms
+   ✓ Le compte vient du SERVEUR — le total de la page de résultats, jamais un filtrage local > ⚠ « je ne sais pas » ne se dit PAS « zéro salle » 18ms
+   ✓ Le compte vient du SERVEUR — le total de la page de résultats, jamais un filtrage local > zéro salle le dit, et propose d'élargir 12ms
+   ✓ Le récapitulatif et le rail lisent l'URL — ils ne se replient pas > le récapitulatif garde TOUTES les réponses de l'URL, sauf l'étape en cours 16ms
+   ✓ Le récapitulatif et le rail lisent l'URL — ils ne se replient pas > cliquer le numéro du rail vaut « Modifier » 15ms
+   ✓ Le récapitulatif et le rail lisent l'URL — ils ne se replient pas > ⚠ une étape sans réponse n'est pas cliquable dans le rail 7ms
+   ✓ Le récapitulatif et le rail lisent l'URL — ils ne se replient pas > ⚠ cliquer le LIBELLÉ d'une étape répondue vaut « Modifier », comme sa pastille 14ms
+   ✓ Le récapitulatif et le rail lisent l'URL — ils ne se replient pas > ⚠ la pastille et le libellé sont UN seul bouton ; le libellé d'une étape sans réponse n'est dans aucun bouton (on ne saute pas une étape incomplète) 21ms
+   ✓ FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre > la boîte est nommée par son titre, et la carte de la question reçoit le focus 8ms
+   × FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre > ⛔ Échap FERME l'assistant : la même URL que « Fermer » — les réponses restent, `guide` part 15ms
+     → expected +0 to be 1 // Object.is equality
+   × FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre > ⛔ Tab reste DANS le panneau : du dernier bouton il revient au premier, et Maj+Tab fait l'inverse 18ms
+     → expected <button type="button" …(1)></button> to be <button type="button" …(1)></button> // Object.is equality
+   ✓ Arabe > se rend sans clé manquante 8ms
+   ✓ Point D — chrome partagée > ⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation 12ms
+   ✓ Point D — chrome partagée > la coche du rail est une ICÔNE, la même que côté Pro — plus un glyphe texte 13ms
+   ✓ Point D — chrome partagée > ⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite 12ms
+   ✓ Point D — chrome partagée > le trait est DÉCORATIF : il ne dit rien à un lecteur d'écran 9ms
+   ✓ Point D — chrome partagée > le bouton « Modifier » vient du composant partagé, et ramène bien à l'étape 15ms
+   ✓ Point D — chrome partagée > ⚠ la MISE EN PAGE reste à l'application : `.wz-*` cohabite avec `.zj-*` 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/filter-wizard.test.tsx > FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre > ⛔ Échap FERME l'assistant : la même URL que « Fermer » — les réponses restent, `guide` part
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/components/filter-wizard.test.tsx:287:36
+    285|     poser("budget", { guests: "250" });
+    286|     fireEvent.keyDown(document, { key: "Escape" });
+    287|     expect(push.mock.calls.length).toBe(1);
+       |                                    ^
+    288|     const { chemin, params, etat } = poussee();
+    289|     expect(chemin).toBe("/salles");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/filter-wizard.test.tsx > FC-8 — un panneau par-dessus les résultats : une boîte de dialogue, et le focus y entre > ⛔ Tab reste DANS le panneau : du dernier bouton il revient au premier, et Maj+Tab fait l'inverse
+AssertionError: expected <button type="button" …(1)></button> to be <button type="button" …(1)></button> // Object.is equality
+
+- Expected
++ Received
+
+  <button
+-   class="wz-btn wz-head-reset"
++   class="wz-btn"
+    type="button"
+  >
+-   Recommencer
++   Sans limite
+  </button>
+
+ ❯ src/components/filter-wizard.test.tsx:301:36
+    299|     dernier.focus();
+    300|     fireEvent.keyDown(document, { key: "Tab" });
+    301|     expect(document.activeElement).toBe(premier);
+       |                                    ^
+    302|     fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
+    303|     expect(document.activeElement).toBe(dernier);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 32 passed (34)
+   Start at  13:09:00
+   Duration  2.14s (transform 413ms, setup 89ms, collect 741ms, tests 663ms, environment 341ms, prepare 77ms)

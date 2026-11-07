@@ -1,0 +1,175 @@
+# FC-1 — ROUGE e2e (B8, « client recherche de salles »), lu contre l'état d'AVANT et la référence a11y RESSERRÉE, session front-client, 05/11/2026
+# HEAD au moment de la mesure : aee7bc4b302be4c9ee2ce09f3979166d79f1f6c6
+# commande : pnpm --filter @zwadj/e2e exec playwright test specs/b8-accessibility.e2e.ts --grep "client recherche de salles" --reporter list — code de sortie 1
+# sha256 e2e/specs/b8-accessibility.e2e.ts : 5deef549a7e2036208f40a982b5ab114b9a053e24f29b0e9509a4b05dc0b6ad6
+# sha256 e2e/baselines/a11y.json (RESSERRÉE) : 15b0711a6edf1411f2e5ea165c5f01bcaea9fe1a7e188d63331b1cb3c70aa81d
+# sha256 apps/client/src/app/theme.css (état d'AVANT) : 27308e8dc8a6373d00c78183e3d79f0a2cad7f1c174a34fe97d1029941c1ad57
+# journal brut : 321 lignes ; gardées 166 (les lignes [WebServer] retirées) ; « token= » gardés : 0 (attendu 0)
+# lecture : 1 échec, le bloc porte « expect(received).toEqual(expected) » et nomme les deux NOUVELLES violations
+
+
+> @zwadj/api@0.0.0 prisma:migrate /home/user/zwadj/apps/api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+32 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 2 tests using 1 worker
+
+  ✓  1 [warmup] › specs/warmup.setup.ts:57:5 › préchauffe les routes des deux applications (21.8s)
+  ✘  2 [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation (3.6s)
+
+
+  1) [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation 
+
+    Error: NOUVELLES violations sur « client recherche de salles » :
+    color-contrast @ .filters-reset
+    color-contrast @ .range-value
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 4
+
+    - Array []
+    + Array [
+    +   "color-contrast @ .filters-reset",
+    +   "color-contrast @ .range-value",
+    + ]
+
+      180 |         nouvelles,
+      181 |         `NOUVELLES violations sur « ${ecran.nom} » :\n${nouvelles.join("\n")}`
+    > 182 |       ).toEqual([]);
+          |         ^
+      183 |
+      184 |       // ⚠ L'AUTRE SENS COMPTE AUSSI. Une violation corrigée doit sortir de la
+      185 |       // référence, sinon la dette semble éternelle et plus personne n'y croit.
+        at /home/user/zwadj/e2e/specs/b8-accessibility.e2e.ts:182:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/b8-accessibility.e2e.ts-B8-75544-s-aucune-NOUVELLE-violation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/b8-accessibility.e2e.ts-B8-75544-s-aucune-NOUVELLE-violation-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/b8-accessibility.e2e.ts-B8-75544-s-aucune-NOUVELLE-violation-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs/warmup.setup.ts (21.8s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 failed
+    [chromium] › specs/b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation 
+  1 passed (53.8s)
+undefined
+/home/user/zwadj/e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/b8-accessibility.e2e.ts --grep client recherche de salles --reporter list

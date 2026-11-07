@@ -1,0 +1,13 @@
+  calibration ✓ extracteur, positif : les deux chemins des lignes de table : True (attendu True)
+  calibration ✓ extracteur, négatif : le chemin cité en prose n'est PAS dans la table : False (attendu False)
+  calibration ✓ classement : un composant est du code de produit : True (attendu True)
+  calibration ✓ classement : un test n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une pièce n'est pas du code de produit : False (attendu False)
+  calibration ✓ classement : une feuille de style est du code de produit : True (attendu True)
+  calibration : 6 bras · 0 manqué(s) (attendu 0)
+lot FP-5 · départ fd9dac0 · HEAD a8a6388 · commits parcourus : 2
+✓ 1. premier commit = la table SEULE : 4391663 → ['docs/preuves/front-client/FP-5/table-ouverture.md']
+✓ 2. extensions de la table, chacune SEULE : 0 commit(s) examiné(s), 0 mêlé(s) à d'autres fichiers (attendu 0)
+— 3. aucun commit de code de produit dans ce lot : rien à ordonner
+✓ 4. diff ⊆ table : 5 fichier(s) examiné(s) (2 commités, 3 non commités) contre 5 chemin(s) de la table · hors table : 0 (attendu 0)
+  (information) chemins de la table absents du diff : 0

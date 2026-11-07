@@ -27,6 +27,7 @@
 // ⚠ CE MODULE EST PUR. Il ne lit ni `headers()`, ni `window`, ni l'horloge : il
 // se teste sans rendre une page.
 import type { Metadata } from "next";
+import type { VenuePublicDTO } from "@zwadj/types";
 
 /** Racine publique du site, sans barre finale. Sert à rendre les `canonical`
  *  ABSOLUES — une `canonical` relative est tolérée par Google mais ambiguë dès
@@ -55,7 +56,10 @@ export const SEARCH_VARIANT_PARAMS = [
   "ceremonyType",
   "availableOn",
   "sort",
-  "page"
+  "page",
+  // FC-8 — le mode guidé (D230) : `/salles?guide=…` montre les MÊMES résultats sous un panneau ; c'est une seconde adresse.
+  // ⚠ D230 y joignait `maxPriceCents` : sans objet depuis FC-7 (le repli est retiré, le paramètre n'a plus d'effet).
+  "guide"
 ] as const;
 
 /** La page porte-t-elle au moins un paramètre de variante ? */
@@ -94,4 +98,77 @@ export function publicMetadata(params: {
     robots: { index: indexable, follow: true },
     alternates: { canonical: absoluteUrl(locale, canonicalPath) }
   };
+}
+
+// ── FC-10 (session `front-client`) — LES DONNÉES STRUCTURÉES D'UNE FICHE DE SALLE (schema.org `EventVenue`), en JSON-LD ──
+//
+// ⚠ PURES, comme tout ce module (D205) : `venueStructuredData` reçoit la salle, la langue et l'URL canonique de la fiche, et rend
+// l'objet — la page ne fait que l'insérer. Une décision prise dans un composant serveur est invisible aux tests ; ici, chaque champ se mesure.
+// ⚠ CE QUE L'OBJET PORTE : le nom et l'accroche dans la langue de la PAGE (une fiche `/ar/…` décrit la salle en arabe), l'adresse
+// (rue, quartier, commune, pays `DZ`), la capacité (`maximumAttendeeCapacity`), les photos en URL ABSOLUES, la position si le pro
+// l'a saisie, et l'URL canonique de la fiche.
+// ⛔ AUCUN PRIX : le serveur rend des CENTIMES (`basePriceCents`), pas un prix « tel quel » ; l'écrire ici obligerait à le
+// convertir — un calcul de montant que le front ne fait plus (FC-7 : la seule conversion du front est `centsFromDinars`, à
+// l'aller). Consigne de la session : « aucun prix sauf si le serveur le donne tel quel ».
+// ⛔ L'INSERTION SE FAIT PAR `jsonLdScript` : les textes viennent du PRO (nom, accroche, adresse) ; `JSON.stringify` n'échappe pas
+// `</script>`, et un nom de salle qui le contiendrait fermerait la balise et injecterait du HTML. `<`, `>`, `&`, U+2028 et U+2029
+// sont donc écrits en échappements `\uXXXX` — le JSON reste identique pour qui le lit.
+
+export interface EventVenueJsonLd {
+  "@context": "https://schema.org";
+  "@type": "EventVenue";
+  name: string;
+  url: string;
+  description?: string;
+  maximumAttendeeCapacity: number;
+  address: {
+    "@type": "PostalAddress";
+    streetAddress?: string;
+    addressLocality: string;
+    addressCountry: "DZ";
+  };
+  image?: string[];
+  geo?: { "@type": "GeoCoordinates"; latitude: number; longitude: number };
+}
+
+/** L'objet JSON-LD d'une fiche. `url` est l'URL canonique ABSOLUE de la fiche ; `absolu` fabrique l'URL absolue d'une image. */
+export function venueStructuredData(
+  venue: VenuePublicDTO,
+  locale: string,
+  url: string,
+  absolu: (chemin: string) => string
+): EventVenueJsonLd {
+  const ar = locale === "ar";
+  const nom = (ar ? venue.nameAr : venue.nameFr).trim();
+  const accroche = (ar ? venue.taglineAr : venue.taglineFr)?.trim() ?? "";
+  const quartier = (ar ? venue.districtAr : venue.districtFr)?.trim() ?? "";
+  const rue = venue.address?.trim() ?? "";
+  const commune = ar ? venue.city.nameAr : venue.city.nameFr;
+  const rueEtQuartier = [rue, quartier].filter((x) => x !== "").join(", ");
+  return {
+    "@context": "https://schema.org",
+    "@type": "EventVenue",
+    name: nom,
+    url,
+    ...(accroche === "" ? {} : { description: accroche }),
+    maximumAttendeeCapacity: venue.capacityMax,
+    address: {
+      "@type": "PostalAddress",
+      ...(rueEtQuartier === "" ? {} : { streetAddress: rueEtQuartier }),
+      addressLocality: commune,
+      addressCountry: "DZ"
+    },
+    ...(venue.photos.length === 0 ? {} : { image: venue.photos.map((p) => absolu(p.url)) }),
+    ...(venue.lat === null || venue.lng === null ? {} : { geo: { "@type": "GeoCoordinates", latitude: venue.lat, longitude: venue.lng } })
+  };
+}
+
+/** Le texte à placer DANS `<script type="application/ld+json">` : du JSON dont `<`, `>`, `&`, U+2028 et U+2029 sont échappés. */
+export function jsonLdScript(donnees: unknown): string {
+  return JSON.stringify(donnees)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 }

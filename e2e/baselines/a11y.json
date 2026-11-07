@@ -11,9 +11,7 @@
     "color-contrast @ .is-soon.site-nav-link"
   ],
   "client recherche de salles": [
-    "color-contrast @ .filters-reset",
     "color-contrast @ .is-soon.site-nav-link",
-    "color-contrast @ .range-value",
     "color-contrast @ .site-nav-soon"
   ],
   "client compte": [

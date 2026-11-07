@@ -440,7 +440,7 @@
       "cta": "فتح فضاء المسيّر"
     },
     "search": {
-      "assistant": "الإجابة على أربعة أسئلة موجّهة",
+      "assistant": "اللي حوّس لقى",
       "budget": "الميزانية القصوى",
       "budgetAny": "دون حد",
       "city": "أين",
@@ -1208,6 +1208,14 @@
         "pt_FIXED": "جزافي",
         "pt_PER_GUEST": "لكل مدعو",
         "pt_PER_UNIT": "بالوحدة",
+        "tierLabel": "الصيغة — {name}",
+        "tierChoose": "اختر صيغة",
+        "quantityLabel": "الكمية — {name} ({unit})",
+        "quantityLabelNoUnit": "الكمية — {name}",
+        "quantityRange": "من {min} إلى {max}.",
+        "quantityMin": "على الأقل {min}.",
+        "quantityMax": "على الأكثر {max}.",
+        "servicesMissing": "تنقص صيغة أو كمية: {names}.",
         "pt_TIERED": "حسب الصيغة",
         "qClient": "من هو الزبون؟",
         "qClientHint": "زبون حاضر في المكان · حجز مباشر",
@@ -1362,6 +1370,10 @@
     "photos": "الصور",
     "photosNone": "لم تنشر هذه القاعة صورًا بعد.",
     "photoOpen": "عرض الصورة بالحجم الكامل",
+    "viewerLabel": "الصورة {n} من {total}",
+    "viewerClose": "إغلاق",
+    "viewerPrevious": "الصورة السابقة",
+    "viewerNext": "الصورة التالية",
     "tour": "الزيارة الافتراضية",
     "tourLoad": "تشغيل الزيارة الافتراضية",
     "tourNotice": "الزيارة مستضافة على Matterport ولا تُحمَّل إلا بطلبك: فهي تستهلك البيانات.",
@@ -1429,6 +1441,9 @@
       "quantity": "الكمية",
       "dayFree": "{date}، متاح",
       "dayFull": "{date}، غير متاح",
+      "dayRequested": "{date}، طلبات قيد الانتظار",
+      "requested": "طلبات قيد الانتظار",
+      "requestedNotice": "توجد طلبات أخرى قيد الانتظار لهذه الفترة. تختار القاعة بين الطلبات، ويمكنك إرسال طلبك.",
       "chosen": "اختيارك: {date} · {slot}"
     },
     "bookingHint": "أرسل طلبك أدناه: تردّ عليك القاعة، ولا يُخصم شيء الآن."
@@ -1451,6 +1466,7 @@
   },
   "wizard": {
     "amenities": "التجهيزات",
+    "close": "إغلاق المساعد",
     "budgetAny": "دون حد",
     "cityAll": "كل الجزائر",
     "continue": "متابعة",

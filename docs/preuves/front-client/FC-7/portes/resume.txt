@@ -1,0 +1,9 @@
+# HEAD 9c7918e274b33adcdb9bac22e49db4d305f0a8ae · arbre : 7 entrée(s) non commitée(s) · 2026-11-05T09:54:18Z
+typecheck exit=0 duree=19s
+lint exit=0 duree=10s
+test exit=0 duree=87s
+build exit=0 duree=32s
+test:int exit=1 duree=333s
+test:e2e exit=0 duree=204s
+FINI · journaux bruts : /tmp/tmp.YLkbEmxvIq
+portes.sh : terminé (FINI ci-dessus) — lancé en arrière-plan du shell, son code de sortie n'est pas ajouté ici ; chaque porte porte le sien.
