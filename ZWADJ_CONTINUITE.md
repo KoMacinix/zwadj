@@ -2396,7 +2396,7 @@ d) S-113 à S-129 (D341) : ratifiées par adoption ; S-116 acceptée telle quell
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 45 est **l'intégration de `front-client` dans `main`** : lot de **CODE** par destination — la fusion apporte le code de quatorze lots — qui **n'écrit aucune ligne de code neuve** (consigne, § 3) ; ni session adverse B ni certification (R-4, DR1 de D336) ; **(b)** 1 a, 1 b et 1 d sont écrites **par adoption** ; 1 c est une citation de Ko, hors dépôt, écrite comme telle ; **(c)** R-1 à R-11 sont écrites ici comme décisions du relecteur, avec leurs motifs, sans retouche ; **(d)** la lecture adverse de la consigne (`75eee79`, `docs/preuves/D342/lecture-adverse/`) : 46 contrôles — 30 ✓ · 11 ≈ · 0 ✗ · 5 ? — et deux défauts d'instrument, réparés et versés avec la passe 1 (la règle d'arrêt de la consigne n'a pas joué : le seul ✗ de la passe 1 était un motif trop étroit, pas un écart du dépôt) ; **(e)** les onze ≈ sont dits ici parce que chacun engage un fichier d'autorité ou une instruction : [1.2] NI la branche, NI la session cloud, NI son exception à « un lot par session » ne figurent dans un fichier d'autorité de `main` — c'est D276, cette session les écrit ; [2.2] « fusionné dans `origin/main` (d44867a) » se lit « sur la base de d44867a » : l'essai du relecteur est local et `origin/main` ne contient pas la branche ; [2.7] la référence décalée (ci-dessus) ; [3.4] le tri de `lancer-campagnes.py` croise `git diff --name-only HEAD`, vide une fois la fusion commitée : on emploie les outils de D341 (base `<départ>..HEAD`), sans retoucher l'instrument (R-10) ; [3.5] « les six portes et l'e2e » : le pilote joue six portes, dont l'e2e ; [4.1] le BILAN dit « 106 commits » et « `main` n'a pas bougé » : 107 commits mesurés, et `main` a 20 commits de plus ; [4.4] les trois lots ARRÊTÉS n'ont pas de « rapport » mais une pièce d'arrêt ; [4.5] la consigne de la branche prévoit une intégration « lot par lot » : celle-ci les intègre sous un seul rang, la section D342 les liste un par un ; [4.7] « audit avant chaque versement » et une fusion de 311 fichiers de preuves : l'audit « b » est fait sur une copie de travail jetable où la fusion est faite sans être commitée ; [4.8] les « six portes vertes » de chaque lot de la branche : `test:int` n'y a jamais été vert, les quatorze lots ne sont CLOS qu'à cette intégration ; [5.4] le geste 0 de Ko (la migration `20261104170000_staff_layer` de D341, que S-129 dit non appliquée à sa base) ouvre tous les gestes qui passent par l'application Pro — inférence, non mesurée ; **(f)** rien d'autre n'est écrit ici : l'état du rang est dans « PROCHAIN LOT — rang 45 ».
 
-⇒ **RANG 45 : OUVERT (D342, 07/11/2026) — l'intégration, dans `main`, de la branche `front-client`** : la table d'ouverture, la lecture adverse et les arbitrages sont écrits **avant la fusion** ; à cette écriture **la fusion n'a pas eu lieu**, rien n'est mesuré après elle, le compteur POUR MÉMOIRE reste **QUATRE**. Point d'entrée : « PROCHAIN LOT — rang 45 ».
+⇒ **RANG 45 : OUVERT (D342, 07/11/2026) — l'intégration, dans `main`, de la branche `front-client`** : la table d'ouverture, la lecture adverse et les arbitrages sont écrits **avant la fusion** ; à cette écriture **la fusion n'a pas eu lieu**, rien n'est mesuré après elle, le compteur POUR MÉMOIRE reste **QUATRE**. Point d'entrée : « PROCHAIN LOT — rang 45 ». ⛔ *(D342, 07/11/2026, fin de session : **« la fusion n'a pas eu lieu » est PÉRIMÉ** — la fusion a eu lieu EN LOCAL (`2b79355`), les six portes sont jouées (cinq à 0, `test:e2e` ROUGE aux deux passes), **RIEN n'est poussé** ; le rang 45 reste OUVERT. Voir « ÉTAT À L'ARRÊT DE LA SESSION D342 ». Annoté, pas réécrit.)*
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -2485,9 +2485,33 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 45 · `[CODE]` **L'intégration de la branche `front-client` dans `main`** ⛔ **OUVERT LE 07/11/2026 (D342) — TABLE, LECTURE ADVERSE ET ARBITRAGES ÉCRITS AVANT LA FUSION**
+## PROCHAIN LOT — rang 45 · `[CODE]` **L'intégration de la branche `front-client` dans `main`** ⛔ **OUVERT LE 07/11/2026 (D342) — TABLE, LECTURE ADVERSE ET ARBITRAGES ÉCRITS AVANT LA FUSION** ⛔ **FUSIONNÉE EN LOCAL, NON POUSSÉE : `test:e2e` ROUGE AUX DEUX PASSES (07/11/2026, fin de session)**
 
-### ⛔ ÉTAT À L'OUVERTURE DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER
+### ⛔ ÉTAT À L'ARRÊT DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à l'ARRÊT, pas à une clôture (D294 : un point d'entrée se rafraîchit à chaque avancement, et un arrêt en est un).** La session s'est arrêtée parce que la consigne l'exige — « rouge encore : tu ne pousses pas, tu rapportes » — **le rang 45 n'est PAS clos**. Ce bloc annule ce que le bloc « ÉTAT À L'OUVERTURE » dit de « la fusion n'a pas eu lieu » et de « rien n'est mesuré après elle ». Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **45 : l'intégration, dans `main`, de la branche `front-client` — OUVERT. La fusion est faite EN LOCAL (`2b79355`), RIEN n'est poussé** : `origin/main` est resté sur `d44867a`, `origin/front-client` sur `43996e2` (non supprimée) | `git rev-list --left-right --count origin/main...main` |
+| numéro | **D342 est PRIS** par ce rang ouvert (écrit dans ce fichier) ; il n'est **pas au registre** : le registre le prendra à la clôture. **Ne pas le reprendre pour autre chose.** | registre (dernière ligne : D341) |
+| compteur | POUR MÉMOIRE **QUATRE**, inchangé : **QUATRE → DIX-HUIT** ne s'écrit qu'à la clôture (R-5) | `AGENTS.md` |
+| la fusion | `git merge --no-ff` (R-3), 107 commits importés avec leurs SHA, 440 fichiers, **sans conflit**, arbre IDENTIQUE à celui que `git merge-tree` recalcule seul (`f55406e857de`) ; contrôle `docs/preuves/D342/fusion/controle-fusion.txt` : **12 contrôles sur 12** ; les trois fichiers modifiés des deux côtés (`ar.json`, `fr.json`, `packages/types/src/index.ts`) ne perdent rien (`ar.json` : 1 230 + 15 + 16 = 1 261 feuilles, parité FR = AR) | `docs/preuves/D342/fusion/` |
+| les six portes (sur secteur, pilote de D340, `HEAD` `2b79355`, 30 relevés dont 0 sur batterie) | `typecheck` **0** · `lint` **0** · `test` **0** (173 fichiers / **2 601** tests : api-client 66, api 1 336, client 488, pro 711 — **exactement** les chiffres de R-1) · `build` **0** · `test:int` **0** (46 fichiers / **735** tests, vert à la PREMIÈRE passe : la branche ne l'avait jamais eu vert) · **`test:e2e` ROUGE : code 1**, `68 passed · 2 failed · 1 skipped · 5 did not run` | `docs/preuves/D342/portes/` |
+| le rouge de l'e2e | **deux échecs, deux `ECONNRESET`** : `fc2-debordement-360` (un fichier de la BRANCHE, dans son `beforeAll`) et `r43-devis-brouillon:85` (un fichier de `main`) — `POST …/api/v1/auth/register a échoué après 3-4 ms` ← `fetch failed` ← `ECONNRESET`, au premier appel du fixture, **aucune assertion atteinte** : la classe D265 | `portes/regle-rejeu.md` |
+| le rejeu unique (R-6 de D339, règle écrite et commitée AVANT lui, `cd356c7`) | **ROUGE aussi** : `1 failed · 1 skipped · 74 passed`, l'échec est **`r26-parcours-reservation:108`** (un fichier de `main`, que la fusion ne touche pas), **la même chaîne de causes** ; `fc2` et `r43` y sont VERTS. **Chaque test non ignoré est vert dans au moins une des deux passes** (croisement calculé des deux sorties brutes). La règle écrite dit « autre test ⇒ tout autre rouge » : **pas de poussée, pas de second rejeu** | `portes/rejeu-resultat.md` |
+| ⚠ ce que l'e2e ne permet PAS d'écrire | « verte AU REJEU » (le rejeu est rouge) ni « verte » ; elle s'écrit **ROUGE aux deux passes, sur trois tests différents, tous par `ECONNRESET` au premier appel du fixture** | — |
+| les campagnes de neutralisation | **NON jouées** (la poussée est interdite sous une porte rouge ; plusieurs heures) ; **la liste de l'union est calculée et versée** (35 campagnes sur 55, complément de l'angle mort : 0), les outils aussi (`docs/preuves/D342/neutralisation/`) ; sept campagnes ont un mode `--int` | `neutralisation/union-sortie.txt` |
+| lecture adverse, audits | lecture adverse : 46 contrôles, 30 ✓ · 11 ≈ · 0 ✗ · 5 ? ; audits de secrets « a » à « d » faits et triés, **0 valeur réelle** ; balayage de forme (état final de 439 fichiers + histoire de 107 commits) : 0 occurrence | `docs/preuves/D342/` |
+| écriture sur la base de développement de Ko | **aucune** (le geste 0 de Ko, appliquer la migration de D341, reste une écriture de Ko) | `scenarios-ko.md` |
+| ce qui RESTE (dans cet ordre, après la décision ci-dessous) | (1) la décision sur l'e2e ; (2) les campagnes de l'union (`jouer-union.py`, depuis un arbre propre) ; (3) la passe D277 « après » ; (4) les écritures de CLÔTURE : section D342, registre, ordre des rangs (« RANG 45 : CLOS » puis « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR »), compteur QUATRE → DIX-HUIT, le backlog (entrées neuves de R-8 et R-9, entrées cochées, prémisses barrées de R-7, lots arrêtés de R-6) et `AGENTS.md` ; (5) les gestes de Ko ; (6) la poussée, puis le contrôle de fin de lot (D288) | — |
+| **décision due** | **au relecteur (qui place le rang) ou à Ko** : un aléa de classe D265 qui CHANGE de test à chaque passe bloque-t-il la poussée ? (a) oui — il faut ordonner d'abord l'enquête D265 (un lot documentaire) ; (b) un rejeu de plus est autorisé (la règle l'interdit sans une décision) ; (c) une exception écrite autorise à pousser l'intégration avec « ROUGE aux deux passes, chaque test vert au moins une fois ». La session ne tranche pas : D270 interdit de pousser sous une porte rouge « même quand le rouge vient d'ailleurs » | — |
+
+#### Les commits de ce lot, du plus ancien au plus récent (pour qu'une reprise n'ait rien à recouper)
+
+`14dbb84` la table SEULE · `363079f` extension 1 · `75eee79` la consigne, la lecture adverse, l'audit « a » · `30a1190` l'audit « b » · `499d1bf` la première écriture d'autorité · **`2b79355` la FUSION** · `e8508d3` extension 2 · `cd356c7` les pièces des portes et la règle du rejeu · puis les pièces du rejeu, l'audit « d » et cette écriture d'arrêt (non listés ici : un fichier ne peut pas porter le SHA du commit qui le contient).
+
+### ~~⛔ ÉTAT À L'OUVERTURE DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D342, fin de session : **PÉRIMÉ** sur « la fusion n'a pas eu lieu », « reste à faire » et « rang suivant » ; l'état courant est le bloc « ÉTAT À L'ARRÊT » juste au-dessus ; celui-ci dit ce qui était vrai AVANT la fusion. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à l'OUVERTURE, avant la fusion (D294 : un point d'entrée se rafraîchit à chaque avancement ET à sa clôture).** Tout ce qui suit dit ce qui est vrai **à cette écriture** ; la clôture réécrira ce bloc. Si ce bloc est le dernier lu et que la section « D342 » n'existe pas encore au registre, **la session a été interrompue avant la fusion ou pendant elle** : `git log` fait foi sur l'état (D276).
 
@@ -2507,7 +2531,7 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 | reste à faire (à cette écriture) | la fusion, les six portes et l'e2e, les campagnes, les gestes de Ko (pièce), la section D342, le registre, le compteur, la passe D277 des deux sens | — |
 | rang suivant | **« RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR »**, candidat proposé : L36-3a-2 (avec S-104, que D341 n'a pas codée) — écrit à la clôture | — |
 
-#### D342 — rang 45 — table d'ouverture (recopiée à l'identique de `docs/preuves/D342/table-ouverture.md` au commit `363079f` (la table `14dbb84` plus son extension 1) ; les titres sont décalés de trois niveaux, le texte est le même octet pour octet)
+#### D342 — rang 45 — table d'ouverture (recopiée à l'identique de `docs/preuves/D342/table-ouverture.md` au commit `e8508d3` — la table `14dbb84`, ses extensions 1 (`363079f`) et 2 (`e8508d3`) ; les titres sont décalés de trois niveaux, le texte est le même octet pour octet ; la copie précédente, au commit `363079f`, est REMPLACÉE par celle-ci)
 
 #### D342 — rang 45 — table d'ouverture
 
@@ -3050,6 +3074,36 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | chemin | rôle |
 |---|---|
 | `docs/preuves/D342/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : un ✗ rendu à tort par un motif trop étroit (défaut d'instrument n° 1 de `defauts-instrument.txt`) ; le comportement ne démentait pas la consigne |
+
+
+**Extension 2** (07/11/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D342/` (sur disque, après leur retour dans le dépôt : ils avaient été mis à l'abri hors dépôt le temps de la passe des portes, qui exige un arbre propre) aux chemins COMPLETS de cette table : **onze fichiers hors table**). Deux causes. (1) **Quatre fichiers étaient nommés sans leur chemin complet** : la ligne « les cinq sorties de porte » de la section B ne donnait le chemin complet que de `typecheck.txt` (`lint.txt`, `test.txt`, `build.txt`, `test-int.txt` suivaient en noms courts) — c'est précisément la faute que la règle des chemins complets (D328) existe pour attraper ; ils sont déclarés ci-dessous. (2) **Sept fichiers n'étaient pas prévus** : le balayage de forme de jeton, que l'audit « b » et son tri (`30a1190`) annoncent « versé avec l'audit « c » » ; la sortie du calcul du complément de l'union ; et la règle du rejeu de l'e2e avec son lanceur, rendus nécessaires par le rouge de l'e2e à la première passe (voir `portes/regle-rejeu.md`, qui précède le rejeu dans l'historique).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D342/portes/lint.txt` | la sortie de la porte `lint` (déjà nommée en nom court à la section B) |
+| `docs/preuves/D342/portes/test.txt` | la sortie de la porte `test` (idem) |
+| `docs/preuves/D342/portes/build.txt` | la sortie de la porte `build` (idem) |
+| `docs/preuves/D342/portes/test-int.txt` | la sortie de la porte `test:int` (idem) |
+| `docs/preuves/D342/balayage-forme-jeton.py` | le balayage MÉCANIQUE de la forme d'un jeton réel (43 caractères base64url mêlant minuscules, majuscules et chiffres, avec ou sans `token=` ; `token=` + 16 caractères ou plus) — deux modes : l'état final des fichiers d'un diff, et l'HISTOIRE (les lignes ajoutées de `git log -p`) ; aucune valeur n'est imprimée ; calibré sur ses deux bras |
+| `docs/preuves/D342/balayage-forme-jeton-avant.txt` | sa sortie AVANT la fusion : les 440 fichiers de la liste A lus à `origin/front-client` |
+| `docs/preuves/D342/balayage-forme-jeton-historique.txt` | sa sortie en mode historique : `e40c141..origin/front-client`, les 107 commits que la fusion importe |
+| `docs/preuves/D342/balayage-forme-jeton-apres.txt` | sa sortie APRÈS la fusion : `HEAD^1..HEAD` lu à `HEAD` |
+| `docs/preuves/D342/neutralisation/complement-sortie.txt` | la sortie de `calculer-complement.py` : le complément de l'angle mort du tri (vide pour ce diff : 0 campagne) |
+| `docs/preuves/D342/portes/regle-rejeu.md` | l'arrêt de l'e2e de la passe des portes (deux `ECONNRESET` au premier appel du fixture) et la règle du rejeu, ÉCRITE AVANT lui (R-6 de D339) |
+| `docs/preuves/D342/portes/rejeu-e2e.sh` | le lanceur du rejeu unique : l'e2e seule, `retries` inchangé, portes dures avant la commande, état machine toutes les 30 s |
+| `docs/preuves/D342/passe-d277.md` | le compte rendu de la passe D277 des deux sens (avant → après, triage de chaque motif) — **déclaré d'avance** (il n'existe pas encore) |
+
+**Pièces CONDITIONNELLES du rejeu** (leur existence dépend du lancement : si une porte dure du lanceur est rouge, le rejeu ne démarre pas et seuls `rejeu-index.txt` et `FIN` existent ; chemins complets) :
+
+| chemin | condition |
+|---|---|
+| `docs/preuves/D342/portes/rejeu-index.txt` | l'index du rejeu (SHA, arbre, état machine avant et après, code de sortie) |
+| `docs/preuves/D342/portes/rejeu-test-e2e.txt` | la sortie du rejeu, MASQUÉE (le dépôt est public, D200), versée **à côté** de `portes/test-e2e.txt` (la passe rouge, masquée), jamais à sa place |
+| `docs/preuves/D342/portes/rejeu-etat-machine.txt` | le relevé de l'état machine pendant le rejeu (déjà nommé à la section B, conditionnelle) |
+| `docs/preuves/D342/portes/rejeu-env-comparaison.txt` | la comparaison de l'état des `.env` entre l'ouverture et la clôture du rejeu (sans aucune valeur : empreintes et hôtes) |
+| `docs/preuves/D342/portes/etat-env-d342-rejeu-ouverture.txt` | l'état des `.env` à l'ouverture du rejeu (D330) |
+| `docs/preuves/D342/portes/etat-env-d342-rejeu-cloture.txt` | l'état des `.env` à la clôture du rejeu |
+| `docs/preuves/D342/portes/rejeu-resultat.md` | le résultat du rejeu, écrit APRÈS lui, dans un commit postérieur à celui de la règle |
 
 ## PROCHAIN LOT — rang 44 · `[DOC]` puis `[CODE]` **L36-3 — le personnel et le PIN, côté serveur** ⛔ **L36-3a-1 CLOS SUR LE CODE LE 06/11/2026 (D341)** · ~~⛔ **OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE (D340, 03/11/2026) — AUCUN CODE**~~ ⛔ *(D341 : **PÉRIMÉ** pour L36-3a-1 ; L36-3a-2 et L36-3b n'ont pas de rang)*
 
