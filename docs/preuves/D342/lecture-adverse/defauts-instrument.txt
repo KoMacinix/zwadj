@@ -1,0 +1,42 @@
+DÉFAUTS D'INSTRUMENT — lecture adverse de la consigne du rang 45 (D342) — instrument confronter-consigne.py
+
+La PREMIÈRE passe est gardée telle quelle : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt (46 contrôles : 29 ✓ · 11 ≈ · 1 ✗ · 5 ?, code de sortie 1).
+La passe finale est confronter-sortie.txt (46 contrôles : 30 ✓ · 11 ≈ · 0 ✗ · 5 ?, code de sortie 0), produite par l'instrument RÉPARÉ, calibration comprise, REJOUÉ EN ENTIER
+(pas la seule partie qui avait échoué — règle de D298).
+
+Règle appliquée (AGENTS.md, D298) : un défaut d'instrument découvert à un point d'arrêt arrête la MESURE, pas le lot ; le lot ne s'arrêterait que si le COMPORTEMENT démentait.
+Le critère qui sépare les deux (D298, dérivé par la session) : le défaut est d'INSTRUMENT quand la sortie brute porte ce que l'instrument cherchait ou montre qu'il le cherchait
+au mauvais endroit ; le COMPORTEMENT dément quand c'est la sortie brute elle-même qui contredit la valeur attendue.
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+DÉFAUT 1 — [0.6] « compteur QUATRE » rendu ✗ À TORT (motif trop étroit)
+
+  Sortie brute de la passe 1 :
+    ✗ [0.6] compteur QUATRE
+         ↳ « POUR MÉMOIRE QUATRE » : 1 occurrence(s) dans ZWADJ_CONTINUITE.md, 0 dans AGENTS.md
+
+  Ce que l'instrument cherchait : la chaîne « POUR MÉMOIRE QUATRE » dans les deux fichiers. Ce qu'AGENTS.md écrit (relevé sur le texte aplati à d44867a, avant de conclure) :
+    « …lot de CODE, L36-3a-1 « la couche du personnel et son Manager » : compteur POUR MÉMOIRE TROIS → QUATRE** (la limite de cinq reste SUSPENDUE par Ko… »
+  soit « POUR MÉMOIRE TROIS → QUATRE » : 1 occurrence ; « POUR MÉMOIRE QUATRE » : 0 ; « QUATRE → DIX-HUIT » : 0. La consigne dit « compteur QUATRE » : la valeur est la bonne, c'est l'ÉCRITURE
+  du compteur dans AGENTS.md (une annotation de transition, pas un état) que le motif ne connaissait pas. Le point 0 de la consigne (« si un seul de ces points diffère : tu t'arrêtes ») N'A DONC PAS JOUÉ :
+  le point ne diffère pas, l'instrument l'a cherché au mauvais endroit.
+
+  Réparation : le motif pour AGENTS.md devient « POUR MÉMOIRE TROIS → QUATRE » ; le détail imprime aussi le compte de « QUATRE → DIX-HUIT » (attendu 0 : c'est CE lot qui l'écrit).
+  Recalibration (le bras qui manquait, ajouté) : « motif du compteur dans AGENTS » — cas vrai « POUR MÉMOIRE TROIS → QUATRE » = 1 occurrence → True ; cas faux « QUATRE → DIX-HUIT » > 0 → False.
+  Sans ce bras, un motif « QUATRE → DIX-HUIT » aurait rendu ✓ après l'écriture de ce lot et ✗ avant, sans que rien ne dise lequel des deux états on lisait.
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+DÉFAUT 2 — [4.4] le détail imprimait du CODE au lieu d'une valeur (cosmétique, sans effet sur le verdict)
+
+  Sortie brute de la passe 1 (fin de la ligne [4.4]) :
+    … ; fichiers par lot : {l: d[0] for l, d in dossiers.items()}
+  Cause : accolades DOUBLÉES dans une f-string (`{{…}}`), donc le texte de l'expression, non évalué. Le verdict (≈) ne dépendait pas de ce champ ; mais le détail devait dire CE QUI AVAIT ÉTÉ PARCOURU
+  (D290), et il disait à la place le code qui le calculait — un compte qui ne dit pas sur quoi il a compté.
+  Réparation : le dictionnaire est calculé avant la f-string (`fichiers_par_lot`) ; la passe finale imprime les dix-sept comptes (FC-1 : 19 … FP-5 : 5).
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+CE QUI A CHANGÉ ENTRE LES DEUX PASSES, relevé par `diff` des deux sorties (5 zones de différence) : la ligne de calibration (cinq → six cas), la ligne de décompte (29 → 30 ✓, 1 → 0 ✗), le contrôle [0.6]
+(✗ → ✓, défaut 1), le DÉTAIL de [4.1] (l'explication de 106 contre 107 commits est désormais étiquetée INFÉRENCE, non mesurée — retouche de rédaction, sans effet sur le verdict ≈) et le DÉTAIL de [4.4]
+(défaut 2). Les 43 autres contrôles ont le même verdict et le même détail, à l'octet. Plusieurs retouches avaient été faites AVANT la passe 1, à la relecture du script (un motif de R-3 qui traversait des points,
+un chemin de fichier deviné, un décompte de clés, une double barre oblique inversée dans une f-string, la dernière ligne de test prise au lieu de celle de D341) : ce ne sont pas des défauts « découverts à un
+point d'arrêt » mais des fautes de rédaction corrigées avant toute sortie, et la passe 1 n'en porte aucune trace.

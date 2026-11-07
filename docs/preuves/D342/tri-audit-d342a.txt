@@ -1,0 +1,25 @@
+D342 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne en pièce, de la lecture adverse et de sa sortie)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341f.txt docs/preuves/D342/audit-secrets-d342a.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D342/audit-secrets-d342a.txt (404 268 octets, 0 CR, 3 419 lignes).
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau) : dece505875148a47ee2ada82393f8e682b9a8825f9d0c6c66679fbf31707da26 — identique à celui que la sortie porte.
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq : motifs, positif, écho, discrimination, cas réel) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ;
+positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) :
+  · précédente (d341f) : 4 679 fichiers parcourus, 4 543 audités, 136 exclus, 1 096 alertes, 1 096 contextes lus par le tri.
+  · nouvelle (d342a)   : 4 688 fichiers parcourus, 4 551 audités, 137 exclus, 1 096 alertes, 1 096 contextes lus par le tri. Contrôle de l'outil : audités + exclus = 4 688 (attendu 4 688, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque (os.walk de docs/preuves, comptes relevés après l'audit) : 4 688 fichiers = 4 673 suivis à d44867a + 7 fichiers de D342 (dont la sortie scellée elle-même,
+    écrite APRÈS l'audit) + 8 résidus `__pycache__/*.pyc` IGNORÉS par git (docs/preuves/D306/outils, D308/outils, D334/outils, D334/session-adverse, D340/passe-d277-secteur : des octets compilés par Python
+    à l'import d'outils archivés ; QUI les a importés n'est pas établi — l'audit les lit, aucun n'est versionné). Le nombre rapporté par l'audit, 4 688, = les 4 687 fichiers présents pendant l'audit + `.gitattributes`
+    (que l'outil ajoute) : l'arithmétique ferme.
+    ⚠ L'écart avec la précédente (+9) n'est PAS attribué fichier par fichier : la sortie précédente ne liste pas ses fichiers. Il est du même ordre que les fichiers de D341 écrits après son audit « f »
+    (sa sortie scellée, son tri, son contrôle de fin de lot) et les 6 fichiers de D342 présents à l'instant de l'audit ; l'attribution exacte n'est pas établie.
+  · Exclus : 137 contre 136, soit un de plus — la sortie scellée d341f, désormais versée et épinglée par son sceau.
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente. Ventilation par motif : aucune (attendu : les nouvelles sont à trier au contexte ; il n'y en a aucune).
+Les 1 096 contextes sont les mêmes, à la clé (motif, chemin, contexte masqué) près, que ceux de d341f : aucune des six pièces de D342 présentes à l'instant de l'audit ne porte une alerte, et la consigne
+(qui nomme `ZWADJ_*`, `AGENTS.md`, des SHA et des noms de décision) n'en produit aucune.
+
+Contrôle « 0 valeur réelle » (D299) : non rejoué à cette étape — il se rejoue UNE fois, à la clôture, sur tous les fichiers versés par le lot (docs/preuves/D342/aucune-valeur-reelle.txt), contre les journaux
+à valeurs réelles de la passe des portes (la base jetable de l'e2e), qui n'existent pas encore.

@@ -1,0 +1,99 @@
+LECTURE ADVERSE DE LA CONSIGNE DU RANG 45 (INTÉGRATION DE front-client) — D342 — instrument confronter-consigne.py, SHA de base d44867a, pointe de branche 43996e2
+calibration (cinq sortes de contrôle, deux bras chacune, ABANDON si un cas manque son verdict) : ligne du registre (D341 présente, D999 absente) → vrai:True faux:False ; motif dans un fichier d'un SHA (RANG 45 présent, RANG 99 absent) → vrai:True faux:False ; ancêtre (le premier commit de la branche l'est, main ne l'est pas) → vrai:True faux:False ; existence d'un chemin à un SHA (AGENTS.md oui, un harnais inventé non) → vrai:True faux:False ; compte d'un diff (la fusion apporte des fichiers, deux SHA identiques n'en apportent aucun) → vrai:True faux:False
+
+══ PREMIÈRE PARTIE — COURTE ══
+46 contrôles parcourus : 29 ✓ · 11 ≈ (imprécis ou en tension, sans arrêt) · 1 ✗ · 5 ? non vérifiables (attendu : aucun ✗ ; chaque ≈ et chaque ? expliqué en seconde partie)
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] le premier commit du lot (la table) a pour parent d44867a et ne contient que table-ouverture.md
+     ↳ parent de 14dbb84 = ['d44867a'] ; fichiers du commit = ['docs/preuves/D342/table-ouverture.md']
+✓ [0.2] origin/main = d44867a au moment de la lecture
+     ↳ origin/main = d44867a94f90 ; attendu d44867a (après le `git fetch` de la session)
+✓ [0.3] origin/front-client = 43996e2
+     ↳ origin/front-client = 43996e279f49 ; attendu 43996e2
+✓ [0.4] arbre propre et aucun stash
+     ↳ stash : 0 ligne(s) ; `git status --short` : 2 ligne(s), dont 0 hors docs/preuves/D342/ (les pièces de CE lot, pas encore commitées, sont les seules attendues)
+✓ [0.5] rang 44 CLOS SUR LE CODE (D341) et « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR »
+     ↳ « rang 44 clos sur le code » : 3 occurrence(s) ; « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » : 9 occurrence(s) dans ZWADJ_CONTINUITE.md@d44867a
+✗ [0.6] compteur QUATRE
+     ↳ « POUR MÉMOIRE QUATRE » : 1 occurrence(s) dans ZWADJ_CONTINUITE.md, 0 dans AGENTS.md
+✓ [0.7] la dernière ligne du registre est D341 (numéro attendu D342, libre)
+     ↳ 295 ligne(s) de registre parcourue(s), la dernière = D341 ; « D342 » : {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0} + CLAUDE.md 0 (attendu 0 partout)
+✓ [1.1] pièces : docs/preuves/front-client/, dont BILAN.md
+     ↳ 311 fichier(s) sous docs/preuves/front-client/ à 43996e2 ; BILAN.md présent (17611 caractères)
+≈ [1.2] session cloud des 05 et 06/11/2026, sous l'exception bornée à « un lot par session » adoptée par Ko le 04/11/2026
+     ↳ BILAN « (05 et 06/11/2026) » : 1 ; consigne de la branche « reçue le 05/11/2026 » : 1 (et NON le 04/11) ; « EXCEPTION BORNÉE À « UN LOT PAR SESSION » » : 1, « pour CETTE session seulement » : 1. ⚠ La date du 04/11 ne se lit dans AUCUN fichier du dépôt, et NI la branche NI la session cloud NI son exception ne figurent dans un fichier d'autorité de `main` (« front-client » / « session cloud » : {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0}) — c'est D276 : cette session doit les écrire.
+? [1.3] 1 b : l'exception de la session cloud est CONSOMMÉE (Ko, 06/11/2026)
+     ↳ la consigne de la branche la borne elle-même (« pour CETTE session seulement… ne crée pas de précédent », 1 occurrence) ; la parole de Ko du 06/11 est dans le chat, hors dépôt.
+? [1.4] 1 c : la question de FP-3 (la copie du nom complétée par K-5 survit-elle à une révision pour une fiche liée ?) ; « oui, pour FP-3 »
+     ↳ la question est dans le BILAN § 5 (1 occurrence de « …perdue à la révision, et K-5 reposera sa question ») ; la citation de Ko est du chat (la consigne l'exclut elle-même de l'adoption) ; le serveur refuse 409 `CLIENT_RECORD_LINKED` — un lot d'API, `apps/api` n'est touché par aucun fichier de la branche.
+✓ [1.5] 1 d : S-113 à S-129 (D341) existent, sont à ratifier ; S-116 acceptée telle quelle
+     ↳ lignes de table `**S-nnn**` dans ZWADJ_CONTINUITE.md@d44867a : {113: 1, 116: 1, 123: 1, 129: 1} ; « S-113 à S-129 sont À RATIFIER » : 1 occurrence(s)
+✓ [2.1] R-1 : origin/front-client fusionne dans origin/main (d44867a) SANS AUCUN CONFLIT
+     ↳ `git merge-tree --write-tree d44867a 43996e2` → code 0, arbre prédit 75fa1e014bfa (aucune ligne de conflit : 0 ligne(s) après l'arbre)
+≈ [2.2] R-1 : « le relecteur a fusionné origin/front-client DANS origin/main (d44867a) »
+     ↳ origin/main = d44867a ne contient PAS la branche (la pointe 43996e2 est ancêtre de main : False) — l'essai du relecteur est local et non poussé ; la phrase se lit « sur la base de d44867a ». Aucun effet : la fusion reste à faire, et l'absence de conflit est reconfirmée en 2.1.
+✓ [2.3] R-1 : 2 601 tests, 173 fichiers (api-client 66, api 1 336, client 488, pro 711)
+     ↳ ARITHMÉTIQUE seulement (la mesure est celle des portes, après la fusion) : 66+1336+488+711 = 2601 ; le dernier « `test` N / F » de ZWADJ_CONTINUITE.md = 2441 / 158 (D341) = 66+1336+386+653 = 2441 avec le client 386 et le pro 653 de l'entrée du BILAN (1 occurrence) ; fichiers : 158 + 15 fichiers de test AJOUTÉS par la fusion = 173 (attendu 173) ; BILAN sortie « client 488, pro 711 » : 1 occurrence
+✓ [2.4] R-1 : « chaque lot de main éloigne la branche ; la branche touche les écrans, L36-3a-2 le serveur »
+     ↳ commits de main absents de la branche : 20 ; fichiers du diff de la fusion sous apps/api/ : 0 (sur 440 parcourus) ; L36-3a-2 = « création, liste, réinitialisation, désactivation, capacités… » : 1 occurrence(s) dans ZWADJ_CONTINUITE.md (un lot serveur)
+✓ [2.5] R-1 : « L'intégration passe avant L36-3a-2 » (le candidat désigné pour le rang 45 par D341)
+     ↳ ZWADJ_CONTINUITE.md : « candidat désigné par R-1 : L36-3a-2 » : 2 occurrence(s) — un CANDIDAT « désigné », pas un rang arbitré (le rang 45 est « EN ATTENTE DE CADRAGE », 0.5) : aucune permission périmée à lever ; la consigne § 5 refait de L36-3a-2 le candidat du rang 46.
+✓ [2.6] R-2 : S-116 — pendant la pause chaque essai paie le coût factice, la rafale est bornée par le débit par IP (S-123), pas par la pause
+     ↳ ligne S-116 (« vingt connexions parallèles… borné par la limite de débit par IP… pas par la pause ») : 1 ; ligne S-123 (`staffLogin` 10 / 15 min / IP) : 1 dans ZWADJ_CONTINUITE.md@d44867a
+≈ [2.7] R-2 : « Motif : R-3 de D340 (réponse et coût identiques, DR5) »
+     ↳ R-3 de D340 dans ZWADJ_CONTINUITE.md = « Méthode RENFORCÉE. Motif : chemin d'identité… » (1 occurrence) — elle NE dit PAS « réponse et coût identiques » ; la décision qui le dit est **R-3 de la consigne de D341** (« S-103 est REFUSÉE… au même coût (argon2 factice, D5)… Motif : DR5 », 1 occurrence dans docs/preuves/D341/consigne.md) ; DR5 « réponse identique pour compte inconnu et mauvais mot de passe » : 2 occurrence. ⚠ Le fond est juste, la RÉFÉRENCE est décalée d'un lot : « R-3 de D340 » se lit « R-3 de D341 » — D342 écrit la bonne.
+✓ [2.8] R-3 : les pièces de chaque lot citent les SHA de la branche (une réécriture les rendrait faux)
+     ↳ SHA de clôture des 14 lots de code, tous ancêtres de 43996e2 : True ; fichiers de docs/preuves/front-client/ qui citent chacun : {'FC-1': 4, 'FC-2': 4, 'FC-3': 4, 'FC-4': 4, 'FC-5': 4, 'FC-6': 4, 'FC-7': 4, 'FC-8': 10, 'FC-9': 5, 'FC-10': 7, 'FC-12': 4, 'FP-1': 4, 'FP-2': 5, 'FP-3': 4}
+✓ [2.9] R-4 : la session adverse de FP-1 n'est PAS due (sessions B en pause, DR1) ; FP-1 a eu ses rouges AVANT son code et son harnais
+     ↳ BILAN « Elle est due avant l'intégration de FP-1 » : 1 ; AGENTS « les sessions B d'attaque à froid… sont en pause » : 1 ; FP-1 parcourt 7 commits : rouges aux positions 2 et 4, premier commit de code de production à la position 5, harnais `neutralize-fp1.py` à la position 6 (0 = premier)
+✓ [2.10] R-5 : quatorze lots de code comptent ; compteur QUATRE → DIX-HUIT ; la limite de cinq reste suspendue ; ce chiffre dit ce qu'une certification devra couvrir avant le premier client réel (R-2 de D340)
+     ↳ lignes de lot du BILAN parcourues : 17 (attendu 17), dont PRÊT 14 (attendu 14) et ARRÊTÉ ['FC-11', 'FP-4', 'FP-5'] ; 4 + 14 = 18 ; consigne de la branche 0 d « chaque lot de code compte, à l'intégration » : 1 ; R-2 de D340 « elle se lève avant le premier client réel » : 1
+✓ [2.11] R-6 : lots ARRÊTÉS — FC-11 garder l'état et écrire la limite ; FP-4 garder l'état ; FP-5 rien (la décision A tient)
+     ↳ BILAN : FC-11 « garder l'état (recommandé, en écrivant la limite) » 1 ; FP-4 « prémisse est fausse » 1 et « Options : garder (recommandé) » 1 ; FP-5 « renverserait la décision A » 1 ; AGENTS « DÉCISION A — le versionnement est CONSERVÉ » : 1
+✓ [2.11b] R-7 : (a) l'entrée « Retirer le repli maxPriceCents … Retirer aussi la clé de SEARCH_VARIANT_PARAMS » porte une prémisse fausse (la clé n'y a jamais été) ; (b) la mention de maxPriceCents dans isVariant de D230 se barre
+     ↳ (a) backlog : 1 occurrence ; SEARCH_VARIANT_PARAMS@d44867a = 11 clé(s) dont `maxPrice` True et `maxPriceCents` False ; `git log -S maxPriceCents -- seo.ts` : 0 commit (attendu 0, la clé n'y a JAMAIS été) ; (b) ZWADJ_CONTINUITE.md : « `guide` et `maxPriceCents` entrent dans `isVariant` (D216) » : 1 occurrence, dans le bloc « D230 — ?guide= porte l'ÉTAPE » (1 occurrence) — ⚠ la phrase cite « (D216) » alors qu'elle vit dans D230 : le barrage se fait à l'endroit où elle est écrite.
+✓ [2.12] R-8 : FC-6 « dates et nombres en ar-DZ » (arbitrage de Ko du 04/10/2026, « avant le lancement ») n'est tenu qu'en partie : les montants d'un devis restent en français à l'écran ET dans le PDF, ensemble (QUOTE_AMOUNT_LOCALE)
+     ↳ arbitrage « avant le lancement » : 1 occurrence dans ZWADJ_CONTINUITE.md, 1 dans ZWADJ_BACKLOG.md (la parole de Ko : « Avant le lancement ; à ordonner par moi ») ; QUOTE_AMOUNT_LOCALE dans 5 fichier(s) de la branche (apps/client/src/lib/intl-locale-guard.test.ts, apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/venues/quote-amount.test.ts…) ; PDF (`apps/api/src/documents/quote-document.ts`) : 4 appel(s) `formatDZD(record.…Cents)` SANS locale, 0 avec — il imprime donc en français, comme l'écran (la branche ne touche pas `apps/api`)
+✓ [2.13] R-9 : huit entrées de backlog neuves, chacune ancrée dans le BILAN (FP-3 ; FP-2 ; catalogue Pro ; /salles sans JS ; hreflang/sitemap/robots ; ancres CRLF ; récapitulatif du comptoir ; relecture arabe des 16 clés + 1 modifiée) ; règle SEO de D216
+     ↳ ancres dans le BILAN : {'FP-3 (§ 5)': 1, 'FP-2 : GET /quotes/:id (§ 5)': 1, 'catalogue Pro en français (§ 6)': 1, '/salles sans JavaScript (§ 6)': 1, 'hreflang/sitemap/robots (§ 6)': 1, 'ancres CRLF en dur (§ 6)': 1, 'récapitulatif du comptoir (FP-4, § 5)': 1, '16 clés neuves (§ 4)': 1} ; `services-section.tsx` porte `labelFr`/`unitNameFr` : 10 occurrence(s) ; lignes de clé du § 4 parcourues : 17 (attendu 17 = 16 neuves + 1 modifiée), dont « modifiée » : 1 ; AGENTS « RÈGLE SEO » (D216) : 1
+✓ [2.14] R-10 : outils/portes.sh, outils/controle-lot.py, neutralisation/socle_front_client.py et l'étalon test-setup-calibration.test.ts existent
+     ↳ existence à 43996e2 : {'docs/preuves/front-client/outils/portes.sh': True, 'docs/preuves/front-client/outils/controle-lot.py': True, 'neutralisation/socle_front_client.py': True, 'apps/client/src/test-setup-calibration.test.ts': True}
+✓ [2.15] R-11 : un artefact `apps/client/.next/types` périmé fait rougir typecheck (BILAN § 3, point 6)
+     ↳ BILAN § 3 point 6 : 1 occurrence ; le dossier existe sur ce poste : True ; ignoré par git : True (le supprimer ne modifie aucun fichier suivi)
+✓ [3.1] § 3 : la table liste « la sortie de `git diff --name-only origin/main...origin/front-client`, chemins complets, versée telle quelle »
+     ↳ lignes du bloc de la table (commit 14dbb84) : 440 ; sortie fraîche du diff à trois points : 440 ; identiques, dans l'ordre : True
+✓ [3.2] § 3 : « la branche ne l'a jamais eu vert (concurrence de pro-clients et quote-numbering, classe D265, fichiers non touchés) »
+     ↳ BILAN § 3.1 « n'est vert dans aucun lot » + les deux fichiers nommés ; parmi les 440 fichiers du diff, ceux qui s'appellent pro-clients.int-spec / quote-numbering.int-spec : 0 (attendu 0) ; D265 dans AGENTS : 1 occurrence(s)
+✓ [3.3] § 3 : rouge hors de la branche → R-6 de D339 (un seul rejeu, règle écrite avant, les deux passes versées) ; rouge dans la branche → le lot fautif par la troisième condition de Ko du 14/10/2026
+     ↳ R-6 de D339 exécutée (« règle… commitée AVANT… rejeu… une seule fois ») : 1 occurrence dans ZWADJ_CONTINUITE.md ; la troisième condition (« …en rejouant le test fautif sur le commit de chaque lot ») : 2 dans AGENTS.md
+≈ [3.4] § 3 : `python3 neutralisation/lancer-campagnes.py` « sur le diff de la fusion » (l'angle mort du tri de D341 compris)
+     ↳ le tri de `lancer-campagnes.py` croise `git diff --name-only HEAD` (1 occurrence) et n'a AUCUNE option de base (0) : une fois la fusion COMMITÉE, ce diff est vide et aucune campagne n'est retenue (D341 l'a déjà vécu). La parade existe : les trois outils de D341 ['calculer-complement.py', 'calculer-union.py', 'jouer-union.py'] (base `<départ>..HEAD`, plus le complément pour les chemins relatifs) ; « l'angle mort du tri » : 13 occurrence(s) dans ZWADJ_CONTINUITE.md. ⚠ Écrit pour ne pas se lire comme tenu : l'instrument n'est pas retouché (R-10), la liste se CALCULE et se VERSE avant de jouer.
+≈ [3.5] § 3 : « les six portes et l'e2e » par le pilote de D340 (passe-secteur.sh)
+     ↳ le pilote joue 6 porte(s) : ['typecheck', 'lint', 'test', 'build', 'test-int', 'test-e2e'] — l'e2e est la SIXIÈME, pas une septième (« les six portes et l'e2e » ne veut pas dire sept) ; il REFUSE sur : {'batterie': True, 'docker': True, 'conteneur': True, 'arbre propre': True, 'ports': True} ; ⚠ « l'arbre n'est pas propre » ⇒ toute pièce de D342 doit être COMMITÉE avant son lancement.
+≈ [4.1] BILAN : « 106 commits » ; « `main` n'a pas bougé (e40c141) » ; aucun fichier d'autorité, aucun apps/api, aucune migration au diff
+     ↳ commits de e40c141..43996e2 : 107 (le BILAN en annonce 106 : le commit du BILAN lui-même ne se compte pas lui-même) ; « main n'a pas bougé » : écrit au 06/11 et PÉRIMÉ depuis — main a 20 commits de plus (D341) ; fichiers d'autorité au diff : 0 (attendu 0), sous apps/api : 0 (attendu 0), migrations/.sql : 0 (attendu 0), package.json/pnpm-lock.yaml : 0 (attendu 0) sur 440 parcourus
+✓ [4.2] BILAN : parité FR/AR « 1 246 clés feuilles de chaque côté »
+     ↳ clés feuilles parcourues à 43996e2 : fr 1246, ar 1246 (attendu 1246 = 1246) ; ⚠ vrai de la POINTE DE LA BRANCHE : `fr.json` et `ar.json` sont aussi modifiés par `main` (D341), le compte de la fusion sera plus grand — c'est la porte `test` (parité) qui le mesure
+✓ [4.3] BILAN § 2 : entrée de la session = 2 194 tests (api-client 59, api 1 096, client 386, pro 653)
+     ↳ 59+1096+386+653 = 2194 ; le BILAN l'écrit 1 fois ; la passe sur secteur de D340 (`test` 2 194 / 148, base du départ e40c141) : 6 occurrence dans ZWADJ_CONTINUITE.md
+≈ [4.4] BILAN : « chaque lot a son dossier (table d'ouverture, rouges, harnais, campagnes, portes, audit, contrôle, rapport) »
+     ↳ 17 dossiers parcourus ; table d'ouverture ET contrôle présents partout (manquants : []) ; pas de fichier « rapport » dans : ['FC-11', 'FP-4', 'FP-5'] — les trois lots ARRÊTÉS, qui portent une pièce d'arrêt à la place (normal : un lot arrêté n'a ni code, ni portes, ni campagnes) ; fichiers par lot : {l: d[0] for l, d in dossiers.items()}
+≈ [4.5] CONTRADICTION ? la consigne de la branche prévoit une intégration « lot par lot » (numéros, rangs, écritures d'autorité) ; la consigne du rang 45 intègre les dix-sept lots sous UN rang et UN numéro
+     ↳ consigne de la branche § 0 c : « …se feront à l'INTÉGRATION, lot par lot, par une session sur le poste de Ko… » (1 occurrence) ; la consigne du rang 45 (§ 5) demande UNE section D342 qui liste les dix-sept lots. Pas un défaut : la consigne la plus récente prévaut, elle est adoptée par Ko, et « lot par lot » se tient DANS la section (un sous-bloc par lot, SHA de départ et de clôture). À dire dans D342.
+✓ [4.6] CONTRADICTION ? « aucune ligne de code neuve » (§ 3) et R-11 (`rm -rf apps/client/.next/types`)
+     ↳ R-11 supprime un artefact de build IGNORÉ par git (vérifié en 2.15) : ce n'est ni une ligne de code ni un fichier suivi ; aucune tension.
+≈ [4.7] CONTRADICTION ? « Audits de secrets avant chaque versement » (§ 3) et une fusion qui verse 311 fichiers de `docs/preuves/front-client/` d'un seul commit
+     ↳ l'audit de D298 parcourt le DISQUE (`os.walk docs/preuves`), pas l'index : pour couvrir ces 311 fichiers AVANT le commit de fusion, il faut les avoir sur disque — d'où l'audit « b », fait sur une COPIE DE TRAVAIL JETABLE (hors dépôt) où la fusion est faite sans être commitée, puis versé AVANT la fusion réelle. La table l'a déclaré à l'ouverture.
+≈ [4.8] CONTRADICTION ? les « six portes » de chaque lot de la branche et « test:int n'est vert dans aucun lot » (BILAN § 2 et § 3.1)
+     ↳ AGENTS : « chaque lot de code garde ses six portes vertes avant sa clôture » (D332, condition 2). La branche ne les a jamais eues toutes vertes (`test:int` rouge à chaque lot), mais ses lots sont dits « PRÊT À INTÉGRER, jamais CLOS » ; c'est CETTE intégration qui doit montrer `test:int` vert (consigne § 3). Rien à corriger : à écrire dans D342 que les quatorze lots ne sont CLOS qu'à cette condition.
+? [5.1] « origin/main = d44867a, origin/front-client = 43996e2 (vérifiés par le relecteur le 06/11/2026) »
+     ↳ la vérification du relecteur est dans le chat ; la session a refait la sienne (0.2, 0.3).
+? [5.2] « adopté par Ko tel quel » / « Ko l'a collé »
+     ↳ la consigne s'écrit « par ADOPTION de ce message » ; l'adoption n'est pas une parole de Ko hors dépôt, et D342 l'écrira comme telle.
+? [5.3] R-1 : « rejoué sur la fusion typecheck 0, lint 0, test 0 (2 601 tests…), build 0 » par le relecteur
+     ↳ mesure du relecteur, dans le chat ; la session ne la reprend PAS : elle rejoue les six portes après la fusion (2.3 ne vérifie que l'arithmétique).
+≈ [5.4] § 4 : « sur la base de dev de Ko, migrations appliquées par Ko (geste 0) » — la migration de D341 est-elle celle visée ?
+     ↳ ZWADJ_CONTINUITE.md : « la migration n'y est pas appliquée (S-129) » : 1 occurrence ; `20261104170000_staff_layer/migration.sql` existe à d44867a : True. ⚠ Inférence, non mesurée : AGENTS dit que le garde du personnel relit `pro_profiles.staff_layer_enabled_at` À CHAQUE requête d'un PRO — sans la migration, les gestes qui passent par l'application Pro ne pourraient pas s'ouvrir ; le geste 0 est donc le premier de la liste, et il est une écriture de Ko.
+✓ [5.5] § 5 : « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat L36-3a-2, avec S-104 que D341 n'a pas codée)
+     ↳ AGENTS « S-104 n'est PAS codée » : 1 occurrence
