@@ -533,3 +533,9 @@ Toutes sous `docs/preuves/D342/`. Les journaux de campagne, dont le nombre dépe
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (07/11/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D342/` aux chemins complets de cette table : 6 fichiers sur disque, 1 hors table). La table déclarait `lecture-adverse/defauts-instrument.txt` (pièce conditionnelle) mais pas la sortie de la première passe qu'il cite ; D341 avait versé la sienne de la même façon.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D342/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : un ✗ rendu à tort par un motif trop étroit (défaut d'instrument n° 1 de `defauts-instrument.txt`) ; le comportement ne démentait pas la consigne |
