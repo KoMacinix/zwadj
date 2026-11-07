@@ -1,0 +1,16 @@
+D341 — tri différentiel de l'audit de secrets « f » (AVANT le dernier commit : la passe D277 « après » et ses outils, le contrôle « 0 valeur réelle », les trois fichiers d'autorité de la clôture)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D341/audit-secrets-d341e.txt docs/preuves/D341/audit-secrets-d341f.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D341/audit-secrets-d341f.txt (sortie scellée : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) — l'audit porte sur `docs/preuves/` seul ; les trois fichiers d'autorité n'y sont pas, ils sont couverts par le contrôle « 0 valeur réelle » (`aucune-valeur-reelle.txt`, qui les parcourt expressément) :
+  · précédente (d341e) : 4 670 fichiers parcourus, 4 535 audités, 135 exclus, 1 096 alertes.
+  · nouvelle (d341f)   : 4 679 fichiers parcourus, 4 543 audités, 136 exclus, 1 096 alertes. Contrôle de l'outil : audités + exclus = 4 679 (attendu 4 679).
+  · RAPPROCHEMENT — l'arithmétique FERME ENTIÈREMENT (9 = 7 + 2) : +9 fichiers parcourus = les 7 fichiers non suivis de `docs/preuves/D341/` au moment de l'audit (le contrôle « 0 valeur réelle », le compte rendu de la passe D277, les deux outils de lecture et leurs deux sorties, la sortie « après » de la passe ; comptés par `git ls-files --others`) + 2 écrits après l'audit « e » (la sortie scellée « e » et son tri). Audités +8 (4 535 → 4 543) : les 7 non suivis et le tri « e ». Exclus +1 (135 → 136) : la sortie scellée « e », épinglée par son sceau. Alertes +0.
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente (ventilation par motif : aucune). Il n'y a aucun contexte à lire : le zéro est celui d'un tri qui a parcouru les 1 096 contextes de chacune des deux sorties.
+Ce zéro a la même cause lisible que celui du « e » : les deux tris écrits depuis le « d » évitent de citer un titre de test, une forme d'adresse ou un mot de déclenchement entre guillemets, et aucune des pièces neuves ne porte autre chose que des comptes, des contextes de motifs d'autorité et des lignes de cibles.
+
+Contrôle dédié « 0 valeur réelle sur N fichiers » (D299) : `aucune-valeur-reelle.txt`, journal e2e brut gardé HORS dépôt (79 valeurs distinctes cherchées, calibré à deux bras), 88 fichiers parcourus (le dossier des preuves de ce lot et les trois fichiers d'autorité), porteurs : 0 (attendu 0).
+⛔ Ce que ce tri ne dit PAS : que les fichiers hors `docs/preuves/` et hors les trois fichiers d'autorité n'en portent pas — ni l'audit ni le contrôle dédié n'y regardent ; le code est couvert par les règles permanentes (aucun secret dans le code, `.env.example` sans valeur).
