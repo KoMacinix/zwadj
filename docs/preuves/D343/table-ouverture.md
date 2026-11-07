@@ -131,3 +131,18 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D343/reproduction/lancer-repro.sh` | le lanceur : portes dures avant la commande (port libre, conteneur Up), brut hors dépôt, sortie filtrée des lignes de serveur, état machine avant et après, empreintes sha256 des fichiers joués ; archivé comme pièce, jamais promu en instrument (D291) |
 | `docs/preuves/D343/reproduction/correction-neutralisee-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par l'exécution « correction neutralisée » (D334, item 5) |
+
+**Extension 3** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/reproduction/` aux chemins complets de cette table : 8 fichiers hors table). Trois causes. (1) **La première passe de la reproduction** a un défaut d'instrument (le mode `serial` a sauté trois bras après le premier échec) : elle est gardée TELLE QUELLE à côté de la passe rejouée, comme D342 l'a fait pour sa lecture adverse, avec la note qui nomme ses défauts. (2) **Deux mesures que la lecture du rouge cite** et qui doivent donc être des pièces : la minuterie d'inactivité du CLIENT (sans elle, « la fenêtre d'échec est étroite » serait une impression) ; la lecture du rouge elle-même, écrite après les sorties et avant tout code. (3) **La garde de la suite jouée contre le harnais d'AVANT** : D334 (item 5) demande que le rouge de chaque fichier de test précède le code ; la garde est un fichier de test, son rouge est une pièce, avec l'empreinte du fichier joué.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/reproduction/rouge-avant-passe-1-AVANT-CORRECTIFS.txt` | la première passe de la reproduction, gardée TELLE QUELLE : A, B, C verts, D1 rouge par la chaîne de production, D2, D3, E non joués (mode `serial`) |
+| `docs/preuves/D343/reproduction/rouge-avant-passe-1-AVANT-CORRECTIFS-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette première passe |
+| `docs/preuves/D343/reproduction/defauts-instrument.txt` | la note des défauts de l'instrument de reproduction (D298) : le mode `serial`, la mesure gardée en mémoire d'un worker, l'ajout du bras F |
+| `docs/preuves/D343/reproduction/lecture-rouge-avant.md` | la lecture du rouge d'avant : ce qui est mesuré, ce qui est inféré, la prédiction du bras E démentie, ce que la preuve du vert devra montrer |
+| `docs/preuves/D343/reproduction/mesure-minuterie-client.mjs` | relève si le client (undici) a fermé ses connexions inactives après une inactivité asynchrone donnée, et combien de connexions trois appels laissent dans son pool |
+| `docs/preuves/D343/reproduction/mesure-minuterie-client-sortie.txt` | sa sortie, cinq valeurs d'inactivité, un processus neuf chacune |
+| `docs/preuves/D343/reproduction/rouge-avant-garde.txt` | la garde `e2e/specs/d265-socket-perimee.e2e.ts` jouée contre le harnais d'AVANT : les deux tests rouges, par `ECONNRESET` lu dans la valeur reçue |
+| `docs/preuves/D343/reproduction/rouge-avant-garde-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette exécution, dont la garde (D334, item 5) |
+
+⚠ **Le fichier de garde est en LF sur le disque** (comme joué) : l'index normalise la fin de ligne (`core.autocrlf`), et le convertir en CRLF avant son commit changerait l'empreinte qui figure dans `rouge-avant-garde-empreintes.txt`. Il reste en LF jusqu'à la fin du lot.
