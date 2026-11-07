@@ -1,0 +1,27 @@
+D343 — tri différentiel de l'audit de secrets « c » (AVANT le commit des pièces du vert, de la correction neutralisée, de la campagne du lot, de la règle des deux passes et de son lanceur)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D343/audit-secrets-d343b.txt docs/preuves/D343/audit-secrets-d343c.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D343/audit-secrets-d343c.txt, lancé dans le dépôt principal (HEAD = commit de l'extension 4 de la table).
+Sortie scellée : 493 918 octets, 0 CR, 4 112 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau, 493 727 octets) = celui que la sortie porte ; relue
+identique, sceau vérifié à la relecture par l'outil lui-même.
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d343b) : 5 065 fichiers parcourus, 4 905 audités, 160 exclus, 1 390 alertes (1 390 contextes).
+  · nouvelle (d343c)   : 5 075 fichiers parcourus, 4 914 audités, 161 exclus, 1 390 alertes (1 390 contextes). Contrôle de l'outil : audités + exclus = 5 075 (attendu 5 075, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 075 fichiers sous docs/preuves/ après l'audit = 5 058 suivis (index) + 9 non suivis hors __pycache__ + 8 __pycache__/*.pyc ignorés. Les 5 075 de
+    l'audit = ces 5 075 moins sa propre sortie scellée (écrite APRÈS lui) plus .gitattributes, que l'outil ajoute : 5 075 − 1 + 1 = 5 075. L'arithmétique ferme.
+  · Exclus : 161 contre 160, soit un de plus — la sortie scellée « b » de ce lot, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif « D298 contre elle-même » → 0 nouvelle (attendu 0) ; positif « D298 contre D297 » → 2 nouvelles (attendu 2).
+  · Les 9 fichiers non suivis étaient sur le disque pendant l'audit : les quatre pièces du vert et de la correction neutralisée (sorties FILTRÉES de Playwright : les lignes de serveur d'API sont
+    retirées, le contrôle de reste du lanceur n'a rien trouvé), la sortie de la campagne, la règle des deux passes, son lanceur, la copie de la procédure de masquage, et la sortie « c » elle-même.
+
+Résultat du tri différentiel : **0 alerte ABSENTE de la sortie précédente** (ventilation par motif : aucune). Le nombre d'alertes est identique à celui de l'audit « b » (1 390 contre 1 390) ;
+les 9 pièces neuves, dont quatre sorties de Playwright, n'ont fait naître aucune alerte.
+
+Conclusion : 0 alerte à lire, **0 valeur réelle**.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier et la sortie scellée « c » n'ont pas été audités avant leur commit (ils n'existaient pas) ; l'audit suivant (« d ») les couvrira.
+  · « 0 alerte nouvelle » ne dit pas que les sorties de Playwright n'ont jamais porté de valeur : elles sont FILTRÉES AVANT d'être versées (les lignes de serveur retirées portent les jetons de
+    vérification). Le brut est hors dépôt ; ce qui est versé est ce que le filtre a laissé, et l'audit le confirme propre.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes (cf. tri « b » : les fichiers .env ne sont pas vus).

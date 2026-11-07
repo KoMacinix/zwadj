@@ -1,0 +1,27 @@
+D343 — campagne de neutralisation neutralize-r45.py --e2e — 07/11/2026 13:17:19
+SHA: 69c22577cd2deae3c36465f1d45958263d911448 · node v22.14.0 · Playwright 1.50.1 · poste sur secteur (relevé AVANT: voir portes de la reproduction, même séance)
+commande: PYTHONIOENCODING=utf-8 python3 neutralisation/neutralize-r45.py --e2e   (4 cibles ; chacune sous sa mutation, la pile e2e COMPLÈTE de la suite — serveurs de développement, base zwadj_e2e)
+journaux bruts (HORS dépôt, .neutralisation-journaux/r45/ : ils portent les journaux du serveur d'API, donc des jetons de vérification — D200): prevol-e2e-garde.log, R45-1.log … R45-4.log
+────────────────────────────────────────────────────────────────
+  calibration ✓ deux titres, deux assertions par ECONNRESET : MORD (attendu MORD)
+  calibration ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ une assertion qui rougit mais PAS par ECONNRESET (serveur absent) : AUTRE-CAUSE (attendu AUTRE-CAUSE)
+  calibration ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 4 déclarées · 4 jouées (e2e, unit) · 0 hors exécution
+  playwright : Version 1.50.1
+  pré-vol e2e-garde : code 0 · ok 2 · x 0
+✓ R45-1. L'appel commun rouvre le pool : `connection: close` est retiré de SES en-têtes — `postJson` ET `apiCall` reprennent des connexions mortes
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa | Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa
+✓ R45-2. La correction change de VALEUR : `connection: keep-alive` au lieu de `close` — les deux fonctions rouvrent le pool
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 2 · Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa | Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa
+✓ R45-3. `apiCall` CONTOURNE l'appel commun et rappelle le `fetch` global : seule `apiCall` rouvre le pool
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 1 · x 1 · Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa
+✓ R45-4. `postJson` CONTOURNE l'appel commun et rappelle le `fetch` global : seule `postJson` rouvre le pool
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 1 · x 1 · Error: l'appel qui suit un blocage synchrone ne doit pas reprendre une connexion fermée pa
+
+4 garde(s) mordue(s) sur 4 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 4 sur 4)
+arbre rendu à son état de départ : vérifié.

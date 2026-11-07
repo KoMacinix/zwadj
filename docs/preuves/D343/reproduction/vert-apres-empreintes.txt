@@ -1,0 +1,8 @@
+D343 — empreintes sha256 des fichiers JOUÉS par « vert-apres » (D334, item 5) — relevées JUSTE APRÈS la passe, sur le disque, octet pour octet
+fd8b8c77ba96409306cbd62b21af39119f4ed2d8d6b85e3e14aa25ab285620ec  docs/preuves/D343/reproduction/repro.config.ts
+35711658c920b08ffd96ead42cc8f4ef650bb1c1dde6eba5d600c41dbab83ffa  docs/preuves/D343/reproduction/repro-d265.repro.ts
+02a596ae44a4f87d060b7407f93f0386a24afddd702827e3624b246facfaede2  docs/preuves/D343/reproduction/lancer-repro.sh
+a9ce8b1697791fefa699e889337c19fb705a35476864c8ee53f3156ac2eaf51e  e2e/fixtures/harness.ts
+00958852c283d50ec5b342f9d85263b8d93f2964f77bd8f89353058ec01018be  e2e/playwright.config.ts
+a05957876715c0d058f04eba5078bfcdc1defe2546760e7435a02d8752d35d06  e2e/global-setup.ts
+1f11ca3d556cc6effc6a4d0d83ea2bab74ad96c2970635d8eff6a728908c1848  e2e/specs/d265-socket-perimee.e2e.ts
