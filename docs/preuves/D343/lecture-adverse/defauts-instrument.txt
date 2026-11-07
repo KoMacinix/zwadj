@@ -1,0 +1,30 @@
+D343 — LECTURE ADVERSE — DÉFAUTS DE L'INSTRUMENT RELEVÉS À LA PREMIÈRE PASSE (rien dans le COMPORTEMENT du dépôt ne démentait la consigne)
+
+Instrument : docs/preuves/D343/lecture-adverse/confronter-consigne.py
+Première passe, gardée TELLE QUELLE : docs/preuves/D343/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt (28 contrôles : 18 ✓ · 7 ≈ · 0 ✗ · 3 ?)
+Passe corrigée : docs/preuves/D343/lecture-adverse/confronter-sortie.txt (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?)
+
+Règle appliquée (D298, ratifiée par Ko le 21/09/2026) : un défaut d'INSTRUMENT découvert à un point d'arrêt arrête la MESURE, pas le lot — l'instrument est réparé,
+la passe est REJOUÉE EN ENTIER, et le défaut s'écrit ici avec la sortie brute qui l'a montré. Ici le comportement ne démentait rien : les trois défauts sont des
+défauts de l'instrument, chacun lisible dans la sortie brute elle-même.
+
+Défaut n° 1 — [2.6] le détail recalculait le test avec une expression mal échappée
+  Sortie brute de la passe 1 : « ✓ [2.6] R-14 : `retries` reste à 0 … ↳ e2e/playwright.config.ts@a1dc635 : `retries: 0` présent : False »
+  Un ✓ à côté d'un « False ». Le verdict lisait la bonne expression régulière (`retries:\s*0\b`), le détail en recalculait une autre, à l'intérieur d'une f-string
+  où `\\s` est devenu une barre oblique inverse LITTÉRALE. Le fichier contient bien `retries: 0,` (ligne 84). Réparation : UN calcul, le booléen est calculé une fois et
+  lu par le verdict ET par le détail. Un détail qui contredit son verdict apprend à ne plus lire les détails.
+
+Défaut n° 2 — [1.1] le motif de « copie jetable » cherchait dans le mauvais fichier
+  Sortie brute de la passe 1 : « (ii) le tri de l'audit « b » parle d'une copie de travail jetable : 0 occurrence(s) »
+  La formule « fait sur une copie de travail jetable » est écrite dans le bloc d'arrêt de ZWADJ_CONTINUITE.md (2 occurrences), PAS dans
+  docs/preuves/D342/tri-audit-d342b.txt (0 occurrence de « copie »). Un « 0 » exact et sans objet — le motif cherchait la bonne phrase au mauvais endroit (D275 :
+  « un zéro se confronte à la sortie brute avant d'être cru »). Réparation : le motif lit ZWADJ_CONTINUITE.md@a1dc635, et le détail dit dans quel fichier il cherche.
+
+Défaut n° 3 — [5.2] le texte du détail disait l'inverse de son propre compte
+  Sortie brute de la passe 1 : « la classe D265 elle-même n'y est PAS nommée par ce numéro : `grep D265` sur cette pièce = 9 occurrence(s) »
+  Le texte affirmait une absence et imprimait neuf présences. docs/preuves/D339/portes/arret-e2e-r41.md range bien ce rouge sous D265 en toutes lettres (« même
+  classe D265, autre test », « D265 a mordu une spec DANS la suite (r41, premier appel du fixture, après 3 ms) »). Le verdict ≈ était donc faux : la consigne
+  (R-12) avait raison. Réparation : le motif cherche les deux tournures, le verdict devient ✓, le détail imprime ce qu'il a trouvé.
+
+Ce que ces trois défauts ont en commun : le DÉTAIL imprimé et le VERDICT ne lisaient pas la même quantité. C'est exactement ce que la règle « le compte de ce qui a été
+parcouru s'imprime à côté du total » (D290) rend visible — c'est le détail qui les a montrés, jamais une relecture du code.

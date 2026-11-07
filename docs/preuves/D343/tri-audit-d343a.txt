@@ -1,0 +1,34 @@
+D343 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne, de la lecture adverse et de ses trois pièces)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D342/audit-secrets-d342d.txt docs/preuves/D343/audit-secrets-d343a.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D343/audit-secrets-d343a.txt, lancé dans le dépôt principal (HEAD = 1a5afed), 7 min 15 s.
+Sortie scellée : 492 213 octets, 0 CR, 4 099 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau, 492 022 octets) = celui que la sortie porte
+(53e9b100401f…) ; relue identique, sceau vérifié à la relecture par l'outil lui-même.
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d342d) : 5 039 fichiers parcourus, 4 881 audités, 158 exclus, 1 384 alertes (1 384 contextes).
+  · nouvelle (d343a)   : 5 048 fichiers parcourus, 4 889 audités, 159 exclus, 1 388 alertes (1 388 contextes). Contrôle de l'outil : audités + exclus = 5 048 (attendu 5 048, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 048 fichiers sous docs/preuves/ après l'audit = 5 034 suivis (index) + 6 non suivis hors __pycache__ + 8 __pycache__/*.pyc ignorés. Les 5 048
+    de l'audit = ces 5 048 moins sa propre sortie scellée (écrite APRÈS lui) plus .gitattributes, que l'outil ajoute : 5 048 − 1 + 1 = 5 048. L'arithmétique ferme.
+  · Exclus : 159 contre 158, soit un de plus — la sortie scellée « d » de D342, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif « D298 contre elle-même » → 0 nouvelle (attendu 0) ; positif « D298 contre D297 » → 2 nouvelles (attendu 2).
+
+Résultat du tri différentiel : 4 alertes ABSENTES de la sortie précédente — jeton = 2, mot-de-passe = 2 — réparties en UN seul fichier, docs/preuves/D342/tri-audit-d342d.txt (4 contextes
+lus, attendu 4). Les contextes sont aux lignes 3 923, 3 925, 3 927 et 3 929 de la sortie scellée.
+
+Tri au contexte — LU, pas déduit :
+  · 4  docs/preuves/D342/tri-audit-d342d.txt — le tri que la session D342 a écrit APRÈS son audit « d » et dont il disait lui-même qu'il n'avait pas été audité avant son commit. Il cite
+       les motifs que l'audit cherche (le mot « token », le mot « hasPassword », « forgot-password ») pour décrire les pièces qu'il a triées, et il décrit le gabarit de masque d'une
+       sortie e2e (« …/auth/verification-email?token=<jeton masqué #N> »). Chaque contexte est une phrase de prose ou ce gabarit : la « valeur » que l'audit masque est de 1 à 6
+       caractères (le texte d'une citation, ou le début du gabarit), jamais un jeton de 43 caractères, jamais un mot de passe. Trois des quatre portent la mention de l'outil « valeur trop
+       courte pour une recherche » ; la quatrième porte « valeur déjà présente dans 0 fichier(s) suivi(s) hors preuves » — c'est le gabarit de masque, qui n'est une valeur nulle part.
+  Total : 4 (attendu 4). Plus grande valeur masquée : 6 caractères, plus petite : 1.
+
+Conclusion : 4 alertes lues, 0 valeur réelle.
+
+⚠ Ce que ce tri ne couvre pas, écrit pour ne pas se lire comme tenu :
+  · ce fichier, la sortie scellée « a » et les pièces ajoutées après l'audit n'ont pas été audités avant leur commit (ils n'existaient pas) ; l'audit suivant (« b ») les couvrira.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes : il ne voit PAS les fichiers .env du poste, ignorés par git. Cette limite est connue (D200, D298) ; elle n'est pas levée
+    par ce lot.
+  · le contrôle dédié « 0 valeur réelle » (D299) n'est pas rejoué ici : il cherche les valeurs d'un JOURNAL à valeurs réelles, et cette session n'en a pas versé à ce stade. Il le sera à la
+    clôture, contre les journaux bruts des deux passes de l'e2e et de la passe des six portes, qui sont ceux qui portent des jetons.

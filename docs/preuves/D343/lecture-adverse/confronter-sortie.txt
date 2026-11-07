@@ -1,0 +1,64 @@
+LECTURE ADVERSE DE LA CONSIGNE « RANG 45 (SUITE) — D265 DANS LE HARNAIS E2E, PUIS CLORE L'INTÉGRATION » — D343 — instrument confronter-consigne.py, SHA de départ a1dc635, commit de la table 7bbf122
+calibration (cinq cas, deux bras chacun, ABANDON si un cas manque son verdict) : ligne du registre (D341 présente, D999 absente) → vrai:True faux:False ; motif dans un fichier d'un SHA (« retries: 0 » présent dans la config, « retries: 7 » absent) → vrai:True faux:False ; ancêtre (a1dc635 l'est de HEAD, HEAD ne l'est pas de a1dc635) → vrai:True faux:False ; existence d'un chemin à un SHA (harness.ts oui, un fichier inventé non) → vrai:True faux:False ; compte d'un rev-list (main..départ compte des commits, départ..départ n'en compte aucun) → vrai:True faux:False
+⚠ des explorations jetables, hors dépôt, ont PRÉCÉDÉ cette lecture (déclaré dans l'en-tête de l'instrument) ; la reproduction qui compte est celle de docs/preuves/D343/reproduction/
+
+══ PREMIÈRE PARTIE — COURTE ══
+28 contrôles parcourus : 19 ✓ · 6 ≈ (imprécis ou en tension, sans arrêt) · 0 ✗ · 3 ? non vérifiables (attendu : aucun ✗ ; chaque ≈ et chaque ? est détaillé ci-dessous)
+
+══ SECONDE PARTIE — EN ENTIER ══
+✓ [0.1] le premier commit du lot (la table) a pour parent a1dc635 et ne contient que table-ouverture.md
+     ↳ parent de 7bbf122 = ['a1dc635'] ; fichiers du commit = ['docs/preuves/D343/table-ouverture.md']
+✓ [0.2] origin/main = d44867a, origin/front-client = 43996e2, origin/integration-45 = a1dc635 (la sauvegarde du § 0)
+     ↳ origin/main = d44867a (attendu d44867a) ; origin/front-client = 43996e2 (attendu 43996e2) ; origin/integration-45 = a1dc635 (attendu a1dc635) — relevés de suivi après `git fetch` et `git push` de la session
+✓ [0.3] arbre propre et aucun stash
+     ↳ stash : 0 ligne(s) ; `git status --short` : 2 ligne(s), dont 0 hors docs/preuves/D343/ (les pièces de CE lot, pas encore commitées, sont les seules attendues)
+✓ [0.4] rang 45 OUVERT, fusion faite en local, rien poussé
+     ↳ titre du rang 45 « OUVERT LE 07/11/2026 (D342) » : 1 occurrence(s) ; « FUSIONNÉE EN LOCAL, NON POUSSÉE » : 1 occurrence(s) dans ZWADJ_CONTINUITE.md@a1dc635
+✓ [0.5] compteur QUATRE
+     ↳ « POUR MÉMOIRE **QUATRE**, inchangé » : 1 occurrence(s) dans ZWADJ_CONTINUITE.md@a1dc635 (le bloc d'arrêt de D342)
+✓ [0.6] la dernière ligne du registre est D341 ; D343 est libre ; D342 est PRIS mais pas au registre
+     ↳ 295 ligne(s) de registre parcourue(s), la dernière = D341, « D342 » au registre : non ; (D343, D342) par fichier : {'ZWADJ_CONTINUITE.md': (0, 103), 'ZWADJ_BACKLOG.md': (0, 2), 'AGENTS.md': (0, 0), 'CLAUDE.md': (0, 0)}
+✓ [0.7] « 117 commits n'existent que sur le poste de Ko » (avant la sauvegarde)
+     ↳ `git rev-list --count origin/main..a1dc635` = 117 (attendu 117) ; dont 10 absents AUSSI de origin/front-client (les commits de D342 et la fusion) — le reste vit déjà sur la branche distante. ⚠ La phrase « n'existent que sur le poste » est exacte pour ces 10 commits ; les 107 autres sont déjà sur `front-client`.
+✓ [0.8] la fusion 2b79355 est un commit de fusion (deux parents), ancêtre du départ, et origin/front-client en est ancêtre
+     ↳ parents de 2b79355 : ['499d1bf', '43996e2'] ; 2b79355 ancêtre de a1dc635 : True ; origin/front-client ancêtre : True
+≈ [1.1] 1 b : les quatre décisions de D342 prises seul (arbitrages avant la fusion ; audit sur copie jetable ; rejeu unique des deux rouges ; sortie e2e masquée) sont TRAÇABLES
+     ↳ (i) 499d1bf ancêtre de la fusion 2b79355 : True ; (ii) ZWADJ_CONTINUITE.md écrit « fait sur une copie de travail jetable » : 2 occurrence(s) ; (iii)(iv) pièces présentes : {'docs/preuves/D342/portes/masquer-jetons.py': True, 'docs/preuves/D342/portes/regle-rejeu.md': True, 'docs/preuves/D342/tri-audit-d342b.txt': True}. ⚠ Leur ÉNUMÉRATION comme « quatre décisions prises seul » n'est dans AUCUN fichier d'autorité à a1dc635 (« quatre décisions prises seul » : 0 occurrence(s)) — elle a vécu dans le rapport de fin de session de D342. À écrire dans la section D342 (consigne § 1 b : ratifiées par adoption).
+≈ [2.1] R-12 : « D265 a coûté un rejeu à la clôture de D339, de D340 et de D342 »
+     ↳ « ECONNRESET » dans la pièce de D339 : True ; de D340 : True ; du rejeu de D342 : True. ⚠ MAIS le rouge de D340 n'était PAS que D265 : la même pièce relève 2 occurrence(s) de « Timed out 7000ms waiting for expect(locator).toHaveURL » (une autre classe, de lenteur de route non préchauffée, D127). Réparer D265 ne garantit donc pas une e2e verte : si une seconde classe reparaît, ce n'est pas D265.
+✓ [2.2] R-13 : le harnais nomme déjà les trois causes possibles (commentaire de postJson)
+     ↳ e2e/fixtures/harness.ts@a1dc635 : [('ECONNREFUSED', True), ('ECONNRESET / UND_ERR_SOCKET', True), ('UND_ERR_HEADERS_TIMEOUT', True)]
+✓ [2.3] R-13 : la signature relevée = ECONNRESET en quelques ms, au PREMIER appel du fixture, POST /auth/register
+     ↳ échecs lus dans les deux sorties de D342 : 2 (passe) + 1 (rejeu) = 3 ; durées en ms : ['3', '4', '4'] ; toutes sur /api/v1/auth/register : True
+✓ [2.4] ORIENTATION (non affirmée par la consigne) : chacun des trois tests en échec de D342 suit un `seedReferentials()` — un `execFileSync` synchrone — dans le `beforeAll` de sa spec
+     ↳ `beforeAll(… seedReferentials() …)` présent dans : {'fc2-debordement-360': True, 'r43-devis-brouillon': True, 'r26-parcours-reservation': True} (3 specs parcourues). C'est ce qui oriente la reproduction vers un BLOCAGE SYNCHRONE de la boucle du worker — pas une preuve : la cause se MESURE (R-13).
+? [2.5] R-13 : « le keepAliveTimeout RÉEL du serveur d'API (relevé, jamais supposé) »
+     ↳ l'API ne le fixe NULLE PART : `git grep` de keepAliveTimeout/headersTimeout/requestTimeout sur 228 fichier(s) de apps/api/src → 0 ligne(s) (attendu 0). Le serveur retombe donc sur le défaut de Node, qui se RELÈVE sur le serveur qui tourne — c'est la première pièce de reproduction (`reproduction/mesure-keepalive-sortie.txt`). Non vérifiable contre le dépôt : c'est une propriété de l'exécution (version de Node comprise).
+✓ [2.6] R-14 : `retries` reste à 0 dans playwright.config.ts (arbitrage de Ko du 04/10/2026 : « aucune nouvelle tentative automatique »)
+     ↳ e2e/playwright.config.ts@a1dc635 : `retries: 0` présent : True ; l'arbitrage de Ko est cité dans le backlog : 5 occurrence(s)
+≈ [2.7] R-14 : « pour les appels de préparation » — combien de sites appellent le `fetch` global ?
+     ↳ 22 fichier(s) .ts de e2e/ parcouru(s) ; sites `fetch(` : {'e2e/fixtures/harness.ts': 2}. Il y en a DEUX dans le harnais (`postJson` et `apiCall`), pas un : la consigne parle « des appels de préparation » au pluriel, et corriger `postJson` seul laisserait `apiCall` exposé. Le troisième chemin (`loginContext`) passe par `context.request` de Playwright (1 appel(s)), un autre client HTTP — hors de ce lot sauf si la mesure l'y rattache.
+✓ [3.1] R-17 (a) : la R-2 du rang 45 cite « R-3 de D340 » pour « réponse et coût identiques » — c'est la R-3 de la consigne de D341
+     ↳ consigne de D342, R-2 : « R-3 de D340 (réponse et coût identiques, DR5) » : 1 ; la R-3 de la consigne de D340 est « Méthode RENFORCÉE » : 1 ; la R-3 de la consigne de D341 est la réponse identique, au même coût : 1
+✓ [3.2] R-17 (b) : « fusionné dans origin/main » — l'essai du relecteur était local, origin/main ne contenait pas la branche
+     ↳ R-1 de D342 : « …a fusionné origin/front-client dans origin/main (d44867a) sans aucun conflit » : 1 ; d44867a a 1 parent (donc n'est PAS une fusion) ; origin/front-client est ancêtre de d44867a : False
+≈ [3.3] R-16 : compteur QUATRE → DIX-HUIT (R-5) → DIX-NEUF (D343 touche du code de test : il compte, D283)
+     ↳ R-5 de D342 : 1 ; règle D283 « un lot qui touche un harnais, un test, un script ou une migration COMPTE » : 1. ⚠ Le DIX-NEUF est CONDITIONNEL : il suppose que du code de test soit écrit. Si la reproduction échoue (R-13) ou si la correction exige `apps/api` (R-14), D343 est documentaire, ne compte pas, et l'intégration n'est pas close — le compteur reste QUATRE, rien n'est poussé sur main.
+✓ [3.4] R-18 : integration-45 et front-client existent et ne sont pas supprimées
+     ↳ origin/integration-45 = a1dc635 ; origin/front-client = 43996e2
+✓ [3.5] § 4 : « Gestes de Ko : ceux de docs/preuves/D342/scenarios-ko.md » existent
+     ↳ docs/preuves/D342/scenarios-ko.md à a1dc635 : True
+≈ [4.1] CONTRADICTION ? la reproduction que la consigne SUGGÈRE (« un appel, une attente au-delà du keepAliveTimeout, puis l'appel du fixture sur la même connexion ») a DÉJÀ été tentée deux fois, et elle a été NÉGATIVE
+     ↳ D325 (`sonde-d265-v2-sortie.txt`) : 15 succès, 0 échec, sur trois bras dont un blocage de 6 500 ms ; D322 (`repro-keepalive-fenetre.txt`) : 33 essais, 0 échec. ⇒ Rejouer cette FORME seule échouerait à reproduire et, selon R-13, arrêterait le lot sur une panne qu'on n'aurait pas cherchée assez loin. Les deux montages n'avaient qu'UNE connexion dans le pool du client (appel, blocage, appel) ; l'exploration jetable de cette session (hors dépôt, déclarée en tête) montre qu'avec DEUX connexions ou plus le résultat change — voir la reproduction versée, qui reconstruit l'état du pool avec les vraies fonctions du fixture. À confirmer par elle, pas par cette ligne.
+? [4.2] CONTRADICTION ? « les deux montages antérieurs ne l'ont pas écartée » (table d'ouverture) vs « la forme de R-13 reproduit »
+     ↳ ne se juge pas ici : la table d'ouverture dit seulement que ces deux montages n'ont rien reproduit, donc n'ont rien écarté ; si la reproduction versée réussit, la raison de leur échec (état du pool) sera écrite dans la section D343, avec sa pièce.
+≈ [4.3] R-15 : « l'e2e complète DEUX fois de suite » et R-16 : « les six portes après la dernière modification » — combien de fois l'e2e est-elle jouée ?
+     ↳ TROIS fois au moins (les deux passes de R-15, puis celle de la passe des six portes de clôture, où `test:e2e` est la sixième porte). Ce n'est pas une contradiction mais un coût, et une règle à écrire avant la première : un rouge à N'IMPORTE LAQUELLE des trois arrête (D270). La règle des deux passes (`portes/regle-deux-passes.md`) le dit, commitée avant elles.
+✓ [4.4] CONTRADICTION ? R-16 demande les campagnes de neutralisation de D342 ; la pause de Ko (DR1 de D336) suspend « les campagnes `--tout` »
+     ↳ DR1 (AGENTS) : « les campagnes `--tout` » en pause : 1 occurrence(s). L'UNION de D342 (35 campagnes sur 55, calculées sur le diff de la fusion) n'est PAS `--tout`, et « les harnais du lot » sont CONSERVÉS par DR1 : pas de contradiction. À ne pas déborder : `--tout` n'est pas joué par ce lot.
+✓ [4.5] CONTRADICTION ? D342 a déclaré « aucune ligne de code neuve » ; D343 en écrit (si la cause est nommée)
+     ↳ ce sont deux lots : la table de D342 l'écrit pour D342 seul ; celle de D343 déclare ses fichiers de code comme CONDITIONNELS à la cause nommée. Le diff final de D343 se compare à SA table.
+? [5.1] « adopté par Ko tel quel » / R-12 à R-18 « DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO »
+     ↳ l'adoption est dans le chat ; la consigne s'écrit « par ADOPTION de ce message » : D343 l'écrira comme telle, jamais comme une parole de Ko hors dépôt (et la délégation du 02/11/2026 est écrite dans AGENTS.md, annotation de la règle D284).
+✓ [5.2] « D265 a coûté un rejeu à la clôture de D339 » — la pièce de D339 range-t-elle ce rouge sous D265 ?
+     ↳ la pièce de D339 contient « ECONNRESET » (True) ET range ce rouge sous D265 en toutes lettres (« même classe D265… », « D265 a mordu une spec DANS la suite (r41, premier appel du fixture, après 3 ms) ») : 2 occurrence(s) de ces deux tournures sur 9 mention(s) de D265 (défaut n° 3 de la passe 1 : le texte disait l'inverse de son propre compte).

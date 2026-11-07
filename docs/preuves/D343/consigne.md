@@ -1,0 +1,27 @@
+RANG 45 (SUITE) — NOMMER ET RÉPARER D265 DANS LE HARNAIS E2E, PUIS CLORE L'INTÉGRATION (texte proposé par le relecteur, adopté par Ko tel quel)
+
+0. REPRISE ET SAUVEGARDE (avant toute écriture)
+- Lis ZWADJ_CONTINUITE.md seul (section la plus récente, « ÉTAT À L'ARRÊT » du rang 45, ordre des rangs, registre) et rapporte. Attendu : HEAD local a1dc635 (fusion de front-client faite en local, non poussée), origin/main = d44867a, rang 45 OUVERT, compteur QUATRE, arbre propre, sans stash. Un écart : tu t'arrêtes et tu le dis.
+- État machine : secteur, RAM libre, chrome, headless_shell, Docker lancé. Sur batterie : aucune porte (R-9 de D340).
+- SAUVEGARDE, premier geste : `git push origin HEAD:refs/heads/integration-45` (jamais main), puis `git ls-remote` qui le prouve. Motif : 117 commits n'existent que sur le poste de Ko ; une branche à part n'est pas main, D270 n'est pas touché.
+
+1. CE QUE KO ARBITRE OU ADOPTE — par ADOPTION de ce message
+a) Le rang 45 avance par un lot de plus (numéro attendu D343) : nommer la cause de D265 par une mesure, la réparer dans le harnais e2e si elle est nommée, puis clore l'intégration. L'arbitrage (c) de Ko sur D265 tient : « aucune nouvelle tentative automatique ».
+b) Les quatre décisions prises seul par la session de D342 (arbitrages écrits avant la fusion ; audit sur une copie jetable ; rejeu unique appliqué aux deux rouges ; sortie e2e masquée versée, brut hors dépôt) : ratifiées par adoption.
+
+2. DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO (suite de R-1 à R-11 de la consigne du rang 45)
+- R-12. Réponse à la question de D342 : (a). L'aléa bloque la poussée (D270) ; ni rejeu de plus (b, R-6 de D339), ni exception (c : une exception à D270 n'appartient qu'à Ko). Motif : D265 a coûté un rejeu à la clôture de D339, de D340 et de D342 ; tant qu'il n'est pas nommé, chaque lot le repaiera.
+- R-13. LE DIAGNOSTIC D'ABORD. Le harnais nomme déjà les trois causes possibles (e2e/fixtures/harness.ts, commentaire de postJson : ECONNREFUSED, ECONNRESET / UND_ERR_SOCKET d'une socket keep-alive fermée par le serveur pendant que le client la réutilise, UND_ERR_HEADERS_TIMEOUT). La signature relevée (ECONNRESET en quelques ms, au PREMIER appel du fixture d'une spec, POST /auth/register) désigne la deuxième : c'est une HYPOTHÈSE, pas une mesure (règle de Ko, D291). Tu la reproduis isolément, ROUGE, avant toute correction : par exemple un appel, une attente au-delà du keepAliveTimeout RÉEL du serveur d'API (relevé, jamais supposé), puis l'appel du fixture sur la même connexion. Si la reproduction échoue : aucune correction, tu t'arrêtes et tu rapportes ce que tu as mesuré (« on ne corrige pas une panne qu'on n'a pas nommée »).
+- R-14. LA CORRECTION ADMISE, si la cause est nommée : dans le harnais e2e seulement (e2e/fixtures/), pour les appels de préparation (par exemple sans réutilisation de connexion : en-tête `connection: close` ou un agent dédié). JAMAIS une nouvelle tentative, dans le harnais ou dans playwright.config.ts (retries reste à 0). Si la correction exige de toucher apps/api (dont le keepAliveTimeout du serveur, qui vaut aussi en production) : tu t'arrêtes et tu rapportes.
+- R-15. LA PREUVE : le rouge isolé avant, le vert isolé après (et la correction neutralisée, le rouge revient) ; puis l'e2e complète DEUX fois de suite, sur secteur, règle commitée avant : deux passes vertes ⇒ la porte e2e est verte ; un seul rouge ⇒ arrêt, pas de poussée. Motif : une fois la cause nommée et corrigée, deux passes complètes valent preuve ; ce n'est pas rejouer pour verdir, puisque les deux doivent passer.
+- R-16. Puis LA CLÔTURE DE L'INTÉGRATION, sur le même HEAD : les six portes après la dernière modification ; les campagnes de neutralisation dont la liste est versée par D342 (les outils adaptés de D341 et D342) ; les écritures de clôture de D342 et de D343 (sections, registre, ordre des rangs, backlog, AGENTS.md) ; la passe D277 des deux sens ; le contrôle de fin de lot ; push vers main puis fetch, local = origin/main. Compteur pour mémoire : QUATRE → DIX-HUIT (les quatorze lots de la branche, R-5) → DIX-NEUF (D343 touche du code de test : il compte, D283).
+- R-17. Deux erreurs du relecteur relevées par D342, à annoter (ajout seul) : R-2 de la consigne du rang 45 cite « R-3 de D340 » pour « réponse et coût identiques » — c'est R-3 de la consigne de D341 ; R-1 dit « fusionné dans origin/main » — l'essai du relecteur était local, origin/main ne contenait pas la branche.
+- R-18. La branche integration-45 n'est pas supprimée dans cette session ; front-client non plus.
+
+3. FORME (inchangée)
+Premier commit de D343 : docs/preuves/D343/table-ouverture.md SEUL, chemins complets ; lecture adverse de cette consigne, versée avant tout .md d'autorité ; rouges (la reproduction isolée) avant le premier commit de code ; audits de secrets avant chaque versement (D298) ; cette consigne versée en pièce (docs/preuves/D343/consigne.md).
+
+4. FIN
+- Ordre des rangs : « RANG 45 : CLOS (intégration de front-client ; D265 nommé et réparé dans le harnais) », puis « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat proposé : L36-3a-2, avec S-104). Si l'arrêt de R-13 ou R-14 joue : « RANG 45 : OUVERT », rien n'est poussé sur main, la sauvegarde integration-45 est à jour.
+- Gestes de Ko : ceux de docs/preuves/D342/scenarios-ko.md, après la poussée.
+- Rapport en français : fait, pas fait, écarts, décisions prises seul (une phrase simple chacune, avec ce qu'elle change pour Ko), au plus une question. Une session, un lot.
