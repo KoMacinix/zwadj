@@ -1,0 +1,21 @@
+D343 — LES DEUX PASSES de l'e2e — départ 07/11/2026 13:25:55
+SHA: 3ada4f7c62e843da3ce4b4d6557eab76edd314e0
+arbre (git status --short): []
+stash: []
+docker: zwadj-db Up 14 hours
+tests listés par 'playwright test --list' (l'ATTENDU, dérivé avant la première passe): Total: 78 tests in 19 files
+passe 1 — état machine JUSTE AVANT: 13:25:59 | SECTEUR | RAM libre 3,554 Mo | chrome 0 | headless_shell 0 | node 0
+passe 1 — ports d'e2e occupés (3100 3101 5273 5274): []
+=== passe 1 — départ 13:26:02 — 13:26:03 | SECTEUR | RAM libre 3,486 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 1 : code de sortie 0 · durée 319 s · fin 13:31:22 — 13:31:22 | SECTEUR | RAM libre 3,470 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 1 — résumé de Playwright (lu dans le BRUT, codes ANSI retirés):  1 skipped; 77 passed (5.3m);
+passe 2 — état machine JUSTE AVANT: 13:31:23 | SECTEUR | RAM libre 3,467 Mo | chrome 0 | headless_shell 0 | node 0
+passe 2 — ports d'e2e occupés (3100 3101 5273 5274): []
+=== passe 2 — départ 13:31:27 — 13:31:28 | SECTEUR | RAM libre 3,499 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 2 : code de sortie 0 · durée 316 s · fin 13:36:44 — 13:36:45 | SECTEUR | RAM libre 3,500 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 2 — résumé de Playwright (lu dans le BRUT, codes ANSI retirés):  1 skipped; 77 passed (5.2m);
+état machine JUSTE APRÈS: 13:36:46 | SECTEUR | RAM libre 3,501 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après les passes (git status --short): []
+fin 07/11/2026 13:36:46
+etat-env comparer : code 0
+DEUX PASSES TERMINÉES — code global 0 — échantillons sur BATTERIE pendant les passes : 0 sur 21

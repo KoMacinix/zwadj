@@ -1,4 +1,5 @@
-"""Masque, dans une sortie brute, toute suite de 43 caractères base64url qui mêle minuscules, majuscules et chiffres (la forme exacte d'un jeton opaque de ce dépôt : TokenService.generate, 256 bits en base64url).
+"""⛔ D343 — COPIE RÉPARÉE de docs/preuves/D342/portes/masquer-jetons.py (défaut d'INSTRUMENT relevé par l'audit de secrets « d » de D343 : voir portes/defaut-masquage.txt). La règle d'origine — « 43 caractères base64url qui mêlent minuscules, majuscules ET chiffres » — LAISSAIT PASSER un jeton réel sans chiffre (21 minuscules, 20 majuscules, 0 chiffre : mesuré). RÈGLE AJOUTÉE : toute suite de 43 caractères base64url IMMÉDIATEMENT APRÈS « token= » est masquée, quelles que soient ses classes de caractères (c'est la forme du lien de vérification d'e-mail du journal de développement). La règle d'origine est conservée telle quelle pour les suites hors de ce contexte.
+Masque, dans une sortie brute, toute suite de 43 caractères base64url qui mêle minuscules, majuscules et chiffres (la forme exacte d'un jeton opaque de ce dépôt : TokenService.generate, 256 bits en base64url).
 Procédure archivée avec la pièce qu'elle a produite — jamais promue en instrument (D291). Les jetons de la sortie e2e sont ceux d'une base JETABLE (`zwadj_e2e`, recréée à chaque lancement) : ils ne donnent accès à rien,
 mais ils ont la forme de jetons réels, et le dépôt est public (D200 : un audit de secrets ne se tronque pas, une pièce ne porte pas de suite de forme jeton).
 Remplace la Nième suite DISTINCTE (ordre de première apparition) par `<jeton masqué #N (43 car.)>` ; la même suite reçoit toujours le même numéro (on peut encore dire que deux occurrences sont le même jeton).
@@ -23,7 +24,8 @@ def masquer(texte: str):
     def sub(m):
         nonlocal n
         s = m.group(0)
-        if not forme_jeton(s):
+        apres_token = texte[max(0, m.start() - 6): m.start()] == "token="
+        if not (forme_jeton(s) or apres_token):
             return s
         if s not in numeros:
             numeros[s] = len(numeros) + 1
@@ -40,12 +42,18 @@ assert num == {faux_jeton: 1} and k == 2 and faux_jeton not in sortie, "calibrat
 sans_chiffre = "aBc" + "x" * 40
 trop_court = "aB3" + "x" * 39
 assert masquer(sans_chiffre)[2] == 0 and masquer(trop_court)[2] == 0, "calibration négative manquée"
+# D343 — troisième paire de bras : le cas que l'audit a trouvé. Un jeton SANS CHIFFRE est masqué APRÈS « token= » (positif) et reste intact HORS de ce contexte (négatif : la règle d'origine ne change pas).
+sans_chiffre_43 = ("aB" * 20) + "-_" + "a"  # 43 caractères base64url, minuscules et majuscules, aucun chiffre
+assert len(sans_chiffre_43) == 43
+sortie3, num3, k3 = masquer(f"?token={sans_chiffre_43} fin")
+assert k3 == 1 and sans_chiffre_43 not in sortie3, "calibration positive (jeton sans chiffre après token=) manquée"
+assert masquer(f"x {sans_chiffre_43} fin")[2] == 0, "calibration négative (même suite hors de token=) manquée"
 
 brut_chemin, masque_chemin, libelle = sys.argv[1], sys.argv[2], sys.argv[3]
 brut = open(brut_chemin, "rb").read()
 texte = brut.decode("utf-8", errors="replace")
 masque, numeros, occurrences = masquer(texte)
-reste = [m.group(0) for m in JETON.finditer(masque) if forme_jeton(m.group(0))]
+reste = [m.group(0) for m in JETON.finditer(masque) if forme_jeton(m.group(0)) or masque[max(0, m.start() - 6): m.start()] == "token="]
 entete = (
     f"⛔ PIÈCE MASQUÉE — {libelle}. La sortie brute porte {occurrences} occurrence(s) de {len(numeros)} suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable\n"
     f"(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.\n"

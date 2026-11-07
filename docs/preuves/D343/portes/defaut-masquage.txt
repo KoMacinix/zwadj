@@ -1,0 +1,21 @@
+D343 — DÉFAUT D'INSTRUMENT : LE MASQUEUR DE JETONS LAISSAIT PASSER UN JETON RÉEL SANS CHIFFRE (relevé par l'audit de secrets « d », avant tout commit des pièces)
+
+Instrument : docs/preuves/D342/portes/masquer-jetons.py (copié tel quel dans docs/preuves/D343/portes/masquer-jetons.py au commit de la règle des deux passes, puis RÉPARÉ).
+Règle d'origine : masquer toute suite de 43 caractères base64url qui mêle minuscules, majuscules ET chiffres (la forme de TokenService.generate).
+
+Ce qu'a montré l'audit (première exécution de « d », 556 936 octets, périmée et remplacée) : 263 alertes nouvelles = 260 gabarits de masque (« token=<jeton masqué #N (43 car.)> », la « valeur » que l'outil
+masque est le mot « <jeton », 6 caractères) + 2 titres de test de test-int.txt (lus à la main : « forgot-password : réponse CONSTANTE », « compte supprimé après émission du token : 401 ») + UNE qui n'était PAS un gabarit : `portes/passe-1-test-e2e.txt` ligne 1781 portait, après « token= », une suite de 43 caractères base64url NON MASQUÉE — un jeton d'une base jetable (zwadj_e2e, recréée à chaque lancement),
+de la forme exacte d'un jeton réel, que la règle d'origine ne reconnaissait pas parce qu'il ne contenait AUCUN CHIFFRE (mesuré : 21 minuscules, 20 majuscules, 0 chiffre, 2 séparateurs ; la valeur n'est pas recopiée ici).
+Le masqueur avait pourtant annoncé « restantes après masquage : 0 (attendu 0) » : son contrôle de reste utilisait la MÊME règle que son masquage — il ne pouvait pas voir ce que la règle ne reconnaît pas.
+
+Pourquoi ce n'est pas rare : un jeton de 43 caractères base64url a une probabilité d'environ 0,07 % de ne contenir aucun chiffre (54/64 à la puissance 43) ; avec 86 jetons par sortie e2e, environ 6 % de chances par sortie.
+Le même défaut est latent dans la copie de D342 (docs/preuves/D342/portes/masquer-jetons.py) ; les pièces de D342 sont propres (l'audit de D342 n'a rien trouvé), donc elles ne sont PAS retouchées (D295 : un instrument et sa
+pièce se corrigent ensemble ou pas du tout) ; l'instrument de D342 n'est pas corrigé non plus, il est archivé comme preuve (D291) — entrée de backlog.
+
+Réparation (D298 : l'instrument est réparé, les pièces qu'il a produites sont régénérées, l'audit est REJOUÉ EN ENTIER) : toute suite de 43 caractères base64url IMMÉDIATEMENT APRÈS « token= » est masquée quelles que
+soient ses classes de caractères ; le contrôle de reste applique la même règle étendue ; la calibration a une troisième paire de bras (positif : un jeton sans chiffre après « token= » est masqué ; négatif : la même suite
+hors de ce contexte ne l'est pas). Les trois sorties e2e (passe-1-test-e2e.txt, passe-2-test-e2e.txt, test-e2e.txt) ont été régénérées depuis leurs bruts (inchangés, hors dépôt) : passe 1 87 jetons masqués (86 avant : le
+jeton manqué est maintenant masqué), passe 2 87, six portes 87.
+
+Contrôle INDÉPENDANT du masqueur (D275 : un compteur se confronte à une autre lecture) : `grep -E 'token=[A-Za-z0-9_-]{43}([^A-Za-z0-9_-]|$)'` sur les trois sorties régénérées → 0, 0, 0 ; gabarits `token=<jeton masqué #N (43 car.)>` comptés → 87, 87, 87.
+La première exécution de l'audit « d » n'est pas versée : elle n'a jamais été commitée et ne porte aucune valeur (l'outil masque les valeurs) ; son compte (263 alertes = 260 gabarits + 1 valeur non masquée + 2 titres de test) est celui de cette note.

@@ -1,0 +1,34 @@
+D343 — tri différentiel de l'audit de secrets « d » (AVANT le commit des sorties des deux passes de l'e2e, des six portes, de la note du défaut du masqueur et de la copie réparée du masqueur)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D343/audit-secrets-d343c.txt docs/preuves/D343/audit-secrets-d343d.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D343/audit-secrets-d343d.txt, lancé dans le dépôt principal (HEAD = commit de l'extension 5 de la table). ⚠ DEUX EXÉCUTIONS : la première (556 936 octets, jamais
+commitée) a montré le défaut du masqueur (voir portes/defaut-masquage.txt) ; elle a été supprimée, le masqueur réparé, les trois sorties régénérées, et l'audit REJOUÉ EN ENTIER (D298). Ce tri est celui de la SECONDE.
+Sortie scellée : 561 778 octets, 0 CR, 4 681 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau, 561 587 octets) = celui que la sortie porte ; relue identique, sceau vérifié à la relecture.
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d343c) : 5 075 fichiers parcourus, 4 914 audités, 161 exclus, 1 390 alertes (1 390 contextes).
+  · nouvelle (d343d)   : 5 095 fichiers parcourus, 4 933 audités, 162 exclus, 1 669 alertes (1 669 contextes). Contrôle de l'outil : audités + exclus = 5 095 (attendu 5 095, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 095 fichiers sous docs/preuves/ après l'audit = 5 068 suivis (index) + 19 non suivis hors __pycache__ + 8 __pycache__/*.pyc ignorés. Les 5 095 de l'audit = ces 5 095 moins sa propre
+    sortie scellée (écrite APRÈS lui) plus .gitattributes : 5 095 − 1 + 1 = 5 095. L'arithmétique ferme.
+  · Exclus : 162 contre 161, soit un de plus — la sortie scellée « c » de ce lot, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif → 0 nouvelle (attendu 0) ; positif → 2 nouvelles (attendu 2).
+
+Résultat du tri différentiel : 279 alertes ABSENTES de la sortie précédente — jeton = 277, mot-de-passe = 2 — réparties en SIX fichiers (279 contextes lus, attendu 279) :
+  · 87 + 87 + 87 = 261  portes/passe-1-test-e2e.txt, portes/passe-2-test-e2e.txt, portes/test-e2e.txt — chaque alerte est une ligne « [WebServer] …/auth/verification-email?token=<jeton masqué #N (43 car.)> » : la « valeur »
+        que l'outil masque est le mot « <jeton » (6 caractères), c'est-à-dire le MASQUE. Classement MÉCANIQUE calibré (un contexte de gabarit est reconnu, un contexte à valeur de 43 caractères ne l'est pas), puis les trois comptes
+        rapprochés du contrôle indépendant du masqueur (un grep de 43 caractères après le motif : 0, 0, 0 ; gabarits comptés : 87, 87, 87). ⚠ L'AUDIT NE VOIT PLUS LA VALEUR QU'IL A VUE À LA PREMIÈRE EXÉCUTION : l'alerte à
+        43 caractères non masqués de la passe 1 n'existe plus.
+  · 8   portes/defaut-masquage.txt — MA PROSE, qui décrit le défaut du masqueur : elle cite le motif, le titre de deux tests, et l'expression régulière de 43 caractères. Les « valeurs » masquées sont des citations de 1 à 16 caractères,
+        jamais un jeton.
+  · 8   portes/masquer-jetons.py — le CODE du masqueur réparé : il contient le littéral de contexte et ses cas de calibration (une suite fabriquée de 43 caractères sans chiffre, assemblée dans le script, jamais une valeur réelle). Les
+        valeurs masquées sont de 0 à 1 caractère.
+  · 2   portes/test-int.txt — deux TITRES de test (« …forgot-password : réponse CONSTANTE… », « …compte supprimé après émission du token : 401… »), lus à la main : le mot masqué est de 7 et de 3 caractères.
+  Total : 261 + 8 + 8 + 2 = 279 (attendu 279). Plus grande valeur masquée : 16 caractères (la syntaxe d'une expression régulière citée), plus petite : 0.
+
+Conclusion : 279 alertes lues, **0 valeur réelle**.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier et la sortie scellée « d » n'ont pas été audités avant leur commit (ils n'existaient pas) ; l'audit suivant les couvrira.
+  · LE MASQUEUR DE D342 (docs/preuves/D342/portes/masquer-jetons.py) A LE MÊME DÉFAUT et n'est pas retouché (D295). Les pièces e2e de D342 ont passé l'audit de D342 ; ce tri ne les a pas relues.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes (cf. tri « b » : les fichiers .env du poste ne sont pas vus).
+  · le contrôle dédié « 0 valeur réelle » (D299) est rejoué à la clôture, contre les trois bruts e2e (hors dépôt) qui sont les journaux à valeurs réelles de cette session.

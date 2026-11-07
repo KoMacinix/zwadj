@@ -1,0 +1,680 @@
+
+> zwadj@ test C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r --workspace-concurrency=1 --no-bail run test
+
+Scope: 9 of 10 workspace projects
+
+> @zwadj/api-client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ✓ src/quotes-client.test.ts (11 tests) 8ms
+ ✓ src/staff-client.test.ts (7 tests) 5ms
+ ✓ src/clients-client.test.ts (5 tests) 5ms
+ ✓ src/venue-families.test.ts (2 tests) 10ms
+ ✓ src/account-client.test.ts (3 tests) 29ms
+ ✓ src/auth-client.test.ts (17 tests) 160ms
+ ✓ src/venue-client.test.ts (21 tests) 137ms
+
+ Test Files  7 passed (7)
+      Tests  66 passed (66)
+   Start at  13:38:17
+   Duration  1.08s (transform 367ms, setup 0ms, collect 921ms, tests 355ms, environment 2ms, prepare 2.66s)
+
+
+> @zwadj/api@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-source-guards.spec.ts (15 tests) 78ms
+ ✓ src/common/quote-draft.spec.ts (32 tests) 111ms
+ ✓ src/media/image-pipeline.spec.ts (6 tests) 915ms
+   ✓ processVenuePhoto > au-delà du plafond : la grande redescend à 1920 de large  355ms
+ ✓ src/auth/password.service.spec.ts (2 tests) 161ms
+ ✓ src/documents/playwright-pdf.renderer.spec.ts (12 tests) 458ms
+ ✓ src/staff/staff-password-policy.spec.ts (18 tests) 1133ms
+   ✓ la liste — fidélité à sa SOURCE VERSÉE (R-5 (D341) : au moins 10 000 entrées, source, licence, empreinte) > toutes les entrées sont des chaînes non vides, sans espace de bord ni saut de ligne (le format d'une liste à une entrée par ligne)  1087ms
+ ✓ src/staff/staff-session.service.spec.ts (30 tests) 80ms
+ ✓ src/common/contact.spec.ts (49 tests) 36ms
+ ✓ src/venues/quote-store.prisma.spec.ts (58 tests) 157ms
+ ✓ src/documents/quote-document.service.spec.ts (17 tests) 60ms
+ ✓ src/documents/quote-document.spec.ts (61 tests) 222ms
+ ✓ src/venues/venues-public.service.spec.ts (25 tests) 106ms
+ ✓ src/venues/quotes.service.spec.ts (47 tests) 126ms
+ ✓ src/auth/auth.service.spec.ts (34 tests) 176ms
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 34396  - 2026-11-07, 1:38:24 p.m.   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>
+ ✓ src/payments/chargily.gateway.spec.ts (17 tests) 58ms
+ ✓ src/config/env.spec.ts (25 tests) 30ms
+ ✓ src/common/notifications/notification-dispatch.spec.ts (10 tests) 25ms
+ ✓ src/common/phone.spec.ts (55 tests) 53ms
+ ✓ src/common/staff-contract.spec.ts (22 tests) 31ms
+ ✓ src/staff/staff-store.prisma.spec.ts (41 tests) 99ms
+ ✓ src/media/disk-storage.adapter.spec.ts (5 tests) 42ms
+ ✓ src/auth/google-auth.spec.ts (12 tests) 73ms
+ ✓ src/venues/bookings.schemas.spec.ts (26 tests) 27ms
+ ✓ src/venues/venue-media.service.spec.ts (11 tests) 48ms
+ ✓ src/common/e2e-api-sans-surveillance.spec.ts (3 tests) 41ms
+ ✓ src/staff/staff-session.guard.spec.ts (19 tests) 49ms
+ ✓ src/venues/venue-media.schemas.spec.ts (12 tests) 20ms
+ ✓ src/account/account.service.spec.ts (16 tests) 72ms
+ ✓ src/common/quote-reference.spec.ts (40 tests) 22ms
+ ✓ src/venues/visit-notifications.service.spec.ts (15 tests) 58ms
+ ✓ src/auth/jwt-auth.guard.spec.ts (12 tests) 48ms
+ ✓ src/venues/booking-notification-input.spec.ts (24 tests) 25ms
+ ✓ src/venues/domain-events.spec.ts (8 tests) 33ms
+ ✓ src/venues/venues.service.spec.ts (9 tests) 26ms
+ ✓ src/common/client-record.spec.ts (27 tests) 34ms
+ ✓ src/staff/staff-session-policy.spec.ts (25 tests) 16ms
+ ✓ src/venues/availability-time.spec.ts (21 tests) 15ms
+ ✓ src/venues/booking-transitions.spec.ts (24 tests) 23ms
+ ✓ src/common/staff-account-name.spec.ts (53 tests) 30ms
+ ✓ src/auth/google-verifier.spec.ts (9 tests) 16ms
+ ✓ src/common/i18n-parity.spec.ts (5 tests) 17ms
+ ✓ src/payments/payment-intent.spec.ts (12 tests) 12ms
+ ✓ prisma/seed-data/seed-data.spec.ts (8 tests) 22ms
+ ✓ src/auth/auth.schemas.spec.ts (15 tests) 25ms
+ ✓ src/account/account-deletion.service.spec.ts (14 tests) 65ms
+ ✓ src/venues/venue-filters.schemas.spec.ts (9 tests) 19ms
+ ✓ src/venues/visit-bookings.schemas.spec.ts (6 tests) 16ms
+ ✓ src/payments/payment-store.prisma.spec.ts (8 tests) 33ms
+ ✓ src/clients/pro-clients.service.spec.ts (19 tests) 31ms
+ ✓ src/venues/booking-admission.spec.ts (15 tests) 13ms
+ ✓ src/venues/quote-transitions.spec.ts (17 tests) 20ms
+ ✓ src/venues/service-pricing.spec.ts (17 tests) 11ms
+ ✓ src/documents/html.spec.ts (8 tests) 11ms
+ ✓ src/referentials/referentials.service.spec.ts (4 tests) 23ms
+ ✓ src/venues/venue-store.prisma.spec.ts (13 tests) 49ms
+ ✓ src/documents/quote-document-policy.spec.ts (7 tests) 9ms
+ ✓ src/venues/availability-engine.spec.ts (18 tests) 21ms
+ ✓ src/staff/staff-cookies.spec.ts (17 tests) 18ms
+ ✓ src/venues/booking-charge.spec.ts (13 tests) 12ms
+ ✓ src/common/email/render.spec.ts (3 tests) 7ms
+ ✓ src/venues/quote-reference.spec.ts (29 tests) 14ms
+ ✓ src/auth/password.service.dummy.spec.ts (4 tests) 13ms
+ ✓ src/venues/slug.spec.ts (6 tests) 8ms
+ ✓ src/payments/payments.service.spec.ts (11 tests) 21ms
+ ✓ src/venues/pricing-engine.spec.ts (16 tests) 11ms
+ ✓ src/clients/pro-client-policy.spec.ts (17 tests) 9ms
+ ✓ src/venues/visit-slots-engine.spec.ts (13 tests) 13ms
+ ✓ src/venues/venues-admin.service.spec.ts (6 tests) 34ms
+ ✓ src/auth/token.service.spec.ts (4 tests) 23ms
+ ✓ src/health/health.controller.spec.ts (2 tests) 44ms
+ ✓ src/venues/booking-window.spec.ts (7 tests) 10ms
+ ✓ src/venues/deposit.spec.ts (9 tests) 8ms
+ ✓ src/venues/booking-deadline.spec.ts (6 tests) 9ms
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests) 13ms
+ ✓ src/common/email/dev-logger.email.spec.ts (1 test) 6ms
+ ✓ src/venues/slot-templates.service.spec.ts (6 tests) 11ms
+ ✓ src/payments/payment-gateway.factory.spec.ts (7 tests) 9ms
+ ✓ src/common/whatsapp/dev-logger.whatsapp.spec.ts (1 test) 6ms
+ ✓ src/auth/auth-emails.service.spec.ts (3 tests) 3ms
+ ✓ src/auth/roles.guard.spec.ts (7 tests) 10ms
+
+ Test Files  80 passed (80)
+      Tests  1336 passed (1336)
+   Start at  13:38:19
+   Duration  16.47s (transform 6.17s, setup 0ms, collect 90.80s, tests 5.54s, environment 33ms, prepare 39.80s)
+
+
+> @zwadj/client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ✓ src/components/auth/register-form.test.tsx (5 tests) 2671ms
+   ✓ RegisterForm — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant, le gabarit d'exemple n'est pas un numéro  630ms
+   ✓ RegisterForm — le téléphone est le champ partagé (rang 32) > ⚠ facultatif : laissé VIDE, la clé est ABSENTE du corps — jamais une chaîne vide  634ms
+   ✓ RegisterForm — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part au format canonique  598ms
+   ✓ RegisterForm — le téléphone est le champ partagé (rang 32) > un numéro INCOMPLET est refusé par le schéma partagé : aucun appel  539ms
+ ✓ src/components/account/account-settings-view.test.tsx (10 tests) 3199ms
+   ✓ garde de session — première page protégée du site client > anonyme : pas de formulaire, un lien de connexion  334ms
+   ✓ profil CLIENT — porté par User, pas par un ProProfile > affiche prénom/nom/téléphone, et AUCUN champ d'établissement  420ms
+   ✓ profil CLIENT — porté par User, pas par un ProProfile > téléphone vidé ⇒ null EXPLICITE (il est facultatif à l'inscription client)  776ms
+   ✓ mot de passe — le compte Google-only est ici le cas COURANT (D42) > mode « définir » : currentPassword absent du corps, session rechargée via /me  339ms
+ ✓ src/components/venue/booking-request-panel-montants.test.tsx (5 tests) 4040ms
+   ✓ FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix du créneau  1608ms
+   ✓ FC-6 — page ARABE : les montants du serveur, en ar-DZ > le prix d'une prestation, à côté de sa case  834ms
+   ✓ FC-6 — page ARABE : les montants du serveur, en ar-DZ > le total, sans prestation choisie : le prix du créneau du serveur  795ms
+   ✓ FC-6 — page FRANÇAISE : rien ne change > le prix du créneau et le total, en format français  705ms
+ ✓ src/components/filter-wizard.test.tsx (34 tests) 4360ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > répondre à la commune pousse `/salles?cityId=…&guide=guests` (D229, mot pour mot)  423ms
+   ✓ FC-8 — chaque réponse POUSSE une URL de `/salles` (aucun état local, D229) > ⚠ construit l'URL avec les noms et l'encodage que `/salles` LIT  304ms
+ ✓ src/components/venue/availability-calendar.test.tsx (11 tests) 4790ms
+   ✓ Calendrier — la semaine algérienne (D56) > la première colonne est DIMANCHE, même en français  740ms
+   ✓ Calendrier — prix affiché > un jour sans créneau libre n'est pas cliquable  554ms
+   ✓ Calendrier — jours passés > restent dans la grille mais sont désactivés : les retirer ferait sauter les colonnes  544ms
+   ✓ Calendrier — sélection et états > les QUATRE états sont nommés, REQUESTED compris  536ms
+   ✓ Calendrier — navigation bornée > on ne peut pas remonter avant le mois courant  459ms
+   ✓ Calendrier — navigation bornée > avancer d'un mois redemande la bonne fenêtre  587ms
+   ✓ Calendrier — chevrons de mois (R2c) > rend une flèche et non le libellé écrit  429ms
+   ✓ Calendrier — chevrons de mois (R2c) > les deux chevrons sont miroitables en RTL : attribut ET classe porteuse  418ms
+ ✓ src/components/venue/booking-request-panel-demande.test.tsx (7 tests) 4972ms
+   ✓ FC-4 — le JOUR seulement demandé se choisit, et son nom le dit > le 16 (un créneau demandé, un fermé) : choisissable, nommé « demandes en attente »  1302ms
+   ✓ FC-4 — le JOUR seulement demandé se choisit, et son nom le dit > le 17 (réservé et fermé) : reste inactif, nommé « indisponible »  609ms
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau demandé est actif, et son libellé dit « demandes en attente »  811ms
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le créneau FERMÉ du même jour reste inactif  700ms
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le choisir fait paraître l'AVIS : d'autres demandes sont en attente  743ms
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > le prix affiché du créneau demandé est celui du SERVEUR (formaté, jamais recalculé)  373ms
+   ✓ FC-4 — le CRÉNEAU demandé se choisit (il suit le jour), avec un avis > un créneau LIBRE choisi n'affiche PAS l'avis  429ms
+ ✓ src/components/venue/booking-request-panel-langue.test.tsx (8 tests) 5403ms
+   ✓ FC-3 — en arabe, les noms viennent des champs ARABES > le créneau : « سهرة », jamais « Soirée »  1661ms
+   ✓ FC-3 — en arabe, les noms viennent des champs ARABES > la prestation : son nom ARABE à côté de la case  751ms
+   ✓ FC-3 — en arabe, les noms viennent des champs ARABES > l'unité d'une prestation « à l'unité » : son nom ARABE  725ms
+   ✓ FC-3 — en arabe, les noms viennent des champs ARABES > le palier d'une prestation « par palier » : son nom ARABE dans la liste  864ms
+   ✓ FC-3 — le repli sur le français n'a lieu que si l'arabe est VIDE, et il se DIT > un créneau sans nom arabe : son nom français, marqué `lang="fr"` et `dir="ltr"`  407ms
+   ✓ FC-3 — le repli sur le français n'a lieu que si l'arabe est VIDE, et il se DIT > une prestation sans nom arabe : son nom français, marqué `lang="fr"` et `dir="ltr"`  330ms
+   ✓ FC-3 — le repli sur le français n'a lieu que si l'arabe est VIDE, et il se DIT > un nom arabe PRÉSENT n'est jamais marqué comme un repli  315ms
+   ✓ FC-3 — en français, rien ne change > le créneau, la prestation, l'unité : les champs FRANÇAIS, sans marque de repli  342ms
+ ✓ src/app/[locale]/page.test.tsx (29 tests) 5418ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ ne nomme AUCUN lauréat d'award — la section n'existe pas  616ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ n'affiche AUCUN compte de prestataires — un nombre serait vérifiable, et faux  658ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ aucune carte de catégorie n'est cliquable ni focusable  301ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > rend les salles RÉELLES quand l'API en renvoie  335ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > le jeu de démonstration ne s'affiche JAMAIS sans bandeau  349ms
+ ✓ src/components/search/search-view.test.tsx (44 tests) 6807ms
+   ✓ Recherche — états > résultats : nom, commune, capacité et prix formatés en DZD  744ms
+   ✓ Recherche — états > le compteur s'accorde au singulier  470ms
+   ✓ Recherche — filtres sans JavaScript > les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche  693ms
+   ✓ Recherche — filtres sans JavaScript > les puces de style sont des CASES (plusieurs à la fois, D65), le type est un RADIO (choix unique, D66)  425ms
+ ✓ src/components/venue/venue-detail-view.test.tsx (28 tests) 7008ms
+   ✓ Détail salle — contenu > nom, commune, accroche, prix formaté et capacité  1137ms
+   ✓ Détail salle — contenu > le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B  346ms
+   ✓ Détail salle — contenu > les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML  318ms
+   ✓ Détail salle — contenu > équipements en pastilles ; liste vide dite explicitement  593ms
+ ✓ src/lib/contact-channel-guard.test.ts (7 tests) 2075ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers)  1918ms
+ ✓ src/components/account/bookings-section.test.tsx (6 tests) 1084ms
+   ✓ Mes réservations — ce que le client doit voir > une demande REFUSÉE reste affichée, marquée, avec le motif de la salle  446ms
+   ✓ Mes réservations — ce que le client doit voir > une demande EN ATTENTE dit qu'on attend la salle, et propose l'annulation  376ms
+ ✓ src/components/lost-word-cloud.test.tsx (16 tests) 1070ms
+   ✓ LostWordCloud — le rendu > deux canevas, tous deux DÉCORATIFS et couvrants  318ms
+   ✓ LostWordCloud — le rendu > chaque mot du vocabulaire apparaît  323ms
+ ✓ src/lib/intl-locale-guard.test.ts (4 tests) 2250ms
+   ✓ FC-6 — la langue de la page passe à chaque formateur de date et de nombre > aucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul  2163ms
+ ✓ src/lib/phone-literal-guard.test.ts (4 tests) 2158ms
+   ✓ L'indicatif d'un pays n'est écrit que dans le modèle de pays — jamais dans un composant > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un indicatif en dur (et la garde a PARCOURU de vrais fichiers)  2036ms
+ ✓ src/components/venue/visit-booking-panel.test.tsx (5 tests) 1041ms
+   ✓ VisitBookingPanel — le téléphone (facultatif) est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro ; plus de « +213… » écrit dans le composant  570ms
+ ✓ src/components/account/visit-bookings-section.test.tsx (6 tests) 550ms
+ ✓ src/components/auth/login-form.test.tsx (4 tests) 755ms
+   ✓ LoginForm (fr) > soumission vide : erreurs de validation partagées, AUCUN appel API  428ms
+ ✓ src/components/auth/google-signin.test.tsx (7 tests) 779ms
+ ✓ src/components/venue/booking-date-picker.test.tsx (11 tests) 1017ms
+   ✓ Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d) > fr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page  460ms
+ ✓ src/components/ui-phone-field.test.tsx (4 tests) 439ms
+ ✓ src/components/site-nav.test.tsx (8 tests) 457ms
+ ✓ src/app/[locale]/not-found.test.tsx (14 tests) 438ms
+ ✓ src/components/theme-toggle.test.tsx (6 tests) 371ms
+ ✓ src/components/locale-switch.test.tsx (3 tests) 310ms
+ ✓ src/lib/calendar.spec.ts (21 tests) 94ms
+ ✓ src/lib/search-query.test.ts (40 tests) 61ms
+ ✓ src/lib/routes.test.ts (8 tests) 67ms
+ ✓ src/app/theme-contrast.test.ts (14 tests) 42ms
+ ✓ src/lib/intl-locale.test.ts (7 tests) 61ms
+ ✓ src/lib/booking-calendar.test.ts (16 tests) 73ms
+ ✓ src/lib/semaine-source-unique.test.ts (6 tests) 124ms
+ ✓ src/components/venue/booking-request-panel.test.tsx (32 tests) 21088ms
+   ✓ Demande de réservation — les dates > une date PRISE reste affichée, désactivée : ça aide à en choisir une autre  1290ms
+   ✓ Demande de réservation — les dates > une date libre est cliquable  549ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas  1523ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-e : UN arrêt de tabulation dans la grille, et la flèche droite avance d'un jour  373ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif  1104ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > 30 % de 200 000 DA = 60 000 DA  328ms
+   ✓ Demande de réservation — l'acompte annoncé AVANT l'envoi (D81) > un acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur  330ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps  884ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > avec un e-mail, il est transmis tel quel  1099ms
+   ✓ Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143) > L-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32)  800ms
+   ✓ Prestations — E2d > une salle SANS catalogue n'affiche aucun bloc vide  317ms
+   ✓ Prestations — E2d > PER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie  959ms
+   ✓ Prestations — E2d > l'ACOMPTE suit le total prestations comprises  992ms
+   ✓ Prestations — E2d > décocher retire la prestation du total  984ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > l'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro  868ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique  835ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus  1057ms
+   ✓ Demande de réservation — le téléphone est le champ partagé (rang 32) > ⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message  659ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null)  917ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux »  543ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby`  609ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte  979ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > ML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide  935ms
+   ✓ ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1) > le numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente  707ms
+ ✓ src/lib/seo.test.ts (11 tests) 26ms
+ ✓ src/lib/adresses-guard.test.ts (5 tests) 18ms
+ ✓ src/lib/availability-windows.test.ts (16 tests) 28ms
+ ✓ src/lib/api.test.ts (8 tests) 25ms
+ ✓ src/lib/nom-localise.test.ts (6 tests) 14ms
+ ✓ src/lib/structured-data.test.ts (6 tests) 16ms
+stderr | src/test-setup-calibration.test.ts > étalon du plafond de console (`test-setup.ts`) > émet exactement DEUX lignes de console — le compte sous lequel ce fichier est exempté
+étalon du plafond de console (FC-9) — ligne 1 sur 2, émise exprès
+étalon du plafond de console (FC-9) — ligne 2 sur 2, émise exprès
+
+ ✓ src/test-setup-calibration.test.ts (1 test) 13ms
+ ✓ src/lib/login-path-guard.test.ts (5 tests) 17ms
+
+ Test Files  41 passed (41)
+      Tests  488 passed (488)
+   Start at  13:38:36
+   Duration  40.72s (transform 10.65s, setup 39.08s, collect 106.86s, tests 85.23s, environment 151.36s, prepare 18.44s)
+
+
+> @zwadj/pro@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/venue-form.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/photos-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/ma-salle-relecture.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000,5 » (virgule) refusé de la même façon
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Création — rejeu de validate() et mapping des erreurs API > CITY_NOT_FOUND → message porté par le champ Commune
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/photos-section.test.tsx (16 tests) 4509ms
+   ✓ Volet photos — upload > ajout : la photo retournée par le serveur apparaît EN FIN de galerie  637ms
+   ✓ Volet photos — upload > excédent : refusé AVANT de démarrer la file, avec le nombre de places restantes  453ms
+   ✓ Volet photos — upload > plafond atteint : l'entrée de fichiers est désactivée et le message le dit  374ms
+   ✓ Volet photos — réordonnancement SÉRIALISÉ > pendant le PATCH en vol, TOUTES les flèches sont disabled ; l'ordre ne change qu'au retour serveur  538ms
+   ✓ Volet photos — alt FR/AR > les DEUX champs partent toujours, et un champ vidé part en `null` (jamais en chaîne vide)  307ms
+ ✓ src/venues/ma-salle-relecture.test.tsx (19 tests) 5580ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)  832ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ RÈGLE DES MONTANTS : la liste montre le prix TEL QUE LE SERVEUR L'A ENREGISTRÉ (formaté par le formateur partagé), pas l'ancien, après un retour sans rechargement (S8 de D327)  561ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la réponse est retenue, la liste n'est pas relue (le serveur n'a rien enregistré)  460ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-17 : le libellé « Mes salles » ne retombe PAS à « Ma salle » pendant la relecture qui suit l'enregistrement (le compte connu est conservé)  480ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-10 : si la relecture qui suit l'enregistrement ÉCHOUE, l'état est « error » — l'écran ne dit pas « à jour » ce qu'il ne sait pas  334ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > F-11 : un enregistrement REFUSÉ par le serveur ne relit PAS la liste, et l'écran le dit  304ms
+   ✓ « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ le compte et la salle courante sont ceux du SERVEUR après la suppression (S6 de D327)  322ms
+   ✓ « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ la salle SUPPRIMÉE n'est jamais montrée comme présente dans la liste pendant la relecture (« Chargement », pas la carte périmée)  382ms
+   ✓ « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > ⛔ F-4 : la relecture part APRÈS la réponse du serveur, pas avant — tant que la suppression est retenue, la liste n'est pas relue et la salle est encore là  377ms
+   ✓ « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > à la dernière salle supprimée, la liste dit « aucune salle » sans rechargement (S6 de D327, le cas où le pro n'en a qu'une)  357ms
+   ✓ « Ma salle » — SUPPRESSION depuis l'assistant : la liste est relue > F-11 : une suppression REFUSÉE ne relit PAS la liste, ne quitte pas l'écran et le dit  315ms
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > le champ AFFICHE la valeur groupée + l'unité, mais ENVOIE bien 15000000 centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > D43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/venue-form.test.tsx (45 tests) 6279ms
+   ✓ Prix — rejet décimal strict (invariant argent) > formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes  680ms
+   ✓ Prix — rejet décimal strict (invariant argent) > formulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition  441ms
+   ✓ Référentiels (ajout B) — chargement, échec, submit bloqué > échec : bandeau + retry qui recharge réellement, et submit BLOQUÉ entre-temps  385ms
+   ✓ Édition — PATCH par diff, 404 indistinct, équipements > AMENITY_NOT_FOUND → message porté par la section Équipements  362ms
+stdout | src/account/account-settings-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-wizard.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > ⚠ au succès, la salle EXISTE et l'assistant reprend à l'ÉTAPE 2 dans l'URL
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > un seul appel : jamais POST puis PATCH dans le même geste
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stdout | src/venues/slots-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — « Suivant » et la raison de son inactivité > ⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/account/account-settings-page.test.tsx (31 tests) 3056ms
+stdout | src/venues/venue-wizard.test.tsx
+PLAFOND ABAISSABLE  "src/venues/venue-wizard.test.tsx": 3 observé(s) sous un plafond de 4. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/venues/venue-wizard.test.tsx (19 tests) 2459ms
+   ✓ Assistant — « Suivant » et la raison de son inactivité > ⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic  332ms
+ ✓ src/venues/slots-section.test.tsx (9 tests) 2696ms
+   ✓ Volet créneaux — affichage > une soirée 20h→02h s'affiche en heures MURALES et annonce le lendemain  529ms
+   ✓ Volet créneaux — D52, la fin est DÉDUITE > 20:00 → 02:00 part en endMinutes 1560, PAS 120 — le créneau que B1 avait interdit  495ms
+   ✓ Volet créneaux — D52, la fin est DÉDUITE > un créneau de journée n'est PAS décalé : 10:00 → 15:00 reste 900  378ms
+stdout | src/venues/blocks-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/pricing-rules-editor.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/services-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/blocks-section.test.tsx (10 tests) 2590ms
+   ✓ Volet blocages — la borne de fin est INCLUSIVE à l'écran > « du 3 au 10 » part en endsAt 2027-08-11T00:00, sinon le 10 resterait libre  350ms
+   ✓ Volet blocages — la borne de fin est INCLUSIVE à l'écran > D51 — aucune conversion de fuseau : ni Z, ni offset, ni millisecondes  305ms
+   ✓ Volet blocages — la borne de fin est INCLUSIVE à l'écran > une plage HORAIRE part avec les heures saisies, sans décalage  428ms
+ ✓ src/venues/pricing-rules-editor.test.tsx (9 tests) 2799ms
+   ✓ Variantes de prix — lecture > l'ordre affiché est celui de la RÉSOLUTION : férié, puis jour, puis saison  492ms
+   ✓ Variantes de prix — la saison peut enjamber décembre > novembre → février est ACCEPTÉ et part tel quel, sans inversion  383ms
+   ✓ Variantes de prix — la saison peut enjamber décembre > les mois COUVERTS sont affichés, y compris en enjambant l'année  302ms
+   ✓ Variantes de prix — le type n'est pas modifiable (B2) > le PATCH ne contient JAMAIS ruleType  330ms
+   ✓ Variantes de prix — jours de la semaine > les jours cochés partent triés, en index 0=dimanche du contrat API  315ms
+ ✓ src/venues/services-section.test.tsx (8 tests) 1833ms
+   ✓ Catalogue pro — l'avertissement qui évite l'erreur la plus chère > PER_GUEST affiche que le montant sera MULTIPLIÉ par les invités  309ms
+   ✓ Catalogue pro — le corps dépend du TYPE > FIXED n'envoie que `fixedPriceCents`  478ms
+stdout | src/App.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/create-venue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/App.test.tsx (18 tests) 2160ms
+   ✓ Inscription PRO — D21 (pas d'auto-login) > succès : écran « vérifiez votre boîte mail » avec l'email, AUCUN login enchaîné  358ms
+ ✓ src/venues/venue-list.test.tsx (13 tests) 1970ms
+ ✓ src/venues/create-venue-page.test.tsx (4 tests) 2539ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle  1286ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > le fournisseur RELIT la liste après la création — une seule source (D78), pas une liste propre à la page de création  487ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ la relecture part APRÈS la réponse de `create`, pas avant (D331 : le faux serveur de D326 enregistrait à l'appel) — tant que le serveur n'a pas répondu, la liste n'est pas relue  509ms
+stdout | src/venues/quotes-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/shell/pro-venues-context.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/shell/pro-venues-context.test.tsx (15 tests) 1110ms
+ ✓ src/venues/quotes-section.test.tsx (20 tests) 1731ms
+stdout | src/venues/edit-venue-save.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/edit-venue-save.test.tsx (6 tests) 1501ms
+   ✓ Point 14 — « Enregistrer » à la dernière étape dit TOUJOURS ce qu'il a fait > U-a : sans rien de modifié, aucune requête ne part — et l'écran le DIT, au lieu de se taire  537ms
+stdout | src/dashboard/dashboard-aside.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/dashboard/dashboard-aside.test.tsx (10 tests) 617ms
+ ✓ src/routes.test.tsx (16 tests) 784ms
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/calendar-link.test.tsx (3 tests) 866ms
+   ✓ Le lien « Calendrier de la salle » de l'assistant (rang 30, D322, K-a à K-c) > K-a, K-c : sa cible est une route DÉCLARÉE — la table de routes y rend le calendrier, et l'adresse reste  600ms
+stdout | src/venues/booking-requests-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/booking-requests-section.test.tsx (11 tests) 338ms
+stdout | src/venues/a3-unexpected-responses.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/a3-unexpected-responses.test.tsx (12 tests) 484ms
+stdout | src/venues/time-select.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/time-select.test.tsx (11 tests) 205ms
+ ✓ src/ui-phone-field.test.tsx (17 tests) 213ms
+stdout | src/venues/visits-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/visits-section.test.tsx (6 tests) 429ms
+ ✓ src/venues/confirm-dialog.test.tsx (9 tests) 206ms
+ ✓ src/ui-choice-dialog.test.tsx (9 tests) 231ms
+stdout | src/venues/request-scope.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/calendar-source.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/request-scope.test.tsx (5 tests) 447ms
+ ✓ src/venues/quote-amount.test.ts (5 tests) 261ms
+ ✓ src/venues/calendar-source.test.tsx (3 tests) 512ms
+ ✓ src/venues/pro-calendar.spec.ts (21 tests) 36ms
+ ✓ src/venues/intl-locale-pro.test.ts (3 tests) 24ms
+ ✓ src/auth/brand-loader.test.tsx (3 tests) 115ms
+ ✓ src/venues/calendar-style.test.ts (26 tests) 18ms
+ ✓ src/dashboard/walkin-contact.test.ts (30 tests) 19ms
+ ✓ src/dashboard/walkin-client.test.ts (13 tests) 9ms
+ ✓ src/lib/reveal.test.ts (6 tests) 13ms
+ ✓ src/dashboard/remittance.test.ts (13 tests) 13ms
+ ✓ src/dashboard/walkin-services.test.ts (10 tests) 17ms
+ ✓ src/venues/block-time.spec.ts (12 tests) 14ms
+ ✓ src/venues/layout-style.test.ts (8 tests) 8ms
+ ✓ src/ui-tokens.test.ts (8 tests) 5ms
+ ✓ src/shell/venues-label.test.ts (3 tests) 4ms
+ ✓ src/venues/venue-client-narrowing.test.ts (3 tests) 6ms
+ ✓ src/venues/slot-time.spec.ts (10 tests) 10ms
+ ✓ src/dashboard/walkin-revision.test.ts (8 tests) 5ms
+ ✓ src/dashboard/walkin-journey.test.tsx (175 tests) 88672ms
+   ✓ Flux par étapes — une seule question à l'écran > s'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule  355ms
+   ✓ Flux par étapes — une seule question à l'écran > ⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité  450ms
+   ✓ Flux par étapes — une seule question à l'écran > chaque réponse fait apparaître la suivante, dans l'ordre arbitré  726ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > ⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis  528ms
+   ✓ Récapitulatif — des réponses, JAMAIS des montants > n'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran  453ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > « Modifier » ramène à l'étape, sans rien effacer  459ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > ⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette  529ms
+   ✓ Retour en arrière — les réponses survivent, les montants non > valider une étape corrigée renvoie à la PREMIÈRE question sans réponse  593ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »  426ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > « Annuler » remet tout à zéro et ramène à la première question  413ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  646ms
+   ✓ Date et créneau sont DEUX écrans > ⚠ l'étape créneau montre les créneaux, PAS la grille du mois  341ms
+   ✓ La date vient du calendrier réel > une date VENDUE ne mène à AUCUN créneau réservable — le moteur décide  366ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question  667ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite  521ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  810ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite  664ms
+   ✓ Un seul devis, révisé > ⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus  621ms
+   ✓ Un seul devis, révisé > aucun montant total avant que le SERVEUR ait chiffré  466ms
+   ✓ Un seul devis, révisé > le total et l'acompte affichés sont ceux du devis, à l'unité près  531ms
+   ✓ Un seul devis, révisé > ⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge  574ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille  546ms
+   ✓ Les deux issues (décision ⑥) > ⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien  692ms
+   ✓ Les deux issues (décision ⑥) > la date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »  802ms
+   ✓ Les deux issues (décision ⑥) > ⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)  755ms
+   ✓ La remise par canal (Q2) et le catalogue > les cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)  624ms
+   ✓ La remise par canal (Q2) et le catalogue > enregistre le canal cliqué sur le devis en cours  651ms
+   ✓ La remise par canal (Q2) et le catalogue > le catalogue affiché est celui de la SALLE — aucune prestation inventée  390ms
+   ✓ La remise par canal (Q2) et le catalogue > ⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)  366ms
+   ✓ Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT > ⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion  611ms
+   ✓ Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé > chaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)  791ms
+   ✓ Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles > le LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer  368ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > absent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer  380ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > de l'étape des prestations à celle du créneau, le créneau retenu SURVIT  407ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > ⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique)  370ms
+   ✓ Point 9 — « Précédent » à gauche, « Continuer » à droite > une fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit  729ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé  955ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`  643ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise  683ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation  601ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre  571ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > « Bloquer la date » : « Date bloquée », avec la date et le client  610ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > en ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue  660ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > la fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran  609ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > cinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS  457ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone  633ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > avec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF  606ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  3061ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle  587ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  1280ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF  592ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)  679ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  650ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé  655ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise  662ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)  805ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > un échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »  711ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  3111ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons  464ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  2890ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > le point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré  617ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements  594ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > la fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran  631ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > en ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte  641ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  2662ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  1528ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`  622ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois  615ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule  467ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > P-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu  523ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`  544ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN  417ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE  486ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés  508ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > une fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE  497ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise  730ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN  579ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  1015ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi  458ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite  454ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > L36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite  444ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail »  437ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont  513ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > ⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue  577ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)  592ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé  530ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part  476ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > K-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé  606ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact  338ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion  388ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom  404ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN  468ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé »  405ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée  468ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre  541ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit  666ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît  689ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms  822ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial`  428ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe  608ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion  670ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1)  451ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche)  680ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche)  403ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route  315ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu  446ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée  615ms
+   ✓ ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion > ⛔ garde native — après la promotion, le message « officiel » est rendu  581ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance  379ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active  396ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif  561ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision  572ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier  417ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > ⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer  577ms
+   ✓ FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée) > MD-10 : en arabe, le palier et l'unité s'écrivent en arabe  489ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien  583ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro  681ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant  701ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > une relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée)  658ms
+   ✓ FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question > ⛔ un AUTRE refus (500) ne relit PAS la liste : seul le 409 de la copie déjà là la justifie  602ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin  714ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)  743ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise  688ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ « Annuler » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)  1039ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409)  574ms
+
+ Test Files  45 passed (45)
+      Tests  711 passed (711)
+   Start at  13:39:18
+   Duration  97.08s (transform 5.29s, setup 10.48s, collect 49.18s, tests 137.39s, environment 59.99s, prepare 10.68s)
+

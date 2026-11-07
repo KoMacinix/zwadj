@@ -161,3 +161,13 @@ FC-1 à FC-3, FC-5 à FC-7, FC-9, FC-10, FP-2 et FP-3 : aucune clé (FC-6 : les 
   (un nom de champ, un titre de test, le décompte des jetons restants) — 0 valeur réelle.
 - Ce qui a été décidé dans le fil a atterri dans un FICHIER : ce BILAN et les rapports de lot de `docs/preuves/front-client/` — **pas** dans les fichiers d'autorité, que cette session n'écrit pas
   (consigne § 0). Leur mise à jour est à l'intégration.
+
+
+## 8. Annotations de l'intégration (D342, D343) — AJOUT SEUL : rien de ce qui précède n'est retouché
+
+Écrites le 07/11/2026 par la session D343, à la clôture du rang 45 (`ZWADJ_CONTINUITE.md`, sections D342 et D343).
+
+- **§ 3, point 4 — la session ADVERSE de FP-1 n'est PAS due** (R-4 de la consigne du rang 45, décision du relecteur déléguée par Ko). Les sessions B sont en pause avec les certifications (DR1 de D336, pause de Ko du 22/10/2026) ; FP-1 a eu ses rouges avant le code et son harnais, la forme renforcée sous la pause (précédent du rang 43). Le « due avant l'intégration de FP-1 » ci-dessus est périmé.
+- **§ 3, point 1 — `test:int` est VERT à l'intégration** : 46 fichiers / 735 tests à la première passe de D342 (poste de Ko, sur secteur), et de nouveau à la passe des six portes de D343. Ce que le BILAN dit — « n'est vert dans aucun lot » — est vrai de chaque lot de la branche, pas de leur intégration.
+- **§ 3, point 5 — le compteur** : QUATRE → DIX-HUIT à l'intégration (R-5, les quatorze lots de code) ; DIX-NEUF avec D343 (du code de test est écrit, D283).
+- **§ 5 — les décisions prises seul par la session cloud** sont **RATIFIÉES par adoption** de la consigne du rang 45 (D342, § 1) ; la question de FP-3 est tranchée par Ko (« oui, pour FP-3 », 06/11/2026, § 1 c) : entrée de backlog neuve, lot d'API, à ordonner.
