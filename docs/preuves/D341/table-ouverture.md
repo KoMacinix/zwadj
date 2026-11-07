@@ -238,3 +238,12 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D341/tri-audit-d341f.txt` | son tri différentiel contre `audit-secrets-d341e.txt` |
 
 Ordre des audits de la clôture, qui suit l'ordre des commits : « d » (déclaré à l'ouverture) précède le commit des pièces de la clôture (journaux de l'union, outils du complément, passe D277 « avant », contrôle de fin de lot) ; « e » précède le commit des journaux du complément ; « f » précède le dernier commit de pièces et les `.md` d'autorité, avec `aucune-valeur-reelle.txt`. Aucune lettre n'est sautée.
+
+**Extension 3** (06/11/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — la passe D277 « après » a montré qu'un compte de motifs ne suffit pas à trier : deux outils de lecture sont nécessaires et doivent être versés avec leurs sorties, sans quoi le triage de la passe n'est pas rejouable) :
+
+| fichier | motif |
+|---|---|
+| `docs/preuves/D341/passe-d277/nouveaux-contextes.py` | liste, par motif de la passe D277, les contextes de la sortie « après » ABSENTS de la sortie « avant » (comparés sur le texte, sans la position) : c'est ce que le lot a ÉCRIT dans chaque motif, donc ce qu'il faut trier ; PREUVE, jamais promue en instrument (D291) |
+| `docs/preuves/D341/passe-d277/nouveaux-contextes.txt` | sa sortie, jouée sur l'état final des trois `.md` d'autorité |
+| `docs/preuves/D341/passe-d277/verifier-zeros.py` | rejoue les motifs à ZÉRO de la passe par des motifs PLUS LARGES (D295 : un zéro est une hypothèse), avec le nombre et le contexte de chaque occurrence |
+| `docs/preuves/D341/passe-d277/verifier-zeros.txt` | sa sortie, jouée sur l'état final des trois `.md` d'autorité |
