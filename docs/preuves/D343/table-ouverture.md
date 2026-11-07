@@ -146,3 +146,10 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D343/reproduction/rouge-avant-garde-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette exécution, dont la garde (D334, item 5) |
 
 ⚠ **Le fichier de garde est en LF sur le disque** (comme joué) : l'index normalise la fin de ligne (`core.autocrlf`), et le convertir en CRLF avant son commit changerait l'empreinte qui figure dans `rouge-avant-garde-empreintes.txt`. Il reste en LF jusqu'à la fin du lot.
+
+**Extension 4** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/` aux chemins complets de cette table : 1 fichier hors table, plus 1 fichier que le lanceur des deux passes écrira). La table déclarait les « journaux de campagnes » en pièce conditionnelle, « chemins complets par extension » : la campagne du lot (`neutralisation/neutralize-r45.py`) est jouée, sa sortie console est la seule pièce versée (les journaux bruts portent les journaux du serveur d'API, donc des jetons de vérification : ils restent HORS dépôt, D200). Et la comparaison de l'état des `.env` entre l'ouverture et la clôture des deux passes (D330) n'était pas nommée, alors que ses deux relevés l'étaient.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt` | la sortie console de la campagne du lot : calibration du lecteur (7 bras), pré-vol, les 4 cibles chacune sous sa mutation prouvée posée, le compte (4 mordues sur 4), la restauration de l'arbre vérifiée |
+| `docs/preuves/D343/portes/deux-passes-env-comparaison.txt` | la comparaison des deux relevés de l'état des `.env` (empreintes et hôtes, sans aucune valeur) entre l'ouverture de la première passe et la clôture de la dernière |
