@@ -539,3 +539,33 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | chemin | rôle |
 |---|---|
 | `docs/preuves/D342/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : un ✗ rendu à tort par un motif trop étroit (défaut d'instrument n° 1 de `defauts-instrument.txt`) ; le comportement ne démentait pas la consigne |
+
+
+**Extension 2** (07/11/2026, commitée SEULE, AVANT le commit des pièces qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D342/` (sur disque, après leur retour dans le dépôt : ils avaient été mis à l'abri hors dépôt le temps de la passe des portes, qui exige un arbre propre) aux chemins COMPLETS de cette table : **onze fichiers hors table**). Deux causes. (1) **Quatre fichiers étaient nommés sans leur chemin complet** : la ligne « les cinq sorties de porte » de la section B ne donnait le chemin complet que de `typecheck.txt` (`lint.txt`, `test.txt`, `build.txt`, `test-int.txt` suivaient en noms courts) — c'est précisément la faute que la règle des chemins complets (D328) existe pour attraper ; ils sont déclarés ci-dessous. (2) **Sept fichiers n'étaient pas prévus** : le balayage de forme de jeton, que l'audit « b » et son tri (`30a1190`) annoncent « versé avec l'audit « c » » ; la sortie du calcul du complément de l'union ; et la règle du rejeu de l'e2e avec son lanceur, rendus nécessaires par le rouge de l'e2e à la première passe (voir `portes/regle-rejeu.md`, qui précède le rejeu dans l'historique).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D342/portes/lint.txt` | la sortie de la porte `lint` (déjà nommée en nom court à la section B) |
+| `docs/preuves/D342/portes/test.txt` | la sortie de la porte `test` (idem) |
+| `docs/preuves/D342/portes/build.txt` | la sortie de la porte `build` (idem) |
+| `docs/preuves/D342/portes/test-int.txt` | la sortie de la porte `test:int` (idem) |
+| `docs/preuves/D342/balayage-forme-jeton.py` | le balayage MÉCANIQUE de la forme d'un jeton réel (43 caractères base64url mêlant minuscules, majuscules et chiffres, avec ou sans `token=` ; `token=` + 16 caractères ou plus) — deux modes : l'état final des fichiers d'un diff, et l'HISTOIRE (les lignes ajoutées de `git log -p`) ; aucune valeur n'est imprimée ; calibré sur ses deux bras |
+| `docs/preuves/D342/balayage-forme-jeton-avant.txt` | sa sortie AVANT la fusion : les 440 fichiers de la liste A lus à `origin/front-client` |
+| `docs/preuves/D342/balayage-forme-jeton-historique.txt` | sa sortie en mode historique : `e40c141..origin/front-client`, les 107 commits que la fusion importe |
+| `docs/preuves/D342/balayage-forme-jeton-apres.txt` | sa sortie APRÈS la fusion : `HEAD^1..HEAD` lu à `HEAD` |
+| `docs/preuves/D342/neutralisation/complement-sortie.txt` | la sortie de `calculer-complement.py` : le complément de l'angle mort du tri (vide pour ce diff : 0 campagne) |
+| `docs/preuves/D342/portes/regle-rejeu.md` | l'arrêt de l'e2e de la passe des portes (deux `ECONNRESET` au premier appel du fixture) et la règle du rejeu, ÉCRITE AVANT lui (R-6 de D339) |
+| `docs/preuves/D342/portes/rejeu-e2e.sh` | le lanceur du rejeu unique : l'e2e seule, `retries` inchangé, portes dures avant la commande, état machine toutes les 30 s |
+| `docs/preuves/D342/passe-d277.md` | le compte rendu de la passe D277 des deux sens (avant → après, triage de chaque motif) — **déclaré d'avance** (il n'existe pas encore) |
+
+**Pièces CONDITIONNELLES du rejeu** (leur existence dépend du lancement : si une porte dure du lanceur est rouge, le rejeu ne démarre pas et seuls `rejeu-index.txt` et `FIN` existent ; chemins complets) :
+
+| chemin | condition |
+|---|---|
+| `docs/preuves/D342/portes/rejeu-index.txt` | l'index du rejeu (SHA, arbre, état machine avant et après, code de sortie) |
+| `docs/preuves/D342/portes/rejeu-test-e2e.txt` | la sortie du rejeu, MASQUÉE (le dépôt est public, D200), versée **à côté** de `portes/test-e2e.txt` (la passe rouge, masquée), jamais à sa place |
+| `docs/preuves/D342/portes/rejeu-etat-machine.txt` | le relevé de l'état machine pendant le rejeu (déjà nommé à la section B, conditionnelle) |
+| `docs/preuves/D342/portes/rejeu-env-comparaison.txt` | la comparaison de l'état des `.env` entre l'ouverture et la clôture du rejeu (sans aucune valeur : empreintes et hôtes) |
+| `docs/preuves/D342/portes/etat-env-d342-rejeu-ouverture.txt` | l'état des `.env` à l'ouverture du rejeu (D330) |
+| `docs/preuves/D342/portes/etat-env-d342-rejeu-cloture.txt` | l'état des `.env` à la clôture du rejeu |
+| `docs/preuves/D342/portes/rejeu-resultat.md` | le résultat du rejeu, écrit APRÈS lui, dans un commit postérieur à celui de la règle |
