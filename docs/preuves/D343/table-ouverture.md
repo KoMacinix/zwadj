@@ -124,3 +124,10 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | chemin | rôle |
 |---|---|
 | `docs/preuves/D343/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : trois défauts d'instrument (un détail qui contredit son verdict, un motif cherché au mauvais endroit, un texte qui dit l'inverse de son compte) ; le comportement du dépôt ne démentait pas la consigne |
+
+**Extension 2** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers que la reproduction va produire aux chemins complets de cette table : 2 fichiers hors table). Le lanceur de la reproduction n'était pas prévu : la sortie de Playwright contient les journaux du serveur d'API, qui portent des jetons de vérification (D200) ; il faut une procédure qui garde le brut HORS du dépôt, verse une sortie filtrée et relève les empreintes des fichiers joués — écrite une fois, rejouée trois fois (avant, après, correction neutralisée), pour que les trois pièces soient produites de la même façon. Et la pièce d'empreintes de la troisième exécution (la correction neutralisée) n'était pas nommée, alors que celles des deux autres l'étaient.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/reproduction/lancer-repro.sh` | le lanceur : portes dures avant la commande (port libre, conteneur Up), brut hors dépôt, sortie filtrée des lignes de serveur, état machine avant et après, empreintes sha256 des fichiers joués ; archivé comme pièce, jamais promu en instrument (D291) |
+| `docs/preuves/D343/reproduction/correction-neutralisee-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par l'exécution « correction neutralisée » (D334, item 5) |
