@@ -1,0 +1,28 @@
+D342 — tri différentiel de l'audit de secrets « d » (AVANT le commit des pièces du rejeu de l'e2e, de sa pièce de résultat et du contrôle « 0 valeur réelle »)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D342/audit-secrets-d342c.txt docs/preuves/D342/audit-secrets-d342d.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D342/audit-secrets-d342d.txt, lancé dans le dépôt principal (HEAD = cd356c7). 490 496 octets, 0 CR, 4 088 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui
+précède la ligne de sceau) = celui que la sortie porte. Calibration : « 5 bras passent sur 5 imprimés, 0 manqué(s) · cas réel : rejoué ». Tri : calibration à deux bras tenue (négatif 0 nouvelle ; positif 2 nouvelles).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d342c) : 5 030 fichiers parcourus, 4 873 audités, 157 exclus, 1 295 alertes (1 295 contextes).
+  · nouvelle (d342d)   : 5 039 fichiers parcourus, 4 881 audités, 158 exclus, 1 384 alertes (1 384 contextes). Contrôle de l'outil : audités + exclus = 5 039 (attendu 5 039, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 040 fichiers sur disque après l'audit = 5 023 suivis (index) + 9 non suivis hors `.pyc` + 8 `__pycache__/*.pyc` ignorés ; les 5 039 de l'audit = ces 5 040 moins deux fichiers écrits APRÈS lui (sa propre
+    sortie scellée et `aucune-valeur-reelle.txt`), plus `.gitattributes` que l'outil ajoute : 5 040 − 2 + 1 = 5 039. L'arithmétique ferme.
+  · Exclus : 158 contre 157, soit un de plus — la sortie scellée « c », désormais versée et épinglée par son sceau.
+
+Résultat du tri différentiel : **89 alertes ABSENTES de la sortie précédente** — jeton = 86, mot-de-passe = 3 — réparties en deux fichiers : `portes/rejeu-test-e2e.txt` 80, `tri-audit-d342c.txt` 9 (89 contextes lus, attendu 89). Les contextes sont dans la sortie scellée aux
+lignes 3 556 à 3 918 (une ligne sur deux), valeurs MASQUÉES par l'outil.
+
+Tri au contexte — LU, pas déduit :
+  · 80  `portes/rejeu-test-e2e.txt` — la sortie du rejeu, MASQUÉE par `portes/masquer-jetons.py` : chaque alerte est une ligne `[WebServer] http://localhost:5273/(fr/)auth/verification-email?token=<jeton masqué #N (43 car.)>` (47 sans préfixe de langue, 33 avec `/fr/`).
+        La « valeur » que l'audit masque est le gabarit `<jeton` : c'est le MASQUE. La procédure a rendu « 80 occurrence(s) · 80 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) » (brut gardé HORS dépôt : 1 282 305 octets, sha256
+        0279b4c1678d4740d7097793c9aea46f1506a890627c4b98fc4512738e33523a).
+  ·  9  `tri-audit-d342c.txt` — MA PROSE, écrite après l'audit « c » et auditée ici : elle cite les motifs de l'audit (« `token=` », « hasPassword= », « forgot-password : ») et décrit les pièces qu'il a triées (la sortie e2e masquée, le balayage) ; jamais une valeur.
+  Total : 80 + 9 = 89 (attendu 89). Plus grande valeur masquée : 17 caractères (le texte d'une expression régulière citée), plus petite : 1.
+
+Contrôle DÉDIÉ « 0 valeur réelle » (D299), rejoué contre LES DEUX journaux bruts (la passe rouge des portes et le rejeu) sur `docs/preuves/D342` et `neutralisation` : « valeurs cherchées : 159 (2 journaux) · parcourus : 171 fichiers, 7 345 447 octets · **porteurs : 0** (attendu 0) » ;
+l'expression stricte et la large s'accordent (79 et 79 ; 80 et 80), la calibration à deux bras tient pour chaque journal. Sa sortie est `docs/preuves/D342/aucune-valeur-reelle.txt` (versée avec ce tri ; la clôture la rejouera si d'autres pièces s'ajoutent).
+
+Conclusion : 89 alertes lues, **0 valeur réelle**. ⚠ Ce que ce tri ne couvre pas, écrit pour ne pas se lire comme tenu : **ce fichier, `aucune-valeur-reelle.txt` et l'audit « d » lui-même n'ont pas été audités avant leur commit** (ils n'existaient pas pendant l'audit) ; le prochain audit les couvrira. Le même sort frappe les trois `.md`
+d'autorité écrits ensuite : l'outil d'audit ne parcourt que `docs/preuves/` et `.gitattributes`.

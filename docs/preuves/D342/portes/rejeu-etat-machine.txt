@@ -1,0 +1,8 @@
+01:50:07 | SECTEUR | RAM libre 3,923 Mo | chrome 0 | headless_shell 0 | node 0
+01:50:37 | SECTEUR | RAM libre 2,005 Mo | chrome 0 | headless_shell 0 | node 14
+01:51:08 | SECTEUR | RAM libre 1,588 Mo | chrome 0 | headless_shell 9 | node 14
+01:51:40 | SECTEUR | RAM libre 1,355 Mo | chrome 0 | headless_shell 8 | node 15
+01:52:11 | SECTEUR | RAM libre 1,428 Mo | chrome 0 | headless_shell 8 | node 15
+01:52:42 | SECTEUR | RAM libre 1,338 Mo | chrome 0 | headless_shell 9 | node 15
+01:53:14 | SECTEUR | RAM libre 1,600 Mo | chrome 0 | headless_shell 8 | node 14
+01:53:45 | SECTEUR | RAM libre 1,667 Mo | chrome 0 | headless_shell 5 | node 13

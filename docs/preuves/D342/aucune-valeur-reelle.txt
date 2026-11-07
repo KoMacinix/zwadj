@@ -1,0 +1,5 @@
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/48d58b53-2f75-462e-aac4-9a0f7b697225/scratchpad/portes-d342/test-e2e.txt : occurrences stricte 79 · large 79 (doivent s'accorder) · valeurs distinctes 79 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/48d58b53-2f75-462e-aac4-9a0f7b697225/scratchpad/rejeu-d342/rejeu-test-e2e-BRUT.txt : occurrences stricte 80 · large 80 (doivent s'accorder) · valeurs distinctes 80 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/48d58b53-2f75-462e-aac4-9a0f7b697225/scratchpad/portes-d342/test-e2e.txt porte 79 valeur(s) (attendu ≥ 79)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/48d58b53-2f75-462e-aac4-9a0f7b697225/scratchpad/rejeu-d342/rejeu-test-e2e-BRUT.txt porte 80 valeur(s) (attendu ≥ 80)
+== valeurs cherchées : 159 (2 journal/journaux) · parcourus : 171 fichiers, 7345447 octets · porteurs : 0 (attendu 0)

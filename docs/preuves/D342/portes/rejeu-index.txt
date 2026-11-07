@@ -1,0 +1,14 @@
+D342 — REJEU UNIQUE de l'e2e — départ 07/11/2026 01:50:02
+SHA: cd356c79f29ead24e007620bebd34910fa18e037
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 01:50:01 | SECTEUR | RAM libre 4,005 Mo | chrome 0 | headless_shell 0 | node 0
+docker: zwadj-db Up 3 hours
+ports d'e2e occupés (3100 3101 5273 5274): []
+=== test-e2e — départ 01:50:06 — 01:50:07 | SECTEUR | RAM libre 3,926 Mo | chrome 0 | headless_shell 0 | node 0
+    test-e2e : code de sortie 1 · durée 227 s · fin 01:53:54 — 01:53:54 | SECTEUR | RAM libre 3,802 Mo | chrome 0 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 01:53:55 | SECTEUR | RAM libre 3,784 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après le rejeu (git status --short): []
+fin 07/11/2026 01:53:55
+etat-env comparer : code 0
+REJEU TERMINE — code 1 — échantillons sur BATTERIE pendant le rejeu : 0 sur 8
