@@ -153,3 +153,11 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt` | la sortie console de la campagne du lot : calibration du lecteur (7 bras), pré-vol, les 4 cibles chacune sous sa mutation prouvée posée, le compte (4 mordues sur 4), la restauration de l'arbre vérifiée |
 | `docs/preuves/D343/portes/deux-passes-env-comparaison.txt` | la comparaison des deux relevés de l'état des `.env` (empreintes et hôtes, sans aucune valeur) entre l'ouverture de la première passe et la clôture de la dernière |
+
+**Extension 5** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/` modifiés ou ajoutés aux chemins complets de cette table : 3 fichiers hors table). Trois causes. (1) **Un défaut d'instrument relevé par l'audit de secrets « d »** : le masqueur de jetons laissait passer un jeton réel sans chiffre ; sa note est une pièce, sa copie réparée (`portes/masquer-jetons.py`, déjà déclarée) est commitée avec les trois sorties régénérées. (2) **Le BILAN de la branche est ANNOTÉ en AJOUT SEUL** (R-4 de la consigne du rang 45 : « le BILAN qui la dit due est annoté (ajout seul) ») : c'est un fichier de la liste A de D342 (`docs/preuves/front-client/BILAN.md`), il est donc MODIFIÉ par ce lot ; la vérification que le début du fichier est inchangé a été faite par octets avant l'écriture. (3) **Le compte rendu de la passe D277** de D343 : sa table déclarait ses trois pièces de sortie, pas le compte rendu qu'en tire la lecture (D342 l'avait déclaré en extension 2).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/portes/defaut-masquage.txt` | la note du défaut d'instrument du masqueur de jetons (une suite de 43 caractères sans chiffre n'était pas masquée), ce que l'audit a montré, la réparation, le contrôle indépendant |
+| `docs/preuves/front-client/BILAN.md` | **modifié, en ajout seul** : section 8, les annotations de l'intégration (la session adverse de FP-1 n'est pas due ; `test:int` vert à l'intégration ; le compteur ; les décisions prises seul de la branche ratifiées) |
+| `docs/preuves/D343/passe-d277.md` | le compte rendu de la passe D277 des deux sens de D343 (avant → après, le triage de chaque motif) |
