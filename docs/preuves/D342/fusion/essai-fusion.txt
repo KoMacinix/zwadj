@@ -1,0 +1,21 @@
+CONTRÔLE DE LA FUSION — D342 — AVANT la fusion — HEAD = 499d1bfefbdc (premier parent), 43996e279f49 (second parent)
+calibration (deux bras par vérification, abandon si un cas manque son verdict) : feuilles JSON (ar.json) → vrai accepté:True · main seul refusé:True · branche seule refusée:True ; lignes de index.ts → vrai accepté:True · main seul refusé:True · branche seule refusée:True
+8 contrôles parcourus : 8 ✓ · 0 ✗ (attendu : 0 ✗)
+
+✓ [A.1] `git merge-tree --write-tree HEAD origin/front-client` rend le code 0 (aucun conflit textuel) et un arbre
+     ↳ code 0, arbre prédit f55406e857de, lignes après l'arbre : 0 (aucune ligne de conflit attendue)
+✓ [A.3] les fichiers que la fusion apporte à main (diff entre le premier parent et le résultat) sont EXACTEMENT les 440 de la liste A de la table
+     ↳ liste A de la table : 440 chemins ; diff premier parent → résultat : 440 chemins ; dans le diff et pas dans la liste : [] ; dans la liste et pas dans le diff : []
+✓ [A.4] la fusion n'apporte AUCUN fichier d'autorité, d'`apps/api`, de migration, de SQL ni de dépendance
+     ↳ 440 chemins parcourus ; d'autorité : [] ; api/migration/sql/dépendance : []
+✓ [A.5] les fichiers modifiés des DEUX côtés (par `main` depuis la base ET par la branche) sont exactement les trois attendus
+     ↳ intersection mesurée (148 fichiers de main depuis la base ∩ 440 de la branche) : ['packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json', 'packages/types/src/index.ts']
+✓ [B.1] `packages/i18n/messages/ar.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1261, 'base': 1230, 'main': 1245, 'branche': 1246, 'résultat': 1261, 'ajoutées par main': 15, 'ajoutées par la branche': 16, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 1} ; problèmes : 0 (attendu 0)
+✓ [B.2] `packages/i18n/messages/fr.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1261, 'base': 1230, 'main': 1245, 'branche': 1246, 'résultat': 1261, 'ajoutées par main': 15, 'ajoutées par la branche': 16, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 1} ; problèmes : 0 (attendu 0)
+✓ [B.3] `packages/types/src/index.ts` : le résultat porte TOUT ce que chaque côté a ajouté, RIEN de ce qu'un côté a retiré, aucun doublon, et chaque module exporté existe
+     ↳ {'lignes non vides parcourues (résultat)': 19, 'base': 15, 'main': 17, 'branche': 17, 'ajoutées par main': 2, 'ajoutées par la branche': 2, 'retirées par main': 0, 'retirées par la branche': 0} ; problèmes : 0 (attendu 0) ; modules `from "./…"` du résultat : 19 parcourus, absents du résultat : [] (attendu []); 
+✓ [B.4] parité FR/AR du résultat : les mêmes feuilles de chaque côté
+     ↳ feuilles fr : 1261, ar : 1261 ; dans fr et pas dans ar : [] ; dans ar et pas dans fr : []
+

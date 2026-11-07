@@ -1,0 +1,29 @@
+CONTRÔLE DE LA FUSION — D342 — APRÈS la fusion — HEAD = 2b79355d7c33, parents 499d1bfefbdc et 43996e279f49
+calibration (deux bras par vérification, abandon si un cas manque son verdict) : feuilles JSON (ar.json) → vrai accepté:True · main seul refusé:True · branche seule refusée:True ; lignes de index.ts → vrai accepté:True · main seul refusé:True · branche seule refusée:True
+12 contrôles parcourus : 12 ✓ · 0 ✗ (attendu : 0 ✗)
+
+✓ [A.1] HEAD est un commit de fusion à DEUX parents, le second est la pointe de `front-client` (43996e2…), le premier le dernier commit de `main` du lot
+     ↳ premier parent 499d1bfefbdc (descendant de d44867a : True), second parent 43996e279f49 (attendu 43996e279f49)
+✓ [A.2] AUCUNE MODIFICATION À LA MAIN : l'arbre du commit de fusion = l'arbre que `git merge-tree` recalcule seul entre ses deux parents
+     ↳ arbre de HEAD f55406e857de ; arbre rejoué f55406e857de (code 0) ; identiques : True — la fusion n'a reçu aucune ligne écrite à la main (consigne § 3 : « aucune ligne de code neuve »)
+✓ [A.3] les fichiers que la fusion apporte à main (diff entre le premier parent et le résultat) sont EXACTEMENT les 440 de la liste A de la table
+     ↳ liste A de la table : 440 chemins ; diff premier parent → résultat : 440 chemins ; dans le diff et pas dans la liste : [] ; dans la liste et pas dans le diff : []
+✓ [A.4] la fusion n'apporte AUCUN fichier d'autorité, d'`apps/api`, de migration, de SQL ni de dépendance
+     ↳ 440 chemins parcourus ; d'autorité : [] ; api/migration/sql/dépendance : []
+✓ [A.5] les fichiers modifiés des DEUX côtés (par `main` depuis la base ET par la branche) sont exactement les trois attendus
+     ↳ intersection mesurée (148 fichiers de main depuis la base ∩ 440 de la branche) : ['packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json', 'packages/types/src/index.ts']
+✓ [B.1] `packages/i18n/messages/ar.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1261, 'base': 1230, 'main': 1245, 'branche': 1246, 'résultat': 1261, 'ajoutées par main': 15, 'ajoutées par la branche': 16, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 1} ; problèmes : 0 (attendu 0)
+✓ [B.2] `packages/i18n/messages/fr.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1261, 'base': 1230, 'main': 1245, 'branche': 1246, 'résultat': 1261, 'ajoutées par main': 15, 'ajoutées par la branche': 16, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 1} ; problèmes : 0 (attendu 0)
+✓ [B.3] `packages/types/src/index.ts` : le résultat porte TOUT ce que chaque côté a ajouté, RIEN de ce qu'un côté a retiré, aucun doublon, et chaque module exporté existe
+     ↳ {'lignes non vides parcourues (résultat)': 19, 'base': 15, 'main': 17, 'branche': 17, 'ajoutées par main': 2, 'ajoutées par la branche': 2, 'retirées par main': 0, 'retirées par la branche': 0} ; problèmes : 0 (attendu 0) ; modules `from "./…"` du résultat : 19 parcourus, absents du résultat : [] (attendu []); 
+✓ [B.4] parité FR/AR du résultat : les mêmes feuilles de chaque côté
+     ↳ feuilles fr : 1261, ar : 1261 ; dans fr et pas dans ar : [] ; dans ar et pas dans fr : []
+✓ [C.1] la fusion GARDE les SHA de la branche : les 18 SHA du BILAN et la pointe sont tous ancêtres de HEAD (R-3 : ni rebase ni squash)
+     ↳ 19 ancêtres sur 19 SHA testés ; non ancêtres : []
+✓ [C.2] la fusion apporte à main EXACTEMENT les 107 commits de la branche, plus le commit de fusion
+     ↳ `git rev-list --count 499d1bf..HEAD` = 108 (attendu 107 + 1 = 108)
+✓ [C.3] la pointe de la branche n'a pas bougé (origin/front-client = 43996e2…), la branche n'est pas supprimée
+     ↳ origin/front-client = 43996e279f49
+

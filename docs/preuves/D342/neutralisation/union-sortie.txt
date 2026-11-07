@@ -1,0 +1,37 @@
+  neutralize-404.py                  ← apps/client/src/app/[locale]/not-found.tsx, apps/client/src/app/not-found.tsx
+  neutralize-act-plafonds.py         ← apps/pro/src/dashboard/walkin-journey.test.tsx
+  neutralize-available-on.py         ← apps/client/src/components/search/search-view.tsx, apps/client/src/components/venue-card.tsx, apps/client/src/lib/search-query.ts, apps/client/src/lib/seo.ts
+  neutralize-b7.py                   ← apps/client/src/app/theme.css
+  neutralize-e3d1-s8.py              ← apps/client/src/test-setup.ts
+  neutralize-fc1.py                  ← apps/client/src/app/theme.css
+  neutralize-fc10.py                 ← apps/client/src/app/[locale]/salles/[slug]/page.tsx, apps/client/src/lib/seo.ts
+  neutralize-fc12.py                 ← apps/client/src/components/venue/venue-photos.tsx
+  neutralize-fc2.py                  ← apps/client/src/app/theme.css
+  neutralize-fc3.py                  ← apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/lib/nom-localise.ts
+  neutralize-fc4.py                  ← apps/client/src/components/venue/booking-date-picker.tsx, apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/lib/booking-calendar.ts
+  neutralize-fc5.py                  ← apps/client/src/components/site-footer.tsx, apps/client/src/lib/calendar.ts, apps/client/src/lib/routes.ts, apps/pro/src/App.tsx, apps/pro/src/routes.ts, apps/pro/src/shell/pro-nav.tsx, apps/pro/src/venues/pro-calendar.ts, packages/types/src/week.ts
+  neutralize-fc6.py                  ← apps/client/src/components/account/account-settings-view.tsx, apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/lib/booking-calendar.ts, apps/client/src/lib/calendar.ts, apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/venues/pro-calendar.ts, packages/i18n/src/format
+  neutralize-fc7.py                  ← apps/client/src/lib/search-query.ts
+  neutralize-fc8.py                  ← apps/client/src/app/[locale]/salles/(recherche)/page.tsx, apps/client/src/components/filter-wizard.tsx, apps/client/src/components/home-view.tsx, apps/client/src/components/search/search-view.tsx, apps/client/src/lib/search-query.ts, apps/client/src/lib/seo.ts
+  neutralize-fc9.py                  ← apps/client/src/components/auth/google-signin.test.tsx, apps/client/src/components/venue/venue-detail-view.test.tsx
+  neutralize-fp1.py                  ← apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/dashboard/walkin-services.ts
+  neutralize-fp2.py                  ← apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-fp3.py                  ← apps/pro/src/dashboard/walkin-client.ts, apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-horizon.py              ← apps/client/src/components/search/search-view.tsx
+  neutralize-horloge.py              ← apps/pro/src/dashboard/walkin-journey.test.tsx
+  neutralize-journey.py              ← apps/client/src/components/filter-wizard.tsx, apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-maxprice.py             ← apps/client/src/components/filter-wizard.tsx, apps/client/src/components/home-view.tsx, apps/client/src/lib/search-query.ts
+  neutralize-r25.py                  ← apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/lib/routes.ts
+  neutralize-r29.py                  ← apps/client/src/components/site-chrome.tsx, apps/client/src/components/venue/booking-date-picker.tsx, apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/lib/booking-calendar.ts, apps/pro/src/App.tsx, apps/pro/src/routes.ts
+  neutralize-r30.py                  ← apps/client/src/components/venue/booking-date-picker.tsx, apps/client/src/lib/booking-calendar.ts, apps/client/src/lib/calendar.ts, apps/pro/src/venues/edit-venue-page.tsx
+  neutralize-r32.py                  ← apps/client/src/components/account/account-settings-view.tsx, apps/client/src/components/venue/booking-request-panel.tsx, apps/client/src/components/venue/visit-booking-panel.tsx, apps/pro/src/account/account-settings-page.tsx, apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/theme.css, apps/
+  neutralize-r33.py                  ← apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/theme.css, apps/pro/src/venues/create-venue-page.tsx, packages/i18n/messages/ar.json, packages/i18n/messages/fr.json
+  neutralize-r37.py                  ← apps/pro/src/venues/edit-venue-page.tsx, apps/pro/src/venues/venue-list-page.tsx
+  neutralize-r38.py                  ← apps/pro/src/dashboard/walkin-journey.tsx, apps/pro/src/shell/pro-nav.tsx, apps/pro/src/venues/venue-list-page.tsx, packages/i18n/messages/ar.json
+  neutralize-r39.py                  ← apps/pro/src/dashboard/walkin-journey.tsx, packages/i18n/messages/ar.json
+  neutralize-r41.py                  ← apps/pro/src/dashboard/walkin-client.ts, apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-r42.py                  ← apps/client/src/components/venue/booking-request-panel.tsx, apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-r43.py                  ← apps/pro/src/dashboard/walkin-journey.tsx
+  neutralize-solid-s7.py             ← apps/client/src/test-setup.ts
+NON RETENUES : neutralize-argon2.py (2 lus), neutralize-available-on-api.py (5 lus), neutralize-booking-status.py (2 lus), neutralize-budgets.py (4 lus), neutralize-r26.py (2 lus), neutralize-r4.py (2 lus), neutralize-r44.py (14 lus), neutralize-rang23.py (3 lus), neutralize-s10a.py (4 lus), neutralize-s10b.py (4 lus), neutralize-s11a.py (4 lus), neutralize-s11b.py (4 lus), neutralize-s9.py (4 lus), neutralize-solid-s1.py (1 lus), neutralize-solid-s2.py (1 lus), neutralize-solid-s3.py (2 lus), neutralize-solid-s4.py (2 lus), neutralize-solid-s5a.py (2 lus), neutralize-solid-s5b.py (1 lus), neutralize-solid-s6.py (2 lus)
+UNION: neutralize-404.py,neutralize-act-plafonds.py,neutralize-available-on.py,neutralize-b7.py,neutralize-e3d1-s8.py,neutralize-fc1.py,neutralize-fc10.py,neutralize-fc12.py,neutralize-fc2.py,neutralize-fc3.py,neutralize-fc4.py,neutralize-fc5.py,neutralize-fc6.py,neutralize-fc7.py,neutralize-fc8.py,neutralize-fc9.py,neutralize-fp1.py,neutralize-fp2.py,neutralize-fp3.py,neutralize-horizon.py,neutralize-horloge.py,neutralize-journey.py,neutralize-maxprice.py,neutralize-r25.py,neutralize-r29.py,neutralize-r30.py,neutralize-r32.py,neutralize-r33.py,neutralize-r37.py,neutralize-r38.py,neutralize-r39.py,neutralize-r41.py,neutralize-r42.py,neutralize-r43.py,neutralize-solid-s7.py

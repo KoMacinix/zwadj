@@ -1,0 +1,32 @@
+D342 — tri différentiel de l'audit de secrets « c » (APRÈS la fusion, AVANT le commit des pièces de portes, de fusion, de balayage, d'outils d'union et de la règle du rejeu)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D342/audit-secrets-d342b.txt docs/preuves/D342/audit-secrets-d342c.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D342/audit-secrets-d342c.txt, lancé DANS LE DÉPÔT PRINCIPAL (HEAD = e8508d3, la fusion 2b79355 incluse ; 28 fichiers non suivis hors `.pyc`). 468 304 octets, 0 CR, 3 907 lignes ;
+sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau) = celui que la sortie porte. Calibration : « 5 bras passent sur 5 imprimés, 0 manqué(s) · cas réel : rejoué » (le journal du cas réel existe dans le dépôt principal,
+contrairement à la copie jetable de l'audit « b »). Tri : calibration à deux bras tenue (négatif « D298 contre elle-même », 0 nouvelle ; positif « D298 contre D297 », 2 nouvelles).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d342b) : 4 993 fichiers parcourus (la copie jetable), 4 837 audités, 156 exclus, 1 180 alertes (1 180 contextes).
+  · nouvelle (d342c)   : 5 030 fichiers parcourus, 4 873 audités, 157 exclus, 1 295 alertes (1 295 contextes). Contrôle de l'outil : audités + exclus = 5 030 (attendu 5 030, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 030 = 4 994 fichiers suivis (index) sous docs/preuves + 28 fichiers non suivis hors `.pyc` (dont la sortie scellée « c » elle-même, écrite APRÈS l'audit) + 8 `__pycache__/*.pyc` ignorés par git ; le nombre
+    rapporté par l'audit, 5 030, = les 5 029 fichiers présents pendant l'audit + `.gitattributes` : l'arithmétique ferme.
+  · Exclus : 157 contre 156, soit un de plus — la sortie scellée « b », désormais versée et épinglée par son sceau.
+
+Résultat du tri différentiel : **115 alertes ABSENTES de la sortie précédente** — jeton = 112, mot-de-passe = 3 — **toutes sous docs/preuves/D342/**. Les 115 contextes sont dans la sortie scellée, aux lignes 3 509 à 3 737 (une ligne sur deux), valeurs MASQUÉES
+par l'outil ; ils ne sont pas recopiés ici (ce fichier serait un écho non scellé de plus). Chacun a été lu, puis rangé par un classement en CODE ; la ventilation par fichier est : portes/test-e2e.txt 79 · balayage-forme-jeton.py 16 · tri-audit-d342b.txt 11 ·
+balayage-forme-jeton-apres.txt 3 · balayage-forme-jeton-avant.txt 3 · table-ouverture.md 2 · portes/test-int.txt 1 = 115 (attendu 115).
+
+Tri au contexte — LU, pas déduit :
+  · 79  `portes/test-e2e.txt` — la sortie de l'e2e de la passe des portes, MASQUÉE par `portes/masquer-jetons.py` (copie de celle de D341, octet pour octet) : chaque alerte est une ligne `[WebServer] http://localhost:5273/auth/verification-email?token=<jeton masqué #N (43 car.)>`
+        (46 sans préfixe de langue, 33 avec `/fr/`). La « valeur » que l'audit masque est le gabarit `<jeton` (6 caractères) : c'est le MASQUE, pas un jeton. La procédure a rendu « 79 occurrence(s) · 79 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) » (brut gardé HORS dépôt :
+        1 334 447 octets, sha256 0f093dfdd1f8f6acc06a20f498614eda2ed850c38ee1eccffca413aef7e4d368).
+  · 16 + 3 + 3  `balayage-forme-jeton.py` et ses sorties : du texte et du code qui DÉCRIVENT la forme cherchée (« `token=` de 43 caractères », `TOKEN_EGAL = re.compile(r"token=([A-Za-z0-9_-]{16,})")`, `"token=16+"`) ; la plus grande valeur masquée fait 17 caractères — le texte de l'expression régulière.
+  · 11  `tri-audit-d342b.txt` — MA PROSE, écrite après l'audit « b » et auditée ici : elle cite les motifs de l'audit « b » (« `token=` », « hasPassword= », « forgot-password : »…), jamais une valeur.
+  ·  2  `table-ouverture.md` (extension 2, ligne 552 du fichier) : la phrase qui décrit le balayage (« `token=` + 16 caractères ou plus »).
+  ·  1  `portes/test-int.txt` ligne 405 : le titre d'un test d'intégration EXISTANT, « …forgot-password : <réponse> CONSTANTE, mais aucun e-mail ne part » ; la valeur est déjà présente dans 161 fichiers suivis hors preuves (c'est le titre d'un test du dépôt).
+  Total : 79 + 22 + 11 + 2 + 1 = 115 (attendu 115). Plus grande valeur masquée : 17 caractères.
+
+Contrôle DÉDIÉ « 0 valeur réelle » (D299) : `python3 -I docs/preuves/D299/outils/aucune-valeur-reelle.py <journal e2e BRUT de la passe des portes> -- docs/preuves/D342 neutralisation` → « valeurs cherchées : 79 (1 journal) · parcourus : 161 fichiers, 5 557 222 octets · **porteurs : 0** (attendu 0) » ;
+l'expression stricte et la large s'accordent (79 et 79), la calibration à deux bras tient (positif 1, négatif 0). Il se rejoue à la clôture contre les DEUX journaux bruts (la passe rouge et le rejeu), et sa sortie se verse alors (`aucune-valeur-reelle.txt`).
+
+Conclusion : 115 alertes lues, **0 valeur réelle**. ⚠ Ce que ce tri ne couvre pas : le journal brut du rejeu n'existe pas encore ; les pièces qu'il produira (sa sortie masquée, son index) seront couvertes par l'audit « d ».

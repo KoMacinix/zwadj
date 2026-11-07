@@ -1,0 +1,573 @@
+
+> zwadj@ test C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r --workspace-concurrency=1 --no-bail run test
+
+Scope: 9 of 10 workspace projects
+
+> @zwadj/api-client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client[39m
+
+ [32m✓[39m src/venue-families.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/staff-client.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/quotes-client.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/clients-client.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/account-client.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/venue-client.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32m✓[39m src/auth-client.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 187[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m66 passed[39m[22m[90m (66)[39m
+[2m   Start at [22m 01:23:04
+[2m   Duration [22m 1.28s[2m (transform 636ms, setup 0ms, collect 1.26s, tests 415ms, environment 3ms, prepare 2.68s)[22m
+
+
+> @zwadj/api@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+ [32m✓[39m src/staff/staff-source-guards.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+ [32m✓[39m src/common/contact.spec.ts [2m([22m[2m49 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m src/common/quote-draft.spec.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+ [32m✓[39m src/common/client-record.spec.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document.service.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session.service.spec.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32m✓[39m src/documents/playwright-pdf.renderer.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 482[2mms[22m[39m
+ [32m✓[39m src/common/quote-reference.spec.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/staff/staff-password-policy.spec.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 1317[2mms[22m[39m
+   [33m[2m✓[22m[39m la liste — fidélité à sa SOURCE VERSÉE (R-5 (D341) : au moins 10 000 entrées, source, licence, empreinte)[2m > [22mtoutes les entrées sont des chaînes non vides, sans espace de bord ni saut de ligne (le format d'une liste à une entrée par ligne) [33m 1270[2mms[22m[39m
+ [32m✓[39m src/staff/staff-cookies.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/venues/quotes.service.spec.ts [2m([22m[2m47 tests[22m[2m)[22m[32m 103[2mms[22m[39m
+ [32m✓[39m src/common/staff-account-name.spec.ts [2m([22m[2m53 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/common/staff-contract.spec.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/staff/staff-store.prisma.spec.ts [2m([22m[2m41 tests[22m[2m)[22m[32m 71[2mms[22m[39m
+ [32m✓[39m src/venues/bookings.schemas.spec.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/venues/quote-store.prisma.spec.ts [2m([22m[2m58 tests[22m[2m)[22m[32m 110[2mms[22m[39m
+ [32m✓[39m src/venues/quote-transitions.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document.spec.ts [2m([22m[2m61 tests[22m[2m)[22m[32m 169[2mms[22m[39m
+ [32m✓[39m src/clients/pro-client-policy.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/common/i18n-parity.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document-policy.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/venues/quote-reference.spec.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/clients/pro-clients.service.spec.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/venues/booking-deadline.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/venues/booking-charge.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session-policy.spec.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/documents/html.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/venues/booking-notification-input.spec.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session.guard.spec.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m src/media/image-pipeline.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1028[2mms[22m[39m
+   [33m[2m✓[22m[39m processVenuePhoto[2m > [22mau-delà du plafond : la grande redescend à 1920 de large [33m 364[2mms[22m[39m
+ [32m✓[39m src/auth/password.service.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mRéponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mRéponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed[39m
+[31m[Nest] 17744  - [39m2026-11-07, 1:23:17 a.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>[39m
+ [32m✓[39m src/payments/chargily.gateway.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/venues/venues-public.service.spec.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+ [32m✓[39m src/account/account-deletion.service.spec.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/account/account.service.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m src/venues/visit-notifications.service.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/auth/auth.service.spec.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 144[2mms[22m[39m
+ [32m✓[39m src/auth/google-auth.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m src/venues/venue-media.service.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/auth/jwt-auth.guard.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/venues/booking-transitions.spec.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m prisma/seed-data/seed-data.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/common/phone.spec.ts [2m([22m[2m55 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/common/e2e-api-sans-surveillance.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/config/env.spec.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m src/venues/venue-store.prisma.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/common/notifications/notification-dispatch.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/media/disk-storage.adapter.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/venues/venues-admin.service.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/auth/auth.schemas.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/venues/venue-media.schemas.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/venues/availability-time.spec.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/venues/availability-engine.spec.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/venues/venue-filters.schemas.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/venues/venues.service.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m src/auth/token.service.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/venues/visit-bookings.schemas.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/health/health.controller.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/payments/payments.service.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/common/filters/all-exceptions.filter.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/venues/domain-events.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/venues/visit-slots-engine.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/payments/payment-intent.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/venues/pricing-engine.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/venues/slug.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/venues/service-pricing.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/referentials/referentials.service.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/venues/booking-admission.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/venues/booking-window.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/auth/password.service.dummy.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/venues/deposit.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/payments/payment-store.prisma.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/common/email/render.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/auth/google-verifier.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/common/email/dev-logger.email.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/payments/payment-gateway.factory.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/common/whatsapp/dev-logger.whatsapp.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/auth/auth-emails.service.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/venues/slot-templates.service.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/auth/roles.guard.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m80 passed[39m[22m[90m (80)[39m
+[2m      Tests [22m [1m[32m1336 passed[39m[22m[90m (1336)[39m
+[2m   Start at [22m 01:23:07
+[2m   Duration [22m 19.78s[2m (transform 5.21s, setup 0ms, collect 104.14s, tests 5.41s, environment 31ms, prepare 50.88s)[22m
+
+
+> @zwadj/client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/client[39m
+
+ [32m✓[39m src/lib/adresses-guard.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/components/auth/register-form.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1367[2mms[22m[39m
+   [33m[2m✓[22m[39m RegisterForm — le téléphone est le champ partagé (rang 32)[2m > [22mun numéro INCOMPLET est refusé par le schéma partagé : aucun appel [33m 500[2mms[22m[39m
+ [32m✓[39m src/components/venue/booking-date-picker.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 1103[2mms[22m[39m
+   [33m[2m✓[22m[39m Calendrier du panneau — les noms dans la LANGUE DE LA PAGE (rang 30, D322, N-a à N-d)[2m > [22mfr : le mois, les sept en-têtes et le nom d'un jour sortent dans la langue de la page [33m 501[2mms[22m[39m
+ [32m✓[39m src/components/filter-wizard.test.tsx [2m([22m[2m34 tests[22m[2m)[22m[33m 1992[2mms[22m[39m
+ [32m✓[39m src/components/account/account-settings-view.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1542[2mms[22m[39m
+ [32m✓[39m src/components/venue/availability-calendar.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 2305[2mms[22m[39m
+   [33m[2m✓[22m[39m Calendrier — la semaine algérienne (D56)[2m > [22mla première colonne est DIMANCHE, même en français [33m 395[2mms[22m[39m
+   [33m[2m✓[22m[39m Calendrier — sélection et états[2m > [22mles QUATRE états sont nommés, REQUESTED compris [33m 318[2mms[22m[39m
+ [32m✓[39m src/components/venue/booking-request-panel-langue.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 2854[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-3 — en arabe, les noms viennent des champs ARABES[2m > [22mle créneau : « سهرة », jamais « Soirée » [33m 701[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-3 — en arabe, les noms viennent des champs ARABES[2m > [22mla prestation : son nom ARABE à côté de la case [33m 350[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-3 — en arabe, les noms viennent des champs ARABES[2m > [22ml'unité d'une prestation « à l'unité » : son nom ARABE [33m 318[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-3 — en arabe, les noms viennent des champs ARABES[2m > [22mle palier d'une prestation « par palier » : son nom ARABE dans la liste [33m 382[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-3 — le repli sur le français n'a lieu que si l'arabe est VIDE, et il se DIT[2m > [22mune prestation sans nom arabe : son nom français, marqué `lang="fr"` et `dir="ltr"` [33m 335[2mms[22m[39m
+ [32m✓[39m src/app/[locale]/page.test.tsx [2m([22m[2m29 tests[22m[2m)[22m[33m 2889[2mms[22m[39m
+   [33m[2m✓[22m[39m Accueil — ce que la page ne promet pas[2m > [22m⚠ n'affiche AUCUN compte de prestataires — un nombre serait vérifiable, et faux [33m 433[2mms[22m[39m
+ [32m✓[39m src/components/search/search-view.test.tsx [2m([22m[2m44 tests[22m[2m)[22m[33m 4684[2mms[22m[39m
+   [33m[2m✓[22m[39m Recherche — états[2m > [22mrésultats : nom, commune, capacité et prix formatés en DZD [33m 403[2mms[22m[39m
+   [33m[2m✓[22m[39m Recherche — états[2m > [22mle compteur s'accorde au singulier [33m 355[2mms[22m[39m
+   [33m[2m✓[22m[39m Recherche — filtres sans JavaScript[2m > [22mles contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche [33m 367[2mms[22m[39m
+ [32m✓[39m src/components/venue/venue-detail-view.test.tsx [2m([22m[2m28 tests[22m[2m)[22m[33m 4711[2mms[22m[39m
+   [33m[2m✓[22m[39m Détail salle — contenu[2m > [22mnom, commune, accroche, prix formaté et capacité [33m 450[2mms[22m[39m
+   [33m[2m✓[22m[39m Détail salle — contenu[2m > [22méquipements en pastilles ; liste vide dite explicitement [33m 356[2mms[22m[39m
+ [32m✓[39m src/lib/contact-channel-guard.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1358[2mms[22m[39m
+   [33m[2m✓[22m[39m ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro[2m > [22m⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers) [33m 1276[2mms[22m[39m
+ [32m✓[39m src/components/lost-word-cloud.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 463[2mms[22m[39m
+ [32m✓[39m src/lib/intl-locale-guard.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1158[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-6 — la langue de la page passe à chaque formateur de date et de nombre[2m > [22maucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul [33m 1116[2mms[22m[39m
+ [32m✓[39m src/lib/phone-literal-guard.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1113[2mms[22m[39m
+   [33m[2m✓[22m[39m L'indicatif d'un pays n'est écrit que dans le modèle de pays — jamais dans un composant[2m > [22m⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un indicatif en dur (et la garde a PARCOURU de vrais fichiers) [33m 1077[2mms[22m[39m
+ [32m✓[39m src/components/venue/visit-booking-panel.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 810[2mms[22m[39m
+   [33m[2m✓[22m[39m VisitBookingPanel — le téléphone (facultatif) est le champ partagé (rang 32)[2m > [22ml'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro ; plus de « +213… » écrit dans le composant [33m 368[2mms[22m[39m
+ [32m✓[39m src/components/auth/login-form.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 699[2mms[22m[39m
+   [33m[2m✓[22m[39m LoginForm (fr)[2m > [22msoumission vide : erreurs de validation partagées, AUCUN appel API [33m 331[2mms[22m[39m
+ [32m✓[39m src/components/auth/google-signin.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 698[2mms[22m[39m
+ [32m✓[39m src/components/account/bookings-section.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 448[2mms[22m[39m
+ [32m✓[39m src/components/venue/booking-request-panel-demande.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 2114[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-4 — le JOUR seulement demandé se choisit, et son nom le dit[2m > [22mle 16 (un créneau demandé, un fermé) : choisissable, nommé « demandes en attente » [33m 624[2mms[22m[39m
+ [32m✓[39m src/components/venue/booking-request-panel-montants.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1533[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-6 — page ARABE : les montants du serveur, en ar-DZ[2m > [22mle prix du créneau [33m 607[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-6 — page ARABE : les montants du serveur, en ar-DZ[2m > [22mle prix d'une prestation, à côté de sa case [33m 305[2mms[22m[39m
+   [33m[2m✓[22m[39m FC-6 — page ARABE : les montants du serveur, en ar-DZ[2m > [22mle total, sans prestation choisie : le prix du créneau du serveur [33m 315[2mms[22m[39m
+ [32m✓[39m src/components/venue/booking-request-panel.test.tsx [2m([22m[2m32 tests[22m[2m)[22m[33m 15189[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — les dates[2m > [22mune date PRISE reste affichée, désactivée : ça aide à en choisir une autre [33m 535[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — un calendrier, pas une liste (rang 29, D321)[2m > [22mC-c : la navigation parcourt la fenêtre de six mois, et n'en sort pas [33m 742[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — un calendrier, pas une liste (rang 29, D321)[2m > [22mC-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif [33m 1025[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22m30 % de 200 000 DA = 60 000 DA [33m 363[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — l'acompte annoncé AVANT l'envoi (D81)[2m > [22mun acompte FIXE supérieur au prix est ÉCRÊTÉ au prix — miroir du serveur [33m 358[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre)[2m > [22m⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps [33m 817[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre)[2m > [22mavec un e-mail, il est transmis tel quel [33m 746[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — un <label> VISIBLE par champ (rang 29, D321, D143)[2m > [22mL-a : chaque champ du panneau a un <label> visible associé, et L-b : les obligatoires portent `required` (D32) [33m 377[2mms[22m[39m
+   [33m[2m✓[22m[39m Prestations — E2d[2m > [22mPER_GUEST : le total suit le nombre d'INVITÉS, pas une quantité saisie [33m 384[2mms[22m[39m
+   [33m[2m✓[22m[39m Prestations — E2d[2m > [22ml'ACOMPTE suit le total prestations comprises [33m 316[2mms[22m[39m
+   [33m[2m✓[22m[39m Prestations — E2d[2m > [22mdécocher retire la prestation du total [33m 443[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — le téléphone est le champ partagé (rang 32)[2m > [22ml'indicatif et le drapeau sont devant ; le gabarit d'exemple n'est pas un numéro [33m 470[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — le téléphone est le champ partagé (rang 32)[2m > [22m⚠ LE FORMAT ENVOYÉ N'A PAS CHANGÉ : un numéro collé à la locale part en forme canonique [33m 854[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — le téléphone est le champ partagé (rang 32)[2m > [22m⚠ un numéro INCOMPLET laisse « Envoyer » inerte — « non vide » ne suffit plus [33m 1237[2mms[22m[39m
+   [33m[2m✓[22m[39m Demande de réservation — le téléphone est le champ partagé (rang 32)[2m > [22m⚠ un fixe ne se tape pas : le premier chiffre refusé reste seul, avec son message [33m 664[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mML-2 — l'e-mail SEUL suffit : « Envoyer » s'active, et le corps NE PORTE PAS `contactPhone` (clé absente, ni "" ni null) [33m 821[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mML-1 — NI numéro NI e-mail : « Envoyer » reste inerte, et un texte VISIBLE dit « l'un des deux » [33m 618[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mML-19 (D32) — ni l'un ni l'autre ne porte `required` ni astérisque, et les DEUX champs sont reliés au texte par `aria-describedby` [33m 546[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mML-8 — un e-mail SAISI et invalide retient, même avec un numéro valide : message d'erreur visible, bouton inerte [33m 796[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mML-8 — un numéro SAISI et incomplet retient, même avec un e-mail valide [33m 804[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Demande de réservation — un numéro OU une adresse e-mail (L36-1)[2m > [22mle numéro seul part toujours (le parcours d'avant), et la clé de l'e-mail est absente [33m 696[2mms[22m[39m
+ [32m✓[39m src/components/site-nav.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 409[2mms[22m[39m
+ [32m✓[39m src/components/theme-toggle.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 322[2mms[22m[39m
+ [32m✓[39m src/lib/calendar.spec.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m src/components/account/visit-bookings-section.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 548[2mms[22m[39m
+ [32m✓[39m src/components/locale-switch.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 197[2mms[22m[39m
+ [32m✓[39m src/components/ui-phone-field.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 437[2mms[22m[39m
+ [32m✓[39m src/app/[locale]/not-found.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 370[2mms[22m[39m
+ [32m✓[39m src/lib/booking-calendar.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m src/app/theme-contrast.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/lib/seo.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/lib/availability-windows.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/lib/api.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/lib/search-query.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/lib/routes.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/lib/structured-data.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/lib/intl-locale.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/lib/nom-localise.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+[90mstderr[2m | src/test-setup-calibration.test.ts[2m > [22m[2métalon du plafond de console (`test-setup.ts`)[2m > [22m[2mémet exactement DEUX lignes de console — le compte sous lequel ce fichier est exempté
+[22m[39métalon du plafond de console (FC-9) — ligne 1 sur 2, émise exprès
+étalon du plafond de console (FC-9) — ligne 2 sur 2, émise exprès
+
+ [32m✓[39m src/test-setup-calibration.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/lib/semaine-source-unique.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/lib/login-path-guard.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m41 passed[39m[22m[90m (41)[39m
+[2m      Tests [22m [1m[32m488 passed[39m[22m[90m (488)[39m
+[2m   Start at [22m 01:23:27
+[2m   Duration [22m 35.47s[2m (transform 6.30s, setup 29.74s, collect 64.23s, tests 51.66s, environment 176.39s, prepare 28.28s)[22m
+
+
+> @zwadj/pro@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro[39m
+
+[90mstdout[2m | src/App.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/venue-list.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/create-venue-page.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/dashboard/walkin-journey.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/create-venue-page.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1196[2mms[22m[39m
+   [33m[2m✓[22m[39m « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir[2m > [22m⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle [33m 507[2mms[22m[39m
+ [32m✓[39m src/venues/venue-list.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 1222[2mms[22m[39m
+ [32m✓[39m src/App.test.tsx [2m([22m[2m18 tests[22m[2m)[22m[33m 1224[2mms[22m[39m
+[90mstdout[2m | src/venues/booking-requests-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/ui-choice-dialog.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 237[2mms[22m[39m
+[90mstdout[2m | src/venues/venue-wizard.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/booking-requests-section.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 397[2mms[22m[39m
+[90mstderr[2m | src/venues/venue-wizard.test.tsx[2m > [22m[2mAssistant — l'étape 1 est CRÉATRICE (décision (a))[2m > [22m[2m⚠ au succès, la salle EXISTE et l'assistant reprend à l'ÉTAPE 2 dans l'URL
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/venues/venue-wizard.test.tsx[2m > [22m[2mAssistant — l'étape 1 est CRÉATRICE (décision (a))[2m > [22m[2mun seul appel : jamais POST puis PATCH dans le même geste
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/venues/venue-wizard.test.tsx[2m > [22m[2mAssistant — « Suivant » et la raison de son inactivité[2m > [22m[2m⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstdout[2m | src/venues/venue-wizard.test.tsx
+[22m[39mPLAFOND ABAISSABLE  "src/venues/venue-wizard.test.tsx": 3 observé(s) sous un plafond de 4. Confirmer sur plusieurs passes avant d'abaisser.
+
+ [32m✓[39m src/venues/venue-wizard.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 1536[2mms[22m[39m
+ [32m✓[39m src/dashboard/walkin-contact.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/venues/layout-style.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/dashboard/remittance.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/dashboard/walkin-client.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/shell/venues-label.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | src/venues/venue-form.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mPrix — rejet décimal strict (invariant argent)[2m > [22m[2mformulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mPrix — rejet décimal strict (invariant argent)[2m > [22m[2mformulaire : « 150000,5 » (virgule) refusé de la même façon
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mPrix — rejet décimal strict (invariant argent)[2m > [22m[2mformulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstdout[2m | src/venues/ma-salle-relecture.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mCréation — rejeu de validate() et mapping des erreurs API[2m > [22m[2mCITY_NOT_FOUND → message porté par le champ Commune
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstdout[2m | src/venues/photos-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mPrix — affichage groupé + unité (lisibilité de la saisie)[2m > [22m[2mle champ AFFICHE la valeur groupée + l'unité, mais ENVOIE bien 15000000 centimes
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | src/venues/venue-form.test.tsx[2m > [22m[2mPrix — affichage groupé + unité (lisibilité de la saisie)[2m > [22m[2mD43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin
+[22m[39mAn update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m src/venues/venue-form.test.tsx [2m([22m[2m45 tests[22m[2m)[22m[33m 3222[2mms[22m[39m
+   [33m[2m✓[22m[39m Prix — rejet décimal strict (invariant argent)[2m > [22mformulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes [33m 341[2mms[22m[39m
+ [32m✓[39m src/venues/photos-section.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 2326[2mms[22m[39m
+   [33m[2m✓[22m[39m Volet photos — réordonnancement SÉRIALISÉ[2m > [22mpendant le PATCH en vol, TOUTES les flèches sont disabled ; l'ordre ne change qu'au retour serveur [33m 321[2mms[22m[39m
+ [32m✓[39m src/venues/ma-salle-relecture.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 3059[2mms[22m[39m
+   [33m[2m✓[22m[39m « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste[2m > [22m⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327) [33m 410[2mms[22m[39m
+[90mstdout[2m | src/venues/slots-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/account/account-settings-page.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/blocks-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/slots-section.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 1523[2mms[22m[39m
+   [33m[2m✓[22m[39m Volet créneaux — affichage[2m > [22mune soirée 20h→02h s'affiche en heures MURALES et annonce le lendemain [33m 345[2mms[22m[39m
+ [32m✓[39m src/account/account-settings-page.test.tsx [2m([22m[2m31 tests[22m[2m)[22m[33m 1548[2mms[22m[39m
+ [32m✓[39m src/venues/blocks-section.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1472[2mms[22m[39m
+[90mstdout[2m | src/venues/pricing-rules-editor.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/services-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/quotes-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/pricing-rules-editor.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 1361[2mms[22m[39m
+   [33m[2m✓[22m[39m Variantes de prix — lecture[2m > [22ml'ordre affiché est celui de la RÉSOLUTION : férié, puis jour, puis saison [33m 361[2mms[22m[39m
+ [32m✓[39m src/venues/services-section.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1288[2mms[22m[39m
+ [32m✓[39m src/venues/quotes-section.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 1018[2mms[22m[39m
+[90mstdout[2m | src/venues/edit-venue-save.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/shell/pro-venues-context.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/calendar-link.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/edit-venue-save.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 783[2mms[22m[39m
+ [32m✓[39m src/venues/calendar-link.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 434[2mms[22m[39m
+ [32m✓[39m src/shell/pro-venues-context.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 886[2mms[22m[39m
+[90mstdout[2m | src/dashboard/dashboard-aside.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/calendar-source.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/dashboard/dashboard-aside.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 631[2mms[22m[39m
+[90mstdout[2m | src/venues/a3-unexpected-responses.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/calendar-source.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 200[2mms[22m[39m
+ [32m✓[39m src/venues/a3-unexpected-responses.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 346[2mms[22m[39m
+[90mstdout[2m | src/routes.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+[90mstdout[2m | src/venues/visits-section.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/visits-section.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 253[2mms[22m[39m
+ [32m✓[39m src/ui-phone-field.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[32m 264[2mms[22m[39m
+ [32m✓[39m src/routes.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 601[2mms[22m[39m
+ [32m✓[39m src/venues/pro-calendar.spec.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/venues/calendar-style.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/dashboard/walkin-services.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/venues/venue-client-narrowing.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/venues/confirm-dialog.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 253[2mms[22m[39m
+ [32m✓[39m src/venues/quote-amount.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 145[2mms[22m[39m
+[90mstdout[2m | src/venues/request-scope.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/request-scope.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 226[2mms[22m[39m
+[90mstdout[2m | src/venues/time-select.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [32m✓[39m src/venues/time-select.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 306[2mms[22m[39m
+ [32m✓[39m src/auth/brand-loader.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32m✓[39m src/venues/block-time.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/lib/reveal.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/ui-tokens.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/dashboard/walkin-revision.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/venues/slot-time.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/venues/intl-locale-pro.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/dashboard/walkin-journey.test.tsx [2m([22m[2m175 tests[22m[2m)[22m[33m 57081[2mms[22m[39m
+   [33m[2m✓[22m[39m Récapitulatif — des réponses, JAMAIS des montants[2m > [22m⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis [33m 327[2mms[22m[39m
+   [33m[2m✓[22m[39m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien [33m 401[2mms[22m[39m
+   [33m[2m✓[22m[39m La date vient du calendrier réel[2m > [22m⚠ changer la date EFFACE le créneau, le DIT, et repose la question [33m 450[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite [33m 372[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse [33m 407[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite [33m 394[2mms[22m[39m
+   [33m[2m✓[22m[39m Un seul devis, révisé[2m > [22m⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus [33m 360[2mms[22m[39m
+   [33m[2m✓[22m[39m Un seul devis, révisé[2m > [22m⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge [33m 387[2mms[22m[39m
+   [33m[2m✓[22m[39m Les deux issues (décision ⑥)[2m > [22m« Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille [33m 360[2mms[22m[39m
+   [33m[2m✓[22m[39m Les deux issues (décision ⑥)[2m > [22m⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien [33m 383[2mms[22m[39m
+   [33m[2m✓[22m[39m Les deux issues (décision ⑥)[2m > [22mla date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée » [33m 330[2mms[22m[39m
+   [33m[2m✓[22m[39m Les deux issues (décision ⑥)[2m > [22m⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135) [33m 372[2mms[22m[39m
+   [33m[2m✓[22m[39m La remise par canal (Q2) et le catalogue[2m > [22mles cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33) [33m 348[2mms[22m[39m
+   [33m[2m✓[22m[39m La remise par canal (Q2) et le catalogue[2m > [22menregistre le canal cliqué sur le devis en cours [33m 385[2mms[22m[39m
+   [33m[2m✓[22m[39m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22m⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion [33m 362[2mms[22m[39m
+   [33m[2m✓[22m[39m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mune fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit [33m 421[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé [33m 439[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert` [33m 426[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise [33m 383[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation [33m 415[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22mla fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre [33m 450[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m« Bloquer la date » : « Date bloquée », avec la date et le client [33m 391[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22men ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue [33m 418[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22mla fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran [33m 463[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone [33m 362[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mavec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF [33m 332[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre [33m 2007[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle [33m 484[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_` [33m 777[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF [33m 372[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée) [33m 435[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché ») [33m 457[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé [33m 385[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise [33m 468[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus) [33m 379[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mun échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé » [33m 533[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel [33m 2139[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal [33m 1972[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré [33m 419[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements [33m 483[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mla fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran [33m 475[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22men ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte [33m 438[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi [33m 1688[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur) [33m 1267[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr` [33m 526[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois [33m 522[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22mP-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule [33m 405[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22mP-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu [33m 440[2mms[22m[39m
+   [33m[2m✓[22m[39m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir` [33m 355[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mune fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE [33m 349[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise [33m 536[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN [33m 408[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mMD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture [33m 635[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mMD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi [33m 373[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite [33m 342[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail » [33m 302[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont [33m 369[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue [33m 499[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine) [33m 521[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé [33m 386[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part [33m 312[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé [33m 313[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom [33m 341[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN [33m 393[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé » [33m 307[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée [33m 449[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre [33m 444[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit [33m 486[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît [33m 442[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms [33m 640[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial` [33m 371[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe [33m 355[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion [33m 665[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1) [33m 330[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche) [33m 536[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée [33m 403[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — après la promotion, le message « officiel » est rendu [33m 599[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active [33m 314[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif [33m 379[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision [33m 537[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier [33m 306[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer [33m 344[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien [33m 314[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro [33m 342[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant [33m 315[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22mune relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée) [33m 323[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin [33m 328[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état) [33m 404[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise [33m 427[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ « Annuler » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours) [33m 525[2mms[22m[39m
+   [33m[2m✓[22m[39m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409) [33m 324[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m45 passed[39m[22m[90m (45)[39m
+[2m      Tests [22m [1m[32m711 passed[39m[22m[90m (711)[39m
+[2m   Start at [22m 01:24:04
+[2m   Duration [22m 62.36s[2m (transform 2.57s, setup 13.79s, collect 34.91s, tests 85.30s, environment 78.46s, prepare 12.62s)[22m
+

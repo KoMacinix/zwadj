@@ -1,0 +1,4 @@
+BALAYAGE DE LA FORME D'UN JETON — D342 — contenu lu à origin/front-client ; fichiers = `git diff --name-only origin/main...origin/front-client`
+calibration (deux bras, abandon si un cas manque son verdict) : positif — 2 suites de forme jeton et 1 `token=` de 43 caractères VUS ; négatif — 42 caractères, 43 sans chiffre, 43 sans majuscule, `token=` de 8 caractères : 0 vu
+PARCOURU : 440 chemins du diff · 439 fichiers texte lus (12912598 octets) · 0 binaires sautés · 1 absents du contenu (supprimés par la fusion)
+TROUVÉ : 0 occurrence(s) dans 0 fichier(s) — forme 43 caractères mixtes : 0 · `token=` + 16 caractères ou plus : 0  (attendu : 0 · 0)

@@ -1,0 +1,4 @@
+BALAYAGE DE LA FORME D'UN JETON, MODE HISTORIQUE — D342 — lignes AJOUTÉES des patchs de `git log -p e40c141..origin/front-client`
+calibration (mode historique : dans un patch fabriqué, la suite AJOUTÉE est VUE, la suite RETIRÉE et celle en contexte NE SONT PAS vues ; forme : mêmes deux bras que le premier mode) tenue
+PARCOURU : 107 commits dans la plage · 107 commits lus dans la sortie de `git log -p` · 134751 lignes ajoutées · 11863770 caractères de patch
+TROUVÉ : 0 occurrence(s) dans 0 commit(s)  (attendu : 0)
