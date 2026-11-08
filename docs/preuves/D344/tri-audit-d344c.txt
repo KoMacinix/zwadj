@@ -1,0 +1,21 @@
+D344 — tri différentiel de l'audit de secrets « c » (AVANT le commit des pièces des deux passes de l'e2e : les deux sorties masquées, l'index, l'état machine, les `.env`, le résultat, le masqueur et le lanceur — le lanceur et le masqueur étaient déjà commités avec la règle)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D344/audit-secrets-d344b.txt docs/preuves/D344/audit-secrets-d344c.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D344/audit-secrets-d344c.txt (HEAD = f784eab ; pièces des passes non suivies). Une seule exécution. Sortie scellée : 609 269 octets ; « relue identique : True · sceau vérifié à la relecture : True ».
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d344b) : 5 127 fichiers parcourus, 4 962 audités, 165 exclus, 1 672 alertes.
+  · nouvelle (d344c)   : 5 140 fichiers parcourus, 4 974 audités, 166 exclus, 1 859 alertes. Contrôle de l'outil : audités + exclus = 5 140 (attendu 5 140, les parcourus).
+  · Exclus : 166 contre 165, soit un de plus — la sortie scellée « b ». Calibration de l'outil de tri, deux bras : négatif 0 (attendu 0), positif 2 (attendu 2).
+
+Résultat du tri différentiel : **187** alertes ABSENTES de la sortie précédente, toutes du motif « jeton », dans QUATRE fichiers — 1 859 − 1 672 = 187 (attendu 187) :
+  · 89 dans `docs/preuves/D344/portes/passe-1-test-e2e.txt` et 89 dans `passe-2-test-e2e.txt` : ce sont les lignes de la forme `[WebServer] …/verification-email?token=<jeton masqué #N (43 car.)>`. La « valeur » que l'audit extrait est le mot du gabarit (6 caractères), pas un jeton : le masqueur a remplacé chaque suite de 43 caractères de forme jeton (89 distinctes par passe, 0 restante — sa propre ligne de bilan) ; l'audit le dit lui-même (« valeur trop courte pour une recherche » / « valeur déjà présente dans 1 fichier suivi hors preuves » : le mot du gabarit). Lues : les 3 premières de chaque fichier au contexte, puis les 89 par la même forme (comptées : 89 lignes `token=<` + `masqué #` par fichier, numéros 1 à 89 consécutifs).
+  · 8 dans `docs/preuves/D344/portes/masquer-jetons.py` : le masqueur NOMME ce qu'il cherche (identique à l'octet à `docs/preuves/D343/portes/masquer-jetons.py`, `cmp`). Même cas que D343 (« outils qui nomment ce qu'ils cherchent »).
+  · 1 dans `docs/preuves/D344/tri-audit-d344b.txt` : ma propre prose, qui écrit « `token=` 0 et 0 » (le motif cherché, avec un zéro derrière) ; valeur de 1 caractère.
+  Total : 89 + 89 + 8 + 1 = 187 (attendu 187).
+
+Conclusion : 187 alertes lues, **0 valeur réelle**. ⚠ Le contrôle dédié « 0 valeur réelle » (D299) fait foi sur l'ABSENCE DE VALEURS et se rejoue à la clôture.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier n'a pas été audité avant son commit ; les 187 alertes de gabarit s'ajoutent à la base de comparaison des audits suivants (comme les 261 de D343).
+  · les 89 suites par passe ont été masquées par l'outil réparé de D343 ; l'audit n'y trouve aucune suite de forme jeton restante (0 alerte `jeton` d'une valeur de 43 caractères dans ces deux fichiers).
