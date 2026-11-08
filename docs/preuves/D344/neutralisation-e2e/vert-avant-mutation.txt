@@ -1,0 +1,285 @@
+# VERT DE DÉPART — les deux specs revenues, SANS mutation, jouées par la configuration de la suite (préchauffage compris)
+# code de sortie e2e : 1 · 710 lignes examinées, dont 408 lignes de serveur écartées (attendu > 0), 282 gardées — ANSI retirés
+
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 7 tests using 2 workers
+
+  ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (31.6s)
+  ok 2 [chromium] › specs\r30-lien-calendrier-pro.e2e.ts:21:5 › le lien « Calendrier de la salle » de l'assistant mène au calendrier — pas au tableau de bord (3.5s)
+  x  3 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:99:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » (10.1s)
+  x  4 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:241:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit (17.1s)
+  x  5 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:254:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche (17.2s)
+  x  6 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:275:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair (17.5s)
+  x  7 [chromium] › specs\r32-nouvelle-reservation.e2e.ts:333:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde (17.6s)
+
+
+  1) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:99:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('#wk-continue-reason li')
+    - Expected  - 4
+    + Received  + 1
+
+      Array [
+    -   "le prénom est obligatoire",
+    -   "le nom est obligatoire",
+    -   "le téléphone est obligatoire",
+    -   "le nombre d'invités est obligatoire",
+    +   "un numéro de mobile ou une adresse e-mail est obligatoire",
+      ]
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('#wk-continue-reason li')
+        11 × locator resolved to 1 element
+
+
+      104 |   await expect(continuer).toBeDisabled();
+      105 |   const raisons = page.locator("#wk-continue-reason li");
+    > 106 |   await expect(raisons).toHaveText([W.needFirstName, W.needLastName, W.needPhone, W.needGuests]);
+          |                         ^
+      107 |   await expect(continuer).toHaveAttribute("aria-describedby", "wk-continue-reason");
+      108 |
+      109 |   // ── Nom (point 2) : un chiffre est refusé sous le champ ; l'arabe et le tiret passent.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:106:25
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-dfdfd-a-réponse-«-Nouveau-devis-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:241:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit 
+
+    TimeoutError: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Prénom', { exact: true })
+
+
+      64 |
+      65 | async function remplirClient(page: Page, libelles: typeof W = W) {
+    > 66 |   await page.getByLabel(libelles.firstName, { exact: true }).fill(SALLE_CLIENT.prenom);
+         |                                                              ^
+      67 |   await page.getByLabel(libelles.lastName, { exact: true }).fill(SALLE_CLIENT.nom);
+      68 |   await champTelephone(page, libelles).pressSequentially(SALLE_CLIENT.chiffres);
+      69 |   await page.getByLabel(libelles.guests, { exact: true }).fill(SALLE_CLIENT.invites);
+        at remplirClient (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:66:62)
+        at jusquAuDevis (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:84:9)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:243:9
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-3c893--est-ACCEPTED-qui-est-écrit-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:254:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche 
+
+    TimeoutError: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Prénom', { exact: true })
+
+
+      64 |
+      65 | async function remplirClient(page: Page, libelles: typeof W = W) {
+    > 66 |   await page.getByLabel(libelles.firstName, { exact: true }).fill(SALLE_CLIENT.prenom);
+         |                                                              ^
+      67 |   await page.getByLabel(libelles.lastName, { exact: true }).fill(SALLE_CLIENT.nom);
+      68 |   await champTelephone(page, libelles).pressSequentially(SALLE_CLIENT.chiffres);
+      69 |   await page.getByLabel(libelles.guests, { exact: true }).fill(SALLE_CLIENT.invites);
+        at remplirClient (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:66:62)
+        at jusquAuDevis (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:84:9)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:256:9
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-42d96-e-fermée-l-erreur-s-affiche-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:275:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    TimeoutError: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Prénom', { exact: true })
+
+
+      64 |
+      65 | async function remplirClient(page: Page, libelles: typeof W = W) {
+    > 66 |   await page.getByLabel(libelles.firstName, { exact: true }).fill(SALLE_CLIENT.prenom);
+         |                                                              ^
+      67 |   await page.getByLabel(libelles.lastName, { exact: true }).fill(SALLE_CLIENT.nom);
+      68 |   await champTelephone(page, libelles).pressSequentially(SALLE_CLIENT.chiffres);
+      69 |   await page.getByLabel(libelles.guests, { exact: true }).fill(SALLE_CLIENT.invites);
+        at remplirClient (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:66:62)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:285:9
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-1684f-ek-end-libre-est-plus-clair-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › specs\r32-nouvelle-reservation.e2e.ts:333:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('الاسم', { exact: true })
+
+
+      352 |
+      353 |   // Chaque libellé arabe pointe SON champ : quatre identifiants distincts (l'identifiant ne vient plus des lettres latines du libellé).
+    > 354 |   const identifiants = await Promise.all([WA.firstName, WA.lastName, WA.phone, WA.email].map((nom) => page.getByLabel(nom, { exact: true }).getAttribute("id")));
+          |                                                                                                                                             ^
+      355 |   expect(new Set(identifiants).size).toBe(4);
+      356 |   // Le numéro se lit de gauche à droite : le drapeau est à GAUCHE des chiffres, même dans une page arabe.
+      357 |   const boite = page.locator(".phone-field").first();
+        at map (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:354:141)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r32-nouvelle-reservation.e2e.ts:354:90
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r32-nouvelle-reservation.e-9306b-e-son-champ-rien-ne-déborde-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs\warmup.setup.ts (31.6s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  5 failed
+    [chromium] › specs\r32-nouvelle-reservation.e2e.ts:99:5 › le parcours de bout en bout : saisie, devis, demande enregistrée, fenêtre APRÈS la réponse, « Nouveau devis » 
+    [chromium] › specs\r32-nouvelle-reservation.e2e.ts:241:5 › « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit 
+    [chromium] › specs\r32-nouvelle-reservation.e2e.ts:254:5 › un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche 
+    [chromium] › specs\r32-nouvelle-reservation.e2e.ts:275:5 › le calendrier du parcours (point 7) : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+    [chromium] › specs\r32-nouvelle-reservation.e2e.ts:333:5 › en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+  2 passed (3.3m)
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test r30-lien-calendrier-pro r32-nouvelle-reservation --reporter=list
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+

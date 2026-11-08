@@ -1,0 +1,38 @@
+# K-1 — le lien « Calendrier de la salle » revient à la route SUPPRIMÉE `/salles/<id>/calendrier` (le défaut d'origine de D322)
+# fichier : apps/pro/src/venues/edit-venue-page.tsx · spec : e2e/specs/r30-lien-calendrier-pro.e2e.ts · ancre 1→0 · marqueur 0→1 · genre substitution · test joué : « le lien « Calendrier de la salle » de l'assistant mène au calendrier »
+# restauration prouvée par l'empreinte : OUI · code de sortie e2e : 1
+# 377 lignes examinées, dont 209 lignes de serveur écartées (attendu > 0), 33 gardées — extrait COPIÉ tel quel, ANSI retirés
+
+  ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (30.0s)
+  x  2 [chromium] › specs\r30-lien-calendrier-pro.e2e.ts:21:5 › le lien « Calendrier de la salle » de l'assistant mène au calendrier — pas au tableau de bord (9.8s)
+  1) [chromium] › specs\r30-lien-calendrier-pro.e2e.ts:21:5 › le lien « Calendrier de la salle » de l'assistant mène au calendrier — pas au tableau de bord 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveURL(expected)
+
+    Locator: locator(':root')
+    Expected string: "http://localhost:5273/calendrier"
+    Received string: "http://localhost:5273/"
+    Call log:
+      - expect.toHaveURL with timeout 7000ms
+      - waiting for locator(':root')
+        11 × locator resolved to <html lang="fr" dir="ltr">…</html>
+           - unexpected value "http://localhost:5273/"
+
+
+      31 |
+      32 |   // L'adresse est celle d'une route DÉCLARÉE, et la page rendue est le calendrier.
+    > 33 |   await expect(page).toHaveURL(`${PRO}/calendrier`);
+         |                      ^
+      34 |   await expect(page.getByRole("heading", { level: 1, name: fr.venue.ui.calendar.title })).toBeVisible();
+      35 |   await contexte.close();
+      36 | });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r30-lien-calendrier-pro.e2e.ts:33:22
+
+
+
+
+
+  Slow test file: [warmup] › specs\warmup.setup.ts (30.0s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  1 failed
+  1 passed (1.6m)

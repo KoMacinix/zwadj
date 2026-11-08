@@ -1,0 +1,14 @@
+D344 — empreintes sha256 des fichiers joués par les exécutions de ce dossier (D334, item 5). Relevées APRÈS les exécutions, sur les fichiers tels qu'ils étaient joués.
+Les fichiers de l'application mutés par K-1 sont relevés à l'état RESTAURÉ (la restauration est prouvée par l'empreinte dans K-1.txt) et leur état tracé : `git diff --stat` des fichiers suivis = 0 ligne après chaque exécution.
+
+2f11ca72d3abd29bed246a006fb639915f36108a7a70a05d2210795168fae5be  e2e/specs/r30-lien-calendrier-pro.e2e.ts
+2f11ca72d3abd29bed246a006fb639915f36108a7a70a05d2210795168fae5be  docs/preuves/D322/navigateur/r30-lien-calendrier-pro.e2e.ts
+a7917f70ea1425898f8c89fa78a7c44e7e64e9eb489c0549c742d7fea8888d1e  docs/preuves/D325/navigateur/r32-nouvelle-reservation.e2e.ts
+a9ce8b1697791fefa699e889337c19fb705a35476864c8ee53f3156ac2eaf51e  e2e/fixtures/harness.ts
+00958852c283d50ec5b342f9d85263b8d93f2964f77bd8f89353058ec01018be  e2e/playwright.config.ts
+a89fd56b4c8fa54195b9a36cfd0b25ae062343ce02a4bcb832c17b03ffb6ff6a  e2e/specs/warmup.setup.ts
+a05957876715c0d058f04eba5078bfcdc1defe2546760e7435a02d8752d35d06  e2e/global-setup.ts
+d157eb52196480f1790a26436a0847d2ff557796bc15976e4204e3ec16468cbd  docs/preuves/D344/neutralisation-e2e/rejouer.py
+300e08186982639105b6ffa1433813f98213b149693af2a6b624a37be79fd621  apps/pro/src/venues/edit-venue-page.tsx
+f3c1f47c775b18d0ddf470e8c9f4bcdba589f4f3c72c701246b060bbf41f25e4  apps/pro/src/routes.ts
+d1e68d40fcda7abc8adec68c2e1ac3330855ec66eddda3d12432f6b95718c7b0  e2e/specs/r32-nouvelle-reservation.e2e.ts  (COPIE de r32 jouée au départ puis RETIRÉE sans être commitée — R-3 ; reconstituée en mémoire par la même transformation, préfixe d1e68d40fcda7abc vérifié contre celui relevé à sa création)

@@ -1,0 +1,20 @@
+D344 — tri différentiel de l'audit de secrets « b » (AVANT le commit des pièces de rouge : le départ sans mutation, K-1, l'arrêt de r32, les empreintes, les écarts de copie)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D344/audit-secrets-d344a.txt docs/preuves/D344/audit-secrets-d344b.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D344/audit-secrets-d344b.txt, lancé dans le dépôt principal (HEAD = a4f691a ; non suivis : les pièces de rouge et la copie de r30 dans e2e/specs/, qui n'est pas sous docs/preuves/ donc non parcourue). Une seule exécution.
+Sortie scellée : 564 054 octets ; « relue identique : True · sceau vérifié à la relecture : True » (ligne de l'outil).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d344a) : 5 118 fichiers parcourus, 4 954 audités, 164 exclus, 1 672 alertes (1 672 contextes).
+  · nouvelle (d344b)   : 5 127 fichiers parcourus, 4 962 audités, 165 exclus, 1 672 alertes (1 672 contextes). Contrôle de l'outil : audités + exclus = 5 127 (attendu 5 127, les parcourus).
+  · Exclus : 165 contre 164, soit un de plus — la sortie scellée « a » de ce lot, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif → 0 nouvelle (attendu 0) ; positif → 2 nouvelles (attendu 2). Calibration de l'outil d'audit : positif 1/1, écho 18/18 exclus, cas réel 24/24.
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente (ventilation par motif : aucune). Les pièces neuves de ce commit (le départ sans mutation et K-1 — des extraits de sortie e2e dont les lignes de serveur, qui portent les jetons de vérification, sont ÉCARTÉES ; le script de neutralisation ; les empreintes ; les trois notes) n'apportent aucune alerte.
+Contrôle complémentaire, propre à ces deux extraits (lignes de serveur écartées), 285 lignes pour `vert-avant-mutation.txt` et 38 pour `K-1.txt` : `token=` 0 et 0 ; `Bearer` 0 et 0 ; `eyJ` 0 et 0 ; chaînes de 40 caractères et plus : 0 dans `K-1.txt`, 25 occurrences dans `vert-avant-mutation.txt`, LUES une à une — ce sont 12 noms de migrations Prisma (« 20261024100000_booking_contact_phone_optional »…, chacun imprimé deux fois par `prisma migrate deploy`) et un nom de dossier de résultats Playwright (« …-est-plus-clair-chromium »). Aucune n'est une valeur de forme secrète.
+
+Conclusion : 0 alerte à lire, **0 valeur réelle**.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier n'a pas été audité avant son commit ; l'audit suivant le couvrira.
+  · les extraits e2e de ce commit ne sont pas masqués par `masquer-jetons.py` : ils sont FILTRÉS (lignes `[WebServer]` écartées, leur nombre imprimé en en-tête). Ce filtre est celui de D325 ; il n'a pas été comparé au masqueur de D343 sur ces deux pièces. Les passes de l'e2e complète (commits suivants) utiliseront le masqueur.
