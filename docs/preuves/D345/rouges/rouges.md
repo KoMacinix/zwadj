@@ -36,3 +36,7 @@
 - (fr) `Expected string: "Qui est le client ?"` · `Received string: "Comment joindre le client ?"` — message « la même étape » ;
 - (ar) `Expected string: "من هو الزبون؟"` · `Received string: "كيف نتواصل مع الزبون؟"` — message « la même étape ».
 ⚠ La pièce est **masquée** (4 suites de forme jeton, d'une base jetable, remplacées : `masquer-jetons.py`, copie à l'octet de celui de D344, archivé à côté de la pièce `docs/preuves/D345/portes/`) ; le brut est gardé hors dépôt.
+
+## Addendum de clôture (08/11/2026) — un écart de fins de ligne, écrit
+
+La spec e2e (`e2e/specs/r47-brouillon-onglet.e2e.ts`) a été jouée au rouge 4 dans sa forme **LF** (sha256 ci-dessus, `836d3220…`) ; elle a été convertie en **CRLF** (la convention du dépôt) **après** ce commit et avant le sien : son contenu est identique, mais l'empreinte de ses octets n'est plus celle-ci (`6a238e56…` en CRLF ; le contrôle de fin de lot retrouve `836d3220…` en normalisant les fins de ligne). Les deux fichiers vitest étaient déjà en CRLF à la lecture : leurs empreintes sont celles des fichiers commités.

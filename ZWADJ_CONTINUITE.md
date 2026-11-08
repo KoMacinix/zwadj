@@ -6466,7 +6466,8 @@ Consigne : celle du relecteur « RANG 47 », adoptée par Ko telle quelle (`docs
 5. **Le montage du fournisseur dans `AppProviders` n'a pas de morsure sous la lecture du harnais** : le retirer fait LEVER chaque test (`useWalkinDraft` jette hors fournisseur) — une erreur, pas une assertion. Il est gardé par le fait qu'aucun test ne passe sans lui.
 6. **Les gardes de r32 ne sont toujours pas mesurées dans un navigateur** (R-7 maintient l'arrêt) ; r47 ne couvre que le brouillon.
 7. **La déconnexion et le changement de compte ne sont pas joués en navigateur** : seulement en vitest (R47-19/20 mordent).
-8. **`lancer-campagnes.py` ne voit pas un lot déjà commité** (`git diff HEAD` vide) : la liste a été calculée à la main (entrée de backlog).
+8. **La spec e2e a été jouée au rouge en LF puis convertie en CRLF avant son commit** : même contenu, empreinte d'octets différente (`rouges.md`, addendum) ; le contrôle de fin de lot la retrouve en normalisant les fins de ligne.
+9. **`lancer-campagnes.py` ne voit pas un lot déjà commité** (`git diff HEAD` vide) : la liste a été calculée à la main (entrée de backlog).
 
 ### 5. Écriture sur la base de développement de Ko
 
