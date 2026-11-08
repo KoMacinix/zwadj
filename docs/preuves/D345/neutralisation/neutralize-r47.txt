@@ -1,0 +1,65 @@
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 25 déclarées · 26 remplacements · 25 jouées (unit)
+  pré-vol brouillon : code 0 · passés 16 · en échec 0
+✓ R47-1. Le parcours n'écrit RIEN au fournisseur : le brouillon reste vide, tout se perd au changement d'onglet
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 11 · en échec 5 · AssertionError: expected 'Comment joindre le client ?' to be 'Quelle date ?' // Object.is equality
+✓ R47-2. L'ÉTAPE n'est pas relue : on revient toujours à la première question
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 12 · en échec 4 · AssertionError: expected 'Comment joindre le client ?' to be 'Quelle date ?' // Object.is equality
+✓ R47-3. Le CONTACT (numéro, e-mail) n'est pas relu : le champ revient vide
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 13 · en échec 3 · AssertionError: expected '' to be '550000002' // Object.is equality
+✓ R47-4. Les NOMS ne sont pas relus : le nom tapé disparaît
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 13 · en échec 3 · AssertionError: expected '' to be 'Amine Belkacem' // Object.is equality
+✓ R47-5. Le NOMBRE D'INVITÉS n'est pas relu
+   ancre 1→0 · marqueur 1→2 · code 1 · passés 13 · en échec 3 · AssertionError: expected '' to be '150' // Object.is equality
+✓ R47-6. R-3 : le « à recalculer » n'est pas relu — l'écran ne dit plus que le total a été jeté
+   ancre 1→0 · marqueur 5→6 · code 1 · passés 15 · en échec 1 · AssertionError: expected undefined to be 'Les conditions ont changé : recalcule…' // Object.is equality
+✓ R47-7. R-3 : « un devis était affiché » n'est pas ÉCRIT — même faute, côté écriture
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected undefined to be 'Les conditions ont changé : recalcule…' // Object.is equality
+✓ R47-8. R-3 : la CHAÎNE de devis n'est pas relue — le clic suivant créerait un devis de plus au lieu de réviser
+   ancre 1→0 · marqueur 1→2 · code 1 · passés 15 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R47-9. La DATE n'est pas relue
+   ancre 1→0 · marqueur 1→2 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Contact+213550000002ModifierClientAmi…' to be 'Contact+213550000002ModifierClientAmi…' // Object.is equality
+✓ R47-10. Le CRÉNEAU n'est pas relu
+   ancre 1→0 · marqueur 1→2 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Contact+213550000002ModifierClientAmi…' to be 'Contact+213550000002ModifierClientAmi…' // Object.is equality
+✓ R47-11. La FICHE (trouvée ou créée) n'est pas relue : l'étape Client n'est plus répondue
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected 'Contact+213550000002ModifierDate2026-…' to be 'Contact+213550000002ModifierClientAmi…' // Object.is equality
+✓ R47-12. « Prestations répondues » n'est pas relu : « aucune prestation » est oublié
+   ancre 1→0 · marqueur 5→6 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Contact+213550000002ModifierClientAmi…' to be 'Contact+213550000002ModifierClientAmi…' // Object.is equality
+✓ R47-13. Les PRESTATIONS cochées ne sont pas relues
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R47-14. Les DÉTAILS de prestation (palier, quantité) ne sont pas relus
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected '' to be '7' // Object.is equality
+✓ R47-15. R-4 : une réservation CRÉÉE n'efface plus le brouillon — revenir rouvrirait le devis conclu
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Devis' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-16. R-4 : un devis REMIS n'efface plus le brouillon
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Devis' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-17. R-5 : le parcours n'est plus monté PAR SALLE — la même instance garde ses réponses quand la salle change
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-18. R-5 : la lecture ne vérifie plus la salle — le brouillon de la salle 1 est montré sur la salle 2
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-19. R-4 : la déconnexion n'efface plus le brouillon — le même compte qui se reconnecte le retrouve
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-20. R-4 : un changement de compte n'efface plus le brouillon
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 14 · en échec 2 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-21. R-2 : le brouillon SURVIT au rechargement — un stockage qui survit à l'arbre, et plus d'effacement au montage (la panne d'un stockage navigateur)
+   ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1 · code 1 · passés 5 · en échec 11 · AssertionError: expected 'Quelle date ?' to be 'Comment joindre le client ?' // Object.is equality
+✓ R47-22. R-4 : « Recommencer » ne remet plus le CONTACT à zéro — le brouillon gardé le fait revenir
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected '550000002' to be '' // Object.is equality
+✓ R47-23. R-1 : le FOURNISSEUR lit le stockage du navigateur (localStorage)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected [ 'walkin-draft-context.tsx' ] to deeply equal []
+✓ R47-24. R-1 : le MODULE PUR lit le stockage du navigateur (indexedDB)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected [ 'walkin-draft.ts' ] to deeply equal []
+✓ R47-25. R-1 : le PARCOURS lit le stockage du navigateur (sessionStorage)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 15 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+  empreintes : 3 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+25 garde(s) mordue(s) sur 25 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 25 sur 25 · 0 · 0)
+arbre rendu à son état de départ : vérifié.
+sortie=0
