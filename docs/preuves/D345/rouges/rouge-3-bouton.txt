@@ -4,7 +4,7 @@
 [90mstdout[2m | src/dashboard/walkin-journey.test.tsx
 [22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
 
- [31m❯[39m src/dashboard/walkin-journey.test.tsx [2m([22m[2m175 tests[22m[2m | [22m[31m2 failed[39m[2m | [22m[33m169 skipped[39m[2m)[22m[33m 1934[2mms[22m[39m
+ [31m❯[39m src/dashboard/walkin-journey.test.tsx [2m([22m[2m175 tests[22m[2m | [22m[31m2 failed[39m[2m | [22m[33m169 skipped[39m[2m)[22m[33m 1986[2mms[22m[39m
    [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22ms'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule
    [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22m⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité
    [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22mchaque réponse fait apparaître la suivante, dans l'ordre arbitré
@@ -20,7 +20,7 @@
    [2m[90m↓[39m[22m Retour en arrière — les réponses survivent, les montants non[2m > [22mvalider une étape corrigée renvoie à la PREMIÈRE question sans réponse
    [2m[90m↓[39m[22m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »
    [2m[90m↓[39m[22m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ une étape SANS réponse n'est pas cliquable dans le rail
-[31m   [31m×[31m Rail latéral, numéros cliquables et remise à zéro[2m > [22m« Recommencer » remet tout à zéro et ramène à la première question[39m[33m 413[2mms[22m[39m
+[31m   [31m×[31m Rail latéral, numéros cliquables et remise à zéro[2m > [22m« Recommencer » remet tout à zéro et ramène à la première question[39m[33m 387[2mms[22m[39m
 [31m     → Unable to find an accessible element with the role "button" and name "Recommencer"
 
 Here are the accessible roles:
@@ -574,7 +574,7 @@ Ignored nodes: comments, script, style
     [36m</section>[31m
   [36m</div>[31m
 [36m</body>[31m[39m
-   [33m[2m✓[22m[39m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ « Recommencer » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien [33m 309[2mms[22m[39m
+   [33m[2m✓[22m[39m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ « Recommencer » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien [33m 329[2mms[22m[39m
    [2m[90m↓[39m[22m Date et créneau sont DEUX écrans[2m > [22ml'étape date montre la grille du mois, jamais les créneaux
    [2m[90m↓[39m[22m Date et créneau sont DEUX écrans[2m > [22m⚠ l'étape créneau montre les créneaux, PAS la grille du mois
    [2m[90m↓[39m[22m La date vient du calendrier réel[2m > [22mune date VENDUE ne mène à AUCUN créneau réservable — le moteur décide
@@ -629,8 +629,8 @@ Ignored nodes: comments, script, style
    [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mde l'étape des prestations à celle du créneau, le créneau retenu SURVIT
    [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22m⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique)
    [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mune fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit
-   [32m✓[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m« Nouveau devis » n'est PAS là avant la conclusion — « Recommencer » l'est[32m 26[2mms[22m[39m
-   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Recommencer », et il repart de l'étape 1, formulaire vidé [33m 323[2mms[22m[39m
+   [32m✓[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m« Nouveau devis » n'est PAS là avant la conclusion — « Recommencer » l'est[32m 20[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Recommencer », et il repart de l'étape 1, formulaire vidé [33m 378[2mms[22m[39m
    [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`
    [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise
    [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation
@@ -700,7 +700,7 @@ Ignored nodes: comments, script, style
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît
-   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Recommencer » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms [33m 440[2mms[22m[39m
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Recommencer » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms [33m 456[2mms[22m[39m
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial`
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe
    [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français
@@ -731,7 +731,7 @@ Ignored nodes: comments, script, style
    [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin
    [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)
    [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise
-[31m   [31m×[31m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)[39m[33m 419[2mms[22m[39m
+[31m   [31m×[31m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)[39m[33m 411[2mms[22m[39m
 [31m     → Unable to find an accessible element with the role "button" and name "Recommencer"
 
 Here are the accessible roles:
@@ -2582,6 +2582,6 @@ Ignored nodes: comments, script, style
 
 [2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
 [2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[2m | [22m[33m169 skipped[39m[90m (175)[39m
-[2m   Start at [22m 13:22:08
-[2m   Duration [22m 5.78s[2m (transform 1.11s, setup 217ms, collect 2.00s, tests 1.93s, environment 1.14s, prepare 172ms)[22m
+[2m   Start at [22m 13:38:58
+[2m   Duration [22m 5.66s[2m (transform 1.08s, setup 227ms, collect 1.96s, tests 1.99s, environment 1.04s, prepare 173ms)[22m
 
