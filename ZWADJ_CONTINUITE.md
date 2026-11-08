@@ -2568,7 +2568,7 @@ b) Les décisions prises seule par la session de D344 (S-138 à S-143) sont rati
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que cette copie et celle de la table. Le rang 47 avance par **un lot de CODE** (il écrit dans `apps/pro`, `packages/i18n`, `e2e/specs` et `neutralisation/` ; il **compte**, D283) ; les décisions R-1 à R-9 sont celles du relecteur, **défaisables par Ko** ; la limite de cinq reste SUSPENDUE (pause de Ko, DR1 de D336) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Ce que le lot a MESURÉ et décidé s'écrit dans la section D345, **après** cette copie.
 
-⛔ **TABLE D'OUVERTURE DU RANG 47 (D345), recopiée à l'IDENTIQUE de `docs/preuves/D345/table-ouverture.md`** (premier commit du lot, `48e1fa3`, SEUL ; **avec son extension 1**, commit `6cafb73`, la table de fin de lot — le contrôle de fin de lot relit les deux textes et compare). Copie par script, jamais retapée :
+⛔ **TABLE D'OUVERTURE DU RANG 47 (D345), recopiée à l'IDENTIQUE de `docs/preuves/D345/table-ouverture.md`** (premier commit du lot, `48e1fa3`, SEUL ; **avec ses extensions 1 à 3**, commits `6cafb73`, `1fb4d1a` et `4475fe2`, chacune SEULE — la copie écrite en première écriture d'autorité (`c42e78e`) ne portait que l'extension 1 et a été REMISE À JOUR à la clôture : c'est la table de fin de lot ; le contrôle de fin de lot relit les deux textes et compare). Copie par script, jamais retapée :
 
 ~~~~markdown
 # D345 — rang 47 — table d'ouverture
@@ -2647,6 +2647,20 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 | `docs/preuves/D345/passe-d277.md`, `docs/preuves/D345/passe-d277/passe-d277.py`, `docs/preuves/D345/passe-d277/sortie-avant.txt`, `docs/preuves/D345/passe-d277/sortie-apres.txt` | la passe D277 des deux sens |
 | `docs/preuves/D345/audit-secrets-d345b.txt`, `docs/preuves/D345/tri-audit-d345b.txt` | l'audit de secrets scellé des pièces de clôture, et son tri différentiel |
 | `docs/preuves/D345/controle-fin-de-lot.py`, `docs/preuves/D345/controle-fin-de-lot.txt` | le contrôle de fin de lot (D288, D328, D334), écrit APRÈS la poussée, et sa sortie |
+
+**Extension 2** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare). Relevé en jouant les seize campagnes que le lot touche : **`neutralisation/neutralize-fp3.py` a UNE cible muette (E-4)** — elle cherche le titre du test « ⛔ « Annuler » puis un NOUVEAU devis pour la même fiche », que ce lot a renommé « ⛔ « Recommencer » puis un NOUVEAU devis… » (le bouton s'appelle « Recommencer »). C'est la classe « une ancre de cible se revérifie à chaque refonte » (`AGENTS.md`) : l'ancre est périmée par CE lot, elle se met à jour dans CE lot (la mutation et l'assertion ne changent pas). Une campagne partiellement jouée n'est pas une campagne verte.
+
+| chemin | rôle |
+|---|---|
+| `neutralisation/neutralize-fp3.py` | le titre attendu de E-4 et le libellé de la cible, mis à jour (« Annuler » → « Recommencer ») ; **aucune mutation ni aucune assertion ne change** |
+| `docs/preuves/D345/campagnes/fp3-AVANT-MISE-A-JOUR.txt` | la sortie de la campagne fp3 avant la mise à jour de l'ancre (9 mordues, 1 muette), gardée telle quelle |
+| `docs/preuves/D345/campagnes/fp3-APRES-MISE-A-JOUR.txt` | la sortie de la campagne fp3 rejouée en entier après la mise à jour |
+
+**Extension 3** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare). Le contrôle dédié « 0 valeur réelle sur N fichiers » (D299, fait foi sur l'absence de VALEURS) a été joué sur les pièces e2e : sa sortie est une pièce du lot.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D345/aucune-valeur-reelle.txt` | la sortie du contrôle `aucune-valeur-reelle.py` : les valeurs des journaux e2e BRUTS (passes 1 et 2, rouge 4) cherchées dans `docs/preuves/D345/` — des comptes seulement, jamais une valeur |
 ~~~~
 
 ⇒ **RANG 47 : CLOS (le parcours « Nouvelle réservation » garde son étape et ses saisies quand on change d'onglet) — D345, 08/11/2026** : lot de **CODE** (il écrit `apps/pro/src/dashboard/walkin-draft.ts`, `walkin-draft-context.tsx`, branche `walkin-journey.tsx` et `App.tsx`, renomme `venue.ui.walkin.reset` dans les deux catalogues, ajoute la spec `e2e/specs/r47-brouillon-onglet.e2e.ts` et le harnais `neutralisation/neutralize-r47.py` : il **compte**, D283) ; **le brouillon vit en mémoire seulement** (R-1, R-2) dans un fournisseur monté au-dessus des routes, **un parcours par salle** (R-5), le devis affiché est « à recalculer » et la chaîne est gardée (R-3), le bouton existant « Annuler » devient « Recommencer » (R-4) ; **aucun contrat d'API, aucune migration, `apps/api` intouché** ; **harnais r47 : 25 gardes mordues sur 25, 0 muette, 0 non mesurée** ; **six portes à 0 sur secteur** (`test` 174 fichiers / 2 617 tests, `test:int` 46 / 735) et **deux passes de l'e2e VERTES** (80 passés + 1 ignoré = 81 attendus, chacune) ; **compteur POUR MÉMOIRE VINGT → VINGT ET UN** (la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque**, pause de Ko) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Section D345, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 47 ».
