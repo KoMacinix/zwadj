@@ -1,0 +1,26 @@
+D345 — CONTRÔLE DE FIN DE LOT
+calibration : 8 bras · 0 manqué(s) (attendu 0)
+HEAD=3a7348d2c24fa9319d65e560856b2a9b1f46ff09
+origin/main=3a7348d2c24fa9319d65e560856b2a9b1f46ff09
+✓ 1.1 local et origin/main sur le MÊME SHA (D288) — HEAD 3a7348d · origin/main 3a7348d
+✓ 1.2 l'arbre est propre, aucun fichier non suivi — 0 ligne(s) de `git status --short` (attendu 0)
+✓ 1.3 aucun stash — 0 entrée(s) (attendu 0)
+✓ 2.1 le PREMIER commit du lot est la table d'ouverture, SEULE — 48e1fa3 · fichiers ['docs/preuves/D345/table-ouverture.md'] · 22 commit(s) examinés depuis le SHA de départ
+✓ 3.1 `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises) — 72 fichier(s) du diff · 66 chemin(s)/joker(s) déclaré(s) · 0 hors table []
+✓ 3.2 les trois fichiers d'autorité sont dans le diff — ['ZWADJ_CONTINUITE.md', 'AGENTS.md', 'ZWADJ_BACKLOG.md']
+✓ 4.1 R-5 : aucun fichier sous `apps/api`, aucune migration, aucun `.sql` — 72 fichier(s) examinés · 0 concerné(s) []
+   fichiers de code/test du lot (11) : ['apps/pro/src/App.tsx', 'apps/pro/src/dashboard/walkin-draft-context.tsx', 'apps/pro/src/dashboard/walkin-draft.test.tsx', 'apps/pro/src/dashboard/walkin-draft.ts', 'apps/pro/src/dashboard/walkin-journey.test.tsx', 'apps/pro/src/dashboard/walkin-journey.tsx', 'e2e/specs/r47-brouillon-onglet.e2e.ts', 'neutralisation/neutralize-fp3.py', 'neutralisation/neutralize-r47.py', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json']
+✓ 5.1 la lecture adverse (consigne + lecture + comptage) précède TOUT .md d'autorité — a5a7e09 avant c42e78e
+✓ 5.2 le PREMIER commit qui touche un .md d'autorité est la première écriture (les arbitrages de Ko) — c42e78e · fichiers ['ZWADJ_CONTINUITE.md']
+✓ 5.3 [D334, item 5] le commit des pièces de rouge PRÉCÈDE le premier commit de code — 3d25c8a avant 06347f6
+✓ 5.4 le code et la première écriture d'autorité sont tous deux dans l'historique — ancêtres vérifiés
+✓ 6.1 l'ÉCART écrit (sept fichiers déclarés par l'extension 1 APRÈS leur commit) est celui que `git` montre — 7 fichiers examinés · 7 ajoutés AVANT le commit de l'extension 1 (attendu 7 : l'écart est écrit dans la table et dans la section D345, S-149)
+✓ 7.1 l'empreinte sha256 notée par les rouges est celle de chaque fichier de test commité ensuite — 3 fichier(s) comparé(s) · 2 identique(s) en octets · 1 identique(s) APRÈS normalisation des fins de ligne ['e2e/specs/r47-brouillon-onglet.e2e.ts'] (ÉCART ÉCRIT : la spec e2e a été jouée en LF puis convertie en CRLF avant son commit, contenu identique) · 0 différent(s) []
+✓ 8.1 la copie de la table dans `ZWADJ_CONTINUITE.md` est IDENTIQUE à `table-ouverture.md` (extensions comprises) — 10599 caractères comparés (copie) contre 10599 (original)
+✓ 9.1 D345 est la DERNIÈRE ligne du registre, une seule fois — 128 ligne(s) de registre examinées · dernière ['D345']
+✓ 9.2 l'ordre des rangs porte « RANG 47 : CLOS » et « RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR » — présents
+✓ 9.3 `AGENTS.md` porte le compteur VINGT ET UN et l'invariant du brouillon — présents
+✓ 9.4 `ZWADJ_BACKLOG.md` : la section neuve, [SÉCU] cochée (GOCSPX = 0), S-142 placée — présents
+✓ 10.1 aucun motif de mojibake dans ce que le lot a écrit (lignes ajoutées des .md d'autorité, fichiers neufs) — 45 fichier(s) examinés · 11746 ligne(s) · 0 occurrence(s) (attendu 0)
+
+RÉSULTAT : 0 échec(s) — aucun
