@@ -1,0 +1,27 @@
+D344 — défauts de l'instrument de lecture adverse (confronter-consigne.py), relevés à sa première passe (D298 : écrits, avec la sortie brute qui les a montrés)
+
+Première passe, gardée TELLE QUELLE : confronter-sortie-passe-1-AVANT-CORRECTIFS.txt (26 contrôles · 23 ✓ · 3 ≈ · 0 ✗).
+Deuxième passe, après les deux corrections ci-dessous : confronter-sortie.txt (26 contrôles · 24 ✓ · 2 ≈ · 0 ✗).
+
+DÉFAUT 1 — contrôle 8 : un verdict ≈ à tort sur un fait vrai.
+  Sortie brute de la première passe :  8. [≈] r30 porte DÉJÀ les chemins d'import de la suite …
+                                       imports de r30 (3) : ['../../packages/i18n/messages/fr.json', '../playwright.config', '../fixtures/harness']
+  Cause : le contrôle exigeait « commence par ../ et ne commence pas par ../../ » ; or l'import du fichier de messages est LÉGITIMEMENT en ../../ depuis
+  e2e/specs/ (e2e/specs → e2e → racine). L'instrument jugeait la FORME du chemin, pas le fait qu'il VISE un fichier.
+  Correction : chaque import est RÉSOLU depuis e2e/specs/ et le fichier visé doit exister au SHA de départ ; le contrôle 9 est écrit sur le même principe
+  (quatre imports de r32 résolus depuis l'archive, zéro résolu depuis e2e/specs/ — c'est ce qui rend la réécriture nécessaire). Le fait mesuré n'a pas
+  changé : seul le verdict, faux, a changé.
+
+DÉFAUT 2 — contrôle 14 : un parcours incomplet derrière un total d'apparence saine (la classe que D290 et D295 écrivent).
+  Sortie brute de la première passe :  14. [✓] … 8 jeton(s) distincts parcourus … : cal-num, phone-field, pro-layout, wk-deposit, wk-field, wk-grand, wk-continue-reason, wk-question
+  Cause : la regex des classes portait un « (?<![\w-]) » devant le point ; or les localisateurs de r32 écrivent « td.cal-cell button.cal-day.is-available » — la
+  classe est COLLÉE à sa balise, donc exclue. Les six classes les plus parlantes de la spec (cal-cell, cal-day, cal-slot-pick, is-available, is-blocked,
+  is-weekend) n'étaient pas parcourues, et le contrôle disait « ✓ aucun absent ».
+  Correction : le lookbehind est retiré (les chaînes visées sont des sélecteurs CSS, pas des noms de fichier). Deuxième passe : 14 jetons parcourus au lieu de 8,
+  fichiers par jeton imprimés, aucun absent.
+
+CE QUI NE CHANGE PAS : aucun des deux défauts ne contredisait le dépôt ; la consigne n'est démentie sur aucun point (0 ✗ aux deux passes).
+Les deux ≈ restants sont des LIMITES de ce qu'une lecture statique peut établir, écrites :
+  16 — le défaut antérieur de r32 (grille .pro-layout à 360 px) est neutralisé par la spec si présent ; elle passe dans les deux états (lu, pas mesuré) ;
+  17 — `${PRO}/calendrier` n'est pas dans le préchauffage : si r30 rougit par un délai de compilation, c'est D127 et la réponse est d'ajouter la route
+       (fichier conditionnel de la table B.3), jamais de monter un délai.

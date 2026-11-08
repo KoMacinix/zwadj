@@ -1,0 +1,21 @@
+D344 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne, de la lecture adverse et de cette pièce)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D343/audit-secrets-d343e.txt docs/preuves/D344/audit-secrets-d344a.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D344/audit-secrets-d344a.txt, lancé dans le dépôt principal (HEAD = f988389, arbre : cinq pièces de D344 non suivies). Une seule exécution.
+Sortie scellée : 563 649 octets ; « relue identique : True · sceau vérifié à la relecture : True » (ligne de l'outil).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d343e) : 5 108 fichiers parcourus, 4 945 audités, 163 exclus, 1 672 alertes (1 672 contextes).
+  · nouvelle (d344a)   : 5 118 fichiers parcourus, 4 954 audités, 164 exclus, 1 672 alertes (1 672 contextes). Contrôle de l'outil : audités + exclus = 5 118 (attendu 5 118, les parcourus).
+  · Exclus : 164 contre 163, soit un de plus — la sortie scellée « e » de D343, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif → 0 nouvelle (attendu 0) ; positif → 2 nouvelles (attendu 2). Calibration de l'outil d'audit : positif 1/1, écho 18/18 exclus, cas réel 24/24.
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente (attendu : à lire ; ventilation par motif : aucune). Les cinq pièces neuves de D344 (table, consigne, instrument de lecture adverse, ses deux sorties, sa note de défauts) n'apportent aucune alerte :
+elles ne contiennent aucune valeur de forme secrète, et les messages de l'application qu'elles citent sont des chemins de libellés, pas des valeurs.
+
+Conclusion : 0 alerte à lire, **0 valeur réelle**.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier n'a pas été audité avant son commit ; l'audit suivant le couvrira.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes : les trois fichiers d'autorité ne sont PAS couverts par lui ; le contrôle dédié « 0 valeur réelle » (D299) les prend pour cibles à la clôture.
+  · la déclaration de Ko (« secret Google régénéré, ancien supprimé, ligne retirée du .env ») n'est PAS vérifiable par cet audit : les fichiers `.env` sont ignorés par git et hors de docs/preuves/. La session ne les lit pas ; elle en relève l'empreinte et les hôtes (D330) aux passes.
