@@ -1,0 +1,16 @@
+D344 — tri différentiel de l'audit de secrets « e » (AVANT le commit des dernières pièces — la passe D277 « après » et son compte rendu, le contrôle « 0 valeur réelle » — et des trois fichiers d'autorité modifiés)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D344/audit-secrets-d344d.txt docs/preuves/D344/audit-secrets-d344e.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D344/audit-secrets-d344e.txt (HEAD = 1ee9dcb ; non suivis : passe D277 « après », son compte rendu, le contrôle « 0 valeur réelle » ; modifiés : les trois fichiers d'autorité, hors du périmètre de l'outil). Une seule exécution. Sortie scellée : 633 795 octets ; « relue identique : True · sceau vérifié à la relecture : True ».
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d344d) : 5 153 fichiers parcourus, 4 986 audités, 167 exclus, 1 953 alertes.
+  · nouvelle (d344e)   : 5 157 fichiers parcourus, 4 989 audités, 168 exclus, 1 957 alertes. Contrôle de l'outil : audités + exclus = 5 157 (attendu 5 157, les parcourus). Exclus : un de plus, la sortie scellée « d ».
+
+Résultat du tri différentiel : 4 alertes ABSENTES de la précédente (1 957 − 1 953 = 4, attendu 4) — jeton=3 · mot-de-passe=1 — toutes dans UN fichier, docs/preuves/D344/tri-audit-d344d.txt (contextes lus, lignes 12, 13, 13 et 14 de ce fichier) : ce sont les lignes de la PROSE du tri « d » qui DÉCRIVENT ce que l'audit « d » avait relevé (le gabarit de la sortie e2e masquée, deux titres de tests d'intégration, l'écho du tri « c »). Échos de contextes déjà triés et déclarés « 0 valeur réelle » ; valeurs de 3 à 7 caractères.
+
+Conclusion : 4 alertes lues, **0 valeur réelle**. Ce tri-ci ne recite pas les lignes qu'il classe.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier, le contrôle de fin de lot (écrit APRÈS la poussée) et les trois fichiers d'autorité n'ont pas été audités avant leur commit ; le contrôle dédié « 0 valeur réelle » (docs/preuves/D344/aucune-valeur-reelle.txt : 267 valeurs, 195 fichiers, 0 porteur) a pris pour cibles les trois fichiers d'autorité dans leur état final.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes.
