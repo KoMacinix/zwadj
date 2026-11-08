@@ -10,7 +10,7 @@ Ce que le lot ajoute, et que chaque cible neutralise :
 et son branchement dans l'ÉCRAN (`apps/pro/src/dashboard/walkin-journey.tsx`, mesuré par `walkin-journey.test.tsx`, bloc « FP-3 ») :
   · E-1 le corps de la révision ignore la règle (retour à `copiePourDevis`) ;
   · E-2 la version rendue n'est jamais gardée ; E-3 la version gardée est ÉCRASÉE par le devis jeté (`quote` redevient `null`) ;
-  · E-4 la version gardée n'est plus liée à la chaîne en cours (après « Annuler », la copie de l'ancien devis fuit sur un nouveau).
+  · E-4 la version gardée n'est plus liée à la chaîne en cours (après « Recommencer », la copie de l'ancien devis fuit sur un nouveau).
 ⚠ CE QUI N'A PAS DE CIBLE, ET POURQUOI — écrit plutôt que joué :
   (a) `version === null` : le retirer fait LEVER un `TypeError` à la première création (`version.clientRecordId` sur `null`) — un plantage, que
       le lecteur strict ne compte pas comme une morsure (D304) ; le cas « sans version » est tenu par un test qui n'a pas de mutation propre ;
@@ -48,7 +48,7 @@ E_COPIE = "⛔ la révision porte la copie ARABE que la boîte de langue a compl
 E_JETE = "⛔ la copie est reprise MÊME quand le devis affiché a été jeté"
 E_TAPE = "⛔ un nom TAPÉ à la révision l'emporte"
 E_LIEE = "⛔ une fiche LIÉE n'en reçoit rien : la révision"
-E_ANNULER = "⛔ « Annuler » puis un NOUVEAU devis pour la même fiche"
+E_ANNULER = "⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche"
 
 GARDE = "version === null || fiche.linked || version.clientRecordId !== fiche.id) return copiePourDevis(noms, fiche.id);"
 LIGNE_AR = 'ar: noms.ar.trim() !== "" ? noms.ar : (present(version.clientNameAr) ?? ""),'
@@ -84,7 +84,7 @@ campagne.cible("E-2. ⛔ la version rendue n'est jamais gardée", ECRAN,
 campagne.cible("E-3. ⛔ la version gardée est ÉCRASÉE quand la modification jette le devis affiché", ECRAN,
                MEMOIRE, "if (quote !== null || quote === null) versionRendue.current = quote;",
                {"ecran": E_JETE})
-campagne.cible("E-4. ⛔ la version gardée n'est plus liée à la chaîne en cours : après « Annuler », la copie de l'ancien devis fuit", ECRAN,
+campagne.cible("E-4. ⛔ la version gardée n'est plus liée à la chaîne en cours : après « Recommencer », la copie de l'ancien devis fuit", ECRAN,
                LIEN_CHAINE, "(versionRendue.current ?? null)",
                {"ecran": E_ANNULER})
 
