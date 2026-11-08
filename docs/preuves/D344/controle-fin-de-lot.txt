@@ -1,0 +1,49 @@
+CONTRÔLE DE FIN DE LOT — D344 — départ 5e932b3 — HEAD 7a0317f
+calibration (cinq cas, deux bras chacun, ABANDON si un cas manque son verdict) : diff ⊆ table (une cellule déclarée est reconnue, un chemin fabriqué ne l'est pas) → vrai:True faux:False ; une phrase de PROSE qui cite un chemin ne le déclare pas → vrai:True faux:False ; mojibake (un texte mojibaké est accusé, un texte sain ne l'est pas) → vrai:True faux:False ; ancêtre (le départ l'est de HEAD, HEAD ne l'est pas du départ) → vrai:True faux:False ; copie de la table (le texte exact est trouvé, le même texte altéré d'un caractère ne l'est pas) → vrai:True faux:False
+
+✓ [1.1] le PREMIER commit du lot est la table d'ouverture, SEULE
+     ↳ parent de f988389 = ['5e932b3'] ; fichiers = ['docs/preuves/D344/table-ouverture.md']
+✓ [1.2] la sortie de la lecture adverse précède TOUT commit qui touche un fichier d'autorité
+     ↳ 13 commit(s) parcouru(s) ; premier commit d'autorité = 1ee9dcb (attendu 1ee9dcb) ; a4f691a en est ancêtre : True
+✓ [1.3] LES ROUGES PRÉCÈDENT LE PREMIER COMMIT DE CODE (D334, item 5) : les pièces de rouge ne contiennent aucun fichier de code, et le commit de code seulement la spec attendue
+     ↳ f1b1376 ancêtre de a9b5831 : True ; 9 fichier(s) de rouge, tous sous docs/preuves/D344/ : True ; fichiers du commit de code = ['e2e/specs/r30-lien-calendrier-pro.e2e.ts']
+✓ [1.4] le premier commit qui touche autre chose que des pièces et des .md d'autorité est le commit de code
+     ↳ premier commit de code trouvé par le parcours = a9b5831 (attendu a9b5831)
+✓ [1.5] LA RÈGLE DES DEUX PASSES est commitée AVANT les passes (jouées sur le commit même de la règle), et les six portes ont été jouées APRÈS elles
+     ↳ l'index des deux passes porte SHA f784eab (attendu f784eab) ; l'index des six portes porte SHA 83a6037 (attendu 83a6037), descendant de la règle : True
+✓ [1.6] l'extension de la table (1) est SEULE dans son commit et précède le fichier qu'elle déclare
+     ↳ 13 commit(s) parcouru(s) ; commits qui ne touchent que la table, hors le premier : ['ca513e8'] (attendu 1)
+✓ [2.1] la spec jouée par les rouges est celle du fichier commité ensuite, et la copie est IDENTIQUE à l'archive (octets de l'arbre de travail ; blobs égaux une fois les fins de ligne normalisées — `e2e/` est normalisé en LF par core.autocrlf, `docs/preuves/` est en -text)
+     ↳ relevée 2f11ca72d3ab… · arbre de travail 2f11ca72d3ab… · archive au départ 2f11ca72d3ab… · blobs normalisés égaux : True (blob de a9b5831 : 1840 octets, 0 CRLF)
+✓ [2.2] R-2 : les deux ARCHIVES ne sont pas touchées (D295)
+     ↳ diff du départ à HEAD sur les deux chemins d'archive : [] (attendu aucun)
+✓ [2.3] R-3 : la copie de r32 n'est PAS dans le dépôt, et l'arrêt est écrit
+     ↳ e2e/specs/r32-nouvelle-reservation.e2e.ts dans HEAD : False (attendu False) ; arret-spec.md dans HEAD : True (attendu True)
+✓ [3.1] git diff <départ>..HEAD --name-only ⊆ la table (chemins complets, fichiers d'autorité déclarés en section C)
+     ↳ 53 fichier(s) dans le diff ; 62 chemin(s) déclaré(s) par cellule ; hors table : []
+✓ [3.2] le lot ne touche NI `apps/`, NI `packages/`, NI `neutralisation/`, NI `e2e/playwright.config.ts`, NI `e2e/fixtures/harness.ts`, NI migration, NI dépendance
+     ↳ 53 fichier(s) parcouru(s) ; fichiers interdits : []
+✓ [3.3] le code du lot est EXACTEMENT la spec de r30 (r32 et warmup.setup.ts n'y sont pas)
+     ↳ fichiers hors pièces et hors .md d'autorité : ['e2e/specs/r30-lien-calendrier-pro.e2e.ts']
+✓ [3.4] RIEN QU'UNE PORTE LIT n'a changé depuis les six portes (jouées sur 83a6037)
+     ↳ fichiers hors docs/preuves/ et hors .md d'autorité entre 83a6037 et HEAD : []
+✓ [4.1] la table d'ouverture est recopiée dans ZWADJ_CONTINUITE.md À L'IDENTIQUE
+     ↳ 103 ligne(s) de la table, la copie est présente 1 fois (attendu 1)
+✓ [5.1] aucun mojibake NOUVEAU dans les trois fichiers d'autorité ni dans la spec (U+FFFD comparé au départ)
+     ↳ 4 fichier(s) lus ; U+FFFD au départ par fichier : {'ZWADJ_CONTINUITE.md': 0, 'AGENTS.md': 1, 'ZWADJ_BACKLOG.md': 0, 'e2e/specs/r30-lien-calendrier-pro.e2e.ts': 0} ; mojibakés : []
+✓ [5.2] les fichiers CRLF le sont restés : 0 LF nu
+     ↳ LF nus par fichier : {'ZWADJ_CONTINUITE.md': 0, 'AGENTS.md': 0, 'ZWADJ_BACKLOG.md': 0, 'e2e/specs/r30-lien-calendrier-pro.e2e.ts': 0}
+✓ [6.1] D343 et D344 sont au registre, D344 en dernier
+     ↳ 299 ligne(s) de registre parcourue(s), les deux dernières = ['D343', 'D344']
+✓ [6.2] le compteur POUR MÉMOIRE est à VINGT dans AGENTS.md (note de D344)
+     ↳ note « DIX-NEUF → VINGT » présente : True
+✓ [6.3] l'ordre des rangs porte « RANG 46 : CLOS » puis « RANG 47 : EN ATTENTE DE CADRAGE DU RELECTEUR »
+     ↳ occurrences : RANG 46 : CLOS 1 (attendu 1), RANG 47 1 (attendu 1)
+✓ [7.1] local et origin/main sur le MÊME SHA (D288), après git fetch
+     ↳ HEAD = 7a0317f76380 ; origin/main = 7a0317f76380
+✓ [7.2] R-18 de D343 : origin/front-client ET origin/integration-45 existent encore (ce lot n'en supprime aucune)
+     ↳ origin/front-client = 43996e2 ; origin/integration-45 = 63511ce
+✓ [7.3] arbre propre, aucun stash
+     ↳ `git status --short` : 0 ligne(s) ; stash : 0
+
+22 contrôles parcourus : 22 ✓ · 0 ✗ (attendu : 0 ✗)
