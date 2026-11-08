@@ -1,0 +1,14 @@
+D345 — LES DEUX PASSES de l'e2e — départ 08/11/2026 13:51:15
+SHA: e6416783ed01d967a666394d7c021a5669ad5c76
+arbre (git status --short): []
+stash: []
+docker: zwadj-db Up 39 hours
+tests listés par 'playwright test --list' (l'ATTENDU, dérivé avant la première passe): Total: 81 tests in 21 files
+passe 1 — état machine JUSTE AVANT: 13:51:19 | SECTEUR | RAM libre 3,589 Mo | chrome 0 | headless_shell 0 | node 0
+passe 1 — ports d'e2e occupés (3100 3101 5273 5274): []
+=== passe 1 — départ 13:51:24 — 13:51:24 | SECTEUR | RAM libre 3,473 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 1 : code de sortie 0 · durée 262 s · fin 13:55:47 — 13:55:47 | SECTEUR | RAM libre 3,594 Mo | chrome 0 | headless_shell 0 | node 0
+    passe 1 — résumé de Playwright (lu dans le BRUT, codes ANSI retirés):  1 skipped; 80 passed (4.3m);
+passe 2 — état machine JUSTE AVANT: 13:55:48 | SECTEUR | RAM libre 3,573 Mo | chrome 0 | headless_shell 0 | node 0
+passe 2 — ports d'e2e occupés (3100 3101 5273 5274): [3101 ]
+REFUS : passe 2 : un port d'e2e est occupé — elle ne démarre pas

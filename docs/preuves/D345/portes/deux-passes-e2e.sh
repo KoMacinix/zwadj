@@ -29,7 +29,16 @@ portes_dures() {  # $1 = numéro de la passe
   docker info > /dev/null 2>&1 || refus "passe $1 : le démon Docker ne répond pas — elle ne démarre pas"
   docker ps --filter name=zwadj-db --filter status=running --format '{{.Names}}' | grep -q zwadj-db || refus "passe $1 : le conteneur zwadj-db n'est pas Up — elle ne démarre pas"
   [ -z "$(git status --short)" ] || refus "passe $1 : l'arbre n'est pas propre — elle ne démarre pas"
-  local OCCUPES; OCCUPES="$(powershell.exe -NoProfile -Command '@(3100,3101,5273,5274) | ForEach-Object { if (Get-NetTCPConnection -LocalPort $_ -State Listen -EA 0) { $_ } }' | tr -d '\r' | tr '\n' ' ')"
+  # ⛔ D345 — DÉFAUT D'INSTRUMENT, LU À LA PREMIÈRE TENTATIVE (docs/preuves/D345/portes/defaut-pilote-ports.md) : l'API de la passe 1 libère le port 3101 APRÈS la fin de `pnpm test:e2e` ;
+  # la copie de D344 ne l'attendait pas et refusait la passe 2 (code 3, ce n'est PAS un rouge). On ATTEND la libération (20 tours de 3 s au plus) ; un port encore occupé APRÈS cette attente refuse toujours.
+  local OCCUPES TOURS=0
+  while :; do
+    OCCUPES="$(powershell.exe -NoProfile -Command '@(3100,3101,5273,5274) | ForEach-Object { if (Get-NetTCPConnection -LocalPort $_ -State Listen -EA 0) { $_ } }' | tr -d '\r' | tr '\n' ' ')"
+    [ -z "$(echo "$OCCUPES" | tr -d ' ')" ] && break
+    TOURS=$((TOURS + 1)); [ "$TOURS" -ge 20 ] && break
+    sleep 3
+  done
+  echo "passe $1 — tours d'attente de libération des ports: $TOURS" >> "$OUT/deux-passes-index.txt"
   echo "passe $1 — ports d'e2e occupés (3100 3101 5273 5274): [$OCCUPES]" >> "$OUT/deux-passes-index.txt"
   [ -z "$(echo "$OCCUPES" | tr -d ' ')" ] || refus "passe $1 : un port d'e2e est occupé — elle ne démarre pas"
 }
