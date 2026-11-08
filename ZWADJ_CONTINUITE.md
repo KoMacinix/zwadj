@@ -2549,6 +2549,106 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 
 ⇒ **RANG 47 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** : **L36-3a-2** (avec **S-104**, que D341 n'a pas codée : un mot de passe expiré ouvre une session) — **pas arbitré** ; **L36-3b** n'a pas de rang. Le rang 47 n'est **pas** nommé par la session. ⚠ **Entrée de backlog sans rang** (à ordonner par Ko) : le parcours « Nouvelle réservation » du pro n'a plus de spec navigateur (`ZWADJ_BACKLOG.md`, « Reports du 08/11/2026 »). ⚠ **Ce qui attend Ko avant** : la ratification de **S-138 à S-143** (D344, § 4) ; la ligne `[SÉCU]` d'`apps/api/.env`, qu'il a déclarée traitée (S-143 : non vérifiée par la session).
 
+⛔ **ARBITRÉ LE 08/11/2026 PAR KO — LE RANG 47 : LE PARCOURS « CLIENT SUR PLACE » GARDE SON ÉTAPE ET SES SAISIES QUAND ON CHANGE D'ONGLET, mot pour mot : les SECTIONS 1 et 2 de la consigne du relecteur (première écriture d'autorité du lot D345 ; la table d'ouverture `48e1fa3`, la consigne et la lecture adverse `a5a7e09`, les pièces de rouge `3d25c8a`, le code `06347f6`, le harnais `4e009af`, la spec `303c480`, l'extension 1 de la table `6cafb73` et les pièces des portes `66178ff` la précèdent, `git` le prouve).** ⚠ Le texte est celui du relecteur, **adopté par Ko tel quel** (`docs/preuves/D345/consigne.md`) ; la consigne s'écrit « adopté par Ko tel quel » en tête, et les points a) et b) de la section 1 ne sont des paroles de Ko que là où ils les citent entre guillemets (la demande de Ko, 08/11/2026 : « faire en sorte de garder en memoir l'etape et les donner dans le processus du client sur place, et ne pas revenir au debut des qu'en passe a un onglet demande ou autre et revenir pour trouver qu'on reviens a l'etape de depart »).
+
+1. CE QUE KO ADOPTE — par ADOPTION de ce message
+a) Ko demande, mot pour mot (chat du relecteur, 08/11/2026) : « faire en sorte de garder en memoir l'etape et les donner dans le processus du client sur place, et ne pas revenir au debut des qu'en passe a un onglet demande ou autre et revenir pour trouver qu'on reviens a l'etape de depart ». Rang 47 = ce lot ; L36-3a-2 n'est pas le rang 47. Numéro attendu : D345. Lot de code : il compte (D283), VINGT → VINGT ET UN.
+b) Les décisions prises seule par la session de D344 (S-138 à S-143) sont ratifiées par adoption.
+
+2. DÉCISIONS DU RELECTEUR (chat), DÉLÉGUÉES PAR KO
+- R-1. Le brouillon du parcours (apps/pro/src/dashboard/walkin-journey.tsx : étape, identifiant, fiche, noms, retouches, date, créneau, invités, prestations, détails FP-1, chainQuoteId) vit dans un fournisseur React monté AU-DESSUS des routes de l'app Pro, EN MÉMOIRE SEULEMENT : jamais localStorage, sessionStorage ni IndexedDB. Motif : il porte le numéro, l'e-mail et le nom d'un client, et le poste du comptoir est partagé. Constat du relecteur au dépôt (942d450) : l'état est aujourd'hui dans les useState locaux du composant, donc perdu quand l'écran se démonte ; le seul accès au stockage du navigateur de l'app Pro est la langue (apps/pro/src/i18n.ts) — à mesurer par toi, pas à recopier.
+- R-2. Le brouillon survit au changement d'onglet ; il ne survit ni au rechargement ni à la fermeture. C'est le comportement attendu, rien ne l'annonce à l'écran ; écris-le au rapport.
+- R-3. Au retour : la même étape et les mêmes saisies. Le devis AFFICHÉ n'est pas restauré tel quel : il est marqué « à recalculer », un clic le recalcule (la salle ou les prix ont pu changer entre-temps). Le chainQuoteId est gardé (la révision reste dans la bonne chaîne).
+- R-4. Le brouillon s'efface : à la fin du parcours (réservation créée ou devis remis), à la déconnexion, au changement de compte, et par un bouton « Recommencer » (FR/AR, parité). Entrée de backlog pour L36-4 : effacer aussi au verrouillage du poste et au changement de membre du personnel.
+- R-5. Aucun contrat d'API, aucune migration, apps/api intouché ; « une seule source » de ProVenuesProvider tient. Si la salle choisie change, le brouillon d'une autre salle n'est pas montré : il s'efface (défaut).
+- R-6. Tests : les rouges d'abord — aller à « Demandes » puis revenir : l'étape et les saisies sont là ; recharger : tout est vide ; se déconnecter : tout est vide ; « Recommencer » : tout est vide ; garde de SOURCE : aucun accès au stockage du navigateur dans le fournisseur. Harnais neutralize-r47. E2e : l'aller-retour d'onglet, joué contre l'écran d'aujourd'hui (comme r41 et r43), sans reprendre remplirClient de l'archive r32. Deux passes e2e vertes de suite, règle commitée avant (R-15 de D343).
+- R-7. Réponse à la question de D344 : la classification de r32 en « comportement qui contredit la spec » est MAINTENUE. Motif : son test 1 échoue sur le CONTENU d'une assertion (quatre raisons attendues, une reçue), pas sur un nom ni une adresse ; la faire passer obligerait à récrire ses assertions, ce que R-3 de D344 interdit.
+- R-8. L'entrée de backlog de S-142 (le parcours « Nouvelle réservation » sans spec navigateur) se place APRÈS le rang 48 et AVANT L36-4. Motif : R-1 de D344 (un filet e2e complet avant les écrans du personnel) ; et ce rang 47 change le même écran, une spec écrite avant serait à reprendre. Annotation additive de l'entrée, rien n'est réécrit.
+- R-9. S-143, le secret Google : tu COMPTES, sans rien afficher d'autre que le nombre, les occurrences du préfixe GOCSPX dans chaque .env (même forme que D330 : jamais une valeur). 0 partout ⇒ tu annotes l'entrée [SÉCU] « ligne retirée : mesuré par comptage, 0 » et tu la coches pour cette partie ; « ancien supprimé dans Google Cloud » reste « déclaré par Ko, non vérifiable ici ». Plus de 0 ⇒ tu ne coches rien et tu le dis.
+
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que cette copie et celle de la table. Le rang 47 avance par **un lot de CODE** (il écrit dans `apps/pro`, `packages/i18n`, `e2e/specs` et `neutralisation/` ; il **compte**, D283) ; les décisions R-1 à R-9 sont celles du relecteur, **défaisables par Ko** ; la limite de cinq reste SUSPENDUE (pause de Ko, DR1 de D336) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Ce que le lot a MESURÉ et décidé s'écrit dans la section D345, **après** cette copie.
+
+⛔ **TABLE D'OUVERTURE DU RANG 47 (D345), recopiée à l'IDENTIQUE de `docs/preuves/D345/table-ouverture.md`** (premier commit du lot, `48e1fa3`, SEUL ; **avec son extension 1**, commit `6cafb73`, la table de fin de lot — le contrôle de fin de lot relit les deux textes et compare). Copie par script, jamais retapée :
+
+~~~~markdown
+# D345 — rang 47 — table d'ouverture
+
+Lot : **le parcours « Nouvelle réservation » du pro (client sur place) garde son étape et ses saisies quand on change d'onglet** (apps/pro). Demande de Ko, mot pour mot (chat du relecteur, 08/11/2026) : « faire en sorte de garder en memoir l'etape et les donner dans le processus du client sur place, et ne pas revenir au debut des qu'en passe a un onglet demande ou autre et revenir pour trouver qu'on reviens a l'etape de depart ». Consigne du relecteur « RANG 47 », adoptée par Ko telle quelle (`docs/preuves/D345/consigne.md`). Lot de **CODE** : il compte (D283), compteur POUR MÉMOIRE VINGT → VINGT ET UN à sa clôture. Aucun contrat d'API, aucune migration, `apps/api` intouché (R-5).
+
+- **SHA de départ** : `942d45025ded6556a11f8a5310ebe93b4c997c85` = `origin/main` (relevé après `git fetch`, avant toute écriture). Branche `main`, arbre propre, aucun stash.
+- **Numéro** : **D345** — dernière ligne du registre lue : D344.
+- **Poste à l'ouverture** : sur secteur (`Win32_Battery.BatteryStatus` = 2), RAM libre 3 513 Mo, `chrome` 0, Docker 29.8.0 lancé.
+
+## Fichiers du lot (chemins COMPLETS)
+
+| Fichier | Rôle | Statut |
+|---|---|---|
+| `docs/preuves/D345/table-ouverture.md` | cette table | ferme |
+| `docs/preuves/D345/consigne.md` | la consigne versée | ferme |
+| `docs/preuves/D345/lecture-adverse/lecture-adverse.md` | la lecture adverse de la consigne | ferme |
+| `docs/preuves/D345/rouges/rouges.md` | les rouges lus, avec l'empreinte sha256 des fichiers de test joués | ferme |
+| `docs/preuves/D345/regle-e2e.md` | la règle des deux passes e2e vertes, commitée avant | ferme |
+| `docs/preuves/D345/comptage-secret.md` | R-9 : comptage de GOCSPX par `.env` (nombres seuls) | ferme |
+| `docs/preuves/D345/neutralisation/neutralize-r47.txt` | la sortie du harnais r47 | ferme |
+| `docs/preuves/D345/portes/portes.md` | les six portes avec leurs chiffres | ferme |
+| `docs/preuves/D345/e2e/passe-1.txt` | première passe e2e complète | ferme |
+| `docs/preuves/D345/e2e/passe-2.txt` | seconde passe e2e complète | ferme |
+| `docs/preuves/D345/scenarios-ko.md` | les gestes de Ko | ferme |
+| `docs/preuves/D345/controle-fin-de-lot.txt` | la sortie du contrôle de fin de lot | ferme |
+| `docs/preuves/D345/audit-secrets-d345a.txt` | audit de secrets avant versement (D298) | ferme |
+| `apps/pro/src/dashboard/walkin-draft.ts` | module PUR : forme du brouillon, `brouillonVierge`, `brouillonPourSalle` | ferme |
+| `apps/pro/src/dashboard/walkin-draft-context.tsx` | le fournisseur React, en mémoire seulement | ferme |
+| `apps/pro/src/dashboard/walkin-draft.test.tsx` | tests du fournisseur et du module pur, garde de SOURCE (aucun stockage navigateur) | ferme |
+| `apps/pro/src/dashboard/walkin-journey.tsx` | le parcours lit et écrit le brouillon | ferme |
+| `apps/pro/src/dashboard/walkin-journey.test.tsx` | tests de l'aller-retour, du rechargement, de « Recommencer » ; trois matchers « Annuler » → « Recommencer » | ferme |
+| `apps/pro/src/App.tsx` | monte le fournisseur au-dessus des routes | ferme |
+| `packages/i18n/messages/fr.json` | `venue.ui.walkin.reset` : « Annuler » → « Recommencer » | ferme |
+| `packages/i18n/messages/ar.json` | `venue.ui.walkin.reset` : « إلغاء » → « إعادة البدء » | ferme |
+| `e2e/specs/r47-brouillon-onglet.e2e.ts` | l'aller-retour d'onglet, contre l'écran d'aujourd'hui | ferme |
+| `neutralisation/neutralize-r47.py` | le harnais du lot | ferme |
+| `ZWADJ_CONTINUITE.md` | section D345, registre, ordre des rangs, point d'entrée, compteur | ferme |
+| `ZWADJ_BACKLOG.md` | entrées neuves (L36-4, S-142 repositionnée) ; annotation de l'entrée [SÉCU] (R-9) | ferme |
+| `AGENTS.md` | annotation additive (clôture du rang 47) | ferme |
+
+## Fichiers CONDITIONNELS (leur existence dépend d'un défaut ou d'un résultat)
+
+| Fichier | Condition |
+|---|---|
+| `docs/preuves/D345/e2e/rejeu.txt` | seulement si une passe e2e sort rouge |
+| `docs/preuves/D345/audit-secrets-d345b.txt` (et suivants) | un audit par versement supplémentaire |
+| `docs/preuves/D345/lecture-adverse/ecarts.md` | seulement si la lecture adverse trouve un écart |
+| `apps/pro/src/dashboard/walkin-journey.test.tsx` — autres tests existants | seulement si un test existant dépend du texte « Annuler » ailleurs que les trois lignes relevées (499, 520, 3022) |
+| `neutralisation/lancer-campagnes.py` | seulement si le tri par fichiers touchés exige d'enregistrer r47 (sinon NON touché) |
+
+## Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (08/11/2026, commitée SEULE). Relevé : en comparant les fichiers de `docs/preuves/D345/` aux chemins de la table d'ouverture, **les pièces produites par le lot sont plus nombreuses que celles que la table nommait** (une ligne par famille, pas par fichier : les sorties que `rouges.md` et `portes.md` citent n'avaient pas leur ligne).
+
+⚠ **Écart écrit, pour ne pas se lire comme tenu** : la règle de `AGENTS.md` (D328, point 4) veut qu'une extension précède le commit du fichier qu'elle couvre. **Sept fichiers, déjà commités, sont déclarés ICI APRÈS leur commit** ; `git` le montre, le contrôle de fin de lot le rapporte : `docs/preuves/D345/rouges/rouge-2-comportement.txt`, `docs/preuves/D345/rouges/rouge-3-bouton.txt`, `docs/preuves/D345/rouges/rouge-4-e2e.txt`, `docs/preuves/D345/portes/masquer-jetons.py` (commit `3d25c8a`) ; `docs/preuves/D345/neutralisation/neutralize-r47-passe-1-AVANT-CORRECTIF-DE-DEUX-TESTS.txt` (`e641678`) ; `docs/preuves/D345/portes/deux-passes-e2e.sh` (`e3bf91f`, déclaré par la ligne « pilote » de la famille ci-dessous), `docs/preuves/D345/portes/defaut-pilote-ports.md` et `docs/preuves/D345/portes/tentative-1/` (`e3bf91f`, `f98be80`). Les **autres** fichiers listés ci-dessous ne sont pas encore commités.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D345/rouges/rouge-2-comportement.txt` | la sortie du rouge 2 (le comportement, contre le parcours inchangé), citée par `rouges.md` — **déclarée après son commit** |
+| `docs/preuves/D345/rouges/rouge-3-bouton.txt` | la sortie du rouge 3 (le libellé « Recommencer ») — **déclarée après son commit** |
+| `docs/preuves/D345/rouges/rouge-4-e2e.txt` | la sortie du rouge 4 (la spec e2e contre l'écran sans la fonctionnalité), MASQUÉE — **déclarée après son commit** |
+| `docs/preuves/D345/neutralisation/neutralize-r47-passe-1-AVANT-CORRECTIF-DE-DEUX-TESTS.txt` | la première passe du harnais (23 mordues, 2 muettes), gardée telle quelle — **déclarée après son commit** |
+| `docs/preuves/D345/portes/masquer-jetons.py` | la procédure de masquage des jetons (copie à l'octet de celle de D344), archivée comme PREUVE — **déclarée après son commit** |
+| `docs/preuves/D345/portes/deux-passes-e2e.sh` | le pilote des deux passes e2e (copie de celui de D344, noms seuls, plus l'attente de libération des ports) — **déclaré après son commit** |
+| `docs/preuves/D345/portes/defaut-pilote-ports.md` | le défaut d'instrument du pilote (D298), écrit — **déclaré après son commit** |
+| `docs/preuves/D345/portes/tentative-1/deux-passes-index.txt`, `docs/preuves/D345/portes/tentative-1/console.txt` | la première tentative des deux passes (passe 1 verte, passe 2 refusée par le pilote), gardée telle quelle — **déclarés après leur commit** |
+| `docs/preuves/D345/portes/portes.md` | le compte rendu des six portes, avec leurs chiffres et l'attendu à côté |
+| `docs/preuves/D345/portes/typecheck.txt`, `docs/preuves/D345/portes/lint.txt`, `docs/preuves/D345/portes/test.txt`, `docs/preuves/D345/portes/build.txt`, `docs/preuves/D345/portes/test-int.txt` | les sorties des cinq portes, masquées si besoin |
+| `docs/preuves/D345/e2e/deux-passes-index.txt`, `docs/preuves/D345/e2e/deux-passes-etat-machine.txt` | l'index des deux passes et l'état machine pendant elles |
+| `docs/preuves/D345/e2e/etat-env-d345-ouverture.txt`, `docs/preuves/D345/e2e/etat-env-d345-cloture.txt`, `docs/preuves/D345/e2e/env-comparaison.txt` | l'état des `.env` (empreintes et hôtes locaux, aucune valeur) à l'ouverture et à la clôture, et leur comparaison |
+| `docs/preuves/D345/campagnes/_index.txt`, `docs/preuves/D345/campagnes/campagnes.md` | les campagnes que le lot touche, jouées, et leur lecture |
+| `docs/preuves/D345/campagnes/*.txt` | la sortie de chacune des seize autres campagnes touchées (une par fichier, nommée comme la campagne) |
+| `docs/preuves/D345/passe-d277.md`, `docs/preuves/D345/passe-d277/passe-d277.py`, `docs/preuves/D345/passe-d277/sortie-avant.txt`, `docs/preuves/D345/passe-d277/sortie-apres.txt` | la passe D277 des deux sens |
+| `docs/preuves/D345/audit-secrets-d345b.txt`, `docs/preuves/D345/tri-audit-d345b.txt` | l'audit de secrets scellé des pièces de clôture, et son tri différentiel |
+| `docs/preuves/D345/controle-fin-de-lot.py`, `docs/preuves/D345/controle-fin-de-lot.txt` | le contrôle de fin de lot (D288, D328, D334), écrit APRÈS la poussée, et sa sortie |
+~~~~
+
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
