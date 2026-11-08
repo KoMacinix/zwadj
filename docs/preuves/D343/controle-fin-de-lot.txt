@@ -1,0 +1,52 @@
+D343 — sortie du contrôle de fin de lot (docs/preuves/D343/controle-fin-de-lot.py), jouée le 07/11/2026 APRÈS la poussée de `main` (9bb238d), arbre propre, depuis la RACINE.
+⚠ DEUX JEUX, le second est celui-ci : un essai AVANT la poussée (HEAD 9bb238d, origin/main d44867a) avait rendu 19 ✓ et 2 ✗ — les familles 7.1 (local et origin/main sur le même SHA) et 7.2 (la fusion de D342 ancêtre de origin/main), qui ne peuvent être vraies qu'après la poussée ; les 19 autres étaient déjà ✓. Cet essai n'est pas versé (le contrôle n'écrit que sa sortie finale).
+⚠ Ce fichier et le script sont versés dans un commit POSTÉRIEUR à ce contrôle (un fichier ne peut pas porter le SHA du commit qui le contient) : local et origin/main sont rapportés une dernière fois dans la section D343 de la fin de session, après la poussée de ce commit.
+Sortie de l'outil, fins de ligne en LF, juste après cette ligne vide.
+
+CONTRÔLE DE FIN DE LOT — D343 — départ a1dc635 — HEAD 9bb238d
+calibration (cinq cas, deux bras chacun, ABANDON si un cas manque son verdict) : diff ⊆ table (une cellule déclarée est reconnue, un chemin fabriqué ne l'est pas) → vrai:True faux:False ; une phrase de PROSE qui cite un chemin ne le déclare pas → vrai:True faux:False ; mojibake (un texte mojibaké est accusé, un texte sain ne l'est pas) → vrai:True faux:False ; mojibake différentiel (un U+FFFD de plus que le départ est accusé, celui déjà cité au départ ne l'est pas) → vrai:True faux:False ; ancêtre (le départ l'est de HEAD, HEAD ne l'est pas du départ) → vrai:True faux:False ; copie de la table (une ligne qui y est est trouvée, une ligne fabriquée absente ne l'est pas) → vrai:True faux:False
+
+✓ [1.1] le PREMIER commit du lot est la table d'ouverture, SEULE
+     ↳ parent de 7bbf122 = ['a1dc635'] ; fichiers = ['docs/preuves/D343/table-ouverture.md']
+✓ [1.2] la sortie de la lecture adverse précède TOUT commit qui touche un fichier d'autorité
+     ↳ premier commit d'autorité = 3ada4f7 ; 220a56b en est ancêtre : True
+✓ [1.3] LES ROUGES PRÉCÈDENT LE PREMIER COMMIT DE CODE (D334, item 5) : les pièces de rouge ne contiennent aucun fichier de code, et le commit de code seulement les trois attendus
+     ↳ a61e9c9 ancêtre de 69c2257 : True ; 17 fichier(s) de rouge, tous sous docs/preuves/D343/ : True ; fichiers du commit de code = ['e2e/fixtures/harness.ts', 'e2e/specs/d265-socket-perimee.e2e.ts', 'neutralisation/neutralize-r45.py']
+✓ [1.4] le premier commit qui touche autre chose que des pièces et des .md d'autorité est le commit de code
+     ↳ premier commit de code trouvé par le parcours = 69c2257 (attendu 69c2257)
+✓ [1.5] LA RÈGLE DES DEUX PASSES est commitée AVANT les passes (celles-ci ont été jouées sur la première écriture d'autorité, qui la suit)
+     ↳ 69671a4 ancêtre de 3ada4f7 : True ; l'index des passes porte SHA 3ada4f7 (attendu 3ada4f7)
+✓ [1.6] les extensions de la table sont chacune SEULE dans leur commit
+     ↳ commits « extension N de la table » parcourus : 5
+✓ [2.1] l'empreinte de la GARDE jouée contre l'état d'avant est celle du fichier commité ensuite (octet pour octet, blob de l'index)
+     ↳ garde : 1f11ca3d556c… = blob de 69c2257 : True
+✓ [2.2] les empreintes de la REPRODUCTION (spec et configuration) sont celles des fichiers commités avec les rouges
+     ↳ repro-d265.repro.ts et repro.config.ts : True
+✓ [3.1] git diff <départ>..HEAD --name-only ⊆ la table (chemins complets, extensions comprises)
+     ↳ 73 fichier(s) dans le diff ; 85 chemin(s) déclaré(s) ; hors table : []
+✓ [3.2] R-14 : le lot ne touche NI `apps/`, NI `packages/`, NI `e2e/playwright.config.ts`, NI migration, NI dépendance
+     ↳ 73 fichier(s) parcouru(s) ; fichiers interdits : []
+✓ [3.3] le code du lot est EXACTEMENT les trois fichiers déclarés (R-14 : dans e2e/fixtures/ seulement pour la correction)
+     ↳ fichiers hors pièces et hors .md d'autorité : ['e2e/fixtures/harness.ts', 'e2e/specs/d265-socket-perimee.e2e.ts', 'neutralisation/neutralize-r45.py']
+✓ [3.4] RIEN QU'UNE PORTE LIT n'a changé depuis les deux passes et les six portes (jouées sur la première écriture d'autorité)
+     ↳ fichiers hors docs/preuves/ et hors .md d'autorité entre 3ada4f7 et HEAD : []
+✓ [4.1] la table d'ouverture est recopiée dans ZWADJ_CONTINUITE.md À L'IDENTIQUE (titres décalés de trois niveaux)
+     ↳ 163 ligne(s) de la table, la copie est présente 1 fois (attendu 1)
+✓ [5.1] aucun mojibake NOUVEAU dans les trois fichiers d'autorité ni dans le harnais (U+FFFD comparé au départ)
+     ↳ 4 fichier(s) lus ; U+FFFD au départ par fichier : {'ZWADJ_CONTINUITE.md': 0, 'AGENTS.md': 1, 'ZWADJ_BACKLOG.md': 0, 'e2e/fixtures/harness.ts': 0} ; mojibakés : []
+✓ [5.2] les fichiers CRLF le sont restés : 0 LF nu
+     ↳ LF nus par fichier : {'ZWADJ_CONTINUITE.md': 0, 'AGENTS.md': 0, 'ZWADJ_BACKLOG.md': 0, 'e2e/fixtures/harness.ts': 0}
+✓ [6.1] D342 et D343 sont au registre, D343 en dernier
+     ↳ 298 ligne(s) de registre parcourue(s), les deux dernières = ['D342', 'D343']
+✓ [6.2] le compteur POUR MÉMOIRE est à DIX-NEUF dans AGENTS.md
+     ↳ annotation « QUATRE → DIX-HUIT … → DIX-NEUF » présente : True
+✓ [7.1] local et origin/main sur le MÊME SHA (D288), après git fetch
+     ↳ HEAD = 9bb238d8f2a9 ; origin/main = 9bb238d8f2a9
+✓ [7.2] la fusion de D342 est ancêtre de origin/main et les 107 commits de la branche y sont (origin/front-client en est ancêtre)
+     ↳ 2b79355 ancêtre : True ; 43996e2 ancêtre : True ; d44867a (main avant) ancêtre : True ; commits de la branche absents de main avant : 107
+✓ [7.3] R-18 : origin/front-client ET origin/integration-45 existent encore
+     ↳ origin/front-client = 43996e2 (attendu 43996e2) ; origin/integration-45 = 63511ce
+✓ [7.4] arbre propre, aucun stash
+     ↳ `git status --short` : 0 ligne(s) ; stash : 0
+
+21 contrôles parcourus : 21 ✓ · 0 ✗ (attendu : 0 ✗)
