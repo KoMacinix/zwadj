@@ -95,3 +95,10 @@ Lot : **faire revenir dans la suite e2e (`e2e/specs/`) les deux specs sorties à
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D344/` aux chemins complets de cette table : 1 fichier hors table, produit par le contrôle de fin de lot). Le contrôle de fin de lot, joué après la poussée de `34d0e5a`, a rendu **✗ sur son contrôle 2.1** (« la copie de r30 est IDENTIQUE à l'archive, octet pour octet ») : défaut d'INSTRUMENT, pas du lot — il comparait des BLOBS git, or `e2e/` est normalisé en LF dans l'index par `core.autocrlf` (`git ls-files --eol` : `i/lf w/crlf`) alors que `docs/preuves/` est en `-text` (`i/crlf`) ; l'arbre de travail est identique à l'octet (`cmp`) et les deux blobs sont égaux une fois les fins de ligne normalisées. La première passe est GARDÉE TELLE QUELLE à côté de la passe corrigée (D298) ; le contrôle corrigé compare les octets de l'arbre de travail ET les blobs normalisés.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D344/controle-fin-de-lot-passe-1-AVANT-CORRECTIFS.txt` | la première passe du contrôle de fin de lot, gardée TELLE QUELLE : 22 contrôles, 21 ✓, 1 ✗ (2.1, défaut d'instrument) |
+
