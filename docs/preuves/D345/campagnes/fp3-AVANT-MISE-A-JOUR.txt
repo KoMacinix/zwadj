@@ -1,0 +1,70 @@
+⛔ PIÈCE MASQUÉE — D345 campagne fp3 avant. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6353 octets, sha256 ba387d893f532c6df3671b021224bf81b0bf1f03c20dfa3bf5f8fdab8dbb8dfd. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 10 déclarées · 10 jouées (unit) · 0 hors exécution · 2 mesure(s) distincte(s) · 2 fichier(s) muté(s)
+  pré-vol ecran : code 0 · passés 175 · en échec 0
+  pré-vol regle : code 0 · passés 8 · en échec 0
+✓ R-1. ⛔ une AUTRE fiche que celle de la version reçoit la copie de l'ancien client
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ R-2. ⛔ une fiche LIÉE reçoit le nom que le serveur lui refuserait (409 CLIENT_RECORD_LINKED)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+   [ecran] code 1 · passés 174 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ R-3. ⛔ la version l'emporte sur le nom ARABE tapé à l'écran
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 7 · en échec 1 · AssertionError: expected { clientRecordId: 'fiche-9', …(2) } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+✓ R-4. ⛔ la version l'emporte sur le nom LATIN tapé à l'écran
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 7 · en échec 1 · AssertionError: expected { clientRecordId: 'fiche-9', …(2) } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+   [ecran] code 1 · passés 174 · en échec 1 · AssertionError: expected 'Amine Belkacem' to be 'Amine Haddad' // Object.is equality
+✓ R-5. ⛔ le nom ARABE absent de l'écran n'est plus repris de la version (la copie de K-5 se perd)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 5 · en échec 3 · AssertionError: expected { clientRecordId: 'fiche-9', …(1) } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+   [ecran#1] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+   [ecran#2] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+✓ R-6. ⛔ le nom LATIN absent de l'écran n'est plus repris de la version
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [regle] code 1 · passés 6 · en échec 2 · AssertionError: expected { clientRecordId: 'fiche-9', …(1) } to deeply equal { clientRecordId: 'fiche-9', …(2) }
+✓ E-1. ⛔ le corps de la révision ignore la règle : retour à la copie des seuls noms de l'écran
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecran#1] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+   [ecran#2] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+   [ecran#3] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+✓ E-2. ⛔ la version rendue n'est jamais gardée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecran#1] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+   [ecran#2] code 1 · passés 172 · en échec 3 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+✓ E-3. ⛔ la version gardée est ÉCRASÉE quand la modification jette le devis affiché
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecran] code 1 · passés 173 · en échec 2 · AssertionError: expected undefined to be 'أمين بلقاسم' // Object.is equality
+✗ E-4. ⛔ la version gardée n'est plus liée à la chaîne en cours : après « Annuler », la copie de l'ancien devis fuit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecran] code 1 · SANS-TITRE — en échec 1, aucun « × » ne porte « ⛔ « Annuler » puis un NOUVEAU devis pour la même fiche »
+  empreintes : 2 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+9 garde(s) mordue(s) sur 10 cible(s) jouée(s) · 1 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 10 sur 10, 0, 0)
+arbre rendu à son état de départ : vérifié.

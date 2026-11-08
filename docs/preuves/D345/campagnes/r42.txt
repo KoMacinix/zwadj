@@ -1,0 +1,94 @@
+⛔ PIÈCE MASQUÉE — D345 campagne r42. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7804 octets, sha256 baa462325c2706b6e6dabc5cd5d5788aaf50c4084c6242c618d37d787239a1be. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 28 déclarées · 22 jouées · 6 non jouée(s) (sans --int) · 6 mesure(s) distincte(s) · 7 fichier(s) muté(s)
+  pré-vol client : code 0 · passés 32 · en échec 0
+  pré-vol contrat : code 0 · passés 49 · en échec 0
+  pré-vol pro-contact : code 0 · passés 30 · en échec 0
+  pré-vol pro-demandes : code 0 · passés 11 · en échec 0
+  pré-vol pro-parcours : code 0 · passés 175 · en échec 0
+  pré-vol schemas : code 0 · passés 26 · en échec 0
+✓ T-1. ⛔ `hasContactChannel` rend toujours VRAI : « ni numéro ni e-mail » n'est plus refusé nulle part
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 46 · en échec 3 · AssertionError: rien, deux clés absentes: expected true to be false // Object.is equality
+✓ T-2. ⛔ `hasContactChannel` ne regarde que le NUMÉRO : l'e-mail seul n'est plus un moyen de joindre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 46 · en échec 3 · AssertionError: un e-mail seul: expected false to be true // Object.is equality
+✓ T-3. ⛔ une chaîne BLANCHE vaut « renseigné » (un formulaire vide passerait pour un contact)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 48 · en échec 1 · AssertionError: deux chaînes blanches: expected true to be false // Object.is equality
+✓ T-4. ⛔ `reachableContact` donne l'E-MAIL avant le numéro (le pro rappelle d'abord)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 48 · en échec 1 · AssertionError: expected 'amina@example.dz' to be '+213550000001' // Object.is equality
+✓ T-5. ⛔ la réservation en ligne accepte « ni numéro ni e-mail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 25 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-6. ⛔ la conversion d'un devis accepte « ni numéro ni e-mail »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 47 · en échec 2 · AssertionError: expected true to be false // Object.is equality
+✓ T-7. ⛔ le numéro redevient OBLIGATOIRE à la réservation en ligne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 23 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ T-8. ⛔ le numéro redevient OBLIGATOIRE à la conversion d'un devis
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 46 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ T-9. ⛔ un numéro VIDE devient une absence à la réservation en ligne (« facultatif » ne veut plus dire clé omise)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 25 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-1. ⛔ le numéro redevient obligatoire pour ENVOYER (l'e-mail seul laisse le bouton inerte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 30 · en échec 2 · AssertionError: expected true to be false // Object.is equality
+✓ C-2. ⛔ un numéro SAISI et incomplet ne retient plus l'envoi quand l'e-mail est bon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 29 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+✓ C-3. ⛔ un e-mail SAISI et invalide ne retient plus l'envoi
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 31 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ C-4. ⛔ le corps envoie TOUJOURS la clé du numéro (« +213 » seul quand il est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 31 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-5. ⛔ D32 — le champ du numéro porte de nouveau `required` (obligatoire SEUL)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 30 · en échec 2 · AssertionError: Téléphone: expected true to be false // Object.is equality
+✓ C-6. ⛔ l'e-mail n'est plus relié au texte « l'un des deux » par `aria-describedby`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 31 · en échec 1 · AssertionError: E-mail: expected [ '' ] to include '_r_4t_'
+✓ C-7. ⛔ le champ du numéro n'est plus relié au texte « l'un des deux »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client] code 1 · passés 31 · en échec 1 · AssertionError: Téléphone: expected [ '' ] to include '_r_4t_'
+✓ P-1. ⛔ la conversion exige de nouveau le NUMÉRO (l'e-mail seul retient)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 27 · en échec 3 · AssertionError: expected [ 'needIdentifier' ] to deeply equal []
+✓ P-2. ⛔ un numéro SAISI et invalide ne retient plus la conversion quand l'e-mail est bon
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-contact] code 1 · passés 27 · en échec 3 · AssertionError: expected [] to deeply equal [ 'needPhoneLeading' ]
+✓ P-3. ⛔ le corps de la conversion envoie TOUJOURS la clé du numéro (« +213 » seul quand il est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 174 · en échec 1 · AssertionError: la clé du numéro doit être ABSENTE: expected true to be false // Object.is equality
+   [pro-contact] code 1 · passés 28 · en échec 2 · AssertionError: expected true to be false // Object.is equality
+✓ P-4. ⛔ la liste des demandes n'affiche que le NUMÉRO : une réservation par e-mail seul n'a plus de contact visible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-demandes] code 1 · passés 9 · en échec 2 · AssertionError: expected null not to be null
+✓ P-5. ⛔ ML-18 — le contact de la liste n'est plus écrit de gauche à droite (un e-mail se retourne dans une page arabe)
+   ancre 1→0 · marqueur 4→5 · genre substitution
+   [pro-demandes] code 1 · passés 10 · en échec 1 · AssertionError: expected null to be 'ltr' // Object.is equality
+✓ P-6. ⛔ ML-6 — les canaux SMS et appel ne sont plus bloqués sans numéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pro-parcours] code 1 · passés 174 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+  empreintes : 11 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+22 garde(s) mordue(s) sur 22 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 6 non jouée(s) (sans --int) (attendu : 22 sur 22, 0, 0, 6)
+arbre rendu à son état de départ : vérifié.

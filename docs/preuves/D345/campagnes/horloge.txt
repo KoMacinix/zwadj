@@ -1,0 +1,11 @@
+⛔ PIÈCE MASQUÉE — D345 campagne horloge. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 254 octets, sha256 ea05a997a7293904685e58b0cc9f1c6779627442d14b8e1f067f7bcc52002c1d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+temoin (aucune mutation)
+✓ C1  le gel d'horloge est retire  (attendu rouge, obtenu rouge)
+✓ C2  l'ancre MAINTENANT est deplacee de dix ans  (attendu vert, obtenu vert)
+
+2 garde(s) mordue(s) sur 2 cible(s).
+arbre rendu a son etat de depart : verifie.

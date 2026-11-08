@@ -1,0 +1,14 @@
+⛔ PIÈCE MASQUÉE — D345 campagne journey. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 681 octets, sha256 7ccdf9988acf58d955f7fcdf8f8d1a031a13117f16ada15ac8c9198f80e1f1c7. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ D1. ⚠ LE `key` DE LA CARTE SAUTE — l'animation redevient muette  [client, pro]
+✓ D2. La coche redevient un rang (le rail ne distingue plus fait/à faire)  [client]
+✓ D3. Le trait de liaison se rend TOUJOURS, même sans rien à relier  [client]
+✓ D4. Le trait cesse d'être décoratif (il parle à un lecteur d'écran)  [client]
+✓ D5. Le bouton « Modifier » perd la classe partagée (retour à deux boutons)  [client, pro]
+✓ D6. La `className` d'application est jetée : le rail quitte sa colonne  [client, pro]
+✓ D7. Le trait de liaison saute côté PRO (l'écart entre les deux revient)  [pro]
+
+7 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.

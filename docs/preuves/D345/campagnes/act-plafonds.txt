@@ -1,0 +1,14 @@
+⛔ PIÈCE MASQUÉE — D345 campagne act-plafonds. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 526 octets, sha256 920e03f69d8061b57b85ff3dd535ee115ff4448289d47ef86660c966324d13b1. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+pre-vol : le spec n'est plus exempte dans PLAFONDS
+temoin (aucune mutation)
+✓ C1  la fenetre act du socle de montage est retiree  (attendu rouge, obtenu rouge)
+✓ C2  la fenetre act du montage du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C3  la fenetre act du second effet du calendrier est retiree  (attendu rouge, obtenu rouge)
+✓ C4  meme retrait que C1, mais l'exemption PLAFONDS est remise  (attendu vert, obtenu vert)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu a son etat de depart : verifie.

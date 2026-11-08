@@ -1,0 +1,17 @@
+act-plafonds sortie=0 duree=234s
+fc5 sortie=0 duree=98s
+fc6 sortie=0 duree=107s
+fp1 sortie=0 duree=775s
+fp2 sortie=0 duree=327s
+fp3 sortie=1 duree=404s
+horloge sortie=0 duree=240s
+journey sortie=0 duree=462s
+r29 sortie=0 duree=164s
+r32 sortie=0 duree=961s
+r33 sortie=0 duree=1276s
+r38 sortie=0 duree=749s
+r39 sortie=0 duree=477s
+r41 sortie=0 duree=999s
+r42 sortie=0 duree=293s
+r43 sortie=0 duree=1476s
+FIN
