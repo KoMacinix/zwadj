@@ -74,3 +74,11 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 | `docs/preuves/D345/passe-d277.md`, `docs/preuves/D345/passe-d277/passe-d277.py`, `docs/preuves/D345/passe-d277/sortie-avant.txt`, `docs/preuves/D345/passe-d277/sortie-apres.txt` | la passe D277 des deux sens |
 | `docs/preuves/D345/audit-secrets-d345b.txt`, `docs/preuves/D345/tri-audit-d345b.txt` | l'audit de secrets scellé des pièces de clôture, et son tri différentiel |
 | `docs/preuves/D345/controle-fin-de-lot.py`, `docs/preuves/D345/controle-fin-de-lot.txt` | le contrôle de fin de lot (D288, D328, D334), écrit APRÈS la poussée, et sa sortie |
+
+**Extension 2** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare). Relevé en jouant les seize campagnes que le lot touche : **`neutralisation/neutralize-fp3.py` a UNE cible muette (E-4)** — elle cherche le titre du test « ⛔ « Annuler » puis un NOUVEAU devis pour la même fiche », que ce lot a renommé « ⛔ « Recommencer » puis un NOUVEAU devis… » (le bouton s'appelle « Recommencer »). C'est la classe « une ancre de cible se revérifie à chaque refonte » (`AGENTS.md`) : l'ancre est périmée par CE lot, elle se met à jour dans CE lot (la mutation et l'assertion ne changent pas). Une campagne partiellement jouée n'est pas une campagne verte.
+
+| chemin | rôle |
+|---|---|
+| `neutralisation/neutralize-fp3.py` | le titre attendu de E-4 et le libellé de la cible, mis à jour (« Annuler » → « Recommencer ») ; **aucune mutation ni aucune assertion ne change** |
+| `docs/preuves/D345/campagnes/fp3-AVANT-MISE-A-JOUR.txt` | la sortie de la campagne fp3 avant la mise à jour de l'ancre (9 mordues, 1 muette), gardée telle quelle |
+| `docs/preuves/D345/campagnes/fp3-APRES-MISE-A-JOUR.txt` | la sortie de la campagne fp3 rejouée en entier après la mise à jour |
