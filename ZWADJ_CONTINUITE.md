@@ -2393,10 +2393,11 @@ d) S-113 à S-129 (D341) : ratifiées par adoption ; S-116 acceptée telle quell
 - R-9. Entrées de backlog neuves (forme D302), une par point : FP-3 + 1 c (lot d'API) ; FP-2 (un GET /quotes/:id serait plus sobre : contrat neuf) ; le catalogue des prestations du Pro affiche palier et unité en français en arabe (services-section.tsx) ; /salles sans JavaScript reste sur son indicateur ; aucun hreflang, sitemap ni robots (BLOQUE : le lancement, règle SEO de D216) ; les harnais à ancres CRLF en dur ; le récapitulatif du comptoir montrerait l'identifiant d'un créneau tout juste créé (FP-4, non reproduit) ; la relecture arabe des 16 clés neuves et de la clé modifiée (BILAN § 4). Les entrées du backlog que la branche a traitées se cochent avec le renvoi au lot.
 - R-10. Les outils de la session (outils/portes.sh, outils/controle-lot.py, neutralisation/socle_front_client.py) restent tels quels, sans promotion dans cette session ; l'étalon de FC-9 (test-setup-calibration.test.ts) reste.
 - R-11. Avant typecheck : `rm -rf apps/client/.next/types` (BILAN § 3, point 6 : un artefact périmé après la suppression de /[locale]/assistant).
+⛔ *(D343, 07/11/2026 — **R-17 de la consigne du rang 45 (suite), AJOUT SEUL** : deux erreurs du relecteur relevées par D342, le texte ci-dessus n'est pas retouché. **(a)** « R-3 de D340 (réponse et coût identiques, DR5) » dans R-2 : c'est **R-3 de la consigne de D341** — la R-3 de la consigne de D340 est « Méthode RENFORCÉE » (lecture adverse de D343, contrôle 3.1). **(b)** « le relecteur a fusionné origin/front-client dans origin/main (d44867a) » dans R-1 : **l'essai du relecteur était local** — `d44867a` n'a qu'un parent et `origin/main` ne contenait pas la branche (contrôle 3.2). Elles sont aussi annotées à la section D342, § 4.)*
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 45 est **l'intégration de `front-client` dans `main`** : lot de **CODE** par destination — la fusion apporte le code de quatorze lots — qui **n'écrit aucune ligne de code neuve** (consigne, § 3) ; ni session adverse B ni certification (R-4, DR1 de D336) ; **(b)** 1 a, 1 b et 1 d sont écrites **par adoption** ; 1 c est une citation de Ko, hors dépôt, écrite comme telle ; **(c)** R-1 à R-11 sont écrites ici comme décisions du relecteur, avec leurs motifs, sans retouche ; **(d)** la lecture adverse de la consigne (`75eee79`, `docs/preuves/D342/lecture-adverse/`) : 46 contrôles — 30 ✓ · 11 ≈ · 0 ✗ · 5 ? — et deux défauts d'instrument, réparés et versés avec la passe 1 (la règle d'arrêt de la consigne n'a pas joué : le seul ✗ de la passe 1 était un motif trop étroit, pas un écart du dépôt) ; **(e)** les onze ≈ sont dits ici parce que chacun engage un fichier d'autorité ou une instruction : [1.2] NI la branche, NI la session cloud, NI son exception à « un lot par session » ne figurent dans un fichier d'autorité de `main` — c'est D276, cette session les écrit ; [2.2] « fusionné dans `origin/main` (d44867a) » se lit « sur la base de d44867a » : l'essai du relecteur est local et `origin/main` ne contient pas la branche ; [2.7] la référence décalée (ci-dessus) ; [3.4] le tri de `lancer-campagnes.py` croise `git diff --name-only HEAD`, vide une fois la fusion commitée : on emploie les outils de D341 (base `<départ>..HEAD`), sans retoucher l'instrument (R-10) ; [3.5] « les six portes et l'e2e » : le pilote joue six portes, dont l'e2e ; [4.1] le BILAN dit « 106 commits » et « `main` n'a pas bougé » : 107 commits mesurés, et `main` a 20 commits de plus ; [4.4] les trois lots ARRÊTÉS n'ont pas de « rapport » mais une pièce d'arrêt ; [4.5] la consigne de la branche prévoit une intégration « lot par lot » : celle-ci les intègre sous un seul rang, la section D342 les liste un par un ; [4.7] « audit avant chaque versement » et une fusion de 311 fichiers de preuves : l'audit « b » est fait sur une copie de travail jetable où la fusion est faite sans être commitée ; [4.8] les « six portes vertes » de chaque lot de la branche : `test:int` n'y a jamais été vert, les quatorze lots ne sont CLOS qu'à cette intégration ; [5.4] le geste 0 de Ko (la migration `20261104170000_staff_layer` de D341, que S-129 dit non appliquée à sa base) ouvre tous les gestes qui passent par l'application Pro — inférence, non mesurée ; **(f)** rien d'autre n'est écrit ici : l'état du rang est dans « PROCHAIN LOT — rang 45 ».
 
-⇒ **RANG 45 : OUVERT (D342, 07/11/2026) — l'intégration, dans `main`, de la branche `front-client`** : la table d'ouverture, la lecture adverse et les arbitrages sont écrits **avant la fusion** ; à cette écriture **la fusion n'a pas eu lieu**, rien n'est mesuré après elle, le compteur POUR MÉMOIRE reste **QUATRE**. Point d'entrée : « PROCHAIN LOT — rang 45 ». ⛔ *(D342, 07/11/2026, fin de session : **« la fusion n'a pas eu lieu » est PÉRIMÉ** — la fusion a eu lieu EN LOCAL (`2b79355`), les six portes sont jouées (cinq à 0, `test:e2e` ROUGE aux deux passes), **RIEN n'est poussé** ; le rang 45 reste OUVERT. Voir « ÉTAT À L'ARRÊT DE LA SESSION D342 ». Annoté, pas réécrit.)*
+⇒ ~~**RANG 45 : OUVERT (D342, 07/11/2026) — l'intégration, dans `main`, de la branche `front-client`**~~ ⛔ *(D343 : **PÉRIMÉ** — le rang 45 est CLOS, voir la ligne « RANG 45 : CLOS » plus bas ; barré avec son motif, pas effacé.)* : la table d'ouverture, la lecture adverse et les arbitrages sont écrits **avant la fusion** ; à cette écriture **la fusion n'a pas eu lieu**, rien n'est mesuré après elle, le compteur POUR MÉMOIRE reste **QUATRE**. Point d'entrée : « PROCHAIN LOT — rang 45 ». ⛔ *(D342, 07/11/2026, fin de session : **« la fusion n'a pas eu lieu » est PÉRIMÉ** — la fusion a eu lieu EN LOCAL (`2b79355`), les six portes sont jouées (cinq à 0, `test:e2e` ROUGE aux deux passes), **RIEN n'est poussé** ; le rang 45 reste OUVERT. Voir « ÉTAT À L'ARRÊT DE LA SESSION D342 ». Annoté, pas réécrit.)*
 
 ⛔ **ARBITRÉ LE 07/11/2026 PAR KO — LE RANG 45 (SUITE) : NOMMER ET RÉPARER D265 DANS LE HARNAIS E2E, PUIS CLORE L'INTÉGRATION, mot pour mot : les SECTIONS 1 et 2 de la consigne du relecteur (première écriture d'autorité du lot D343 ; la table d'ouverture `7bbf122`, ses extensions 1 (`1a5afed`), 2 (`06b6454`) et 3 (`1a99abd`), la lecture adverse de la consigne `220a56b` et les pièces de rouge `a61e9c9` la précèdent, `git` le prouve).** ⚠ Le texte est celui du relecteur, **adopté par Ko tel quel** : la consigne s'écrit « par ADOPTION de ce message » (§ 1) ; aucune phrase ci-dessous n'est une parole de Ko hors la formule d'adoption que la consigne porte elle-même. Copié par script depuis `docs/preuves/D343/consigne.md`, jamais retapé.
 
@@ -2415,7 +2416,11 @@ b) Les quatre décisions prises seul par la session de D342 (arbitrages écrits 
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 45 avance par **un lot de plus, D343** : lot de **CODE DE TEST** (il écrit dans `e2e/fixtures/`, une spec et un harnais ; il touche un harnais et un test, donc il **compte**, D283) ; il n'écrit aucune ligne d'`apps/api` (R-14) ; ni session adverse B ni certification (DR1 de D336) ; **(b)** 1 a et 1 b sont écrites **par adoption** ; la ratification de 1 b couvre les quatre décisions prises seul par la session de D342 — l'ÉNUMÉRATION de ces quatre décisions n'était dans aucun fichier d'autorité à `a1dc635` (contrôle 1.1 de la lecture adverse de D343) : elle est écrite à la section D342 ; **(c)** R-12 à R-18 sont écrites comme **décisions du relecteur (chat), déléguées par Ko**, avec leur motif — la délégation du 02/11/2026 est celle de l'annotation de la règle D284 (`AGENTS.md`) ; **(d)** R-17 est tenue **en ajout seul** : les deux erreurs du relecteur sont annotées là où elles sont écrites (R-2 et R-1 de la consigne du rang 45, section D342) ; **(e)** la lecture adverse de cette consigne (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?, `docs/preuves/D343/lecture-adverse/`) a relevé, sans arrêt : R-12 est exacte mais **D340 n'était pas que D265** (une seconde classe, `toHaveURL` à 7 000 ms) ; la forme de reproduction que R-13 suggère **avait déjà été tentée deux fois, négative** (D322, D325) ; le harnais compte **deux** fonctions qui appellent le `fetch` global, pas une ; le `DIX-NEUF` de R-16 est **conditionnel** à du code de test écrit.
 
-⇒ **RANG 45 : TOUJOURS OUVERT (D343, 07/11/2026) — la suite de l'intégration de `front-client`** : à cette écriture, la fusion est faite EN LOCAL (`2b79355`) et **rien n'est poussé sur `main`** ; D265 est **nommé par la mesure et réparé dans le harnais** (rouges `a61e9c9`, code `69c2257`) ; il reste les deux passes de l'e2e (R-15), les six portes de clôture, les campagnes, les écritures de clôture de D342 et de D343, la poussée. Le compteur POUR MÉMOIRE reste **QUATRE** jusqu'à la clôture. Point d'entrée : « PROCHAIN LOT — rang 45 ».
+⇒ ~~**RANG 45 : TOUJOURS OUVERT (D343, 07/11/2026) — la suite de l'intégration de `front-client`**~~ ⛔ *(D343, fin de session : **PÉRIMÉ** — voir la ligne « RANG 45 : CLOS » juste dessous.)* : à cette écriture, la fusion est faite EN LOCAL (`2b79355`) et **rien n'est poussé sur `main`** ; D265 est **nommé par la mesure et réparé dans le harnais** (rouges `a61e9c9`, code `69c2257`) ; il reste les deux passes de l'e2e (R-15), les six portes de clôture, les campagnes, les écritures de clôture de D342 et de D343, la poussée. Le compteur POUR MÉMOIRE reste **QUATRE** jusqu'à la clôture. Point d'entrée : « PROCHAIN LOT — rang 45 ».
+
+⇒ **RANG 45 : CLOS (intégration de `front-client` ; D265 nommé et réparé dans le harnais) — D342 + D343, 07/11/2026** : lot de **CODE par destination** (D342, la fusion `2b79355`) puis lot de **CODE DE TEST** (D343 : un fixture, une garde, un harnais ; il compte, D283) ; **la fusion est poussée sur `main`** (contrôle de fin de lot : `docs/preuves/D343/controle-fin-de-lot.txt`, local = `origin/main` après push puis fetch) ; D265 est **nommé par la mesure** — une boucle bloquée plus longtemps que la fermeture serveur envoie le premier appel du `fetch` global sur une connexion morte du pool — et **réparé** dans `e2e/fixtures/harness.ts` (`connection: close`, un appel commun), **jamais par une nouvelle tentative** ; **deux passes complètes consécutives de l'e2e vertes** (77 passés + 1 ignoré chacune), six portes à 0 ; **compteur POUR MÉMOIRE QUATRE → DIX-HUIT → DIX-NEUF** ; la limite de cinq reste SUSPENDUE ; aucune certification, aucune marque ; ⚠ « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » (D341), « OUVERT » (D342) et « TOUJOURS OUVERT » (D343) ci-dessus sont **PÉRIMÉS** ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Point d'entrée : « PROCHAIN LOT — rang 45 » (« ÉTAT À LA CLÔTURE DU RANG 45 »).
+
+⇒ **RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** : **L36-3a-2** (avec **S-104**, que D341 n'a pas codée : un mot de passe expiré ouvre une session) — **pas arbitré** ; **L36-3b** n'a pas de rang. Le rang 46 n'est **pas** nommé par la session. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D342/scenarios-ko.md`, après la poussée) ; la ratification de **S-130 à S-137** (D343, § 8) ; la ligne de commentaire de `apps/api/.env` qui contient une valeur de forme secrète (backlog `[SÉCU]`).
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -2504,9 +2509,31 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 45 · `[CODE]` **L'intégration de la branche `front-client` dans `main`** ⛔ **OUVERT LE 07/11/2026 (D342) — TABLE, LECTURE ADVERSE ET ARBITRAGES ÉCRITS AVANT LA FUSION** ⛔ **FUSIONNÉE EN LOCAL, NON POUSSÉE : `test:e2e` ROUGE AUX DEUX PASSES (07/11/2026, fin de session)**
+## PROCHAIN LOT — rang 45 · `[CODE]` **L'intégration de la branche `front-client` dans `main`** ~~⛔ **OUVERT LE 07/11/2026 (D342) — TABLE, LECTURE ADVERSE ET ARBITRAGES ÉCRITS AVANT LA FUSION** ⛔ **FUSIONNÉE EN LOCAL, NON POUSSÉE : `test:e2e` ROUGE AUX DEUX PASSES (07/11/2026, fin de session)**~~ ⛔ **CLOS SUR LE CODE LE 07/11/2026 (D342 + D343) : D265 NOMMÉ ET RÉPARÉ, DEUX PASSES DE L'E2E VERTES, POUSSÉ SUR `main`** ⛔ *(D343 : « OUVERT », « FUSIONNÉE EN LOCAL, NON POUSSÉE » et « ROUGE AUX DEUX PASSES » sont PÉRIMÉS ; barrés avec leur motif, pas effacés.)*
 
-### ⛔ ÉTAT À L'ARRÊT DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 45 (D343, 07/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294 : un point d'entrée se rafraîchit à chaque avancement ET à sa clôture).** Ce bloc annule le bloc « ÉTAT À L'ARRÊT DE LA SESSION D342 » juste en dessous (« la fusion est faite en local, RIEN n'est poussé », « `test:e2e` ROUGE aux deux passes », « décision due »). Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **45 : CLOS** — l'intégration de `front-client` dans `main` (D342) ET D265 nommé et réparé dans le harnais e2e (D343) | ordre des rangs |
+| rang suivant | **« RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé : L36-3a-2 (avec S-104) ; **pas arbitré** ; L36-3b n'a pas de rang | ordre des rangs |
+| numéros | **D342 et D343 sont au registre** ; dernier numéro attribué : **D343**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **DIX-NEUF** (QUATRE + les quatorze lots de la branche + D343) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| `main` | **la fusion est poussée** (`git merge --no-ff`, 107 commits importés avec leurs SHA) ; `origin/front-client` et `origin/integration-45` **ne sont pas supprimées** (R-18) | contrôle de fin de lot |
+| D265 | **nommé par la mesure, réparé** : `fetch failed` ← `ECONNRESET` au premier appel du fixture = une boucle bloquée (≥ la fermeture serveur, ≈ 6,0 s) envoie le premier appel sur une connexion MORTE du pool (≥ 2 connexions libres) ; `connection: close` par UN appel commun ; garde `d265-socket-perimee` (rouge sans la correction, 4 gardes mordues sur 4) ; **inférence non mesurée** : que `seedReferentials()` soit la source du blocage dans les échecs d'origine | section D343 §§ 1 à 4 |
+| e2e | **deux passes complètes consécutives VERTES** (77 passés + 1 ignoré chacune, 78 attendus dérivés), puis une troisième à la passe des six portes (77 + 1) | `docs/preuves/D343/portes/` |
+| portes | **six à 0** sur secteur (`test` 173 fichiers / 2 601 tests ; `test:int` 46 fichiers / 735) | idem |
+| campagnes | `neutralize-r45.py` **4 gardes sur 4** ; union des campagnes de D342 : **35 sur 35 jouées, 655 gardes mordues, 0 muette, 9 cibles `--e2e` non mesurées** (`r32` rejouée UNE fois : pré-vol rouge par la garde console, puis 65 sur 65) | `docs/preuves/D343/neutralisation/`, `docs/preuves/D342/neutralisation/` |
+| écriture sur la base de développement de Ko | **aucune** (le geste 0 de Ko, appliquer la migration `20261104170000_staff_layer`, reste une écriture de Ko) ; ⚠ **une valeur de forme secrète a été VUE (jamais écrite) dans un commentaire de `apps/api/.env`** pendant un relevé de noms de variables | rapport de fin de lot ; backlog `[SÉCU]` |
+| ce qui RESTE | (1) les gestes de Ko (`docs/preuves/D342/scenarios-ko.md`) ; (2) la ratification de S-130 à S-137 ; (3) le rang 46, à cadrer par le relecteur ; (4) les entrées de backlog neuves de D342 (R-8, R-9) et de D343 (les specs hors suite, `loginContext`, le semis, la seconde classe de rouge, le `[SÉCU]`) | backlog |
+
+#### Les commits de D343, du plus ancien au plus récent (pour qu'une reprise n'ait rien à recouper)
+
+`7bbf122` la table SEULE · `1a5afed` extension 1 · `220a56b` la consigne, la lecture adverse, l'audit « a » · `06b6454` extension 2 · `1a99abd` extension 3 · `a61e9c9` LES ROUGES · `69c2257` LE CODE · `e04fcef` extension 4 · `6e6db6e` le vert et le rouge qui revient · `69671a4` LA RÈGLE DES DEUX PASSES · `3ada4f7` la première écriture d'autorité · l'extension 5 · `63511ce` les deux passes, les six portes · puis les pièces de l'union et de la passe D277, la deuxième écriture d'autorité, le contrôle de fin de lot (non listés ici : un fichier ne peut pas porter le SHA du commit qui le contient).
+
+### ~~⛔ ÉTAT À L'ARRÊT DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D343 : **PÉRIMÉ** sur « la fusion est faite en local, RIEN n'est poussé », « test:e2e ROUGE » et « décision due » ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 45 » juste au-dessus. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à l'ARRÊT, pas à une clôture (D294 : un point d'entrée se rafraîchit à chaque avancement, et un arrêt en est un).** La session s'est arrêtée parce que la consigne l'exige — « rouge encore : tu ne pousses pas, tu rapportes » — **le rang 45 n'est PAS clos**. Ce bloc annule ce que le bloc « ÉTAT À L'OUVERTURE » dit de « la fusion n'a pas eu lieu » et de « rien n'est mesuré après elle ». Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -2529,6 +2556,172 @@ concerné, et corriger le seul cas connu laisserait les autres armés.
 #### Les commits de ce lot, du plus ancien au plus récent (pour qu'une reprise n'ait rien à recouper)
 
 `14dbb84` la table SEULE · `363079f` extension 1 · `75eee79` la consigne, la lecture adverse, l'audit « a » · `30a1190` l'audit « b » · `499d1bf` la première écriture d'autorité · **`2b79355` la FUSION** · `e8508d3` extension 2 · `cd356c7` les pièces des portes et la règle du rejeu · puis les pièces du rejeu, l'audit « d » et cette écriture d'arrêt (non listés ici : un fichier ne peut pas porter le SHA du commit qui le contient).
+
+#### D343 — rang 45 (suite) — table d'ouverture (recopiée à l'identique de `docs/preuves/D343/table-ouverture.md` au commit 39b4d22 — la table `7bbf122` et ses extensions ; les titres sont décalés de trois niveaux, le texte est le même octet pour octet)
+
+#### D343 — rang 45 (SUITE) — table d'ouverture
+
+Lot : **nommer la cause de D265 par une mesure, la réparer dans le harnais e2e si elle est nommée, puis clore l'intégration de `front-client` dans `main`** (consigne du relecteur « RANG 45 (SUITE) », adoptée par Ko telle quelle, collée en tête de la session ; `docs/preuves/D343/consigne.md`). Lot de **CODE DE TEST** : si la cause est nommée, il écrit du code dans `e2e/fixtures/` (et un harnais, et peut-être une spec) ; il **compte** (D283 : un lot qui touche un harnais ou un test compte). Il n'écrit **aucune ligne d'`apps/api`** : la consigne (R-14) dit que si la correction l'exigeait, la session s'arrête et rapporte. Méthode : les règles de `AGENTS.md` — les rouges (la reproduction isolée) AVANT le premier commit de code (D334, item 5), pas de session adverse B ni de certification (pause de Ko, DR1 de D336).
+
+- **SHA de départ** : `a1dc6355b930837beaee779c3b16dc91af51be6e` (fin de la session D342 : fusion `2b79355` faite EN LOCAL, jamais poussée sur `main`). `origin/main` = `d44867a94f90e9544c5e7fe6b6a56c0c91caea36`, `origin/front-client` = `43996e279f49bff19792b4e27cfec4bb59b66177`, branche `main`, arbre propre (`git status --short` : 0 ligne), aucun stash (0 ligne). Les cinq points ont été relevés AVANT toute écriture : aucun ne diffère de l'attendu de la consigne (§ 0).
+- **Sauvegarde, premier geste d'écriture** (consigne, § 0) : `git push origin HEAD:refs/heads/integration-45` — jamais `main` — puis `git ls-remote --heads origin` : `integration-45` = `a1dc6355b930837beaee779c3b16dc91af51be6e` = HEAD local, `main` inchangée (`d44867a`), `front-client` inchangée (`43996e2`). Motif de la consigne : 117 commits n'existent que sur le poste de Ko ; une branche à part n'est pas `main`, D270 n'est pas touché.
+- **Numéro** : **D343** — pris en lisant la dernière ligne du registre de `ZWADJ_CONTINUITE.md` (`D341`, 295e et dernière ligne `| Dnnn |`) ; `D343` figure dans **0** des quatre fichiers d'autorité (texte aplati : 0, 0, 0, 0). **D342** est PRIS par le rang 45 ouvert (103 occurrences dans `ZWADJ_CONTINUITE.md`) mais n'est pas au registre : la clôture de CE lot l'y écrit, les deux ensemble.
+- **Poste à l'ouverture** : **sur secteur** (`PowerLineStatus` = `Online`, `BatteryStatus` = 2, charge 100 %), RAM libre 3 517 Mo sur 16 095, `chrome` 0, `headless_shell` 0, `node` 0, Docker 29.8.0 lancé, `zwadj-db` « Up 13 hours » (port 5432 publié). Node v22.14.0, undici 6.21.1 (celui qu'embarque Node, c'est le `fetch` du harnais). Sur batterie au moment d'une porte de clôture : aucune porte ne se lance (R-9 de D340).
+- **Ce que la consigne décide** (rappel, texte complet dans `consigne.md`) : R-12, l'aléa bloque la poussée (D270), ni rejeu de plus ni exception ; R-13, **le diagnostic d'abord** — la signature (ECONNRESET en quelques ms au PREMIER appel du fixture) désigne une socket keep-alive périmée, mais c'est une **HYPOTHÈSE, pas une mesure** (règle de Ko, D291) ; elle se reproduit isolément, ROUGE, avant toute correction ; **si la reproduction échoue : aucune correction, la session s'arrête et rapporte** ; R-14, la correction admise est **dans `e2e/fixtures/` seulement**, jamais une nouvelle tentative (`retries` reste à 0), jamais dans `apps/api` ; R-15, la preuve est le rouge isolé avant, le vert isolé après, la correction neutralisée (le rouge revient), puis l'e2e complète **deux fois de suite**, sur secteur, règle commitée avant — **un seul rouge ⇒ arrêt, pas de poussée** ; R-16, la clôture de l'intégration sur le même HEAD ; R-17, deux erreurs du relecteur annotées ; R-18, ni `integration-45` ni `front-client` supprimées.
+- **Ce que les enquêtes antérieures ont établi, et ce qu'elles n'ont pas** (relevé, pas supposé — `ZWADJ_BACKLOG.md`, entrées D265 ; `docs/preuves/D322/mesures/` ; `docs/preuves/D325/enquete-d265/`) : **tous** les échecs relevés sont le **premier appel `fetch` du fixture après `seedReferentials()`** (`execFileSync` synchrone, 5,2 à 5,4 s mesurés, au ras des 5 s du `keepAliveTimeout` par défaut de Node) ; l'API ne fixe **aucun** `keepAliveTimeout` dans son code (`grep` sur `apps/api/src` : 0) ; deux montages isolés (D322, D325) **n'ont pas reproduit** la panne, en changeant à chaque fois l'instrument — **ils ne l'ont donc pas écartée**. Ce lot rejoue la reproduction avec les **vraies** pièces : le vrai serveur d'API, le vrai `seedReferentials`, les vraies fonctions du fixture, dans un vrai worker Playwright.
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) la consigne en pièce, la sortie de la lecture adverse de la consigne et l'audit de secrets scellé avec son tri, **avant toute écriture d'autorité** ; (3) **les pièces des rouges** (la reproduction isolée, ses sorties lues contre l'état d'avant, l'empreinte sha256 de chaque fichier joué), **dans un commit ANTÉRIEUR au premier commit de code** (D334, item 5) ; (4) le code, s'il y en a ; (5) la règle des deux passes de l'e2e, commitée **avant** elles ; (6) les pièces des passes, des six portes, des campagnes de neutralisation, de la passe D277 ; (7) les trois `.md` d'autorité, **les arbitrages de Ko en PREMIÈRE écriture** ; (8) la poussée vers `main`, puis `git fetch`, puis le contrôle de fin de lot (D288).
+- **Écrit pour ne pas se lire comme tenu** : cette table ne dit pas que la cause sera nommée. Elle déclare ce qui peut exister ; les fichiers de code et de campagne sont **CONDITIONNELS** (section B) et n'existent que si la reproduction nomme la cause. Si elle ne la nomme pas, le diff final ne contient **aucun** fichier de code et le rang 45 reste **OUVERT**, rien n'est poussé sur `main`.
+
+##### A. Le départ
+
+`git diff a1dc6355b930837beaee779c3b16dc91af51be6e..HEAD --name-only` doit rester inclus dans les sections B, C et D de cette table, **extensions comprises**. Aucun préfixe n'est employé : « 0 fichier non déclaré » doit pouvoir être faux (D328).
+
+##### B. Les fichiers de CE lot — chemins complets
+
+###### B.1 Pièces de D343 (`docs/preuves/D343/`)
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/table-ouverture.md` | ce fichier — premier commit du lot, SEUL |
+| `docs/preuves/D343/consigne.md` | la consigne du relecteur, versée telle quelle (la copie du message collé) |
+| `docs/preuves/D343/lecture-adverse/confronter-consigne.py` | l'instrument de la lecture adverse de la consigne contre le dépôt, calibré sur ses deux bras |
+| `docs/preuves/D343/lecture-adverse/confronter-sortie.txt` | sa sortie, versée avant toute écriture d'autorité |
+| `docs/preuves/D343/audit-secrets-d343a.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), avant le commit de la consigne et de la lecture adverse |
+| `docs/preuves/D343/tri-audit-d343a.txt` | son tri différentiel contre la dernière sortie scellée (`docs/preuves/D342/audit-secrets-d342d.txt`) |
+| `docs/preuves/D343/reproduction/mesure-keepalive.mjs` | relève le délai RÉEL après lequel le serveur d'API ferme une connexion inactive (jamais supposé : R-13) |
+| `docs/preuves/D343/reproduction/mesure-keepalive-sortie.txt` | sa sortie |
+| `docs/preuves/D343/reproduction/repro.config.ts` | la configuration Playwright de la reproduction : le **vrai** serveur d'API seul, ports dédiés, `retries: 0` |
+| `docs/preuves/D343/reproduction/repro-d265.repro.ts` | la spec de reproduction : les bras négatifs et le bras positif, avec les vraies fonctions du fixture |
+| `docs/preuves/D343/reproduction/rouge-avant.txt` | la sortie LUE de la reproduction contre l'état d'avant (le harnais de `a1dc635`) |
+| `docs/preuves/D343/reproduction/rouge-avant-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette reproduction (D334, item 5) |
+| `docs/preuves/D343/audit-secrets-d343b.txt` | audit de secrets scellé, AVANT le commit des pièces de rouge |
+| `docs/preuves/D343/tri-audit-d343b.txt` | son tri différentiel contre `audit-secrets-d343a.txt` |
+| `docs/preuves/D343/portes/regle-deux-passes.md` | la règle des deux passes de l'e2e (R-15), ÉCRITE ET COMMITÉE AVANT elles |
+| `docs/preuves/D343/portes/deux-passes-e2e.sh` | le lanceur des deux passes : portes dures avant la première, état machine toutes les 30 s, `retries` inchangé |
+| `docs/preuves/D343/portes/passe-1-test-e2e.txt`, `docs/preuves/D343/portes/passe-2-test-e2e.txt` | les sorties des deux passes, MASQUÉES (le dépôt est public, D200) |
+| `docs/preuves/D343/portes/deux-passes-index.txt` | l'index des deux passes (SHA, arbre, états machine, codes de sortie) |
+| `docs/preuves/D343/portes/deux-passes-etat-machine.txt` | l'état machine relevé pendant les deux passes |
+| `docs/preuves/D343/portes/deux-passes-resultat.md` | le résultat des deux passes, écrit APRÈS elles, dans un commit postérieur à celui de la règle |
+| `docs/preuves/D343/portes/etat-env-d343-ouverture.txt`, `docs/preuves/D343/portes/etat-env-d343-cloture.txt` | l'état des `.env` (empreintes et hôtes, sans aucune valeur — D330) avant la première et après la dernière passe |
+| `docs/preuves/D343/portes/masquer-jetons.py` | la procédure qui masque les jetons des sorties e2e, archivée à côté des pièces (jamais promue en instrument, D291) |
+| `docs/preuves/D343/portes/_index.txt` | l'index de la passe des six portes de clôture (`docs/preuves/D340/portes/passe-secteur.sh`, employé tel quel) |
+| `docs/preuves/D343/portes/typecheck.txt`, `docs/preuves/D343/portes/lint.txt`, `docs/preuves/D343/portes/test.txt`, `docs/preuves/D343/portes/build.txt`, `docs/preuves/D343/portes/test-int.txt` | les cinq sorties de porte, sans codes ANSI |
+| `docs/preuves/D343/portes/test-e2e.txt` | la sortie de l'e2e de la passe des six portes — pièce MASQUÉE |
+| `docs/preuves/D343/portes/etat-machine-pendant.txt` | l'état machine relevé toutes les 30 s pendant la passe des six portes |
+| `docs/preuves/D343/portes/FIN` | le marqueur de fin de passe écrit par le pilote |
+| `docs/preuves/D343/audit-secrets-d343c.txt` | audit de secrets scellé, AVANT le commit des pièces de portes |
+| `docs/preuves/D343/tri-audit-d343c.txt` | son tri différentiel contre `audit-secrets-d343b.txt` |
+| `docs/preuves/D343/neutralisation/union-rapport.txt` | le tableau final de la passe de l'union des campagnes (celles de D342, liste versée) et de celles que ce lot touche |
+| `docs/preuves/D343/passe-d277/passe-d277.py` | la passe D277 des deux sens, motifs dérivés des affirmations du lot |
+| `docs/preuves/D343/passe-d277/sortie-avant.txt`, `docs/preuves/D343/passe-d277/sortie-apres.txt` | ses sorties, avant et après les écritures d'autorité |
+| `docs/preuves/D343/aucune-valeur-reelle.txt` | la sortie du contrôle dédié « 0 valeur réelle sur N fichiers » (D299) |
+| `docs/preuves/D343/audit-secrets-d343d.txt` | audit de secrets scellé, AVANT le commit des campagnes |
+| `docs/preuves/D343/tri-audit-d343d.txt` | son tri différentiel contre `audit-secrets-d343c.txt` |
+| `docs/preuves/D343/audit-secrets-d343e.txt` | audit de secrets scellé de la clôture, AVANT les `.md` d'autorité |
+| `docs/preuves/D343/tri-audit-d343e.txt` | son tri différentiel contre `audit-secrets-d343d.txt` |
+| `docs/preuves/D343/controle-fin-de-lot.py` | le contrôle de fin de lot (D288, D328), écrit APRÈS la poussée |
+| `docs/preuves/D343/controle-fin-de-lot.txt` | sa sortie |
+
+###### B.2 Pièces de D342 que CE lot écrit (le rang 45 se clôt ici : D342 n'a jamais été poussé)
+
+La table de D342 les déclarait déjà ; elles n'existaient pas à l'arrêt de la session D342 (`docs/preuves/D342/` ne contient aujourd'hui ni `neutralisation/union-rapport.txt`, ni `passe-d277/sortie-apres.txt`, ni `passe-d277.md`, ni les audits « e » et « f », ni le contrôle de fin de lot). Chemins complets :
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D342/neutralisation/union-rapport.txt` | le tableau final de la passe de l'union (35 campagnes sur 55, liste versée par D342) |
+| `docs/preuves/D342/passe-d277/sortie-apres.txt` | la sortie de la passe D277 « après » les écritures d'autorité de D342 |
+| `docs/preuves/D342/passe-d277.md` | le compte rendu de la passe D277 des deux sens de D342 (avant → après, triage de chaque motif) |
+| `docs/preuves/D342/controle-fin-de-lot.py`, `docs/preuves/D342/controle-fin-de-lot.txt` | le contrôle de fin de lot de D342 (la fusion), écrit APRÈS la poussée |
+| `docs/preuves/D342/audit-secrets-d342e.txt`, `docs/preuves/D342/tri-audit-d342e.txt` | l'audit de secrets scellé de la clôture de D342 et son tri différentiel contre `audit-secrets-d342d.txt` — ⚠ **conditionnels** : voir la note sous B.3 |
+
+###### B.3 Pièces CONDITIONNELLES (leur existence dépend d'un défaut ou d'un cas — D328)
+
+| chemin | condition |
+|---|---|
+| `docs/preuves/D343/reproduction/vert-apres.txt` | **seulement si la reproduction NOMME la cause** et qu'une correction est écrite : la même reproduction rejouée contre l'état d'après |
+| `docs/preuves/D343/reproduction/vert-apres-empreintes.txt` | idem : l'empreinte sha256 de chaque fichier joué après la correction |
+| `docs/preuves/D343/reproduction/correction-neutralisee.txt` | idem : la correction neutralisée, le rouge qui revient, LU |
+| `docs/preuves/D343/arret-diagnostic.md` | **seulement si la reproduction ÉCHOUE** (R-13) ou si la correction exigerait de toucher `apps/api` (R-14) : ce que la session a mesuré, rien d'autre ; aucune correction ne s'écrit |
+| `docs/preuves/D343/lecture-adverse/defauts-instrument.txt` | si la première passe de l'instrument de lecture adverse montre un défaut d'instrument (D341, D342) |
+| `docs/preuves/D343/neutralisation/` — les journaux de campagnes (chemins complets par extension) | les campagnes que la liste de D342 et le tri de CE lot retiennent : leur liste dépend du diff final |
+| `docs/preuves/D343/passe-d277/` — outils de lecture supplémentaires (chemins complets par extension) | si un compte de motifs ne suffit pas à trier |
+| `docs/preuves/D343/audit-secrets-d343f.txt`, `docs/preuves/D343/tri-audit-d343f.txt` | si un versement a lieu après `audit-secrets-d343e.txt` |
+| `docs/preuves/D343/portes/passe-3-test-e2e.txt` et autres pièces d'une troisième passe | **jamais prévues** : un seul rouge des deux passes de R-15 est un ARRÊT (R-15), pas un rejeu ; si ce fichier existe, c'est un incident |
+
+⚠ **Les pièces `audit-secrets-d342e` / `tri-audit-d342e`** : les audits de D342 s'arrêtent à « d » (`docs/preuves/D342/audit-secrets-d342d.txt`). Les audits de ce lot portent le suffixe `d343*` et couvrent l'arbre entier, donc aussi les pièces de D342 versées ici ; les deux fichiers `d342e` de la ligne B.2 n'existent que si la session choisit de clore l'audit de D342 séparément — la table ne le suppose pas.
+
+###### B.4 Fichiers de CODE — tous CONDITIONNELS à la cause nommée (R-13, R-14)
+
+| chemin | condition et rôle |
+|---|---|
+| `e2e/fixtures/harness.ts` | **si la cause est nommée** : la correction, dans les appels de préparation (`postJson`, `apiCall`) — **jamais une nouvelle tentative**, jamais dans `e2e/playwright.config.ts` (`retries` reste à 0). Fichier CRLF : vérifié en octets avant et après |
+| `e2e/specs/d265-socket-perimee.e2e.ts` | **si la cause est nommée ET que la session retient une garde permanente dans la suite** : la garde qui mord (le bras positif de la reproduction, devenu un test) — sa décision, et le coût qu'elle ajoute à la suite, sont écrits à la clôture. N'existe pas si la garde reste une campagne de neutralisation |
+| `neutralisation/neutralize-r45.py` | **si la cause est nommée** : le harnais du lot — neutralise la correction pour montrer que le rouge revient ; nommé selon `neutralize-<lot>.py` (D272) pour que `lancer-campagnes.py` le découvre ; LF (comme les autres harnais), trois lignes UTF-8 en tête |
+
+##### C. Les fichiers d'autorité — écrits en dernier, les arbitrages de Ko en première écriture
+
+| chemin | ce que le lot y écrit |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | **première écriture** : la section 1 de la consigne (a, b — par adoption, jamais comme une parole de Ko hors une citation) et les décisions du relecteur R-12 à R-18, écrites comme telles, la table recopiée à l'identique ; puis, EN DERNIER, la section D342 (les dix-sept lots de la fusion, leur état, SHA de départ et de clôture) et la section D343 (la cause, la correction ou l'arrêt), le registre (D342 et D343), l'ordre des rangs (« RANG 45 : CLOS (intégration de front-client ; D265 nommé et réparé dans le harnais) » puis « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR » ; ou « RANG 45 : OUVERT » si un arrêt joue), le point d'entrée, la passe D277 |
+| `ZWADJ_BACKLOG.md` | les entrées D265 annotées ou cochées avec le renvoi au lot ; les entrées neuves de D342 (R-8 et R-9), les entrées que la branche a traitées COCHÉES, les prémisses fausses de R-7 BARRÉES avec leur motif, les lots arrêtés de R-6 — forme D302 (ce qu'elles bloquent, leur coût, aucune durée) |
+| `AGENTS.md` | le compteur POUR MÉMOIRE (QUATRE → DIX-HUIT → DIX-NEUF si du code de test est écrit, D283 ; sinon DIX-HUIT), l'exception de la session cloud CONSOMMÉE, les annotations de ce qui est devenu faux ou permis — annotées, pas réécrites ; l'annotation des deux erreurs du relecteur (R-17) |
+
+##### D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucun fichier d'`apps/api`, aucune migration, aucune dépendance** : R-14 — si la correction l'exigeait, la session s'arrête et rapporte.
+- **`e2e/playwright.config.ts`** n'est pas déclaré : `retries` reste à 0 (Ko, 04/10/2026 : « aucune nouvelle tentative automatique »). Si le diff final le contient, c'est un incident, pas une omission.
+- **`CLAUDE.md`** n'est pas déclaré : la consigne nomme trois fichiers d'autorité.
+- **`neutralisation/lancer-campagnes.py` et les autres instruments de `neutralisation/`** ne sont pas retouchés : leur promotion est un autre lot (R-10 de D342).
+- **Le sort de `integration-45` et de `front-client`** : aucune des deux branches n'est supprimée dans cette session (R-18).
+- **Les gestes de Ko** : ceux de `docs/preuves/D342/scenarios-ko.md` (déjà versé), joués par Ko après la poussée ; la session n'écrit rien sur sa base de développement (le geste 0, la migration `20261104170000_staff_layer`, reste une écriture de Ko).
+- **Le diff final** (`git diff a1dc6355b930837beaee779c3b16dc91af51be6e..HEAD --name-only`) doit rester inclus dans cette table, extensions comprises ; un fichier hors table est un incident.
+
+##### Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (07/11/2026, commitée SEULE, AVANT le commit de la pièce qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/` aux chemins complets de cette table : 5 fichiers sur disque, 1 hors table). La table déclarait `lecture-adverse/defauts-instrument.txt` (pièce conditionnelle, B.3) mais pas la sortie de la première passe qu'il cite ; D342 avait versé la sienne de la même façon (extension 1 de sa table).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | la première passe de l'instrument de lecture adverse, gardée TELLE QUELLE : trois défauts d'instrument (un détail qui contredit son verdict, un motif cherché au mauvais endroit, un texte qui dit l'inverse de son compte) ; le comportement du dépôt ne démentait pas la consigne |
+
+**Extension 2** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers que la reproduction va produire aux chemins complets de cette table : 2 fichiers hors table). Le lanceur de la reproduction n'était pas prévu : la sortie de Playwright contient les journaux du serveur d'API, qui portent des jetons de vérification (D200) ; il faut une procédure qui garde le brut HORS du dépôt, verse une sortie filtrée et relève les empreintes des fichiers joués — écrite une fois, rejouée trois fois (avant, après, correction neutralisée), pour que les trois pièces soient produites de la même façon. Et la pièce d'empreintes de la troisième exécution (la correction neutralisée) n'était pas nommée, alors que celles des deux autres l'étaient.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/reproduction/lancer-repro.sh` | le lanceur : portes dures avant la commande (port libre, conteneur Up), brut hors dépôt, sortie filtrée des lignes de serveur, état machine avant et après, empreintes sha256 des fichiers joués ; archivé comme pièce, jamais promu en instrument (D291) |
+| `docs/preuves/D343/reproduction/correction-neutralisee-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par l'exécution « correction neutralisée » (D334, item 5) |
+
+**Extension 3** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/reproduction/` aux chemins complets de cette table : 8 fichiers hors table). Trois causes. (1) **La première passe de la reproduction** a un défaut d'instrument (le mode `serial` a sauté trois bras après le premier échec) : elle est gardée TELLE QUELLE à côté de la passe rejouée, comme D342 l'a fait pour sa lecture adverse, avec la note qui nomme ses défauts. (2) **Deux mesures que la lecture du rouge cite** et qui doivent donc être des pièces : la minuterie d'inactivité du CLIENT (sans elle, « la fenêtre d'échec est étroite » serait une impression) ; la lecture du rouge elle-même, écrite après les sorties et avant tout code. (3) **La garde de la suite jouée contre le harnais d'AVANT** : D334 (item 5) demande que le rouge de chaque fichier de test précède le code ; la garde est un fichier de test, son rouge est une pièce, avec l'empreinte du fichier joué.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/reproduction/rouge-avant-passe-1-AVANT-CORRECTIFS.txt` | la première passe de la reproduction, gardée TELLE QUELLE : A, B, C verts, D1 rouge par la chaîne de production, D2, D3, E non joués (mode `serial`) |
+| `docs/preuves/D343/reproduction/rouge-avant-passe-1-AVANT-CORRECTIFS-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette première passe |
+| `docs/preuves/D343/reproduction/defauts-instrument.txt` | la note des défauts de l'instrument de reproduction (D298) : le mode `serial`, la mesure gardée en mémoire d'un worker, l'ajout du bras F |
+| `docs/preuves/D343/reproduction/lecture-rouge-avant.md` | la lecture du rouge d'avant : ce qui est mesuré, ce qui est inféré, la prédiction du bras E démentie, ce que la preuve du vert devra montrer |
+| `docs/preuves/D343/reproduction/mesure-minuterie-client.mjs` | relève si le client (undici) a fermé ses connexions inactives après une inactivité asynchrone donnée, et combien de connexions trois appels laissent dans son pool |
+| `docs/preuves/D343/reproduction/mesure-minuterie-client-sortie.txt` | sa sortie, cinq valeurs d'inactivité, un processus neuf chacune |
+| `docs/preuves/D343/reproduction/rouge-avant-garde.txt` | la garde `e2e/specs/d265-socket-perimee.e2e.ts` jouée contre le harnais d'AVANT : les deux tests rouges, par `ECONNRESET` lu dans la valeur reçue |
+| `docs/preuves/D343/reproduction/rouge-avant-garde-empreintes.txt` | l'empreinte sha256 de chaque fichier joué par cette exécution, dont la garde (D334, item 5) |
+
+⚠ **Le fichier de garde est en LF sur le disque** (comme joué) : l'index normalise la fin de ligne (`core.autocrlf`), et le convertir en CRLF avant son commit changerait l'empreinte qui figure dans `rouge-avant-garde-empreintes.txt`. Il reste en LF jusqu'à la fin du lot.
+
+**Extension 4** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D343/` aux chemins complets de cette table : 1 fichier hors table, plus 1 fichier que le lanceur des deux passes écrira). La table déclarait les « journaux de campagnes » en pièce conditionnelle, « chemins complets par extension » : la campagne du lot (`neutralisation/neutralize-r45.py`) est jouée, sa sortie console est la seule pièce versée (les journaux bruts portent les journaux du serveur d'API, donc des jetons de vérification : ils restent HORS dépôt, D200). Et la comparaison de l'état des `.env` entre l'ouverture et la clôture des deux passes (D330) n'était pas nommée, alors que ses deux relevés l'étaient.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt` | la sortie console de la campagne du lot : calibration du lecteur (7 bras), pré-vol, les 4 cibles chacune sous sa mutation prouvée posée, le compte (4 mordues sur 4), la restauration de l'arbre vérifiée |
+| `docs/preuves/D343/portes/deux-passes-env-comparaison.txt` | la comparaison des deux relevés de l'état des `.env` (empreintes et hôtes, sans aucune valeur) entre l'ouverture de la première passe et la clôture de la dernière |
+
+**Extension 5** (07/11/2026, commitée SEULE, AVANT les fichiers qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/` modifiés ou ajoutés aux chemins complets de cette table : 3 fichiers hors table). Trois causes. (1) **Un défaut d'instrument relevé par l'audit de secrets « d »** : le masqueur de jetons laissait passer un jeton réel sans chiffre ; sa note est une pièce, sa copie réparée (`portes/masquer-jetons.py`, déjà déclarée) est commitée avec les trois sorties régénérées. (2) **Le BILAN de la branche est ANNOTÉ en AJOUT SEUL** (R-4 de la consigne du rang 45 : « le BILAN qui la dit due est annoté (ajout seul) ») : c'est un fichier de la liste A de D342 (`docs/preuves/front-client/BILAN.md`), il est donc MODIFIÉ par ce lot ; la vérification que le début du fichier est inchangé a été faite par octets avant l'écriture. (3) **Le compte rendu de la passe D277** de D343 : sa table déclarait ses trois pièces de sortie, pas le compte rendu qu'en tire la lecture (D342 l'avait déclaré en extension 2).
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D343/portes/defaut-masquage.txt` | la note du défaut d'instrument du masqueur de jetons (une suite de 43 caractères sans chiffre n'était pas masquée), ce que l'audit a montré, la réparation, le contrôle indépendant |
+| `docs/preuves/front-client/BILAN.md` | **modifié, en ajout seul** : section 8, les annotations de l'intégration (la session adverse de FP-1 n'est pas due ; `test:int` vert à l'intégration ; le compteur ; les décisions prises seul de la branche ratifiées) |
+| `docs/preuves/D343/passe-d277.md` | le compte rendu de la passe D277 des deux sens de D343 (avant → après, le triage de chaque motif) |
 
 ### ~~⛔ ÉTAT À L'OUVERTURE DE LA SESSION D342 (07/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D342, fin de session : **PÉRIMÉ** sur « la fusion n'a pas eu lieu », « reste à faire » et « rang suivant » ; l'état courant est le bloc « ÉTAT À L'ARRÊT » juste au-dessus ; celui-ci dit ce qui était vrai AVANT la fusion. Barré avec son motif, pas effacé.)*
 
@@ -5938,6 +6131,167 @@ reflété en arabe. V-b · il efface les réponses. **Nouveau devis (Q)** — Q-
 vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du serveur. F-b · elle s'ouvre sur un échec. F-c · elle ne
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
+
+## Session du 07/11/2026 — D343 · rang 45 (SUITE) CLOS, lot de CODE DE TEST : D265 NOMMÉ PAR LA MESURE ET RÉPARÉ DANS LE HARNAIS E2E, puis clôture de l'intégration de `front-client` (D342) — lecture adverse de la consigne (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?), reproduction avec le vrai serveur (A à C verts, D1 à D3 et F rouges), correction (`connection: close`, un appel commun), garde permanente, deux passes de l'e2e vertes (77 + 1 ignoré), six portes à 0, campagne du lot 4/4, union des campagnes de D342 (35 campagnes, 655 gardes mordues, 0 muette, 9 cibles `--e2e` non mesurées ; `r32` rejouée une fois)
+
+⛔ **Écrite À LA CLÔTURE du rang 45** (07/11/2026). Consigne du relecteur « RANG 45 (SUITE) — nommer et réparer D265 dans le harnais e2e, puis clore l'intégration », **adoptée par Ko tel quel** (`docs/preuves/D343/consigne.md`, copiée dans l'ordre des rangs). Lot de **CODE DE TEST** (D283 : il touche un harnais, un test et un fixture, donc il **compte**) ; **aucune ligne d'`apps/api`**, `e2e/playwright.config.ts` inchangé (`retries: 0`). Méthode : les règles de `AGENTS.md`, **les rouges avant le code** (D334, item 5), ni session adverse B ni certification (pause de Ko, DR1 de D336).
+
+- **SHA de départ** : `a1dc6355b930837beaee779c3b16dc91af51be6e` (fin de D342 : la fusion `2b79355` faite EN LOCAL, jamais poussée). `origin/main` = `d44867a`, `origin/front-client` = `43996e2`. **Sauvegarde, premier geste** : `git push origin HEAD:refs/heads/integration-45`, prouvée par `git ls-remote` (`integration-45` = `a1dc635`, `main` inchangée) ; mise à jour ensuite (`63511ce`).
+- **Poste** : sur secteur de bout en bout (`PowerLineStatus` = `Online`), `chrome` 0, `headless_shell` 0 à chaque départ de porte, Docker 29.8.0, Node v22.14.0, Playwright 1.50.1, undici 6.21.1.
+- **Les commits du lot, dans l'ordre (`git log a1dc635..`)** : `7bbf122` la table d'ouverture SEULE · `1a5afed` extension 1 · `220a56b` la consigne, la lecture adverse, l'audit « a » · `06b6454` extension 2 · `1a99abd` extension 3 · **`a61e9c9` LES ROUGES** (avant tout code) · **`69c2257` LE CODE** · `e04fcef` extension 4 · `6e6db6e` le vert et le rouge qui revient · `69671a4` LA RÈGLE DES DEUX PASSES (avant elles) · `3ada4f7` la première écriture d'autorité · l'extension 5 · `63511ce` les deux passes, les six portes, le défaut du masqueur · puis les commits de clôture (non listés ici : un fichier ne peut pas porter le SHA du commit qui le contient). **Quatre extensions de la table puis une cinquième, chacune commitée SEULE avant les fichiers qu'elle déclare** (D328).
+- **Ce que la lecture adverse de la consigne a relevé, sans arrêt** (`docs/preuves/D343/lecture-adverse/`) : R-12 est exacte mais **D340 n'était pas que D265** (une seconde classe, `toHaveURL` à 7 000 ms) ; la forme de reproduction que R-13 suggère **avait déjà été tentée deux fois, négative** (D322, D325 : 48 essais, 0 échec) ; le harnais compte **deux** fonctions qui appellent le `fetch` global ; le `DIX-NEUF` de R-16 est conditionnel à du code de test écrit ; l'énumération des « quatre décisions prises seul » de D342 n'était dans aucun fichier d'autorité. **Trois défauts d'instrument** (un détail qui contredit son verdict, un motif cherché au mauvais endroit, un texte qui dit l'inverse de son compte), la première passe gardée.
+
+### 1. La cause de D265, NOMMÉE PAR LA MESURE (R-13)
+
+⛔ **Mesuré, pas supposé (règle de Ko, D291) — chaque terme a sa pièce dans `docs/preuves/D343/reproduction/`.** Le `fetch` global de Node (undici 6.21.1) garde les connexions HTTP ouvertes dans un **pool**. Trois appels successifs du fixture en laissent **deux** libres (`mesure-minuterie-client-sortie.txt` : « connexions établies par les 3 premiers appels : 2 »). Le serveur d'API **annonce** `Keep-Alive: timeout=5` et ferme en réalité une connexion inactive après **≈ 6,0 s** (6 004 à 6 018 ms, `mesure-keepalive-sortie.txt` ; 6 006 à 6 016 ms dans chaque worker de la reproduction) ; le **client** ferme les siennes vers **3 s** (intactes à 3 000 ms, une neuve à 3 500 ms) — **à condition que sa boucle d'événements tourne**. Si la boucle du worker est **bloquée** plus longtemps que la fermeture serveur (un `execFileSync`, un `Atomics.wait`), la minuterie du client ne peut pas tourner, le serveur ferme tout, et le **premier appel suivant prend une connexion morte du pool** : `POST …/auth/register a échoué après N ms` ← `TypeError: fetch failed` ← `Error [ECONNRESET]: read ECONNRESET`, en quelques ms — **la signature exacte des échecs de D322, D325, D339, D340 et D342**.
+
+⚠ **Pourquoi D322 et D325 n'avaient rien reproduit, et pourquoi la forme que R-13 suggère (« un appel, une attente, l'appel sur la même connexion ») ne l'aurait pas reproduit non plus** : leurs montages n'avaient qu'**UNE** connexion dans le pool, et undici la tient pour « occupée » tant que sa notification de libération n'a pas eu de tour de boucle — il en ouvre une neuve, l'appel réussit. Il faut **deux connexions libres ou plus** : c'est ce que trois appels successifs du vrai fixture construisent. Contrôle 4.1 de la lecture adverse, confirmé par la mesure (D322 : 33 essais, 0 échec ; D325 : 15 essais, 0 échec).
+
+### 2. Ce que la reproduction montre (`rouge-avant.txt`) — et ce qu'elle ne montre PAS
+
+La reproduction joue, dans un **vrai worker Playwright**, contre le **vrai serveur d'API** (`nest start`, la commande et l'environnement de la suite, repris de `e2e/playwright.config.ts`), les **vraies fonctions du fixture** : `A` (aucun blocage), `B` (attente asynchrone plus longue que la fermeture serveur) et `C` (blocage synchrone puis un tour de boucle) sont **verts** — les trois bras négatifs, donc le montage ne mesure pas autre chose que ce qu'il croit ; `D1`, `D2`, `D3` (blocage synchrone, appel immédiat) sont **rouges, trois fois sur trois**, en 8, 19 et 15 ms, par la chaîne de production ; `F` (`apiCall`, l'autre fonction du harnais qui appelle le `fetch` global) est **rouge**. La garde de la suite, jouée contre le harnais d'avant, est **rouge aux deux sites** par `expect(received).toBeNull()` dont la valeur reçue porte `ECONNRESET`.
+
+⛔ **UNE PRÉDICTION DE LA SPEC EST DÉMENTIE, ET C'EST ÉCRIT ICI PLUTÔT QUE RETOUCHÉ DANS LA SPEC.** Le bras `E` (le **vrai** `seedReferentials()`, après 1,5 s libre) est **VERT** à l'état d'avant : le semis n'a duré que **3 583 ms** sur ce poste au repos, soit 5,1 s d'inactivité totale, **sous** les ≈ 6,0 s du serveur. **Ce qui n'est donc PAS établi : que ce soit `seedReferentials()` qui bloque la boucle dans les échecs de la suite.** C'est une **INFÉRENCE** — soutenue par le fait que les trois échecs de D342 (`fc2`, `r43`, `r26`) sont tous le premier appel du fixture après un `seedReferentials()` dans le `beforeAll` de leur spec (contrôle 2.4 de la lecture adverse), et par la mesure de D322 (le semis à 5,2–5,4 s) ; **limitée** par le fait que la durée du semis **pendant les passes qui ont échoué** n'a jamais été relevée. La fenêtre d'échec, pour un pool encore chaud (≤ ≈ 3 s d'inactivité avant le semis), est `inactivité avant + durée du semis ≥ ≈ 6,0 s` : large (≈ 2,3 s) si le semis dure 5,2–5,4 s, étroite (≈ 0,6 s) s'il dure 3,6 s. C'est ce qui rend la panne **intermittente** : elle dépend de l'écart entre le dernier appel de la spec précédente et le semis de la suivante, jamais du code. **La réparation ne dépend pas de cette inférence** : elle supprime la classe (aucune connexion réutilisable), quelle que soit la source du blocage.
+
+Deux défauts d'INSTRUMENT, relevés à la première passe de la reproduction et gardés (`defauts-instrument.txt`, règle de D298 : l'instrument est réparé, la passe est REJOUÉE EN ENTIER) : le mode `serial` a sauté trois bras après le premier échec (« 3 did not run ») ; la mesure du délai, gardée en mémoire par un test, aurait été perdue au redémarrage du worker qu'un échec provoque (D2, D3 et E auraient alors bloqué 1 000 ms au lieu de 7 000 et auraient PASSÉ pour une mauvaise raison — mesure confondue, D209 n° 1). La garde de la suite a évité les deux d'emblée.
+
+### 3. La correction (`69c2257`, après les rouges `a61e9c9`) — trois fichiers, aucun dans `apps/api`
+
+- `e2e/fixtures/harness.ts` (CRLF préservé, 351 → 355 lignes, 0 LF nu) : **`connection: close`** sur les appels de préparation, et **UN seul appel commun**, `appelHttp`, pour `postJson` ET `apiCall` (deux sites qui appellent le `fetch` global se seraient corrigés chacun, et auraient fini par diverger). **Ce n'est pas une nouvelle tentative** : aucun appel n'est rejoué, `playwright.config.ts` est inchangé (`retries: 0`, arbitrage de Ko du 04/10/2026). Le dépliage de la chaîne des causes (D265) vaut maintenant pour les DEUX fonctions — `apiCall` ne dépliait rien.
+- `e2e/specs/d265-socket-perimee.e2e.ts` : la **garde permanente** — elle MESURE la fermeture serveur (jamais supposée), fait trois appels du vrai fixture, bloque la boucle de `délai + 1 000 ms`, fait un appel de plus et exige qu'il réussisse ; deux tests, un par fonction ; l'assertion lit la chaîne des causes elle-même. **Coût dans la suite : ≈ 21 s dans un worker** (mesure du délai ≈ 6 s dans le `beforeAll`, puis 7,9 s et 7,1 s pour les deux tests — relevé à la passe 2 de l'e2e).
+- `neutralisation/neutralize-r45.py` : le harnais du lot, quatre cibles.
+
+### 4. La preuve (R-15)
+
+| quoi | résultat | pièce |
+|---|---|---|
+| rouge isolé AVANT | A, B, C verts ; D1, D2, D3, F **rouges** (`ECONNRESET`) ; E vert (prédiction démentie) ; la garde **rouge aux deux sites** | `reproduction/rouge-avant.txt`, `rouge-avant-garde.txt` (+ empreintes sha256 des fichiers joués) |
+| vert isolé APRÈS | la reproduction ET la garde dans la même exécution : **10 passés, 0 échec** (A à F, D1/D2/D3 compris) | `reproduction/vert-apres.txt` |
+| correction NEUTRALISÉE | `connection: close` retiré de l'appel commun : **6 échecs** (D1, D2, D3, F, et les deux tests de la garde), 4 passés ; le fichier est restauré à l'octet (empreinte identique, diff vide) | `reproduction/correction-neutralisee.txt` |
+| campagne du lot | `neutralize-r45.py --e2e` : **4 gardes mordues sur 4**, lecture calibrée sur 7 bras (dont « une assertion qui rougit mais PAS par ECONNRESET » ⇒ `AUTRE-CAUSE`), chaque mutation prouvée posée (ancre 1→0, marqueur 0→1), arbre rendu et vérifié ; R45-3 et R45-4 montrent que chacune des deux fonctions est gardée séparément (`ok 1 · x 1`) | `neutralisation/neutralize-r45-sortie.txt` |
+
+### 5. Les deux passes de l'e2e (R-15) — `docs/preuves/D343/portes/`
+
+**Règle écrite et commitée AVANT (`69671a4`), deux passes complètes consécutives, sur secteur, `retries` inchangé** : passe 1 **0 échec, 77 passés + 1 ignoré = 78** (319 s) ; passe 2 **0 échec, 77 passés + 1 ignoré = 78** (316 s) ; **78** est l'attendu **dérivé** par `playwright test --list` avant la première passe (76 tests de D342 + les 2 de la garde), pas écrit de mémoire ; 0 relevé sur batterie sur 21, `.env` identiques à l'ouverture et à la clôture, « Nest application successfully started » ×1 par passe, **0 occurrence de `a échoué après` ni d'`ECONNRESET`** dans les deux sorties masquées. **La porte `test:e2e` est VERTE au sens de R-15** — et seulement cela : pas une certification (pause de Ko), pas un taux (le taux de la panne n'a jamais été mesuré).
+
+### 6. La clôture de l'intégration (R-16)
+
+**Les six portes** — pilote de D340 (`docs/preuves/D340/portes/passe-secteur.sh`), UNE fois, sur secteur, `HEAD` = `3ada4f7`, arbre propre avant et après, **44 relevés d'état machine dont 0 sur batterie** : `typecheck` **0** (36 s) · `lint` **0** (17 s) · `test` **0** (161 s ; api-client 7 fichiers / 66 tests, api 80 / 1 336, client 41 / 488, pro 45 / 711 = **173 fichiers / 2 601 tests**, exactement ceux de D342 : aucun test unitaire n'a été ajouté) · `build` **0** (62 s) · `test:int` **0** (716 s ; **46 fichiers / 735 tests**) · `test:e2e` **0** (336 s ; **77 passés + 1 ignoré = 78**) — la **troisième passe verte de suite** de l'e2e. Pièces : `docs/preuves/D343/portes/`. ⚠ Elles ont été jouées sur `3ada4f7`, **avant** les écritures de clôture : celles-ci ne touchent aucun fichier qu'une porte lit (`.md` d'autorité et pièces sous `docs/preuves/` ; le contrôle de fin de lot le vérifie sur le diff de `3ada4f7` à la tête).
+
+**La campagne du lot** — `neutralisation/neutralize-r45.py --e2e`, jouée sur `69c2257` : **4 gardes mordues sur 4**, lecture calibrée sur 7 bras, chaque mutation prouvée posée, arbre rendu et vérifié (`docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt`).
+
+**L'union des campagnes de D342** — les 35 campagnes sur 55 que le tri de D342 retient (liste versée : `docs/preuves/D342/neutralisation/union-sortie.txt`, complément de l'angle mort du tri : 0), jouées EN SÉRIE par l'outil de D342 (`jouer-union.py`, arbre propre exigé avant et après chacune) sur la tête propre `63511ce`, les sept campagnes à mode d'intégration en `--int` : **655 gardes mordues, 0 muette, 9 cibles non mesurées** — des cibles `--e2e` que l'outil de D342 ne joue pas (`fc1` ×2, `fc2` ×1, `fc8` ×2, `fc10` ×1, `r25` ×3) ; première passe : **590 gardes mordues en 19 815 s**. ⚠ **UNE campagne a été rejouée, UNE fois, et c'est écrit** : `neutralize-r32.py` est sortie en code 2 à la première exécution — son PRÉ-VOL (sans aucune mutation) a rougi sur `apps/pro/src/account/account-settings-page.test.tsx` par « 2 avertissement(s) de console dans un fichier NON exempté » (la garde des sorties console, dont l'entrée `[PRO]` du backlog et `AGENTS.md` disent qu'elle **flotte** : classe `act`) — **pas une morsure** : le pré-vol refuse de juger ; les six portes avaient passé ce même fichier. Rejouée seule (`jouer-union.py --seulement neutralize-r32.py`) : **65 gardes mordues sur 65, code 0, 1 439 s**, arbre propre. Les 35 campagnes sont donc jouées : **655 gardes mordues** au total (590 + 65). Rapport : `docs/preuves/D342/neutralisation/union-rapport.txt`.
+
+### 7. Où chaque décision du relecteur (R-12 à R-18) est tenue
+
+| décision | tenue par |
+|---|---|
+| R-12 l'aléa bloque la poussée ; ni rejeu de plus ni exception | aucune poussée n'a eu lieu avant que les deux passes soient vertes ; aucun rejeu hors de la règle ; aucune exception à D270 |
+| R-13 le diagnostic d'abord, reproduit ROUGE avant toute correction | `a61e9c9` (les rouges) précède `69c2257` (le code) dans l'historique ; la reproduction a réussi (D1 à D3, F, la garde) — la clause d'arrêt (« si la reproduction échoue : aucune correction ») n'a pas joué |
+| R-14 la correction dans `e2e/fixtures/` seulement, jamais une nouvelle tentative | `harness.ts` ; `playwright.config.ts` et `apps/api` **non touchés** (le diff final le prouve : contrôle de fin de lot) ; aucun appel n'est rejoué |
+| R-15 rouge avant, vert après, correction neutralisée, deux passes | sections 2, 4 et 5 ci-dessus |
+| R-16 la clôture sur le même HEAD | section 6 |
+| R-17 deux erreurs du relecteur, ajout seul | annotées à la section D342 (§ 4) et à l'endroit où R-1 et R-2 de D342 sont écrites dans l'ordre des rangs |
+| R-18 ni `integration-45` ni `front-client` supprimées | les deux existent au distant (`git ls-remote`, rapporté au contrôle de fin de lot) |
+
+### 8. Les décisions prises seul par la session D343 — à ratifier
+
+| n° | ce que la session a décidé seule | ce que cela change pour Ko |
+|---|---|---|
+| S-130 | **La garde est PERMANENTE, dans la suite** (`e2e/specs/d265-socket-perimee.e2e.ts`), pas seulement une campagne : elle ajoute ≈ 21 s dans un worker | la suite dure un peu plus ; une régression de la correction rougit à la prochaine passe au lieu de revenir en rejeu |
+| S-131 | **UN appel commun (`appelHttp`) pour `postJson` et `apiCall`**, qui déplie aussi la chaîne des causes pour `apiCall` | un seul endroit à corriger ; un `TypeError: fetch failed` d'`apiCall` dit désormais LAQUELLE des trois pannes |
+| S-132 | **Le bras E est laissé démenti** : la spec jouée n'a pas été retouchée après le résultat (son empreinte est versée) ; la lecture l'écrit | rien à faire ; la cause est nommée sans que « le semis bloque » soit présenté comme mesuré |
+| S-133 | **Les défauts d'instrument de la reproduction ont été réparés et la passe REJOUÉE EN ENTIER**, première passe gardée (D298) | deux pièces de plus ; rien à faire |
+| S-134 | **`loginContext` est laissé hors du lot** (autre client HTTP, non mesuré) | une entrée du backlog ; aucun échec relevé ne le met en cause |
+| S-135 | **Le compteur passe à DIX-NEUF** : D343 écrit du code de test (un harnais, une spec, un fixture), donc il compte (D283) | le chiffre qu'une certification devra couvrir augmente de un |
+| S-136 | **La table d'ouverture a eu quatre extensions**, chacune commitée SEULE avant les fichiers qu'elle déclare (D328) | rien à faire ; `git` le prouve |
+| S-137 | **La session a signalé une valeur de forme secrète vue par erreur dans un commentaire de `apps/api/.env`** (relevé des noms de variables) | à regarder : une action de Ko (backlog `[SÉCU]`) |
+
+### 9. Ce que ce lot NE fait PAS — limites écrites pour ne pas se lire comme tenues
+
+- **Il ne prouve pas que `seedReferentials()` est la source du blocage** dans les échecs d'origine (inférence, section 2) ; il prouve que la panne EXISTE sous la condition « boucle bloquée ≥ fermeture serveur avec ≥ 2 connexions libres » et que la réparation la supprime.
+- **Il ne mesure pas `loginContext`** (autre client HTTP), ni la fréquence de la panne, ni le comportement d'une autre version de Node (la garde mesure la fermeture serveur à chaque lancement et ne suppose aucun chiffre).
+- **Il ne traite pas la seconde classe de rouge** (`toHaveURL` à 7 000 ms, D340) : entrée de backlog.
+- **Il ne ramène aucune des specs sorties de la suite** (lien du calendrier, rang 32) : un déplacement chacune, à ordonner par Ko.
+- **Il n'est pas une certification** : aucune marque, pause de Ko (DR1 de D336).
+- **La garde coûte ≈ 21 s** dans un worker de la suite.
+
+### 10. Les gestes de Ko
+
+Ceux de `docs/preuves/D342/scenarios-ko.md` (aucun nouveau : D343 ne change rien à l'écran), après la poussée. Un seul geste de plus, qui n'est pas visuel : **regarder la ligne de commentaire de `apps/api/.env` qui contient une valeur de forme secrète** (backlog `[SÉCU]`).
+
+## Session du 07/11/2026 — D342 · rang 45 CLOS (avec D343), lot de CODE par destination : l'intégration, dans `main`, de la branche `front-client` (dix-sept lots FC-1 à FC-12 et FP-1 à FP-5, 107 commits) — lecture adverse de la consigne (46 contrôles : 30 ✓ · 11 ≈ · 0 ✗ · 5 ?), fusion `--no-ff` sans conflit, six portes de la fusion, rejeu unique de l'e2e
+
+⛔ **Écrite À LA CLÔTURE DU RANG 45 par la session D343** (la session D342 s'est arrêtée sur un e2e rouge sans écrire cette section : `a1dc635`). Tout ce qui suit sur la fusion et ses portes est **lu dans les pièces de D342** (`docs/preuves/D342/`) ; ce que D343 y ajoute est dit comme tel. Le numéro D342 est **pris** par le rang 45 depuis son ouverture (écrit dans ce fichier le 07/11/2026) et **entre au registre avec D343**.
+
+### 1. La fusion
+
+- **`git merge --no-ff origin/front-client` (R-3), `2b79355`** : parents `499d1bf` (le dernier commit de `main` du lot) et `43996e2` (la pointe de `front-client`) ; **107 commits** importés avec leurs SHA (ni rebase ni squash : les pièces de chaque lot citent les SHA de la branche) ; **440 fichiers** (349 ajoutés, 90 modifiés, 1 supprimé — `apps/client/src/app/[locale]/assistant/page.tsx`) ; **0 fichier sous `apps/api`, 0 migration, 0 dépendance, 0 fichier d'autorité** ; trois fichiers modifiés des deux côtés (`ar.json`, `fr.json`, `packages/types/src/index.ts`), **sans conflit** — `ar.json` : 1 230 + 15 + 16 = 1 261 feuilles, parité FR = AR.
+- **Contrôle de la fusion** (`fusion/controle-fusion.txt`) : **12 contrôles sur 12**, dont l'arbre du commit de fusion **identique** à celui que `git merge-tree` recalcule seul entre ses deux parents (`f55406e857de`) — aucune ligne écrite à la main.
+- **Les dix-sept lots** (BILAN de la branche, § 1 ; état à la fusion) :
+
+| lot | état | objet | départ → clôture |
+|---|---|---|---|
+| FC-1 | PRÊT | contraste : une garde à 4,5:1 sur le pire fond neutre, quatre sélecteurs | `1e6426f` → `5f95ba3` |
+| FC-2 | PRÊT | débordement à 360 px de l'en-tête commun | `5f95ba3` → `7113356` |
+| FC-3 | PRÊT | noms en arabe dans le panneau de demande ; le repli français est dit | `7113356` → `470dfe1` |
+| FC-4 | PRÊT | le jour et le créneau déjà demandés se choisissent, avec un avis | `470dfe1` → `e537bb1` |
+| FC-5 | PRÊT | source unique : la semaine, et les adresses de pages | `e537bb1` → `b595bde` |
+| FC-6 | PRÊT (une partie ARRÊTÉE) | dates et nombres en arabe en `ar-DZ` ; **les montants d'un devis restent en français** | `b595bde` → `06261c3` |
+| FC-7 | PRÊT | le repli `maxPriceCents` est retiré | `06261c3` → `a2d96f0` |
+| FC-8 | PRÊT | le lot ③ : l'assistant est un mode de `/salles` | `a2d96f0` → `f4c9256` |
+| FC-9 | PRÊT | les avertissements `act(...)` de la suite client, corrigés à la source | `f4c9256` → `669cdae` |
+| FC-10 | PRÊT | données structurées schema.org `EventVenue` de la fiche | `669cdae` → `eb98ee7` |
+| FC-11 | ARRÊTÉ | le HTML initial vide des 404 : prémisse fausse, mesurée | `eb98ee7` → `01f3c25` |
+| FC-12 | PRÊT | galerie de photos et visionneuse | `01f3c25` → `aec8141` |
+| FP-1 | PRÊT (méthode RENFORCÉE) | la quantité (PER_UNIT) et le palier (TIERED) au comptoir | `aec8141` → `8fb0296` |
+| FP-2 | PRÊT | après le 409 de K-5, l'écran garde la copie du nom qui existe déjà | `8fb0296` → `8432070` |
+| FP-3 | PRÊT (avec une limite du serveur) | une révision reprend la copie du nom de la version courante | `8432070` → `bcb51fd` |
+| FP-4 | ARRÊTÉ | rafraîchir le panneau gauche et le sélecteur : prémisse fausse, lue dans le code | `bcb51fd` → `fd9dac0` |
+| FP-5 | ARRÊTÉ | versions précédentes d'un devis : aucune route d'écran ne les rend (la décision A tient) | `fd9dac0` → `73919ff` |
+
+**Quatorze lots de code comptent** (FC-1 à FC-10, FC-12, FP-1 à FP-3) ; les trois ARRÊTÉS sont documentaires et ne comptent pas (R-5, R-6). La branche n'a écrit aucun fichier d'autorité, aucun numéro, aucun rang.
+
+### 2. Les portes de la fusion (D342, `HEAD` = `2b79355`, sur secteur, pilote de D340 — 30 relevés d'état machine, 0 sur batterie)
+
+`typecheck` **0** · `lint` **0** · `test` **0** (173 fichiers / **2 601** tests : api-client 66, api 1 336, client 488, pro 711 — exactement les chiffres de R-1) · `build` **0** · `test:int` **0** (46 fichiers / **735** tests, **vert à la première passe** : la branche ne l'avait jamais eu vert) · **`test:e2e` ROUGE** : `68 passed · 2 failed · 1 skipped · 5 did not run`.
+
+- **Le rouge de l'e2e, lu** : deux `ECONNRESET` au PREMIER appel `fetch` du fixture, 3 et 4 ms après son départ — `fc2-debordement-360` (un fichier de la branche, dans son `beforeAll`) et `r43-devis-brouillon:85` (un fichier de `main`). Aucune assertion d'écran atteinte.
+- **Le rejeu unique** (R-6 de D339 ; règle écrite et commitée AVANT lui, `cd356c7`) : **ROUGE aussi** — `1 failed · 1 skipped · 74 passed`, l'échec est `r26-parcours-reservation:108` (un fichier de `main`), **la même chaîne de causes** ; `fc2` et `r43` y sont verts. **Chaque test non ignoré est vert dans au moins une des deux passes.** La règle écrite dit « autre test ⇒ tout autre rouge » : pas de poussée, pas de second rejeu. D342 s'est arrêtée là, et a posé la question à laquelle R-12 a répondu.
+- ⚠ **Ce que l'e2e ne permettait PAS d'écrire** : « verte au rejeu » (le rejeu est rouge) ni « verte » — elle s'écrivait « ROUGE aux deux passes, sur trois tests différents, tous par `ECONNRESET` au premier appel du fixture ». **Elle est devenue verte par D343** : la cause de ce rouge est nommée et réparée (section D343) ; deux passes complètes consécutives vertes, sur secteur, sont rapportées là.
+
+### 3. La lecture adverse, les audits, les quatre décisions prises seul (ratifiées par adoption, consigne de D343 § 1 b)
+
+- **Lecture adverse de la consigne** (`docs/preuves/D342/lecture-adverse/`) : 46 contrôles, **30 ✓ · 11 ≈ · 0 ✗ · 5 ?** ; deux défauts d'instrument réparés (le seul ✗ de la passe 1 était un motif trop étroit), la première passe gardée (`confronter-sortie-passe-1-AVANT-CORRECTIFS.txt`).
+- **Audits de secrets « a » à « d »**, faits et triés : « a » 0 alerte nouvelle ; « b » 84 (toutes lues) ; « c » 115 ; « d » 89 — **0 valeur réelle** à chaque fois ; balayage de forme d'un jeton : **0 occurrence** dans les 439 fichiers texte de l'état final et dans les 134 751 lignes ajoutées des 107 commits (histoire).
+- **LES QUATRE DÉCISIONS PRISES SEUL PAR LA SESSION D342** — leur énumération n'était dans aucun fichier d'autorité à `a1dc635` (contrôle 1.1 de la lecture adverse de D343), elle est écrite ici — **toutes ratifiées par adoption de la consigne de D343 (§ 1 b)** :
+  1. **Les arbitrages écrits AVANT la fusion** (`499d1bf`, première écriture d'autorité) — *ce que cela change pour Ko* : rien à faire ; `git` prouve l'ordre.
+  2. **L'audit de secrets « b » fait sur une copie de travail jetable** où la fusion est faite sans être commitée, parce que l'outil d'audit lit le disque et que les 311 fichiers de `docs/preuves/front-client/` n'y étaient pas encore — *pour Ko* : ces 311 fichiers ont été audités avant d'entrer dans `main`.
+  3. **Le rejeu unique appliqué aux deux rouges**, y compris à celui d'un fichier de la branche (`fc2`), au lieu de chercher un « lot fautif » sur un test rouge par son code : l'échec précédait tout code de FC-2 (`regle-rejeu.md`) — *pour Ko* : aucun des dix-sept lots n'est mis en cause.
+  4. **La sortie e2e MASQUÉE versée, le brut hors dépôt** (`masquer-jetons.py`, 80 jetons d'une base jetable de forme réelle) : le dépôt est public (D200) — *pour Ko* : les pièces e2e versées portent `<jeton masqué #N>`, le brut est sur le poste.
+- **Aucune écriture sur la base de développement de Ko** (le geste 0, appliquer la migration `20261104170000_staff_layer` de D341, reste une écriture de Ko).
+
+### 4. Où chaque décision du relecteur (R-1 à R-11, consigne du rang 45) est tenue
+
+| décision | tenue par |
+|---|---|
+| R-1 l'intégration passe avant L36-3a-2 | rang 45 ouvert avant le rang 46 ; les chiffres de R-1 retrouvés **exactement** (173 fichiers, 2 601 tests) |
+| R-2 S-116 acceptée | ratifiée par adoption ; D341 (invariant « couche du personnel ») la tenait déjà |
+| R-3 `--no-ff`, jamais rebase ni squash | `2b79355`, deux parents, SHA de la branche conservés ; contrôle de la fusion A.1 à A.4 |
+| R-4 pas de session adverse pour FP-1 | non due (DR1 de D336) ; le BILAN qui la dit due est **annoté ici** (ajout seul) : *« la session adverse de FP-1 n'est PAS due — R-4, consigne du rang 45, D342 »* |
+| R-5 compteur QUATRE → DIX-HUIT | écrit à cette clôture (`AGENTS.md`) ; DIX-NEUF avec D343 |
+| R-6 les lots arrêtés | FC-11 : l'état est gardé, la limite est une entrée du backlog ; FP-4 : l'état est gardé ; FP-5 : rien (la décision A tient) |
+| R-7 prémisses fausses barrées | les deux, au backlog et à D230, avec leur motif |
+| R-8 FC-6 tenu en partie | entrée de backlog neuve : un lot `apps/api` + `apps/pro` ensemble ; BLOQUE : le lancement |
+| R-9 entrées de backlog neuves | écrites à cette clôture (forme D302) |
+| R-10 outils de la branche non promus | `outils/portes.sh`, `outils/controle-lot.py`, `neutralisation/socle_front_client.py` : inchangés |
+| R-11 `rm -rf apps/client/.next/types` | fait avant `typecheck` |
+
+⚠ **Deux erreurs du relecteur, relevées par D342 et ANNOTÉES ici (R-17 de D343, ajout seul)** : (a) **R-2 de la consigne du rang 45 cite « R-3 de D340 » pour « réponse et coût identiques » — c'est R-3 de la consigne de D341** (la R-3 de la consigne de D340 est « Méthode RENFORCÉE ») ; (b) **R-1 dit « fusionné dans origin/main » — l'essai du relecteur était local** : `origin/main` (`d44867a`, un seul parent) ne contenait pas la branche. Les deux sont confirmées par la lecture adverse de D343 (contrôles 3.1 et 3.2).
+
+### 5. Les gestes de Ko — `docs/preuves/D342/scenarios-ko.md`, non joués par la session
+
+Geste 0 (une écriture de Ko : appliquer la migration de D341 sur sa base) ; puis FC-2 (en-tête à 360 px), FC-4 (jour déjà demandé), FC-8 (l'assistant ouvert depuis `/salles`), FC-12 (la visionneuse, Échap et flèches, FR et AR), FP-1 (au comptoir : une prestation par palier, une à l'unité), FC-6 (une date et un mois en arabe).
 
 ## Session du 04/11/2026 au 06/11/2026 — D341 · rang 44 (suite) CLOS SUR LE CODE, lot de CODE : L36-3a-1, la couche du personnel et son Manager — lecture adverse de la consigne (56 contrôles, 0 écart), rouges commités AVANT le code (109 lus), SIG-1 premier commit de code, la tranche [L36-3] migrée d'un bloc, le quatrième garde global fermé par défaut, harnais r44 (236 cibles, 236 mordues), six portes sur secteur ; **compteur POUR MÉMOIRE TROIS → QUATRE ; aucune certification, aucune marque**
 
@@ -24490,7 +24844,7 @@ tomber plutôt que d'inventer une règle d'arrondi que personne n'a décidée.
 la valeur : une valeur malformée sous le bon nom se laisse tomber, elle ne se
 fait pas remplacer en douce par l'ancien nom.
 
-**D229 — L'assistant n'est plus une route, c'est un MODE de `/salles`.** ⛔ *NON LIVRÉ.*
+**D229 — L'assistant n'est plus une route, c'est un MODE de `/salles`.** ⛔ ~~*NON LIVRÉ.*~~ ⛔ *(D343 : **LIVRÉ par FC-8** — intégré dans `main` par D342, `f4c9256` ; le « NON LIVRÉ » ci-dessus est périmé, barré avec son motif.)*
 Annule le compromis « route dédiée » et rend le point C sans objet (plus de route
 à renommer, donc plus de débat 301 ; seul le libellé change → **« Li hwas lqa »**).
 ⚠⚠ **AUCUN ÉTAT LOCAL : l'URL est la seule source de vérité.** Chaque réponse
@@ -24508,16 +24862,16 @@ pousser ») supposait un tampon local et contredisait la décision ci-dessus.
 une navigation par caractère. La valeur est tenue par le DOM — l'état propre du
 navigateur, celui-là même qu'un `<form method="get">` utilise.
 
-**D230 — `?guide=` porte l'ÉTAPE, pas un booléen.** ⛔ *NON LIVRÉ.*
+**D230 — `?guide=` porte l'ÉTAPE, pas un booléen.** ⛔ ~~*NON LIVRÉ.*~~ ⛔ *(D343 : **LIVRÉ par FC-8** — intégré dans `main` par D342, `f4c9256` ; le « NON LIVRÉ » ci-dessus est périmé, barré avec son motif.)*
 `?guide=1` ne suffit pas : sans état local, l'étape courante se déduirait des
 réponses — mais « Modifier » demande de revenir à une étape **déjà répondue**, ce
 qu'un booléen ne peut pas exprimer. Effet de bord bienvenu : le bouton retour
 recule d'une question au lieu de quitter la page.
 ⚠ Toute valeur inconnue **ferme** le panneau plutôt que d'ouvrir la première
 étape : ouvrir donnerait l'impression que la valeur a été comprise.
-⚠ `guide` **et** `maxPriceCents` entrent dans `isVariant` (D216).
+~~⚠ `guide` **et** `maxPriceCents` entrent dans `isVariant` (D216).~~ ⛔ *(D342, R-7 ; barré par D343 : **PRÉMISSE FAUSSE**, barrée avec son motif, pas effacée — `maxPriceCents` n'a JAMAIS été dans `SEARCH_VARIANT_PARAMS` ni dans `isVariant` (FC-7 : `git log -S`, 0 commit) ; la mention a changé de prémisse avec FC-7, et `?guide=` est livré par FC-8.)*
 
-**D231 — Accueil : formulaire SSR à TROIS champs, strictement additif.** ⛔ *NON LIVRÉ.*
+**D231 — Accueil : formulaire SSR à TROIS champs, strictement additif.** ⛔ ~~*NON LIVRÉ.*~~ ⛔ *(D343 : **LIVRÉ par FC-8** — intégré dans `main` par D342, `f4c9256` ; le « NON LIVRÉ » ci-dessus est périmé, barré avec son motif.)*
 Commune (première question de l'assistant) + invités + budget, tous facultatifs,
 aux noms du contrat. Sans JS : soumet les trois, donc **plus qu'aujourd'hui**.
 Avec JS : le même formulaire devient l'étape 1.
@@ -25709,9 +26063,9 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D226 | A | D226 — Le harnais a signalé sa propre péremption, et c'est le comportement |
 | D227 | S | D227 — ✅ LIVRÉ. Refus hors horizon, code distinct |
 | D228 | S | D228 — ✅ LIVRÉ, avec un SECOND défaut laissé OUVERT. |
-| D229 | A | D229 — L'assistant n'est plus une route, c'est un MODE de /salles. ⛔ NON … |
-| D230 | A | D230 — ?guide= porte l'ÉTAPE, pas un booléen. ⛔ NON LIVRÉ. |
-| D231 | A | D231 — Accueil : formulaire SSR à TROIS champs, strictement additif. ⛔ NO… |
+| D229 | A | D229 — L'assistant n'est plus une route, c'est un MODE de /salles. ⛔ ~~NON …~~ **LIVRÉ par FC-8 (D343)**. |
+| D230 | A | D230 — ?guide= porte l'ÉTAPE, pas un booléen. ⛔ ~~NON LIVRÉ.~~ **LIVRÉ par FC-8 (D343)**. |
+| D231 | A | D231 — Accueil : formulaire SSR à TROIS champs, strictement additif. ⛔ ~~NO…~~ **LIVRÉ par FC-8 (D343)**. |
 | D232 | A | D232 — ⛔ INCIDENT D'INTÉGRITÉ : du code non retracé est apparu dans l'arb… |
 | D233 | S | D233 — prisma migrate dev ALIGNE la base sur le schéma ; il ne « propose … |
 | D234 | S | D234 — L'autorité sur les statuts verrouillants est HARD_BOOKING_STATUSES… |
@@ -25822,3 +26176,5 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D339 | A | D339 — rang 43 CLOS SUR LE CODE le 03/11/2026, lot de **CODE** (méthode RENFORCÉE sous la pause) fait en **DEUX sessions** (28/10 ; puis 30/10 → 03/11, après un arrêt avant la fin — déclaration de Ko : « Les 10 commits locaux, de fb386f1 à 260cd5c, et les 7 fichiers modifiés ou non suivis de l'arbre viennent de la session Claude Code du rang 43 (suite), ouverte le 28/10/2026, qui s'est arrêtée avant la fin. Je n'y ai pas touché. ») : **L36-2, le devis brouillon non officiel** — `quotes.is_official`, la `CHECK quotes_unofficial_inert`, le déclencheur `bookings_quote_must_be_official` (INSERT et UPDATE de `quote_id`), la promotion (`POST /quotes/:id/promote`, une transaction, UNE ligne `audit_logs` sans donnée personnelle — la première écriture de cette table), la référence `BROUILLON-…`, le filigrane de chaque page (même nombre de pages avec et sans), le second bouton de l'étape Contact ; Ko a répondu aux cinq questions le 28/10 (Q1 (a), Q2 (a), Q3 (a), Q4 (a) pour ce lot, Q5 (b)) ; **les rouges commités AVANT le code** (155 lus) ; migration sur base non vide ; portes : `typecheck` 0, `lint` 0, `test` 2 194 / 148, `build` 0, `test:int` 619 / 40, **`test:e2e` « verte AU REJEU »** (première passe : 62 passés, 1 échec sur `r41:65`, `ECONNRESET`, classe D265, spec hors du lot ; rejeu unique décidé par Ko — R-6 à R-10 : 63 passés, 0 échec, 1 ignoré) ; `neutralize-r43.py` 87 sur 87, union des campagnes 444 mordues · 0 muette · 0 non mesurée (cinq harnais ré-ancrés), e2e neutralisée à la main (E-1 à E-5, filtre d'audit mesuré), M-2 et M-5 prouvées équivalentes ; la sonde de dérive de D334 rejouée : `prisma migrate diff` ne voit pas le déclencheur ; **aucune écriture de données sur la base de développement de Ko, la migration n'y est PAS appliquée** ; **compteur POUR MÉMOIRE DEUX → TROIS, aucune certification (pause de Ko)** ; ~~la condition de clôture du rang 43 est OUVERTE~~ *(D340 : LEVÉE)* (les six gestes de Ko, dont la lisibilité du filigrane en FR et en AR) ; ~~S-83 à S-97 à ratifier ; rang 44 en attente d'arbitrage de Ko (candidat proposé : L36-3, pas arbitré).~~ *(D340, 03/11/2026 : S-83 à S-96 ratifiées par adoption, S-97 confirmée ; rang 44 arbitré — voir la ligne D340.)* Localisateur : « ÉTAT À LA CLÔTURE DU RANG 43 (D339) » du point d'entrée du rang 43 et section « Session des 28/10 et 30/10 → 03/11/2026 — D339 » de ZWADJ_CONTINUITE.md ; pièces : `docs/preuves/D339/`. |
 | D340 | A | D340 — rang 44 ARBITRÉ PAR KO le 03/11/2026 (L36-3, le personnel et le PIN côté serveur : cadrage puis code dans la même session, avec règle d'arrêt ; délégation de Ko du 02/11/2026 citée mot pour mot ; R-1 à R-6 du relecteur ; S-97 confirmée, S-83 à S-96 ratifiées par adoption, condition de clôture du rang 43 levée) et **OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE** le 03/11/2026, lot DOCUMENTAIRE (compteur POUR MÉMOIRE TROIS, inchangé ; aucune certification) : lecture adverse de la consigne (43 contrôles : 35 ✓ · 3 ≈ · 0 ✗ · 5 ?, un défaut d'instrument réparé et versé à côté) ; cadrage `docs/preuves/D340/cadrage.md` (27 mesures) qui conclut par trois raisons mesurées que le lot ne tient pas en une session — taille ≈ 2,8 × L36-2, frontière de R-5 contredite par la FK `device_id` de la tranche, nullabilité de la tranche non écrite (DR8) — et propose trois lots (L36-3a-1 la couche et son Manager, L36-3a-2 le personnel et ses capacités, L36-3b le PIN) ; dix contrats K-14 à K-23 à ratifier ; 44 modes de défaillance ; ordre total des verrous ; S-98 à S-112 à ratifier ; une seule question (au relecteur : trois lots ou deux) ; SIG-1 mesuré (le `Set-Cookie` de `zwadj_rt` est journalisé en clair) ; ~~**portes `test` et `test:e2e` ROUGES** (première passe et rejeu unique, sur batterie, arbre sans code ; règle du rejeu commitée avant lui) et **clôture commitée en local, NON POUSSÉE** (D270) ;~~ ⛔ *(D340, 04/11/2026 : **NON CERTIFIANTES — R-7** ; la passe sur SECTEUR (R-8) est **VERTE** — six portes à 0, `test` 2 194 / 148, `test:int` 619 / 40, `test:e2e` 63 passés · 1 ignoré · 0 échec — et la clôture est **POUSSÉE** ; état inchangé : RANG 44 OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE ; R-9 dans `AGENTS.md`, R-10 au backlog)* « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » ; aucun code, aucune migration. Localisateur : « PROCHAIN LOT — rang 44 » et la section « Session du 03/11/2026 — D340 ». |
 | D341 | A | D341 — rang 44 (SUITE) CLOS SUR LE CODE le 06/11/2026, lot de **CODE** (méthode RENFORCÉE sous la pause), consigne du relecteur adoptée par Ko le 04/11/2026 : **L36-3a-1, la couche du personnel et son Manager** — K-14 à K-18 (activer, se connecter, se déconnecter, l'état, changer son mot de passe), le QUATRIÈME garde global fermé par défaut (`StaffSessionGuard` : le drapeau relu à chaque requête, la salle du profil du Bearer, un seul refus pour toutes les causes, quatre routes exemptées, liste fermée), la réservation atomique d'une tentative en UNE instruction (vingt connexions parallèles = cinq comptées, pause de 15 minutes jamais définitive), l'inactivité de 10 minutes et le plafond de 12 heures côté serveur à l'heure de la base, les cookies `zwadj_ss` et `zwadj_dv_*` (`HttpOnly`, `SameSite=Strict`), l'audit à charge utile fermée (sept actions), toute la tranche [L36-3] migrée d'un bloc (`20261104170000_staff_layer` : trois tables, trois énumérations, deux colonnes, la nullabilité du § 5.2 et les six garanties du § 5.3, aucun déclencheur), la liste des mots de passe courants (SecLists, MIT, 10 001 entrées), SIG-1 réparé au premier commit de code (`56b0fd8`, SEUL) ; lecture adverse de la consigne (56 contrôles : 47 ✓ · 5 ≈ · 0 ✗ · 4 ?) ; **les rouges commités AVANT le code** (109 lus + 11 fichiers tombés à la collecte, empreintes) ; **13 des 22 fichiers de test modifiés ensuite, déclarés avec leurs empreintes** (deux contradictions et un décompte faux dans les TESTS, puis 15 trous de garde trouvés par le harnais) ; `neutralize-r44.py` 236 sur 236 cibles mordues · 0 muette · 0 non mesurée ; union des campagnes 428 mordues · 0 muette · 0 non mesurée (4 campagnes : r33, r38, r39, r44) + complément de l'angle mort du tri : 200 mordues · 0 muette · 0 non mesurée (5 campagnes : r4, r41, r42, r43, s11b) ; portes sur secteur (pilote de D340, SHA `40b7380`) : `typecheck` 0, `lint` 0, `test` 2 441 / 158 (+247 / +10), `build` 0, `test:int` 735 / 46 (+116 / +6), `test:e2e` 63 passés · 1 ignoré ; coût du garde mesuré, sans budget : +1,851 ms par requête Pro (+11,8 %), couche éteinte ; **compteur POUR MÉMOIRE TROIS → QUATRE, aucune certification (pause de Ko)** ; S-113 à S-129 à ratifier, dont S-116 (MP-17 ne tient pas comme écrit : la pause protège le compte, pas le coût) ; **RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR** (candidat L36-3a-2) ; la pause du paiement en ligne (E3 et R1) est inchangée. Localisateur : « ÉTAT À LA CLÔTURE DE LA SESSION D341 » du point d'entrée du rang 44 et section « Session du 04/11/2026 — D341 ». |
+| D342 | A | D342 — rang 45 CLOS (avec D343) le 07/11/2026, lot de **CODE par destination**, consigne du relecteur adoptée par Ko : **l'intégration, dans `main`, de la branche `front-client`** (dix-sept lots FC-1 à FC-12 et FP-1 à FP-5, 107 commits, 440 fichiers, **0 sous `apps/api`**) par `git merge --no-ff` (`2b79355`, sans conflit, l'arbre identique à celui que `git merge-tree` recalcule seul) ; lecture adverse de la consigne (46 contrôles : 30 ✓ · 11 ≈ · 0 ✗ · 5 ?) ; six portes de la fusion (cinq à 0 dont `test:int` 46 fichiers / 735 tests à la première passe ; `test:e2e` ROUGE aux deux passes, trois tests différents, même `ECONNRESET` au premier appel du fixture) ; quatre décisions prises seul, ratifiées par adoption (D343) ; **compteur POUR MÉMOIRE QUATRE → DIX-HUIT** (R-5). Écrit à la clôture par D343, la session D342 s'étant arrêtée sur un e2e rouge. Section D342, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 45 ». |
+| D343 | A | D343 — rang 45 (SUITE) CLOS le 07/11/2026, lot de **CODE DE TEST** (il compte, D283), consigne du relecteur adoptée par Ko : **D265 NOMMÉ PAR LA MESURE ET RÉPARÉ dans le harnais e2e, puis clôture de l'intégration** ; lecture adverse de la consigne (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?) ; **la cause** : le `fetch` global garde les connexions dans un pool, trois appels en laissent deux libres, le serveur d'API ferme une connexion inactive à ≈ 6,0 s (5 annoncées) et le client à ≈ 3 s si sa boucle tourne, une boucle bloquée envoie le premier appel suivant sur une connexion morte (`fetch failed` ← `ECONNRESET`) ; reproduction avec le vrai serveur et le vrai fixture (A à C verts, D1 à D3 et F rouges, E vert : prédiction démentie) ; **correction** `connection: close` par UN appel commun (`appelHttp`), jamais une nouvelle tentative ; garde permanente `d265-socket-perimee` ; `neutralize-r45.py` 4 gardes mordues sur 4 ; **deux passes de l'e2e vertes** (77 passés + 1 ignoré chacune) et six portes à 0 sur secteur ; défaut d'instrument du masqueur de jetons trouvé par l'audit (un jeton sans chiffre) et réparé ; union des campagnes de D342 655 gardes mordues, 0 muette, 9 cibles `--e2e` non mesurées, une campagne (`r32`) rejouée UNE fois après un pré-vol rouge par la garde console flottante ; huit décisions prises seul (S-130 à S-137) à ratifier ; **compteur POUR MÉMOIRE DIX-NEUF** ; rang suivant : « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D343, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 45 ». |
