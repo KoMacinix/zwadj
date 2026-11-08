@@ -1,0 +1,9 @@
+D343 — RAPPORT DES CAMPAGNES DE NEUTRALISATION DE CE LOT (R-16)
+
+1. La campagne du lot : `neutralisation/neutralize-r45.py --e2e` — 4 gardes mordues sur 4 (R45-1 à R45-4), lecture calibrée sur 7 bras, mutations prouvées posées, arbre rendu et vérifié.
+   Sortie : docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt. Mutation « à la main » de l'appel commun, rejouée sur la reproduction ET la garde : docs/preuves/D343/reproduction/correction-neutralisee.txt (6 échecs).
+
+2. Les campagnes que le TRI de `lancer-campagnes.py` retient pour le diff de CE lot : `python3 neutralisation/lancer-campagnes.py --liste` (relevé avec le fichier modifié `e2e/fixtures/harness.ts`) → UNE campagne concernée sur 56 : `neutralize-r45.py`.
+   ⚠ Le tri ne voit pas les campagnes qui EXERCENT le harnais sans citer son chemin : les campagnes e2e (r25, r26, r33, r41, r42, r43…) l'importent par leurs specs. L'angle mort est connu (backlog, « le tri de `lancer-campagnes.py` a un angle mort ») ; les campagnes de l'union de D342 qui ont un mode e2e n'ont PAS été jouées avec `--e2e` (9 cibles non mesurées : voir le rapport de l'union).
+
+3. L'union des campagnes de D342 (la liste que R-16 demande) : docs/preuves/D342/neutralisation/union-rapport.txt — 35 campagnes, 655 gardes mordues, 0 muette, 9 cibles non mesurées, r32 rejouée UNE fois (pré-vol rouge par la garde console flottante, puis 65 sur 65).

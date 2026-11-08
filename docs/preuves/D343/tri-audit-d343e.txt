@@ -1,0 +1,26 @@
+D343 — tri différentiel de l'audit de secrets « e » (AVANT le commit des pièces de clôture : les sorties de l'union des campagnes, les deux comptes rendus de la passe D277, la sortie scellée « e » et le contrôle « 0 valeur réelle » ; AVANT, aussi, les trois fichiers d'autorité modifiés)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D343/audit-secrets-d343d.txt docs/preuves/D343/audit-secrets-d343e.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D343/audit-secrets-d343e.txt, lancé dans le dépôt principal (HEAD = 63511ce, arbre : trois fichiers d'autorité modifiés et dix pièces non suivies). Une seule exécution, aucune écriture dans docs/preuves/ pendant sa durée.
+Sortie scellée : 563 429 octets, 0 CR, 4 692 lignes ; sceau RECALCULÉ À LA MAIN (sha256 de tout ce qui précède la ligne de sceau, 563 238 octets) = celui que la sortie porte ; relue identique, sceau vérifié à la relecture.
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d343d) : 5 095 fichiers parcourus, 4 933 audités, 162 exclus, 1 669 alertes (1 669 contextes).
+  · nouvelle (d343e)   : 5 108 fichiers parcourus, 4 945 audités, 163 exclus, 1 672 alertes (1 672 contextes). Contrôle de l'outil : audités + exclus = 5 108 (attendu 5 108, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 108 fichiers sous docs/preuves/ après l'audit = 5 088 suivis (index) + 10 non suivis hors __pycache__ + 10 __pycache__/*.pyc ignorés. Les 5 108 de l'audit = ces 5 108 moins sa propre
+    sortie scellée (écrite APRÈS lui) plus .gitattributes : 5 108 − 1 + 1 = 5 108. L'arithmétique ferme.
+  · Exclus : 163 contre 162, soit un de plus — la sortie scellée « d » de ce lot, désormais versée et épinglée par son sceau.
+  · Calibration de l'outil de tri, deux bras : négatif → 0 nouvelle (attendu 0) ; positif → 2 nouvelles (attendu 2).
+
+Résultat du tri différentiel : 3 alertes ABSENTES de la sortie précédente — jeton = 2, mot-de-passe = 1 — dans UN seul fichier, docs/preuves/D343/tri-audit-d343d.txt (3 contextes lus, attendu 3) :
+  · les trois sont des lignes de la PROSE du tri « d » qui DÉCRIT ce que l'audit « d » avait relevé : la ligne qui compte les 261 alertes de gabarit des sorties masquées de l'e2e (la « valeur » masquée est le mot du gabarit, 6 caractères),
+    et la ligne qui cite deux titres de test d'intégration (les « valeurs » masquées sont un mot de 7 caractères et un nombre de 4 caractères). Ce sont des ÉCHOS de contextes déjà triés et déclarés « 0 valeur réelle » par le tri « d » ;
+    elles n'apparaissent comme nouvelles que parce que ce fichier-là, versé après l'audit « d », n'existait pas pour lui (il l'avait annoncé : « ce fichier … n'ont pas été audités avant leur commit »).
+  Total : 3 (attendu 3). Plus grande valeur masquée : 7 caractères, plus petite : 4. Aucune n'a la forme ni la longueur d'une valeur réelle.
+
+Conclusion : 3 alertes lues, **0 valeur réelle**. Ce tri-ci est rédigé SANS citer les mots que l'audit cherche, pour ne pas produire à l'audit suivant les échos que ce tri vient de classer.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier, la sortie scellée « e », le contrôle de fin de lot (docs/preuves/D343/controle-fin-de-lot.py et .txt, écrits APRÈS la poussée) et les modifications des trois fichiers d'autorité faites après cet audit n'ont pas été audités avant leur commit ; l'audit suivant les couvrira.
+  · LE MASQUEUR DE D342 (docs/preuves/D342/portes/masquer-jetons.py) A LE MÊME DÉFAUT que celui de D343 avant sa réparation et n'est pas retouché (D295) ; ce tri ne relit pas les pièces e2e de D342.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes : les trois fichiers d'autorité (ZWADJ_CONTINUITE.md, ZWADJ_BACKLOG.md, AGENTS.md) ne sont PAS couverts par lui ; le contrôle dédié « 0 valeur réelle » les a pris pour cibles (docs/preuves/D343/aucune-valeur-reelle.txt : 349 valeurs cherchées, 263 fichiers, 0 porteur).

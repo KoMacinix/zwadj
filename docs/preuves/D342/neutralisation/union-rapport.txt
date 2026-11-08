@@ -1,0 +1,208 @@
+D342/D343 — RAPPORT DE LA PASSE DE L'UNION DES CAMPAGNES DE NEUTRALISATION (R-16 de la consigne du rang 45 (suite)) — joué le 07/11/2026 par la session D343
+liste : docs/preuves/D342/neutralisation/union-sortie.txt (35 campagnes sur 55 ; complément de l'angle mort du tri : 0 — docs/preuves/D342/neutralisation/complement-sortie.txt)
+outil : docs/preuves/D342/neutralisation/jouer-union.py (copie adaptée de celui de D341 : arbre propre exigé avant et après chaque campagne, EN SÉRIE), `python3 docs/preuves/D342/neutralisation/jouer-union.py`
+tête propre au lancement : 63511ce (arbre propre : `git status --short` vide, aucun stash) ; sur secteur ; machine : douze cœurs (AGENTS.md, D286) ; AUCUNE autre campagne ni porte pendant la passe, et le dépôt n'a pas été écrit (l'outil exige un arbre propre après chaque campagne) ; quelques LECTURES légères ont eu lieu en parallèle (git status, essais à blanc de l'écriture de clôture sur des COPIES hors dépôt, une lecture de 14 Mo par le contrôle « 0 valeur réelle »)
+durée : 19 815 s (5 h 30) pour la première passe, plus 1 439 s pour le rejeu de r32
+journaux bruts HORS dépôt : .neutralisation-journaux/d342-union/ (sorties entières de chaque campagne ; ils portent les journaux du serveur d'API, donc des jetons de vérification — D200)
+⚠ LECTURE : « sortie » = code de sortie de la campagne (0 tout mordu ; 3 campagne incomplète : des cibles `--e2e` non jouées par cet outil ; 2 pré-vol rouge ou erreur de script). Un « — (aucun résumé écrit) » veut dire que la campagne
+(ancien format) n'écrit pas de ligne « N garde(s) mordue(s) » : le compte vient des lignes de verdict (D269).
+════════════════════════════════════════════════════════════════════════════════
+PREMIÈRE PASSE (la sortie ENTIÈRE de jouer-union.py, sans codes ANSI)
+════════════════════════════════════════════════════════════════════════════════
+liste versée : 35 campagne(s) · jouées dans ce lancement : 35 · avec --int : ['neutralize-e3d1-s8.py', 'neutralize-r25.py', 'neutralize-r33.py', 'neutralize-r39.py', 'neutralize-r41.py', 'neutralize-r42.py', 'neutralize-r43.py'] · arbre propre au départ : oui
+
+[1/35] neutralize-404.py … (14:22:46)
+    sortie=0 · 12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 520 s · arbre propre après : oui
+
+[2/35] neutralize-act-plafonds.py … (14:31:26)
+    sortie=0 · 4 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 4 garde(s) mordue(s) sur 4 cible · 402 s · arbre propre après : oui
+
+[3/35] neutralize-available-on.py … (14:38:08)
+    sortie=0 · 10 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 435 s · arbre propre après : oui
+
+[4/35] neutralize-b7.py … (14:45:22)
+    sortie=0 · 3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 3 garde(s) mordue(s) sur 3 cible · 349 s · arbre propre après : oui
+
+[5/35] neutralize-e3d1-s8.py --int … (14:51:11)
+    sortie=0 · 8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 8 garde(s) mordue(s) sur 8 cible · 99 s · arbre propre après : oui
+
+[6/35] neutralize-fc1.py … (14:52:50)
+    sortie=3 · 4 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s) · 4 garde(s) mordue(s) sur 4 cible · 20 s · arbre propre après : oui
+
+[7/35] neutralize-fc10.py … (14:53:10)
+    sortie=3 · 4 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s) · 4 garde(s) mordue(s) sur 4 cible · 19 s · arbre propre après : oui
+
+[8/35] neutralize-fc12.py … (14:53:29)
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 7 garde(s) mordue(s) sur 7 cible · 74 s · arbre propre après : oui
+
+[9/35] neutralize-fc2.py … (14:54:43)
+    sortie=3 · 0 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s) · 0 garde(s) mordue(s) sur 0 cible · 0 s · arbre propre après : oui
+
+[10/35] neutralize-fc3.py … (14:54:44)
+    sortie=0 · 8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 8 garde(s) mordue(s) sur 8 cible · 83 s · arbre propre après : oui
+
+[11/35] neutralize-fc4.py … (14:56:06)
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 7 garde(s) mordue(s) sur 7 cible · 82 s · arbre propre après : oui
+
+[12/35] neutralize-fc5.py … (14:57:28)
+    sortie=0 · 11 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 11 garde(s) mordue(s) sur 11 cible · 99 s · arbre propre après : oui
+
+[13/35] neutralize-fc6.py … (14:59:07)
+    sortie=0 · 12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 12 garde(s) mordue(s) sur 12 cible · 104 s · arbre propre après : oui
+
+[14/35] neutralize-fc7.py … (15:00:51)
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 2 garde(s) mordue(s) sur 2 cible · 13 s · arbre propre après : oui
+
+[15/35] neutralize-fc8.py … (15:01:04)
+    sortie=3 · 10 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s) · 10 garde(s) mordue(s) sur 10 cible · 91 s · arbre propre après : oui
+
+[16/35] neutralize-fc9.py … (15:02:35)
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 2 garde(s) mordue(s) sur 2 cible · 30 s · arbre propre après : oui
+
+[17/35] neutralize-fp1.py … (15:03:05)
+    sortie=0 · 18 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 18 garde(s) mordue(s) sur 18 cible · 1323 s · arbre propre après : oui
+
+[18/35] neutralize-fp2.py … (15:25:08)
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 6 garde(s) mordue(s) sur 6 cible · 564 s · arbre propre après : oui
+
+[19/35] neutralize-fp3.py … (15:34:32)
+    sortie=0 · 10 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 10 garde(s) mordue(s) sur 10 cible · 675 s · arbre propre après : oui
+
+[20/35] neutralize-horizon.py … (15:45:47)
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 177 s · arbre propre après : oui
+
+[21/35] neutralize-horloge.py … (15:48:44)
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 2 garde(s) mordue(s) sur 2 cible · 323 s · arbre propre après : oui
+
+[22/35] neutralize-journey.py … (15:54:07)
+    sortie=0 · 7 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 625 s · arbre propre après : oui
+
+[23/35] neutralize-maxprice.py … (16:04:32)
+    sortie=0 · 6 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 253 s · arbre propre après : oui
+
+[24/35] neutralize-r25.py --int … (16:08:45)
+    sortie=3 · 8 mordue(s), 0 muette(s)/erreur(s), 3 non mesurée(s) · 8 garde(s) mordue(s) sur 8 cible · 154 s · arbre propre après : oui
+
+[25/35] neutralize-r29.py … (16:11:19)
+    sortie=0 · 15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 15 garde(s) mordue(s) sur 15 cible · 210 s · arbre propre après : oui
+
+[26/35] neutralize-r30.py … (16:14:50)
+    sortie=0 · 8 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 8 garde(s) mordue(s) sur 8 cible · 74 s · arbre propre après : oui
+
+[27/35] neutralize-r32.py … (16:16:04)
+    sortie=2 · 0 mordue(s), 1 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 55 s · arbre propre après : oui
+
+[28/35] neutralize-r33.py --int … (16:16:59)
+    sortie=0 · 95 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 95 garde(s) mordue(s) sur 95 cible · 2376 s · arbre propre après : oui
+
+[29/35] neutralize-r37.py … (16:56:35)
+    sortie=0 · 21 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 21 garde(s) mordue(s) sur 21 cible · 293 s · arbre propre après : oui
+
+[30/35] neutralize-r38.py … (17:01:28)
+    sortie=0 · 46 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 46 garde(s) mordue(s) sur 46 cible · 1158 s · arbre propre après : oui
+
+[31/35] neutralize-r39.py --int … (17:20:46)
+    sortie=0 · 51 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 51 garde(s) mordue(s) sur 51 cible · 1159 s · arbre propre après : oui
+
+[32/35] neutralize-r41.py --int … (17:40:05)
+    sortie=0 · 70 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 70 garde(s) mordue(s) sur 70 cible · 2262 s · arbre propre après : oui
+
+[33/35] neutralize-r42.py --int … (18:17:46)
+    sortie=0 · 28 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 28 garde(s) mordue(s) sur 28 cible · 997 s · arbre propre après : oui
+
+[34/35] neutralize-r43.py --int … (18:34:23)
+    sortie=0 · 87 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 87 garde(s) mordue(s) sur 87 cible · 4451 s · arbre propre après : oui
+
+[35/35] neutralize-solid-s7.py … (19:48:35)
+    sortie=0 · 2 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · — (aucun résumé écrit) · 266 s · arbre propre après : oui
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-404.py                       0    12     0     0   520  — (aucun résumé écrit)
+neutralize-act-plafonds.py              0     4     0     0   402  4 garde(s) mordue(s) sur 4 cible
+neutralize-available-on.py              0    10     0     0   434  — (aucun résumé écrit)
+neutralize-b7.py                        0     3     0     0   349  3 garde(s) mordue(s) sur 3 cible
+neutralize-e3d1-s8.py --int             0     8     0     0    99  8 garde(s) mordue(s) sur 8 cible
+neutralize-fc1.py                       3     4     0     2    20  4 garde(s) mordue(s) sur 4 cible
+neutralize-fc10.py                      3     4     0     1    19  4 garde(s) mordue(s) sur 4 cible
+neutralize-fc12.py                      0     7     0     0    74  7 garde(s) mordue(s) sur 7 cible
+neutralize-fc2.py                       3     0     0     1     0  0 garde(s) mordue(s) sur 0 cible
+neutralize-fc3.py                       0     8     0     0    83  8 garde(s) mordue(s) sur 8 cible
+neutralize-fc4.py                       0     7     0     0    82  7 garde(s) mordue(s) sur 7 cible
+neutralize-fc5.py                       0    11     0     0    99  11 garde(s) mordue(s) sur 11 cible
+neutralize-fc6.py                       0    12     0     0   104  12 garde(s) mordue(s) sur 12 cible
+neutralize-fc7.py                       0     2     0     0    12  2 garde(s) mordue(s) sur 2 cible
+neutralize-fc8.py                       3    10     0     2    91  10 garde(s) mordue(s) sur 10 cible
+neutralize-fc9.py                       0     2     0     0    29  2 garde(s) mordue(s) sur 2 cible
+neutralize-fp1.py                       0    18     0     0  1323  18 garde(s) mordue(s) sur 18 cible
+neutralize-fp2.py                       0     6     0     0   564  6 garde(s) mordue(s) sur 6 cible
+neutralize-fp3.py                       0    10     0     0   675  10 garde(s) mordue(s) sur 10 cible
+neutralize-horizon.py                   0     6     0     0   177  — (aucun résumé écrit)
+neutralize-horloge.py                   0     2     0     0   323  2 garde(s) mordue(s) sur 2 cible
+neutralize-journey.py                   0     7     0     0   625  — (aucun résumé écrit)
+neutralize-maxprice.py                  0     6     0     0   253  — (aucun résumé écrit)
+neutralize-r25.py --int                 3     8     0     3   154  8 garde(s) mordue(s) sur 8 cible
+neutralize-r29.py                       0    15     0     0   210  15 garde(s) mordue(s) sur 15 cible
+neutralize-r30.py                       0     8     0     0    74  8 garde(s) mordue(s) sur 8 cible
+neutralize-r32.py                       2     0     1     0    55  — (aucun résumé écrit)
+neutralize-r33.py --int                 0    95     0     0  2376  95 garde(s) mordue(s) sur 95 cible
+neutralize-r37.py                       0    21     0     0   293  21 garde(s) mordue(s) sur 21 cible
+neutralize-r38.py                       0    46     0     0  1158  46 garde(s) mordue(s) sur 46 cible
+neutralize-r39.py --int                 0    51     0     0  1158  51 garde(s) mordue(s) sur 51 cible
+neutralize-r41.py --int                 0    70     0     0  2261  70 garde(s) mordue(s) sur 70 cible
+neutralize-r42.py --int                 0    28     0     0   997  28 garde(s) mordue(s) sur 28 cible
+neutralize-r43.py --int                 0    87     0     0  4451  87 garde(s) mordue(s) sur 87 cible
+neutralize-solid-s7.py                  0     2     0     0   266  — (aucun résumé écrit)
+========================================================================================================================
+PARCOURU : 35 passage(s) pour 35 campagne(s) (attendu : autant que de campagnes ; chaque campagne à mode d'intégration est jouée UNE fois, avec --int) · 19815s
+MESURÉ : 590 garde(s) mordue(s) · 1 muette(s)/erreur(s) · 9 non mesurée(s) · 6 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+  ⚠ neutralize-fc1.py → sortie 3
+  ⚠ neutralize-fc10.py → sortie 3
+  ⚠ neutralize-fc2.py → sortie 3
+  ⚠ neutralize-fc8.py → sortie 3
+  ⚠ neutralize-r25.py --int → sortie 3
+  ⚠ neutralize-r32.py → sortie 2
+ARBRE à la fin : propre (attendu : propre)
+
+════════════════════════════════════════════════════════════════════════════════
+LA CAMPAGNE EN CODE 2 DE LA PREMIÈRE PASSE : neutralize-r32.py — LE PRÉ-VOL (SANS AUCUNE MUTATION) ÉTAIT ROUGE
+════════════════════════════════════════════════════════════════════════════════
+Extrait de son journal (titres de test et comptes ; aucune valeur) :
+    calibration : 8 bras · 0 manqué(s) (attendu 0)
+  cibles : 65 déclarées · 65 jouées (unit) · 14 mesure(s) distincte(s) · 14 fichier(s) muté(s)
+    pré-vol client-account : code 0 · passés 10 · en échec 0
+    pré-vol client-booking : code 0 · passés 32 · en échec 0
+    pré-vol client-champ : code 0 · passés 4 · en échec 0
+    pré-vol client-garde : code 0 · passés 4 · en échec 0
+    pré-vol client-visit : code 0 · passés 5 · en échec 0
+    pré-vol client-wizard : code 0 · passés 34 · en échec 0
+  ✗ PRÉ-VOL pro-account : code 1, ROUGE — passés 30 · en échec 1
+        Tests  1 failed | 30 passed (31)
+  ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+   FAIL  src/account/account-settings-page.test.tsx > écran profil — les deux numéros du pro (D38) sont le champ de téléphone PARTAGÉ > ⚠ des lettres, un dixième chiffre, un premier chiffre refusé : rien de tout cela n'entre dans l'un ni l'autre champ
+  Error: 2 avertissement(s) de console dans un fichier NON exempté.
+      232|     `${captures.length} avertissement(s) de console dans un fichier NO…
+
+Lecture : le pré-vol `pro-account` (`apps/pro/src/account/account-settings-page.test.tsx`) a rougi par « 2 avertissement(s) de console dans un fichier NON exempté » — la garde des sorties console, qui FLOTTE (classe `act` : AGENTS.md,
+« UN PLAFOND SE RELÈVE SUR PLUSIEURS PASSES » ; backlog `[PRO]` « LA GARDE DES SORTIES CONSOLE A TOMBÉ DE NOUVEAU »). Ce n'est PAS une morsure et pas une garde muette : le pré-vol refuse de juger, la campagne s'est arrêtée (code 2) avant toute mutation.
+Les six portes avaient passé ce même fichier (pro 45 fichiers / 711 tests, 0 échec). DÉCISION DE LA SESSION (écrite ici, à ratifier) : rejouer CETTE campagne, UNE fois, après la fin de l'union, par l'option `--seulement` de l'outil.
+
+════════════════════════════════════════════════════════════════════════════════
+LE REJEU UNIQUE DE r32 (`python3 docs/preuves/D342/neutralisation/jouer-union.py --seulement neutralize-r32.py`, tête propre, 20:17)
+════════════════════════════════════════════════════════════════════════════════
+liste versée : 35 campagne(s) · jouées dans ce lancement : 1 (FILTRE ['neutralize-r32.py'] : un lancement filtré n'est pas la passe) · avec --int : [] · arbre propre au départ : oui
+
+[1/1] neutralize-r32.py … (19:53:17)
+    sortie=0 · 65 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s) · 65 garde(s) mordue(s) sur 65 cible · 1439 s · arbre propre après : oui
+
+========================================================================================================================
+campagne                           sortie  mord  muet  nonm   sec  résumé du harnais
+neutralize-r32.py                       0    65     0     0  1439  65 garde(s) mordue(s) sur 65 cible
+========================================================================================================================
+PARCOURU : 1 passage(s) pour 1 campagne(s) (attendu : autant que de campagnes ; chaque campagne à mode d'intégration est jouée UNE fois, avec --int) · 1439s
+MESURÉ : 65 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 0 non mesurée(s) · 0 sortie(s) non nulle(s) (attendu : 0, 0, 0)
+ARBRE à la fin : propre (attendu : propre)
+
+════════════════════════════════════════════════════════════════════════════════
+TOTAL — 35 campagnes jouées : 590 gardes mordues à la première passe (r32 : 0, pré-vol rouge) + 65 (rejeu de r32) = 655 GARDES MORDUES ; 0 muette ; 9 cibles `--e2e` non mesurées (fc1 ×2, fc2 ×1, fc8 ×2, fc10 ×1, r25 ×3).
+Les cibles de `neutralize-r45.py` (4 sur 4) sont à part : docs/preuves/D343/neutralisation/neutralize-r45-sortie.txt.
