@@ -1,0 +1,2587 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro[39m
+
+[90mstdout[2m | src/dashboard/walkin-journey.test.tsx
+[22m[39m🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ [31m❯[39m src/dashboard/walkin-journey.test.tsx [2m([22m[2m175 tests[22m[2m | [22m[31m2 failed[39m[2m | [22m[33m169 skipped[39m[2m)[22m[33m 1934[2mms[22m[39m
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22ms'ouvre sur la question du CONTACT (rang 41 : la première étape), et sur elle seule
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22m⚠ l'étape répondue QUITTE l'écran — c'est là que se mesure l'exclusivité
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22mchaque réponse fait apparaître la suivante, dans l'ordre arbitré
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22m⚠ ne laisse pas passer un client incomplet — le bouton reste inerte
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22m⚠ le nombre d'invités MANQUANT bloque aussi — il chiffre les prestations
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22mchaque champ client porte un LABEL visible — des cases nues ne se distinguent pas
+   [2m[90m↓[39m[22m Flux par étapes — une seule question à l'écran[2m > [22mle fil de progression NOMME l'étape courante pour un lecteur d'écran
+   [2m[90m↓[39m[22m Récapitulatif — des réponses, JAMAIS des montants[2m > [22mfige la réponse validée en ligne de récapitulatif
+   [2m[90m↓[39m[22m Récapitulatif — des réponses, JAMAIS des montants[2m > [22m⚠ AUCUN MONTANT dans le récapitulatif avant l'étape Devis
+   [2m[90m↓[39m[22m Récapitulatif — des réponses, JAMAIS des montants[2m > [22mn'affiche PAS l'étape en cours dans le récapitulatif — elle est déjà à l'écran
+   [2m[90m↓[39m[22m Retour en arrière — les réponses survivent, les montants non[2m > [22m« Modifier » ramène à l'étape, sans rien effacer
+   [2m[90m↓[39m[22m Retour en arrière — les réponses survivent, les montants non[2m > [22m⚠ NE REPLIE PAS le récapitulatif — écart assumé avec la maquette
+   [2m[90m↓[39m[22m Retour en arrière — les réponses survivent, les montants non[2m > [22mvalider une étape corrigée renvoie à la PREMIÈRE question sans réponse
+   [2m[90m↓[39m[22m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ cliquer le NUMÉRO d'une étape répondue vaut « Modifier »
+   [2m[90m↓[39m[22m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ une étape SANS réponse n'est pas cliquable dans le rail
+[31m   [31m×[31m Rail latéral, numéros cliquables et remise à zéro[2m > [22m« Recommencer » remet tout à zéro et ramène à la première question[39m[33m 413[2mms[22m[39m
+[31m     → Unable to find an accessible element with the role "button" and name "Recommencer"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[31m
+    [33mclass[31m=[32m"wk-head"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-eyebrow"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-lede"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-step-counter"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Nouvelle réservation":
+  [36m<h1[31m
+    [33mclass[31m=[32m"wk-title"[31m
+  [36m/>[31m
+
+  Name "Quel créneau ?":
+  [36m<h2[31m
+    [33mclass[31m=[32m"wk-question"[31m
+    [33mid[31m=[32m"wk-question"[31m
+  [36m/>[31m
+
+  Name "Créneaux du 2026-08-15":
+  [36m<h2 />[31m
+
+  --------------------------------------------------
+  button:
+
+  Name "Annuler":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-head-reset"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Client":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Date":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Client":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Date":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Soirée 20:00 – 02:00 1 581 000 DA Disponible":
+  [36m<button[31m
+    [33maria-pressed[31m=[32m"false"[31m
+    [33mclass[31m=[32m"cal-slot cal-slot-pick is-available"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Précédent":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-btn-previous"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Avancement de la réservation":
+  [36m<nav[31m
+    [33maria-label[31m=[32m"Avancement de la réservation"[31m
+    [33mclass[31m=[32m"zj-rail wk-rail"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[31m
+
+  Name "Réponses déjà données":
+  [36m<ul[31m
+    [33maria-label[31m=[32m"Réponses déjà données"[31m
+    [33mclass[31m=[32m"zj-recap wk-recap"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<ul />[31m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33maria-current[31m=[32m"step"[31m
+    [33mclass[31m=[32m"is-current"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-todo"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-todo"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li />[31m
+
+  --------------------------------------------------
+  region:
+
+  Name "Quel créneau ?":
+  [36m<section[31m
+    [33maria-labelledby[31m=[32m"wk-question"[31m
+    [33mclass[31m=[32m"zj-card wk-active"[31m
+    [33mtabindex[31m=[32m"-1"[31m
+  [36m/>[31m
+
+  Name "Créneaux du 2026-08-15":
+  [36m<section[31m
+    [33maria-label[31m=[32m"Créneaux du 2026-08-15"[31m
+    [33mclass[31m=[32m"cal-slots"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<header[31m
+      [33mclass[31m=[32m"wk-head"[31m
+    [36m>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-eyebrow"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"wk-eyebrow-rule"[31m
+        [36m/>[31m
+        [0mClient présent sur place[0m
+      [36m</p>[31m
+      [36m<h1[31m
+        [33mclass[31m=[32m"wk-title"[31m
+      [36m>[31m
+        [0mNouvelle réservation[0m
+      [36m</h1>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-lede"[31m
+      [36m>[31m
+        [0mCréez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.[0m
+      [36m</p>[31m
+      [36m<button[31m
+        [33mclass[31m=[32m"wk-btn wk-head-reset"[31m
+        [33mtype[31m=[32m"button"[31m
+      [36m>[31m
+        [0mAnnuler[0m
+      [36m</button>[31m
+    [36m</header>[31m
+    [36m<nav[31m
+      [33maria-label[31m=[32m"Avancement de la réservation"[31m
+      [33mclass[31m=[32m"zj-rail wk-rail"[31m
+    [36m>[31m
+      [36m<ol>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mContact[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mClient[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mDate[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33maria-current[31m=[32m"step"[31m
+          [33mclass[31m=[32m"is-current"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33maria-hidden[31m=[32m"true"[31m
+            [33mclass[31m=[32m"zj-rail-n"[31m
+          [36m>[31m
+            [0m4[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-rail-label"[31m
+          [36m>[31m
+            [0mCréneau[0m
+          [36m</span>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-todo"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33maria-hidden[31m=[32m"true"[31m
+            [33mclass[31m=[32m"zj-rail-n"[31m
+          [36m>[31m
+            [0m5[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-rail-label"[31m
+          [36m>[31m
+            [0mPrestations[0m
+          [36m</span>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-todo"[31m
+        [36m>[31m
+          [36m<span[31m
+            [33maria-hidden[31m=[32m"true"[31m
+            [33mclass[31m=[32m"zj-rail-n"[31m
+          [36m>[31m
+            [0m6[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-rail-label"[31m
+          [36m>[31m
+            [0mDevis[0m
+          [36m</span>[31m
+        [36m</li>[31m
+      [36m</ol>[31m
+    [36m</nav>[31m
+    [36m<ul[31m
+      [33maria-label[31m=[32m"Réponses déjà données"[31m
+      [33mclass[31m=[32m"zj-recap wk-recap"[31m
+    [36m>[31m
+      [36m<li[31m
+        [33mclass[31m=[32m"zj-recap-row"[31m
+      [36m>[31m
+        [36m<div>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-step"[31m
+          [36m>[31m
+            [0mContact[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-value"[31m
+          [36m>[31m
+            [0m+213550000002[0m
+          [36m</span>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+          [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mModifier[0m
+        [36m</button>[31m
+      [36m</li>[31m
+      [36m<li[31m
+        [33mclass[31m=[32m"zj-recap-row"[31m
+      [36m>[31m
+        [36m<div>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-step"[31m
+          [36m>[31m
+            [0mClient[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-value"[31m
+          [36m>[31m
+            [0mAmine Belkacem · Invités : 200[0m
+          [36m</span>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+          [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mModifier[0m
+        [36m</button>[31m
+      [36m</li>[31m
+      [36m<li[31m
+        [33mclass[31m=[32m"zj-recap-row"[31m
+      [36m>[31m
+        [36m<div>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-step"[31m
+          [36m>[31m
+            [0mDate[0m
+          [36m</span>[31m
+          [36m<span[31m
+            [33mclass[31m=[32m"zj-recap-value"[31m
+          [36m>[31m
+            [0m2026-08-15[0m
+          [36m</span>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+          [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mModifier[0m
+        [36m</button>[31m
+      [36m</li>[31m
+    [36m</ul>[31m
+    [36m<span[31m
+      [33maria-hidden[31m=[32m"true"[31m
+      [33mclass[31m=[32m"zj-connector wk-connector"[31m
+    [36m/>[31m
+    [36m<section[31m
+      [33maria-labelledby[31m=[32m"wk-question"[31m
+      [33mclass[31m=[32m"zj-card wk-active"[31m
+      [33mtabindex[31m=[32m"-1"[31m
+    [36m>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-step-counter"[31m
+      [36m>[31m
+        [0mÉtape 4 sur 6[0m
+      [36m</p>[31m
+      [36m<h2[31m
+        [33mclass[31m=[32m"wk-question"[31m
+        [33mid[31m=[32m"wk-question"[31m
+      [36m>[31m
+        [0mQuel créneau ?[0m
+      [36m</h2>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-hint"[31m
+      [36m>[31m
+        [0mCliquez sur un créneau pour continuer.[0m
+      [36m</p>[31m
+      [36m<section[31m
+        [33maria-label[31m=[32m"Créneaux du 2026-08-15"[31m
+        [33mclass[31m=[32m"cal-slots"[31m
+      [36m>[31m
+        [36m<h2>[31m
+          [0mCréneaux du 2026-08-15[0m
+        [36m</h2>[31m
+        [36m<ul>[31m
+          [36m<li>[31m
+            [36m<button[31m
+              [33maria-pressed[31m=[32m"false"[31m
+              [33mclass[31m=[32m"cal-slot cal-slot-pick is-available"[31m
+              [33mtype[31m=[32m"button"[31m
+            [36m>[31m
+              [36m<span>[31m
+                [0mSoirée[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"cal-slot-hours"[31m
+              [36m>[31m
+                [0m20:00 – 02:00[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"cal-slot-price"[31m
+              [36m>[31m
+                [0m1 581 000 DA[0m
+              [36m</span>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"cal-status"[31m
+              [36m>[31m
+                [0mDisponible[0m
+              [36m</span>[31m
+            [36m</button>[31m
+          [36m</li>[31m
+        [36m</ul>[31m
+      [36m</section>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"wk-actions"[31m
+      [36m>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"wk-btn wk-btn-previous"[31m
+          [33mtype[31m=[32m"button"[31m
+        [36m>[31m
+          [0mPrécédent[0m
+        [36m</button>[31m
+      [36m</div>[31m
+    [36m</section>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+   [33m[2m✓[22m[39m Rail latéral, numéros cliquables et remise à zéro[2m > [22m⚠ « Recommencer » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien [33m 309[2mms[22m[39m
+   [2m[90m↓[39m[22m Date et créneau sont DEUX écrans[2m > [22ml'étape date montre la grille du mois, jamais les créneaux
+   [2m[90m↓[39m[22m Date et créneau sont DEUX écrans[2m > [22m⚠ l'étape créneau montre les créneaux, PAS la grille du mois
+   [2m[90m↓[39m[22m La date vient du calendrier réel[2m > [22mune date VENDUE ne mène à AUCUN créneau réservable — le moteur décide
+   [2m[90m↓[39m[22m La date vient du calendrier réel[2m > [22m⚠ changer la date EFFACE le créneau, le DIT, et repose la question
+   [2m[90m↓[39m[22m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ la référence rendue par le serveur s'affiche juste après le calcul, avec son libellé, isolée de gauche à droite
+   [2m[90m↓[39m[22m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse
+   [2m[90m↓[39m[22m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite
+   [2m[90m↓[39m[22m ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis »[2m > [22m⛔ GARDE DE SOURCE — l'application Pro ne bâtit AUCUNE référence : ni `DEVIS-` ni `padStart` dans le parcours (la référence vient du serveur)
+   [2m[90m↓[39m[22m Un seul devis, révisé[2m > [22m⚠ le second calcul RÉVISE la chaîne, il ne crée PAS un devis de plus
+   [2m[90m↓[39m[22m Un seul devis, révisé[2m > [22maucun montant total avant que le SERVEUR ait chiffré
+   [2m[90m↓[39m[22m Un seul devis, révisé[2m > [22mle total et l'acompte affichés sont ceux du devis, à l'unité près
+   [2m[90m↓[39m[22m Un seul devis, révisé[2m > [22m⚠ changer une condition JETTE le total et le dit — un total périmé est un mensonge
+   [2m[90m↓[39m[22m Le focus suit la question (R2d, désormais structurel)[2m > [22m⚠ ne vole PAS le focus au premier rendu — personne n'a rien demandé
+   [2m[90m↓[39m[22m Le focus suit la question (R2d, désormais structurel)[2m > [22memmène le focus sur la carte de l'étape à chaque transition
+   [2m[90m↓[39m[22m Le focus suit la question (R2d, désormais structurel)[2m > [22mfait aussi défiler, en une seule fois
+   [2m[90m↓[39m[22m Les deux issues (décision ⑥)[2m > [22m« Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille
+   [2m[90m↓[39m[22m Les deux issues (décision ⑥)[2m > [22m⚠ « Enregistrer » n'appelle JAMAIS accept — le standby ne verrouille rien
+   [2m[90m↓[39m[22m Les deux issues (décision ⑥)[2m > [22mla date prise entre-temps remonte l'erreur de la BASE, et l'écran ne dit pas « bloquée »
+   [2m[90m↓[39m[22m Les deux issues (décision ⑥)[2m > [22m⚠ sans e-mail, la clé est ABSENTE du corps — jamais une chaîne vide (D135)
+   [2m[90m↓[39m[22m La remise par canal (Q2) et le catalogue[2m > [22mles cinq canaux sont RENDUS une fois le devis calculé ; tous sont actifs sauf « e-mail », qui exige une adresse valide (rang 33)
+   [2m[90m↓[39m[22m La remise par canal (Q2) et le catalogue[2m > [22menregistre le canal cliqué sur le devis en cours
+   [2m[90m↓[39m[22m La remise par canal (Q2) et le catalogue[2m > [22mle catalogue affiché est celui de la SALLE — aucune prestation inventée
+   [2m[90m↓[39m[22m La remise par canal (Q2) et le catalogue[2m > [22m⚠ un catalogue ILLISIBLE le dit — jamais « aucune prestation », qui est un autre fait (D133)
+   [2m[90m↓[39m[22m Point D — chrome partagée[2m > [22m⚠⚠ LA CARTE EST REMONTÉE À CHAQUE ÉTAPE : c'est ce qui fait rejouer l'animation
+   [2m[90m↓[39m[22m Point D — chrome partagée[2m > [22mle rail et le récapitulatif portent la chrome partagée ET la mise en page du Pro
+   [2m[90m↓[39m[22m Point D — chrome partagée[2m > [22mle bouton « Modifier » est le composant partagé, identique au client
+   [2m[90m↓[39m[22m Point D — chrome partagée[2m > [22m⚠ TRAIT DE LIAISON : absent tant qu'il n'y a rien à relier, présent ensuite
+   [2m[90m↓[39m[22m Point D — chrome partagée[2m > [22mla coche du rail est une icône, la même que côté client
+   [2m[90m↓[39m[22m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22ml'indicatif et le drapeau sont devant le champ, venus du modèle de pays ; ce qui se tape ne les contient pas
+   [2m[90m↓[39m[22m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22mseuls les chiffres passent, au plus la longueur du modèle
+   [2m[90m↓[39m[22m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22m⚠ un premier chiffre refusé s'affiche SEUL avec son message ; la saisie suivante est bloquée ; « Continuer » dit pourquoi
+   [2m[90m↓[39m[22m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22mle texte d'aide dit la longueur du modèle (plus de « 8 à 9 »)
+   [2m[90m↓[39m[22m Point 1 — le téléphone : le champ PARTAGÉ, la règle du CONTRAT[2m > [22m⚠ LE FORMAT ENVOYÉ À L'API n'a pas changé : l'indicatif puis les chiffres saisis, à la conversion
+   [2m[90m↓[39m[22m Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' »[2m > [22m⚠ un chiffre ou un symbole est refusé, sous le champ, et « Continuer » le dit
+   [2m[90m↓[39m[22m Point 2 — nom et prénom : lettres de toute écriture, espaces, « - » et « ' »[2m > [22mle français accentué, les noms composés, l'apostrophe et L'ARABE passent — le champ n'est pas en erreur
+   [2m[90m↓[39m[22m Point 3 — l'e-mail : la règle du contrat, importée[2m > [22mle champ refuse exactement ce que `isValidContactEmail` refuse — le serveur applique la même fonction
+   [2m[90m↓[39m[22m Point 3 — l'e-mail : la règle du contrat, importée[2m > [22mvide, l'e-mail ne retient rien (D135) ; refusé, il retient « Continuer » avec sa raison
+   [2m[90m↓[39m[22m Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé[2m > [22mchaque champ porte son exemple, ET son libellé visible reste là, lié au champ (D143)
+   [2m[90m↓[39m[22m Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé[2m > [22m⚠ AUCUNE vraie donnée : le téléphone est un gabarit (« X »), l'e-mail est sur example.com, aucun nom n'est une personne
+   [2m[90m↓[39m[22m Point 4 — un exemple du format dans chaque champ, qui ne remplace JAMAIS le libellé[2m > [22mle même exemple existe en ARABE, pour chacun des champs
+   [2m[90m↓[39m[22m Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton[2m > [22mtout est vide : la liste nomme CHAQUE manque de l'étape, et le bouton la désigne par `aria-describedby`
+   [2m[90m↓[39m[22m Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton[2m > [22m⚠ UN SEUL manque : « le nombre d'invités est obligatoire » — et rien d'autre
+   [2m[90m↓[39m[22m Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton[2m > [22mun numéro INCOMPLET se dit avec la longueur du modèle
+   [2m[90m↓[39m[22m Point 5 — « Continuer » grisé : la RAISON PRÉCISE, liée au bouton[2m > [22mtout répondu : plus de liste, plus de description, le bouton s'active
+   [2m[90m↓[39m[22m Libellés liés aux champs — en arabe aussi[2m > [22m⚠ en ARABE, chaque libellé pointe son PROPRE champ (l'identifiant ne vient plus des lettres latines du libellé)
+   [2m[90m↓[39m[22m Libellés liés aux champs — en arabe aussi[2m > [22m⚠ chaque libellé du formulaire porte `for` = l'identifiant d'UN champ qui existe, et deux libellés ne visent jamais le même — en français comme en arabe
+   [2m[90m↓[39m[22m Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles[2m > [22mle LIBELLÉ d'une étape répondue ramène à elle, sans rien effacer
+   [2m[90m↓[39m[22m Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles[2m > [22m⚠ le libellé et la pastille sont UN seul bouton — deux commandes de même nom côte à côte seraient deux arrêts de tabulation
+   [2m[90m↓[39m[22m Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles[2m > [22m⚠ on ne saute PAS une étape incomplète : le libellé d'une étape sans réponse n'est dans aucun bouton
+   [2m[90m↓[39m[22m Point 8 — les libellés du rail sont cliquables comme leur pastille, avec les mêmes règles[2m > [22ml'étape COURANTE n'est pas cliquable non plus : « Modifier » n'existerait pas
+   [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mabsent à la première étape ; présent aux suivantes, et il ramène à l'étape d'avant SANS rien effacer
+   [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mde l'étape des prestations à celle du créneau, le créneau retenu SURVIT
+   [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22m⚠ DANS LE DOM, « Précédent » PRÉCÈDE « Voir le devis » : à gauche en français, et la page arabe le reflète (le sens de la page, pas une propriété physique)
+   [2m[90m↓[39m[22m Point 9 — « Précédent » à gauche, « Continuer » à droite[2m > [22mune fois l'affaire conclue, « Précédent » disparaît — il ne propose plus de modifier ce qui est écrit
+   [32m✓[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m« Nouveau devis » n'est PAS là avant la conclusion — « Recommencer » l'est[32m 26[2mms[22m[39m
+   [33m[2m✓[22m[39m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Recommencer », et il repart de l'étape 1, formulaire vidé [33m 323[2mms[22m[39m
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ la fenêtre ne s'ouvre PAS avant la réponse du serveur : elle attend `convert`
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ « Bloquer la date » : la fenêtre attend `accept` aussi, et ne s'ouvre pas si la date a été prise
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m⚠ un ÉCHEC du serveur laisse la fenêtre fermée — l'erreur s'affiche, aucune confirmation
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22mla fenêtre dit l'ACTION, la DATE et le CLIENT — « enregistrée » pour l'un, « bloquée » pour l'autre
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22m« Bloquer la date » : « Date bloquée », avec la date et le client
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22men ARABE, la fenêtre se dit dans la langue de la page, avec la date dans cette langue
+   [2m[90m↓[39m[22m Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur[2m > [22mla fenêtre se ferme par son bouton, sans rien défaire : la demande reste inscrite à l'écran
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mcinq canaux, dans l'ordre de la liste d'autorité — l'e-mail est le CINQUIÈME bouton, rangé à côté du SMS
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle canal « e-mail » est INACTIF sans adresse, et la raison est liée au bouton ; le mobile saisi active le SMS et le téléphone
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mavec une adresse valide à l'étape Contact, le canal « e-mail » est ACTIF
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle fichier téléchargé porte le nom que le SERVEUR donne : une seule formule, sans donnée personnelle
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ rang 39 (F-15) : la fenêtre de remise COMMENCE par la référence du devis remis, isolée de gauche à droite, avant le canal et le PDF
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⚠ la fenêtre de remise ne s'ouvre PAS avant les réponses : elle attend l'enregistrement ET le PDF (la boîte de langue, elle, est déjà fermée)
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 2 — enregistrée, mais le PDF refusé (une version plus récente existe) : la fenêtre le DIT, avec le motif du serveur, et rien n'est téléchargé
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 3 — le PDF est téléchargé, mais l'enregistrement a échoué : la fenêtre le DIT, le PDF est tout de même sauvé, et le texte d'état n'affiche aucune remise
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22missue 4 — les deux échouent : « Rien n'a pu être fait », avec les DEUX motifs (une panne du moteur n'est pas un refus)
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mun échec du TÉLÉCHARGEMENT lui-même (le navigateur refuse le lien) est dit comme un PDF non téléchargé — jamais « téléchargé »
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mla phrase « Zwadj n'imprime rien et n'envoie rien à votre place » a DISPARU de l'écran, et l'aide dit ce que font les boutons
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mle point de branchement n'est PAS appelé quand l'enregistrement a échoué : on n'enverra pas ce que le serveur n'a pas enregistré
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22m⚠ pendant le travail les boutons sont VERROUILLÉS : un double clic ne fait ni deux remises ni deux téléchargements
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mla fenêtre se ferme par son bouton, sans rien défaire : la remise reste inscrite à l'écran
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22men ARABE : le libellé du cinquième canal, la boîte de langue ET la fenêtre de remise dans la langue de la page, la langue du PDF choisie dans la boîte
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-11 : la langue du PDF est celle CHOISIE, pas celle de l'interface — « العربية » sur une page française envoie `ar`, « Français » sur une page arabe envoie `fr`
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-12 : le canal retenu est celui du DERNIER clic — SMS, annuler, puis impression et « Français » enregistre l'IMPRESSION, une seule fois
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22mP-13 : un canal GRISÉ n'ouvre pas la boîte (l'e-mail sans adresse) ; un double clic sur un canal actif en ouvre UNE seule
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22mP-13 : choisir une langue FERME la boîte tout de suite et verrouille les boutons — même quand l'enregistrement n'a pas répondu
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22m⛔ P-14 : la boîte est accessible — rôle `dialog`, nom et description, focus initial sur « Annuler », boutons de langue qui déclarent leur `lang` ET leur `dir`
+   [2m[90m↓[39m[22m Rang 33 — cinq canaux, le PDF et la fenêtre[2m > [22mRang 38 — la boîte de langue[2m > [22mP-14 : les deux libellés de langue sont écrits DANS LEUR PROPRE LANGUE, et IDENTIQUES dans les deux catalogues (« Français » ne se traduit pas en arabe)
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-17 — le CONTACT est la PREMIÈRE étape, les NOMS la seconde : le rail le dit dans cet ordre, et la première question est celle du contact
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ S-57 — la recherche porte d'abord sur le NUMÉRO, puis sur l'E-MAIL ; un numéro trouvé ne cherche pas l'e-mail
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mune fiche TROUVÉE PRÉREMPLIT les noms de CE devis, modifiables ; aucune fiche n'est créée ; le devis porte la fiche et les noms DE L'ÉCRAN
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-6 — une fiche LIÉE : les deux champs de nom sont GRISÉS, le texte le dit, et le devis porte les noms de la FICHE
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-6 — une fiche LIÉE RENDUE par la création (K-2, `created: false`) : ses noms s'IMPOSENT au devis, quels que soient les noms tapés
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mun AUTRE numéro après une fiche trouvée, et pas de fiche pour lui : les noms de l'ANCIENNE fiche ne passent pas au nouveau client
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mune fiche ABSENTE se CRÉE (K-2) au « Continuer » de l'étape Client, avec le contact et les noms TAPÉS — et le devis porte la fiche CRÉÉE
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-4 — le numéro du PRO refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-17 — AUCUNE écriture de fiche après la création : ni au calcul, ni à la conversion, ni à la remise
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ MD-9 — la conversion est PRÉREMPLIE depuis la copie (coupée au PREMIER espace) et la fiche ; les deux champs restent MODIFIABLES ; l'envoi porte la valeur de l'ÉCRAN
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mMD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mMD-9 — une copie SANS espace : tout au NOM, le PRÉNOM vide — et la conclusion RETENUE jusqu'à ce qu'il soit saisi
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ L36-1 — une fiche SANS numéro (trouvée par l'e-mail) : la conversion n'EXIGE PLUS le numéro, le corps n'en porte pas, la fiche n'est PAS réécrite
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mL36-1 — le pro PEUT ajouter un numéro à la conversion : il part avec l'e-mail ; la fiche n'est pas réécrite
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mML-1 — ni numéro ni e-mail à la conversion (le pro les efface) : « Enregistrer » redevient inerte, et la raison est « un numéro ou un e-mail »
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mML-6 — SANS numéro, les canaux qui l'exigent (SMS, appel) ne sont PAS proposés ; l'e-mail et les canaux sans contact le sont
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22m⛔ K-5 — la boîte de langue DEMANDE le nom qui manque à la langue choisie, le COMPLÈTE sur le devis, PUIS remet et télécharge dans cette langue
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — la copie de la langue choisie est LÀ : aucune question, la remise part (le français d'un devis à copie latine)
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — ANNULER la question du nom : rien n'est complété, rien n'est remis ni téléchargé
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — le nom saisi passe la règle PARTAGÉE : un chiffre retient la validation, rien ne part
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mK-5 — le serveur REFUSE le complément (409 : déjà complété entre-temps) : l'erreur est DITE, rien n'est remis ni téléchargé
+   [2m[90m↓[39m[22m ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom[2m > [22mle récapitulatif : l'étape Contact dit le numéro, l'étape Client les noms et les invités — aucun montant
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ Q1 — l'étape Contact porte UN SECOND bouton, à côté de « Continuer » ; il s'ouvre sans rien taper, n'appelle NI la recherche NI la création de fiche, et mène à l'étape Client
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-20 (Q2) — l'étape Client d'un brouillon n'a AUCUN champ de nom et A le champ des invités ; « Continuer » reste grisé sans invités, et la fiche n'est ni cherchée ni créée
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ le récapitulatif DIT que le contact n'a pas été donné (`draftSummary`) — l'étape Contact est répondue, pas oubliée
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ la CRÉATION du brouillon envoie `isOfficial: false` et RIEN d'autre que le devis : ni fiche, ni nom — le corps exact
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-21 — le brouillon affiche sa référence `BROUILLON-…` (celle du SERVEUR) et son bandeau ; AUCUN canal de remise, AUCUN bouton de conclusion, AUCUN champ de conversion
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-21 (R-3) — « Télécharger le brouillon » ouvre la boîte de langue, télécharge le PDF dans la langue CHOISIE, sous le nom `BROUILLON-…` — sans `deliver`, sans la question du nom
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ la langue ARABE du PDF : `document(id, "ar")` et le nom `_ar_` ; « Annuler » dans la boîte ne télécharge RIEN
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ un téléchargement qui ÉCHOUE est dit (l'erreur du serveur), n'enregistre rien et n'affiche pas « téléchargé »
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-23 (R-1 côté écran) — modifier un brouillon RÉVISE la chaîne avec un corps SANS fiche, SANS nom, SANS `isOfficial` ; la création n'est pas rejouée
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-22 — « Ajouter les coordonnées » ramène au CONTACT ; après la fiche et les noms, le total du brouillon est TOUJOURS là (D-23) et « Rendre le devis officiel » envoie la fiche et les noms de l'écran — rien d'autre
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ après la promotion : l'écran prend le DTO du SERVEUR (`DEVIS-…`, même numéro), le bandeau disparaît, les cinq canaux et la conclusion APPARAISSENT, et le message le dit
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ une promotion REFUSÉE est dite (le message du catalogue) et le devis reste un BROUILLON : le bandeau est là, aucun canal n'apparaît
+   [33m[2m✓[22m[39m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Recommencer » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms [33m 440[2mms[22m[39m
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-13 côté écran — le chemin ORDINAIRE (« Continuer » du contact) ne crée jamais un brouillon : le corps ne porte pas `isOfficial`
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ parité FR = AR — l'étape Contact porte le bouton ARABE ; le devis brouillon, son bandeau et son téléchargement se lisent en arabe, avec les chaînes du catalogue arabe
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ chaque chaîne neuve existe dans les DEUX catalogues, non vide, et l'arabe diffère du français
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ D-23 (R-1) — APRÈS avoir ajouté des coordonnées, modifier le brouillon le RÉVISE encore SANS fiche ni nom : la fiche ne part que dans la promotion
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ le second bouton n'est plus offert quand une chaîne OFFICIELLE est en cours : un devis officiel ne redevient pas un brouillon (R-1)
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Continuer » du contact QUITTE le mode « sans coordonnées » : revenu au contact par « Précédent », un numéro tapé rend l'étape Client COMPLÈTE (les champs des noms, plus le texte du brouillon)
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ « Rendre le devis officiel » reste GRISÉ tant que l'étape Client n'est pas répondue : un nom effacé après la fiche retient le geste (la promotion n'envoie que ce que l'écran affiche)
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le SECOND bouton est offert à l'étape Contact
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le bandeau du brouillon est rendu, avec le téléchargement et le geste qui AJOUTE des coordonnées ; « Rendre officiel » n'y est PAS (aucune fiche)
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le parcours d'un brouillon ATTEINT le devis : sans fiche, aucune étape n'est jugée « non répondue » en route
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le récapitulatif DIT que le contact n'a pas été donné
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — « Continuer » de l'étape Client d'un brouillon est GRISÉ sans invités et OFFERT avec, sans aucun nom
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le téléchargement d'un brouillon DIT qu'il a eu lieu
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — le TOTAL du brouillon survit à l'ajout des coordonnées (la fiche, les noms, la recherche ne le jettent pas) ; aucune version de plus n'est demandée
+   [2m[90m↓[39m[22m ⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le brouillon sans nom, le téléchargement sans remise, la promotion[2m > [22m⛔ garde native — après la promotion, le message « officiel » est rendu
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-1, MD-11 : une prestation PAR FORMULE cochée propose ses paliers ACTIFS, et aucun n'est choisi d'avance
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-1 : sans palier, « Voir le devis » reste INACTIF et la raison est DITE ; le palier choisi, il s'active
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-2, MD-3 : la quantité est bornée par le CATALOGUE (de 2 à 30 ici) — vide ou hors bornes, « Voir le devis » reste inactif
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-5, MD-9 : le corps du devis porte le palier CHOISI et la quantité SAISIE — à la création ET à la révision
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-7 : décocher EFFACE le détail — recocher ne renvoie pas l'ancien palier
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22m⛔ MD-6 : changer la quantité APRÈS le calcul jette le devis affiché — il faut recalculer
+   [2m[90m↓[39m[22m FP-1 — le palier et la quantité se saisissent au comptoir (méthode renforcée)[2m > [22mMD-10 : en arabe, le palier et l'unité s'écrivent en arabe
+   [2m[90m↓[39m[22m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ le 409 relit la liste des devis de LA SALLE, dit le refus, et ne remet ni ne télécharge rien
+   [2m[90m↓[39m[22m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ la copie du SERVEUR est gardée : la remise suivante en arabe part sans reposer la question, et rien n'est écrit par le pro
+   [2m[90m↓[39m[22m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ le devis relu est cherché PAR SON IDENTIFIANT : la copie d'un AUTRE devis de la salle ne passe pas au devis courant
+   [2m[90m↓[39m[22m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22mune relecture qui ÉCHOUE ne change rien : le refus reste dit, rien n'est remis, la question du nom se repose (la copie n'est pas inventée)
+   [2m[90m↓[39m[22m FP-2 — après le 409 de K-5 : la copie qui existe déjà est GARDÉE, la remise suivante part sans reposer la question[2m > [22m⛔ un AUTRE refus (500) ne relit PAS la liste : seul le 409 de la copie déjà là la justifie
+   [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la révision porte la copie ARABE que la boîte de langue a complétée sur la version précédente, avec le nom latin
+   [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ la copie est reprise MÊME quand le devis affiché a été jeté par une modification (le total périmé n'est plus dans l'état)
+   [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ un nom TAPÉ à la révision l'emporte sur celui de la version ; l'autre écriture est reprise
+[31m   [31m×[31m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)[39m[33m 419[2mms[22m[39m
+[31m     → Unable to find an accessible element with the role "button" and name "Recommencer"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[31m
+    [33mclass[31m=[32m"wk-head"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-eyebrow"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-lede"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-step-counter"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-reference"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+    [33mid[31m=[32m"wk-_r_20_-hint"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+    [33mid[31m=[32m"wk-_r_21_-hint"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+    [33mid[31m=[32m"wk-deliver-reason"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Nouvelle réservation":
+  [36m<h1[31m
+    [33mclass[31m=[32m"wk-title"[31m
+  [36m/>[31m
+
+  Name "Devis":
+  [36m<h2[31m
+    [33mclass[31m=[32m"wk-question"[31m
+    [33mid[31m=[32m"wk-question"[31m
+  [36m/>[31m
+
+  Name "Total à facturer":
+  [36m<h3[31m
+    [33mclass[31m=[32m"wk-total-head"[31m
+  [36m/>[31m
+
+  Name "Coordonnées du client":
+  [36m<h3[31m
+    [33mclass[31m=[32m"wk-total-head"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  button:
+
+  Name "Annuler":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-head-reset"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Client":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Date":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Créneau":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Créneau"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Prestations":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Prestations"[31m
+    [33mclass[31m=[32m"zj-rail-step"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Client":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Date":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Créneau":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Créneau"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier l'étape Prestations":
+  [36m<button[31m
+    [33maria-label[31m=[32m"Modifier l'étape Prestations"[31m
+    [33mclass[31m=[32m"zj-btn zj-recap-edit"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Modifier le devis":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-btn-primary"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Imprimé et remis":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Envoyé par SMS":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Envoyé par e-mail":
+  [36m<button[31m
+    [33maria-describedby[31m=[32m"wk-deliver-reason"[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mdisabled[31m=[32m""[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Annoncé de vive voix":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Convenu par téléphone":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Bloquer la date":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Enregistrer sans bloquer":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-btn-primary"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  Name "Précédent":
+  [36m<button[31m
+    [33mclass[31m=[32m"wk-btn wk-btn-previous"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Avancement de la réservation":
+  [36m<nav[31m
+    [33maria-label[31m=[32m"Avancement de la réservation"[31m
+    [33mclass[31m=[32m"zj-rail wk-rail"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[31m
+
+  Name "Réponses déjà données":
+  [36m<ul[31m
+    [33maria-label[31m=[32m"Réponses déjà données"[31m
+    [33mclass[31m=[32m"zj-recap wk-recap"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"is-done"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33maria-current[31m=[32m"step"[31m
+    [33mclass[31m=[32m"is-current"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  Name "":
+  [36m<li[31m
+    [33mclass[31m=[32m"zj-recap-row"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  region:
+
+  Name "Devis":
+  [36m<section[31m
+    [33maria-labelledby[31m=[32m"wk-question"[31m
+    [33mclass[31m=[32m"zj-card wk-active"[31m
+    [33mtabindex[31m=[32m"-1"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[31m
+
+  Name "":
+  [36m<dt />[31m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[31m
+
+  Name "":
+  [36m<dd />[31m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[31m
+
+  Name "":
+  [36m<strong />[31m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Prénom":
+  [36m<input[31m
+    [33mclass[31m=[32m"wk-input"[31m
+    [33mid[31m=[32m"wk-_r_1u_"[31m
+    [33mplaceholder[31m=[32m"Ex. : Amina"[31m
+    [33mvalue[31m=[32m"Amine"[31m
+  [36m/>[31m
+
+  Name "Nom":
+  [36m<input[31m
+    [33mclass[31m=[32m"wk-input"[31m
+    [33mid[31m=[32m"wk-_r_1v_"[31m
+    [33mplaceholder[31m=[32m"Ex. : Benali"[31m
+    [33mvalue[31m=[32m"Belkacem"[31m
+  [36m/>[31m
+
+  Name "Téléphone":
+  [36m<input[31m
+    [33maria-describedby[31m=[32m"wk-_r_20_-hint"[31m
+    [33mautocomplete[31m=[32m"tel-national"[31m
+    [33mid[31m=[32m"wk-_r_20_"[31m
+    [33minputmode[31m=[32m"numeric"[31m
+    [33mplaceholder[31m=[32m"5XX XX XX XX"[31m
+    [33mtype[31m=[32m"tel"[31m
+    [33mvalue[31m=[32m"550000002"[31m
+  [36m/>[31m
+
+  Name "E-mail":
+  [36m<input[31m
+    [33maria-describedby[31m=[32m"wk-_r_21_-hint"[31m
+    [33mclass[31m=[32m"wk-input"[31m
+    [33mid[31m=[32m"wk-_r_21_"[31m
+    [33minputmode[31m=[32m"email"[31m
+    [33mplaceholder[31m=[32m"nom@example.com"[31m
+    [33mvalue[31m=[32m""[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  img:
+
+  Name "Algérie, +213":
+  [36m<span[31m
+    [33maria-label[31m=[32m"Algérie, +213"[31m
+    [33mclass[31m=[32m"phone-field-country"[31m
+    [33mrole[31m=[32m"img"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  group:
+
+  Name "Remise du devis au client":
+  [36m<fieldset[31m
+    [33mclass[31m=[32m"wk-total-actions"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"wk-hint"[31m
+    [33mrole[31m=[32m"status"[31m
+  [36m/>[31m
+
+  --------------------------------------------------dialog:
+
+  Name "Remise enregistrée":
+  [36m<div[31m
+    [33maria-describedby[31m=[32m"_r_1r_-desc"[31m
+    [33maria-labelledby[31m=[32m"_r_1r_-title"[31m
+    [33maria-modal[31m=[32m"true"[31m
+    [33mclass[31m=[32m"dialog-panel"[31m
+    [33mrole[31m=[32m"dialog"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Remise enregistrée":
+  [36m<h2[31m
+    [33mclass[31m=[32m"dialog-title"[31m
+    [33mid[31m=[32m"_r_1r_-title"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[31m
+    [33mclass[31m=[32m"dialog-desc"[31m
+    [33mid[31m=[32m"_r_1r_-desc"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+  button:
+
+  Name "Fermer":
+  [36m<button[31m
+    [33mclass[31m=[32m"btn btn-accent"[31m
+    [33mtype[31m=[32m"button"[31m
+  [36m/>[31m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[31m
+  [33mstyle[31m=[32m"overflow: hidden;"[31m
+[36m>[31m
+  [36m<div>[31m
+    [36m<header[31m
+      [33mclass[31m=[32m"wk-head"[31m
+    [36m>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-eyebrow"[31m
+      [36m>[31m
+        [36m<span[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"wk-eyebrow-rule"[31m
+        [36m/>[31m
+        [0mClient présent sur place[0m
+      [36m</p>[31m
+      [36m<h1[31m
+        [33mclass[31m=[32m"wk-title"[31m
+      [36m>[31m
+        [0mNouvelle réservation[0m
+      [36m</h1>[31m
+      [36m<p[31m
+        [33mclass[31m=[32m"wk-lede"[31m
+      [36m>[31m
+        [0mCréez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.[0m
+      [36m</p>[31m
+      [36m<button[31m
+        [33mclass[31m=[32m"wk-btn wk-head-reset"[31m
+        [33mtype[31m=[32m"button"[31m
+      [36m>[31m
+        [0mAnnuler[0m
+      [36m</button>[31m
+    [36m</header>[31m
+    [36m<nav[31m
+      [33maria-label[31m=[32m"Avancement de la réservation"[31m
+      [33mclass[31m=[32m"zj-rail wk-rail"[31m
+    [36m>[31m
+      [36m<ol>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Contact"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mContact[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Client"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mClient[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Date"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+              [36m>[31m
+                [36m<path[31m
+                  [33md[31m=[32m"M20 6 9 17l-5-5"[31m
+                [36m/>[31m
+              [36m</svg>[31m
+            [36m</span>[31m
+            [36m<span[31m
+              [33mclass[31m=[32m"zj-rail-label"[31m
+            [36m>[31m
+              [0mDate[0m
+            [36m</span>[31m
+          [36m</button>[31m
+        [36m</li>[31m
+        [36m<li[31m
+          [33mclass[31m=[32m"is-done"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33maria-label[31m=[32m"Modifier l'étape Créneau"[31m
+            [33mclass[31m=[32m"zj-rail-step"[31m
+            [33mtype[31m=[32m"button"[31m
+          [36m>[31m
+            [36m<span[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"zj-rail-n zj-rail-btn"[31m
+            [36m>[31m
+              [36m<svg[31m
+                [33maria-hidden[31m=[32m"true"[31m
+                [33mclass[31m=[32m"lucide lucide-check"[31m
+                [33mfill[31m=[32m"none"[31m
+                [33mheight[31m=[32m"14"[31m
+                [33mstroke[31m=[32m"currentColor"[31m
+                [33mstroke-linecap[31m=[32m"round"[31m
+                [33mstroke-linejoin[31m=[32m"round"[31m
+                [33mstroke-width[31m=[32m"2.5"[31m
+                [33mviewBox[31m=[32m"0 0 24 24"[31m
+                [33mwidth[31m=[32m"14"[31m
+                [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+     ...[39m
+   [2m[90m↓[39m[22m FP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ une fiche LIÉE n'en reçoit rien : la révision ne porte pas le nom arabe que la fiche n'a pas (le serveur le refuserait, 409)
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/dashboard/walkin-journey.test.tsx[2m > [22mRail latéral, numéros cliquables et remise à zéro[2m > [22m« Recommencer » remet tout à zéro et ramène à la première question
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "button" and name "Recommencer"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"wk-head"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-lede"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-step-counter"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Nouvelle réservation":
+  [36m<h1[39m
+    [33mclass[39m=[32m"wk-title"[39m
+  [36m/>[39m
+
+  Name "Quel créneau ?":
+  [36m<h2[39m
+    [33mclass[39m=[32m"wk-question"[39m
+    [33mid[39m=[32m"wk-question"[39m
+  [36m/>[39m
+
+  Name "Créneaux du 2026-08-15":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Annuler":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-head-reset"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Client":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Date":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Client":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Date":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Soirée 20:00 – 02:00 1 581 000 DA Disponible":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"cal-slot cal-slot-pick is-available"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Précédent":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-btn-previous"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Avancement de la réservation":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Avancement de la réservation"[39m
+    [33mclass[39m=[32m"zj-rail wk-rail"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[39m
+
+  Name "Réponses déjà données":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Réponses déjà données"[39m
+    [33mclass[39m=[32m"zj-recap wk-recap"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<ul />[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33maria-current[39m=[32m"step"[39m
+    [33mclass[39m=[32m"is-current"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-todo"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-todo"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Quel créneau ?":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"wk-question"[39m
+    [33mclass[39m=[32m"zj-card wk-active"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "Créneaux du 2026-08-15":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Créneaux du 2026-08-15"[39m
+    [33mclass[39m=[32m"cal-slots"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"wk-head"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-eyebrow"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"wk-eyebrow-rule"[39m
+        [36m/>[39m
+        [0mClient présent sur place[0m
+      [36m</p>[39m
+      [36m<h1[39m
+        [33mclass[39m=[32m"wk-title"[39m
+      [36m>[39m
+        [0mNouvelle réservation[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-lede"[39m
+      [36m>[39m
+        [0mCréez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"wk-btn wk-head-reset"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mAnnuler[0m
+      [36m</button>[39m
+    [36m</header>[39m
+    [36m<nav[39m
+      [33maria-label[39m=[32m"Avancement de la réservation"[39m
+      [33mclass[39m=[32m"zj-rail wk-rail"[39m
+    [36m>[39m
+      [36m<ol>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mContact[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mClient[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mDate[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33maria-current[39m=[32m"step"[39m
+          [33mclass[39m=[32m"is-current"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"zj-rail-n"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-rail-label"[39m
+          [36m>[39m
+            [0mCréneau[0m
+          [36m</span>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-todo"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"zj-rail-n"[39m
+          [36m>[39m
+            [0m5[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-rail-label"[39m
+          [36m>[39m
+            [0mPrestations[0m
+          [36m</span>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-todo"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"zj-rail-n"[39m
+          [36m>[39m
+            [0m6[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-rail-label"[39m
+          [36m>[39m
+            [0mDevis[0m
+          [36m</span>[39m
+        [36m</li>[39m
+      [36m</ol>[39m
+    [36m</nav>[39m
+    [36m<ul[39m
+      [33maria-label[39m=[32m"Réponses déjà données"[39m
+      [33mclass[39m=[32m"zj-recap wk-recap"[39m
+    [36m>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"zj-recap-row"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-step"[39m
+          [36m>[39m
+            [0mContact[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-value"[39m
+          [36m>[39m
+            [0m+213550000002[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+          [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mModifier[0m
+        [36m</button>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"zj-recap-row"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-step"[39m
+          [36m>[39m
+            [0mClient[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-value"[39m
+          [36m>[39m
+            [0mAmine Belkacem · Invités : 200[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+          [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mModifier[0m
+        [36m</button>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"zj-recap-row"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-step"[39m
+          [36m>[39m
+            [0mDate[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"zj-recap-value"[39m
+          [36m>[39m
+            [0m2026-08-15[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+          [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mModifier[0m
+        [36m</button>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+    [36m<span[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mclass[39m=[32m"zj-connector wk-connector"[39m
+    [36m/>[39m
+    [36m<section[39m
+      [33maria-labelledby[39m=[32m"wk-question"[39m
+      [33mclass[39m=[32m"zj-card wk-active"[39m
+      [33mtabindex[39m=[32m"-1"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-step-counter"[39m
+      [36m>[39m
+        [0mÉtape 4 sur 6[0m
+      [36m</p>[39m
+      [36m<h2[39m
+        [33mclass[39m=[32m"wk-question"[39m
+        [33mid[39m=[32m"wk-question"[39m
+      [36m>[39m
+        [0mQuel créneau ?[0m
+      [36m</h2>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-hint"[39m
+      [36m>[39m
+        [0mCliquez sur un créneau pour continuer.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-label[39m=[32m"Créneaux du 2026-08-15"[39m
+        [33mclass[39m=[32m"cal-slots"[39m
+      [36m>[39m
+        [36m<h2>[39m
+          [0mCréneaux du 2026-08-15[0m
+        [36m</h2>[39m
+        [36m<ul>[39m
+          [36m<li>[39m
+            [36m<button[39m
+              [33maria-pressed[39m=[32m"false"[39m
+              [33mclass[39m=[32m"cal-slot cal-slot-pick is-available"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0mSoirée[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"cal-slot-hours"[39m
+              [36m>[39m
+                [0m20:00 – 02:00[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"cal-slot-price"[39m
+              [36m>[39m
+                [0m1 581 000 DA[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"cal-status"[39m
+              [36m>[39m
+                [0mDisponible[0m
+              [36m</span>[39m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wk-actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"wk-btn wk-btn-previous"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mPrécédent[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/dashboard/walkin-journey.test.tsx:[2m499:28[22m[39m
+    [90m497| [39m    await repondreClient();
+    [90m498| [39m    await repondreDate();
+    [90m499| [39m    fireEvent.click(screen.getByRole("button", { name: "Recommencer" }…
+    [90m   | [39m                           [31m^[39m
+    [90m500| [39m    expect(question()).toBe("Comment joindre le client ?");
+    [90m501| [39m    expect((screen.getByLabelText("Téléphone") as HTMLInputElement).va…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/dashboard/walkin-journey.test.tsx[2m > [22mFP-3 — la révision reprend la copie du nom complétée sur la version précédente[2m > [22m⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "button" and name "Recommencer"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"wk-head"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-lede"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-step-counter"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-reference"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+    [33mid[39m=[32m"wk-_r_20_-hint"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+    [33mid[39m=[32m"wk-_r_21_-hint"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+    [33mid[39m=[32m"wk-deliver-reason"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Nouvelle réservation":
+  [36m<h1[39m
+    [33mclass[39m=[32m"wk-title"[39m
+  [36m/>[39m
+
+  Name "Devis":
+  [36m<h2[39m
+    [33mclass[39m=[32m"wk-question"[39m
+    [33mid[39m=[32m"wk-question"[39m
+  [36m/>[39m
+
+  Name "Total à facturer":
+  [36m<h3[39m
+    [33mclass[39m=[32m"wk-total-head"[39m
+  [36m/>[39m
+
+  Name "Coordonnées du client":
+  [36m<h3[39m
+    [33mclass[39m=[32m"wk-total-head"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Annuler":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-head-reset"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Client":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Date":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Créneau":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Créneau"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Prestations":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Prestations"[39m
+    [33mclass[39m=[32m"zj-rail-step"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Contact":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Client":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Date":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Créneau":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Créneau"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier l'étape Prestations":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Modifier l'étape Prestations"[39m
+    [33mclass[39m=[32m"zj-btn zj-recap-edit"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Modifier le devis":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-btn-primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Imprimé et remis":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Envoyé par SMS":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Envoyé par e-mail":
+  [36m<button[39m
+    [33maria-describedby[39m=[32m"wk-deliver-reason"[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Annoncé de vive voix":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Convenu par téléphone":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Bloquer la date":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Enregistrer sans bloquer":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-btn-primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Précédent":
+  [36m<button[39m
+    [33mclass[39m=[32m"wk-btn wk-btn-previous"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Avancement de la réservation":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Avancement de la réservation"[39m
+    [33mclass[39m=[32m"zj-rail wk-rail"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol />[39m
+
+  Name "Réponses déjà données":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Réponses déjà données"[39m
+    [33mclass[39m=[32m"zj-recap wk-recap"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"is-done"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33maria-current[39m=[32m"step"[39m
+    [33mclass[39m=[32m"is-current"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"zj-recap-row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Devis":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"wk-question"[39m
+    [33mclass[39m=[32m"zj-card wk-active"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  [36m<dt />[39m
+
+  Name "":
+  [36m<dt />[39m
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  [36m<dd />[39m
+
+  Name "":
+  [36m<dd />[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Prénom":
+  [36m<input[39m
+    [33mclass[39m=[32m"wk-input"[39m
+    [33mid[39m=[32m"wk-_r_1u_"[39m
+    [33mplaceholder[39m=[32m"Ex. : Amina"[39m
+    [33mvalue[39m=[32m"Amine"[39m
+  [36m/>[39m
+
+  Name "Nom":
+  [36m<input[39m
+    [33mclass[39m=[32m"wk-input"[39m
+    [33mid[39m=[32m"wk-_r_1v_"[39m
+    [33mplaceholder[39m=[32m"Ex. : Benali"[39m
+    [33mvalue[39m=[32m"Belkacem"[39m
+  [36m/>[39m
+
+  Name "Téléphone":
+  [36m<input[39m
+    [33maria-describedby[39m=[32m"wk-_r_20_-hint"[39m
+    [33mautocomplete[39m=[32m"tel-national"[39m
+    [33mid[39m=[32m"wk-_r_20_"[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mplaceholder[39m=[32m"5XX XX XX XX"[39m
+    [33mtype[39m=[32m"tel"[39m
+    [33mvalue[39m=[32m"550000002"[39m
+  [36m/>[39m
+
+  Name "E-mail":
+  [36m<input[39m
+    [33maria-describedby[39m=[32m"wk-_r_21_-hint"[39m
+    [33mclass[39m=[32m"wk-input"[39m
+    [33mid[39m=[32m"wk-_r_21_"[39m
+    [33minputmode[39m=[32m"email"[39m
+    [33mplaceholder[39m=[32m"nom@example.com"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "Algérie, +213":
+  [36m<span[39m
+    [33maria-label[39m=[32m"Algérie, +213"[39m
+    [33mclass[39m=[32m"phone-field-country"[39m
+    [33mrole[39m=[32m"img"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "Remise du devis au client":
+  [36m<fieldset[39m
+    [33mclass[39m=[32m"wk-total-actions"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"wk-hint"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------dialog:
+
+  Name "Remise enregistrée":
+  [36m<div[39m
+    [33maria-describedby[39m=[32m"_r_1r_-desc"[39m
+    [33maria-labelledby[39m=[32m"_r_1r_-title"[39m
+    [33maria-modal[39m=[32m"true"[39m
+    [33mclass[39m=[32m"dialog-panel"[39m
+    [33mrole[39m=[32m"dialog"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Remise enregistrée":
+  [36m<h2[39m
+    [33mclass[39m=[32m"dialog-title"[39m
+    [33mid[39m=[32m"_r_1r_-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"dialog-desc"[39m
+    [33mid[39m=[32m"_r_1r_-desc"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Fermer":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-accent"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"wk-head"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-eyebrow"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"wk-eyebrow-rule"[39m
+        [36m/>[39m
+        [0mClient présent sur place[0m
+      [36m</p>[39m
+      [36m<h1[39m
+        [33mclass[39m=[32m"wk-title"[39m
+      [36m>[39m
+        [0mNouvelle réservation[0m
+      [36m</h1>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"wk-lede"[39m
+      [36m>[39m
+        [0mCréez une réservation pour un client venu sur place. Le calendrier est synchronisé en temps réel.[0m
+      [36m</p>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"wk-btn wk-head-reset"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [0mAnnuler[0m
+      [36m</button>[39m
+    [36m</header>[39m
+    [36m<nav[39m
+      [33maria-label[39m=[32m"Avancement de la réservation"[39m
+      [33mclass[39m=[32m"zj-rail wk-rail"[39m
+    [36m>[39m
+      [36m<ol>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Contact"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mContact[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Client"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mClient[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Date"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M20 6 9 17l-5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"zj-rail-label"[39m
+            [36m>[39m
+              [0mDate[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"is-done"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Modifier l'étape Créneau"[39m
+            [33mclass[39m=[32m"zj-rail-step"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"zj-rail-n zj-rail-btn"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-check"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+     ...
+[90m [2m❯[22m Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/dashboard/walkin-journey.test.tsx:[2m3022:28[22m[39m
+    [90m3020| [39m    const quotes = doublesDuServeur();
+    [90m3021| [39m    await jusquALaCopieCompletee(quotes);
+    [90m3022| [39m    fireEvent.click(screen.getByRole("button", { name: "Recommencer" }…
+    [90m   | [39m                           [31m^[39m
+    [90m3023| [39m    await allerAuDevis();
+    [90m3024| [39m    fireEvent.click(screen.getByRole("button", { name: "Calculer le de…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[2m | [22m[33m169 skipped[39m[90m (175)[39m
+[2m   Start at [22m 13:22:08
+[2m   Duration [22m 5.78s[2m (transform 1.11s, setup 217ms, collect 2.00s, tests 1.93s, environment 1.14s, prepare 172ms)[22m
+
