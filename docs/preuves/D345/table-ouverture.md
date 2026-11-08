@@ -82,3 +82,9 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 | `neutralisation/neutralize-fp3.py` | le titre attendu de E-4 et le libellé de la cible, mis à jour (« Annuler » → « Recommencer ») ; **aucune mutation ni aucune assertion ne change** |
 | `docs/preuves/D345/campagnes/fp3-AVANT-MISE-A-JOUR.txt` | la sortie de la campagne fp3 avant la mise à jour de l'ancre (9 mordues, 1 muette), gardée telle quelle |
 | `docs/preuves/D345/campagnes/fp3-APRES-MISE-A-JOUR.txt` | la sortie de la campagne fp3 rejouée en entier après la mise à jour |
+
+**Extension 3** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare). Le contrôle dédié « 0 valeur réelle sur N fichiers » (D299, fait foi sur l'absence de VALEURS) a été joué sur les pièces e2e : sa sortie est une pièce du lot.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D345/aucune-valeur-reelle.txt` | la sortie du contrôle `aucune-valeur-reelle.py` : les valeurs des journaux e2e BRUTS (passes 1 et 2, rouge 4) cherchées dans `docs/preuves/D345/` — des comptes seulement, jamais une valeur |
