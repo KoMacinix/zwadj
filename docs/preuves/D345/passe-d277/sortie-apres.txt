@@ -1,0 +1,47 @@
+D345 — passe D277 « apres »
+  calibration ✓ A1 « RANG 47 : EN ATTENTE DE CADRAGE » : positif 1 (attendu 1) · négatif 0 (attendu 0)
+  calibration ✓ B1 « un lot de code PEUT s'ouvrir » : positif 1 (attendu 1) · négatif 0 (attendu 0)
+== ZWADJ_CONTINUITE.md : 3199781 caractères examinés (texte aplati)
+      7  A1 « RANG 47 : EN ATTENTE DE CADRAGE »
+      7  A2 compteur POUR MÉMOIRE VINGT (état courant)
+      1  A3 « dernier numéro attribué : D344 »
+      1  A4 « D344 est au registre »
+      0  A5 libellé « Annuler » du bouton de remise à zéro du parcours   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A6 le parcours « perd son état » / « revient à la première question » au changement d'onglet   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+     15  B1 « un lot de code PEUT s'ouvrir »
+     38  B2 « aucun lot de code ne s'ouvre »
+      4  B3 candidat L36-3a-2 pour le rang 47
+      2  B4 « le rang 47 reste à cadrer » / « en attente de cadrage du relecteur » (rang 47)
+== ZWADJ_BACKLOG.md : 692438 caractères examinés (texte aplati)
+      0  A1 « RANG 47 : EN ATTENTE DE CADRAGE »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A2 compteur POUR MÉMOIRE VINGT (état courant)   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A3 « dernier numéro attribué : D344 »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A4 « D344 est au registre »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A5 libellé « Annuler » du bouton de remise à zéro du parcours   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A6 le parcours « perd son état » / « revient à la première question » au changement d'onglet   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  B1 « un lot de code PEUT s'ouvrir »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      5  B2 « aucun lot de code ne s'ouvre »
+      0  B3 candidat L36-3a-2 pour le rang 47   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  B4 « le rang 47 reste à cadrer » / « en attente de cadrage du relecteur » (rang 47)   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+== AGENTS.md : 234015 caractères examinés (texte aplati)
+      2  A1 « RANG 47 : EN ATTENTE DE CADRAGE »
+      1  A2 compteur POUR MÉMOIRE VINGT (état courant)
+      0  A3 « dernier numéro attribué : D344 »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A4 « D344 est au registre »   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A5 libellé « Annuler » du bouton de remise à zéro du parcours   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      0  A6 le parcours « perd son état » / « revient à la première question » au changement d'onglet   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+      5  B1 « un lot de code PEUT s'ouvrir »
+     14  B2 « aucun lot de code ne s'ouvre »
+      2  B3 candidat L36-3a-2 pour le rang 47
+      0  B4 « le rang 47 reste à cadrer » / « en attente de cadrage du relecteur » (rang 47)   ← motif à ZÉRO : une hypothèse à vérifier, pas une absence constatée
+== total par motif
+      9  A1 « RANG 47 : EN ATTENTE DE CADRAGE »
+      8  A2 compteur POUR MÉMOIRE VINGT (état courant)
+      1  A3 « dernier numéro attribué : D344 »
+      1  A4 « D344 est au registre »
+      0  A5 libellé « Annuler » du bouton de remise à zéro du parcours
+      0  A6 le parcours « perd son état » / « revient à la première question » au changement d'onglet
+     20  B1 « un lot de code PEUT s'ouvrir »
+     57  B2 « aucun lot de code ne s'ouvre »
+      6  B3 candidat L36-3a-2 pour le rang 47
+      2  B4 « le rang 47 reste à cadrer » / « en attente de cadrage du relecteur » (rang 47)
