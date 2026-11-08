@@ -158,9 +158,7 @@ def main() -> int:
         octets = open(f, "rb").read()
         if hashlib.sha256(octets).hexdigest() in rouges:
             brut.append(f)
-        elif hashlib.sha256(octets.replace(b"
-", b"
-")).hexdigest() in rouges:
+        elif hashlib.sha256(octets.replace(bytes([13, 10]), bytes([10]))).hexdigest() in rouges:
             lf.append(f)
         else:
             ecarts.append(f)
@@ -184,19 +182,24 @@ def main() -> int:
     verdict("VINGT ET UN" in agents and "LE BROUILLON DU PARCOURS « NOUVELLE RÉSERVATION » VIT EN MÉMOIRE SEULEMENT" in agents, "9.3 `AGENTS.md` porte le compteur VINGT ET UN et l'invariant du brouillon", "présents")
     verdict("Reports du 08/11/2026 — rang 47 CLOS" in backlog and "- [x] **[SÉCU]**" in backlog and "PLACÉE PAR LE RELECTEUR (R-8" in backlog, "9.4 `ZWADJ_BACKLOG.md` : la section neuve, [SÉCU] cochée (GOCSPX = 0), S-142 placée", "présents")
 
-    # 10. aucune corruption d'encodage dans les fichiers ajoutés ou modifiés
-    total = 0
-    mots = 0
+    # 10. aucune corruption d'encodage dans ce que le lot a ÉCRIT : les lignes AJOUTÉES des fichiers d'autorité (ils portent d'anciens exemples de mojibake, cités exprès), et les fichiers neufs (sauf les sorties brutes et ce script, qui nomme ses motifs).
+    total, mots, lignes = 0, 0, 0
+    for f in AUTORITE:
+        ajoutees = [l[1:] for l in git("diff", DEPART + "..HEAD", "-U0", "--", f).splitlines() if l.startswith("+") and not l.startswith("+++")]
+        lignes += len(ajoutees)
+        mots += mojibake(chr(10).join(ajoutees))
+        total += 1
     for f in diff:
-        if f.startswith("docs/preuves/D345/e2e/passe-") or f.startswith("docs/preuves/D345/audit-secrets") or f.startswith("docs/preuves/D345/rouges/rouge-") or f.startswith("docs/preuves/D345/campagnes/"):
-            continue  # sorties brutes volumineuses : contrôlées par les audits
+        if f in AUTORITE or f.endswith("controle-fin-de-lot.py") or f.startswith(("docs/preuves/D345/e2e/passe-", "docs/preuves/D345/audit-secrets", "docs/preuves/D345/rouges/rouge-", "docs/preuves/D345/campagnes/")):
+            continue
         try:
             t = open(f, encoding="utf-8").read()
         except (OSError, UnicodeDecodeError):
             continue
         total += 1
+        lignes += t.count(chr(10))
         mots += mojibake(t)
-    verdict(mots == 0, "10.1 aucun motif de mojibake dans les fichiers texte du diff", f"{total} fichier(s) examinés · {mots} occurrence(s) (attendu 0)")
+    verdict(mots == 0, "10.1 aucun motif de mojibake dans ce que le lot a écrit (lignes ajoutées des .md d'autorité, fichiers neufs)", f"{total} fichier(s) examinés · {lignes} ligne(s) · {mots} occurrence(s) (attendu 0)")
 
     dire()
     dire(f"RÉSULTAT : {len(ECHECS)} échec(s) — {'; '.join(ECHECS) if ECHECS else 'aucun'}")
