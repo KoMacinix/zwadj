@@ -2437,7 +2437,7 @@ b) Les décisions prises seul par la session de D343 sont ratifiées par adoptio
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : rien d'autre que cette copie et celle de la table. Le rang 46 avance par **un lot de CODE DE TEST** (il écrit dans `e2e/specs/` ; il touche un test, donc il **compte**, D283) ; les décisions R-1 à R-5 sont celles du relecteur, **défaisables par Ko** ; la limite de cinq reste SUSPENDUE (pause de Ko, DR1 de D336) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Ce que le lot a MESURÉ et décidé (r30 revenue, r32 arrêtée par R-3) s'écrit dans la section D344, **après** cette copie.
 
-⛔ **TABLE D'OUVERTURE DU RANG 46 (D344), recopiée à l'IDENTIQUE de `docs/preuves/D344/table-ouverture.md`** (premier commit du lot, `f988389`, SEUL ; aucune extension : le diff final est resté inclus dans la table telle qu'ouverte — le contrôle de fin de lot le mesure). Copie par script, jamais retapée ; le contrôle de fin de lot relit les deux textes et compare :
+⛔ **TABLE D'OUVERTURE DU RANG 46 (D344), recopiée à l'IDENTIQUE de `docs/preuves/D344/table-ouverture.md`** (premier commit du lot, `f988389`, SEUL ; ~~aucune extension : le diff final est resté inclus dans la table telle qu'ouverte~~ ⛔ *(corrigé à la clôture : UNE extension, la première passe du contrôle de fin de lot, voir le § 7 de la section D344 ; la copie ci-dessous la porte)* — le contrôle de fin de lot le mesure). Copie par script, jamais retapée ; le contrôle de fin de lot relit les deux textes et compare :
 
 ~~~~markdown
 # D344 — rang 46 — table d'ouverture
@@ -2537,6 +2537,12 @@ Lot : **faire revenir dans la suite e2e (`e2e/specs/`) les deux specs sorties à
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (08/11/2026, commitée SEULE, AVANT le fichier qu'elle déclare — relevé en comparant les fichiers de `docs/preuves/D344/` aux chemins complets de cette table : 1 fichier hors table, produit par le contrôle de fin de lot). Le contrôle de fin de lot, joué après la poussée de `34d0e5a`, a rendu **✗ sur son contrôle 2.1** (« la copie de r30 est IDENTIQUE à l'archive, octet pour octet ») : défaut d'INSTRUMENT, pas du lot — il comparait des BLOBS git, or `e2e/` est normalisé en LF dans l'index par `core.autocrlf` (`git ls-files --eol` : `i/lf w/crlf`) alors que `docs/preuves/` est en `-text` (`i/crlf`) ; l'arbre de travail est identique à l'octet (`cmp`) et les deux blobs sont égaux une fois les fins de ligne normalisées. La première passe est GARDÉE TELLE QUELLE à côté de la passe corrigée (D298) ; le contrôle corrigé compare les octets de l'arbre de travail ET les blobs normalisés.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D344/controle-fin-de-lot-passe-1-AVANT-CORRECTIFS.txt` | la première passe du contrôle de fin de lot, gardée TELLE QUELLE : 22 contrôles, 21 ✓, 1 ✗ (2.1, défaut d'instrument) |
 ~~~~
 
 ⇒ **RANG 46 : CLOS (la spec du lien du calendrier revient dans la suite ; la spec « Nouvelle réservation » est arrêtée par R-3) — D344, 08/11/2026** : lot de **CODE DE TEST** (il ajoute `e2e/specs/r30-lien-calendrier-pro.e2e.ts` à la suite : il **compte**, D283) ; **r30 est REVENUE** (copie identique à l'octet de l'archive de D322, verte au départ, **mord** : K-1, `toHaveURL` attendu `/calendrier`, reçu `/`) ; **r32 est ARRÊTÉE** (R-3, second cas : l'écran « Client » a changé au rang 41, D336 ; 5 tests sur 5 rouges dès le premier écran ; elle reste dans `docs/preuves/D325/navigateur/`, aucune correction) ; **deux passes complètes de l'e2e VERTES** (78 passés + 1 ignoré = 79 attendus, chacune, sur secteur) et **six portes à 0** (`test` 173 fichiers / 2 601 tests ; `test:int` 46 fichiers / 735) ; **compteur POUR MÉMOIRE DIX-NEUF → VINGT** ; la limite de cinq reste SUSPENDUE ; **aucune certification, aucune marque** ; ⚠ « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR » ci-dessus est **PÉRIMÉ** ; la pause du paiement en ligne (E3 et R1) est **inchangée** ; **aucun geste de Ko**. Point d'entrée : « PROCHAIN LOT — rang 46 » (« ÉTAT À LA CLÔTURE DU RANG 46 »).
@@ -6322,6 +6328,12 @@ La consigne distingue deux cas. **Ancre périmée** : un nom accessible, une adr
 ### 6. Audits de secrets
 
 `a` : 0 alerte nouvelle ; `b` : 0 ; `c` : 187 alertes de gabarit (les lignes `token=<jeton masqué #N>` des sorties masquées, les mots du masqueur, une ligne de prose), lues, 0 valeur réelle ; `d` : voir `docs/preuves/D344/tri-audit-d344d.txt` ; contrôle dédié « 0 valeur réelle » : `docs/preuves/D344/aucune-valeur-reelle.txt`.
+
+### 7. À la clôture : un défaut d'INSTRUMENT du contrôle de fin de lot, et ce que « identique à l'octet » veut dire ici
+
+Le contrôle de fin de lot (`docs/preuves/D344/controle-fin-de-lot.py`), joué après la poussée de `34d0e5a`, a rendu **22 contrôles : 21 ✓ · 1 ✗** — le contrôle 2.1 (« la copie de r30 est identique à l'archive, octet pour octet ») comparait des BLOBS git : le blob commité de `e2e/specs/r30-…` a **0 CRLF et 36 LF** (`git ls-files --eol` : `i/lf w/crlf`, car `core.autocrlf` normalise `e2e/` dans l'index comme toutes les autres specs), alors que l'archive sous `docs/preuves/` est en `-text` (`i/crlf`). **Le défaut est dans l'instrument, pas dans le lot** : l'arbre de travail est identique à l'octet (`cmp`, sha256 `2f11ca72…`), et les deux blobs sont égaux une fois les fins de ligne normalisées. La première passe est **gardée telle quelle** (`docs/preuves/D344/controle-fin-de-lot-passe-1-AVANT-CORRECTIFS.txt`, déclarée par l'**extension 1** de la table, commitée SEULE avant son fichier : `ca513e8`) ; le contrôle corrigé compare les octets de l'arbre de travail ET les blobs normalisés.
+
+⇒ **Précision à retenir** : « copie identique à l'octet » dans ce lot veut dire **l'arbre de travail** (CRLF des deux côtés). Le blob de l'index, lui, est en LF, **comme celui de toute spec de `e2e/`** ; ce n'est pas un écart de la copie, c'est le régime de fins de ligne de ces deux dossiers. ⚠ Une pièce qui compare des empreintes entre `docs/preuves/` et le reste du dépôt doit dire sur QUOI elle compare (arbre de travail ou index).
 
 ## Session du 07/11/2026 — D343 · rang 45 (SUITE) CLOS, lot de CODE DE TEST : D265 NOMMÉ PAR LA MESURE ET RÉPARÉ DANS LE HARNAIS E2E, puis clôture de l'intégration de `front-client` (D342) — lecture adverse de la consigne (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?), reproduction avec le vrai serveur (A à C verts, D1 à D3 et F rouges), correction (`connection: close`, un appel commun), garde permanente, deux passes de l'e2e vertes (77 + 1 ignoré), six portes à 0, campagne du lot 4/4, union des campagnes de D342 (35 campagnes, 655 gardes mordues, 0 muette, 9 cibles `--e2e` non mesurées ; `r32` rejouée une fois)
 
