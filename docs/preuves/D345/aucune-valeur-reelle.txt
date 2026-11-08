@@ -1,0 +1,7 @@
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/passe-1-clean.txt : occurrences stricte 93 · large 93 (doivent s'accorder) · valeurs distinctes 93 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/passe-2-clean.txt : occurrences stricte 93 · large 93 (doivent s'accorder) · valeurs distinctes 93 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/e2e-rouge-clean.txt : occurrences stricte 4 · large 4 (doivent s'accorder) · valeurs distinctes 4 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/passe-1-clean.txt porte 93 valeur(s) (attendu ≥ 93)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/passe-2-clean.txt porte 93 valeur(s) (attendu ≥ 93)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/2f91d921-124f-468f-848f-e765203f16e9/scratchpad/e2e-rouge-clean.txt porte 4 valeur(s) (attendu ≥ 4)
+== valeurs cherchées : 190 (3 journal/journaux) · parcourus : 57 fichiers, 5109225 octets · porteurs : 0 (attendu 0)
