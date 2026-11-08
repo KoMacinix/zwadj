@@ -132,6 +132,8 @@ import {
 import { channelBlockers, describeRemittance, isolateLtr, wantsRealSending, type RemitOutcome, type RemitView } from "./remittance";
 import { onQuoteRemitted } from "./remittance-hook";
 import { saveBlob } from "./save-file";
+import { WALKIN_STEPS, type WalkinDraft, type WalkinStep } from "./walkin-draft";
+import { useWalkinDraft } from "./walkin-draft-context";
 import { choixDuDevis, type DetailSaisi } from "./walkin-services";
 
 type Outcome = { kind: "locked" } | { kind: "standby" } | null;
@@ -166,8 +168,9 @@ const SANS_COPIE: CopieDuDevis = { clientNameAr: null, clientNameLatin: null };
  *  qu'une prestation par personne se chiffre `unitPrice × guests`
  *  (`service-pricing.ts`). Cocher des prestations sans avoir dit combien de
  *  personnes ferait naître des montants dont le pro n'a pas vu la base. */
-const STEPS = ["contact", "client", "date", "slot", "services", "quote"] as const;
-type Step = (typeof STEPS)[number];
+// ⛔ Rang 47 (D345) : la liste des étapes vit dans `walkin-draft.ts` (le brouillon en porte l'étape) — une seule liste, jamais deux.
+const STEPS = WALKIN_STEPS;
+type Step = WalkinStep;
 const STEP_LABEL: Record<Step, string> = {
   contact: "venue.ui.walkin.stepContact",
   client: "venue.ui.walkin.stepClient",
@@ -313,7 +316,16 @@ function NomDialog({ locale, onConfirm, onCancel }: { locale: QuoteDocumentLocal
   );
 }
 
+/**
+ * ⛔ Rang 47 (D345, R-5) — UN PARCOURS PAR SALLE. Le parcours est monté avec la salle en clé : quand la salle choisie change, il est DÉMONTÉ puis remonté, et ses
+ * réponses ne passent pas à la salle suivante. Mesuré avant ce lot (`docs/preuves/D345/rouges/`) : sans clé, la même instance restait montée à la même étape quand
+ * seule la prop `venue` changeait — un créneau de la salle 1 serait resté choisi pour la salle 2.
+ */
 export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
+  return <ParcoursDeLaSalle key={venue.id} venue={venue} />;
+}
+
+function ParcoursDeLaSalle({ venue }: { venue: VenueProDTO }) {
   const { t, i18n } = useTranslation();
   const quotes = useQuotes();
   const services = useServices();
@@ -323,25 +335,29 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const toMessageRef = useRef(toMessage);
   toMessageRef.current = toMessage;
   const isAr = i18n.language === "ar";
+  // ⛔ Rang 47 (D345) — le brouillon que le pro a laissé en changeant d'onglet (R-1 à R-5), lu UNE fois à l'ouverture. `null` = parcours neuf. Le devis AFFICHÉ n'y est
+  // pas : il est « à recalculer » (R-3) ; la chaîne (`chainQuoteId`) y est, la révision reste dans la bonne chaîne.
+  const brouillons = useWalkinDraft();
+  const [reprise] = useState<WalkinDraft | null>(() => brouillons.lire(venue.id));
 
   const [catalogue, setCatalogue] = useState<Catalogue>({ kind: "loading" });
   /** ⛔ Rang 41 (D336) — l'étape CONTACT : ce que le pro a tapé, un numéro (chiffres nationaux) et/ou un e-mail. */
-  const [identifiant, setIdentifiant] = useState<Identifiant>(NO_IDENTIFIANT);
+  const [identifiant, setIdentifiant] = useState<Identifiant>(reprise?.identifiant ?? NO_IDENTIFIANT);
   /** L'identifiant pour lequel la fiche a été CHERCHÉE (K-1) — `null` = jamais. Une saisie qui s'en écarte se cherche de nouveau à « Continuer ». */
-  const [cherche, setCherche] = useState<Identifiant | null>(null);
+  const [cherche, setCherche] = useState<Identifiant | null>(reprise?.cherche ?? null);
   /** La fiche du client : TROUVÉE par la recherche (K-1) ou CRÉÉE au « Continuer » de l'étape Client (K-2) ; `null` = aucune encore. */
-  const [fiche, setFiche] = useState<ClientRecordDTO | null>(null);
-  const [ficheTrouvee, setFicheTrouvee] = useState(false);
+  const [fiche, setFiche] = useState<ClientRecordDTO | null>(reprise?.fiche ?? null);
+  const [ficheTrouvee, setFicheTrouvee] = useState(reprise?.ficheTrouvee ?? false);
   /** L'étape CLIENT : les noms de CE devis (K-4) — préremplis par une fiche trouvée, modifiables ; ceux d'une fiche LIÉE s'imposent (MD-6). */
-  const [noms, setNoms] = useState<Noms>(NO_NOMS);
+  const [noms, setNoms] = useState<Noms>(reprise?.noms ?? NO_NOMS);
   /** K-12 — ce que le pro a RETOUCHÉ au contact de la conversion. Le reste se PRÉREMPLIT depuis la copie du devis et la fiche (`prefillConversion`). */
-  const [retouches, setRetouches] = useState<Partial<Contact>>({});
-  const [eventDate, setEventDate] = useState<string | null>(null);
-  const [slotId, setSlotId] = useState<string | null>(null);
-  const [guests, setGuests] = useState("");
-  const [picks, setPicks] = useState<string[]>([]);
+  const [retouches, setRetouches] = useState<Partial<Contact>>(reprise?.retouches ?? {});
+  const [eventDate, setEventDate] = useState<string | null>(reprise?.eventDate ?? null);
+  const [slotId, setSlotId] = useState<string | null>(reprise?.slotId ?? null);
+  const [guests, setGuests] = useState(reprise?.guests ?? "");
+  const [picks, setPicks] = useState<string[]>(reprise?.picks ?? []);
   /** ⛔ FP-1 — le palier (TIERED) et la quantité (PER_UNIT) SAISIS pour chaque prestation cochée ; la règle pure les juge. */
-  const [details, setDetails] = useState<Record<string, DetailSaisi>>({});
+  const [details, setDetails] = useState<Record<string, DetailSaisi>>(reprise?.details ?? {});
   const [quote, setQuote] = useState<QuoteDTO | null>(null);
   /** ⛔ FP-3 — la DERNIÈRE version que le serveur a rendue pour la chaîne, gardée à part : `invalidate` jette le devis AFFICHÉ (`quote` redevient `null`)
    *  à chaque modification, alors que la copie du nom qu'elle porte — celle que la boîte de langue a complétée — doit survivre à la révision. */
@@ -351,8 +367,9 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   }, [quote]);
   /** ⚠ Survit à l'invalidation : c'est lui qui fait que le clic suivant RÉVISE
    *  au lieu de créer un devis de plus. */
-  const [chainQuoteId, setChainQuoteId] = useState<string | null>(null);
-  const [stale, setStale] = useState(false);
+  const [chainQuoteId, setChainQuoteId] = useState<string | null>(reprise?.chainQuoteId ?? null);
+  // ⛔ R-3 : un devis était affiché quand le pro est parti ⇒ il est « à recalculer » (le message de `stale`, déjà existant).
+  const [stale, setStale] = useState(reprise?.devisAffiche ?? false);
   const [outcome, setOutcome] = useState<Outcome>(null);
   const [done, setDone] = useState<Done>(null);
   /** Rang 33 (D326) — ce que la fenêtre de REMISE dit : l'instantané des deux issues (canal enregistré, PDF téléchargé), posé APRÈS les deux réponses. */
@@ -364,23 +381,53 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   /** ⛔ L36-2 (D339, Q1) — le pro a choisi « le client ne donne ni numéro ni e-mail » et n'a pas encore donné de coordonnées : le devis sera un BROUILLON, sans fiche ni nom (Q2). */
-  const [sansCoordonnees, setSansCoordonnees] = useState(false);
+  const [sansCoordonnees, setSansCoordonnees] = useState(reprise?.sansCoordonnees ?? false);
   /** La chaîne en cours EST un brouillon — posé par la réponse du SERVEUR (`quote.isOfficial === false`), levé par la promotion. Tant qu'il est vrai, aucune fiche ni aucun nom ne part dans une révision (R-1). */
-  const [chaineBrouillon, setChaineBrouillon] = useState(false);
+  const [chaineBrouillon, setChaineBrouillon] = useState(reprise?.chaineBrouillon ?? false);
   /** La boîte de langue du TÉLÉCHARGEMENT d'un brouillon (aucune remise, aucune question du nom — R-3). */
   const [langueBrouillon, setLangueBrouillon] = useState(false);
   const [brouillonTelecharge, setBrouillonTelecharge] = useState(false);
   /** La promotion vient d'avoir lieu : le message le DIT jusqu'à la prochaine condition modifiée. */
   const [promu, setPromu] = useState(false);
 
-  const [step, setStep] = useState<Step>("contact");
+  const [step, setStep] = useState<Step>(reprise?.step ?? "contact");
   /** ⚠ LE SEUL DRAPEAU D'ÉTAPE, et il est justifié : « aucune prestation » est
    *  une réponse valable, indiscernable de « pas encore répondu » si on se
    *  contentait de regarder `picks`. Les quatre autres étapes se déduisent de
    *  leurs données, donc elles ne peuvent pas mentir. */
-  const [servicesAnswered, setServicesAnswered] = useState(false);
+  const [servicesAnswered, setServicesAnswered] = useState(reprise?.servicesAnswered ?? false);
   /** Annonce du seul effet de bord d'une correction : le créneau tombé. */
   const [slotCleared, setSlotCleared] = useState(false);
+
+  // ⛔ Rang 47 (D345) — le brouillon suit l'écran. À CHAQUE rendu (aucune liste de dépendances : la liste serait une seconde énumération des champs à tenir à jour, et un
+  // champ oublié se perdrait en silence), l'état courant est rendu au fournisseur. Une ISSUE du parcours — réservation créée (`done`, `outcome`) ou devis remis
+  // (`remit`) — l'efface au lieu de le garder (R-4).
+  useEffect(() => {
+    if (outcome !== null || done !== null || remit !== null) {
+      brouillons.effacer();
+      return;
+    }
+    brouillons.ecrire({
+      venueId: venue.id,
+      step,
+      identifiant,
+      cherche,
+      fiche,
+      ficheTrouvee,
+      noms,
+      retouches,
+      eventDate,
+      slotId,
+      guests,
+      picks,
+      details,
+      chainQuoteId,
+      servicesAnswered,
+      sansCoordonnees,
+      chaineBrouillon,
+      devisAffiche: quote !== null || stale
+    });
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -489,6 +536,8 @@ export function WalkinJourney({ venue }: { venue: VenueProDTO }) {
    * donc, et l'écran garde son résultat.
    */
   const reset = () => {
+    // ⛔ R-4 : « Recommencer » remet TOUTES les réponses à zéro ; le brouillon gardé suit l'écran (l'effet ci-dessous en rend l'état vide au rendu suivant), donc un
+    // aller-retour d'onglet ne le fait pas revenir. ⚠ Aucun `effacer()` ici : il serait redondant (mutation équivalente, mesurée avec `brouillonVierge`).
     setIdentifiant(NO_IDENTIFIANT);
     setCherche(null);
     setFiche(null);

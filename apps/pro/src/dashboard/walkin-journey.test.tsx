@@ -492,18 +492,18 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
     expect(within(rail()).queryAllByRole("button")).toHaveLength(0);
   });
 
-  it("« Annuler » remet tout à zéro et ramène à la première question", async () => {
+  it("« Recommencer » remet tout à zéro et ramène à la première question", async () => {
     await setup();
     await repondreClient();
     await repondreDate();
-    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    fireEvent.click(screen.getByRole("button", { name: "Recommencer" }));
     expect(question()).toBe("Comment joindre le client ?");
     expect((screen.getByLabelText("Téléphone") as HTMLInputElement).value).toBe("");
     expect(screen.getByLabelText("E-mail")).toHaveValue("");
     expect(recap().textContent).toBe("");
   });
 
-  it("⚠ « Annuler » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien", async () => {
+  it("⚠ « Recommencer » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien", async () => {
     // Après `convert`, une demande existe en base. Un bouton qui viderait
     // l'écran laisserait croire qu'elle a été annulée. Elle ne l'aurait pas été.
     await setup({
@@ -517,7 +517,7 @@ describe("Rail latéral, numéros cliquables et remise à zéro", () => {
     await screen.findByText(montant(478_600_000));
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
     await screen.findByRole("status");
-    await waitFor(() => expect(screen.queryByRole("button", { name: "Annuler" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Recommencer" })).toBeNull());
   });
 });
 
@@ -1278,13 +1278,13 @@ describe("Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation
   const dateLongue = (civil: string, langue: string) =>
     new Intl.DateTimeFormat(langue === "ar" ? "ar-DZ" : langue, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${civil}T00:00:00Z`));
 
-  it("« Nouveau devis » n'est PAS là avant la conclusion — « Annuler » l'est", async () => {
+  it("« Nouveau devis » n'est PAS là avant la conclusion — « Recommencer » l'est", async () => {
     await setup();
     expect(screen.queryByRole("button", { name: FR.newQuote })).toBeNull();
     expect(screen.getByRole("button", { name: FR.reset })).toBeInTheDocument();
   });
 
-  it("⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Annuler », et il repart de l'étape 1, formulaire vidé", async () => {
+  it("⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Recommencer », et il repart de l'étape 1, formulaire vidé", async () => {
     await jusquAuTotal({ quotes: { create: vi.fn().mockResolvedValue(draft()), convert: convertir() } });
     fireEvent.click(screen.getByRole("button", { name: "Enregistrer sans bloquer" }));
     await screen.findByRole("dialog");
@@ -2472,7 +2472,7 @@ describe("⛔ D339 — le devis BROUILLON au comptoir : le second bouton, le bro
     for (const libelle of canaux()) expect(screen.queryByRole("button", { name: libelle }), libelle).toBeNull();
   });
 
-  it("⛔ « Annuler » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms", async () => {
+  it("⛔ « Recommencer » (la remise à zéro) EFFACE le mode brouillon : le devis suivant, par le chemin ordinaire, est créé SANS `isOfficial` et AVEC sa fiche et ses noms", async () => {
     const { quotes } = await calculerBrouillon();
     fireEvent.click(screen.getByRole("button", { name: FR.reset }));
     await laisserRetomber();
@@ -3016,10 +3016,10 @@ describe("FP-3 — la révision reprend la copie du nom complétée sur la versi
     expect(corps.clientNameAr).toBe(COPIE_AR);
   });
 
-  it("⛔ « Annuler » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)", async () => {
+  it("⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)", async () => {
     const quotes = doublesDuServeur();
     await jusquALaCopieCompletee(quotes);
-    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    fireEvent.click(screen.getByRole("button", { name: "Recommencer" }));
     await allerAuDevis();
     fireEvent.click(screen.getByRole("button", { name: "Calculer le devis" }));
     await screen.findByText(montant(478_600_000));

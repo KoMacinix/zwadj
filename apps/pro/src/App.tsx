@@ -32,6 +32,7 @@ import { ForgotPage, ResetPage, VerifyEmailPage } from "./auth/recovery-pages";
 import { RedirectIfSession, RequireProSession } from "./auth/require-pro";
 import { VenueProvider } from "./venues/venue-client-context";
 import { ProVenuesProvider } from "./shell/pro-venues-context";
+import { WalkinDraftProvider } from "./dashboard/walkin-draft-context";
 import { AccountSettingsPage } from "./account/account-settings-page";
 import { VenueListPage } from "./venues/venue-list-page";
 import { CreateVenuePage } from "./venues/create-venue-page";
@@ -79,7 +80,11 @@ export function AppProviders({
             libellé adaptatif de la nav, sélecteur de portée et panneau gauche
             posent la même question. Trois `listMine()` au montage d'une page
             seraient trois allers-retours pour une seule réponse. */}
-        <ProVenuesProvider>{children}</ProVenuesProvider>
+        {/* Rang 47 (D345) — le brouillon du parcours « Nouvelle réservation », EN MÉMOIRE, au-dessus des routes : il survit au changement d'onglet (R-1, R-2).
+            Il ne lit AUCUNE liste de salles : « une seule source » de `ProVenuesProvider` tient (R-5). */}
+        <ProVenuesProvider>
+          <WalkinDraftProvider>{children}</WalkinDraftProvider>
+        </ProVenuesProvider>
       </VenueProvider>
     </AuthProvider>
   );
