@@ -1,0 +1,21 @@
+D344 — tri différentiel de l'audit de secrets « d » (AVANT le commit des pièces de la passe des six portes — les six sorties, l'index, l'état machine, le marqueur de fin — et de la passe D277 « avant »)
+
+Procédure : python3 -I docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D344/audit-secrets-d344c.txt docs/preuves/D344/audit-secrets-d344d.txt
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D344/audit-secrets-d344d.txt (HEAD = 83a6037 ; non suivis : les pièces des six portes et de la passe D277 ; modifié : ZWADJ_CONTINUITE.md, hors du périmètre de l'outil). Une seule exécution. Sortie scellée : 632 172 octets ; « relue identique : True · sceau vérifié à la relecture : True ».
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d344c) : 5 140 fichiers parcourus, 4 974 audités, 166 exclus, 1 859 alertes.
+  · nouvelle (d344d)   : 5 153 fichiers parcourus, 4 986 audités, 167 exclus, 1 953 alertes. Contrôle de l'outil : audités + exclus = 5 153 (attendu 5 153, les parcourus).
+  · Exclus : 167 contre 166, soit un de plus — la sortie scellée « c ». Calibration de l'outil de tri, deux bras : négatif 0 (attendu 0), positif 2 (attendu 2).
+
+Résultat du tri différentiel : **94** alertes ABSENTES de la sortie précédente (1 953 − 1 859 = 94, attendu 94) — jeton=93 · mot-de-passe=1 — dans TROIS fichiers :
+  · 89 [jeton] dans `docs/preuves/D344/portes/test-e2e.txt` : les lignes `[WebServer] …/verification-email?token=<jeton masqué #N (43 car.)>`, même gabarit que les 178 de l'audit « c » ; la « valeur » est le mot du gabarit. 89 lignes `masqué #` (numéros 1 à 89) plus la ligne d'en-tête du masqueur = 90, comptées.
+  · 2 dans `docs/preuves/D344/portes/test-int.txt` ([mot-de-passe] 1, [jeton] 1) : ce sont deux TITRES de tests d'intégration (« après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : … CONSTANTE, mais aucun e-mail ne part » et « compte supprimé après émission du token : … (l'identité n'existe plus) »), où l'audit lit le mot qui suit « : » comme une valeur de 7 et de 3 caractères. Les MÊMES lignes figurent dans `docs/preuves/D321/portes/test-int.txt`, `D322/portes/test-int.txt` et `D337/portes/test-int.txt` (comparées : même titre, même durée à la milliseconde près en moins) et l'audit les y a déjà triées.
+  · 3 [jeton] dans `docs/preuves/D344/tri-audit-d344c.txt` : l'écho de la prose du tri « c » (la ligne qui DÉCRIT le gabarit `token=<jeton masqué #N>`), déclarée « 0 valeur réelle ». Valeurs de 6 caractères.
+  Total : 89 + 2 + 3 = 94 (attendu 94).
+
+Conclusion : 94 alertes lues, **0 valeur réelle**. Ce tri-ci est rédigé en évitant de réécrire le gabarit complet, pour ne pas produire à l'audit suivant l'écho que ce tri vient de classer — il le nomme tout de même une fois, et l'audit suivant en comptera donc au moins une.
+
+⚠ CE QUE CETTE PASSE NE COUVRE PAS, écrit pour ne pas se lire comme tenu :
+  · ce fichier, la passe D277 « après », le contrôle « 0 valeur réelle », le contrôle de fin de lot et les trois fichiers d'autorité modifiés n'ont pas été audités avant leur commit ; le contrôle dédié « 0 valeur réelle » (D299) prend les trois fichiers d'autorité pour cibles à la clôture.
+  · l'outil d'audit ne parcourt que docs/preuves/ et .gitattributes.
