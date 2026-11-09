@@ -2665,8 +2665,12 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 47 : CLOS (le parcours « Nouvelle réservation » garde son étape et ses saisies quand on change d'onglet) — D345, 08/11/2026** : lot de **CODE** (il écrit `apps/pro/src/dashboard/walkin-draft.ts`, `walkin-draft-context.tsx`, branche `walkin-journey.tsx` et `App.tsx`, renomme `venue.ui.walkin.reset` dans les deux catalogues, ajoute la spec `e2e/specs/r47-brouillon-onglet.e2e.ts` et le harnais `neutralisation/neutralize-r47.py` : il **compte**, D283) ; **le brouillon vit en mémoire seulement** (R-1, R-2) dans un fournisseur monté au-dessus des routes, **un parcours par salle** (R-5), le devis affiché est « à recalculer » et la chaîne est gardée (R-3), le bouton existant « Annuler » devient « Recommencer » (R-4) ; **aucun contrat d'API, aucune migration, `apps/api` intouché** ; **harnais r47 : 25 gardes mordues sur 25, 0 muette, 0 non mesurée** ; **six portes à 0 sur secteur** (`test` 174 fichiers / 2 617 tests, `test:int` 46 / 735) et **deux passes de l'e2e VERTES** (80 passés + 1 ignoré = 81 attendus, chacune) ; **compteur POUR MÉMOIRE VINGT → VINGT ET UN** (la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque**, pause de Ko) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Section D345, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 47 ».
 
-⇒ **RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 47, section 4) : **l'assistant de recherche client qui ne reprend pas les choix déjà faits** — Ko, 08/11/2026 : « rien n'est autopopuler apres avoir mis les choix » — **pas arbitré**. Le rang 48 n'est **pas** nommé par la session. ⚠ **Ordre posé par la consigne (R-8)** : l'entrée de backlog « le parcours « Nouvelle réservation » sans spec navigateur » se place **APRÈS le rang 48 et AVANT L36-4** ; L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D345/scenarios-ko.md`) ; la ratification de **S-144 à S-149** (section D345, § 3).
+⇒ ~~**RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D346 : **PÉRIMÉ** — le rang 48 est arbitré par Ko et **CLOS le 09/11/2026** : voir les deux lignes juste dessous. Barré avec son motif, pas effacé.)* *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 47, section 4) : **l'assistant de recherche client qui ne reprend pas les choix déjà faits** — Ko, 08/11/2026 : « rien n'est autopopuler apres avoir mis les choix » — **pas arbitré**. Le rang 48 n'est **pas** nommé par la session. ⚠ **Ordre posé par la consigne (R-8)** : l'entrée de backlog « le parcours « Nouvelle réservation » sans spec navigateur » se place **APRÈS le rang 48 et AVANT L36-4** ; L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D345/scenarios-ko.md`) ; la ratification de **S-144 à S-149** (section D345, § 3).
 
+
+⇒ **RANG 48 : CLOS (l'assistant de recherche client : le panneau de filtres de `/salles` suit l'adresse quand l'assistant répond) — D346, 09/11/2026** : lot de **CODE** (il touche `apps/client/src/components/search/search-view.tsx`, ajoute la spec `e2e/specs/r48-assistant-choix.e2e.ts`, dix tests de composant dans `search-view.test.tsx` et le harnais `neutralisation/neutralize-r48.py` : il **compte**, D283) ; **R-1 a montré l'assistant juste et le formulaire des filtres rouge** (commune, curseurs, cases : ils restaient aux valeurs d'avant, assistant ouvert ou fermé, FR et AR) ; la réparation est **une clé** dérivée des huit champs du panneau, l'adresse reste la seule autorité ; **aucun contrat d'API, aucune migration, `apps/api` et `apps/pro` intouchés** ; **harnais r48 : 12 gardes mordues sur 12, 0 muette, 0 non mesurée** ; **six portes à 0** sur secteur et **deux passes e2e vertes** de suite (82 passés + 1 ignoré chacune) ; **compteur POUR MÉMOIRE VINGT ET UN → VINGT-DEUX** (la limite de cinq reste SUSPENDUE par Ko ; aucune certification, aucune marque). Pièces : `docs/preuves/D346/` ; décision : section D346.
+
+⇒ **RANG 49 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 48, section 4) : **la spec navigateur du parcours « Nouvelle réservation »** (entrée de S-142, `ZWADJ_BACKLOG.md`, « Reports du 08/11/2026 »), **avant L36-4** — **pas arbitré**. Le rang 49 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D346/scenarios-ko.md`) ; la ratification de **S-150 à S-157** (section D346, § 3).
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -2755,9 +2759,28 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## PROCHAIN LOT — rang 48 · `[CODE]` **L'assistant de recherche client : le panneau de filtres de `/salles` suit l'adresse quand l'assistant répond** ⛔ **CLOS SUR LE CODE LE 09/11/2026 (D346)**
+
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 48 (D346, 09/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **48 : CLOS** — le panneau de filtres de `/salles` reflète les choix de l'assistant | ordre des rangs |
+| rang suivant | **« RANG 49 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé (consigne du rang 48, section 4) : **la spec navigateur du parcours « Nouvelle réservation »**, avant L36-4 ; **pas arbitré** ; L36-3a-2 (avec S-104) et L36-3b restent sans rang | ordre des rangs |
+| numéros | **D346 est au registre** ; dernier numéro attribué : **D346**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **VINGT-DEUX** (VINGT ET UN + D346) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| ce que R-1 a montré | l'**assistant est juste** à chaque étape (FR et AR) ; c'est le **formulaire des filtres** qui ne suivait pas l'adresse (commune, curseurs, cases) | `docs/preuves/D346/reproduction/reproduction.md` |
+| la réparation | une **clé** sur `<SearchFilters>` dans `search-view.tsx`, dérivée des huit champs du panneau (jamais page, tri, date) ; l'adresse reste la seule autorité ; la page marche sans JavaScript | section D346 |
+| portes | **six à 0** sur secteur (`test` 174 fichiers / 2 628 tests ; `test:int` 46 / 735 ; `typecheck`, `lint`, `build` à 0) ; **e2e : deux passes vertes** de suite (82 passés + 1 ignoré chacune) | `docs/preuves/D346/portes/portes.md` |
+| harnais | `neutralize-r48.py` : **12 mordues sur 12, 0 muette** ; voisines : `available-on` 10/10, `horizon` 6/6, `fc8` 12/12 | `docs/preuves/D346/neutralisation/`, `campagnes/` |
+| écriture sur la base de développement de Ko | **aucune** ; une lecture sur `zwadj_e2e` (deux comptes) | section D346 |
+| ce qui RESTE | (1) les gestes de Ko (`docs/preuves/D346/scenarios-ko.md`) ; (2) la ratification de **S-150 à S-157** ; (3) le rang 49, à cadrer par le relecteur ; (4) les entrées de backlog neuves (cache des référentiels ; pas de bouton « Précédent » ; annotation de L36-4) | backlog |
+
 ## PROCHAIN LOT — rang 47 · `[CODE]` **Le parcours « Nouvelle réservation » garde son étape et ses saisies quand on change d'onglet** ⛔ **CLOS SUR LE CODE LE 08/11/2026 (D345)**
 
-### ⛔ ÉTAT À LA CLÔTURE DU RANG 47 (D345, 08/11/2026) — À LIRE EN PREMIER
+### ~~⛔ ÉTAT À LA CLÔTURE DU RANG 47 (D345, 08/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D346 : **PÉRIMÉ** sur « rang suivant : RANG 48 », « compteur VINGT ET UN » et « ce qui RESTE : le rang 48, à cadrer » ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 48 » juste au-dessus. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -6417,6 +6440,131 @@ reflété en arabe. V-b · il efface les réponses. **Nouveau devis (Q)** — Q-
 vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du serveur. F-b · elle s'ouvre sur un échec. F-c · elle ne
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
+
+## Session du 09/11/2026 — D346 · rang 48 CLOS, lot de CODE : le panneau de filtres de `/salles` suit l'adresse quand l'assistant répond (une clé dérivée des seuls champs du panneau) ; compteur POUR MÉMOIRE VINGT ET UN → VINGT-DEUX
+
+Consigne : celle du relecteur « RANG 48 », adoptée par Ko telle quelle (`docs/preuves/D346/consigne.md` ; constat de Ko, mot pour mot : « rien n'est autopopuler apres avoir mis les choix »). SHA de départ : `caa5e4c` (= `origin/main`), arbre propre, aucun stash, secteur, Docker lancé. Dernier numéro lu au registre : D345 → **D346**. Lot de **CODE** (il compte, D283) : le seul fichier de produit touché est `apps/client/src/components/search/search-view.tsx` ; **aucun contrat d'API, aucune migration, `apps/api` et `apps/pro` intouchés** (R-5).
+
+### 1. Ce que R-1 a montré, joué dans un navigateur (FR et AR) — `docs/preuves/D346/reproduction/reproduction.md`
+
+| endroit | résultat |
+|---|---|
+| **l'assistant** (commune, invités, palier de budget, puces de goûts), à l'ouverture, revisité par la liste d'étapes, revisité par le bouton retour du navigateur | **juste partout** : chaque étape montre ce que l'adresse porte |
+| **le formulaire des filtres de `/salles`** (commune, poignée de capacité, poignée de budget, styles, équipements) | **rouge à chaque étape où l'adresse porte un choix, assistant ouvert OU fermé** : il reste aux valeurs d'avant |
+| « Recommencer » depuis un état plein | vert par coïncidence (le formulaire n'avait jamais rien montré) |
+
+⇒ **Le défaut était dans le formulaire, pas dans l'assistant.** La piste de R-2 est confirmée, et plus large que dite : `RangeFilter` (capacité, budget) et la radio du type de cérémonie sont des `useState` initialisés une fois, pas seulement des `defaultValue`. Cause : l'assistant pousse une adresse (`router.push`), la page se rend de nouveau, mais la **même instance** du panneau reste montée et ses champs ne suivent pas leurs propriétés.
+
+### 2. Ce qui a été fait
+
+| point | fait |
+|---|---|
+| la réparation | `search-view.tsx` : **une clé** sur `<SearchFilters>` (`filtersKey(state)`), dérivée des **huit champs du panneau** (commune, invités, plafond de capacité, plancher et plafond de budget, styles, équipements, type de cérémonie). Changer la clé **remonte** le panneau avec les valeurs de l'adresse : **l'adresse reste la seule autorité** (D229, D207), aucun état local ne la double, aucun stockage du navigateur (R-3). `page`, `sort` et `availableOn` n'y entrent pas |
+| la page sans JavaScript | inchangée : le panneau reste un vrai `<form method="get">` ; une clé React ne change rien au HTML servi. La spec existante `fc8` (« sans JavaScript, le HTML servi… ») est restée verte aux deux passes |
+| les tests, rouges d'abord (R-6) | 10 tests de composant rouges contre l'ancien code (55 au fichier : 10 en échec, 45 verts), 2 tests navigateur rouges (FR, AR), **commités avant le premier commit de code** (`1f95e06` puis `57fe8a5`, D334 point 5) ; un test **à champ unique** par champ de la clé, ajouté après le premier rouge (S-154) |
+| le harnais | `neutralisation/neutralize-r48.py` : **12 gardes mordues sur 12, 0 muette, 0 non mesurée**, chacune par un seul test précis lu en `AssertionError` ; il compte aussi la clé TROP LARGE (la page) |
+| la spec navigateur | `e2e/specs/r48-assistant-choix.e2e.ts` : FR et AR, 13 étapes mesurées chacune contre l'adresse, mesures **à sondage borné** (2,5 s : au retour du navigateur l'adresse change AVANT le rendu — une lecture immédiate a donné un faux rouge) |
+| les portes | six à 0 sur secteur (`test` 174 fichiers / 2 628 tests ; `test:int` 46 / 735 ; e2e **deux passes vertes de suite**, 82 passés + 1 ignoré chacune) : `docs/preuves/D346/portes/portes.md` |
+| les campagnes voisines | `available-on` 10/10, `horizon` 6/6, `fc8` 12/12 (rejouées à la main : `lancer-campagnes.py` rend « 0 campagne » à un lot commité) |
+| l'écriture sur la base de développement de Ko | **aucune** (tout ce qui a été joué travaille sur `zwadj_e2e` et `zwadj_test`) ; une **lecture** : `docker exec … psql -d zwadj_e2e`, deux `count(*)` (amenities 23, venue_styles 4) pour comprendre des listes vides — la base e2e, pas celle de Ko |
+
+### 3. Décisions prises par la session seule (une phrase chacune, avec ce qu'elle change pour Ko) — **S-150 à S-157, À RATIFIER PAR KO**
+
+- **S-150** — « Précédent » est lu comme *liste d'étapes + récapitulatif + bouton retour du navigateur* : **l'assistant n'a pas de bouton « Précédent »** (lecture adverse, ligne 7). Pour Ko : ses gestes n'incluent pas de bouton qui n'existe pas ; s'il veut ce bouton, c'est une décision produit (backlog).
+- **S-151** — La clé du panneau est faite des **huit champs seulement**, jamais de la page ni du tri. Pour Ko : une case cochée sans être soumise **survit** à un changement de page.
+- **S-152** — La clé est posée à l'appel dans `SearchView`, pas dans le formulaire : l'état de la radio de cérémonie et des curseurs vit AU-DESSUS du `<form>`, une clé sur lui ne l'aurait pas remonté. Pour Ko : rien de visible.
+- **S-153** — La spec du lot tolère l'absence de puces de goûts. Pour Ko : dans la suite complète, la partie « goûts » en navigateur n'est **mesurée que si** les listes de référentiels existent ; elle l'est toujours en composant (voir le piège ci-dessous).
+- **S-154** — Quatre tests à champ unique (styles, équipements, plafond de capacité, plancher de budget) ajoutés **après** le premier rouge, qui est amendé (la première version, 6 sur 51, reste au commit `1f95e06`). Pour Ko : sans eux, retirer un seul champ de la clé n'aurait fait rougir aucun test.
+- **S-155** — Les mesures de la spec attendent que l'écran atteigne l'adresse (sondage de 2,5 s). Pour Ko : un rouge de cette spec est un vrai rouge, pas une lecture trop tôt.
+- **S-156** — Les trois campagnes voisines (`available-on`, `horizon`, `fc8`) sont rejouées par moi, par un `grep` des harnais qui nomment `search-view` ; la liste n'est pas celle d'un outil. Pour Ko : rien à faire.
+- **S-157** — « Recommencer » est mesuré **depuis un état plein** (rouvert par le retour du navigateur), pas depuis un état vide. Pour Ko : c'est le cas qui peut mentir, pas l'autre.
+
+### 4. Un piège relevé en jouant, hors du lot (entrée de backlog, rien n'est corrigé ici)
+Le serveur de développement du client met en cache **une heure** les listes de référentiels (`next: { revalidate: 3600 }`, `apps/client/src/lib/api.ts`), **sur disque** (`apps/client/.next/cache/fetch-cache`), et le préchauffage de la suite e2e visite `/fr/salles` **avant** tout semis : les listes de styles et d'équipements y sont mises en cache **vides** et survivent aux relances. Mesuré : l'assistant disait « Aucun style publié » avec 4 styles en base. La reproduction a été jouée sans préchauffage (`--no-deps`) et le cache vidé. Piste, non établie : en production, une liste vide rendue par l'API au démarrage resterait une heure.
+
+### 5. Limites écrites, pour ne pas se lire comme tenues
+- **La partie « goûts » en navigateur n'est mesurée dans la suite complète que si les listes existent** (§ 4) ; en composant, elle l'est toujours.
+- **Un visiteur qui modifie le panneau sans soumettre, puis répond à l'assistant, perd sa saisie** : la clé change, le panneau est remonté sur l'adresse (voulu : l'adresse est l'autorité). Non mesuré en navigateur.
+- **Ce qu'un humain voit n'est pas regardé par les portes** : `docs/preuves/D346/scenarios-ko.md`, les gestes de Ko, restent à jouer.
+- Le bouton arabe « إعادة البدء » reste dans la relecture arabe humaine du backlog (Ko, 1 c).
+
+### 6. La table d'ouverture, recopiée à l'identique (`docs/preuves/D346/table-ouverture.md`, extension 1 comprise)
+
+~~~~
+# D346 — rang 48 — table d'ouverture
+
+Lot : **l'assistant de recherche client : les choix déjà faits doivent reparaître** (apps/client). Constat de Ko, mot pour mot (chat du relecteur, 08/11/2026) : « rien n'est autopopuler apres avoir mis les choix ». Consigne du relecteur « RANG 48 », adoptée par Ko telle quelle (`docs/preuves/D346/consigne.md`). Lot de **CODE** : il compte (D283), compteur POUR MÉMOIRE VINGT ET UN → VINGT-DEUX à sa clôture — **mais seulement si R-1 montre un rouge** ; sinon (R-4) aucun code, le lot ne compte pas. Aucun contrat d'API, aucune migration, `apps/api` et `apps/pro` intouchés (R-5).
+
+- **SHA de départ** : `caa5e4cf4a8791b70d76acb4dd0a75ae1b75c15a` = `origin/main` (relevé après `git fetch`, avant toute écriture). Branche `main`, arbre propre, aucun stash.
+- **Numéro** : **D346** — dernière ligne du registre lue : D345.
+- **Poste à l'ouverture** : sur secteur (`Win32_Battery.BatteryStatus` = 2), RAM libre 4 189 Mo, `chrome` et `headless_shell` 0, Docker 29.8.0 lancé.
+
+## Fichiers du lot (chemins COMPLETS)
+
+| Fichier | Rôle | Statut |
+|---|---|---|
+| `docs/preuves/D346/table-ouverture.md` | cette table | ferme |
+| `docs/preuves/D346/consigne.md` | la consigne versée | ferme |
+| `docs/preuves/D346/lecture-adverse/lecture-adverse.md` | la lecture adverse de la consigne | ferme |
+| `docs/preuves/D346/reproduction/reproduction.md` | R-1 : ce qui a été joué dans le navigateur, endroit par endroit, valeur mesurée | ferme |
+| `docs/preuves/D346/scenarios-ko.md` | les gestes de Ko | ferme |
+| `docs/preuves/D346/controle-fin-de-lot.txt` | la sortie du contrôle de fin de lot | ferme |
+| `docs/preuves/D346/audit-secrets-d346a.txt` | audit de secrets avant versement (D298) | ferme |
+| `ZWADJ_CONTINUITE.md` | section D346, registre, ordre des rangs, point d'entrée, compteur | ferme |
+| `ZWADJ_BACKLOG.md` | R-7 : annotation additive de L36-4 ; entrées neuves éventuelles | ferme |
+| `AGENTS.md` | annotation additive (clôture du rang 48) | ferme |
+
+## Fichiers CONDITIONNELS (leur existence dépend d'un défaut ou d'un résultat)
+
+| Fichier | Condition |
+|---|---|
+| `docs/preuves/D346/reproduction/rouge-*.txt` | les sorties brutes de R-1, une par endroit trouvé rouge (jamais déduit du code) |
+| `docs/preuves/D346/rouges/rouges.md` et `docs/preuves/D346/rouges/rouge-*.txt` | seulement si R-1 montre un rouge : les tests rouges lus, avec l'empreinte sha256 de chaque fichier de test joué ; commités AVANT le premier commit de code (D334, point 5) |
+| `docs/preuves/D346/regle-e2e.md` | seulement si du code part : la règle des deux passes e2e vertes, commitée avant elles (R-15 de D343) |
+| `docs/preuves/D346/neutralisation/neutralize-r48.txt` | seulement si du code part : la sortie du harnais |
+| `docs/preuves/D346/portes/portes.md` | seulement si du code part : les six portes avec leurs chiffres |
+| `docs/preuves/D346/e2e/passe-1.txt`, `docs/preuves/D346/e2e/passe-2.txt` | seulement si du code part : les deux passes e2e complètes |
+| `docs/preuves/D346/e2e/rejeu.txt` | seulement si une passe e2e sort rouge |
+| `docs/preuves/D346/audit-secrets-d346b.txt` (et suivants) | un audit par versement supplémentaire |
+| `docs/preuves/D346/lecture-adverse/ecarts.md` | seulement si la lecture adverse trouve un écart |
+| `apps/client/src/components/search/search-view.tsx` | seulement si R-1 montre rouge le formulaire des filtres (piste de R-2) |
+| `apps/client/src/components/search/search-view.test.tsx` | seulement si `search-view.tsx` est touché : test de composant du rouge |
+| `apps/client/src/components/filter-wizard.tsx` | seulement si R-1 montre rouge l'assistant lui-même |
+| `apps/client/src/components/filter-wizard.test.tsx` | seulement si `filter-wizard.tsx` est touché : test de composant du rouge |
+| `e2e/specs/r48-assistant-choix.e2e.ts` | seulement si du code part : le rouge en navigateur (R-6), FR et AR |
+| `neutralisation/neutralize-r48.py` | seulement si du code part : le harnais du lot (R-6) |
+| `neutralisation/lancer-campagnes.py` | seulement si le tri par fichiers touchés exige d'enregistrer r48 (sinon NON touché) |
+
+## Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (09/11/2026, commitée SEULE, AVANT le commit des fichiers marqués « à venir »). Motif : la table nommait certaines pièces par famille (`rouges/rouge-*.txt`, « les six portes »), pas par chemin complet ; la règle (D328, point 4) veut le chemin complet.
+
+⚠ **Écart écrit, pour ne pas se lire comme tenu** : deux fichiers sont déclarés ICI APRÈS leur commit (`1f95e06` puis `57fe8a5`, qui les amende) : `docs/preuves/D346/rouges/rouge-1-composant.txt` et `docs/preuves/D346/rouges/rouge-2-navigateur.txt`. Ils étaient couverts par le motif `rouges/rouge-*.txt` de la table d'ouverture, non par un chemin complet. Les autres fichiers ci-dessous ne sont **pas encore commités** (statut « à venir »).
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D346/rouges/rouge-1-composant.txt` | la sortie du rouge 1 (composant), rejouée contre l'ancien code | déjà commité |
+| `docs/preuves/D346/rouges/rouge-2-navigateur.txt` | la sortie du rouge 2 (navigateur, FR et AR) | déjà commité |
+| `docs/preuves/D346/portes/_index.txt` | l'index du pilote de D340 : état machine avant, pendant, après ; durée et code de chaque porte | à venir |
+| `docs/preuves/D346/portes/etat-machine-pendant.txt` | l'état machine relevé toutes les 30 s pendant la passe | à venir |
+| `docs/preuves/D346/portes/typecheck.txt`, `docs/preuves/D346/portes/lint.txt`, `docs/preuves/D346/portes/test.txt`, `docs/preuves/D346/portes/build.txt`, `docs/preuves/D346/portes/test-int.txt` | les sorties des cinq portes (jetons masqués par le masqueur de D345) | à venir |
+| `docs/preuves/D346/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D346/e2e/passe-2-batterie-apres.txt` | l'alimentation avant et après la seconde passe e2e (2 = secteur) | à venir |
+| `docs/preuves/D346/campagnes/available-on.txt`, `docs/preuves/D346/campagnes/horizon.txt`, `docs/preuves/D346/campagnes/fc8.txt`, `docs/preuves/D346/campagnes/fc8-e2e.txt` | les trois campagnes voisines qui lisent `search-view.tsx` (rejouées) | à venir |
+| `docs/preuves/D346/audit-secrets-d346c.txt` | l'audit de secrets avant le versement des portes (D298) | à venir |
+
+**Extension 2** (09/11/2026, commitée SEULE, AVANT le commit des fichiers ci-dessous). Motif : trois pièces, produites par le tri de l'audit de secrets et par le contrôle de fin de lot, n'étaient pas nommées. Aucune n'est commitée à cette écriture.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D346/aucune-valeur-reelle.txt` | la sortie du contrôle dédié « 0 valeur réelle » (D299) : 186 valeurs cherchées dans 33 fichiers, 0 porteur | à venir |
+| `docs/preuves/D346/tri-audit-d346c.txt` | le tri écrit des 187 alertes nouvelles de l'audit « c » (186 gabarits de masquage, 1 titre de test) | à venir |
+| `docs/preuves/D346/controle-fin-de-lot.py` | l'instrument du contrôle de fin de lot (D288, D328, D334 point 5), écrit à neuf pour ce lot | à venir |
+~~~~
+
+### 7. Ordre des commits (D328, D334 point 5), relevé par `git log`
+Table d'ouverture seule (`7712831`) → consigne, lecture adverse, audit de secrets (`816d435`) → rouges (`1f95e06`, amendés par `57fe8a5`) → code et harnais (`a209b6c`) → extension de la table, seule → pièces des portes et des campagnes → `.md` d'autorité. Le contrôle de fin de lot est `docs/preuves/D346/controle-fin-de-lot.txt`.
 
 ## Session du 08/11/2026 — D345 · rang 47 CLOS, lot de CODE : le parcours « Nouvelle réservation » (client sur place) garde son étape et ses saisies quand on change d'onglet — brouillon en MÉMOIRE seulement, un parcours par salle, « Annuler » devient « Recommencer » ; compteur POUR MÉMOIRE VINGT → VINGT ET UN
 
@@ -26582,3 +26730,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D343 | A | D343 — rang 45 (SUITE) CLOS le 07/11/2026, lot de **CODE DE TEST** (il compte, D283), consigne du relecteur adoptée par Ko : **D265 NOMMÉ PAR LA MESURE ET RÉPARÉ dans le harnais e2e, puis clôture de l'intégration** ; lecture adverse de la consigne (28 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 3 ?) ; **la cause** : le `fetch` global garde les connexions dans un pool, trois appels en laissent deux libres, le serveur d'API ferme une connexion inactive à ≈ 6,0 s (5 annoncées) et le client à ≈ 3 s si sa boucle tourne, une boucle bloquée envoie le premier appel suivant sur une connexion morte (`fetch failed` ← `ECONNRESET`) ; reproduction avec le vrai serveur et le vrai fixture (A à C verts, D1 à D3 et F rouges, E vert : prédiction démentie) ; **correction** `connection: close` par UN appel commun (`appelHttp`), jamais une nouvelle tentative ; garde permanente `d265-socket-perimee` ; `neutralize-r45.py` 4 gardes mordues sur 4 ; **deux passes de l'e2e vertes** (77 passés + 1 ignoré chacune) et six portes à 0 sur secteur ; défaut d'instrument du masqueur de jetons trouvé par l'audit (un jeton sans chiffre) et réparé ; union des campagnes de D342 655 gardes mordues, 0 muette, 9 cibles `--e2e` non mesurées, une campagne (`r32`) rejouée UNE fois après un pré-vol rouge par la garde console flottante ; huit décisions prises seul (S-130 à S-137) à ratifier ; **compteur POUR MÉMOIRE DIX-NEUF** ; rang suivant : « RANG 46 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D343, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 45 ». |
 | D344 | A | D344 — rang 46 CLOS le 08/11/2026, lot de **CODE DE TEST** (il compte, D283), consigne du relecteur adoptée par Ko : **la spec du lien du calendrier (r30, D322) REVIENT dans la suite e2e** (copie identique à l'octet de l'archive, verte au départ, mord : K-1) ; **la spec « Nouvelle réservation » (r32, D325) est ARRÊTÉE par R-3** — l'application contredit la spec dès son premier écran (l'étape Client a été scindée au rang 41, D336 : une raison de blocage au lieu de quatre, plus de champ « Prénom » au départ ; 5 tests sur 5 rouges) ; elle reste dans `docs/preuves/` ; lecture adverse de la consigne (26 contrôles : 24 ✓ · 2 ≈ · 0 ✗ ; deux défauts d'instrument gardés avec leur première passe) ; **deux passes de l'e2e vertes** (78 passés + 1 ignoré = 79 attendus, chacune) et six portes à 0 sur secteur ; six décisions prises seul (S-138 à S-143) à ratifier ; **compteur POUR MÉMOIRE VINGT** ; rang suivant : « RANG 47 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D344, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 46 ». ⛔ *(D345 : « RANG 47 : EN ATTENTE DE CADRAGE DU RELECTEUR », « compteur POUR MÉMOIRE VINGT » et le candidat « L36-3a-2 » dits ici sont **PÉRIMÉS** — le rang 47 est arbitré par Ko et clos (D345), compteur VINGT ET UN, rang suivant « RANG 48 ». Annoté, pas réécrit.)* |
 | D345 | A | D345 — rang 47 CLOS le 08/11/2026, lot de **CODE** (il compte, D283), consigne du relecteur adoptée par Ko : **le parcours « Nouvelle réservation » (client sur place) garde son étape et ses saisies quand on change d'onglet** — le brouillon vit dans un fournisseur monté au-dessus des routes, **en mémoire seulement** (jamais le stockage du navigateur : il porte le numéro et le nom d'un client sur un poste partagé), survit à l'aller-retour d'onglet, **pas** au rechargement ni à la fermeture ; le devis affiché est « à recalculer », la chaîne de devis est gardée ; il s'efface à la fin du parcours, à la déconnexion, au changement de compte, par « Recommencer » (le bouton « Annuler » existant, renommé) et quand la salle change ; **un défaut préexistant trouvé par le test** : un parcours commencé pour la salle 1 restait à l'écran à la même étape quand la salle devenait la salle 2 (corrigé : un parcours par salle) ; lecture adverse de la consigne (18 contrôles : 13 ✓ · 2 écarts comblés · 1 limite · 2 à faire) ; rouges lus avant le code (8 sur 16 en vitest, 2 sur 2 en navigateur) ; harnais r47 **25 mordues sur 25** ; six portes à 0 sur secteur et **deux passes de l'e2e vertes** (80 + 1 = 81) ; six décisions prises seule (S-144 à S-149) à ratifier ; **compteur POUR MÉMOIRE VINGT ET UN** ; rang suivant : « RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D345, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 47 ». |
+| D346 | A | D346 — rang 48 CLOS le 09/11/2026, lot de **CODE** (il compte, D283), consigne du relecteur adoptée par Ko : **l'assistant de recherche client, les choix déjà faits doivent reparaître** — R-1 jouée dans un navigateur (FR et AR) : **l'assistant est juste, c'est le formulaire des filtres de `/salles` qui ne suivait pas l'adresse** (commune, curseurs de capacité et de budget, cases) ; réparation : **une clé** sur `<SearchFilters>` (`search-view.tsx`), dérivée des huit champs du panneau, jamais page ni tri ; l'adresse reste la seule autorité ; aucun contrat d'API, aucune migration ; **rouges lus avant le code** (10 en composant, 2 en navigateur) ; harnais `neutralize-r48.py` **12 sur 12** ; six portes à 0 et **deux passes e2e vertes** de suite ; compteur POUR MÉMOIRE **VINGT ET UN → VINGT-DEUX** (limite de cinq suspendue, aucune certification) ; S-150 à S-157 prises par la session, à ratifier ; piège hors lot : le cache d'une heure des référentiels du client, vide après le préchauffage de l'e2e. Section D346. |
