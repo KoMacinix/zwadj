@@ -1,0 +1,175 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/components/search/search-view.test.tsx (51 tests | 6 failed) 1613ms
+   ✓ Recherche — états > résultats : nom, commune, capacité et prix formatés en DZD 155ms
+   ✓ Recherche — états > aucun résultat : message d'élargissement, PAS un écran vide 31ms
+   ✓ Recherche — états > API muette : état d'ERREUR distinct du vide — on ne dit pas « aucune salle » quand on n'en sait rien 28ms
+   ✓ Recherche — états > le compteur s'accorde au singulier 78ms
+   ✓ Recherche — états > UI-D5 — le NOMBRE est isolé dans son propre élément : c'est lui que le design accentue 29ms
+   ✓ Recherche — médias > une URL de vignette RELATIVE est préfixée par la base API, pas par l'origine de Next 21ms
+   ✓ Recherche — médias > une URL ABSOLUE (adapter S3/CDN) est laissée intacte 21ms
+   ✓ Recherche — médias > salle sans photo : un cartouche explicite, pas une image cassée 27ms
+   ✓ Recherche — filtres sans JavaScript > le panneau est un vrai formulaire GET : c'est ce qui fait filtrer la page sans JS 19ms
+   ✓ Recherche — filtres sans JavaScript > les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche 93ms
+   ✓ Recherche — filtres sans JavaScript > D69 — poignées EN BUTÉE quand l'URL est nue : le panneau au repos ne filtre rien 39ms
+   ✓ Recherche — filtres sans JavaScript > la butée haute s'annonce « et plus » — sinon « 500 » se lirait comme un plafond 21ms
+   ✓ Recherche — filtres sans JavaScript > les puces de style sont des CASES (plusieurs à la fois, D65), le type est un RADIO (choix unique, D66) 56ms
+   ✓ Recherche — filtres sans JavaScript > UI-D3 — recliquer une puce de type la DÉCOCHE : sans elle, un groupe de radios ne se vide jamais 33ms
+   ✓ Recherche — filtres sans JavaScript > UI-D3 — trois types exactement, « Tous » n'existe plus 31ms
+   ✓ Recherche — filtres sans JavaScript > référentiel de styles VIDE : le bloc disparaît, la recherche reste utilisable 32ms
+   ✓ Recherche — filtres sans JavaScript > les équipements partagent le même `name` : c'est l'encodage natif que le navigateur sait produire seul 32ms
+   ✓ Recherche — filtres sans JavaScript > UI-D5 — le tri a quitté le formulaire dans l'ARBRE mais lui APPARTIENT toujours (attribut `form`) 23ms
+   ✓ Recherche — filtres sans JavaScript > UI-D5 — l'étiquette dit « Recommandé », la VALEUR soumise reste `recent` (contrat A3 non rouvert) 31ms
+   ✓ Recherche — pagination > des LIENS, pas un « charger plus » : un bouton JS ne produit aucune URL indexable 30ms
+   ✓ Recherche — pagination > la page courante est signalée aux lecteurs d'écran 23ms
+   ✓ Recherche — pagination > une seule page : aucune navigation de pagination 18ms
+   ✓ Recherche — bilingue > en arabe : libellés, noms de salle et de commune passent en AR 38ms
+   ✓ Recherche — bilingue > aucun `dir` en dur : l'orientation vient de <html>, jamais d'un composant 18ms
+   ✓ Recherche — bascule grille / carte (UI-D5) > la grille est l'affichage par DÉFAUT — le cartouche de carte ne squatte plus le bas de page 24ms
+   ✓ Recherche — bascule grille / carte (UI-D5) > le report post-MVP est DIT, pas laissé en blanc (décision produit n°2) 30ms
+   ✓ Recherche — bascule grille / carte (UI-D5) > l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas 29ms
+   ✓ Recherche — données de démonstration (UI-D5) > ÉTEINT par défaut : sans `previewVenues`, un résultat vide reste un résultat vide 23ms
+   ✓ Recherche — données de démonstration (UI-D5) > allumé + recherche vide : la GRILLE se remplit, et le bandeau dit que ces salles sont fausses 60ms
+   ✓ Recherche — données de démonstration (UI-D5) > allumé mais recherche PLEINE : les vraies salles gagnent, aucun bandeau 33ms
+   ✓ Recherche — données de démonstration (UI-D5) > les salles de démonstration portent la note du design 42ms
+   ✓ Recherche — données de démonstration (UI-D5) > une salle RÉELLE n'invente PAS de note : le DTO n'en porte pas encore (Flux B) 18ms
+   ✓ Lot `availableOn` — annotation par date > `availableOnDate === false` ⇒ carte GRISÉE, avec une mention ÉCRITE 19ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ LA CARTE GRISÉE RESTE UN LIEN : « pas ce jour-là » n'est pas « pas cette salle » 21ms
+   ✓ Lot `availableOn` — annotation par date > `availableOnDate === true` ⇒ AUCUN grisé, et la salle reste dans la page 17ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ `null` NE GRISE PAS : il ne signifie plus QUE « question non posée » 17ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ QUESTION NON POSÉE ⇒ aucun bandeau, aucun grisé, même avec des `false` en base 17ms
+   ✓ Lot `availableOn` — annotation par date > un bandeau DIT sur quelle date porte l'annotation — sinon une URL partagée grise sans expliquer 18ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ LA DATE AFFICHÉE VIENT DE L'ÉCHO, jamais de l'URL 28ms
+   ✓ Lot `availableOn` — annotation par date > DATE PASSÉE : message PROPRE, distinct de la panne, avec une sortie qui marche 17ms
+   ✓ Lot `availableOn` — annotation par date > DATE TROP LOINTAINE : l'AUTRE message, et surtout PAS celui de la date passée 20ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ une PANNE reste une panne : elle n'emprunte aucun des deux messages de date 16ms
+   ✓ FC-8 — le mode guidé de `/salles` > `guide` connu : l'assistant s'ouvre, à l'étape DEMANDÉE, et les résultats RÉELS restent dessous 37ms
+   ✓ FC-8 — le mode guidé de `/salles` > sans `guide` : aucun assistant, la page de résultats seule 19ms
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > la commune choisie dans l'assistant est celle du formulaire 31ms
+     → expected '' to be '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' // Object.is equality
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > les invités de l'assistant sont la poignée BASSE de la capacité 27ms
+     → expected '20' to be '250' // Object.is equality
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > le budget de l'assistant est la poignée HAUTE du budget 24ms
+     → expected '1500000' to be '750000' // Object.is equality
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > les goûts de l'assistant (styles ET équipements) sont cochés dans le formulaire 24ms
+     → expected false to be true // Object.is equality
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > le type de cérémonie de l'adresse est celui du formulaire 23ms
+     → expected '' to be 'indoor' // Object.is equality
+   × Recherche — le formulaire des filtres suit l'adresse (D346) > « Recommencer » (adresse vide) vide le formulaire, à toutes les poignées 26ms
+     → expected '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' to be '' // Object.is equality
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > changer de page ne remonte pas le formulaire : une saisie non soumise survit 23ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > la commune choisie dans l'assistant est celle du formulaire
+AssertionError: expected '' to be '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' // Object.is equality
+
+- Expected
++ Received
+
+- 6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f
+
+ ❯ src/components/search/search-view.test.tsx:550:76
+    548|     expect((document.getElementById("f-city") as HTMLSelectElement).va…
+    549|     naviguer({ cityId: CITY_ID });
+    550|     expect((document.getElementById("f-city") as HTMLSelectElement).va…
+       |                                                                            ^
+    551|   });
+    552| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > les invités de l'assistant sont la poignée BASSE de la capacité
+AssertionError: expected '20' to be '250' // Object.is equality
+
+Expected: "250"
+Received: "20"
+
+ ❯ src/components/search/search-view.test.tsx:556:35
+    554|     const { naviguer } = montage();
+    555|     naviguer({ guests: "250" });
+    556|     expect(champ("guests").value).toBe("250");
+       |                                   ^
+    557|   });
+    558| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > le budget de l'assistant est la poignée HAUTE du budget
+AssertionError: expected '1500000' to be '750000' // Object.is equality
+
+Expected: "750000"
+Received: "1500000"
+
+ ❯ src/components/search/search-view.test.tsx:562:37
+    560|     const { naviguer } = montage();
+    561|     naviguer({ maxPrice: "750000" });
+    562|     expect(champ("maxPrice").value).toBe("750000");
+       |                                     ^
+    563|   });
+    564| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > les goûts de l'assistant (styles ET équipements) sont cochés dans le formulaire
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/components/search/search-view.test.tsx:568:38
+    566|     const { naviguer } = montage();
+    567|     naviguer({ styles: "royal", amenities: "wifi" });
+    568|     expect(coche("styles", "royal")).toBe(true);
+       |                                      ^
+    569|     expect(coche("styles", "jardin")).toBe(false);
+    570|     expect(coche("amenities", "wifi")).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > le type de cérémonie de l'adresse est celui du formulaire
+AssertionError: expected '' to be 'indoor' // Object.is equality
+
+- Expected
++ Received
+
+- indoor
+
+ ❯ src/components/search/search-view.test.tsx:577:125
+    575|     const { naviguer } = montage();
+    576|     naviguer({ ceremonyType: "indoor" });
+    577|     expect((document.querySelector('.filters input[name="ceremonyType"…
+       |                                                                                                                             ^
+    578|   });
+    579| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — le formulaire des filtres suit l'adresse (D346) > « Recommencer » (adresse vide) vide le formulaire, à toutes les poignées
+AssertionError: expected '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ 6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f
+
+ ❯ src/components/search/search-view.test.tsx:584:76
+    582|     expect(champ("guests").value).toBe("250");
+    583|     naviguer({});
+    584|     expect((document.getElementById("f-city") as HTMLSelectElement).va…
+       |                                                                            ^
+    585|     expect(champ("guests").value).toBe("20");
+    586|     expect(champ("maxPrice").value).toBe("1500000");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 45 passed (51)
+   Start at  01:24:39
+   Duration  4.96s (transform 598ms, setup 233ms, collect 1.28s, tests 1.61s, environment 1.18s, prepare 260ms)
+

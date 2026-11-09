@@ -1,0 +1,1057 @@
+# journal brut hors dépôt (lignes [WebServer] et codes ANSI retirés) : sha256 92727669dbe2337f1574131fc0d0326b949c220545bf7063772aa63e937b683e
+# cd e2e && npx playwright test specs/r48-assistant-choix.e2e.ts --project=chromium --no-deps  (cache fetch de Next vidé avant ; code produit NON modifié, HEAD 816d435)
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 2 tests using 1 worker
+
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/fr/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 1-apres-commune guests {"voulu":"","vu":""}
+MESURE-FORMULAIRE 1-apres-commune {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 2-apres-invites budget {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 2-apres-invites {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&guide=budget","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 3-apres-budget taste {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 3-apres-budget {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 4-apres-gouts taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 4-apres-gouts {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 5a-revisite-invites-par-la-liste guests {"voulu":"250","vu":"250"}
+MESURE-FORMULAIRE 5a-revisite-invites-par-la-liste {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 5b-revisite-commune-par-la-liste city {"voulu":"01a1befd-6dba-757b-95ce-51cb10ced377","vu":"01a1befd-6dba-757b-95ce-51cb10ced377"}
+MESURE-FORMULAIRE 5b-revisite-commune-par-la-liste {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=city","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 6-retour-navigateur-vers-gouts taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 6-retour-navigateur-vers-gouts {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 7-assistant-termine fermé
+MESURE-FORMULAIRE 7-assistant-termine {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 8a-rouvert-par-retour taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 8a-rouvert-par-retour {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 8b-recommencer-depuis-un-etat-plein city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 8b-recommencer-depuis-un-etat-plein {"url":"/fr/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-taste taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 9-retour-navigateur-taste {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-budget budget {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 9-retour-navigateur-budget {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&guide=budget","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-guests guests {"voulu":"","vu":""}
+MESURE-FORMULAIRE 9-retour-navigateur-guests {"url":"/fr/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-city city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/fr/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  1 [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (40.8s)
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/ar/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 1-apres-commune guests {"voulu":"","vu":""}
+MESURE-FORMULAIRE 1-apres-commune {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 2-apres-invites budget {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 2-apres-invites {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&guide=budget","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 3-apres-budget taste {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 3-apres-budget {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 4-apres-gouts taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 4-apres-gouts {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 5a-revisite-invites-par-la-liste guests {"voulu":"250","vu":"250"}
+MESURE-FORMULAIRE 5a-revisite-invites-par-la-liste {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 5b-revisite-commune-par-la-liste city {"voulu":"01a1befd-6dba-757b-95ce-51cb10ced377","vu":"01a1befd-6dba-757b-95ce-51cb10ced377"}
+MESURE-FORMULAIRE 5b-revisite-commune-par-la-liste {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=city","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 6-retour-navigateur-vers-gouts taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 6-retour-navigateur-vers-gouts {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 7-assistant-termine fermé
+MESURE-FORMULAIRE 7-assistant-termine {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 8a-rouvert-par-retour taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 8a-rouvert-par-retour {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 8b-recommencer-depuis-un-etat-plein city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 8b-recommencer-depuis-un-etat-plein {"url":"/ar/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-taste taste {"voulu":2,"vu":2}
+MESURE-FORMULAIRE 9-retour-navigateur-taste {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&maxPrice=750000&amenities=acces-pmr&styles=royal&guide=taste","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"750000","styles":["royal"],"amenities":["acces-pmr"]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-budget budget {"voulu":0,"vu":0}
+MESURE-FORMULAIRE 9-retour-navigateur-budget {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guests=250&guide=budget","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"250","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-guests guests {"voulu":"","vu":""}
+MESURE-FORMULAIRE 9-retour-navigateur-guests {"url":"/ar/salles?cityId=01a1befd-6dba-757b-95ce-51cb10ced377&guide=guests","voulu":{"cityId":"01a1befd-6dba-757b-95ce-51cb10ced377","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+MESURE-ASSISTANT 9-retour-navigateur-city city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  2 [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (37.6s)
+
+
+  1) [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: 1-apres-commune — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    +   "cityId": "",
+        "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:117:5
+
+    Error: 2-apres-invites — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:123:5
+
+    Error: 3-apres-budget — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:128:5
+
+    Error: 4-apres-gouts — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:143:5
+
+    Error: 5a-revisite-invites-par-la-liste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:149:5
+
+    Error: 5b-revisite-commune-par-la-liste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:152:5
+
+    Error: 6-retour-navigateur-vers-gouts — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:158:5
+
+    Error: 7-assistant-termine — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:163:5
+
+    Error: 8a-rouvert-par-retour — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:168:5
+
+    Error: 9-retour-navigateur-taste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    Error: 9-retour-navigateur-budget — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    Error: 9-retour-navigateur-guests — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    +   "cityId": "",
+        "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: 1-apres-commune — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    +   "cityId": "",
+        "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:117:5
+
+    Error: 2-apres-invites — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:123:5
+
+    Error: 3-apres-budget — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:128:5
+
+    Error: 4-apres-gouts — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:143:5
+
+    Error: 5a-revisite-invites-par-la-liste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:149:5
+
+    Error: 5b-revisite-commune-par-la-liste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:152:5
+
+    Error: 6-retour-navigateur-vers-gouts — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:158:5
+
+    Error: 7-assistant-termine — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:163:5
+
+    Error: 8a-rouvert-par-retour — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:168:5
+
+    Error: 9-retour-navigateur-taste — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 9
+    + Received  + 5
+
+      Object {
+    -   "amenities": Array [
+    -     "acces-pmr",
+    -   ],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    -   "maxPricePoignee": "750000",
+    -   "styles": Array [
+    -     "royal",
+    -   ],
+    +   "amenities": Array [],
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+    +   "maxPricePoignee": "1500000",
+    +   "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    Error: 9-retour-navigateur-budget — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    -   "guestsPoignee": "250",
+    +   "cityId": "",
+    +   "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    Error: 9-retour-navigateur-guests — formulaire
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "amenities": Array [],
+    -   "cityId": "01a1befd-6dba-757b-95ce-51cb10ced377",
+    +   "cityId": "",
+        "guestsPoignee": "20",
+        "maxPricePoignee": "1500000",
+        "styles": Array [],
+      }
+
+    Call Log:
+    - Timeout 2500ms exceeded while waiting on the predicate
+
+      60 |     return { ...v, styles: [...v.styles].sort(), amenities: [...v.amenities].sort() };
+      61 |   };
+    > 62 |   await doux.poll(lire, { message: `${etape} — formulaire`, ...ATTENTE }).toEqual(voulu);
+         |   ^
+      63 |   console.log("MESURE-FORMULAIRE", etape, JSON.stringify({ url: page.url().replace(CLIENT, ""), voulu, vu: await lire() }));
+      64 | }
+      65 |
+        at mesurerFormulaire (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:62:3)
+        at mesurerTout (C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:98:3)
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:178:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+    [chromium] › specs\r48-assistant-choix.e2e.ts:102:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+exit 1

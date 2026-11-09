@@ -522,3 +522,79 @@ describe("FC-8 — le mode guidé de `/salles`", () => {
     expect(screen.queryByRole("dialog")).toBe(null);
   });
 });
+
+// ── D346 (rang 48) — LE FORMULAIRE DES FILTRES SUIT L'ADRESSE, SANS RECHARGEMENT ───────────────────────────────────────────────
+// L'assistant pousse une adresse (`router.push`) : la page se rend de nouveau et `SearchView` reçoit un NOUVEL `state`, mais la MÊME
+// instance reste montée. Les champs du formulaire sont non contrôlés (`defaultValue`, `defaultChecked`) ou initialisés une fois
+// (`useState`) : sans remontage, ils gardent leurs valeurs d'avant. Mesuré en navigateur (`docs/preuves/D346/reproduction/`).
+// ⚠ Le MÊME composant est rendu à nouveau (`rerender`), jamais un second `render` : c'est la différence entre « la page se charge » et
+// « l'assistant a répondu ».
+// ⚠ Les verdicts s'écrivent en assertion NATIVE (`toBe`) : un matcher jest-dom échoue en `Error`, pas en `AssertionError` (D316).
+describe("Recherche — le formulaire des filtres suit l'adresse (D346)", () => {
+  function montage(brut: Record<string, string | string[]> = {}) {
+    const vue = (b: Record<string, string | string[]>) => (
+      <NextIntlClientProvider locale="fr" messages={messages.fr}>
+        <SearchView state={parseSearchParams(b)} outcome={ok(results([venue(1)]))} wilayas={WILAYAS} amenities={AMENITIES} styles={STYLES} />
+      </NextIntlClientProvider>
+    );
+    const rendu = render(vue(brut));
+    return { ...rendu, naviguer: (b: Record<string, string | string[]>) => rendu.rerender(vue(b)) };
+  }
+  const champ = (nom: string) => document.querySelector(`.filters [name="${nom}"]`) as HTMLInputElement;
+  const coche = (nom: string, valeur: string) => (document.querySelector(`.filters input[name="${nom}"][value="${valeur}"]`) as HTMLInputElement).checked;
+
+  it("la commune choisie dans l'assistant est celle du formulaire", () => {
+    const { naviguer } = montage();
+    expect((document.getElementById("f-city") as HTMLSelectElement).value).toBe("");
+    naviguer({ cityId: CITY_ID });
+    expect((document.getElementById("f-city") as HTMLSelectElement).value).toBe(CITY_ID);
+  });
+
+  it("les invités de l'assistant sont la poignée BASSE de la capacité", () => {
+    const { naviguer } = montage();
+    naviguer({ guests: "250" });
+    expect(champ("guests").value).toBe("250");
+  });
+
+  it("le budget de l'assistant est la poignée HAUTE du budget", () => {
+    const { naviguer } = montage();
+    naviguer({ maxPrice: "750000" });
+    expect(champ("maxPrice").value).toBe("750000");
+  });
+
+  it("les goûts de l'assistant (styles ET équipements) sont cochés dans le formulaire", () => {
+    const { naviguer } = montage();
+    naviguer({ styles: "royal", amenities: "wifi" });
+    expect(coche("styles", "royal")).toBe(true);
+    expect(coche("styles", "jardin")).toBe(false);
+    expect(coche("amenities", "wifi")).toBe(true);
+    expect(coche("amenities", "parking")).toBe(false);
+  });
+
+  it("le type de cérémonie de l'adresse est celui du formulaire", () => {
+    const { naviguer } = montage();
+    naviguer({ ceremonyType: "indoor" });
+    expect((document.querySelector('.filters input[name="ceremonyType"]:checked') as HTMLInputElement | null)?.value ?? "").toBe("indoor");
+  });
+
+  it("« Recommencer » (adresse vide) vide le formulaire, à toutes les poignées", () => {
+    const { naviguer } = montage({ cityId: CITY_ID, guests: "250", maxPrice: "750000", styles: "royal", amenities: "wifi" });
+    expect(champ("guests").value).toBe("250");
+    naviguer({});
+    expect((document.getElementById("f-city") as HTMLSelectElement).value).toBe("");
+    expect(champ("guests").value).toBe("20");
+    expect(champ("maxPrice").value).toBe("1500000");
+    expect(coche("styles", "royal")).toBe(false);
+    expect(coche("amenities", "wifi")).toBe(false);
+  });
+
+  // GARDE CONTRE UNE RÉPARATION TROP LARGE (lecture adverse, ligne 10) : changer de PAGE ne change aucun filtre — ce que le visiteur a
+  // modifié sans soumettre ne doit pas disparaître.
+  it("changer de page ne remonte pas le formulaire : une saisie non soumise survit", () => {
+    const { naviguer } = montage({ cityId: CITY_ID });
+    fireEvent.click(document.querySelector('.filters input[name="amenities"][value="parking"]') as HTMLInputElement);
+    expect(coche("amenities", "parking")).toBe(true);
+    naviguer({ cityId: CITY_ID, page: "2" });
+    expect(coche("amenities", "parking")).toBe(true);
+  });
+});
