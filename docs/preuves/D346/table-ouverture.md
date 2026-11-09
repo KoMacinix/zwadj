@@ -45,3 +45,19 @@ Lot : **l'assistant de recherche client : les choix déjà faits doivent repara�
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (09/11/2026, commitée SEULE, AVANT le commit des fichiers marqués « à venir »). Motif : la table nommait certaines pièces par famille (`rouges/rouge-*.txt`, « les six portes »), pas par chemin complet ; la règle (D328, point 4) veut le chemin complet.
+
+⚠ **Écart écrit, pour ne pas se lire comme tenu** : deux fichiers sont déclarés ICI APRÈS leur commit (`1f95e06` puis `57fe8a5`, qui les amende) : `docs/preuves/D346/rouges/rouge-1-composant.txt` et `docs/preuves/D346/rouges/rouge-2-navigateur.txt`. Ils étaient couverts par le motif `rouges/rouge-*.txt` de la table d'ouverture, non par un chemin complet. Les autres fichiers ci-dessous ne sont **pas encore commités** (statut « à venir »).
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D346/rouges/rouge-1-composant.txt` | la sortie du rouge 1 (composant), rejouée contre l'ancien code | déjà commité |
+| `docs/preuves/D346/rouges/rouge-2-navigateur.txt` | la sortie du rouge 2 (navigateur, FR et AR) | déjà commité |
+| `docs/preuves/D346/portes/_index.txt` | l'index du pilote de D340 : état machine avant, pendant, après ; durée et code de chaque porte | à venir |
+| `docs/preuves/D346/portes/etat-machine-pendant.txt` | l'état machine relevé toutes les 30 s pendant la passe | à venir |
+| `docs/preuves/D346/portes/typecheck.txt`, `docs/preuves/D346/portes/lint.txt`, `docs/preuves/D346/portes/test.txt`, `docs/preuves/D346/portes/build.txt`, `docs/preuves/D346/portes/test-int.txt` | les sorties des cinq portes (jetons masqués par le masqueur de D345) | à venir |
+| `docs/preuves/D346/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D346/e2e/passe-2-batterie-apres.txt` | l'alimentation avant et après la seconde passe e2e (2 = secteur) | à venir |
+| `docs/preuves/D346/campagnes/available-on.txt`, `docs/preuves/D346/campagnes/horizon.txt`, `docs/preuves/D346/campagnes/fc8.txt`, `docs/preuves/D346/campagnes/fc8-e2e.txt` | les trois campagnes voisines qui lisent `search-view.tsx` (rejouées) | à venir |
+| `docs/preuves/D346/audit-secrets-d346c.txt` | l'audit de secrets avant le versement des portes (D298) | à venir |
+
