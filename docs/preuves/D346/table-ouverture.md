@@ -61,3 +61,11 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `docs/preuves/D346/campagnes/available-on.txt`, `docs/preuves/D346/campagnes/horizon.txt`, `docs/preuves/D346/campagnes/fc8.txt`, `docs/preuves/D346/campagnes/fc8-e2e.txt` | les trois campagnes voisines qui lisent `search-view.tsx` (rejouées) | à venir |
 | `docs/preuves/D346/audit-secrets-d346c.txt` | l'audit de secrets avant le versement des portes (D298) | à venir |
 
+**Extension 2** (09/11/2026, commitée SEULE, AVANT le commit des fichiers ci-dessous). Motif : trois pièces, produites par le tri de l'audit de secrets et par le contrôle de fin de lot, n'étaient pas nommées. Aucune n'est commitée à cette écriture.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D346/aucune-valeur-reelle.txt` | la sortie du contrôle dédié « 0 valeur réelle » (D299) : 186 valeurs cherchées dans 33 fichiers, 0 porteur | à venir |
+| `docs/preuves/D346/tri-audit-d346c.txt` | le tri écrit des 187 alertes nouvelles de l'audit « c » (186 gabarits de masquage, 1 titre de test) | à venir |
+| `docs/preuves/D346/controle-fin-de-lot.py` | l'instrument du contrôle de fin de lot (D288, D328, D334 point 5), écrit à neuf pour ce lot | à venir |
+
