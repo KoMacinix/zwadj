@@ -120,6 +120,18 @@ export interface SearchViewProps {
   guide?: GuideStep | null;
 }
 
+/** D346 (rang 48) — LA CLÉ DU PANNEAU DE FILTRES : les SEULS champs qu'il porte.
+ *
+ *  ⚠ Le panneau est fait de champs NON contrôlés (`defaultValue`, `defaultChecked`) et d'états initialisés une fois (`RangeFilter`,
+ *  la radio de cérémonie). Quand l'assistant pousse une adresse (`router.push`), la page se rend de nouveau mais la MÊME instance
+ *  reste montée : sans clé, le panneau garde ses valeurs d'avant — mesuré en navigateur, FR et AR. Changer la clé le REMONTE avec
+ *  les valeurs de l'adresse, qui reste la seule autorité (D229) : aucun état local ne la double.
+ *  ⚠ Ni `page` ni `sort` ni `availableOn` n'y entrent : changer de page ou de tri ne change aucun CHAMP du panneau, et le remonter
+ *  effacerait ce que le visiteur a modifié sans soumettre. Le panneau reste un vrai `<form method="get">` : une clé React ne change
+ *  rien au HTML servi, la page marche sans JavaScript. */
+const filtersKey = (s: SearchState): string =>
+  JSON.stringify([s.cityId, s.guests, s.maxCapacity, s.minPrice, s.maxPrice, s.styles, s.amenities, s.ceremonyType]);
+
 export function SearchView({ state, outcome, wilayas, amenities, styles, previewVenues = null, guide = null }: SearchViewProps) {
   const t = useTranslations("search");
   const locale = useLocale();
@@ -152,7 +164,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
     // impossible. Le confort de lecture est repris par le rembourrage de la
     // colonne de résultats, pas par une largeur maximale du document.
     <main className="search-shell">
-      <SearchFilters state={state} wilayas={wilayas} amenities={amenities} styles={styles} ar={ar} />
+      <SearchFilters key={filtersKey(state)} state={state} wilayas={wilayas} amenities={amenities} styles={styles} ar={ar} />
 
       <section className="search-results">
         <div className="results-head">
