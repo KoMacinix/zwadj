@@ -588,6 +588,32 @@ describe("Recherche — le formulaire des filtres suit l'adresse (D346)", () => 
     expect(coche("amenities", "wifi")).toBe(false);
   });
 
+  // ⚠ UN TEST PAR CHAMP DE LA CLÉ : si un test change deux champs à la fois, retirer UN seul champ de la clé ne le fait pas rougir
+  // (l'autre remonte le panneau) — la cible serait muette par confusion de mesure (D209). Chaque champ a donc le sien.
+  it("les styles seuls : cochés dans le formulaire quand l'adresse change", () => {
+    const { naviguer } = montage();
+    naviguer({ styles: "royal" });
+    expect(coche("styles", "royal")).toBe(true);
+  });
+
+  it("les équipements seuls : cochés dans le formulaire quand l'adresse change", () => {
+    const { naviguer } = montage();
+    naviguer({ amenities: "wifi" });
+    expect(coche("amenities", "wifi")).toBe(true);
+  });
+
+  it("le plafond de capacité seul (poignée HAUTE) suit l'adresse", () => {
+    const { naviguer } = montage();
+    naviguer({ maxCapacity: "300" });
+    expect(champ("maxCapacity").value).toBe("300");
+  });
+
+  it("le plancher de budget seul (poignée BASSE) suit l'adresse", () => {
+    const { naviguer } = montage();
+    naviguer({ minPrice: "500000" });
+    expect(champ("minPrice").value).toBe("500000");
+  });
+
   // GARDE CONTRE UNE RÉPARATION TROP LARGE (lecture adverse, ligne 10) : changer de PAGE ne change aucun filtre — ce que le visiteur a
   // modifié sans soumettre ne doit pas disparaître.
   it("changer de page ne remonte pas le formulaire : une saisie non soumise survit", () => {
