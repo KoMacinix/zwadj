@@ -1,0 +1,18 @@
+⛔ PIÈCE MASQUÉE — D346 campagne available-on. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 752 octets, sha256 90c2dc7360e384dd3cb776c80aa22af7f211ad2b645b496fad386478ff29f959. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ 1. Le grisé ne mord plus : `false` cesse de produire la classe
+✓ 2. `null` grise comme `false` (le piège du booléen à trois valeurs)
+✓ 3. La date affichée vient de l'URL et non de l'écho du serveur
+✓ 4. Le refus de date passée est replié sur la panne générique
+✓ 5. La date irréelle n'est plus filtrée (février 31 part à l'API)
+✓ 6. `availableOn` cesse d'être transmis à l'API
+✓ 7. La règle SEO ne voit plus la pagination comme une variante
+✓ 8. `noindex` emporte `nofollow` (le chemin vers les fiches est coupé)
+✓ 9. Un champ vide redevient une variante (la page nue se désindexe)
+✓ 10. La carte grisée cesse d'être un lien
+
+10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+exit 0

@@ -1,0 +1,17 @@
+D346 — tri de l'audit de secrets « c » (neutralisation/audit-secrets.py, sortie scellée docs/preuves/D346/audit-secrets-d346c.txt)
+
+Procédure : docs/preuves/D299/outils/alertes-nouvelles.py <précédente = audit-secrets-d346b.txt> <nouvelle = audit-secrets-d346c.txt>. Calibration de l'outil : 2 bras, ✓ ✓.
+Contextes lus : 2160 (précédente) et 2347 (nouvelle). Alertes ABSENTES de la précédente : 187 — ventilation par motif : jeton = 186, mot-de-passe = 1.
+
+Triées au contexte (les lignes de la sortie scellée sont celles que renvoie l'outil ; aucun contexte n'est recopié ici, sans quoi cette pièce serait elle-même un écho non scellé) :
+
+ · 186 — [jeton] docs/preuves/D346/e2e/passe-1.txt ×93 et docs/preuves/D346/e2e/passe-2.txt ×93 : la ligne « [WebServer] …/auth/verification-email?token=<jeton masqué #N (43 car.)> » — le GABARIT du masqueur de D345, pas une valeur (l'audit voit « token= » devant). Même classe que les 186 de D345 (docs/preuves/D345/tri-audit-d345b.txt).
+ ·   1 — [mot-de-passe] docs/preuves/D346/portes/test-int.txt (ligne 342) : le titre d'un test d'intégration existant (« forgot-password : réponse CONSTANTE, mais aucun e-mail ne part »). Même classe que la ligne de D345.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py, calibré sur ses deux bras à chaque lancement), sortie : docs/preuves/D346/aucune-valeur-reelle.txt :
+ · journaux bruts cherchés : les deux passes e2e (93 valeurs distinctes chacune, 186 au total) ;
+ · parcourus : 33 fichiers, 10 022 480 octets (docs/preuves/D346 et les trois fichiers d'autorité) ;
+ · porteurs : 0 (attendu 0).
+ · ⚠ un premier lancement avec en plus test-int.txt et le journal de la reproduction (qui ne portent AUCUNE valeur) a ABANDONNÉ sur la calibration : l'outil exige au moins une valeur par journal. Relancé avec les seuls journaux qui en portent, comme à D345 ; l'abandon n'est pas un défaut de l'instrument mais de la liste qu'on lui donnait.
+
+Conclusion : 0 valeur réelle versée. 187 alertes de MOTS, toutes des gabarits ou des titres (D299 : l'audit garantit l'absence de valeurs, pas de mots).

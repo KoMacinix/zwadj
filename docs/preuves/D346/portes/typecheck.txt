@@ -1,0 +1,26 @@
+⛔ PIÈCE MASQUÉE — D346 porte typecheck. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 627 octets, sha256 032c9dfef438e01005fda583ca5798b7d00336bb473dbfaffe3c7475a32f52cc. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+> zwadj@ typecheck C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run typecheck
+
+Scope: 9 of 10 workspace projects
+e2e typecheck$ tsc --noEmit
+packages/types typecheck$ tsc --noEmit
+packages/types typecheck: Done
+e2e typecheck: Done
+packages/api-client typecheck$ tsc --noEmit
+packages/i18n typecheck$ tsc --noEmit
+packages/ui typecheck$ tsc --noEmit
+packages/i18n typecheck: Done
+packages/ui typecheck: Done
+packages/api-client typecheck: Done
+apps/api typecheck$ tsc --noEmit
+apps/pro typecheck$ tsc --noEmit
+apps/client typecheck$ tsc --noEmit
+apps/client typecheck: Done
+apps/pro typecheck: Done
+apps/api typecheck: Done

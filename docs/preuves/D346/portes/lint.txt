@@ -1,0 +1,26 @@
+⛔ PIÈCE MASQUÉE — D346 porte lint. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 526 octets, sha256 9efc734f1e0537bb659099ea0094676ba62c06c37cfcbdedf73c3784cd334764. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+> zwadj@ lint C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run lint
+
+Scope: 9 of 10 workspace projects
+e2e lint$ eslint .
+packages/types lint$ eslint src
+packages/types lint: Done
+e2e lint: Done
+packages/api-client lint$ eslint src
+packages/i18n lint$ eslint src
+packages/ui lint$ eslint src
+packages/i18n lint: Done
+packages/ui lint: Done
+packages/api-client lint: Done
+apps/api lint$ eslint src prisma
+apps/client lint$ eslint src
+apps/pro lint$ eslint src
+apps/client lint: Done
+apps/pro lint: Done
+apps/api lint: Done
