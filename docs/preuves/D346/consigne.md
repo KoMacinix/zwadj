@@ -1,0 +1,15 @@
+# D346 — la consigne « RANG 48 », versée (texte proposé par le relecteur, adopté par Ko tel quel)
+
+Résumé fidèle des points (le message de Ko est le texte d'origine ; il n'est pas recopié mot à mot ici) :
+
+- 0. Reprise : lire ZWADJ_CONTINUITE.md seul ; attendu rang 47 CLOS (D345), compteur POUR MÉMOIRE VINGT ET UN, « RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR », origin/main = caa5e4c, arbre propre, sans stash. État machine : secteur, RAM, chrome, headless_shell, Docker. Batterie : aucune porte (R-9 de D340).
+- 1. Adopté par Ko : a) constat « rien n'est autopopuler apres avoir mis les choix » ; rang 48 = ce lot ; numéro D346 ; lot de code, il compte, VINGT ET UN → VINGT-DEUX. b) S-144 à S-149 ratifiées. c) Le bouton arabe reste « إعادة البدء ».
+- R-1. REPRODUIRE D'ABORD, dans un navigateur, avant tout code : sur /salles ouvrir l'assistant, répondre aux quatre questions, le fermer ou le finir ; regarder (i) le formulaire des filtres, (ii) l'assistant rouvert et chaque étape revisitée par « Précédent » et par le bouton retour, (iii) idem en arabe. Pour chaque endroit : la réponse est-elle visible, mesuré (valeur du champ, coche, aria-pressed), jamais déduit du code.
+- R-2. Constat du relecteur, À MESURER : l'assistant montre déjà budget et goûts par aria-pressed lu dans l'adresse ; commune et invités par defaultValue. Le formulaire (`search-view.tsx`, `<form method="get">`) est en defaultValue / defaultChecked sans clé liée à l'état ; piste : quand l'assistant pousse une adresse sans recharger, le formulaire déjà monté garde ses anciennes valeurs.
+- R-3. Ne réparer QUE ce que R-1 a montré rouge. L'adresse reste la seule autorité (D229, D207) ; aucun état local qui la double ; aucun stockage du navigateur ; la page marche sans JavaScript (vrai GET).
+- R-4. Si R-1 ne montre rien de rouge : aucun code, verser ce qui a été joué, rapporter ; ce cas ne compte pas.
+- R-5. Aucun contrat d'API, aucune migration, apps/api et apps/pro intouchés ; `toPublicQuery` reste la seule autorité des noms de l'adresse publique.
+- R-6. Tests : rouges d'abord (navigateur et composant) ; harnais neutralize-r48 ; deux passes e2e vertes de suite, règle commitée avant (R-15 de D343).
+- R-7. Annotation additive de L36-4 : le brouillon de D345 ne porte que la salle, pas son propriétaire ; au changement de membre par PIN (L36-3b) l'identité changera sans déconnexion ; à mesurer à L36-4. Rien n'est codé ici.
+- 3. Forme : premier commit = table d'ouverture seule ; lecture adverse avant tout .md d'autorité ; rouges avant code ; audits de secrets avant chaque versement (D298) ; consigne versée ; six portes après la dernière modification.
+- 4. Fin : contrôle de fin de lot (D288, D328), push puis fetch ; « RANG 48 : CLOS » puis « RANG 49 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : la spec navigateur du parcours « Nouvelle réservation », avant L36-4) ; gestes de Ko dans `scenarios-ko.md` ; rapport en français : fait, pas fait, écarts, décisions prises seule, au plus une question. Une session, un lot.

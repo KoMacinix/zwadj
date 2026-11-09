@@ -1,0 +1,26 @@
+# D346 — lecture adverse de la consigne « RANG 48 » (avant toute écriture d'autorité)
+
+Faite par la session de code, contre le dépôt à `caa5e4c` (HEAD = origin/main), AVANT tout `.md` d'autorité. Ce n'est pas une session B à froid (en pause, D336). Chaque ligne : l'affirmation, la mesure, le verdict.
+
+| # | Affirmation | Mesure | Verdict |
+|---|---|---|---|
+| 1 | origin/main = caa5e4c, arbre propre, sans stash | `git rev-parse HEAD` = `origin/main` = `caa5e4cf…` après `git fetch` ; `git status --short` vide ; `git stash list` : 0 | ✓ |
+| 2 | rang 47 CLOS, compteur VINGT ET UN, « RANG 48 : EN ATTENTE DE CADRAGE… » | `ZWADJ_CONTINUITE.md` ligne 2668 (« RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR »), ligne 2767 ; registre : dernière ligne D345 (ligne 26584) → D346 libre | ✓ |
+| 3 | R-2 : l'assistant montre budget et goûts par `aria-pressed` lu dans l'adresse | `filter-wizard.tsx` lignes 267-268 (budget), 296-297 et 318-319 (goûts) : `aria-pressed` calculé depuis `state` (props, lues dans l'URL) | ✓ (à mesurer en navigateur) |
+| 4 | R-2 : commune et invités par `defaultValue` | `filter-wizard.tsx:200` et `:241-242` : `defaultValue` **ET `key={state.cityId}` / `key={state.guests}`** : la clé remonte le champ quand la valeur de l'adresse change. La consigne omet la clé : le soupçon sur l'assistant est donc plus faible qu'elle ne le dit | ✓ avec nuance (écart de description) |
+| 5 | R-2 : le formulaire est en `defaultValue` / `defaultChecked` sans clé liée à l'état | `search-view.tsx:404` (`defaultValue={state.cityId}`), `:457` et `:509` (`defaultChecked`) ; `<form>` ligne 392 sans `key` ; `SearchFilters` monté inconditionnellement ligne 125 | ✓ |
+| 6 | (non dite) autres porteurs d'état figé du formulaire | `RangeFilter` : `useState(lowValue === "" ? min : Number(lowValue))` (capacité = « invités » de l'assistant ; budget = `maxPrice` de l'assistant) — **un `useState` initialisé une fois, qui ne suit pas les props** ; `SearchFilters` : `useState(state.ceremonyType)` ; le tri `#f-sort` : `defaultValue={state.sort}`. Le défaut possible est donc PLUS LARGE que la consigne (invités et budget passent par `RangeFilter`, pas par `defaultValue`) | écart : élargit ce que R-1 doit regarder |
+| 7 | R-1 : « chaque étape revisitée par « Précédent » » | **il n'existe pas de bouton « Précédent »** dans l'assistant : `messages/fr.json` `wizard` ne porte que `close`, `continue`, `edit`, `editAria`, `reset`, `see`, `skip`. L'entête a « Recommencer » et « Fermer l'assistant » (`filter-wizard.tsx:147-153`) ; on revisite une étape par la liste d'étapes (`JourneyRail`, `onEdit`) ou le récapitulatif (« Modifier »), et par le bouton retour du navigateur | écart : le geste de R-1 est réinterprété (rail, récapitulatif, retour navigateur), déclaré au rapport |
+| 8 | R-1 : « le fermer ou le finir » | « Fermer l'assistant » → `aller(state, null)` ; « Voir les salles » → `aller(state, null)` : deux chemins vers la même adresse, sans `guide` | ✓ |
+| 9 | R-3 : « l'adresse reste la seule autorité (D229, D207) » | en-tête de `filter-wizard.tsx` (lignes 6-12) : « AUCUN ÉTAT LOCAL (D229) » ; `RangeFilter` et `ceremony` sont déjà des états locaux dans le formulaire : une réparation par `key` dérivée de l'adresse ne les double pas, elle les rejoue | ✓ |
+| 10 | R-3 : « la page marche sans JavaScript (vrai GET) » | `<form method="get" id={FILTERS_FORM_ID}>` ; une `key` React ne change rien au HTML servi. **Risque non écrit** : une `key` sur le formulaire entier calculée sur toute la querystring (page, tri, `guide`) le remonterait aussi à chaque changement de page ou de tri et **effacerait ce que le visiteur a modifié sans soumettre**. La clé doit porter les seuls champs du formulaire | limite à écrire (décision de conception, à mesurer par un test) |
+| 11 | R-5 : `toPublicQuery` seule autorité des noms | `search-query.ts` : `guidedSearchQuery` passe par `toPublicQuery(state, 1)` | ✓ |
+| 12 | R-6 : règle des deux passes e2e vertes, commitée avant (R-15 de D343) | `ZWADJ_CONTINUITE.md` ligne 2412 « R-15. LA PREUVE… DEUX fois de suite, sur secteur, règle commitée avant » | ✓ |
+| 13 | R-7 : L36-4 existe au backlog ; annotation additive | `ZWADJ_BACKLOG.md:2512` `[PRO][L36-4]` ; une annotation D345 s'y trouve déjà ligne 2526 | ✓ |
+| 14 | 1 c) : le bouton arabe reste « إعادة البدء » | `venue.ui.walkin.reset` : entrée de relecture arabe `[I18N]` au backlog ligne 2514 ; aucun changement de catalogue demandé | ✓ (rien à écrire dans les catalogues) |
+| 15 | R-4 : « ce cas ne compte pas » | cohérent avec D283 : aucun fichier hors `docs/` ne change ; la spec jouée pour R-1 ne serait alors PAS versée comme test de la suite mais comme pièce sous `docs/preuves/D346/reproduction/` | ✓ |
+| 16 | `loading.tsx` borné par le groupe de routes | `apps/client/src/app/[locale]/salles/(recherche)/loading.tsx` : le formulaire n'est pas remonté par un Suspense quand seule la querystring change — **à mesurer** (c'est ce que R-1 tranche) | à mesurer |
+
+## Bilan
+Écarts trouvés : **2** (lignes 6 et 7) ; limites à écrire : **1** (ligne 10) ; à mesurer : **1** (ligne 16).
+Aucun écart ne bloque le lot. Décisions de la session à déclarer au rapport : (a) « Précédent » lu comme rail + récapitulatif + retour navigateur ; (b) R-1 regarde aussi la plage de capacité, la plage de budget, le type de cérémonie et le tri du formulaire.
