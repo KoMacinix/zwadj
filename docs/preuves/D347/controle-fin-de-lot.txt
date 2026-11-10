@@ -1,0 +1,17 @@
+D347 — contrôle de fin de lot (D288, D328, D334 point 5), joué APRÈS la poussée de bbdb565
+premier commit du lot : d3141b8 | fichiers : ['docs/preuves/D347/table-ouverture.md']
+fichiers au diff b0db574..HEAD : 28 ; non déclarés (chemins complets) : 0 (attendu 0) []
+fichiers d'apps/ ou packages/ au diff : 0 (attendu 0)
+ordre des commits (git log --reverse) :
+  d3141b8 docs(rang-49): D347 — table d'ouverture, SEULE
+  0d61ba0 docs(rang-49): D347 — la consigne versée et sa lecture adverse (avant tout .md d'autorité)
+  6ccdf16 docs(rang-49): D347 — la carte des gardes de r32 (R-2), avant tout code
+  973ceb6 docs(rang-49): D347 — extension 1 de la table d'ouverture, SEULE, avant les pièces qu'elle couvre
+  78c77cf docs(rang-49): D347 — les rouges de r49 lus (36 cibles sur 36 mordues), règle des passes e2e, audit de secrets — AVANT la spec et le harnais
+  11d3bce docs(rang-49): D347 — rectification de l'empreinte de la spec (LF joué, CRLF commité), avant le code
+  bdbf14e test(rang-49): D347 — la spec navigateur du parcours « Nouvelle réservation » (r49, six tests) et son harnais de neutralisation (36 cibles)
+  79ff6f1 docs(rang-49): D347 — les six portes (0 partout), les deux passes e2e (88 passés + 1 ignoré, deux fois), audit de secrets
+  bbdb565 docs(rang-49): D347 — la clôture dans les trois fichiers d'autorité : section D347, registre, ordre des rangs (RANG 49 CLOS, RANG 50 en attente), point d'entrée, compteur VINGT-DEUX → VINGT-TROIS, annotations de r32 et de l'entrée S-142
+lecture adverse (0d61ba0) avant les .md d'autorité (bbdb565) : vrai ; rouges (78c77cf) avant le premier commit de code (bdbf14e) : vrai
+git status --short : ''
+local = bbdb565cb667f6ee6129c21c9815d2c1c5293294 ; origin/main = bbdb565cb667f6ee6129c21c9815d2c1c5293294 (après git fetch)
