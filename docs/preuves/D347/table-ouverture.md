@@ -43,3 +43,14 @@ Lot : **le parcours « Nouvelle réservation » du pro retrouve une spec navigat
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (10/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait certaines pièces par famille (« les six portes », « les deux passes ») ; la règle (D328, point 4) veut le chemin complet. Aucune de ces pièces n'est encore commitée.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D347/rouges/campagne-passe-1.txt` | sortie du harnais, passe 1 (cibles R49-1 à R49-18 mordues, R49-11 muette = mutation équivalente, R49-19 en erreur de script) | à venir |
+| `docs/preuves/D347/rouges/campagne-passe-2.txt` | sortie du harnais, reprise (`--seulement`) : R49-11 corrigée, R49-19 à R49-36 | à venir |
+| `docs/preuves/D347/rouges/extraits-des-echecs.txt` | par cible, le bloc d'échec lu (journaux bruts NON versés : ils portent des jetons de développement) | à venir |
+| `docs/preuves/D347/portes/_index.txt`, `docs/preuves/D347/portes/etat-machine-pendant.txt`, `docs/preuves/D347/portes/typecheck.txt`, `docs/preuves/D347/portes/lint.txt`, `docs/preuves/D347/portes/test.txt`, `docs/preuves/D347/portes/build.txt`, `docs/preuves/D347/portes/test-int.txt`, `docs/preuves/D347/portes/test-e2e.txt` | la passe des six portes (pilote `docs/preuves/D340/portes/passe-secteur.sh`, non modifié) | à venir |
+| `docs/preuves/D347/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D347/e2e/passe-2-batterie-apres.txt` | l'alimentation avant et après la seconde passe e2e | à venir |
+| `docs/preuves/D347/audit-secrets-d347b.txt`, `docs/preuves/D347/audit-secrets-d347c.txt` | audits de secrets des versements suivants | à venir |
