@@ -1,0 +1,55 @@
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 36 déclarées · 36 jouées (e2e, unit) · 0 hors exécution
+  pré-vol e2e-r49 : code 0 · ok 6 · x 0
+✓ R49-1. G1a — « Continuer » du contact n'est plus relié à sa raison (aria-describedby)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-2. G1a — « Continuer » des noms n'est plus relié à sa raison (aria-describedby)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-3. G1d — l'erreur d'e-mail n'est plus affichée sous le champ
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ R49-4. G1d — un e-mail saisi et invalide ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: un e-mail SAISI et invalide retient même avec un numéro valide
+✓ R49-5. G1b — l'erreur du nom en lettres latines n'est plus affichée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ R49-6. G1b — un nom latin invalide ne retient plus « Continuer »
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+✓ R49-7. G1e — le champ du nom latin perd son exemple
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-8. G1e — le champ des invités perd son exemple
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-9. G1e — le champ de l'e-mail du contact perd son exemple
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-10. G1e — le champ du téléphone perd son exemple
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 2 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✗ R49-11. G1c — le premier chiffre refusé n'est plus signalé
+   ancre 1→0 · marqueur 0→1 · code 0 · VERT — ok 6 · x 0
+✓ R49-12. G1c — le premier chiffre refusé n'est plus GARDÉ SEUL : la saisie suivante passe
+   ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: la saisie suivante doit être bloquée
+✓ R49-13. G1c — le champ du téléphone accepte plus de neuf chiffres
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: seuls les chiffres passent, au plus neuf
+✓ R49-14. G1c — le champ du téléphone accepte les lettres
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: seuls les chiffres passent, au plus neuf
+✓ R49-15. G5a — le libellé ne pointe plus son champ (htmlFor)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 6 · Error: le libellé du téléphone pointe un champ
+✓ R49-16. G1h — le total affiché n'est plus celui du serveur
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+✓ R49-17. G1h — l'acompte affiché n'est plus celui du serveur
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+✓ R49-18. G1i — le rail ne ramène plus à l'étape cliquée
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+✗ R49-19. G1g — « Précédent » passe du côté de FIN de la ligne (ordre inversé)
+   MUTATION NON POSÉE : ancre 1→1, marqueur 0→1 (attendu 1→0 et 0→1)
+
+17 garde(s) mordue(s) sur 36 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 36 sur 36)
+arbre rendu à son état de départ : vérifié.
+SORTIE 2

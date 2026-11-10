@@ -1,0 +1,875 @@
+===== R49-1 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByRole('button', { name: 'Continuer', exact: true })
+    Expected string: "wk-continue-reason"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByRole('button', { name: 'Continuer', exact: true })
+        11 × locator resolved to <button disabled type="button" class="wk-btn wk-btn-primary wk-btn-next">Continuer</button>
+           - unexpected value "null"
+
+      118 |   await expect(continuer).toBeDisabled();
+      119 |   await expect(raisons(page)).toHaveText([W.needIdentifier]);
+    > 120 |   await expect(continuer).toHaveAttribute("aria-describedby", "wk-continue-reason");
+          |                           ^
+      121 |
+      122 |   // ── Exemples (G1e) : un format dans chaque champ, le libellé reste visible.
+      123 |   const tel = page.getByLabel(W.phone, { exact: true });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:120:27
+
+===== R49-2 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByRole('button', { name: 'Continuer', exact: true })
+    Expected string: "wk-continue-reason"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByRole('button', { name: 'Continuer', exact: true })
+        11 × locator resolved to <button disabled type="button" class="wk-btn wk-btn-primary wk-btn-next">Continuer</button>
+           - unexpected value "null"
+
+      159 |   await expect(suite).toBeDisabled();
+      160 |   await expect(raisons(page)).toHaveText([W.needName, W.needGuests]);
+    > 161 |   await expect(suite).toHaveAttribute("aria-describedby", "wk-continue-reason");
+          |                       ^
+      162 |   const latin = page.getByLabel(W.nameLatin, { exact: true });
+      163 |   const arabe = page.getByLabel(W.nameAr, { exact: true });
+      164 |   await expect(latin).toHaveAttribute("placeholder", W.nameLatinPlaceholder);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:161:23
+
+===== R49-3 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('alert').filter({ hasText: 'Adresse e-mail invalide. Exemple : nom@example.com.' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('alert').filter({ hasText: 'Adresse e-mail invalide. Exemple : nom@example.com.' })
+
+      144 |   // ── E-mail (G1d) : une adresse à moitié tapée est refusée, et retient ; vide, elle ne retient rien.
+      145 |   await courriel.fill("abc");
+    > 146 |   await expect(page.getByRole("alert").filter({ hasText: W.emailInvalid })).toBeVisible();
+          |                                                                             ^
+      147 |   await expect(continuer, "un e-mail SAISI et invalide retient même avec un numéro valide").toBeDisabled();
+      148 |   await expect(raisons(page)).toHaveText([W.needEmailValid]);
+      149 |   await courriel.fill("");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:146:77
+
+===== R49-4 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: un e-mail SAISI et invalide retient même avec un numéro valide
+
+    Timed out 7000ms waiting for expect(locator).toBeDisabled()
+
+    Locator: getByRole('button', { name: 'Continuer', exact: true })
+    Expected: disabled
+    Received: enabled
+    Call log:
+      - un e-mail SAISI et invalide retient même avec un numéro valide with timeout 7000ms
+      - waiting for getByRole('button', { name: 'Continuer', exact: true })
+        11 × locator resolved to <button type="button" class="wk-btn wk-btn-primary wk-btn-next">Continuer</button>
+           - unexpected value "enabled"
+
+      145 |   await courriel.fill("abc");
+      146 |   await expect(page.getByRole("alert").filter({ hasText: W.emailInvalid })).toBeVisible();
+    > 147 |   await expect(continuer, "un e-mail SAISI et invalide retient même avec un numéro valide").toBeDisabled();
+          |                                                                                             ^
+      148 |   await expect(raisons(page)).toHaveText([W.needEmailValid]);
+      149 |   await courriel.fill("");
+      150 |   await expect(page.getByRole("alert")).toHaveCount(0);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:147:93
+
+===== R49-5 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('alert').filter({ hasText: 'Le nom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('alert').filter({ hasText: 'Le nom ne peut contenir que des lettres, des espaces, des tirets et des apostrophes.' })
+
+      168 |   // ── Noms (G1b) : un chiffre est refusé sous le champ ; l'arabe et le tiret passent.
+      169 |   await latin.fill("Amina1");
+    > 170 |   await expect(page.getByRole("alert").filter({ hasText: W.nameLatinInvalid })).toBeVisible();
+          |                                                                                 ^
+      171 |   await expect(raisons(page)).toHaveText([W.needNameLatinValid, W.needGuests]);
+      172 |   await latin.fill("");
+      173 |   await arabe.fill("أمينة");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:170:81
+
+===== R49-6 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('#wk-continue-reason li')
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+    -   "le nom en lettres latines contient un caractère non admis",
+        "le nombre d'invités est obligatoire",
+      ]
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('#wk-continue-reason li')
+        11 × locator resolved to 1 element
+
+      169 |   await latin.fill("Amina1");
+      170 |   await expect(page.getByRole("alert").filter({ hasText: W.nameLatinInvalid })).toBeVisible();
+    > 171 |   await expect(raisons(page)).toHaveText([W.needNameLatinValid, W.needGuests]);
+          |                               ^
+      172 |   await latin.fill("");
+      173 |   await arabe.fill("أمينة");
+      174 |   await expect(page.getByRole("alert")).toHaveCount(0);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:171:31
+
+===== R49-7 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByLabel('Nom en lettres latines', { exact: true })
+    Expected string: "Ex. : Amina Benali"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByLabel('Nom en lettres latines', { exact: true })
+        11 × locator resolved to <input value="" dir="auto" id="wk-_r_7_" placeholder="" class="wk-input"/>
+           - unexpected value ""
+
+      162 |   const latin = page.getByLabel(W.nameLatin, { exact: true });
+      163 |   const arabe = page.getByLabel(W.nameAr, { exact: true });
+    > 164 |   await expect(latin).toHaveAttribute("placeholder", W.nameLatinPlaceholder);
+          |                       ^
+      165 |   await expect(arabe).toHaveAttribute("placeholder", W.nameArPlaceholder);
+      166 |   await expect(page.getByLabel(W.guests, { exact: true })).toHaveAttribute("placeholder", W.guestsPlaceholder);
+      167 |
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:164:23
+
+===== R49-8 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByLabel('Nombre d\'invités', { exact: true })
+    Expected string: "Ex. : 150"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByLabel('Nombre d\'invités', { exact: true })
+        11 × locator resolved to <input value="" id="wk-guests" placeholder="" inputmode="numeric" class="wk-input wk-guests-input" aria-describedby="wk-guests-hint"/>
+           - unexpected value ""
+
+      164 |   await expect(latin).toHaveAttribute("placeholder", W.nameLatinPlaceholder);
+      165 |   await expect(arabe).toHaveAttribute("placeholder", W.nameArPlaceholder);
+    > 166 |   await expect(page.getByLabel(W.guests, { exact: true })).toHaveAttribute("placeholder", W.guestsPlaceholder);
+          |                                                            ^
+      167 |
+      168 |   // ── Noms (G1b) : un chiffre est refusé sous le champ ; l'arabe et le tiret passent.
+      169 |   await latin.fill("Amina1");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:166:60
+
+===== R49-9 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByLabel('E-mail', { exact: true })
+    Expected string: "nom@example.com"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByLabel('E-mail', { exact: true })
+        11 × locator resolved to <input value="" id="wk-_r_2_" placeholder="" class="wk-input" inputmode="email"/>
+           - unexpected value ""
+
+      124 |   const courriel = page.getByLabel(W.contactEmail, { exact: true });
+      125 |   await expect(tel).toHaveAttribute("placeholder", PHONE.placeholder.DZ);
+    > 126 |   await expect(courriel).toHaveAttribute("placeholder", W.emailPlaceholder);
+          |                          ^
+      127 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.phone)}$`) })).toBeVisible();
+      128 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.contactEmail)}$`) })).toBeVisible();
+      129 |
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:126:26
+
+===== R49-10 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "5XX XX XX XX"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+        11 × locator resolved to <input value="" type="tel" id="wk-_r_1_" placeholder="" inputmode="numeric" autocomplete="tel-national" aria-describedby="wk-_r_1_-hint"/>
+           - unexpected value ""
+
+      123 |   const tel = page.getByLabel(W.phone, { exact: true });
+      124 |   const courriel = page.getByLabel(W.contactEmail, { exact: true });
+    > 125 |   await expect(tel).toHaveAttribute("placeholder", PHONE.placeholder.DZ);
+          |                     ^
+      126 |   await expect(courriel).toHaveAttribute("placeholder", W.emailPlaceholder);
+      127 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.phone)}$`) })).toBeVisible();
+      128 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.contactEmail)}$`) })).toBeVisible();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:125:21
+
+===== R49-11 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('alert').filter({ hasText: 'Un numéro de mobile algérien commence par 5, 6 ou 7.' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('alert').filter({ hasText: 'Un numéro de mobile algérien commence par 5, 6 ou 7.' })
+
+      132 |   await tel.pressSequentially("0");
+      133 |   await expect(tel).toHaveValue("0");
+    > 134 |   await expect(page.getByRole("alert").filter({ hasText: PHONE.leadingDigit.DZ })).toBeVisible();
+          |                                                                                    ^
+      135 |   await expect(raisons(page)).toHaveText([W.needPhoneLeading]);
+      136 |   await tel.pressSequentially("55");
+      137 |   await expect(tel, "la saisie suivante doit être bloquée").toHaveValue("0");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:134:84
+
+===== R49-12 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: la saisie suivante doit être bloquée
+
+    Timed out 7000ms waiting for expect(locator).toHaveValue(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "0"
+    Received string: "055"
+    Call log:
+      - la saisie suivante doit être bloquée with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+        11 × locator resolved to <input type="tel" value="055" id="wk-_r_1_" inputmode="numeric" aria-invalid="true" placeholder="5XX XX XX XX" autocomplete="tel-national" aria-describedby="wk-_r_1_-hint wk-_r_1_-leading"/>
+           - unexpected value "055"
+
+      135 |   await expect(raisons(page)).toHaveText([W.needPhoneLeading]);
+      136 |   await tel.pressSequentially("55");
+    > 137 |   await expect(tel, "la saisie suivante doit être bloquée").toHaveValue("0");
+          |                                                             ^
+      138 |   await tel.fill("");
+      139 |   // Treize caractères tapés dont deux lettres : seuls les chiffres passent, au plus NEUF (les quatre derniers chiffres tapés sont refusés).
+      140 |   await tel.pressSequentially("66a1234b5678912");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:137:61
+
+===== R49-13 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: seuls les chiffres passent, au plus neuf
+
+    Timed out 7000ms waiting for expect(locator).toHaveValue(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "661234567"
+    Received string: "6612345678912"
+    Call log:
+      - seuls les chiffres passent, au plus neuf with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+        11 × locator resolved to <input type="tel" id="wk-_r_1_" inputmode="numeric" value="6612345678912" placeholder="5XX XX XX XX" autocomplete="tel-national" aria-describedby="wk-_r_1_-hint"/>
+           - unexpected value "6612345678912"
+
+      139 |   // Treize caractères tapés dont deux lettres : seuls les chiffres passent, au plus NEUF (les quatre derniers chiffres tapés sont refusés).
+      140 |   await tel.pressSequentially("66a1234b5678912");
+    > 141 |   await expect(tel, "seuls les chiffres passent, au plus neuf").toHaveValue(CLIENT.chiffres);
+          |                                                                 ^
+      142 |   await expect(page.getByRole("alert")).toHaveCount(0);
+      143 |
+      144 |   // ── E-mail (G1d) : une adresse à moitié tapée est refusée, et retient ; vide, elle ne retient rien.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:141:65
+
+===== R49-14 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: seuls les chiffres passent, au plus neuf
+
+    Timed out 7000ms waiting for expect(locator).toHaveValue(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "661234567"
+    Received string: "66a1234b5"
+    Call log:
+      - seuls les chiffres passent, au plus neuf with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+        11 × locator resolved to <input type="tel" id="wk-_r_1_" value="66a1234b5" inputmode="numeric" placeholder="5XX XX XX XX" autocomplete="tel-national" aria-describedby="wk-_r_1_-hint"/>
+           - unexpected value "66a1234b5"
+
+      139 |   // Treize caractères tapés dont deux lettres : seuls les chiffres passent, au plus NEUF (les quatre derniers chiffres tapés sont refusés).
+      140 |   await tel.pressSequentially("66a1234b5678912");
+    > 141 |   await expect(tel, "seuls les chiffres passent, au plus neuf").toHaveValue(CLIENT.chiffres);
+          |                                                                 ^
+      142 |   await expect(page.getByRole("alert")).toHaveCount(0);
+      143 |
+      144 |   // ── E-mail (G1d) : une adresse à moitié tapée est refusée, et retient ; vide, elle ne retient rien.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:141:65
+
+===== R49-15 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: getByLabel('Téléphone', { exact: true })
+    Expected string: "5XX XX XX XX"
+    Received: <element(s) not found>
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for getByLabel('Téléphone', { exact: true })
+
+      123 |   const tel = page.getByLabel(W.phone, { exact: true });
+      124 |   const courriel = page.getByLabel(W.contactEmail, { exact: true });
+    > 125 |   await expect(tel).toHaveAttribute("placeholder", PHONE.placeholder.DZ);
+          |                     ^
+      126 |   await expect(courriel).toHaveAttribute("placeholder", W.emailPlaceholder);
+      127 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.phone)}$`) })).toBeVisible();
+      128 |   await expect(page.locator("label", { hasText: new RegExp(`^${echappe(W.contactEmail)}$`) })).toBeVisible();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:125:21
+
+===== R49-16 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('.wk-grand strong')
+    Expected string: "180 000 DA"
+    Received string: "180 001 DA"
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('.wk-grand strong')
+        11 × locator resolved to <strong>180 001 DA</strong>
+           - unexpected value "180 001 DA"
+
+      201 |
+      202 |   // ── ⛔ G1h — le total et l'acompte AFFICHÉS sont ceux du serveur.
+    > 203 |   await expect(page.locator(".wk-grand strong")).toHaveText(dinars(serveur.totalCents));
+          |                                                  ^
+      204 |   await expect(page.locator(".wk-deposit strong")).toHaveText(dinars(serveur.depositCents));
+      205 |
+      206 |   // ── G1i — le LIBELLÉ « Client » du rail ramène à l'étape sans rien effacer.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:203:50
+
+===== R49-17 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('.wk-deposit strong')
+    Expected string: "54 000 DA"
+    Received string: "54 001 DA"
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('.wk-deposit strong')
+        11 × locator resolved to <strong>54 001 DA</strong>
+           - unexpected value "54 001 DA"
+
+      202 |   // ── ⛔ G1h — le total et l'acompte AFFICHÉS sont ceux du serveur.
+      203 |   await expect(page.locator(".wk-grand strong")).toHaveText(dinars(serveur.totalCents));
+    > 204 |   await expect(page.locator(".wk-deposit strong")).toHaveText(dinars(serveur.depositCents));
+          |                                                    ^
+      205 |
+      206 |   // ── G1i — le LIBELLÉ « Client » du rail ramène à l'étape sans rien effacer.
+      207 |   const rail = page.getByRole("navigation", { name: W.progressLabel });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:204:52
+
+===== R49-18 (passe 1) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('#wk-question')
+    Expected string: "Qui est le client ?"
+    Received string: "Devis"
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('#wk-question')
+        11 × locator resolved to <h2 id="wk-question" class="wk-question">Devis</h2>
+           - unexpected value "Devis"
+
+      207 |   const rail = page.getByRole("navigation", { name: W.progressLabel });
+      208 |   await rail.getByText(W.stepClient, { exact: true }).click();
+    > 209 |   await expect(question(page)).toHaveText(W.qClient);
+          |                                ^
+      210 |   await expect(page.getByLabel(W.nameLatin, { exact: true })).toHaveValue(CLIENT.nomLatin);
+      211 |   await expect(page.getByLabel(W.guests, { exact: true })).toHaveValue(CLIENT.invites);
+      212 |   await rail.getByText(W.stepQuote, { exact: true }).click();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:209:32
+
+===== R49-19 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: « Précédent » doit être à GAUCHE de « Voir le devis » en français
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 938.625
+    Received:   1094.53125
+
+      194 |   const voirDevis = page.getByRole("button", { name: W.seeQuote, exact: true });
+      195 |   const [boitePrecedent, boiteSuivant] = [(await precedent.boundingBox()) as { x: number }, (await voirDevis.boundingBox()) as { x: number }];
+    > 196 |   expect(boitePrecedent.x, "« Précédent » doit être à GAUCHE de « Voir le devis » en français").toBeLessThan(boiteSuivant.x);
+          |                                                                                                 ^
+      197 |   await voirDevis.click();
+      198 |   const reponse = page.waitForResponse((r) => /\/venues\/[^/]+\/quotes$/.test(new URL(r.url()).pathname) && r.request().method() === "POST");
+      199 |   await page.getByRole("button", { name: W.compute, exact: true }).click();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:196:97
+
+===== R49-20 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:341:5 › ⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: en arabe, « Précédent » doit être à DROITE de « Voir le devis »
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 201.296875
+    Received:   43
+
+      376 |   const precedent = (await page.getByRole("button", { name: WA.previous, exact: true }).boundingBox()) as { x: number };
+      377 |   const suivant = (await page.getByRole("button", { name: WA.seeQuote, exact: true }).boundingBox()) as { x: number };
+    > 378 |   expect(precedent.x, "en arabe, « Précédent » doit être à DROITE de « Voir le devis »").toBeGreaterThan(suivant.x);
+          |                                                                                          ^
+      379 |   expect(await debordement(), "l'étape Prestations déborde à 360 px").toBeLessThanOrEqual(0);
+      380 |   await contexte.close();
+      381 | });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:378:90
+
+===== R49-21 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: la fenêtre s'est ouverte AVANT la réponse du serveur
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByRole('dialog')
+    Expected: 0
+    Received: 1
+    Call log:
+      - la fenêtre s'est ouverte AVANT la réponse du serveur with timeout 7000ms
+      - waiting for getByRole('dialog')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+      221 |   await page.getByRole("button", { name: W.standby, exact: true }).click();
+      222 |   await page.waitForTimeout(400);
+    > 223 |   await expect(page.getByRole("dialog"), "la fenêtre s'est ouverte AVANT la réponse du serveur").toHaveCount(0);
+          |                                                                                                  ^
+      224 |   await conversion;
+      225 |
+      226 |   // ── G1k — la fenêtre nomme le client, dit l'action, porte la date ; « Fermer » la ferme.
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:223:98
+
+===== R49-22 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: la fenêtre dit l'action, sur le modèle du message
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('dialog', { name: 'Date enregistrée' }).getByText(/^La date du .+ est enregistrée pour .+, sans être bloquée\.$/)
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - la fenêtre dit l'action, sur le modèle du message with timeout 7000ms
+      - waiting for getByRole('dialog', { name: 'Date enregistrée' }).getByText(/^La date du .+ est enregistrée pour .+, sans être bloquée\.$/)
+
+      228 |   await expect(fenetre).toBeVisible();
+      229 |   const dit = fenetre.getByText(gabarit(W.doneDialogStandby));
+    > 230 |   await expect(dit, "la fenêtre dit l'action, sur le modèle du message").toBeVisible();
+          |                                                                          ^
+      231 |   expect(plat(await dit.textContent()), "la fenêtre nomme le client").toContain(`${CLIENT.prenom} ${CLIENT.nom}`);
+      232 |   expect(plat(await dit.textContent()), "la fenêtre porte une date").toMatch(/\d{1,2} \S+ \d{4}/);
+      233 |   await fenetre.getByRole("button", { name: W.doneDialogClose, exact: true }).click();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:230:74
+
+===== R49-23 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: la fenêtre dit l'action, sur le modèle du message
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('dialog', { name: 'Date enregistrée' }).getByText(/^La date du .+ est enregistrée pour .+, sans être bloquée\.$/)
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - la fenêtre dit l'action, sur le modèle du message with timeout 7000ms
+      - waiting for getByRole('dialog', { name: 'Date enregistrée' }).getByText(/^La date du .+ est enregistrée pour .+, sans être bloquée\.$/)
+
+      228 |   await expect(fenetre).toBeVisible();
+      229 |   const dit = fenetre.getByText(gabarit(W.doneDialogStandby));
+    > 230 |   await expect(dit, "la fenêtre dit l'action, sur le modèle du message").toBeVisible();
+          |                                                                          ^
+      231 |   expect(plat(await dit.textContent()), "la fenêtre nomme le client").toContain(`${CLIENT.prenom} ${CLIENT.nom}`);
+      232 |   expect(plat(await dit.textContent()), "la fenêtre porte une date").toMatch(/\d{1,2} \S+ \d{4}/);
+      233 |   await fenetre.getByRole("button", { name: W.doneDialogClose, exact: true }).click();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:230:74
+
+===== R49-24 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByRole('button', { name: 'Recommencer', exact: true })
+    Expected: 0
+    Received: 1
+    Call log:
+      - expect.toHaveCount with timeout 7000ms
+      - waiting for getByRole('button', { name: 'Recommencer', exact: true })
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+      240 |
+      241 |   // ── G1l — « Recommencer » a disparu, « Nouveau devis » le remplace et repart du début, formulaire vidé.
+    > 242 |   await expect(page.getByRole("button", { name: W.reset, exact: true })).toHaveCount(0);
+          |                                                                          ^
+      243 |   await page.getByRole("button", { name: W.newQuote, exact: true }).click();
+      244 |   await expect(question(page)).toHaveText(W.qContact);
+      245 |   await expect(page.getByLabel(W.phone, { exact: true })).toHaveValue("");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:242:74
+
+===== R49-25 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie 
+
+    Error: une seule demande, celle qui vient d'être enregistrée
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        Object {
+          "contactEmail": null,
+    -     "contactFirstName": "Amina",
+    +     "contactFirstName": "Bensalem",
+          "contactLastName": "Bensalem",
+          "contactPhone": "+213661234567",
+          "status": "PENDING",
+        },
+      ]
+
+      235 |
+      236 |   // ── G1m — la ligne ÉCRITE est celle SAISIE (relue côté serveur, par l'API) ; jamais le corps de la requête (r41 le mesure).
+    > 237 |   expect(await demandesDeLaSalle(salle), "une seule demande, celle qui vient d'être enregistrée").toMatchObject([
+          |                                                                                                   ^
+      238 |     { status: "PENDING", contactFirstName: CLIENT.prenom, contactLastName: CLIENT.nom, contactPhone: CLIENT.e164, contactEmail: null }
+      239 |   ]);
+      240 |
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:237:99
+
+===== R49-26 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:252:5 › ⛔ T3 — « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "ACCEPTED",
+    +   "PENDING",
+      ]
+
+      258 |   await expect(fenetre.getByText(gabarit(W.doneDialogLocked)), "la fenêtre dit « bloquée », sur le modèle du message").toBeVisible();
+      259 |   await fenetre.getByRole("button", { name: W.doneDialogClose, exact: true }).click();
+    > 260 |   expect((await demandesDeLaSalle(salle)).map((d) => d.status)).toEqual(["ACCEPTED"]);
+          |                                                                 ^
+      261 |   await contexte.close();
+      262 | });
+      263 |
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:260:65
+
+===== R49-27 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:252:5 › ⛔ T3 — « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('dialog', { name: 'Date bloquée' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('dialog', { name: 'Date bloquée' })
+
+      255 |   await page.getByRole("button", { name: W.lockDate, exact: true }).click();
+      256 |   const fenetre = page.getByRole("dialog", { name: W.doneTitleLocked });
+    > 257 |   await expect(fenetre).toBeVisible();
+          |                         ^
+      258 |   await expect(fenetre.getByText(gabarit(W.doneDialogLocked)), "la fenêtre dit « bloquée », sur le modèle du message").toBeVisible();
+      259 |   await fenetre.getByRole("button", { name: W.doneDialogClose, exact: true }).click();
+      260 |   expect((await demandesDeLaSalle(salle)).map((d) => d.status)).toEqual(["ACCEPTED"]);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:257:25
+
+===== R49-28 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:264:5 › ⛔ T4 — un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche, aucune ligne n'est écrite 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('alert').filter({ hasText: 'Cette date vient d\'être prise pour une autre réservation.' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for getByRole('alert').filter({ hasText: 'Cette date vient d\'être prise pour une autre réservation.' })
+
+      269 |   );
+      270 |   await page.getByRole("button", { name: W.lockDate, exact: true }).click();
+    > 271 |   await expect(page.getByRole("alert").filter({ hasText: fr.booking.errors.slotTaken })).toBeVisible();
+          |                                                                                          ^
+      272 |   await page.waitForTimeout(500);
+      273 |   await expect(page.getByRole("dialog")).toHaveCount(0);
+      274 |   await expect(page.getByRole("button", { name: W.newQuote, exact: true })).toHaveCount(0);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:271:90
+
+===== R49-29 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:264:5 › ⛔ T4 — un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche, aucune ligne n'est écrite 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: getByRole('dialog')
+    Expected: 0
+    Received: 1
+    Call log:
+      - expect.toHaveCount with timeout 7000ms
+      - waiting for getByRole('dialog')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+      271 |   await expect(page.getByRole("alert").filter({ hasText: fr.booking.errors.slotTaken })).toBeVisible();
+      272 |   await page.waitForTimeout(500);
+    > 273 |   await expect(page.getByRole("dialog")).toHaveCount(0);
+          |                                          ^
+      274 |   await expect(page.getByRole("button", { name: W.newQuote, exact: true })).toHaveCount(0);
+      275 |   expect(await demandesDeLaSalle(salle), "l'échec simulé n'a rien écrit").toEqual([]);
+      276 |   await contexte.close();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:273:42
+
+===== R49-30 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:286:5 › ⛔ T5 — le calendrier du parcours : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: un vendredi bloqué s'affiche de la teinte du week-end
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(230, 227, 225)"
+    Received: "rgb(249, 248, 247)"
+
+      318 |   const bloque = await mesure(jourBloque);
+      319 |   // Le STATUT l'emporte : le fond est celui du « bloqué », pas la teinte du week-end.
+    > 320 |   expect(bloque.fond, "un vendredi bloqué s'affiche de la teinte du week-end").toBe(bloque.bloque);
+          |                                                                                ^
+      321 |   expect(bloque.fond).not.toBe(bloque.weekend);
+      322 |   // Un hachurage, indépendant de la couleur ; et la bordure en tirets du week-end.
+      323 |   expect(bloque.image).toContain("repeating-linear-gradient");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:320:80
+
+===== R49-31 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:286:5 › ⛔ T5 — le calendrier du parcours : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "repeating-linear-gradient"
+    Received string:    "none"
+
+      321 |   expect(bloque.fond).not.toBe(bloque.weekend);
+      322 |   // Un hachurage, indépendant de la couleur ; et la bordure en tirets du week-end.
+    > 323 |   expect(bloque.image).toContain("repeating-linear-gradient");
+          |                        ^
+      324 |   expect(bloque.bordure).toBe("dashed");
+      325 |
+      326 |   const libre = page.locator("td.cal-cell.is-weekend button.cal-day.is-available:not([disabled])").first();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:323:24
+
+===== R49-32 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:286:5 › ⛔ T5 — le calendrier du parcours : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: un week-end libre prend la teinte du week-end
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(249, 248, 247)"
+    Received: "rgb(241, 239, 238)"
+
+      327 |   await expect(libre).toBeVisible();
+      328 |   const l = await mesure(libre);
+    > 329 |   expect(l.fond, "un week-end libre prend la teinte du week-end").toBe(l.weekend);
+          |                                                                   ^
+      330 |   expect(l.image, "un jour libre n'est pas hachuré").toBe("none");
+      331 |   // Plus clair que l'ancienne teinte (`--accent-soft`) : luminance relative lue sur les couleurs RÉSOLUES par le navigateur.
+      332 |   const luminance = (css: string) => {
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:329:67
+
+===== R49-33 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:286:5 › ⛔ T5 — le calendrier du parcours : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "dashed"
+    Received: "solid"
+
+      322 |   // Un hachurage, indépendant de la couleur ; et la bordure en tirets du week-end.
+      323 |   expect(bloque.image).toContain("repeating-linear-gradient");
+    > 324 |   expect(bloque.bordure).toBe("dashed");
+          |                          ^
+      325 |
+      326 |   const libre = page.locator("td.cal-cell.is-weekend button.cal-day.is-available:not([disabled])").first();
+      327 |   await expect(libre).toBeVisible();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:324:26
+
+===== R49-34 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:341:5 › ⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: locator('html')
+    Expected string: "rtl"
+    Received string: "ltr"
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for locator('html')
+        11 × locator resolved to <html lang="ar" dir="ltr">…</html>
+           - unexpected value "ltr"
+
+      341 | test("⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde", async ({ browser }) => {
+      342 |   const { contexte, page } = await ouvrir(browser, "ar", { width: 360, height: 780 });
+    > 343 |   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+          |                                      ^
+      344 |   const debordement = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      345 |
+      346 |   // ── Étape CONTACT. Chaque libellé arabe pointe SON champ (deux identifiants distincts, non vides).
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:343:38
+
+===== R49-35 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:341:5 › ⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+
+    Locator: locator('.phone-field').first()
+    Expected string: "ltr"
+    Received string: ""
+    Call log:
+      - expect.toHaveAttribute with timeout 7000ms
+      - waiting for locator('.phone-field').first()
+        11 × locator resolved to <div class="input-affix phone-field">…</div>
+           - unexpected value "null"
+
+      356 |   // Le numéro se lit de gauche à droite : la boîte est `ltr`, le drapeau est à GAUCHE des chiffres, même dans une page arabe.
+      357 |   const boite = page.locator(".phone-field").first();
+    > 358 |   await expect(boite).toHaveAttribute("dir", "ltr");
+          |                       ^
+      359 |   const drapeau = (await boite.locator("[role=img]").boundingBox()) as { x: number };
+      360 |   const chiffres = (await tel.boundingBox()) as { x: number };
+      361 |   expect(drapeau.x, "le drapeau est à gauche des chiffres").toBeLessThan(chiffres.x);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:358:23
+
+===== R49-36 (passe 2) =====
+
+
+  1) [chromium] › specs\r49-nouvelle-reservation.e2e.ts:341:5 › ⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde 
+
+    Error: l'étape Contact déborde à 360 px
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 0
+    Received:    145
+
+      361 |   expect(drapeau.x, "le drapeau est à gauche des chiffres").toBeLessThan(chiffres.x);
+      362 |   // Aucun débordement horizontal à 360 px.
+    > 363 |   expect(await debordement(), "l'étape Contact déborde à 360 px").toBeLessThanOrEqual(0);
+          |                                                                   ^
+      364 |
+      365 |   // ── Étape CLIENT : trois champs, trois identifiants distincts ; la page ne déborde toujours pas.
+      366 |   await jusquAuxNoms(page, WA);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r49-nouvelle-reservation.e2e.ts:363:67

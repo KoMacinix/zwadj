@@ -1,0 +1,55 @@
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 36 déclarées · 19 jouées (e2e, unit) · 0 hors exécution
+  pré-vol e2e-r49 : code 0 · ok 6 · x 0
+✓ R49-11. G1c — le premier chiffre refusé n'est plus signalé sous le champ
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ R49-19. G1g — « Précédent » passe du côté de FIN de la ligne (ordre inversé)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 2 · Error: « Précédent » doit être à GAUCHE de « Voir le devis » en français
+✓ R49-20. G5d — la ligne des boutons ne se reflète plus en arabe (direction physique)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: en arabe, « Précédent » doit être à DROITE de « Voir le devis »
+✓ R49-21. G1j — la fenêtre s'ouvre pendant que le serveur travaille
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: la fenêtre s'est ouverte AVANT la réponse du serveur
+✓ R49-22. G1k — la fenêtre ne nomme plus le client
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 2 · Error: la fenêtre dit l'action, sur le modèle du message
+✓ R49-23. G1k — la fenêtre ne porte plus la date
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 2 · Error: la fenêtre dit l'action, sur le modèle du message
+✓ R49-24. G1l — « Nouveau devis » redevient « Recommencer »
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+✓ R49-25. G1m — la ligne écrite ne porte plus le prénom saisi
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: une seule demande, celle qui vient d'être enregistrée
+✓ R49-26. G2 — « Bloquer la date » n'accepte plus la demande (elle reste en attente)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: expect(received).toEqual(expected) // deep equality
+✓ R49-27. G2 — « Bloquer la date » annonce « enregistrée »
+   ancre 1→0 · marqueur 1→2 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ R49-28. G3 — l'erreur du serveur n'est plus dite
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ R49-29. G3 — un échec ouvre quand même la fenêtre de confirmation
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+✓ R49-30. G4 — un vendredi bloqué reprend la teinte du week-end (le statut ne l'emporte plus)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: un vendredi bloqué s'affiche de la teinte du week-end
+✓ R49-31. G4 — le jour bloqué perd son hachurage
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: expect(received).toContain(expected) // indexOf
+✓ R49-32. G4 — le week-end libre perd sa teinte propre
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: un week-end libre prend la teinte du week-end
+✓ R49-33. G4 — le week-end perd sa bordure en tirets
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: expect(received).toBe(expected) // Object.is equality
+✓ R49-34. G5a — la page arabe n'est plus déclarée de droite à gauche
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · —
+✓ R49-35. G5b — la boîte du numéro n'est plus de gauche à droite
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ R49-36. G5c — l'étape Contact déborde à 360 px
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 5 · x 1 · Error: l'étape Contact déborde à 360 px
+
+19 garde(s) mordue(s) sur 19 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 19 sur 19)
+arbre rendu à son état de départ : vérifié.
+SORTIE 0
