@@ -20,3 +20,8 @@ Ici « rouge » = la spec, inchangée, jouée contre l'application dont UNE gard
 
 ## Mesures ajoutées par la campagne à la lecture
 - R49-34 (la page arabe n'est plus `rtl`) : première ligne `Error:` absente du résumé (« — »), mais le bloc porte `expect(locator).toHaveAttribute` avec `Expected "rtl"` / `Received "ltr"` (extrait).
+
+## Rectification de l'empreinte de la spec (ajout, avant le commit de code)
+L'empreinte de la spec ci-dessus est celle du fichier JOUÉ par les deux passes de la campagne (fins de ligne LF : un fichier neuf naît en LF). Avant son commit, la spec a été convertie en CRLF comme le reste du dépôt (règle « un fichier neuf naît en LF : le normaliser »). **Contenu identique, octets différents** : sha256 en LF = `bd326b455cbf562f01c320197383079bfd1f217423821ec82f1c4bf7fa5da784` (rejoué : voir la ligne de contrôle ci-dessous), sha256 en CRLF (le fichier commité) = `a85cbcec88652b825758585851b673b0bcc7c9c54ed23643fb9dccbe89267c48`. Le harnais est inchangé : `ca5d06e1be22c77aa86f183daa0db7310521b2fff977d04ec8b12d3d34f6162d`.
+
+Contrôle : sha256 du fichier commité reconverti en LF = `bd326b455cbf562f01c320197383079bfd1f217423821ec82f1c4bf7fa5da784` (attendu `bd326b45…a784` : égal).
