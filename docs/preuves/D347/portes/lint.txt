@@ -1,0 +1,22 @@
+# journal brut hors dépôt : sha256 9efc734f1e0537bb659099ea0094676ba62c06c37cfcbdedf73c3784cd334764 · 0 lignes [WebServer] retirées sur 22 · « token= » restants : 0 (attendu 0)
+
+> zwadj@ lint C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run lint
+
+Scope: 9 of 10 workspace projects
+e2e lint$ eslint .
+packages/types lint$ eslint src
+packages/types lint: Done
+e2e lint: Done
+packages/api-client lint$ eslint src
+packages/i18n lint$ eslint src
+packages/ui lint$ eslint src
+packages/i18n lint: Done
+packages/ui lint: Done
+packages/api-client lint: Done
+apps/api lint$ eslint src prisma
+apps/client lint$ eslint src
+apps/pro lint$ eslint src
+apps/client lint: Done
+apps/pro lint: Done
+apps/api lint: Done
