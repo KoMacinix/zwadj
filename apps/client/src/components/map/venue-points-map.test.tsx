@@ -1,5 +1,5 @@
 // Carte — lot CA-2 (session « carte »). Les POINTS, ce qui est DIT autour, et la petite carte de la salle choisie.
-import { fireEvent, screen, within } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { formatDZD } from "@zwadj/i18n";
 import { venuePath } from "../../lib/routes";
 import { VenuePointsMap } from "./venue-points-map";
@@ -13,9 +13,18 @@ vi.mock("../../i18n/navigation", () => ({
   )
 }));
 
-/** Le texte d'un nœud, espaces insécables ramenés à des espaces : `formatDZD` en pose, le DOM les garde. */
-const texte = (noeud: Element | null): string => (noeud?.textContent ?? "").replace(/[  ]/g, " ");
-const net = (s: string): string => s.replace(/[  ]/g, " ");
+/** Les deux espaces insécables que `formatDZD` pose (U+00A0, U+202F), bâtis par leur CODE : écrits tels quels dans ce
+ *  fichier, ils seraient invisibles à la relecture (et refusés par le lint). */
+const INSECABLES = new RegExp(`[${String.fromCharCode(0xa0, 0x202f)}]`, "g");
+const net = (s: string): string => s.replace(INSECABLES, " ");
+/** Le texte d'un nœud, espaces insécables ramenés à des espaces. */
+const texte = (noeud: Element | null): string => net(noeud?.textContent ?? "");
+
+/** Les points du faux canevas dans un état donné — lus dans le DOM, pour que l'assertion soit NATIVE (une requête Testing
+ *  Library qui ne trouve rien lève une erreur de requête, pas une `AssertionError` : D316). */
+const pointsMarques = (canevas: HTMLElement, etat: "true" | "false"): (string | null)[] =>
+  Array.from(canevas.querySelectorAll(`button[aria-pressed="${etat}"]`)).map((b) => b.textContent);
+const alerte = (racine: HTMLElement): string | undefined => racine.querySelector('[role="alert"]')?.textContent ?? undefined;
 
 const carte = (props: Partial<Parameters<typeof VenuePointsMap>[0]> = {}, locale: "fr" | "ar" = "fr") =>
   rendre(
@@ -34,7 +43,7 @@ describe("VenuePointsMap — ce que la carte reçoit", () => {
     const points = [point(1), point(2), point(3)];
     carte({ response: reponse(points) });
     const canevas = await screen.findByTestId("canevas");
-    const boutons = within(canevas).getAllByRole("button", { pressed: false });
+    const boutons = Array.from(canevas.querySelectorAll('button[aria-pressed="false"]'));
     expect(boutons.map((b) => b.textContent)).toEqual(points.map((p) => p.nameFr));
     expect(boutons.map((b) => Number(b.getAttribute("data-lat")))).toEqual(points.map((p) => p.lat));
     expect(boutons.map((b) => Number(b.getAttribute("data-lng")))).toEqual(points.map((p) => p.lng));
@@ -43,22 +52,24 @@ describe("VenuePointsMap — ce que la carte reçoit", () => {
   it("le fond de carte reçu est celui qu'on lui passe, et sa mention est AFFICHÉE, avec son lien", async () => {
     carte();
     expect((await screen.findByTestId("canevas")).getAttribute("data-tuiles")).toBe(TUILES.url);
-    const lien = screen.getByRole("link", { name: TUILES.attribution });
-    expect(lien.getAttribute("href")).toBe(TUILES.attributionUrl);
+    const lien = document.querySelector(".zw-map-attribution a");
+    expect(lien?.textContent).toBe(TUILES.attribution);
+    expect(lien?.getAttribute("href")).toBe(TUILES.attributionUrl);
   });
 
   it("en arabe : les points portent le nom ARABE, et la carte sait que la page se lit de droite à gauche", async () => {
     const points = [point(1), point(2)];
     carte({ response: reponse(points) }, "ar");
     const canevas = await screen.findByTestId("canevas");
-    expect(within(canevas).getAllByRole("button", { pressed: false }).map((b) => b.textContent)).toEqual(points.map((p) => p.nameAr));
+    expect(pointsMarques(canevas, "false")).toEqual(points.map((p) => p.nameAr));
     expect(canevas.getAttribute("data-rtl")).toBe("true");
   });
 });
 
 describe("VenuePointsMap — ce qui est DIT, pas seulement montré", () => {
   it("le nombre de salles sur la carte est celui des points", async () => {
-    const { container } = carte({ response: reponse([point(1), point(2), point(3)]) });
+    // ⚠ `total` (9) ≠ nombre de points (3) : sans cet écart, afficher le total à la place passerait inaperçu.
+    const { container } = carte({ response: reponse([point(1), point(2), point(3)], { total: 9, withoutCoordinates: 6 }) });
     await screen.findByTestId("canevas");
     expect(container.querySelector(".map-view-count")?.textContent).toBe(message("fr", "map.count", { count: 3 }));
   });
@@ -126,7 +137,7 @@ describe("VenuePointsMap — la salle choisie", () => {
     );
     expect(fiche?.querySelector("a")?.getAttribute("href")).toBe(venuePath(choisie.slug));
     // Le point choisi est marqué sur la carte, et lui seul.
-    expect(within(canevas).getAllByRole("button", { pressed: true }).map((b) => b.textContent)).toEqual([choisie.nameFr]);
+    expect(pointsMarques(canevas, "true")).toEqual([choisie.nameFr]);
   });
 
   it("choisir un AUTRE point remplace la carte (une seule à la fois), et le prix suit le point", async () => {
@@ -146,7 +157,7 @@ describe("VenuePointsMap — la salle choisie", () => {
     fireEvent.click(within(canevas).getByRole("button", { name: "Salle 1" }));
     fireEvent.click(screen.getByRole("button", { name: message("fr", "map.card.close") }));
     expect(container.querySelectorAll(".map-venue-card")).toHaveLength(0);
-    expect(within(canevas).queryAllByRole("button", { pressed: true })).toHaveLength(0);
+    expect(pointsMarques(canevas, "true")).toEqual([]);
   });
 
   it("en arabe : nom arabe, prix mis en forme pour l'arabe, même fiche", async () => {
@@ -176,12 +187,12 @@ describe("VenuePointsMap — le fond de carte en panne", () => {
     const canevas = await screen.findByTestId("canevas");
     expect(container.textContent).not.toContain(message("fr", "map.tilesError"));
     fireEvent.click(within(canevas).getByRole("button", { name: "(test) une tuile échoue" }));
-    expect(screen.getByRole("alert").textContent).toBe(message("fr", "map.tilesError"));
-    expect(within(canevas).getAllByRole("button", { pressed: false })).toHaveLength(2);
+    expect(alerte(container)).toBe(message("fr", "map.tilesError"));
+    expect(pointsMarques(canevas, "false")).toHaveLength(2);
   });
 
   it("⛔ la bibliothèque de carte ne se charge pas : un message, pas un écran vide", async () => {
-    carte({ loadCanvas: () => Promise.reject(new Error("réseau coupé")) });
-    expect((await screen.findByRole("alert")).textContent).toBe(message("fr", "map.loadError"));
+    const { container } = carte({ loadCanvas: () => Promise.reject(new Error("réseau coupé")) });
+    await waitFor(() => expect(alerte(container)).toBe(message("fr", "map.loadError")));
   });
 });

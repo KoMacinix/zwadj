@@ -27,13 +27,21 @@
 //    (notes, taux d'acceptation). La valeur soumise reste `recent` : le contrat
 //    A3, sa requête SQL et ses tests d'intégration ne sont pas rouverts. Le jour
 //    où le signal existera, la valeur changera sous l'étiquette.
-//  - **La bascule grille/carte est un `useState`, pas un paramètre d'URL.** Elle
-//    ne gouverne qu'un cartouche « Carte à venir » : aucun contenu indexable
-//    n'en dépend, donc rien à mettre dans l'URL. Le jour où la carte existe,
-//    elle passera par `toPublicQuery` comme le reste.
-//  - **Le cartouche de carte a quitté le bas de page** : il n'y est pas dans le
-//    design, et il annonçait un report sous des résultats qui n'en parlaient
-//    pas. Il EST maintenant la vue carte.
+//  - **La bascule grille/carte est un `useState`, pas un paramètre d'URL — ET
+//    ELLE LE RESTE (lot CA-2, session « carte »).** Ce commentaire disait : « le
+//    jour où la carte existe, elle passera par `toPublicQuery` comme le reste ».
+//    La carte existe, et l'écart est VOULU : la carte ne se charge qu'AU GESTE
+//    (décision R-9, adoptée par Ko — précédent D45, la visite virtuelle). La
+//    monter, c'est demander des tuiles à un tiers, qui reçoit alors l'adresse IP
+//    du visiteur. Un paramètre d'adresse la ferait charger à l'ouverture d'un
+//    lien partagé, sans aucun geste — et ferait d'une préférence d'affichage une
+//    variante d'URL de plus (D216).
+//  - **La vue « carte » EST la carte** (`VenueMapLoader`) : les salles des
+//    filtres COURANTS (`toMapQuery`), demandées à la route de points au moment de
+//    la bascule. La GRILLE reste l'autre chemin — au clavier, au lecteur d'écran,
+//    et sans JavaScript, où la bascule n'existe pas.
+//  - **Un refus de date passe AVANT la vue** : « cette date est passée » se dit
+//    de la même façon en grille et en carte, et la carte n'est alors pas montée.
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatDZD } from "@zwadj/i18n";
@@ -44,6 +52,9 @@ import { Link } from "../../i18n/navigation";
 // rend les mêmes salles, et deux copies auraient divergé à la première
 // correction. Le rendu est inchangé — ses tests n'ont pas bougé.
 import { VenueCard } from "../venue-card";
+// ⚠ Import STATIQUE sans danger : le chargeur ne tire pas la bibliothèque de carte (elle arrive par `import()` au montage
+// de la carte, voir `@zwadj/ui`, `map/venue-map.tsx`). Gardé par `lib/leaflet-import-guard.test.ts`.
+import { VenueMapLoader } from "../map/venue-map-loader";
 import { FilterWizard } from "../filter-wizard";
 // ⚠ `import type` et NON un import de valeur : le type est effacé à la
 // compilation, la DONNÉE ne l'est pas. Importer `PREVIEW_VENUES` ici la
@@ -60,6 +71,7 @@ import {
   CAPACITY_FLOOR,
   CAPACITY_STEP,
   pageWindow,
+  toMapQuery,
   toPublicQuery,
   type GuideStep,
   type SearchState
@@ -230,14 +242,7 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
           </div>
         </div>
 
-        {view === "map" ? (
-          // Décision produit n°2 : la carte est reportée post-MVP, et on le DIT
-          // plutôt que de laisser un vide.
-          <div className="map-panel">
-            <h2 className="map-panel-title">{t("map.title")}</h2>
-            <p className="map-panel-body">{t("map.soon")}</p>
-          </div>
-        ) : refus !== null ? (
+        {refus !== null ? (
           // ⚠ AVANT la branche de panne, et c'est tout l'intérêt du type
           // `SearchOutcome` : ces refus ne sont pas des incidents. On les DIT,
           // et on offre le retour vers la recherche sans date plutôt qu'un
@@ -261,6 +266,11 @@ export function SearchView({ state, outcome, wilayas, amenities, styles, preview
               </Link>
             </p>
           </div>
+        ) : view === "map" ? (
+          // CA-2 — LA CARTE, montée AU GESTE seulement (R-9) : cette branche n'existe que si le visiteur a basculé. Elle
+          // passe APRÈS le refus de date et AVANT les états de la grille : la carte demande ses propres points, elle ne
+          // dépend ni de la page courante ni du repli de démonstration.
+          <VenueMapLoader query={toMapQuery(state).toString()} ar={ar} />
         ) : results === null && !showPreview ? (
           <div className="state-panel" role="alert">
             <h2>{t("results.errorTitle")}</h2>

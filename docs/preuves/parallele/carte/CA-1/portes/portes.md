@@ -30,7 +30,7 @@ une inférence : propre à ce conteneur. **Aucun de ces tests n'est dans un fich
 |---|---|---|
 | `pnpm typecheck` | 0 | tous les paquets |
 | `pnpm lint` | 0 | tous les paquets |
-| `pnpm test` | 0 | api-client 7 fichiers / 66 tests ; client 81 / 1355 ; pro 41 / 499 ; api 46 / 727 — 0 échec |
+| `pnpm test` | 0 | ~~api-client 7 fichiers / 66 tests ; client 81 / 1355 ; pro 41 / 499 ; api 46 / 727~~ — 0 échec. ⛔ *RECTIFIÉ au lot CA-2 : les quatre couples (fichiers / tests) sont ceux de la sortie `test.txt`, mais leurs NOMS DE PAQUET avaient été écrits de mémoire, d'après un ordre supposé. Relevé sur la sortie : api-client 7 / 66 ; **api 81 / 1355 ; client 41 / 499 ; pro 46 / 727**. Barré avec son motif, pas effacé.* |
 | `pnpm build` | 0 | tous les paquets |
 | `pnpm test:int` (sous verrou) | **1** | 47 fichiers ; **738 passés, 6 en échec** |
 

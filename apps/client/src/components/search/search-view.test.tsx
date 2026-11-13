@@ -337,18 +337,19 @@ describe("Recherche — bilingue", () => {
 describe("Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte)", () => {
   it("⛔ la grille est l'affichage par DÉFAUT, et AUCUNE carte n'est montée avant le geste (R-9)", () => {
     renderView();
-    expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
     expect(screen.queryAllByTestId("chargeur-de-carte")).toHaveLength(0);
+    expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
   });
 
   it("⛔ le geste « Carte » monte la carte sur les filtres COURANTS, sans la page ni sa taille ; la grille cède la place", () => {
     const raw = { cityId: CITY_ID, guests: "120", maxPrice: "500000", amenities: ["wifi", "parking"], sort: "price_asc", page: "3" };
     renderView({}, "fr", raw);
     fireEvent.click(screen.getByRole("button", { name: "Carte" }));
-    const chargeur = screen.getByTestId("chargeur-de-carte");
+    const chargeurs = screen.queryAllByTestId("chargeur-de-carte");
+    expect(chargeurs).toHaveLength(1);
     // ⚠ L'attendu vient de la fonction qui bâtit la requête de l'API — jamais d'une querystring retapée.
-    expect(chargeur.getAttribute("data-query")).toBe(toMapQuery(parseSearchParams(raw)).toString());
-    expect(chargeur.getAttribute("data-ar")).toBe("false");
+    expect(chargeurs[0]?.getAttribute("data-query")).toBe(toMapQuery(parseSearchParams(raw)).toString());
+    expect(chargeurs[0]?.getAttribute("data-ar")).toBe("false");
     // Deux affichages, pas un empilement.
     expect(screen.queryByRole("list", { name: "Salles à Alger" })).toBeNull();
   });
@@ -371,7 +372,7 @@ describe("Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie cart
   it("en arabe, la carte reçoit le sens d'écriture de la page", () => {
     renderView({}, "ar");
     fireEvent.click(screen.getByRole("button", { name: messages.ar.search.view.map }));
-    expect(screen.getByTestId("chargeur-de-carte").getAttribute("data-ar")).toBe("true");
+    expect(screen.queryAllByTestId("chargeur-de-carte").map((c) => c.getAttribute("data-ar"))).toEqual(["true"]);
   });
 
   it("l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas", () => {

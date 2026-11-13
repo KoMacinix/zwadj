@@ -1628,3 +1628,103 @@
 .photo-viewer-close {
   justify-self: end;
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CARTE DES SALLES — session « carte », lots CA-2 à CA-4. Mise en page de la vue
+   « carte » (recherche, accueil) et de la petite carte de la salle choisie. Le
+   cadre de la carte lui-même (`.zw-map*`) vit dans `@zwadj/ui`.
+   ════════════════════════════════════════════════════════════════════════════ */
+.map-view {
+  display: grid;
+  gap: 12px;
+}
+
+.map-view-status {
+  display: grid;
+  gap: 2px;
+}
+
+.map-view-count,
+.map-view-note,
+.map-view-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.map-view-count {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.map-view-empty {
+  padding: 28px 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  text-align: center;
+}
+
+/* La salle choisie : une rangée (vignette + texte) qui passe en colonne quand la place manque (360 px). */
+.map-venue-card {
+  display: grid;
+  grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.map-venue-card-media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.map-venue-card-media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.map-venue-card-body {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.map-venue-card-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.map-venue-card-meta,
+.map-venue-card-price {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.map-venue-card-price {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.map-venue-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 6px;
+}
+
+@media (max-width: 420px) {
+  .map-venue-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1509,5 +1509,27 @@
     "body": "Le lien est peut-être erroné, ou la page a été retirée.",
     "venues": "Voir les salles",
     "home": "Retour à l'accueil"
+  },
+  "map": {
+    "region": "Carte des salles",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "loading": "Chargement de la carte…",
+    "loadError": "La carte n'a pas pu être chargée. Vérifiez votre connexion, puis réessayez.",
+    "tilesError": "Le fond de carte ne se charge pas. Les salles restent placées au bon endroit.",
+    "unavailableTitle": "Carte indisponible",
+    "unavailableBody": "La carte n'est pas disponible pour le moment. Toutes les salles restent visibles dans la liste.",
+    "pointsErrorTitle": "Les salles n'ont pas pu être placées sur la carte",
+    "pointsErrorBody": "Réessayez dans un instant. La liste des salles reste disponible.",
+    "retry": "Réessayer",
+    "count": "Salles sur la carte : {count}",
+    "withoutCoordinates": "Salles sans position, visibles dans la liste : {count}",
+    "truncated": "La carte montre les {limit} premières salles. Affinez les filtres pour voir les autres.",
+    "empty": "Aucune salle de cette recherche n'a encore de position sur la carte.",
+    "card": {
+      "label": "Salle choisie sur la carte",
+      "open": "Voir la salle",
+      "close": "Fermer"
+    }
   }
 }

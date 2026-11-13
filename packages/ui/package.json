@@ -13,6 +13,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/leaflet": "1.9.22",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@zwadj/config": "workspace:*",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@zwadj/types": "workspace:*",
+    "leaflet": "1.9.4",
     "lucide-react": "^0.563.0"
   }
 }

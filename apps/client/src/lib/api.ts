@@ -7,6 +7,7 @@ import type {
   VenueAvailabilityResponse,
   ApiHealthResponse,
   VenueListResponse,
+  VenueMapResponse,
   VenuePublicDTO,
   VenueStyleDTO,
   VenueVisitSlotsResponse,
@@ -258,5 +259,36 @@ export async function getVisitSlots(
     return (await res.json()) as VenueVisitSlotsResponse;
   } catch {
     return null;
+  }
+}
+
+// ── Carte des salles (session « carte », lot CA-2) ───────────────────────────
+
+/** Issue de la lecture des points de la carte.
+ *
+ *  ⚠ DEUX issues seulement, et c'est délibéré. Les refus MÉTIER de la date (`AVAILABLE_ON_PAST`, hors horizon) sont déjà
+ *  dits par la page de recherche, qui rend son panneau de refus AVANT toute vue — la carte n'est alors jamais montée. Un
+ *  400 qui arriverait ici quand même se dit comme ce qu'il est pour la carte : elle n'a pas ses points. */
+export type VenueMapOutcome = { kind: "ok"; data: VenueMapResponse } | { kind: "unreachable" };
+
+/**
+ * Les POINTS de la carte pour une requête de recherche (`GET /api/v1/venue-map`, mêmes filtres que la liste).
+ *
+ * ⚠ APPELÉE DEPUIS LE NAVIGATEUR, comme `countVenues` et pour la même raison : route publique, sans session. Elle n'est
+ * appelée qu'au moment où une carte se monte (au geste, ou à l'approche de l'écran) — jamais au rendu serveur d'une page.
+ *
+ * ⚠ Une réponse 200 dont `points` n'est pas un tableau est une PANNE, pas « zéro salle » : remplacer une réponse abîmée
+ * par une carte vide présenterait un compte faux comme un fait (D133).
+ */
+export async function getVenueMap(query: URLSearchParams, signal?: AbortSignal): Promise<VenueMapOutcome> {
+  try {
+    const suffixe = query.toString();
+    const res = await fetch(`${API_URL}/api/v1/venue-map${suffixe === "" ? "" : `?${suffixe}`}`, { cache: "no-store", signal });
+    if (!res.ok) return { kind: "unreachable" };
+    const data = (await res.json()) as VenueMapResponse;
+    if (data === null || typeof data !== "object" || !Array.isArray(data.points)) return { kind: "unreachable" };
+    return { kind: "ok", data };
+  } catch {
+    return { kind: "unreachable" };
   }
 }

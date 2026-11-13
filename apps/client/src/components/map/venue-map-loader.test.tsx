@@ -1,6 +1,6 @@
 // Carte — lot CA-2 (session « carte »). Le CHARGEUR : quatre issues, quatre phrases — et aucune requête quand il n'y a pas
 // de fond de carte.
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import type { VenueMapOutcome } from "../../lib/api";
 import { VenueMapLoader } from "./venue-map-loader";
 import { TUILES, chargerFauxCanevas, enveloppe, message, point, rendre, reponse } from "./map-test-support";
@@ -49,14 +49,15 @@ describe("VenueMapLoader — le chargement des points", () => {
   it("⛔ la route de points ne répond pas : un message et « Réessayer » — ni page blanche, ni « aucune salle »", async () => {
     const load = vi.fn<() => Promise<VenueMapOutcome>>().mockResolvedValueOnce(PANNE).mockResolvedValueOnce(OK);
     const { container } = rendre(<VenueMapLoader query="" ar={false} tiles={TUILES} load={load} loadCanvas={chargerFauxCanevas} />);
-    const alerte = await screen.findByRole("alert");
-    expect(alerte.querySelector("h2")?.textContent).toBe(message("fr", "map.pointsErrorTitle"));
+    await waitFor(() =>
+      expect(container.querySelector('[role="alert"] h2')?.textContent).toBe(message("fr", "map.pointsErrorTitle"))
+    );
     expect(container.textContent).not.toContain(message("fr", "map.empty"));
     expect(screen.queryByTestId("canevas")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: message("fr", "map.retry") }));
+    await waitFor(() => expect(load.mock.calls).toHaveLength(2));
     await screen.findByTestId("canevas");
-    expect(load.mock.calls).toHaveLength(2);
   });
 
   it("quand la requête change (l'assistant a poussé une adresse), les points sont REDEMANDÉS pour la nouvelle", async () => {
@@ -82,11 +83,13 @@ describe("VenueMapLoader — le chargement des points", () => {
     vue.rerender(enveloppe(<VenueMapLoader query="guests=300" ar={false} tiles={TUILES} load={load} loadCanvas={chargerFauxCanevas} />));
     nouvelle.resoudre({ kind: "ok", data: reponse([point(7)]) });
     await screen.findByRole("button", { name: "Salle 7" });
-    ancienne.resoudre({ kind: "ok", data: reponse([point(1), point(2)]) });
-    // On laisse à l'ancienne réponse le temps d'être (à tort) appliquée, puis on regarde ce qui est à l'écran.
-    await Promise.resolve();
-    await Promise.resolve();
-    expect(screen.queryByRole("button", { name: "Salle 1" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Salle 7" }).textContent).toBe("Salle 7");
+    // On laisse à l'ancienne réponse le temps d'être (à tort) appliquée — sous `act`, pour que React rende ce qu'elle
+    // aurait changé —, puis on regarde ce qui est à l'écran.
+    await act(async () => {
+      ancienne.resoudre({ kind: "ok", data: reponse([point(1), point(2)]) });
+      await Promise.resolve();
+    });
+    const noms = Array.from(document.querySelectorAll('[data-testid="canevas"] button[aria-pressed]')).map((b) => b.textContent);
+    expect(noms).toEqual(["Salle 7"]);
   });
 });

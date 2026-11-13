@@ -374,7 +374,7 @@ describe("toMapQuery — la requête des points de la carte", () => {
     expect(sq.toMapQuery?.(riche).toString()).toBe(attendu.toString());
     // Et la requête porte bien des filtres : la comparaison ne passe pas sur deux chaînes vides.
     expect(attendu.get("maxPriceCents")).toBe(String(sq.centsFromDinars("800000")));
-    expect(attendu.get("amenities")).toBe("wifi,parking");
+    expect(attendu.get("amenities")?.split(",").sort()).toEqual(["parking", "wifi"]);
   });
 
   it("changer de PAGE ne change pas la requête de la carte (elle ne se recharge pas pour rien)", () => {
