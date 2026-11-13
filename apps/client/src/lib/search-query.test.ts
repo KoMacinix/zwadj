@@ -348,3 +348,39 @@ describe("FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230)", () => {
     expect(nextGuideStep?.(vide, "city")).toBe("guests");
   });
 });
+
+// ── Carte (session « carte », lot CA-2) ──────────────────────────────────────
+describe("toMapQuery — la requête des points de la carte", () => {
+  const riche = sq.parseSearchParams({
+    cityId: "6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f",
+    guests: "120",
+    maxCapacity: "400",
+    minPrice: "200000",
+    maxPrice: "800000",
+    amenities: ["wifi", "parking"],
+    styles: ["jardin"],
+    ceremonyType: "outdoor",
+    sort: "price_asc",
+    page: "4"
+  });
+
+  it("⛔ les MÊMES filtres que la requête de la liste — tout ce que `toApiQuery` envoie, moins la page et sa taille", () => {
+    // L'AUTORITÉ est `toApiQuery` : on lui retire les deux clés de pagination, on ne recopie aucun filtre ici.
+    const attendu = new URLSearchParams(sq.toApiQuery(riche));
+    expect(attendu.has("page")).toBe(true);
+    expect(attendu.has("pageSize")).toBe(true);
+    attendu.delete("page");
+    attendu.delete("pageSize");
+    expect(sq.toMapQuery?.(riche).toString()).toBe(attendu.toString());
+    // Et la requête porte bien des filtres : la comparaison ne passe pas sur deux chaînes vides.
+    expect(attendu.get("maxPriceCents")).toBe(String(sq.centsFromDinars("800000")));
+    expect(attendu.get("amenities")).toBe("wifi,parking");
+  });
+
+  it("changer de PAGE ne change pas la requête de la carte (elle ne se recharge pas pour rien)", () => {
+    const page1 = sq.toMapQuery?.({ ...riche, page: 1 }).toString();
+    const page7 = sq.toMapQuery?.({ ...riche, page: 7 }).toString();
+    expect(page1).toBe(page7);
+    expect(page1).not.toBeUndefined();
+  });
+});

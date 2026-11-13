@@ -21,7 +21,7 @@ import { messages } from "@zwadj/i18n";
 import type { AmenityDTO, VenueListResponse, VenueSummaryDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import type { SearchOutcome } from "../../lib/api";
 import { PREVIEW_VENUES } from "../../lib/preview-venues";
-import { parseSearchParams } from "../../lib/search-query";
+import { parseSearchParams, toMapQuery } from "../../lib/search-query";
 import { SearchView } from "./search-view";
 
 vi.mock("../../i18n/navigation", () => ({
@@ -32,6 +32,14 @@ vi.mock("../../i18n/navigation", () => ({
   ),
   useRouter: () => ({ push: vi.fn() }),
   usePathname: () => "/salles"
+}));
+
+// CA-2 — le chargeur de carte est DOUBLÉ ici : ce fichier mesure ce que la VUE lui passe et QUAND elle le monte. Ce qu'il
+// fait de sa requête est mesuré dans `components/map/venue-map-loader.test.tsx`.
+vi.mock("../map/venue-map-loader", () => ({
+  VenueMapLoader: ({ query, ar }: { query: string; ar: boolean }) => (
+    <div data-testid="chargeur-de-carte" data-query={query} data-ar={String(ar)} />
+  )
 }));
 
 const CITY_ID = "6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f";
@@ -326,25 +334,52 @@ describe("Recherche — bilingue", () => {
   });
 });
 
-describe("Recherche — bascule grille / carte (UI-D5)", () => {
-  it("la grille est l'affichage par DÉFAUT — le cartouche de carte ne squatte plus le bas de page", () => {
+describe("Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte)", () => {
+  it("⛔ la grille est l'affichage par DÉFAUT, et AUCUNE carte n'est montée avant le geste (R-9)", () => {
     renderView();
     expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
-    expect(screen.queryByText("Carte à venir")).toBeNull();
+    expect(screen.queryAllByTestId("chargeur-de-carte")).toHaveLength(0);
   });
 
-  it("le report post-MVP est DIT, pas laissé en blanc (décision produit n°2)", () => {
+  it("⛔ le geste « Carte » monte la carte sur les filtres COURANTS, sans la page ni sa taille ; la grille cède la place", () => {
+    const raw = { cityId: CITY_ID, guests: "120", maxPrice: "500000", amenities: ["wifi", "parking"], sort: "price_asc", page: "3" };
+    renderView({}, "fr", raw);
+    fireEvent.click(screen.getByRole("button", { name: "Carte" }));
+    const chargeur = screen.getByTestId("chargeur-de-carte");
+    // ⚠ L'attendu vient de la fonction qui bâtit la requête de l'API — jamais d'une querystring retapée.
+    expect(chargeur.getAttribute("data-query")).toBe(toMapQuery(parseSearchParams(raw)).toString());
+    expect(chargeur.getAttribute("data-ar")).toBe("false");
+    // Deux affichages, pas un empilement.
+    expect(screen.queryByRole("list", { name: "Salles à Alger" })).toBeNull();
+  });
+
+  it("revenir à « Grille » démonte la carte", () => {
     renderView();
     fireEvent.click(screen.getByRole("button", { name: "Carte" }));
-    expect(screen.getByText("Carte à venir")).toBeInTheDocument();
-    // La grille cède la place : deux affichages, pas un empilement.
-    expect(screen.queryByRole("list", { name: "Salles à Alger" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Grille" }));
+    expect(screen.queryAllByTestId("chargeur-de-carte")).toHaveLength(0);
+    expect(screen.getByRole("list", { name: "Salles à Alger" })).toBeInTheDocument();
+  });
+
+  it("⛔ un REFUS de date passe AVANT la carte : la vue « carte » dit le refus, elle ne charge rien", () => {
+    renderView({ outcome: { kind: "past-date" } }, "fr", { availableOn: "2020-01-01" });
+    fireEvent.click(screen.getByRole("button", { name: "Carte" }));
+    expect(screen.queryAllByTestId("chargeur-de-carte")).toHaveLength(0);
+    expect(screen.getByRole("alert").querySelector("h2")?.textContent).toBe(messages.fr.search.availableOn.pastTitle);
+  });
+
+  it("en arabe, la carte reçoit le sens d'écriture de la page", () => {
+    renderView({}, "ar");
+    fireEvent.click(screen.getByRole("button", { name: messages.ar.search.view.map }));
+    expect(screen.getByTestId("chargeur-de-carte").getAttribute("data-ar")).toBe("true");
   });
 
   it("l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas", () => {
     renderView();
     expect(screen.getByRole("button", { name: "Grille" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "Carte" })).toHaveAttribute("aria-pressed", "false");
+    fireEvent.click(screen.getByRole("button", { name: "Carte" }));
+    expect(screen.getByRole("button", { name: "Carte" }).getAttribute("aria-pressed")).toBe("true");
   });
 });
 

@@ -8,7 +8,7 @@
 // C'est le même angle mort que « vérifier qu'un composant est monté, pas
 // seulement écrit » (leçon R1).
 import { VenueErrorCode } from "@zwadj/types";
-import { searchVenues } from "./api";
+import { getVenueMap, searchVenues } from "./api";
 
 /** Réponse minimale : seuls `ok`, `status` et `json` sont lus par `searchVenues`. */
 function reponse(status: number, body: unknown | (() => never)) {
@@ -117,5 +117,45 @@ describe("searchVenues — les trois issues", () => {
   it("réseau coupé ⇒ `unreachable`, jamais une exception qui casserait la page", async () => {
     stubFetch(new TypeError("fetch failed"));
     expect(await searchVenues(new URLSearchParams())).toEqual({ kind: "unreachable" });
+  });
+});
+
+// ── Carte (session « carte », lot CA-2) ──────────────────────────────────────
+describe("getVenueMap — les points de la carte", () => {
+  const data = { points: [], total: 3, withoutCoordinates: 3, truncated: false, limit: 500, availableOn: null };
+
+  it("200 : `ok`, avec le corps tel quel, demandé à la route de carte avec LA requête reçue", async () => {
+    stubFetch(reponse(200, data));
+    const out = await getVenueMap(new URLSearchParams({ cityId: "abc", guests: "120" }));
+    expect(out).toEqual({ kind: "ok", data });
+    const appel = (fetch as unknown as { mock: { calls: [string][] } }).mock.calls[0]?.[0] ?? "";
+    expect(new URL(appel).pathname).toBe("/api/v1/venue-map");
+    expect(new URL(appel).search).toBe("?cityId=abc&guests=120");
+  });
+
+  it("sans filtre : aucun « ? » orphelin", async () => {
+    stubFetch(reponse(200, data));
+    await getVenueMap(new URLSearchParams());
+    const appel = (fetch as unknown as { mock: { calls: [string][] } }).mock.calls[0]?.[0] ?? "";
+    expect(appel.endsWith("/api/v1/venue-map")).toBe(true);
+  });
+
+  it("⛔ 500 ⇒ `unreachable` : une panne ne se dit pas « zéro salle »", async () => {
+    stubFetch(reponse(500, { message: "boom" }));
+    expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "unreachable" });
+  });
+
+  it("⛔ 200 dont `points` n'est pas un tableau ⇒ `unreachable`, pas une carte vide", async () => {
+    stubFetch(reponse(200, { ...data, points: null }));
+    expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "unreachable" });
+    stubFetch(reponse(200, null));
+    expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "unreachable" });
+  });
+
+  it("corps illisible ou réseau coupé ⇒ `unreachable`, jamais une exception", async () => {
+    stubFetch(reponse(200, () => { throw new SyntaxError("Unexpected token"); }));
+    expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "unreachable" });
+    stubFetch(new TypeError("fetch failed"));
+    expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "unreachable" });
   });
 });

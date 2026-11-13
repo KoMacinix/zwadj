@@ -1,0 +1,4099 @@
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/lib/search-query.test.ts (42 tests | 2 failed) 36ms
+   ✓ parseSearchParams > l'URL nue donne l'état par défaut : tri « recent », page 1, aucun filtre 2ms
+   ✓ parseSearchParams > les cases répétées sont collectées, dédoublonnées et triées 0ms
+   ✓ parseSearchParams > la forme jointe par virgules est acceptée aussi : une URL copiée depuis l'API ne perd pas ses filtres 0ms
+   ✓ parseSearchParams > une saisie non entière est REJETÉE côté front : elle ne doit jamais produire un 400 sur une page indexée 0ms
+   ✓ parseSearchParams > un tri inconnu retombe sur « recent », une page absurde sur 1 — jamais une erreur 0ms
+   ✓ parseSearchParams > les clés marketing sont ignorées sans bruit 0ms
+   ✓ D69 — une poignée EN BUTÉE n'est pas un filtre : elle est effacée dès la lecture 0ms
+   ✓ une valeur AU-DELÀ de la butée veut dire « tout », pas « rien » 0ms
+   ✓ une poignée à l'INTÉRIEUR de la course filtre normalement 0ms
+   ✓ plage INVERSÉE : redressée, jamais transmise — l'API la refuserait en 400 (D68) 0ms
+   ✓ un type de cérémonie inconnu est ignoré, les styles suivent la règle des amenities 0ms
+   ✓ toApiQuery > convertit les DINARS de l'URL en CENTIMES pour l'API 1ms
+   ✓ toApiQuery > joint les amenities par des virgules — la forme attendue par le contrat A3 0ms
+   ✓ toApiQuery > impose toujours tri, page et pageSize 0ms
+   ✓ toApiQuery > n'envoie pas les filtres vides : `cityId=` serait un UUID invalide, donc un 400 0ms
+   ✓ transporte le plafond de capacité, les styles joints et le type de cérémonie 0ms
+   ✓ toPublicQuery > omet les valeurs par défaut : l'URL nue et `?sort=recent&page=1` seraient du contenu dupliqué 0ms
+   ✓ toPublicQuery > garde les DINARS et RÉPÈTE les amenities : c'est la forme canonique publique 1ms
+   ✓ toPublicQuery > le numéro de page est un paramètre du lien, pas de l'état : la pagination réutilise les filtres 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > un lien qui porte `maxPriceCents` n'a AUCUN plafond, et l'API n'en reçoit aucun 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > `maxPrice` est seul à décider, même à côté de l'ancien nom 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⚠ `?maxPrice=` VIDE reste « peu importe » — le visiteur vient d'effacer son plafond 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⚠ une valeur MALFORMÉE sous le bon nom se laisse tomber 0ms
+   ✓ ⛔ D228 (FC-7) — `maxPriceCents` n'est PLUS lu dans l'URL : seul `maxPrice` porte le plafond > ⛔ l'URL publique n'émet JAMAIS l'ancien nom 0ms
+   ✓ pageWindow > montre tout tant que ça tient 0ms
+   ✓ pageWindow > borne, voisins et ellipses au-delà : une salle de plus n'ajoute pas un lien de plus 0ms
+   ✓ availableOn — la date d'annotation > D55 — LE CAS RÉEL D'ABORD : une vraie date passe intacte, dans les deux sens 0ms
+   ✓ availableOn — la date d'annotation > une date à la BONNE FORME mais IRRÉELLE est abandonnée : février n'a pas de 31 0ms
+   ✓ availableOn — la date d'annotation > le 29 février d'une année BISSEXTILE est accepté, celui d'une année commune non 0ms
+   ✓ availableOn — la date d'annotation > une forme non conforme est abandonnée, jamais réécrite 0ms
+   ✓ availableOn — la date d'annotation > ABSENTE de l'URL ⇒ ABSENTE des deux querystrings : on ne pose pas une question qu'on n'a pas reçue 0ms
+   ✓ availableOn — la date d'annotation > ⚠ AUCUNE notion de « passé » ici : une date de 2020 traverse et part à l'API, seule autorité 0ms
+   ✓ page de recherche — rendu à la demande > déclare `dynamic = "force-dynamic"` 3ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > ⛔ AUCUN palier n'atteint la butée — un palier en butée ne filtre RIEN (D69) 2ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > ⛔ chaque palier SURVIT à l'aller-retour URL → état → API 1ms
+   ✓ BUDGET_TIERS — l'autorité unique des paliers > les paliers sont strictement croissants et sans doublon 0ms
+   ✓ FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230) > les trois fonctions existent 0ms
+   ✓ FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230) > une étape connue s'ouvre ; ⛔ toute AUTRE valeur ferme le panneau (l'ouvrir ferait croire qu'elle a été comprise) 0ms
+   ✓ FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230) > l'URL d'une étape = l'URL publique de l'état (`toPublicQuery`, la seule autorité des noms) + `guide`, page 1 1ms
+   ✓ FC-8 — `?guide=` porte l'ÉTAPE de l'assistant (D230) > l'étape suivante est la première SANS réponse APRÈS celle qu'on quitte — sinon la dernière (on n'y retombe pas en boucle) 0ms
+   × toMapQuery — la requête des points de la carte > ⛔ les MÊMES filtres que la requête de la liste — tout ce que `toApiQuery` envoie, moins la page et sa taille 17ms
+     → expected undefined to be 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' // Object.is equality
+   × toMapQuery — la requête des points de la carte > changer de PAGE ne change pas la requête de la carte (elle ne se recharge pas pour rien) 1ms
+     → expected undefined not to be undefined
+ ❯ src/lib/api.test.ts (13 tests | 5 failed) 24ms
+   ✓ searchVenues — les trois issues > 200 : `ok`, avec le corps tel quel — l'écho `availableOn` compris 5ms
+   ✓ searchVenues — les trois issues > ⚠ 400 + `AVAILABLE_ON_PAST` ⇒ `past-date`, JAMAIS `unreachable` 1ms
+   ✓ searchVenues — les trois issues > ⚠ 400 + `AVAILABLE_ON_BEYOND_HORIZON` ⇒ `beyond-horizon`, PAS `past-date` 1ms
+   ✓ searchVenues — les trois issues > 400 d'un AUTRE code ⇒ `unreachable` : on lit le CODE, pas le statut seul 1ms
+   ✓ searchVenues — les trois issues > ⚠ le code à la RACINE n'est PAS reconnu : c'est la forme imaginée, pas celle du filtre 0ms
+   ✓ searchVenues — les trois issues > 400 au corps ILLISIBLE ⇒ `unreachable`, sans exception qui remonte 1ms
+   ✓ searchVenues — les trois issues > 500 ⇒ `unreachable`, et le corps n'est même pas lu 1ms
+   ✓ searchVenues — les trois issues > réseau coupé ⇒ `unreachable`, jamais une exception qui casserait la page 1ms
+   × getVenueMap — les points de la carte > 200 : `ok`, avec le corps tel quel, demandé à la route de carte avec LA requête reçue 8ms
+     → (0 , getVenueMap) is not a function
+   × getVenueMap — les points de la carte > sans filtre : aucun « ? » orphelin 1ms
+     → (0 , getVenueMap) is not a function
+   × getVenueMap — les points de la carte > ⛔ 500 ⇒ `unreachable` : une panne ne se dit pas « zéro salle » 1ms
+     → (0 , getVenueMap) is not a function
+   × getVenueMap — les points de la carte > ⛔ 200 dont `points` n'est pas un tableau ⇒ `unreachable`, pas une carte vide 1ms
+     → (0 , getVenueMap) is not a function
+   × getVenueMap — les points de la carte > corps illisible ou réseau coupé ⇒ `unreachable`, jamais une exception 1ms
+     → (0 , getVenueMap) is not a function
+ ❯ src/components/ui-map-tiles.test.ts (12 tests | 12 failed) 21ms
+   × resolveMapTiles — quel fond de carte (R-2) > ⛔ PRODUCTION sans variable : PAS de carte — jamais le défaut de développement 6ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > développement sans variable : le défaut de développement, avec SON attribution 2ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > des variables vides ou faites d'espaces valent « absentes » 1ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > adresse ET mention fournies : ce sont elles, en production comme en développement 1ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > ⛔ une adresse SANS mention : pas de carte (on n'affiche pas les tuiles d'un tiers sans le créditer) 1ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > ⛔ une mention SANS adresse : pas de carte non plus (elle créditerait le défaut de développement d'un autre nom) 0ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > une adresse qui n'est pas un gabarit de tuiles ({z}, {x}, {y}) est refusée 1ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > `http://` : admis hors production (serveur de tuiles local), refusé en production 0ms
+     → (0 , resolveMapTiles) is not a function
+   × resolveMapTiles — quel fond de carte (R-2) > le lien de la mention est facultatif, et n'est gardé que s'il est en `https://` 1ms
+     → (0 , resolveMapTiles) is not a function
+   × coordonnées > une coordonnée s'écrit à la précision de la colonne (six décimales) 5ms
+     → expected undefined to be 6 // Object.is equality
+   × coordonnées > une position plausible : les bornes du contrat, INCLUSES 0ms
+     → (0 , isMapPosition) is not a function
+   × coordonnées > la boîte des points : `null` sans point, le point lui-même s'il est seul, les extrêmes sinon 0ms
+     → (0 , boundsOf) is not a function
+ ❯ src/lib/leaflet-import-guard.test.ts (4 tests | 2 failed) 935ms
+   ✓ La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > CALIBRATION, bras positif : import statique, import de la feuille de style, `import()`, `require`, `export … from` sont VUS, chacun sous SON genre 15ms
+   ✓ La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > CALIBRATION, bras négatif : un commentaire et une chaîne quelconque qui nomment la bibliothèque ne sont PAS des imports 2ms
+   × La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > ⛔ UN SEUL fichier importe Leaflet, et il existe (la garde a PARCOURU de vrais fichiers) 646ms
+     → expected [] to deeply equal [ Array(1) ]
+   × La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > ⛔ le canevas n'est chargé que par `import()`, et seulement depuis le cadre ; ailleurs, au plus ses TYPES 271ms
+     → expected [] to deeply equal [ Array(1) ]
+ ❯ src/components/search/search-view.test.tsx (58 tests | 3 failed) 2352ms
+   ✓ Recherche — états > résultats : nom, commune, capacité et prix formatés en DZD 179ms
+   ✓ Recherche — états > aucun résultat : message d'élargissement, PAS un écran vide 45ms
+   ✓ Recherche — états > API muette : état d'ERREUR distinct du vide — on ne dit pas « aucune salle » quand on n'en sait rien 31ms
+   ✓ Recherche — états > le compteur s'accorde au singulier 110ms
+   ✓ Recherche — états > UI-D5 — le NOMBRE est isolé dans son propre élément : c'est lui que le design accentue 37ms
+   ✓ Recherche — médias > une URL de vignette RELATIVE est préfixée par la base API, pas par l'origine de Next 30ms
+   ✓ Recherche — médias > une URL ABSOLUE (adapter S3/CDN) est laissée intacte 37ms
+   ✓ Recherche — médias > salle sans photo : un cartouche explicite, pas une image cassée 42ms
+   ✓ Recherche — filtres sans JavaScript > le panneau est un vrai formulaire GET : c'est ce qui fait filtrer la page sans JS 42ms
+   ✓ Recherche — filtres sans JavaScript > les contrôles sont RÉALIMENTÉS depuis l'URL — un lien partagé rouvre la même recherche 138ms
+   ✓ Recherche — filtres sans JavaScript > D69 — poignées EN BUTÉE quand l'URL est nue : le panneau au repos ne filtre rien 57ms
+   ✓ Recherche — filtres sans JavaScript > la butée haute s'annonce « et plus » — sinon « 500 » se lirait comme un plafond 28ms
+   ✓ Recherche — filtres sans JavaScript > les puces de style sont des CASES (plusieurs à la fois, D65), le type est un RADIO (choix unique, D66) 67ms
+   ✓ Recherche — filtres sans JavaScript > UI-D3 — recliquer une puce de type la DÉCOCHE : sans elle, un groupe de radios ne se vide jamais 41ms
+   ✓ Recherche — filtres sans JavaScript > UI-D3 — trois types exactement, « Tous » n'existe plus 39ms
+   ✓ Recherche — filtres sans JavaScript > référentiel de styles VIDE : le bloc disparaît, la recherche reste utilisable 42ms
+   ✓ Recherche — filtres sans JavaScript > les équipements partagent le même `name` : c'est l'encodage natif que le navigateur sait produire seul 61ms
+   ✓ Recherche — filtres sans JavaScript > UI-D5 — le tri a quitté le formulaire dans l'ARBRE mais lui APPARTIENT toujours (attribut `form`) 37ms
+   ✓ Recherche — filtres sans JavaScript > UI-D5 — l'étiquette dit « Recommandé », la VALEUR soumise reste `recent` (contrat A3 non rouvert) 27ms
+   ✓ Recherche — pagination > des LIENS, pas un « charger plus » : un bouton JS ne produit aucune URL indexable 35ms
+   ✓ Recherche — pagination > la page courante est signalée aux lecteurs d'écran 36ms
+   ✓ Recherche — pagination > une seule page : aucune navigation de pagination 19ms
+   ✓ Recherche — bilingue > en arabe : libellés, noms de salle et de commune passent en AR 73ms
+   ✓ Recherche — bilingue > aucun `dir` en dur : l'orientation vient de <html>, jamais d'un composant 58ms
+   ✓ Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > ⛔ la grille est l'affichage par DÉFAUT, et AUCUNE carte n'est montée avant le geste (R-9) 34ms
+   × Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > ⛔ le geste « Carte » monte la carte sur les filtres COURANTS, sans la page ni sa taille ; la grille cède la place 39ms
+     → Unable to find an element by: [data-testid="chargeur-de-carte"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            Filtres
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            Réinitialiser
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            Commune
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              value=""
+            >
+              Toutes les communes
+            </option>
+            <optgroup
+              label="Alger"
+            >
+              <option
+                selected=""
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                Bab Ezzouar
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Capacité
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 20.833333333333336%; inline-size: 79.16666666666666%;"
+            />
+            <input
+              aria-label="Capacité — 120 invités"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="120"
+            />
+            <input
+              aria-label="Capacité — 500+ invités"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            120 invités
+             — 
+            500+ invités
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Budget
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 33.33333333333333%;"
+            />
+            <input
+              aria-label="Budget — 0 DA"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="Budget — 500 000 DA"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            0 DA
+             — 
+            500 000 DA
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Style
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                Royal
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                Jardin
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Type de mariage
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                Intérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                Extérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                Mixte
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Équipements
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                checked=""
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                Wifi
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                checked=""
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                Parking
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          Afficher les résultats
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              Salles à Alger
+            </h1>
+            <p
+              class="results-count"
+              role="status"
+            >
+              <span
+                class="results-count-n"
+              >
+                1
+              </span>
+               salle trouvée
+            </p>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              Trier par
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                value="recent"
+              >
+                Recommandé
+              </option>
+              <option
+                selected=""
+                value="price_asc"
+              >
+                Prix croissant
+              </option>
+              <option
+                value="price_desc"
+              >
+                Prix décroissant
+              </option>
+            </select>
+            <div
+              aria-label="Affichage"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Grille
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Carte
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            Carte
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            Carte à venir
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+   ✓ Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > revenir à « Grille » démonte la carte 41ms
+   × Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > ⛔ un REFUS de date passe AVANT la carte : la vue « carte » dit le refus, elle ne charge rien 131ms
+     → Unable to find an accessible element with the role "alert"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  <main
+    class="search-shell"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Filtres":
+  <h2
+    class="filters-title"
+  />
+
+  Name "Salles à Alger":
+  <h1
+    class="results-title"
+  />
+
+  Name "Carte":
+  <h2
+    class="map-panel-title"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Réinitialiser":
+  <a
+    class="filters-reset"
+    href="/salles"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Commune":
+  <select
+    id="f-city"
+    name="cityId"
+  />
+
+  Name "Trier par":
+  <select
+    class="sort-select"
+    form="search-filters"
+    id="f-sort"
+    name="sort"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "Toutes les communes":
+  <option
+    selected=""
+    value=""
+  />
+
+  Name "Bab Ezzouar":
+  <option
+    value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+  />
+
+  Name "Recommandé":
+  <option
+    selected=""
+    value="recent"
+  />
+
+  Name "Prix croissant":
+  <option
+    value="price_asc"
+  />
+
+  Name "Prix décroissant":
+  <option
+    value="price_desc"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "Alger":
+  <optgroup
+    label="Alger"
+  />
+
+  Name "Capacité":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Budget":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Style":
+  <fieldset
+    class="filter-block chips-block"
+  />
+
+  Name "Type de mariage":
+  <fieldset
+    class="filter-block chips-block"
+  />
+
+  Name "Équipements":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Affichage":
+  <div
+    aria-label="Affichage"
+    class="view-switch"
+    role="group"
+  />
+
+  --------------------------------------------------
+  slider:
+
+  Name "Capacité — 20 invités":
+  <input
+    aria-label="Capacité — 20 invités"
+    max="500"
+    min="20"
+    name="guests"
+    step="10"
+    type="range"
+    value="20"
+  />
+
+  Name "Capacité — 500+ invités":
+  <input
+    aria-label="Capacité — 500+ invités"
+    max="500"
+    min="20"
+    name="maxCapacity"
+    step="10"
+    type="range"
+    value="500"
+  />
+
+  Name "Budget — 0 DA":
+  <input
+    aria-label="Budget — 0 DA"
+    max="1500000"
+    min="0"
+    name="minPrice"
+    step="50000"
+    type="range"
+    value="0"
+  />
+
+  Name "Budget — 1 500 000 DA et plus":
+  <input
+    aria-label="Budget — 1 500 000 DA et plus"
+    max="1500000"
+    min="0"
+    name="maxPrice"
+    step="50000"
+    type="range"
+    value="1500000"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="range-value"
+  />
+
+  Name "":
+  <p
+    class="range-value"
+  />
+
+  Name "":
+  <p
+    class="map-panel-body"
+  />
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Royal":
+  <input
+    name="styles"
+    type="checkbox"
+    value="royal"
+  />
+
+  Name "Jardin":
+  <input
+    name="styles"
+    type="checkbox"
+    value="jardin"
+  />
+
+  Name "Wifi":
+  <input
+    name="amenities"
+    type="checkbox"
+    value="wifi"
+  />
+
+  Name "Parking":
+  <input
+    name="amenities"
+    type="checkbox"
+    value="parking"
+  />
+
+  --------------------------------------------------
+  radio:
+
+  Name "Intérieur":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="indoor"
+  />
+
+  Name "Extérieur":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="outdoor"
+  />
+
+  Name "Mixte":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="mixed"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Afficher les résultats":
+  <button
+    class="btn btn-accent"
+    type="submit"
+  />
+
+  Name "Grille":
+  <button
+    aria-pressed="false"
+    class="view-switch-btn"
+    type="button"
+  />
+
+  Name "Carte":
+  <button
+    aria-pressed="true"
+    class="view-switch-btn is-active"
+    type="button"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            Filtres
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            Réinitialiser
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            Commune
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              selected=""
+              value=""
+            >
+              Toutes les communes
+            </option>
+            <optgroup
+              label="Alger"
+            >
+              <option
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                Bab Ezzouar
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Capacité
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="Capacité — 20 invités"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="20"
+            />
+            <input
+              aria-label="Capacité — 500+ invités"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            20 invités
+             — 
+            500+ invités
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Budget
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="Budget — 0 DA"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="Budget — 1 500 000 DA et plus"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="1500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            0 DA
+             — 
+            1 500 000 DA et plus
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Style
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                Royal
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                Jardin
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Type de mariage
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                Intérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                Extérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                Mixte
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Équipements
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                Wifi
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                Parking
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          Afficher les résultats
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              Salles à Alger
+            </h1>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              Trier par
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                selected=""
+                value="recent"
+              >
+                Recommandé
+              </option>
+              <option
+                value="price_asc"
+              >
+                Prix croissant
+              </option>
+              <option
+                value="price_desc"
+              >
+                Prix décroissant
+              </option>
+            </select>
+            <div
+              aria-label="Affichage"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Grille
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Carte
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            Carte
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            Carte à venir
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+   × Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > en arabe, la carte reçoit le sens d'écriture de la page 45ms
+     → Unable to find an element by: [data-testid="chargeur-de-carte"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            عوامل التصفية
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            إعادة الضبط
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            البلدية
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              selected=""
+              value=""
+            >
+              كل البلديات
+            </option>
+            <optgroup
+              label="الجزائر"
+            >
+              <option
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                باب الزوار
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            السعة
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="السعة — 20 مدعو"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="20"
+            />
+            <input
+              aria-label="السعة — 500+ مدعو"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            20 مدعو
+             — 
+            500+ مدعو
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            الميزانية
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="الميزانية — ‏0 د.ج.‏"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="الميزانية — ‏1.500.000 د.ج.‏ فأكثر"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="1500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            ‏0 د.ج.‏
+             — 
+            ‏1.500.000 د.ج.‏ فأكثر
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            الطراز
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                ملكي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                حديقة
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            نوع الزفاف
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                داخلي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                خارجي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                مختلط
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            التجهيزات
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                واي فاي
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                موقف سيارات
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          عرض النتائج
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              قاعات في الجزائر
+            </h1>
+            <p
+              class="results-count"
+              role="status"
+            >
+              <span
+                class="results-count-n"
+              >
+                1
+              </span>
+               قاعة موجودة
+            </p>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              ترتيب حسب
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                selected=""
+                value="recent"
+              >
+                موصى به
+              </option>
+              <option
+                value="price_asc"
+              >
+                السعر تصاعديًا
+              </option>
+              <option
+                value="price_desc"
+              >
+                السعر تنازليًا
+              </option>
+            </select>
+            <div
+              aria-label="طريقة العرض"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  شبكة
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  خريطة
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            الخريطة
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            الخريطة قادمة
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+   ✓ Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > l'état de la bascule est ANNONCÉ : `aria-pressed`, que la seule couleur de fond ne dit pas 39ms
+   ✓ Recherche — données de démonstration (UI-D5) > ÉTEINT par défaut : sans `previewVenues`, un résultat vide reste un résultat vide 23ms
+   ✓ Recherche — données de démonstration (UI-D5) > allumé + recherche vide : la GRILLE se remplit, et le bandeau dit que ces salles sont fausses 62ms
+   ✓ Recherche — données de démonstration (UI-D5) > allumé mais recherche PLEINE : les vraies salles gagnent, aucun bandeau 30ms
+   ✓ Recherche — données de démonstration (UI-D5) > les salles de démonstration portent la note du design 46ms
+   ✓ Recherche — données de démonstration (UI-D5) > une salle RÉELLE n'invente PAS de note : le DTO n'en porte pas encore (Flux B) 14ms
+   ✓ Lot `availableOn` — annotation par date > `availableOnDate === false` ⇒ carte GRISÉE, avec une mention ÉCRITE 19ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ LA CARTE GRISÉE RESTE UN LIEN : « pas ce jour-là » n'est pas « pas cette salle » 17ms
+   ✓ Lot `availableOn` — annotation par date > `availableOnDate === true` ⇒ AUCUN grisé, et la salle reste dans la page 19ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ `null` NE GRISE PAS : il ne signifie plus QUE « question non posée » 17ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ QUESTION NON POSÉE ⇒ aucun bandeau, aucun grisé, même avec des `false` en base 12ms
+   ✓ Lot `availableOn` — annotation par date > un bandeau DIT sur quelle date porte l'annotation — sinon une URL partagée grise sans expliquer 12ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ LA DATE AFFICHÉE VIENT DE L'ÉCHO, jamais de l'URL 14ms
+   ✓ Lot `availableOn` — annotation par date > DATE PASSÉE : message PROPRE, distinct de la panne, avec une sortie qui marche 21ms
+   ✓ Lot `availableOn` — annotation par date > DATE TROP LOINTAINE : l'AUTRE message, et surtout PAS celui de la date passée 20ms
+   ✓ Lot `availableOn` — annotation par date > ⚠ une PANNE reste une panne : elle n'emprunte aucun des deux messages de date 16ms
+   ✓ FC-8 — le mode guidé de `/salles` > `guide` connu : l'assistant s'ouvre, à l'étape DEMANDÉE, et les résultats RÉELS restent dessous 40ms
+   ✓ FC-8 — le mode guidé de `/salles` > sans `guide` : aucun assistant, la page de résultats seule 20ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > la commune choisie dans l'assistant est celle du formulaire 29ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > les invités de l'assistant sont la poignée BASSE de la capacité 30ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > le budget de l'assistant est la poignée HAUTE du budget 28ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > les goûts de l'assistant (styles ET équipements) sont cochés dans le formulaire 28ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > le type de cérémonie de l'adresse est celui du formulaire 26ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > « Recommencer » (adresse vide) vide le formulaire, à toutes les poignées 31ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > les styles seuls : cochés dans le formulaire quand l'adresse change 26ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > les équipements seuls : cochés dans le formulaire quand l'adresse change 27ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > le plafond de capacité seul (poignée HAUTE) suit l'adresse 31ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > le plancher de budget seul (poignée BASSE) suit l'adresse 25ms
+   ✓ Recherche — le formulaire des filtres suit l'adresse (D346) > changer de page ne remonte pas le formulaire : une saisie non soumise survit 22ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/map/venue-map-loader.test.tsx [ src/components/map/venue-map-loader.test.tsx ]
+Error: Failed to resolve import "./venue-map-loader" from "src/components/map/venue-map-loader.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/user/zwadj/apps/client/src/components/map/venue-map-loader.test.tsx:5:0
+  9  |  const __vi_import_0__ = await import("react/jsx-dev-runtime");
+  10 |  const __vi_import_1__ = await import("@testing-library/react");
+  11 |  const __vi_import_2__ = await import("./venue-map-loader");
+     |                                       ^
+  12 |  const __vi_import_3__ = await import("./map-test-support");
+  13 |  
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/26]⎯
+
+ FAIL  src/components/map/venue-points-map.test.tsx [ src/components/map/venue-points-map.test.tsx ]
+Error: Failed to resolve import "./venue-points-map" from "src/components/map/venue-points-map.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/user/zwadj/apps/client/src/components/map/venue-points-map.test.tsx:5:0
+  11 |  const __vi_import_2__ = await import("@zwadj/i18n");
+  12 |  const __vi_import_3__ = await import("../../lib/routes");
+  13 |  const __vi_import_4__ = await import("./venue-points-map");
+     |                                       ^
+  14 |  const __vi_import_5__ = await import("./map-test-support");
+  15 |  
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/26]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > ⛔ PRODUCTION sans variable : PAS de carte — jamais le défaut de développement
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:23:12
+     21| describe("resolveMapTiles — quel fond de carte (R-2)", () => {
+     22|   it("⛔ PRODUCTION sans variable : PAS de carte — jamais le défaut de …
+     23|     expect(resolveMapTiles({ production: true, ...VIDE })).toBeNull();
+       |            ^
+     24|   });
+     25| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > développement sans variable : le défaut de développement, avec SON attribution
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:27:19
+     25| 
+     26|   it("développement sans variable : le défaut de développement, avec S…
+     27|     const tiles = resolveMapTiles({ production: false, ...VIDE });
+       |                   ^
+     28|     expect(tiles).toBe(DEV_MAP_TILES);
+     29|     expect(tiles?.attribution.length).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > des variables vides ou faites d'espaces valent « absentes »
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:34:12
+     32| 
+     33|   it("des variables vides ou faites d'espaces valent « absentes »", ()…
+     34|     expect(resolveMapTiles({ production: true, url: "  ", attribution:…
+       |            ^
+     35|     expect(resolveMapTiles({ production: false, url: "  ", attribution…
+     36|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > adresse ET mention fournies : ce sont elles, en production comme en développement
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:39:12
+     37| 
+     38|   it("adresse ET mention fournies : ce sont elles, en production comme…
+     39|     expect(resolveMapTiles({ production: true, ...FOURNISSEUR })).toEq…
+       |            ^
+     40|     expect(resolveMapTiles({ production: false, ...FOURNISSEUR })).toE…
+     41|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > ⛔ une adresse SANS mention : pas de carte (on n'affiche pas les tuiles d'un tiers sans le créditer)
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:44:12
+     42| 
+     43|   it("⛔ une adresse SANS mention : pas de carte (on n'affiche pas les …
+     44|     expect(resolveMapTiles({ production: true, ...FOURNISSEUR, attribu…
+       |            ^
+     45|     expect(resolveMapTiles({ production: false, ...FOURNISSEUR, attrib…
+     46|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > ⛔ une mention SANS adresse : pas de carte non plus (elle créditerait le défaut de développement d'un autre nom)
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:49:12
+     47| 
+     48|   it("⛔ une mention SANS adresse : pas de carte non plus (elle crédite…
+     49|     expect(resolveMapTiles({ production: false, ...FOURNISSEUR, url: u…
+       |            ^
+     50|   });
+     51| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > une adresse qui n'est pas un gabarit de tuiles ({z}, {x}, {y}) est refusée
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:54:14
+     52|   it("une adresse qui n'est pas un gabarit de tuiles ({z}, {x}, {y}) e…
+     53|     for (const url of ["https://tuiles.exemple.dz/carte.png", "https:/…
+     54|       expect(resolveMapTiles({ production: true, ...FOURNISSEUR, url }…
+       |              ^
+     55|     }
+     56|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > `http://` : admis hors production (serveur de tuiles local), refusé en production
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:60:12
+     58|   it("`http://` : admis hors production (serveur de tuiles local), ref…
+     59|     const url = "http://localhost:8080/{z}/{x}/{y}.png";
+     60|     expect(resolveMapTiles({ production: false, ...FOURNISSEUR, url })…
+       |            ^
+     61|     expect(resolveMapTiles({ production: true, ...FOURNISSEUR, url }))…
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > resolveMapTiles — quel fond de carte (R-2) > le lien de la mention est facultatif, et n'est gardé que s'il est en `https://`
+TypeError: (0 , resolveMapTiles) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:65:12
+     63| 
+     64|   it("le lien de la mention est facultatif, et n'est gardé que s'il es…
+     65|     expect(resolveMapTiles({ production: true, ...FOURNISSEUR, attribu…
+       |            ^
+     66|     expect(resolveMapTiles({ production: true, ...FOURNISSEUR, attribu…
+     67|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > coordonnées > une coordonnée s'écrit à la précision de la colonne (six décimales)
+AssertionError: expected undefined to be 6 // Object.is equality
+
+- Expected: 
+6
+
++ Received: 
+undefined
+
+ ❯ src/components/ui-map-tiles.test.ts:72:33
+     70| describe("coordonnées", () => {
+     71|   it("une coordonnée s'écrit à la précision de la colonne (six décimal…
+     72|     expect(COORDINATE_DECIMALS).toBe(6);
+       |                                 ^
+     73|     expect(roundCoordinate(36.75381234567)).toBe(36.753812);
+     74|     expect(roundCoordinate(3.0588999996)).toBe(3.0589);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > coordonnées > une position plausible : les bornes du contrat, INCLUSES
+TypeError: (0 , isMapPosition) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:78:12
+     76| 
+     77|   it("une position plausible : les bornes du contrat, INCLUSES", () =>…
+     78|     expect(isMapPosition({ lat: 90, lng: 180 })).toBe(true);
+       |            ^
+     79|     expect(isMapPosition({ lat: -90, lng: -180 })).toBe(true);
+     80|     expect(isMapPosition({ lat: 90.000001, lng: 0 })).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/26]⎯
+
+ FAIL  src/components/ui-map-tiles.test.ts > coordonnées > la boîte des points : `null` sans point, le point lui-même s'il est seul, les extrêmes sinon
+TypeError: (0 , boundsOf) is not a function
+ ❯ src/components/ui-map-tiles.test.ts:86:12
+     84| 
+     85|   it("la boîte des points : `null` sans point, le point lui-même s'il …
+     86|     expect(boundsOf([])).toBeNull();
+       |            ^
+     87|     expect(boundsOf([{ lat: 36.7, lng: 3.05 }])).toEqual({ south: 36.7…
+     88|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/26]⎯
+
+ FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > 200 : `ok`, avec le corps tel quel, demandé à la route de carte avec LA requête reçue
+TypeError: (0 , getVenueMap) is not a function
+ ❯ src/lib/api.test.ts:129:23
+    127|   it("200 : `ok`, avec le corps tel quel, demandé à la route de carte …
+    128|     stubFetch(reponse(200, data));
+    129|     const out = await getVenueMap(new URLSearchParams({ cityId: "abc",…
+       |                       ^
+    130|     expect(out).toEqual({ kind: "ok", data });
+    131|     const appel = (fetch as unknown as { mock: { calls: [string][] } }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/26]⎯
+
+ FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > sans filtre : aucun « ? » orphelin
+TypeError: (0 , getVenueMap) is not a function
+ ❯ src/lib/api.test.ts:138:11
+    136|   it("sans filtre : aucun « ? » orphelin", async () => {
+    137|     stubFetch(reponse(200, data));
+    138|     await getVenueMap(new URLSearchParams());
+       |           ^
+    139|     const appel = (fetch as unknown as { mock: { calls: [string][] } }…
+    140|     expect(appel.endsWith("/api/v1/venue-map")).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/26]⎯
+
+ FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > ⛔ 500 ⇒ `unreachable` : une panne ne se dit pas « zéro salle »
+TypeError: (0 , getVenueMap) is not a function
+ ❯ src/lib/api.test.ts:145:18
+    143|   it("⛔ 500 ⇒ `unreachable` : une panne ne se dit pas « zéro salle »",…
+    144|     stubFetch(reponse(500, { message: "boom" }));
+    145|     expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "…
+       |                  ^
+    146|   });
+    147| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/26]⎯
+
+ FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > ⛔ 200 dont `points` n'est pas un tableau ⇒ `unreachable`, pas une carte vide
+TypeError: (0 , getVenueMap) is not a function
+ ❯ src/lib/api.test.ts:150:18
+    148|   it("⛔ 200 dont `points` n'est pas un tableau ⇒ `unreachable`, pas un…
+    149|     stubFetch(reponse(200, { ...data, points: null }));
+    150|     expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "…
+       |                  ^
+    151|     stubFetch(reponse(200, null));
+    152|     expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/26]⎯
+
+ FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > corps illisible ou réseau coupé ⇒ `unreachable`, jamais une exception
+TypeError: (0 , getVenueMap) is not a function
+ ❯ src/lib/api.test.ts:157:18
+    155|   it("corps illisible ou réseau coupé ⇒ `unreachable`, jamais une exce…
+    156|     stubFetch(reponse(200, () => { throw new SyntaxError("Unexpected t…
+    157|     expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "…
+       |                  ^
+    158|     stubFetch(new TypeError("fetch failed"));
+    159|     expect(await getVenueMap(new URLSearchParams())).toEqual({ kind: "…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/26]⎯
+
+ FAIL  src/lib/leaflet-import-guard.test.ts > La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > ⛔ UN SEUL fichier importe Leaflet, et il existe (la garde a PARCOURU de vrais fichiers)
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "packages/ui/src/map/leaflet-canvas.tsx",
+- ]
++ []
+
+ ❯ src/lib/leaflet-import-guard.test.ts:98:24
+     96|     }
+     97|     for (const racine of RACINES) expect(parcourus[racine], `fichiers …
+     98|     expect(importeurs).toEqual([CANEVAS]);
+       |                        ^
+     99|   });
+    100| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/26]⎯
+
+ FAIL  src/lib/leaflet-import-guard.test.ts > La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > ⛔ le canevas n'est chargé que par `import()`, et seulement depuis le cadre ; ailleurs, au plus ses TYPES
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "packages/ui/src/map/venue-map.tsx — dynamique",
+- ]
++ []
+
+ ❯ src/lib/leaflet-import-guard.test.ts:111:25
+    109|       }
+    110|     }
+    111|     expect(chargements).toEqual([`${CADRE} — dynamique`]);
+       |                         ^
+    112|   });
+    113| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/26]⎯
+
+ FAIL  src/lib/search-query.test.ts > toMapQuery — la requête des points de la carte > ⛔ les MÊMES filtres que la requête de la liste — tout ce que `toApiQuery` envoie, moins la page et sa taille
+AssertionError: expected undefined to be 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' // Object.is equality
+
+- Expected: 
+"cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f&guests=120&minPriceCents=20000000&maxPriceCents=80000000&maxCapacity=400&amenities=parking%2Cwifi&styles=jardin&ceremonyType=outdoor&sort=price_asc"
+
++ Received: 
+undefined
+
+ ❯ src/lib/search-query.test.ts:374:47
+    372|     attendu.delete("page");
+    373|     attendu.delete("pageSize");
+    374|     expect(sq.toMapQuery?.(riche).toString()).toBe(attendu.toString());
+       |                                               ^
+    375|     // Et la requête porte bien des filtres : la comparaison ne passe …
+    376|     expect(attendu.get("maxPriceCents")).toBe(String(sq.centsFromDinar…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/26]⎯
+
+ FAIL  src/lib/search-query.test.ts > toMapQuery — la requête des points de la carte > changer de PAGE ne change pas la requête de la carte (elle ne se recharge pas pour rien)
+AssertionError: expected undefined not to be undefined
+ ❯ src/lib/search-query.test.ts:384:23
+    382|     const page7 = sq.toMapQuery?.({ ...riche, page: 7 }).toString();
+    383|     expect(page1).toBe(page7);
+    384|     expect(page1).not.toBeUndefined();
+       |                       ^
+    385|   });
+    386| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/26]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > ⛔ le geste « Carte » monte la carte sur les filtres COURANTS, sans la page ni sa taille ; la grille cède la place
+TestingLibraryElementError: Unable to find an element by: [data-testid="chargeur-de-carte"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            Filtres
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            Réinitialiser
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            Commune
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              value=""
+            >
+              Toutes les communes
+            </option>
+            <optgroup
+              label="Alger"
+            >
+              <option
+                selected=""
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                Bab Ezzouar
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Capacité
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 20.833333333333336%; inline-size: 79.16666666666666%;"
+            />
+            <input
+              aria-label="Capacité — 120 invités"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="120"
+            />
+            <input
+              aria-label="Capacité — 500+ invités"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            120 invités
+             — 
+            500+ invités
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Budget
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 33.33333333333333%;"
+            />
+            <input
+              aria-label="Budget — 0 DA"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="Budget — 500 000 DA"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            0 DA
+             — 
+            500 000 DA
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Style
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                Royal
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                Jardin
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Type de mariage
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                Intérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                Extérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                Mixte
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Équipements
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                checked=""
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                Wifi
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                checked=""
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                Parking
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          Afficher les résultats
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              Salles à Alger
+            </h1>
+            <p
+              class="results-count"
+              role="status"
+            >
+              <span
+                class="results-count-n"
+              >
+                1
+              </span>
+               salle trouvée
+            </p>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              Trier par
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                value="recent"
+              >
+                Recommandé
+              </option>
+              <option
+                selected=""
+                value="price_asc"
+              >
+                Prix croissant
+              </option>
+              <option
+                value="price_desc"
+              >
+                Prix décroissant
+              </option>
+            </select>
+            <div
+              aria-label="Affichage"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Grille
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Carte
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            Carte
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            Carte à venir
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/search/search-view.test.tsx:348:29
+    346|     renderView({}, "fr", raw);
+    347|     fireEvent.click(screen.getByRole("button", { name: "Carte" }));
+    348|     const chargeur = screen.getByTestId("chargeur-de-carte");
+       |                             ^
+    349|     // ⚠ L'attendu vient de la fonction qui bâtit la requête de l'API …
+    350|     expect(chargeur.getAttribute("data-query")).toBe(toMapQuery(parseS…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/26]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > ⛔ un REFUS de date passe AVANT la carte : la vue « carte » dit le refus, elle ne charge rien
+TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  <main
+    class="search-shell"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Filtres":
+  <h2
+    class="filters-title"
+  />
+
+  Name "Salles à Alger":
+  <h1
+    class="results-title"
+  />
+
+  Name "Carte":
+  <h2
+    class="map-panel-title"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "Réinitialiser":
+  <a
+    class="filters-reset"
+    href="/salles"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Commune":
+  <select
+    id="f-city"
+    name="cityId"
+  />
+
+  Name "Trier par":
+  <select
+    class="sort-select"
+    form="search-filters"
+    id="f-sort"
+    name="sort"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "Toutes les communes":
+  <option
+    selected=""
+    value=""
+  />
+
+  Name "Bab Ezzouar":
+  <option
+    value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+  />
+
+  Name "Recommandé":
+  <option
+    selected=""
+    value="recent"
+  />
+
+  Name "Prix croissant":
+  <option
+    value="price_asc"
+  />
+
+  Name "Prix décroissant":
+  <option
+    value="price_desc"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "Alger":
+  <optgroup
+    label="Alger"
+  />
+
+  Name "Capacité":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Budget":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Style":
+  <fieldset
+    class="filter-block chips-block"
+  />
+
+  Name "Type de mariage":
+  <fieldset
+    class="filter-block chips-block"
+  />
+
+  Name "Équipements":
+  <fieldset
+    class="filter-block"
+  />
+
+  Name "Affichage":
+  <div
+    aria-label="Affichage"
+    class="view-switch"
+    role="group"
+  />
+
+  --------------------------------------------------
+  slider:
+
+  Name "Capacité — 20 invités":
+  <input
+    aria-label="Capacité — 20 invités"
+    max="500"
+    min="20"
+    name="guests"
+    step="10"
+    type="range"
+    value="20"
+  />
+
+  Name "Capacité — 500+ invités":
+  <input
+    aria-label="Capacité — 500+ invités"
+    max="500"
+    min="20"
+    name="maxCapacity"
+    step="10"
+    type="range"
+    value="500"
+  />
+
+  Name "Budget — 0 DA":
+  <input
+    aria-label="Budget — 0 DA"
+    max="1500000"
+    min="0"
+    name="minPrice"
+    step="50000"
+    type="range"
+    value="0"
+  />
+
+  Name "Budget — 1 500 000 DA et plus":
+  <input
+    aria-label="Budget — 1 500 000 DA et plus"
+    max="1500000"
+    min="0"
+    name="maxPrice"
+    step="50000"
+    type="range"
+    value="1500000"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="range-value"
+  />
+
+  Name "":
+  <p
+    class="range-value"
+  />
+
+  Name "":
+  <p
+    class="map-panel-body"
+  />
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Royal":
+  <input
+    name="styles"
+    type="checkbox"
+    value="royal"
+  />
+
+  Name "Jardin":
+  <input
+    name="styles"
+    type="checkbox"
+    value="jardin"
+  />
+
+  Name "Wifi":
+  <input
+    name="amenities"
+    type="checkbox"
+    value="wifi"
+  />
+
+  Name "Parking":
+  <input
+    name="amenities"
+    type="checkbox"
+    value="parking"
+  />
+
+  --------------------------------------------------
+  radio:
+
+  Name "Intérieur":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="indoor"
+  />
+
+  Name "Extérieur":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="outdoor"
+  />
+
+  Name "Mixte":
+  <input
+    name="ceremonyType"
+    type="radio"
+    value="mixed"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Afficher les résultats":
+  <button
+    class="btn btn-accent"
+    type="submit"
+  />
+
+  Name "Grille":
+  <button
+    aria-pressed="false"
+    class="view-switch-btn"
+    type="button"
+  />
+
+  Name "Carte":
+  <button
+    aria-pressed="true"
+    class="view-switch-btn is-active"
+    type="button"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            Filtres
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            Réinitialiser
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            Commune
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              selected=""
+              value=""
+            >
+              Toutes les communes
+            </option>
+            <optgroup
+              label="Alger"
+            >
+              <option
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                Bab Ezzouar
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Capacité
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="Capacité — 20 invités"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="20"
+            />
+            <input
+              aria-label="Capacité — 500+ invités"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            20 invités
+             — 
+            500+ invités
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Budget
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="Budget — 0 DA"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="Budget — 1 500 000 DA et plus"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="1500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            0 DA
+             — 
+            1 500 000 DA et plus
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Style
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                Royal
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                Jardin
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Type de mariage
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                Intérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                Extérieur
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                Mixte
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            Équipements
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                Wifi
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                Parking
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          Afficher les résultats
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              Salles à Alger
+            </h1>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              Trier par
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                selected=""
+                value="recent"
+              >
+                Recommandé
+              </option>
+              <option
+                value="price_asc"
+              >
+                Prix croissant
+              </option>
+              <option
+                value="price_desc"
+              >
+                Prix décroissant
+              </option>
+            </select>
+            <div
+              aria-label="Affichage"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Grille
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  Carte
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            Carte
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            Carte à venir
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/search/search-view.test.tsx:368:19
+    366|     fireEvent.click(screen.getByRole("button", { name: "Carte" }));
+    367|     expect(screen.queryAllByTestId("chargeur-de-carte")).toHaveLength(…
+    368|     expect(screen.getByRole("alert").querySelector("h2")?.textContent)…
+       |                   ^
+    369|   });
+    370| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/26]⎯
+
+ FAIL  src/components/search/search-view.test.tsx > Recherche — bascule grille / carte (UI-D5, puis CA-2 : la vraie carte) > en arabe, la carte reçoit le sens d'écriture de la page
+TestingLibraryElementError: Unable to find an element by: [data-testid="chargeur-de-carte"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="search-shell"
+    >
+      <form
+        class="filters"
+        id="search-filters"
+        method="get"
+      >
+        <div
+          class="filters-head"
+        >
+          <h2
+            class="filters-title"
+          >
+            عوامل التصفية
+          </h2>
+          <a
+            class="filters-reset"
+            href="/salles"
+          >
+            إعادة الضبط
+          </a>
+        </div>
+        <div
+          class="filter-block"
+        >
+          <label
+            class="filter-label"
+            for="f-city"
+          >
+            البلدية
+          </label>
+          <select
+            id="f-city"
+            name="cityId"
+          >
+            <option
+              selected=""
+              value=""
+            >
+              كل البلديات
+            </option>
+            <optgroup
+              label="الجزائر"
+            >
+              <option
+                value="6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f"
+              >
+                باب الزوار
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            السعة
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="السعة — 20 مدعو"
+              max="500"
+              min="20"
+              name="guests"
+              step="10"
+              type="range"
+              value="20"
+            />
+            <input
+              aria-label="السعة — 500+ مدعو"
+              max="500"
+              min="20"
+              name="maxCapacity"
+              step="10"
+              type="range"
+              value="500"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            20 مدعو
+             — 
+            500+ مدعو
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            الميزانية
+          </legend>
+          <div
+            class="range"
+          >
+            <div
+              class="range-track"
+            />
+            <div
+              class="range-fill"
+              style="inset-inline-start: 0%; inline-size: 100%;"
+            />
+            <input
+              aria-label="الميزانية — ‏0 د.ج.‏"
+              max="1500000"
+              min="0"
+              name="minPrice"
+              step="50000"
+              type="range"
+              value="0"
+            />
+            <input
+              aria-label="الميزانية — ‏1.500.000 د.ج.‏ فأكثر"
+              max="1500000"
+              min="0"
+              name="maxPrice"
+              step="50000"
+              type="range"
+              value="1500000"
+            />
+          </div>
+          <p
+            class="range-value"
+          >
+            ‏0 د.ج.‏
+             — 
+            ‏1.500.000 د.ج.‏ فأكثر
+          </p>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            الطراز
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="royal"
+              />
+              <span>
+                ملكي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="styles"
+                type="checkbox"
+                value="jardin"
+              />
+              <span>
+                حديقة
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block chips-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            نوع الزفاف
+          </legend>
+          <div
+            class="chips"
+          >
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="indoor"
+              />
+              <span>
+                داخلي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="outdoor"
+              />
+              <span>
+                خارجي
+              </span>
+            </label>
+            <label
+              class="chip"
+            >
+              <input
+                name="ceremonyType"
+                type="radio"
+                value="mixed"
+              />
+              <span>
+                مختلط
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset
+          class="filter-block"
+        >
+          <legend
+            class="filter-label"
+          >
+            التجهيزات
+          </legend>
+          <div
+            class="service-list"
+          >
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="wifi"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-wifi"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 20h.01"
+                />
+                <path
+                  d="M2 8.82a15 15 0 0 1 20 0"
+                />
+                <path
+                  d="M5 12.859a10 10 0 0 1 14 0"
+                />
+                <path
+                  d="M8.5 16.429a5 5 0 0 1 7 0"
+                />
+              </svg>
+              <span>
+                واي فاي
+              </span>
+            </label>
+            <label
+              class="service-row"
+            >
+              <input
+                name="amenities"
+                type="checkbox"
+                value="parking"
+              />
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sparkles"
+                fill="none"
+                focusable="false"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                />
+                <path
+                  d="M20 2v4"
+                />
+                <path
+                  d="M22 4h-4"
+                />
+                <circle
+                  cx="4"
+                  cy="20"
+                  r="2"
+                />
+              </svg>
+              <span>
+                موقف سيارات
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <button
+          class="btn btn-accent"
+          type="submit"
+        >
+          عرض النتائج
+        </button>
+      </form>
+      <section
+        class="search-results"
+      >
+        <div
+          class="results-head"
+        >
+          <div
+            class="results-heading"
+          >
+            <h1
+              class="results-title"
+            >
+              قاعات في الجزائر
+            </h1>
+            <p
+              class="results-count"
+              role="status"
+            >
+              <span
+                class="results-count-n"
+              >
+                1
+              </span>
+               قاعة موجودة
+            </p>
+          </div>
+          <div
+            class="results-tools"
+          >
+            <label
+              class="sr-only"
+              for="f-sort"
+            >
+              ترتيب حسب
+            </label>
+            <select
+              class="sort-select"
+              form="search-filters"
+              id="f-sort"
+              name="sort"
+            >
+              <option
+                selected=""
+                value="recent"
+              >
+                موصى به
+              </option>
+              <option
+                value="price_asc"
+              >
+                السعر تصاعديًا
+              </option>
+              <option
+                value="price_desc"
+              >
+                السعر تنازليًا
+              </option>
+            </select>
+            <div
+              aria-label="طريقة العرض"
+              class="view-switch"
+              role="group"
+            >
+              <button
+                aria-pressed="false"
+                class="view-switch-btn"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-layout-grid"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="3"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="14"
+                    y="14"
+                  />
+                  <rect
+                    height="7"
+                    rx="1"
+                    width="7"
+                    x="3"
+                    y="14"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  شبكة
+                </span>
+              </button>
+              <button
+                aria-pressed="true"
+                class="view-switch-btn is-active"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-map"
+                  fill="none"
+                  focusable="false"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+                  />
+                  <path
+                    d="M15 5.764v15"
+                  />
+                  <path
+                    d="M9 3.236v15"
+                  />
+                </svg>
+                <span
+                  class="sr-only"
+                >
+                  خريطة
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="map-panel"
+        >
+          <h2
+            class="map-panel-title"
+          >
+            الخريطة
+          </h2>
+          <p
+            class="map-panel-body"
+          >
+            الخريطة قادمة
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/search/search-view.test.tsx:374:19
+    372|     renderView({}, "ar");
+    373|     fireEvent.click(screen.getByRole("button", { name: messages.ar.sea…
+    374|     expect(screen.getByTestId("chargeur-de-carte").getAttribute("data-…
+       |                   ^
+    375|   });
+    376| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/26]⎯
+
+
+ Test Files  7 failed (7)
+      Tests  24 failed | 105 passed (129)
+   Start at  17:03:27
+   Duration  4.67s (transform 753ms, setup 610ms, collect 2.39s, tests 3.37s, environment 4.34s, prepare 726ms)
+
