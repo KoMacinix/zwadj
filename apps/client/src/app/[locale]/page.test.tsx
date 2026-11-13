@@ -104,7 +104,7 @@ describe("Accueil — ce que la page ne promet pas", () => {
     expect(document.querySelectorAll(".leaflet-container, [data-testid='canevas']")).toHaveLength(0);
     // Le lien vers la recherche marche sans JavaScript : c'est le chemin de qui n'aura jamais la carte.
     const liens = Array.from(section?.querySelectorAll("a") ?? []);
-    expect(liens.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([[messages.fr.map.home.search, SEARCH_PATH]]);
+    expect(liens.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([[messages.fr.map.home.search, `/fr${SEARCH_PATH}`]]);
     // Le cartouche « à venir » a disparu.
     expect(section?.textContent ?? "").not.toContain(messages.fr.home.map.soon);
   });

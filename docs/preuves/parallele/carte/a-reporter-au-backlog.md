@@ -15,6 +15,19 @@ Aucune durée estimée. Chaque lot complète ce fichier.
   campagne, et tout lot qui touche `venues-public.service.ts` ou `search-view.tsx` la rejoue.
 - Coût : code de harnais (il compte), 1 fichier (`neutralisation/neutralize-horizon.py`), ni e2e ni migration.
 
+### `[HARNAIS]` `neutralize-available-on.py`, cible 6 : l'ancre porte un `\r\n` en dur
+- Relevé le 13/11/2026 (lot CA-2) : « 0 occurrence(s), 1 attendue(s) dans apps/client/src/lib/search-query.ts ». L'ancre est
+  écrite `…state.availableOn);\r\n  query.set("sort"…` : elle ne se trouve que dans un fichier en CRLF (poste de Ko,
+  `core.autocrlf=true`). Dans un clone en LF (Linux, CI, session cloud) la campagne s'arrête là.
+- Bloque : rien sur le poste de Ko ; toute campagne `--tout` jouée ailleurs.
+- Coût : code de harnais (il compte), 1 fichier ; le socle `socle_front_client.py` montre la forme (`_adapter`).
+
+### `[HARNAIS]` `neutralize-r33.py`, cible M-12 : muette sur une machine en UTC
+- Relevé le 13/11/2026 (lot CA-2) : « la date d'un événement dérive du fuseau du serveur » — 61 passés, 0 échec. Une garde
+  de fuseau ne peut pas mordre quand le serveur est en UTC (AGENTS.md, leçon S11-a : épingler `process.env.TZ`).
+- Bloque : rien sur le poste de Ko (fuseau d'Alger ?) — à vérifier ; ailleurs, la campagne sort en 1.
+- Coût : code de test ou de harnais (il compte), 1 ou 2 fichiers.
+
 ### `[INFRA][TEST]` quatre tests de requêtes SIMULTANÉES tombent en `read ECONNRESET` dans le conteneur cloud
 - `pro-clients.int-spec.ts` (MD-1 ×2) et `quote-numbering.int-spec.ts` (F-1, F-2), déterministes sur `origin/main` dans ce
   conteneur (PostgreSQL 16 + polyfill, Linux). Cause NON établie (aucune erreur côté PostgreSQL ; dix requêtes simultanées
@@ -25,7 +38,10 @@ Aucune durée estimée. Chaque lot complète ce fichier.
 ## Clés de catalogue devenues mortes (à retirer à l'intégration, pas ici)
 Les catalogues sont partagés avec les deux autres sessions : cette session n'y écrit qu'un bloc neuf et ne retire rien.
 - `search.map.title`, `search.map.soon` : plus lues depuis CA-2 (la vue « carte » est la carte).
-- (les clés de l'accueil : voir le lot CA-3.)
+- `home.map.soon` : plus lue depuis CA-3 (l'accueil monte la vraie carte). `home.map.title` reste lue.
+- ⚠ `home.map.title` vaut « Carte des salles · Alger » alors que la carte de l'accueil montre TOUTES les salles publiques
+  situées, où qu'elles soient. Le titre n'a pas été changé (c'est un texte produit existant) : à trancher par Ko —
+  garder « Alger » tant que le catalogue est algérois, ou retirer la ville. Coût : 2 valeurs de catalogue, documentaire.
 - Coût : documentaire côté catalogues (2 fichiers), plus le repère « le total ne recule pas » de
   `apps/api/src/common/i18n-parity.spec.ts`, à relever DÉLIBÉRÉMENT (il compte les clés ; la session ajoute 18 clés à CA-2
   et ne touche pas ce fichier, que d'autres sessions peuvent modifier).

@@ -1,0 +1,7 @@
+TRI DE L'AUDIT DE SECRETS — CA-3 (13/11/2026)
+Précédente : ../CA-2/audit-secrets-ca2.txt · nouvelle : audit-secrets-ca3.txt.
+Alertes absentes de la précédente : 5, chacune lue au contexte (lignes 6144 à 6153 de la sortie scellée).
+  1 à 3. ../CA-2/tri-audit-ca2.txt (lignes 5, 7, 9) — l'ÉCHO du tri de CA-2, qui citait les titres de test qu'il triait.
+  4 et 5. portes/test-int.txt (lignes 434 et 562) — deux TITRES de tests existants de l'API, recités par la sortie de la porte.
+BILAN : 5 sur 5 = l'écho d'un tri (3) et des titres de test (2) ; AUCUNE valeur réelle.
+⚠ Ce fichier ne cite plus les titres qu'il trie : les citer fabrique l'écho du tri suivant (constaté deux fois).

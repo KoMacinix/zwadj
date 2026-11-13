@@ -1728,3 +1728,15 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Accueil : la carte (lot CA-3, session « carte ») ─────────────────────────
+   Le cadre garde la place de la carte AVANT qu'elle arrive : la page ne saute pas quand la section approche de l'écran. */
+.hm-map-frame {
+  margin-block-start: 22px;
+}
+
+.hm-map-frame .map-panel {
+  min-block-size: clamp(240px, 34vw, 420px);
+  gap: 12px;
+  padding: 24px 16px;
+}

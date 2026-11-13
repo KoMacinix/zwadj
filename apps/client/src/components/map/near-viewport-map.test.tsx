@@ -78,8 +78,9 @@ describe("NearViewportMap — avec un observateur", () => {
     const { load } = poser();
     const observateur = FauxObservateur.instances[0] as FauxObservateur;
     observateur.signaler(true);
+    // Assertion NATIVE d'abord : si rien ne se monte, c'est elle qui échoue (et non une requête qui ne trouve rien).
+    await waitFor(() => expect(load.mock.calls).toHaveLength(1));
     await screen.findByTestId("canevas");
-    expect(load.mock.calls).toHaveLength(1);
     expect((load.mock.calls[0] as unknown as [URLSearchParams])[0].toString()).toBe("");
     expect(observateur.debranche).toBe(true);
   });

@@ -26,3 +26,18 @@ avoir à accorder le nom au nombre (singulier, duel, pluriel de 3 à 10, de 11 �
 | `map.card.label` | Salle choisie sur la carte | القاعة المختارة على الخريطة |
 | `map.card.open` | Voir la salle | عرض القاعة |
 | `map.card.close` | Fermer | إغلاق |
+
+## Lot CA-3 (11 clés : 3 pour l'accueil, et — posées par avance, voir la table de CA-3 — 3 pour la fiche, 5 pour le pro)
+| clé | français | arabe |
+|---|---|---|
+| `map.home.waiting` | La carte des salles s'affiche ici quand vous arrivez à cette section. | تظهر خريطة القاعات هنا عند وصولك إلى هذا القسم. |
+| `map.home.show` | Afficher la carte | عرض الخريطة |
+| `map.home.search` | Rechercher une salle avec des filtres | ابحث عن قاعة باستعمال معايير البحث |
+| `map.venue.show` (CA-4) | Voir sur la carte | عرض على الخريطة |
+| `map.venue.notice` (CA-4) | La carte est fournie par un service externe : elle ne se charge que si vous la demandez. | الخريطة مقدَّمة من خدمة خارجية، ولا تُحمَّل إلا إذا طلبتها. |
+| `map.venue.region` (CA-4) | Emplacement de {name} sur la carte | موقع {name} على الخريطة |
+| `map.pin.show` (CA-5) | Placer la salle sur la carte | تحديد موقع القاعة على الخريطة |
+| `map.pin.hide` (CA-5) | Masquer la carte | إخفاء الخريطة |
+| `map.pin.hint` (CA-5) | Cliquez sur la carte pour poser le point, ou faites-le glisser. La latitude et la longitude se remplissent seules ; pensez à enregistrer. | انقر على الخريطة لوضع النقطة أو اسحبها. يُملأ خطّا العرض والطول تلقائياً، ولا تنسَ الحفظ. |
+| `map.pin.region` (CA-5) | Carte pour placer la salle | خريطة لتحديد موقع القاعة |
+| `map.pin.label` (CA-5) | Position de la salle | موقع القاعة |
