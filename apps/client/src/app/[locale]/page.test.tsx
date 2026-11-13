@@ -18,6 +18,13 @@ import { HomeView } from "../../components/home-view";
 import { PREVIEW_VENUES, previewVenuesFor } from "../../lib/preview-venues";
 import { VENDOR_CATEGORIES } from "../../lib/vendor-categories";
 import { parseSearchParams, BUDGET_CEILING, BUDGET_TIERS } from "../../lib/search-query";
+import { SEARCH_PATH } from "../../lib/routes";
+
+// CA-3 — la carte « à l'approche de l'écran » est DOUBLÉE ici : ce fichier mesure que l'accueil la pose dans SA section, avec
+// la requête vide, et ne monte aucune carte lui-même. Ce qu'elle fait est mesuré dans `components/map/near-viewport-map.test.tsx`.
+vi.mock("../../components/map/near-viewport-map", () => ({
+  NearViewportMap: ({ query }: { query: string }) => <div data-testid="carte-a-l-approche" data-query={query} />
+}));
 
 /** ⚠ Une salle RÉELLE : elle n'a ni note, ni avis, ni badge — `VenueSummaryDTO`
  *  ne les porte pas. C'est le point de la carte conditionnelle : une salle
@@ -87,9 +94,19 @@ describe("Accueil — ce que la page ne promet pas", () => {
     expect(screen.queryByText(/db:/i)).toBeNull();
   });
 
-  it("annonce la carte comme À VENIR, sans image de carte figée", () => {
+  it("⛔ CA-3 — la section carte : au chargement la carte n'est PAS montée (R-9), et un lien mène à la recherche", () => {
     poser();
-    expect(screen.getByText("Carte à venir")).toBeInTheDocument();
+    const section = document.querySelector("section.hm-map");
+    // La carte de l'accueil est confiée au composant qui attend l'approche de l'écran — avec la requête VIDE (toutes les
+    // salles publiques) — et rien d'autre ne monte une carte ici.
+    const attente = Array.from(section?.querySelectorAll('[data-testid="carte-a-l-approche"]') ?? []);
+    expect(attente.map((n) => n.getAttribute("data-query"))).toEqual([""]);
+    expect(document.querySelectorAll(".leaflet-container, [data-testid='canevas']")).toHaveLength(0);
+    // Le lien vers la recherche marche sans JavaScript : c'est le chemin de qui n'aura jamais la carte.
+    const liens = Array.from(section?.querySelectorAll("a") ?? []);
+    expect(liens.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([[messages.fr.map.home.search, SEARCH_PATH]]);
+    // Le cartouche « à venir » a disparu.
+    expect(section?.textContent ?? "").not.toContain(messages.fr.home.map.soon);
   });
 });
 
