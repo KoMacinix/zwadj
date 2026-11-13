@@ -1,0 +1,120 @@
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/components/venue/venue-detail-view.test.tsx (32 tests | 2 failed) 1337ms
+   ✓ Détail salle — contenu > nom, commune, accroche, prix formaté et capacité 157ms
+   ✓ Détail salle — contenu > le prix affiché est annoncé comme une BASE : le prix réel dépend du Flux B 33ms
+   ✓ Détail salle — contenu > les sauts de ligne de la description sont conservés, sans jamais interpréter de HTML 27ms
+   ✓ Détail salle — contenu > équipements en pastilles ; liste vide dite explicitement 49ms
+   ✓ Détail salle — D33 > TEMPORARILY_UNAVAILABLE : bandeau, et la page reste entièrement consultable 30ms
+   ✓ Détail salle — D33 > ACTIVE : aucun bandeau 26ms
+   ✓ Détail salle — photos > URL relatives préfixées ; la couverture en pleine taille, les suivantes en vignette 33ms
+   ✓ Détail salle — photos > la COUVERTURE n'est pas différée : c'est le plus grand élément affiché (LCP) 37ms
+   ✓ Détail salle — photos > « agrandir » RESTE un lien vers l'original : le repli sans JavaScript (FC-12 y ajoute la visionneuse) 54ms
+   ✓ Détail salle — photos > l'alt saisi par le pro fait foi ; absent, l'image est décorative 29ms
+   ✓ Détail salle — photos > aucune photo : c'est dit, pas un trou dans la page 29ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un clic sur une vignette ouvre la visionneuse sur CETTE photo, pleine taille, avec l'alt du pro dans la langue de la page 41ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ Échap ferme, et le focus REVIENT à la vignette qui l'a ouverte 45ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > le focus reste DANS la boîte : Tab depuis le dernier bouton revient au premier 40ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > en français, la flèche DROITE mène à la photo suivante, la GAUCHE à la précédente — et la galerie boucle 52ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > ⛔ en arabe (RTL), les flèches sont INVERSÉES : la GAUCHE mène à la photo suivante 50ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un alt ABSENT reste vide dans la visionneuse (image décorative), jamais inventé 48ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > une seule photo : la boîte n'a que « Fermer » — ni précédente ni suivante 33ms
+   ✓ FC-12 — la visionneuse : la galerie s'agrandit sans quitter la page > un clic avec MODIFICATEUR (Ctrl) reste un lien : la visionneuse ne s'ouvre pas 33ms
+   ✓ Détail salle — visite Matterport > AUCUNE iframe au chargement : le tiers ne se charge qu'au geste (coût de données) 65ms
+   ✓ Détail salle — visite Matterport > après le geste : l'iframe est montée sur l'URL Matterport de l'identifiant 60ms
+   ✓ Détail salle — visite Matterport > le lien externe est TOUJOURS là : c'est le repli quand JavaScript n'arrive pas 26ms
+   ✓ Détail salle — visite Matterport > salle sans scan : aucune section visite, aucun bouton mort 50ms
+   ✓ Détail salle — appels à l'action (Flux B) > PLUS AUCUN bouton mort : la demande de réservation est réelle depuis E1a 50ms
+   ✓ Détail salle — appels à l'action (Flux B) > AUCUN bouton mort « Réserver une visite » : c'est le panneau RÉEL de C5 qui porte ce titre 48ms
+   ✓ Détail salle — appels à l'action (Flux B) > le panneau de visite est MONTÉ et interroge les créneaux — un composant livré mais non monté est un composant absent 29ms
+   ✓ Détail salle — bilingue > en arabe : nom, accroche, description et libellés passent en AR 28ms
+   ✓ Détail salle — bilingue > aucun `dir` en dur : l'orientation vient de <html> 22ms
+   ✓ Détail salle — la position sur la carte (R-7) > ⛔ une salle SANS coordonnées : l'adresse, et rien d'autre — aucune carte n'est offerte 20ms
+   × Détail salle — la position sur la carte (R-7) > ⛔ une salle située : la carte est posée SOUS L'ADRESSE, à SA position, sous son nom 33ms
+     → expected [] to deeply equal [ [ '36.745312', '3.031987', …(2) ] ]
+   ✓ Détail salle — la position sur la carte (R-7) > ⚠ UNE seule coordonnée n'est pas une position : latitude seule, puis longitude seule ⇒ pas de carte 39ms
+   × Détail salle — la position sur la carte (R-7) > en arabe : la carte reçoit le nom ARABE de la salle et le sens d'écriture de la page 20ms
+     → expected [] to deeply equal [ [ 'قاعة الرياض', 'true' ] ]
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/venue-location-map.test.tsx [ src/components/venue/venue-location-map.test.tsx ]
+Error: Failed to resolve import "./venue-location-map" from "src/components/venue/venue-location-map.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/user/zwadj/apps/client/src/components/venue/venue-location-map.test.tsx:4:33
+  2  |  import { fireEvent, screen } from "@testing-library/react";
+  3  |  import { TUILES, chargerFauxCanevas, message, rendre } from "../map/map-test-support";
+  4  |  import { VenueLocationMap } from "./venue-location-map";
+     |                                    ^
+  5  |  const poser = (props = {}, locale = "fr") => {
+  6  |    const charger = vi.fn(chargerFauxCanevas);
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > Détail salle — la position sur la carte (R-7) > ⛔ une salle située : la carte est posée SOUS L'ADRESSE, à SA position, sous son nom
+AssertionError: expected [] to deeply equal [ [ '36.745312', '3.031987', …(2) ] ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "36.745312",
+-     "3.031987",
+-     "Salle El Ryad",
+-     "false",
+-   ],
+- ]
++ []
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:412:152
+    410|     const { container } = await renderDetail({ lat: 36.745312, lng: 3.…
+    411|     const dansLaSection = cartes(emplacement(container));
+    412|     expect(dansLaSection.map((c) => [c.getAttribute("data-lat"), c.get…
+       |                                                                                                                                                        ^
+    413|       ["36.745312", "3.031987", "Salle El Ryad", "false"]
+    414|     ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/components/venue/venue-detail-view.test.tsx > Détail salle — la position sur la carte (R-7) > en arabe : la carte reçoit le nom ARABE de la salle et le sens d'écriture de la page
+AssertionError: expected [] to deeply equal [ [ 'قاعة الرياض', 'true' ] ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "قاعة الرياض",
+-     "true",
+-   ],
+- ]
++ []
+
+ ❯ src/components/venue/venue-detail-view.test.tsx:429:119
+    427|   it("en arabe : la carte reçoit le nom ARABE de la salle et le sens d…
+    428|     const { container } = await renderDetail({ lat: 36.745312, lng: 3.…
+    429|     expect(cartes(emplacement(container, "ar")).map((c) => [c.getAttri…
+       |                                                                                                                       ^
+    430|       ["قاعة الرياض", "true"]
+    431|     ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 30 passed (32)
+   Start at  23:57:40
+   Duration  2.73s (transform 502ms, setup 173ms, collect 807ms, tests 1.34s, environment 599ms, prepare 144ms)
+

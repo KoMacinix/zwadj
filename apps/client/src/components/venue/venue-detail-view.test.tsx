@@ -18,6 +18,14 @@ import type { AuthClient } from "../../lib/auth/auth-client";
 import { AuthProvider } from "../../lib/auth/auth-context";
 import { VenueDetailView } from "./venue-detail-view";
 
+// CA-4 — la carte de la fiche est DOUBLÉE ici : ce fichier mesure QUAND la fiche la pose et ce qu'elle lui passe. Ce
+// qu'elle fait (le geste, le point) est mesuré dans `venue-location-map.test.tsx`.
+vi.mock("./venue-location-map", () => ({
+  VenueLocationMap: ({ lat, lng, name, ar }: { lat: number; lng: number; name: string; ar: boolean }) => (
+    <div data-testid="position-de-la-salle" data-lat={lat} data-lng={lng} data-name={name} data-ar={String(ar)} />
+  )
+}));
+
 vi.mock("../../i18n/navigation", () => ({
   Link: ({ href, children, ...rest }: { href: string; children: React.ReactNode }) => (
     <a href={href} {...rest}>
@@ -380,5 +388,46 @@ describe("Détail salle — bilingue", () => {
   it("aucun `dir` en dur : l'orientation vient de <html>", async () => {
     const { container } = await renderDetail({}, "ar");
     expect(container.querySelectorAll("[dir]")).toHaveLength(0);
+  });
+});
+
+// ── Carte (session « carte », lot CA-4) ──────────────────────────────────────
+describe("Détail salle — la position sur la carte (R-7)", () => {
+  /** La section « Emplacement » : celle dont le titre est le libellé du catalogue. */
+  const emplacement = (racine: HTMLElement, locale: "fr" | "ar" = "fr"): Element | null =>
+    Array.from(racine.querySelectorAll("section")).find(
+      (section) => section.querySelector("h2")?.textContent === messages[locale].venueDetail.location
+    ) ?? null;
+  const cartes = (zone: ParentNode | null) => Array.from(zone?.querySelectorAll('[data-testid="position-de-la-salle"]') ?? []);
+
+  it("⛔ une salle SANS coordonnées : l'adresse, et rien d'autre — aucune carte n'est offerte", async () => {
+    const { container } = await renderDetail({ lat: null, lng: null });
+    expect(emplacement(container)?.textContent).toContain("12 rue des Oliviers");
+    expect(cartes(container)).toHaveLength(0);
+  });
+
+  it("⛔ une salle située : la carte est posée SOUS L'ADRESSE, à SA position, sous son nom", async () => {
+    const { container } = await renderDetail({ lat: 36.745312, lng: 3.031987 });
+    const dansLaSection = cartes(emplacement(container));
+    expect(dansLaSection.map((c) => [c.getAttribute("data-lat"), c.getAttribute("data-lng"), c.getAttribute("data-name"), c.getAttribute("data-ar")])).toEqual([
+      ["36.745312", "3.031987", "Salle El Ryad", "false"]
+    ]);
+    // Une seule carte sur la fiche, et elle est dans la section de l'adresse.
+    expect(cartes(container)).toHaveLength(1);
+  });
+
+  it("⚠ UNE seule coordonnée n'est pas une position : latitude seule, puis longitude seule ⇒ pas de carte", async () => {
+    const premiere = await renderDetail({ lat: 36.745312, lng: null });
+    expect(cartes(premiere.container)).toHaveLength(0);
+    premiere.unmount();
+    const seconde = await renderDetail({ lat: null, lng: 3.031987 });
+    expect(cartes(seconde.container)).toHaveLength(0);
+  });
+
+  it("en arabe : la carte reçoit le nom ARABE de la salle et le sens d'écriture de la page", async () => {
+    const { container } = await renderDetail({ lat: 36.745312, lng: 3.031987 }, "ar");
+    expect(cartes(emplacement(container, "ar")).map((c) => [c.getAttribute("data-name"), c.getAttribute("data-ar")])).toEqual([
+      ["قاعة الرياض", "true"]
+    ]);
   });
 });
