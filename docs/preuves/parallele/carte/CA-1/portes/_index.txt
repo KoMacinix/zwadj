@@ -1,0 +1,6 @@
+typecheck code=0 duree=16s
+lint code=0 duree=9s
+test code=0 duree=74s
+build code=0 duree=32s
+test-int code=1 duree=320s
+FIN

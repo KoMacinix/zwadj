@@ -1,0 +1,8 @@
+TRI DE L'AUDIT DE SECRETS — CA-1 (13/11/2026)
+Précédente : docs/preuves/parallele/carte/audit-secrets-ouverture.txt (2364 contextes) · nouvelle : audit-secrets-ca1.txt (2365).
+Alertes absentes de la précédente : 1 (attendu : chacune triée au contexte).
+  1. [mot-de-passe] CA-1/portes/test-int.txt:374 — le TITRE d'un test existant (« forgot-password : … CONSTANTE, mais aucun
+     e-mail ne part ») recité par la sortie de vitest. Un mot, pas une valeur : le mot masqué est déjà présent dans 168
+     fichiers suivis hors preuves (dit par l'audit lui-même).
+BILAN : 1 sur 1 = un titre de test ; AUCUNE valeur réelle. Les `.env` locaux de la session sont des copies des `.env.example`
+suivis et ne sont pas commités (`git status` : absents).

@@ -35,6 +35,7 @@ import { VenueMediaController } from "./venue-media.controller";
 import { VenueMediaService } from "./venue-media.service";
 import { VenuesAdminController } from "./venues-admin.controller";
 import { VenuesAdminService } from "./venues-admin.service";
+import { VenueMapController } from "./venue-map.controller";
 import { VenuesPublicController } from "./venues-public.controller";
 import { VenuesPublicService } from "./venues-public.service";
 import { PricingRulesController } from "./pricing-rules.controller";
@@ -55,6 +56,7 @@ import { REFERENTIELS_EXISTENCE, VENUE_STORE } from "./venue-store.types";
     PricingRulesController,
     VenuesAdminController,
     VenuesPublicController,
+    VenueMapController,
     AvailabilityController,
     // ⚠ Leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et
     // les six portes passent quand même. On le déclare dans le même geste.

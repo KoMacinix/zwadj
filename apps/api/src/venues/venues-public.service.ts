@@ -9,11 +9,13 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from "@nes
 import {
   BOOKING_HORIZON_MONTHS,
   HARD_BOOKING_STATUSES,
+  VENUE_MAP_MAX_POINTS,
   VenueAvailabilityStatus,
   VenueErrorCode,
   VenuePublicationStatus,
   type VenueListQueryInput,
   type VenueListResponse,
+  type VenueMapResponse,
   type VenuePublicDTO,
   type VenueSummaryDTO,
   CEREMONY_TYPE_MATCHES
@@ -32,6 +34,7 @@ import {
   type CivilDate
 } from "./availability-time";
 import { SERVICE_SELECT, toServiceDTO } from "./services.service";
+import { HAS_COORDINATES, VENUE_MAP_SELECT, venueMapResponse } from "./venue-map";
 
 /** Colonnes des cartes de la liste (VenueSummaryDTO) — ni taux, ni GPS.
  *  A4-② : la couverture est tirée en SQL (take: 1 imbriqué — jamais les 30
@@ -167,7 +170,16 @@ export class VenuesPublicService {
   /** Clé → URL publique, recalculée à chaque lecture (port A0). */
   private readonly urlOf = (key: string): string => this.storage.publicUrl(key);
 
-  async list(query: VenueListQueryInput): Promise<VenueListResponse> {
+  /**
+   * LE FILTRE PUBLIC — une seule fonction, deux appelants : `list()` et `map()`
+   * (lot CA-1). La carte et la liste doivent parler des MÊMES salles ; deux
+   * constructions du même `where` finiraient par diverger, en silence, au
+   * premier filtre ajouté d'un seul côté.
+   *
+   * Rend aussi la date d'annotation validée : `list()` s'en sert pour annoter sa
+   * page, `map()` ne lit que son effet sur le `where` (situation B).
+   */
+  private publicFilter(query: VenueListQueryInput, nowMs: number): { where: Prisma.VenueWhereInput; annotateOn: CivilDate | null } {
     // ⚠ AVANT toute requête. Une date hors bornes ne se calcule pas : elle se
     // refuse. Écart assumé avec D49, motivé par la différence entre une
     // FENÊTRE (qui rétrécit) et un POINT (qui se déplacerait en silence si on
@@ -177,8 +189,7 @@ export class VenuesPublicService {
     // dérivent. Deux `Date.now()` peuvent tomber de part et d'autre de minuit
     // à Alger : la borne basse dirait « hier » pendant que la haute compte
     // depuis « aujourd'hui ».
-    const annotateOn =
-      query.availableOn === undefined ? null : this.civilDateOrRefuse(query.availableOn, Date.now());
+    const annotateOn = query.availableOn === undefined ? null : this.civilDateOrRefuse(query.availableOn, nowMs);
 
     const amenityKeys = [...new Set((query.amenities ?? "").split(",").filter((k) => k.length > 0))];
     const styleKeys = [...new Set((query.styles ?? "").split(",").filter((k) => k.length > 0))];
@@ -247,6 +258,12 @@ export class VenuesPublicService {
         ? {}
         : { AND: amenityKeys.map((key) => ({ amenities: { some: { amenity: { key } } } })) })
     };
+    return { where, annotateOn };
+  }
+
+  async list(query: VenueListQueryInput): Promise<VenueListResponse> {
+    // UNE lecture d'horloge par requête (D48), faite ici et passée au filtre.
+    const { where, annotateOn } = this.publicFilter(query, Date.now());
 
     const [rows, total] = await this.prisma.$transaction([
       this.prisma.venue.findMany({
@@ -273,6 +290,51 @@ export class VenuesPublicService {
       // l'annotation, pas plus qu'il ne présume les bornes de D49.
       availableOn: query.availableOn ?? null
     };
+  }
+
+  /**
+   * Les POINTS de la carte (lot CA-1) : toutes les salles de la liste qui ont
+   * une position, sans pagination, au plus `VENUE_MAP_MAX_POINTS`.
+   *
+   * ⚠ MÊME FILTRE que `list()` — `publicFilter`, pas une copie. Le prédicat des
+   * points est ce filtre ET « a des coordonnées » ; il est composé par `AND`
+   * pour ne dépendre d'aucune clé du filtre (qui porte déjà son propre `AND`
+   * quand des équipements sont demandés).
+   *
+   * ⚠ TROIS lectures dans UN `$transaction` : les points, le total du filtre, et
+   * le nombre de salles situées. Le troisième compte n'est pas un luxe : sans
+   * lui, « tronqué » se déduirait du nombre de lignes rendues, et « sans
+   * coordonnées » ne pourrait pas se dire du tout quand le plafond tronque.
+   *
+   * ⚠ AUCUNE ANNOTATION : un point ne dit rien d'une disponibilité. La date
+   * garde son effet de FILTRE (refus du passé et du hors-horizon, exclusion des
+   * salles sans créneau actif), exactement comme pour la liste, et son écho.
+   */
+  async map(query: VenueListQueryInput): Promise<VenueMapResponse> {
+    const { where } = this.publicFilter(query, Date.now());
+    const located: Prisma.VenueWhereInput = { AND: [where, HAS_COORDINATES] };
+
+    const [rows, total, locatedCount] = await this.prisma.$transaction([
+      this.prisma.venue.findMany({
+        where: located,
+        orderBy: this.orderBy(query.sort),
+        take: VENUE_MAP_MAX_POINTS,
+        select: VENUE_MAP_SELECT
+      }),
+      this.prisma.venue.count({ where }),
+      this.prisma.venue.count({ where: located })
+    ]);
+
+    return venueMapResponse({
+      rows,
+      total,
+      located: locatedCount,
+      limit: VENUE_MAP_MAX_POINTS,
+      // ⚠ La date est passée TELLE QUE REÇUE : c'est le module pur qui rend l'écho (`null` si aucune). Écrire ici la
+      // même expression que `list()` rendrait ambiguë l'ancre d'une cible de `neutralize-available-on-api.py` (A9).
+      requestedOn: query.availableOn,
+      urlOf: this.urlOf
+    });
   }
 
   /**
