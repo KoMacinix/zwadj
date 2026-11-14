@@ -50,4 +50,11 @@ doublent le canevas). La spec le montre en ROUGE avant la réparation.
 | `e2e/baselines/*` | seulement si la spec d'accessibilité existante (`b8`) exige de relever son gel — par une EXTENSION |
 
 ## Extensions
-(aucune à l'ouverture)
+### Extension 1 — 14/11/2026, AVANT le commit des fichiers qu'elle couvre
+Le navigateur a montré un second défaut (voir `rouges/rouges.md`, ligne « accueil ») : sur une page d'accueil courte, la
+carte se monte à l'OUVERTURE de la page, sans défilement. Fichiers ajoutés au lot :
+| chemin | nature |
+|---|---|
+| `apps/client/src/components/map/near-viewport-map.tsx` | RÉPARATION : la carte ne se monte à l'approche qu'APRÈS un défilement du visiteur |
+| `apps/client/src/components/map/near-viewport-map.test.tsx` | tests de la réparation |
+| `neutralisation/neutralize-ca3.py` | ses cibles suivent le fichier réparé (ancres, et cibles neuves pour la garde du défilement) |
