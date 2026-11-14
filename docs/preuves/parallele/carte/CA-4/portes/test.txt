@@ -1,0 +1,468 @@
+
+> zwadj@ test /home/user/zwadj
+> pnpm -r --workspace-concurrency=1 --no-bail run test
+
+Scope: 9 of 10 workspace projects
+
+> @zwadj/api-client@0.0.0 test /home/user/zwadj/packages/api-client
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/packages/api-client
+
+ ✓ src/account-client.test.ts (3 tests) 6ms
+ ✓ src/auth-client.test.ts (17 tests) 82ms
+ ✓ src/venue-client.test.ts (21 tests) 70ms
+ ✓ src/quotes-client.test.ts (11 tests) 7ms
+ ✓ src/staff-client.test.ts (7 tests) 3ms
+ ✓ src/venue-families.test.ts (2 tests) 3ms
+ ✓ src/clients-client.test.ts (5 tests) 3ms
+
+ Test Files  7 passed (7)
+      Tests  66 passed (66)
+   Start at  00:03:06
+   Duration  750ms (transform 244ms, setup 0ms, collect 353ms, tests 175ms, environment 1ms, prepare 536ms)
+
+
+> @zwadj/api@0.0.0 test /home/user/zwadj/apps/api
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/api
+
+ ✓ src/documents/playwright-pdf.renderer.spec.ts (12 tests) 387ms
+ ✓ src/staff/staff-password-policy.spec.ts (18 tests) 362ms
+   ✓ la liste — fidélité à sa SOURCE VERSÉE (R-5 (D341) : au moins 10 000 entrées, source, licence, empreinte) > toutes les entrées sont des chaînes non vides, sans espace de bord ni saut de ligne (le format d'une liste à une entrée par ligne)  332ms
+ ✓ src/media/image-pipeline.spec.ts (6 tests) 426ms
+ ✓ src/auth/password.service.spec.ts (2 tests) 125ms
+ ✓ src/staff/staff-session.service.spec.ts (30 tests) 43ms
+ ✓ src/documents/quote-document.spec.ts (61 tests) 56ms
+ ✓ src/venues/quote-store.prisma.spec.ts (58 tests) 47ms
+ ✓ src/auth/auth.service.spec.ts (34 tests) 51ms
+ ✓ src/common/quote-draft.spec.ts (32 tests) 40ms
+ ✓ src/venues/quotes.service.spec.ts (47 tests) 36ms
+ ✓ src/staff/staff-store.prisma.spec.ts (41 tests) 36ms
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Réponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed
+[Nest] 21970  - 11/14/2026, 12:03:10 AM   ERROR [ChargilyGateway] Chargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>
+ ✓ src/payments/chargily.gateway.spec.ts (17 tests) 15ms
+ ✓ src/venues/venues-public.service.spec.ts (32 tests) 35ms
+ ✓ src/documents/quote-document.service.spec.ts (17 tests) 31ms
+ ✓ src/account/account.service.spec.ts (16 tests) 23ms
+ ✓ src/venues/venue-media.service.spec.ts (11 tests) 16ms
+ ✓ src/common/e2e-api-sans-surveillance.spec.ts (3 tests) 18ms
+ ✓ src/account/account-deletion.service.spec.ts (14 tests) 18ms
+ ✓ prisma/seed-data/seed-data.spec.ts (8 tests) 15ms
+ ✓ src/common/contact.spec.ts (49 tests) 24ms
+ ✓ src/common/phone.spec.ts (55 tests) 29ms
+ ✓ src/venues/venue-store.prisma.spec.ts (13 tests) 16ms
+ ✓ src/auth/google-auth.spec.ts (12 tests) 33ms
+ ✓ src/media/disk-storage.adapter.spec.ts (5 tests) 26ms
+ ✓ src/common/client-record.spec.ts (27 tests) 18ms
+ ✓ src/common/staff-account-name.spec.ts (53 tests) 20ms
+ ✓ src/staff/staff-session.guard.spec.ts (19 tests) 17ms
+ ✓ src/config/env.spec.ts (25 tests) 18ms
+ ✓ src/staff/staff-source-guards.spec.ts (15 tests) 23ms
+ ✓ src/venues/visit-notifications.service.spec.ts (15 tests) 20ms
+ ✓ src/venues/venue-media.schemas.spec.ts (12 tests) 18ms
+ ✓ src/venues/venues.service.spec.ts (9 tests) 12ms
+ ✓ src/common/notifications/notification-dispatch.spec.ts (10 tests) 20ms
+ ✓ src/common/staff-contract.spec.ts (22 tests) 20ms
+ ✓ src/clients/pro-clients.service.spec.ts (19 tests) 12ms
+ ✓ src/health/health.controller.spec.ts (2 tests) 9ms
+ ✓ src/venues/booking-transitions.spec.ts (24 tests) 14ms
+ ✓ src/auth/jwt-auth.guard.spec.ts (12 tests) 14ms
+ ✓ src/venues/domain-events.spec.ts (8 tests) 14ms
+ ✓ src/payments/payments.service.spec.ts (11 tests) 10ms
+ ✓ src/common/i18n-parity.spec.ts (5 tests) 8ms
+ ✓ src/staff/staff-session-policy.spec.ts (25 tests) 8ms
+ ✓ src/venues/availability-engine.spec.ts (18 tests) 22ms
+ ✓ src/auth/auth.schemas.spec.ts (15 tests) 18ms
+ ✓ src/venues/bookings.schemas.spec.ts (26 tests) 13ms
+ ✓ src/staff/staff-cookies.spec.ts (17 tests) 6ms
+ ✓ src/common/quote-reference.spec.ts (40 tests) 11ms
+ ✓ src/payments/payment-store.prisma.spec.ts (8 tests) 8ms
+ ✓ src/venues/venue-filters.schemas.spec.ts (9 tests) 9ms
+ ✓ src/venues/venues-admin.service.spec.ts (6 tests) 10ms
+ ✓ src/venues/quote-transitions.spec.ts (17 tests) 8ms
+ ✓ src/venues/availability-time.spec.ts (21 tests) 8ms
+ ✓ src/venues/visit-bookings.schemas.spec.ts (6 tests) 9ms
+ ✓ src/auth/google-verifier.spec.ts (9 tests) 8ms
+ ✓ src/clients/pro-client-policy.spec.ts (17 tests) 4ms
+ ✓ src/venues/booking-notification-input.spec.ts (24 tests) 8ms
+ ✓ src/common/filters/all-exceptions.filter.spec.ts (6 tests) 9ms
+ ✓ src/documents/html.spec.ts (8 tests) 4ms
+ ✓ src/venues/booking-deadline.spec.ts (6 tests) 3ms
+ ✓ src/venues/booking-charge.spec.ts (13 tests) 5ms
+ ✓ src/venues/quote-reference.spec.ts (29 tests) 7ms
+ ✓ src/venues/visit-slots-engine.spec.ts (13 tests) 7ms
+ ✓ src/venues/booking-admission.spec.ts (15 tests) 6ms
+ ✓ src/auth/token.service.spec.ts (4 tests) 17ms
+ ✓ src/payments/payment-intent.spec.ts (12 tests) 6ms
+ ✓ src/venues/service-pricing.spec.ts (17 tests) 5ms
+ ✓ src/venues/pricing-engine.spec.ts (16 tests) 7ms
+ ✓ src/venues/venue-map.spec.ts (12 tests) 5ms
+ ✓ src/auth/roles.guard.spec.ts (7 tests) 5ms
+ ✓ src/venues/deposit.spec.ts (9 tests) 4ms
+ ✓ src/auth/password.service.dummy.spec.ts (4 tests) 9ms
+ ✓ src/referentials/referentials.service.spec.ts (4 tests) 6ms
+ ✓ src/venues/booking-window.spec.ts (7 tests) 4ms
+ ✓ src/documents/quote-document-policy.spec.ts (7 tests) 4ms
+ ✓ src/venues/slug.spec.ts (6 tests) 5ms
+ ✓ src/common/email/dev-logger.email.spec.ts (1 test) 3ms
+ ✓ src/venues/slot-templates.service.spec.ts (6 tests) 5ms
+ ✓ src/common/email/render.spec.ts (3 tests) 3ms
+ ✓ src/common/whatsapp/dev-logger.whatsapp.spec.ts (1 test) 3ms
+ ✓ src/payments/payment-gateway.factory.spec.ts (7 tests) 4ms
+ ✓ src/auth/auth-emails.service.spec.ts (3 tests) 3ms
+
+ Test Files  81 passed (81)
+      Tests  1355 passed (1355)
+   Start at  00:03:07
+   Duration  11.44s (transform 1.84s, setup 0ms, collect 14.69s, tests 2.46s, environment 15ms, prepare 5.71s)
+
+
+> @zwadj/client@0.0.0 test /home/user/zwadj/apps/client
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ✓ src/app/theme-contrast.test.ts (14 tests) 37ms
+ ✓ src/components/venue/venue-location-map.test.tsx (4 tests) 134ms
+ ✓ src/components/venue/venue-detail-view.test.tsx (32 tests) 1751ms
+ ✓ src/components/search/search-view.test.tsx (58 tests) 1781ms
+ ✓ src/app/[locale]/page.test.tsx (29 tests) 936ms
+ ✓ src/components/venue/booking-request-panel.test.tsx (32 tests) 4456ms
+   ✓ Demande de réservation — un calendrier, pas une liste (rang 29, D321) > C-d : le jour REGARDÉ est celui qu'on envoie, au créneau cliqué — et un créneau pris de ce jour reste affiché, inactif  371ms
+   ✓ Demande de réservation — D135 : l'e-mail est facultatif quand il y a un numéro (L36-1 : l'un OU l'autre) > ⚠ sans e-mail, la demande PART et la clé est ABSENTE du corps  300ms
+ ✓ src/components/venue/booking-request-panel-langue.test.tsx (8 tests) 938ms
+ ✓ src/lib/leaflet-import-guard.test.ts (4 tests) 649ms
+   ✓ La bibliothèque de carte ne s'importe qu'à un endroit, chargé à la demande > ⛔ UN SEUL fichier importe Leaflet, et il existe (la garde a PARCOURU de vrais fichiers)  455ms
+ ✓ src/components/venue/booking-request-panel-demande.test.tsx (7 tests) 786ms
+ ✓ src/components/filter-wizard.test.tsx (34 tests) 642ms
+ ✓ src/components/venue/availability-calendar.test.tsx (11 tests) 724ms
+ ✓ src/components/account/account-settings-view.test.tsx (10 tests) 462ms
+ ✓ src/components/venue/booking-request-panel-montants.test.tsx (5 tests) 556ms
+ ✓ src/lib/phone-literal-guard.test.ts (4 tests) 472ms
+   ✓ L'indicatif d'un pays n'est écrit que dans le modèle de pays — jamais dans un composant > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un indicatif en dur (et la garde a PARCOURU de vrais fichiers)  457ms
+ ✓ src/lib/intl-locale-guard.test.ts (4 tests) 507ms
+   ✓ FC-6 — la langue de la page passe à chaque formateur de date et de nombre > aucun formateur de date ou de nombre ne choisit sa langue — ni son fuseau — tout seul  496ms
+ ✓ src/lib/contact-channel-guard.test.ts (7 tests) 546ms
+   ✓ ML-6 — aucun geste d'appel ni de SMS n'existe : rien ne suppose un numéro > ⚠ AUCUNE source de l'application Client, de l'application Pro ni de `@zwadj/ui` n'écrit un lien d'appel, de SMS ou de conversation (et la garde a PARCOURU de vrais fichiers)  497ms
+ ✓ src/components/auth/register-form.test.tsx (5 tests) 494ms
+ ✓ src/components/auth/google-signin.test.tsx (7 tests) 392ms
+ ✓ src/components/map/venue-points-map.test.tsx (16 tests) 289ms
+ ✓ src/components/venue/booking-date-picker.test.tsx (11 tests) 306ms
+ ✓ src/components/auth/login-form.test.tsx (4 tests) 199ms
+ ✓ src/components/map/venue-map-loader.test.tsx (5 tests) 182ms
+ ✓ src/components/venue/visit-booking-panel.test.tsx (5 tests) 248ms
+ ✓ src/components/lost-word-cloud.test.tsx (16 tests) 191ms
+ ✓ src/components/map/near-viewport-map.test.tsx (7 tests) 188ms
+ ✓ src/components/account/bookings-section.test.tsx (6 tests) 126ms
+ ✓ src/components/site-nav.test.tsx (8 tests) 144ms
+ ✓ src/components/account/visit-bookings-section.test.tsx (6 tests) 151ms
+ ✓ src/app/[locale]/not-found.test.tsx (14 tests) 133ms
+ ✓ src/components/ui-phone-field.test.tsx (4 tests) 140ms
+ ✓ src/components/theme-toggle.test.tsx (6 tests) 117ms
+ ✓ src/components/locale-switch.test.tsx (3 tests) 68ms
+ ✓ src/lib/intl-locale.test.ts (7 tests) 32ms
+ ✓ src/lib/semaine-source-unique.test.ts (6 tests) 48ms
+ ✓ src/lib/calendar.spec.ts (21 tests) 22ms
+ ✓ src/lib/search-query.test.ts (42 tests) 23ms
+ ✓ src/lib/booking-calendar.test.ts (16 tests) 21ms
+ ✓ src/lib/seo.test.ts (11 tests) 7ms
+ ✓ src/lib/routes.test.ts (8 tests) 5ms
+ ✓ src/lib/adresses-guard.test.ts (5 tests) 6ms
+ ✓ src/lib/availability-windows.test.ts (16 tests) 8ms
+ ✓ src/lib/api.test.ts (13 tests) 13ms
+ ✓ src/lib/structured-data.test.ts (6 tests) 5ms
+ ✓ src/components/ui-map-tiles.test.ts (12 tests) 6ms
+ ✓ src/lib/login-path-guard.test.ts (5 tests) 7ms
+stderr | src/test-setup-calibration.test.ts > étalon du plafond de console (`test-setup.ts`) > émet exactement DEUX lignes de console — le compte sous lequel ce fichier est exempté
+étalon du plafond de console (FC-9) — ligne 1 sur 2, émise exprès
+étalon du plafond de console (FC-9) — ligne 2 sur 2, émise exprès
+
+ ✓ src/test-setup-calibration.test.ts (1 test) 4ms
+ ✓ src/lib/nom-localise.test.ts (6 tests) 7ms
+
+ Test Files  47 passed (47)
+      Tests  561 passed (561)
+   Start at  00:03:19
+   Duration  20.62s (transform 1.48s, setup 2.33s, collect 14.03s, tests 18.96s, environment 15.92s, prepare 3.48s)
+
+
+> @zwadj/pro@0.0.0 test /home/user/zwadj/apps/pro
+> vitest run
+
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+stdout | src/venues/venue-form.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-journey.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/ma-salle-relecture.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/dashboard/walkin-draft.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000.5 » bloque l'envoi — AUCUN appel API, aucun calcul de centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000,5 » (virgule) refusé de la même façon
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — rejet décimal strict (invariant argent) > formulaire : « 150000 » part bien en 15 000 000 centimes, puis redirige vers l'édition
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Création — rejeu de validate() et mapping des erreurs API > CITY_NOT_FOUND → message porté par le champ Commune
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > le champ AFFICHE la valeur groupée + l'unité, mais ENVOIE bien 15000000 centimes
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/venues/venue-form.test.tsx > Prix — affichage groupé + unité (lisibilité de la saisie) > D43 — l'unité a quitté le LIBELLÉ : une description masquée la porte, et aucun id décrit n'est orphelin
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/venue-form.test.tsx (45 tests) 2224ms
+ ✓ src/venues/ma-salle-relecture.test.tsx (19 tests) 2286ms
+   ✓ « Ma salle » — ÉDITION : un enregistrement réussi fait relire la liste > ⛔ la salle courante et le compte sont ceux du SERVEUR après l'enregistrement, sans visiter la liste (S4 de D327)  342ms
+ ✓ src/dashboard/walkin-draft.test.tsx (16 tests) 2957ms
+   ✓ R-2 / R-3 — aller à un autre onglet puis revenir : la même étape, les mêmes saisies > à l'étape DATE : on revient à la question de la date, et le récapitulatif des réponses est le même  372ms
+   ✓ R-2 / R-3 — aller à un autre onglet puis revenir : la même étape, les mêmes saisies > R-3 : un devis déjà calculé n'est PAS restauré tel quel — « à recalculer » ; la chaîne est gardée, donc le clic RÉVISE au lieu de créer  460ms
+   ✓ R-4 — le brouillon s'efface > à la fin du parcours (réservation créée) : revenir ne rouvre PAS le devis conclu, mais un parcours vide  346ms
+   ✓ R-4 — le brouillon s'efface > à la fin du parcours (devis remis) : revenir ne rouvre PAS le parcours rempli, mais un parcours vide  353ms
+stdout | src/venues/pricing-rules-editor.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/photos-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/account/account-settings-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/pricing-rules-editor.test.tsx (9 tests) 1232ms
+ ✓ src/venues/photos-section.test.tsx (16 tests) 1932ms
+ ✓ src/account/account-settings-page.test.tsx (31 tests) 1377ms
+stdout | src/venues/slots-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-wizard.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > ⚠ au succès, la salle EXISTE et l'assistant reprend à l'ÉTAPE 2 dans l'URL
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stdout | src/venues/blocks-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stderr | src/venues/venue-wizard.test.tsx > Assistant — l'étape 1 est CRÉATRICE (décision (a)) > un seul appel : jamais POST puis PATCH dans le même geste
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/venues/slots-section.test.tsx (9 tests) 1146ms
+stderr | src/venues/venue-wizard.test.tsx > Assistant — « Suivant » et la raison de son inactivité > ⚠ un champ REMPLI mais invalide montre son message SANS attendre un clic
+An update to ProVenuesProvider inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stdout | src/venues/venue-wizard.test.tsx
+PLAFOND ABAISSABLE  "src/venues/venue-wizard.test.tsx": 3 observé(s) sous un plafond de 4. Confirmer sur plusieurs passes avant d'abaisser.
+
+ ✓ src/venues/venue-wizard.test.tsx (19 tests) 1154ms
+ ✓ src/venues/blocks-section.test.tsx (10 tests) 1063ms
+stdout | src/App.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/services-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/venue-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/App.test.tsx (18 tests) 838ms
+ ✓ src/venues/services-section.test.tsx (8 tests) 965ms
+ ✓ src/venues/venue-list.test.tsx (13 tests) 725ms
+stdout | src/venues/create-venue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/quotes-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/edit-venue-save.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/create-venue-page.test.tsx (4 tests) 800ms
+   ✓ « Ma salle » — la salle créée apparaît dans la liste, sans rafraîchir > ⛔ après la création, une navigation INTERNE vers la liste montre la nouvelle salle  346ms
+ ✓ src/venues/edit-venue-save.test.tsx (6 tests) 666ms
+ ✓ src/venues/quotes-section.test.tsx (20 tests) 813ms
+stdout | src/shell/pro-venues-context.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/calendar-link.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/shell/pro-venues-context.test.tsx (15 tests) 661ms
+ ✓ src/venues/calendar-link.test.tsx (3 tests) 360ms
+ ✓ src/routes.test.tsx (16 tests) 492ms
+stdout | src/dashboard/dashboard-aside.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/a3-unexpected-responses.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/dashboard/dashboard-aside.test.tsx (10 tests) 350ms
+stdout | src/venues/booking-requests-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/a3-unexpected-responses.test.tsx (12 tests) 219ms
+ ✓ src/venues/booking-requests-section.test.tsx (11 tests) 245ms
+stdout | src/venues/time-select.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/time-select.test.tsx (11 tests) 191ms
+ ✓ src/ui-choice-dialog.test.tsx (9 tests) 154ms
+ ✓ src/venues/confirm-dialog.test.tsx (9 tests) 182ms
+ ✓ src/ui-phone-field.test.tsx (17 tests) 161ms
+stdout | src/venues/calendar-source.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/calendar-source.test.tsx (3 tests) 140ms
+stdout | src/venues/visits-section.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/visits-section.test.tsx (6 tests) 147ms
+stdout | src/venues/request-scope.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/venues/request-scope.test.tsx (5 tests) 122ms
+ ✓ src/auth/brand-loader.test.tsx (3 tests) 68ms
+ ✓ src/venues/quote-amount.test.ts (5 tests) 171ms
+ ✓ src/venues/pro-calendar.spec.ts (21 tests) 25ms
+ ✓ src/venues/intl-locale-pro.test.ts (3 tests) 19ms
+ ✓ src/lib/reveal.test.ts (6 tests) 12ms
+ ✓ src/dashboard/walkin-contact.test.ts (30 tests) 11ms
+ ✓ src/venues/calendar-style.test.ts (26 tests) 12ms
+ ✓ src/dashboard/remittance.test.ts (13 tests) 10ms
+ ✓ src/venues/layout-style.test.ts (8 tests) 4ms
+ ✓ src/dashboard/walkin-services.test.ts (10 tests) 11ms
+ ✓ src/dashboard/walkin-client.test.ts (13 tests) 10ms
+ ✓ src/venues/slot-time.spec.ts (10 tests) 5ms
+ ✓ src/venues/venue-client-narrowing.test.ts (3 tests) 6ms
+ ✓ src/venues/block-time.spec.ts (12 tests) 6ms
+ ✓ src/ui-tokens.test.ts (8 tests) 4ms
+ ✓ src/dashboard/walkin-revision.test.ts (8 tests) 5ms
+ ✓ src/shell/venues-label.test.ts (3 tests) 4ms
+ ✓ src/dashboard/walkin-journey.test.tsx (175 tests) 33950ms
+   ✓ Rail latéral, numéros cliquables et remise à zéro > ⚠ « Recommencer » DISPARAÎT une fois l'affaire conclue — il n'annulerait rien  342ms
+   ✓ La date vient du calendrier réel > ⚠ changer la date EFFACE le créneau, le DIT, et repose la question  303ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ la révision remplace la référence par CELLE du serveur : même numéro, version 2 — l'écran n'incrémente rien, il affiche la réponse  307ms
+   ✓ ⛔ Rang 39 (D333, DB-10, F-14) — la référence du devis, après « Calculer le devis » > ⛔ en arabe : le libellé est arabe, la référence reste LATINE et isolée de gauche à droite  334ms
+   ✓ Les deux issues (décision ⑥) > « Bloquer la date » enchaîne convert → accept : c'est ACCEPT qui verrouille  334ms
+   ✓ Points 10 et 11 — « Nouveau devis » et la fenêtre de confirmation, APRÈS la réponse du serveur > ⚠ après « Enregistrer sans bloquer » : « Nouveau devis » REMPLACE « Recommencer », et il repart de l'étape 1, formulaire vidé  334ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ chaque bouton fait DEUX choses, APRÈS le choix de la langue : enregistre le canal sur le devis en cours ET demande le PDF de CE devis dans la langue CHOISIE, et rien d'autre  1175ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ rang 39 (F-15) : le nom du fichier porte la langue CHOISIE dans la boîte, pas celle de l'interface — « العربية » sur une page française donne `_ar_`, « Français » sur une page arabe donne `_fr_`  521ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > issue 1 — tout a réussi : « Remise enregistrée », le canal nommé, le PDF téléchargé ; et le texte déjà affiché reste (« en plus du texte déjà affiché »)  311ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ AUCUN TEXTE NE DIT QUE ZWADJ A ENVOYÉ QUOI QUE CE SOIT : pour le SMS et l'e-mail la fenêtre dit « n'envoie pas encore » ; pour les autres canaux, rien de tel  1336ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > ⛔ le point de branchement de l'envoi réel est appelé pour le SMS et l'e-mail, UNE fois, avec le devis rendu par le serveur — et pour AUCUN autre canal  1196ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10/P-13 : chacun des CINQ boutons ouvre la boîte (français, arabe, annuler) — et RIEN n'est enregistré ni téléchargé tant que le pro n'a pas choisi  1021ms
+   ✓ Rang 33 — cinq canaux, le PDF et la fenêtre > Rang 38 — la boîte de langue > ⛔ P-10 : ANNULER — par le bouton, par Échap ou par le clic sur le fond — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise (décision 2 du relecteur)  599ms
+   ✓ ⛔ D336 — le contact d'abord, puis les noms ; la fiche ; la conversion préremplie ; la boîte de langue complète le nom > MD-9 — interface en ARABE : la copie ARABE est découpée ; à défaut, l'autre écriture  343ms
+   ✓ FP-3 — la révision reprend la copie du nom complétée sur la version précédente > ⛔ « Recommencer » puis un NOUVEAU devis pour la même fiche : la copie de l'ancien n'est pas reprise (la version gardée est celle de LA CHAÎNE en cours)  372ms
+
+ Test Files  46 passed (46)
+      Tests  727 passed (727)
+   Start at  00:03:39
+   Duration  36.11s (transform 1.68s, setup 2.89s, collect 17.24s, tests 57.93s, environment 16.49s, prepare 3.86s)
+

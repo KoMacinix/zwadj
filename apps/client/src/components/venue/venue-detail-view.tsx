@@ -24,6 +24,7 @@ import { ArrowBackIcon } from "@zwadj/ui";
 import { Link } from "../../i18n/navigation";
 import { AvailabilityCalendar } from "./availability-calendar";
 import { MatterportEmbed } from "./matterport-embed";
+import { VenueLocationMap } from "./venue-location-map";
 import { BookingRequestPanel } from "./booking-request-panel";
 import { VisitBookingPanel } from "./visit-booking-panel";
 import { VenuePhotos } from "./venue-photos";
@@ -150,6 +151,9 @@ export function VenueDetailView({ venue }: { venue: VenuePublicDTO }) {
         <h2 style={SECTION_TITLE}>{t("location")}</h2>
         {venue.address ? <p style={{ margin: 0 }}>{venue.address}</p> : null}
         <p style={{ margin: "2px 0 0", color: "var(--ink-2)" }}>{district ? `${district} — ${city}` : city}</p>
+        {/* CA-4 — la POSITION, sous l'adresse, seulement si la salle a ses DEUX coordonnées (R-7) : une seule n'est pas
+            une position, et sans position la fiche ne montre rien de plus. La carte ne se charge qu'au geste (R-9). */}
+        {venue.lat !== null && venue.lng !== null ? <VenueLocationMap lat={venue.lat} lng={venue.lng} name={name} ar={ar} /> : null}
       </section>
 
       <section

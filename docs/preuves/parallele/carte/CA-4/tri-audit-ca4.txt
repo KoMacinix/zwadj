@@ -1,0 +1,5 @@
+TRI DE L'AUDIT DE SECRETS — CA-4 (14/11/2026)
+Précédente : ../CA-3/audit-secrets-ca3.txt (2374 contextes) · nouvelle : audit-secrets-ca4.txt (2375).
+Alertes absentes de la précédente : 1, lue au contexte (ligne 6156 de la sortie scellée) : portes/test-int.txt — le TITRE
+d'un test existant de l'API, recité par la sortie de la porte (le même qu'aux lots précédents, à une autre ligne).
+BILAN : 1 sur 1 = un titre de test ; AUCUNE valeur réelle.
