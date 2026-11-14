@@ -26,6 +26,10 @@ function Banc({ depart }: { depart?: Partial<VenueFormValues> }) {
   return <PlaceFields values={values} onChange={(patch) => setValues((v) => ({ ...v, ...patch }))} errors={{}} />;
 }
 const champ = (libelle: string) => screen.getByLabelText(libelle) as HTMLInputElement;
+/** La position que la carte (doublée) a reçue — lue dans le DOM, pour que l'assertion soit NATIVE : si la carte n'est pas
+ *  posée du tout, la liste est vide et c'est l'égalité qui échoue (D316), pas une requête qui ne trouve rien. */
+const positionsRecues = (): (string | null)[] =>
+  Array.from(document.querySelectorAll('[data-testid="carte-du-point"]')).map((n) => n.getAttribute("data-pin"));
 
 describe("pinOfFields — la position que portent les deux champs", () => {
   it("deux nombres plausibles : la position ; la virgule décimale est admise, comme à la saisie", () => {
@@ -52,12 +56,12 @@ describe("PlaceFields — la carte et les deux champs", () => {
     render(<Banc depart={{ lat: "36.5", lng: "3.1" }} />);
     expect(champ(messages.fr.venue.ui.form.lat).value).toBe("36.5");
     expect(champ(messages.fr.venue.ui.form.lng).value).toBe("3.1");
-    expect(screen.getByTestId("carte-du-point").getAttribute("data-pin")).toBe("36.5,3.1");
+    expect(positionsRecues()).toEqual(["36.5,3.1"]);
   });
 
   it("champs vides : la carte n'a aucun point", () => {
     render(<Banc />);
-    expect(screen.getByTestId("carte-du-point").getAttribute("data-pin")).toBe("aucun");
+    expect(positionsRecues()).toEqual(["aucun"]);
   });
 
   it("⛔ poser le point écrit la latitude ET la longitude, ensemble — et la paire passe le contrat partagé", () => {
@@ -67,7 +71,7 @@ describe("PlaceFields — la carte et les deux champs", () => {
     const lng = champ(messages.fr.venue.ui.form.lng).value;
     expect([lat, lng]).toEqual(["36.753812", "3.058765"]);
     // La carte relit ce qu'elle vient d'écrire : elle n'a pas de position à elle.
-    expect(screen.getByTestId("carte-du-point").getAttribute("data-pin")).toBe("36.753812,3.058765");
+    expect(positionsRecues()).toEqual(["36.753812,3.058765"]);
     // L'AUTORITÉ de « latitude et longitude ensemble » est le schéma partagé : la paire écrite n'y lève pas `coordsPair`.
     const verdict = venueCreateSchema.safeParse({ lat: Number(lat), lng: Number(lng) });
     const messagesDErreur = verdict.success ? [] : verdict.error.issues.map((i) => i.message);
@@ -79,8 +83,8 @@ describe("PlaceFields — la carte et les deux champs", () => {
   it("saisir une nouvelle latitude au clavier déplace le point de la carte ; en vider un seul le retire", () => {
     render(<Banc depart={{ lat: "36.5", lng: "3.1" }} />);
     fireEvent.change(champ(messages.fr.venue.ui.form.lat), { target: { value: "36.9" } });
-    expect(screen.getByTestId("carte-du-point").getAttribute("data-pin")).toBe("36.9,3.1");
+    expect(positionsRecues()).toEqual(["36.9,3.1"]);
     fireEvent.change(champ(messages.fr.venue.ui.form.lng), { target: { value: "" } });
-    expect(screen.getByTestId("carte-du-point").getAttribute("data-pin")).toBe("aucun");
+    expect(positionsRecues()).toEqual(["aucun"]);
   });
 });

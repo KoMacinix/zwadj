@@ -1,4 +1,5 @@
-import { AmenityIcon } from "@zwadj/ui";
+import { AmenityIcon, isMapPosition, type MapPosition } from "@zwadj/ui";
+import { VenuePinMap } from "./venue-pin-map";
 // Corps de formulaire PARTAGÉ création/édition (Lot A5) + les briques que la
 // liste réutilise (statut D33, badge de publication).
 //
@@ -175,6 +176,18 @@ function numericField(raw: string): number | string | undefined {
  *  de l'argent, l'invariant « entiers » ne s'y applique pas. */
 function coordField(raw: string): number | string | undefined {
   return numericField(raw.replace(",", "."));
+}
+
+/** La POSITION que portent les deux champs de coordonnées, ou `null` (lot CA-5, session « carte »).
+ *
+ *  C'est ce que la carte MONTRE : elle n'a aucune position à elle, elle relit les champs. `null` tant que la paire n'est pas
+ *  lisible — un champ vide, une saisie en cours (« 36. »), une valeur hors des bornes du contrat. ⚠ Même lecture que l'envoi
+ *  (`coordField` : la virgule décimale est admise) : la carte ne doit pas montrer un point là où le formulaire en enverrait un autre. */
+export function pinOfFields(lat: string, lng: string): MapPosition | null {
+  const position = { lat: coordField(lat), lng: coordField(lng) };
+  if (typeof position.lat !== "number" || typeof position.lng !== "number") return null;
+  const pin = { lat: position.lat, lng: position.lng };
+  return isMapPosition(pin) ? pin : null;
 }
 
 /** Texte saisi ⇒ valeur nettoyée, ou `undefined` si le champ est vide.
@@ -965,6 +978,11 @@ export function PlaceFields({ values, onChange, errors }: {
           )}
         </Field>
       </div>
+
+      {/* CA-5 — poser le point sur une carte. Les deux champs ci-dessus RESTENT (clavier, lecteur d'écran) et restent la
+          source : la carte lit sa position en eux (`pinOfFields`) et y écrit latitude ET longitude d'un seul geste — elle
+          ne peut donc pas enfreindre « les deux ensemble ». Elle ne s'ouvre qu'à la demande. */}
+      <VenuePinMap pin={pinOfFields(values.lat, values.lng)} onPick={(p) => onChange({ lat: String(p.lat), lng: String(p.lng) })} />
     </>
   );
 }

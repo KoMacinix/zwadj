@@ -22,6 +22,12 @@ Aucune durée estimée. Chaque lot complète ce fichier.
 - Bloque : rien sur le poste de Ko ; toute campagne `--tout` jouée ailleurs.
 - Coût : code de harnais (il compte), 1 fichier ; le socle `socle_front_client.py` montre la forme (`_adapter`).
 
+### `[HARNAIS]` `neutralize-r49.py` : douze `\r\n` en dur, le harnais refuse de démarrer dans un clone en LF
+- Relevé le 14/11/2026 (lot CA-5) : « ARBRE NON CONFORME AU DÉPART : R49-18 : ancre ×0 … » ; 7 remplacements sur 37 n'ont
+  pas leur ancre dans ce clone, AVEC ou SANS le lot (vérifié par `git stash`). Même classe que `available-on` cible 6.
+- Bloque : rien sur le poste de Ko ; toute campagne `--tout` jouée ailleurs.
+- Coût : code de harnais (il compte), 1 fichier ; même remède (`_adapter` du socle).
+
 ### `[HARNAIS]` `neutralize-r33.py`, cible M-12 : muette sur une machine en UTC
 - Relevé le 13/11/2026 (lot CA-2) : « la date d'un événement dérive du fuseau du serveur » — 61 passés, 0 échec. Une garde
   de fuseau ne peut pas mordre quand le serveur est en UTC (AGENTS.md, leçon S11-a : épingler `process.env.TZ`).
