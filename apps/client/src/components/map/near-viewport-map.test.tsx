@@ -37,6 +37,9 @@ class FauxObservateur {
   }
 }
 
+/** Le visiteur fait défiler la page. */
+const defiler = () => act(() => void window.dispatchEvent(new Event("scroll")));
+
 const poser = (props: Partial<Parameters<typeof NearViewportMap>[0]> = {}) => {
   const load = vi.fn(async () => OK);
   const vue = rendre(<NearViewportMap query="" ar={false} tiles={TUILES} load={load} loadCanvas={chargerFauxCanevas} {...props} />);
@@ -68,15 +71,45 @@ describe("NearViewportMap — avec un observateur", () => {
     expect(observateur.options?.rootMargin).toBe(NEAR_VIEWPORT_MARGIN);
   });
 
-  it("un signal « hors de la marge » ne monte rien", () => {
+  it("un signal « hors de la marge » ne monte rien, même après un défilement", () => {
     const { load } = poser();
     (FauxObservateur.instances[0] as FauxObservateur).signaler(false);
+    defiler();
+    expect(load.mock.calls).toHaveLength(0);
+  });
+
+  it("⛔ CA-6 — section DÉJÀ proche à l'ouverture (page courte, écran haut), SANS défilement : rien n'est demandé ; le bouton est offert", () => {
+    const { load } = poser();
+    const observateur = FauxObservateur.instances[0] as FauxObservateur;
+    observateur.signaler(true);
+    expect(load.mock.calls).toHaveLength(0);
+    expect(observateur.debranche).toBe(false);
+    expect(Array.from(document.querySelectorAll(".map-panel button")).map((b) => b.textContent)).toEqual([message("fr", "map.home.show")]);
+  });
+
+  it("⛔ CA-6 — …et le PREMIER défilement du visiteur la monte", async () => {
+    const { load } = poser();
+    (FauxObservateur.instances[0] as FauxObservateur).signaler(true);
+    defiler();
+    await waitFor(() => expect(load.mock.calls).toHaveLength(1));
+    await screen.findByTestId("canevas");
+  });
+
+  it("CA-6 — entrée puis SORTIE de la marge avant tout défilement : défiler ensuite ne monte rien (le dernier relevé fait foi)", () => {
+    const { load } = poser();
+    const observateur = FauxObservateur.instances[0] as FauxObservateur;
+    observateur.signaler(true);
+    observateur.signaler(false);
+    defiler();
     expect(load.mock.calls).toHaveLength(0);
   });
 
   it("⛔ quand la section approche : les points de TOUTES les salles publiques sont demandés, la carte se monte, et l'observateur est débranché", async () => {
     const { load } = poser();
     const observateur = FauxObservateur.instances[0] as FauxObservateur;
+    // Le cas NORMAL : le visiteur fait défiler (la section est encore loin), puis la section entre dans la marge.
+    defiler();
+    expect(load.mock.calls).toHaveLength(0);
     observateur.signaler(true);
     // Assertion NATIVE d'abord : si rien ne se monte, c'est elle qui échoue (et non une requête qui ne trouve rien).
     await waitFor(() => expect(load.mock.calls).toHaveLength(1));

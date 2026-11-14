@@ -180,6 +180,16 @@ export default function LeafletCanvas({
         if (interactive) {
           element.setAttribute("aria-label", point.label);
           element.setAttribute("aria-pressed", point.id === selectedId ? "true" : "false");
+          // ⛔ LE CLAVIER (réparé au lot CA-6, défaut vu dans un navigateur) : Leaflet annonce le point comme un bouton
+          // (`role`, `tabindex`) mais ne relie la touche Entrée qu'à SES bulles (`_onKeyPress` → `_openPopup`), que ce fichier
+          // n'emploie pas. Sans cet écouteur, un point prenait le focus et ne répondait à rien. Entrée et Espace, comme un
+          // vrai bouton ; l'événement s'arrête ici, sinon la carte prendrait Espace ou les flèches pour elle.
+          element.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            event.stopPropagation();
+            onSelectRef.current?.(point.id);
+          });
         } else {
           // Un point qu'on ne peut pas actionner n'est pas un bouton : c'est une image qui porte un nom.
           element.setAttribute("role", "img");

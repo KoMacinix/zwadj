@@ -52,5 +52,72 @@ Les catalogues sont partagés avec les deux autres sessions : cette session n'y 
   `apps/api/src/common/i18n-parity.spec.ts`, à relever DÉLIBÉRÉMENT (il compte les clés ; la session ajoute 18 clés à CA-2
   et ne touche pas ce fichier, que d'autres sessions peuvent modifier).
 
+## ⛔ `[INFRA]` CHOISIR LE FOURNISSEUR DU FOND DE CARTE DE PRODUCTION — **BLOQUE le lancement** (décision de Ko, R-2)
+- État : la carte marche en développement sur les tuiles publiques d'OpenStreetMap (défaut écrit à UN endroit,
+  `packages/ui/src/map/map-tiles.ts`). En PRODUCTION, tant que `NEXT_PUBLIC_MAP_TILES_URL` + `…_ATTRIBUTION` (site client) et
+  `VITE_MAP_TILES_URL` + `…_ATTRIBUTION` (app Pro) ne sont pas posées, toutes les cartes affichent « carte indisponible ».
+  Ouvrir le site au public sans cette décision, c'est l'ouvrir sans carte.
+- Pour Ko : « la carte marche dès maintenant sur ton poste ; avant d'ouvrir le site au public il faudra choisir qui fournit
+  le fond de carte ».
+- Les trois options (consigne, R-2), SANS recommandation :
+  1. les tuiles publiques d'OpenStreetMap ;
+  2. un fournisseur avec clé (hébergeur de tuiles commercial) ;
+  3. des tuiles hébergées par Zwadj (son propre serveur de tuiles).
+- ⛔ **CE QUE CHAQUE OPTION COÛTE N'A PAS PU ÊTRE RELEVÉ, ET RIEN N'EST ÉCRIT DE MÉMOIRE.** La consigne demande les coûts
+  « relevés dans les conditions d'usage publiées (lien et date de lecture) ». Le 13/11/2026, depuis le conteneur de la
+  session, les six pages demandées ont toutes échoué en résolution de nom (`getaddrinfo ENOTFOUND`) : ces sites sont hors
+  du réseau autorisé de l'environnement. Aucune page n'a été lue ; aucune date de lecture ne peut être donnée.
+  Pages À LIRE (par Ko, ou par une session dont le réseau les autorise), une par question :
+  | question | page |
+  |---|---|
+  | option 1 : ce que la politique d'usage des tuiles publiques permet à un site commercial, ce qu'elle exige, ce qu'elle garantit | `https://operations.osmfoundation.org/policies/tiles/` |
+  | la mention d'attribution exigée (toutes options à base de données OpenStreetMap) | `https://www.openstreetmap.org/copyright` |
+  | option 2 : limites de l'offre gratuite, usage commercial, premier palier payant — trois exemples de fournisseurs | `https://www.maptiler.com/cloud/pricing/` · `https://www.thunderforest.com/pricing/` · `https://stadiamaps.com/pricing/` |
+  | option 3 : ce qu'un serveur de tuiles demande (machine, disque, logiciels) | `https://switch2osm.org/serving-tiles/` |
+  ⚠ La liste des trois fournisseurs de l'option 2 est un ÉCHANTILLON choisi par la session pour avoir des pages de prix à
+  lire, pas une présélection.
+- Ce que le CODE impose à l'option retenue, quelle qu'elle soit (cela, c'est mesuré) : des tuiles IMAGE servies en `https` à
+  une adresse de la forme `…/{z}/{x}/{y}.png` (la clé éventuelle du fournisseur est dans cette adresse, donc PUBLIQUE : elle
+  part dans le navigateur) ; une mention d'attribution en texte, et son lien de licence facultatif ; aucune autre
+  dépendance. Changer de fournisseur = changer trois variables d'environnement par application, sans toucher au code.
+- À décider avec : ce que le fournisseur fait des adresses IP des visiteurs (`ce-qui-part-vers-le-tiers.md`).
+- Bloque : le lancement. Coût : décision produit + configuration de déploiement (6 variables) ; aucun fichier du dépôt si
+  l'option tient dans le gabarit ci-dessus ; un lot de code si le fournisseur exige autre chose (tuiles vectorielles,
+  en-tête d'autorisation).
+
 ## Hors session par décision (R-8, R-10) — à ordonner par Ko
-(complété au lot CA-6.)
+Chaque ligne : ce qu'elle bloque = « à ordonner par Ko ».
+- **L'adresse déduite du point posé par le pro (« géocodage inverse »)** — R-8. Service tiers, décision de Ko. Coût : un
+  contrat d'API neuf ou un appel direct à un tiers depuis le navigateur du pro ; dépendance à un fournisseur (et ses
+  conditions) ; code pro (`venue-pin-map.tsx`, `venue-form.tsx`).
+- **« Près de moi »** (centrer la carte sur le visiteur) — R-10. La position du visiteur est une donnée personnelle (loi
+  18-07) : avis du juriste d'abord. Coût : code client ; aucun contrat d'API si le calcul reste dans le navigateur.
+- **Tri par distance** — R-10. Coût : contrat d'API (paramètres de position), requête SQL de distance ; rend utile l'index
+  géographique ci-dessous.
+- **Itinéraire vers la salle** — R-10. Coût : un lien sortant vers une application de cartes suffit (aucune dépendance) ;
+  un itinéraire dans la page demande un service tiers.
+- **Regroupement des points proches** — R-10. Non fait : aucune mesure ne le rend nécessaire (le plafond est de 500 points,
+  la base de test en montre une poignée). À rouvrir quand une ville porte assez de salles pour que les points se
+  recouvrent. Coût : une dépendance de plus (greffon de Leaflet) ou du code maison dans `leaflet-canvas.tsx`.
+- **Filtre par quartier** — R-10. Coût : contrat d'API (un filtre de plus sur la liste ET sur la carte : le filtre commun
+  `publicFilter` le rend unique), écran de filtres.
+- **Index géographique sur les coordonnées des salles** (backlog, ligne « Add index on Venue coords + city », restée
+  partielle) — NON fait, sur consigne (R-3 : aucune migration). La route de points filtre par les mêmes colonnes que la
+  liste et lit au plus 500 lignes : aucun besoin mesuré. Coût le jour venu : une migration écrite à la main.
+- **Délais et coupe-circuits sur les appels de carte** (backlog, « Circuit breakers + timeouts on … maps calls ») — sans
+  objet côté serveur à ce jour : l'API n'appelle aucun service de carte, seul le navigateur parle au fournisseur de tuiles.
+  Une tuile en échec et une bibliothèque qui ne se charge pas sont DITES à l'écran (lots CA-2, CA-6). À rouvrir avec le
+  géocodage inverse, s'il passe par l'API.
+- **Annoter la décision produit n° 2** (« carte reportée après le MVP ») et les entrées de backlog sur la carte : à
+  l'intégration, par la session qui écrit les fichiers d'autorité (consigne, point 0 a).
+
+## Limites connues de ce qui est livré (à ordonner par Ko)
+- **La molette ne zoome pas la carte** (voulu : sur une page qui défile, elle doit faire défiler la page) ; on zoome par
+  les boutons, le double-clic, le pincement. Sur un téléphone, un doigt posé sur la carte la déplace au lieu de faire
+  défiler la page : la carte est bornée en hauteur pour laisser de quoi défiler autour. Pas de mesure d'usage réel.
+- **Le point du pro ne se pose pas au clavier** : la carte du pro est un confort de souris ou de doigt ; le chemin clavier
+  est celui des deux champs, qui restent. Écrit, pas corrigé.
+- **La carte est en clair dans le thème sombre** : les tuiles sont des images du fournisseur. Un fond sombre est une
+  propriété du fournisseur choisi.
+- **La vue « carte » n'est pas dans l'adresse** (écart C-3 de la lecture adverse) : un lien partagé ouvre toujours la grille.
+- **La maquette de l'écran de carte n'est pas au dépôt** (écart C-4) : la carte n'a été confrontée à aucun visuel de référence.

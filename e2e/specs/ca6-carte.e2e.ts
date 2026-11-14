@@ -224,11 +224,15 @@ test("CA-6 — accueil : rien ne part au chargement ; la carte se monte quand la
   await page.goto(`${CLIENT}/fr`);
   await settle(page);
   await expect(page.locator("#hm-map-h")).toHaveCount(1);
-  // ⛔ R-9 — au chargement : aucune tuile, aucune carte. La section est loin sous le héros.
+  // ⛔ R-9 — au chargement : aucune tuile, aucune carte — MÊME si la section est déjà proche de l'écran (dans cette base
+  // de test la page est courte : c'est ainsi que le défaut a été vu). Le bouton est offert à qui ne veut pas défiler.
+  await expect(page.locator(".hm-map .map-panel-body")).toHaveText(fr.map.home.waiting);
+  await expect(page.locator(".hm-map").getByRole("button", { name: fr.map.home.show })).toHaveCount(1);
   expect(reseau.tuiles).toEqual([]);
   await expect(page.locator(".leaflet-container")).toHaveCount(0);
-  await expect(page.locator(".hm-map .map-panel-body")).toHaveText(fr.map.home.waiting);
 
+  // Le visiteur DESCEND vers la section : c'est son défilement qui monte la carte.
+  await page.mouse.wheel(0, 300);
   await page.locator("#hm-map-h").scrollIntoViewIfNeeded();
   await expect(page.locator(".hm-map .zw-map-canvas.leaflet-container")).toHaveCount(1);
   const api = await pointsDeLApi("");

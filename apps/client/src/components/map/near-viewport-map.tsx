@@ -9,8 +9,9 @@
 // descendent pas jusque-là. Ils ne doivent ni payer ce poids ni être signalés à un tiers pour une carte qu'ils ne voient pas.
 //
 // ── Trois cas, écrits ───────────────────────────────────────────────────────
-//   · le navigateur sait observer (`IntersectionObserver`) : la carte se monte quand la section entre dans une marge autour
-//     de l'écran, UNE fois (l'observateur est débranché aussitôt) ;
+//   · le navigateur sait observer (`IntersectionObserver`) : la carte se monte quand la section est dans une marge autour
+//     de l'écran ET que le visiteur a fait défiler la page — jamais à la seule ouverture —, UNE fois (tout est débranché
+//     aussitôt) ;
 //   · il ne sait pas : un BOUTON « Afficher la carte » — un geste, comme sur la recherche ;
 //   · sans JavaScript : ni l'un ni l'autre n'existe. La section garde son titre, sa phrase et son LIEN vers la recherche,
 //     qui marche sans script. Le bouton n'est rendu qu'APRÈS le montage : un bouton mort apprendrait que le site ne marche pas.
@@ -54,18 +55,38 @@ export function NearViewportMap({ query, ar, headingLevel = 3, tiles = CLIENT_MA
       return;
     }
     setEtat("observe");
+    // ⛔ DEUX conditions, pas une (réparé au lot CA-6, défaut vu dans un navigateur) : la section est PROCHE de l'écran, ET
+    // le visiteur a FAIT DÉFILER la page. Sur une page courte ou un écran haut, la section est déjà dans la marge à
+    // l'ouverture : « proche » seul montait la carte au chargement, sans aucun geste — ce que R-9 interdit. Le bouton
+    // reste offert à qui voit la section sans avoir défilé.
+    let proche = false;
+    // Une page rouverte au milieu (retour arrière, rechargement) a déjà défilé.
+    let defile = window.scrollY > 0;
+    const debrancher = () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", surDefilement);
+    };
+    const monter = () => {
+      if (!proche || !defile) return;
+      // UNE fois : la carte montée le reste, même si la section ressort de l'écran.
+      debrancher();
+      setEtat("montee");
+    };
+    const surDefilement = () => {
+      defile = true;
+      monter();
+    };
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          // UNE fois : la carte montée le reste, même si la section ressort de l'écran.
-          observer.disconnect();
-          setEtat("montee");
-        }
+        // Le DERNIER relevé fait foi : un lot peut porter une entrée puis une sortie de la marge.
+        proche = entries[entries.length - 1]?.isIntersecting === true;
+        monter();
       },
       { rootMargin: NEAR_VIEWPORT_MARGIN }
     );
     observer.observe(element);
-    return () => observer.disconnect();
+    window.addEventListener("scroll", surDefilement, { passive: true });
+    return debrancher;
   }, [sansFond]);
 
   if (sansFond || etat === "montee") {

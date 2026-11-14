@@ -33,15 +33,25 @@ T_ACCUEIL = "⛔ CA-3 — la section carte : au chargement la carte n'est PAS mo
 
 campagne.cible("N-1. ⛔ R-9 : la carte de l'accueil est montée dès le chargement de la page", APPROCHE,
                'setEtat("observe");', 'setEtat("montee");', {"approche": T_RIEN})
-campagne.cible("N-2. Un signal « hors de la marge » monte la carte", APPROCHE,
-               "if (entries.some((entry) => entry.isIntersecting)) {", "if (entries.some((entry) => entry.isIntersecting || true)) {",
-               {"approche": "un signal « hors de la marge » ne monte rien"})
+campagne.cible("N-2. Un signal « hors de la marge » compte pour « proche »", APPROCHE,
+               "proche = entries[entries.length - 1]?.isIntersecting === true;", "proche = entries.length > 0;",
+               {"approche": "un signal « hors de la marge » ne monte rien, même après un défilement"})
 campagne.cible("N-3. L'approche de l'écran ne monte rien", APPROCHE,
-               '          observer.disconnect();\n          setEtat("montee");', '          observer.disconnect();\n          setEtat("observe");',
+               '      debrancher();\n      setEtat("montee");', '      debrancher();\n      setEtat("observe");',
                {"approche": T_APPROCHE})
 campagne.cible("N-4. L'observateur reste branché après le montage", APPROCHE,
-               '          observer.disconnect();\n          setEtat("montee");', '          void observer;\n          setEtat("montee");',
+               '      debrancher();\n      setEtat("montee");', '      void debrancher;\n      setEtat("montee");',
                {"approche": T_APPROCHE})
+# ── CA-6 : la garde du DÉFILEMENT (défaut vu dans un navigateur : sur une page courte la carte se montait à l'ouverture)
+campagne.cible("N-10. ⛔ LE DÉFAUT DE CA-6 RESTAURÉ : « proche » suffit, la carte se monte à l'ouverture d'une page courte", APPROCHE,
+               "if (!proche || !defile) return;", "if (!proche) return;",
+               {"approche": "⛔ CA-6 — section DÉJÀ proche à l'ouverture (page courte, écran haut), SANS défilement : rien n'est demandé ; le bouton est offert"})
+campagne.cible("N-11. Le défilement n'est pas écouté : une section déjà proche ne se monte jamais seule", APPROCHE,
+               '    window.addEventListener("scroll", surDefilement, { passive: true });\n', "",
+               {"approche": "⛔ CA-6 — …et le PREMIER défilement du visiteur la monte"})
+campagne.cible("N-12. Le PREMIER relevé fait foi au lieu du dernier (une sortie de la marge est ignorée)", APPROCHE,
+               "proche = entries[entries.length - 1]?.isIntersecting === true;", "proche = proche || entries[0]?.isIntersecting === true;",
+               {"approche": "CA-6 — entrée puis SORTIE de la marge avant tout défilement : défiler ensuite ne monte rien (le dernier relevé fait foi)"})
 campagne.cible("N-5. La marge d'approche n'est plus celle qui est déclarée", APPROCHE,
                "{ rootMargin: NEAR_VIEWPORT_MARGIN }", '{ rootMargin: "0px" }',
                {"approche": "la section est observée, avec la marge déclarée"})
