@@ -70,3 +70,17 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `apps/client/src/app/[locale]/salles/[slug]/page.tsx` | commentaire d'en-tête seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
 | `apps/client/src/app/[locale]/salles/(recherche)/loading.tsx` | commentaire seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
 | `docs/preuves/D348/rouges/verser-journal.py` | le script qui a retiré les lignes à jeton du journal brut avant versement, archivé comme preuve (jamais promu en instrument, D291) | à venir |
+
+**Extension 3** (16/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait la campagne, les portes et les passes e2e par famille (« la sortie du harnais », « les six portes », « les deux passes ») ; la règle (D328, point 4) veut les chemins complets. Aucune de ces pièces n'est encore commitée. Le code (la correction, la spec, le harnais) est déjà commité (`411d373`, `ac728d8`) ; il n'ajoute aucun fichier hors table.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/neutralisation/campagne-passe-1.txt`, `docs/preuves/D348/neutralisation/campagne-passe-2.txt` | les deux premières passes de la campagne (harnais v1, v2), arrêtées sur PUB1-17 ; versées pour dire ce qu'elles ont montré | à venir |
+| `docs/preuves/D348/neutralisation/campagne-passe-3.txt`, `docs/preuves/D348/neutralisation/campagne-passe-3-reprise-avortee.txt`, `docs/preuves/D348/neutralisation/campagne-passe-3-reprise.txt` | la passe du harnais FINAL (20 cibles) : cibles 1 à 12, puis la reprise avortée (Docker arrêté), puis la reprise déclarée `--seulement` de 13 à 21 | à venir |
+| `docs/preuves/D348/neutralisation/extraits-des-echecs.txt` | par cible, le bloc d'échec lu (20 cibles) | à venir |
+| `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-404.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-available-on.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-fc10.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-fc10-e2e.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-horizon.txt` | les campagnes existantes qui lisent un fichier de ce lot (`lancer-campagnes.py` ne les voit pas : arbre propre, comparaison à `HEAD`) | à venir |
+| `docs/preuves/D348/portes/_index.txt`, `docs/preuves/D348/portes/etat-machine-pendant.txt`, `docs/preuves/D348/portes/typecheck.txt`, `docs/preuves/D348/portes/lint.txt`, `docs/preuves/D348/portes/test.txt`, `docs/preuves/D348/portes/build.txt`, `docs/preuves/D348/portes/test-int.txt`, `docs/preuves/D348/portes/test-e2e.txt` | la passe des six portes (pilote `docs/preuves/D340/portes/passe-secteur.sh`, non modifié) ; `test-e2e.txt` est la PASSE 1 de l'e2e | à venir |
+| `docs/preuves/D348/portes/test-rouge-instruction.md`, `docs/preuves/D348/portes/test-rejeux-fichier-seul.txt` | la porte `test` est rouge (un test de `apps/pro`, hors du lot) : ce qui a été instruit | à venir |
+| `docs/preuves/D348/e2e/passe-2.txt`, `docs/preuves/D348/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D348/e2e/passe-2-batterie-apres.txt` | la seconde passe e2e et l'alimentation avant et après | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-apres-sortie.txt`, `docs/preuves/D348/mesures/pieces/m3-instrument-apres.mjs` | M-3 rejouée APRÈS la correction, et sa copie d'instrument | à venir |
+| `docs/preuves/D348/audit-secrets-d348c.txt` | l'audit de secrets de ce versement | à venir |
