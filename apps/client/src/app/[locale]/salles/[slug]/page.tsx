@@ -3,9 +3,9 @@
 // Pas de `generateStaticParams` : il faudrait interroger l'API AU BUILD pour
 // lister les slugs. Une API éteinte en CI produirait alors un site sans aucune
 // page de salle, et toute salle publiée après le build resterait invisible
-// jusqu'au suivant. Le rendu est donc à la demande, avec un `revalidate` de
-// 300 s posé sur le `fetch` : première visite rendue, les suivantes servies
-// depuis le cache — l'ISR utile, sans dépendance au build.
+// jusqu'au suivant. Le rendu est donc à la demande, SANS cache sur le `fetch`
+// (D348 : un `revalidate` de 300 s gardait la fiche d'une salle masquée ou
+// supprimée en 200, voir `getVenueBySlug`) : chaque vue lit l'état réel.
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { absoluteUrl, jsonLdScript, publicMetadata, venueStructuredData } from "../../../../lib/seo";

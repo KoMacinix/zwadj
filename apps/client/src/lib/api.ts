@@ -183,14 +183,19 @@ export async function getVenueStyles(): Promise<VenueStyleDTO[]> {
  * L'appelant transforme ce `null` en 404 HTTP. Rendre une page « introuvable »
  * en 200 serait un soft-404 : Google indexerait une page fantôme.
  *
- * `revalidate` plutôt que `no-store` : le détail est la page la plus lue et la
- * moins changeante du site. Le même appel sert `generateMetadata` et le rendu —
- * Next déduplique les `fetch` de configuration identique, donc UN aller-retour.
+ * ⛔ `no-store`, PAS `revalidate` (D348, mesuré sur un build de production) : avec `revalidate: 300`, la fiche
+ * d'une salle MASQUÉE ou SUPPRIMÉE restait servie en 200 plus de dix minutes, et après un redémarrage du
+ * serveur — la revalidation rend 404, et le cache de données de Next ne remplace pas une entrée par une
+ * réponse non-200 (inférence, non lue dans le code de Next). Le nom, le prix et les photos d'une salle
+ * modifiée étaient en outre périmés jusqu'à 5 minutes. La fiche DIT la vérité à chaque vue.
+ * Le même appel sert `generateMetadata` et le rendu : Next déduplique en principe les `fetch` identiques d'une
+ * même requête, donc UN aller-retour par vue — NON MESURÉ (D348), le surcoût d'un second aller-retour serait
+ * celui d'une lecture de plus par vue.
  */
 export async function getVenueBySlug(slug: string): Promise<VenuePublicDTO | null> {
   try {
     const res = await fetch(`${API_URL}/api/v1/venues/${encodeURIComponent(slug)}`, {
-      next: { revalidate: 300 }
+      cache: "no-store"
     });
     if (!res.ok) return null;
     return (await res.json()) as VenuePublicDTO;

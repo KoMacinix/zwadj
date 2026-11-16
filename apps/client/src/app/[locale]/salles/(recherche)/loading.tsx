@@ -25,9 +25,9 @@
 //
 // ⚠ CE QUE CET EMPLACEMENT COÛTE, ET POURQUOI C'EST ACCEPTÉ. La fiche de salle
 // n'a plus de squelette : elle attend son rendu complet. `getVenueBySlug` est
-// en `revalidate: 300` (lib/api.ts) — la page la plus lue est servie de cache
-// la plupart du temps. La recherche, elle, est en `no-store` : c'est là que le
-// serveur attend vraiment, et c'est là que le squelette reste.
+// en `no-store` (lib/api.ts, D348 : un cache de 300 s gardait la fiche d'une
+// salle masquée ou supprimée en 200) — comme la recherche, elle attend l'API à
+// chaque vue ; le squelette, lui, ne reste que sur la recherche.
 //
 // ⛔ NE PAS REMONTER CE FICHIER D'UN NIVEAU « pour couvrir plus de pages ».
 // La garde `src/app/[locale]/not-found.test.tsx` refuse toute `loading.tsx`
