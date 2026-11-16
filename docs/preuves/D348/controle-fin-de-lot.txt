@@ -1,0 +1,23 @@
+D348 — contrôle de fin de lot (D288, D328), joué le 16/11/2026 après le dernier commit d'autorité (1fd132f)
+
+1. premier commit du lot, SEUL :
+   5b739f5 : ['docs/preuves/D348/table-ouverture.md']  → table seule : True
+
+2. git diff 26ad5c7..HEAD --name-only : 60 fichiers ; hors table (chemins complets, extensions 1 à 4 comprises) : []
+
+3. ordre, relevé par git log :
+   lecture adverse (f1c4d52, rang 1) avant tout .md d'autorité (1fd132f, rang 10) : True
+   rouges (9258886, rang 4) avant le premier commit de code (411d373, rang 5) : True
+   chaque extension de table précède les fichiers qu'elle couvre : ext 1 (bd896d2) < rouges (9258886) : True ; ext 2 (cbd901a) < correction (411d373) : True ; ext 3 (c67e352) et ext 4 (ff1f925) < pièces (786e81e) : True
+
+4. sous apps/ et packages/ (code d'application) :
+   apps/client/src/app/[locale]/salles/(recherche)/loading.tsx |  6 +++---
+    apps/client/src/app/[locale]/salles/[slug]/page.tsx         |  6 +++---
+    apps/client/src/lib/api.ts                                  | 13 +++++++++----
+    3 files changed, 15 insertions(+), 10 deletions(-)
+
+5. SYNCHRONISATION AVEC LE DISTANT (D288) — ⛔ NON POUSSÉ, volontairement (D270 : la porte `test` est rouge) :
+   local  HEAD        = 1fd132f88e702a6c9a9066b8e411967f31fb3d5c
+   origin/main        = 26ad5c77ec03a73d82e92368f7d97c4beac7556f
+   commits locaux non poussés : 11
+   arbre : [?? docs/preuves/D348/controle-fin-de-lot.txt] ; stash : []
