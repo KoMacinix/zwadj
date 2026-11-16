@@ -84,3 +84,9 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `docs/preuves/D348/e2e/passe-2.txt`, `docs/preuves/D348/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D348/e2e/passe-2-batterie-apres.txt` | la seconde passe e2e et l'alimentation avant et après | à venir |
 | `docs/preuves/D348/mesures/pieces/m3-apres-sortie.txt`, `docs/preuves/D348/mesures/pieces/m3-instrument-apres.mjs` | M-3 rejouée APRÈS la correction, et sa copie d'instrument | à venir |
 | `docs/preuves/D348/audit-secrets-d348c.txt` | l'audit de secrets de ce versement | à venir |
+
+**Extension 4** (16/11/2026, commitée SEULE, AVANT le fichier qu'elle couvre). Motif : l'extension 3 nommait l'audit de secrets du dernier versement mais pas son tri ; la table n'avait pas non plus la sortie du contrôle de fin de lot sous son chemin de versement tardif. Aucun de ces fichiers n'est encore commité.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/aucune-valeur-reelle-c.txt` | le tri des alertes nouvelles de l'audit « c » et le contrôle dédié « 0 valeur réelle » (55 journaux, 354 valeurs, 0 porteur) | à venir |
