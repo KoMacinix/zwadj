@@ -1,0 +1,22 @@
+# Porte typecheck — journal brut hors dépôt : sha256 412b7cc4ab21bc2fa8dae44ef0bf8fcb71703fefb44ac9856ba2d3b245a820b2 · 627 octets · 21 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+
+> zwadj@ typecheck C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm -r run typecheck
+
+Scope: 9 of 10 workspace projects
+e2e typecheck$ tsc --noEmit
+packages/types typecheck$ tsc --noEmit
+packages/types typecheck: Done
+e2e typecheck: Done
+packages/i18n typecheck$ tsc --noEmit
+packages/api-client typecheck$ tsc --noEmit
+packages/ui typecheck$ tsc --noEmit
+packages/i18n typecheck: Done
+packages/ui typecheck: Done
+packages/api-client typecheck: Done
+apps/api typecheck$ tsc --noEmit
+apps/client typecheck$ tsc --noEmit
+apps/pro typecheck$ tsc --noEmit
+apps/client typecheck: Done
+apps/pro typecheck: Done
+apps/api typecheck: Done

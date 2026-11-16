@@ -1,0 +1,25 @@
+# Six portes (pilote D340) — index — journal brut hors dépôt : sha256 02d3845274e4e1256e435636e4923942ee2883d9a8aa4d5a36503c60267be567 · 2207 octets · 24 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+D340 — PASSE SUR SECTEUR (R-8) — départ 16/11/2026 12:21:02
+SHA: ac728d8c32ca4aaf6211f6e8b50fdadd2a894409
+origin/main: 26ad5c77ec03a73d82e92368f7d97c4beac7556f
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 12:21:01 | SECTEUR | RAM libre 4,759 Mo | chrome 8 | headless_shell 0 | node 0
+docker: zwadj-db Up 17 minutes
+ports d'e2e occupés (3100 3101 5273 5274): []
+=== typecheck — départ 12:21:05 — 12:21:06 | SECTEUR | RAM libre 4,692 Mo | chrome 8 | headless_shell 0 | node 0
+    typecheck : code de sortie 0 · durée 20 s · fin 12:21:26 — 12:21:27 | SECTEUR | RAM libre 4,766 Mo | chrome 8 | headless_shell 0 | node 0
+=== lint — départ 12:21:27 — 12:21:28 | SECTEUR | RAM libre 4,783 Mo | chrome 8 | headless_shell 0 | node 0
+    lint : code de sortie 0 · durée 15 s · fin 12:21:43 — 12:21:43 | SECTEUR | RAM libre 4,794 Mo | chrome 8 | headless_shell 0 | node 0
+=== test — départ 12:21:43 — 12:21:44 | SECTEUR | RAM libre 4,800 Mo | chrome 8 | headless_shell 0 | node 0
+    test : code de sortie 1 · durée 113 s · fin 12:23:37 — 12:23:37 | SECTEUR | RAM libre 4,784 Mo | chrome 10 | headless_shell 0 | node 0
+=== build — départ 12:23:37 — 12:23:38 | SECTEUR | RAM libre 4,785 Mo | chrome 10 | headless_shell 0 | node 0
+    build : code de sortie 0 · durée 35 s · fin 12:24:13 — 12:24:14 | SECTEUR | RAM libre 5,042 Mo | chrome 10 | headless_shell 0 | node 0
+=== test-int — départ 12:24:14 — 12:24:15 | SECTEUR | RAM libre 5,025 Mo | chrome 10 | headless_shell 0 | node 0
+    test-int : code de sortie 0 · durée 514 s · fin 12:32:49 — 12:32:50 | SECTEUR | RAM libre 3,034 Mo | chrome 8 | headless_shell 0 | node 0
+=== test-e2e — départ 12:32:50 — 12:32:51 | SECTEUR | RAM libre 3,020 Mo | chrome 8 | headless_shell 0 | node 0
+    test-e2e : code de sortie 0 · durée 442 s · fin 12:40:13 — 12:40:14 | SECTEUR | RAM libre 4,212 Mo | chrome 8 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 12:40:15 | SECTEUR | RAM libre 4,201 Mo | chrome 8 | headless_shell 0 | node 0
+arbre après la passe (git status --short): []
+fin 16/11/2026 12:40:15
+PASSE TERMINEE — échantillons sur BATTERIE pendant la passe : 0 sur 38

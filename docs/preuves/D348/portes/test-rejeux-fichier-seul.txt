@@ -1,0 +1,23 @@
+D348 — rejeu de apps/pro/src/account/account-settings-page.test.tsx SEUL, cinq fois, sur l'arbre de la clôture (pnpm --filter @zwadj/pro exec vitest run <fichier>)
+--- rejeu 1
+ Test Files  1 passed (1)
+      Tests  31 passed (31)
+--- rejeu 2
+ Test Files  1 passed (1)
+      Tests  31 passed (31)
+--- rejeu 3
+ Test Files  1 passed (1)
+      Tests  31 passed (31)
+--- rejeu 4
+ Test Files  1 passed (1)
+      Tests  31 passed (31)
+--- rejeu 5
+  · An update to DeletionSection inside a test was not wrapped in act(...).
+  · An update to ProVenuesProvider inside a test was not wrapped in act(...).
+ FAIL  src/account/account-settings-page.test.tsx > Canaux de notification — D60 > garder UN seul canal reste permis
+Error: 2 avertissement(s) de console dans un fichier NON exempté.
+  · An update to DeletionSection inside a test was not wrapped in act(...).
+  · An update to ProVenuesProvider inside a test was not wrapped in act(...).
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 passed (31)
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/account/account-settings-page.test.tsx

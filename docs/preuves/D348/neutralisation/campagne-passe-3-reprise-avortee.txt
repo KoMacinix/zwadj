@@ -1,0 +1,75 @@
+# Campagne PUB-1, reprise avortée : Docker arrêté, pré-vol non démarré — journal brut hors dépôt : sha256 93bee28f6863f1eac5324997190b6e9deee29c2736fa22b053f0a8e7fa671f40 · 5397 octets · 74 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+  pose ✓ PUB1-1 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-2 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-3 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-4 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-5 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-6 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-7 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-8 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 1→2
+  pose ✓ PUB1-9 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-10 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-11 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-12 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-13 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-14 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-15 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-16 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-18 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-19 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-20 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-21 : ancre 1→0 · marqueur 0→1
+  pose : 20 cible(s) · 0 non posable(s) (attendu 0)
+cibles : 20 déclarées · 8 jouées (e2e, unit) · 0 hors exécution
+✗ PRÉ-VOL e2e-m1 : code 1, NON-DÉMARRÉE — aucune ligne de test [chromium] (serveurs ? base ?)
+Server]       "message": "failed with status code 500",
+[WebServer]       "stack":
+[WebServer]           Error: failed with status code 500
+[WebServer]               at onResFinished (C:\Users\benla\Desktop\MyProjct\Zwadj\node_modules\.pnpm\pino-http@10.5.0\node_modules\pino-http\logger.js:115:39)
+[WebServer]               at ServerResponse.onResponseComplete (C:\Users\benla\Desktop\MyProjct\Zwadj\node_modules\.pnpm\pino-http@10.5.0\node_modules\pino-http\logger.js:178:14)
+[WebServer]               at ServerResponse.emit (node:events:530:35)
+[WebServer]               at onFinish (node:_http_outgoing:1081:10)
+[WebServer]               at callback (node:internal/streams/writable:766:21)
+[WebServer]               at afterWrite (node:internal/streams/writable:710:5)
+[WebServer]               at afterWriteTick (node:internal/streams/writable:696:10)
+[WebServer]               at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+[WebServer]     }
+[WebServer] [12:00:48.242] INFO (18132): request errored {"req":{"id":4,"method":"GET","url":"/api/v1/wilayas","query":{},"params":{"path":["wilayas"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":9515},"res":{"statusCode":500,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"116","etag":"W/\"74-4hJIAd4ELA5gXdb9XiJ68M00lTI\""}},"responseTime":9}
+[WebServer]     err: {
+[WebServer]       "type": "Error",
+[WebServer]       "message": "failed with status code 500",
+[WebServer]       "stack":
+[WebServer]           Error: failed with status code 500
+[WebServer]               at onResFinished (C:\Users\benla\Desktop\MyProjct\Zwadj\node_modules\.pnpm\pino-http@10.5.0\node_modules\pino-http\logger.js:115:39)
+[WebServer]               at ServerResponse.onResponseComplete (C:\Users\benla\Desktop\MyProjct\Zwadj\node_modules\.pnpm\pino-http@10.5.0\node_modules\pino-http\logger.js:178:14)
+[WebServer]               at ServerResponse.emit (node:events:530:35)
+[WebServer]               at onFinish (node:_http_outgoing:1081:10)
+[WebServer]               at callback (node:internal/streams/writable:766:21)
+[WebServer]               at afterWrite (node:internal/streams/writable:710:5)
+[WebServer]               at afterWriteTick (node:internal/streams/writable:696:10)
+[WebServer]               at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+[WebServer]     }
+AggregateError: 
+
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r50-salle-publiee.e2e.ts -g M-1
+
+
+campagne exit=2

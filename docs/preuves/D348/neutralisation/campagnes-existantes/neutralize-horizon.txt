@@ -1,0 +1,11 @@
+# Campagne existante neutralize-horizon (lit api.ts) — journal brut hors dépôt : sha256 ff36eea806aa6ff3b7484ad3cf04d9ea500e764519325380869a8b41ea30ab6e · 613 octets · 10 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+✓ H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres
+✓ H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé
+✓ H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée
+✓ H4. Le client range le nouveau refus avec l'ancien
+✓ H5. L'écran affiche « cette date est déjà passée » pour une date de 2099
+✓ H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté
+
+6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+exit=0

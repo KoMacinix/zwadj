@@ -9,7 +9,7 @@ La salle de la mesure : créée PAR L'ÉCRAN du pro (nom français et arabe, com
 | 1 | le pro crée la salle par les sept étapes de l'assistant ; chaque enregistrement répond (201) | **vu** | test 2 |
 | 2 | AVANT la publication, la recherche (sans cache) ne montre pas la salle | **vu** (0 carte) | test 2 |
 | 3 | l'admin publie : 200 | **vu** | test 2 |
-| 4 | FR — l'accueil montre la salle ; aucun bandeau « données de démonstration » | **vu** | test 3 · `pieces/apres-fr-accueil.png` (à venir, voir note) |
+| 4 | FR — l'accueil montre la salle ; aucun bandeau « données de démonstration » | **vu** | test 3 (aucune capture d'« après » de l'accueil : la grille y est sous la ligne de flottaison et l'assertion du test est la pièce ; la capture d'« avant » du bandeau est `pieces/avant-fr-accueil.png`) |
 | 5 | FR — `/salles` sans filtre : la salle, pas de bandeau | **vu** | test 4 · `pieces/apres-fr-salles.png` |
 | 6 | FR — chaque filtre qui lui correspond : **ville, invités, budget, équipement, style, date** — la carte est là ; et la même demande réglée pour l'exclure ne la montre pas (jumeaux négatifs : ville, invités[^1], budget, équipement, style) | **vu**, 6 positifs et 5 négatifs | test 4 |
 | 7 | FR — la date ne grise pas la salle (libre ce jour-là) ; tous les filtres ensemble | **vu** | test 4 |

@@ -35,3 +35,22 @@ La sortie brute porte « V2 : le NOUVEAU PRIX est servi à T+1 s » : c'est un *
 - **La cause.** Ce qui est mesuré : une entrée de cache à 200 n'est jamais remplacée par une réponse 404 de l'API ; le prix, le nom et la photo (réponses 200) sont remplacés après 300 s. **Inférence, non lue dans le code de Next** : le cache de données de `fetch` ne retient pas une réponse non-200, donc une revalidation qui rend 404 laisse l'entrée périmée en place et continue de la servir.
 - **Combien de temps « pour toujours » dure.** Mesuré : au moins 13 minutes et un redémarrage. Non mesuré au-delà ; une éviction du cache sur disque (déploiement, purge de `.next/cache`) la lèverait.
 - **L'effet réel pour le visiteur d'un site en production.** Le build est celui de `next build` sur ce poste ; un hébergeur qui garde le cache de données ailleurs (ou le purge à chaque déploiement) peut se comporter autrement. Non mesuré.
+
+## Après la correction (ajouté à la clôture ; le rouge ci-dessus n'est pas retouché)
+
+Correction : `getVenueBySlug` lit l'API **sans cache** (`cache: "no-store"` au lieu de `next: { revalidate: 300 }`, `apps/client/src/lib/api.ts`), commit `411d373`. Même mesure, même build de production (`next build` puis `next start`, API de l'e2e, base jetable `zwadj_e2e`), instrument `pieces/m3-instrument-apres.mjs` (COPIE du premier ; seul changement : le détecteur du prix). Sortie : `pieces/m3-apres-sortie.txt`.
+
+| question | avant la correction | après la correction |
+|---|---|---|
+| (i) fiche visitée en 404 avant la publication, puis publiée | 200 à T+1 s | **200 à T+1 s** (inchangé : le 404 n'était déjà pas gardé) |
+| (ii) nom / photo d'une salle modifiée, sur la fiche | servis périmés pendant **308 s** | **à jour à T+1 s** (nom, photo) |
+| (ii) prix d'une salle modifiée | périmé 308 s (le « T+1 s » de la sortie brute rouge est le faux positif rectifié plus haut) | **à jour** : lu directement sur la page après la mesure, `123456 DA` et `basePriceCents":12345600` présents (le détecteur de cette copie attendait aussi un espace simple devant « DA » alors que l'espace est insécable : **second défaut d'instrument**, écrit ici ; l'instrument a été arrêté au bout de 9 minutes et le prix relu à la main) |
+| (iii) salle masquée | fiche en 200 à T+663 s et au-delà, redémarrage compris | **404 à T+1 s**, stable aux 9 sondages suivants (jusqu'à T+541 s) |
+| (iii) salle supprimée | idem | **404 à T+1 s**, stable de même |
+
+La liste (sans cache) est restée identique : nouveau nom présent, salles masquée et supprimée absentes, à T+2 s.
+
+## Ce que cette mesure NE dit PAS
+- **Le coût.** Une lecture de l'API par vue de fiche (au lieu d'une toutes les 5 minutes). Ni la charge ni le temps de réponse n'ont été mesurés ; la déduplication des deux lectures d'une même vue (métadonnées et rendu) n'a pas été mesurée non plus (le commentaire de `getVenueBySlug` le dit).
+- **Un autre hébergeur.** Mesuré sur `next start` de ce poste.
+- **Les référentiels** (`getWilayas`, `getAmenities`, `getVenueStyles`, `revalidate: 3600`) : le mécanisme supposé (une réponse non-200 ne remplace pas l'entrée) leur serait applicable, mais ils ne servent que des listes quasi immuables ; non mesuré, non corrigé (entrée de backlog).

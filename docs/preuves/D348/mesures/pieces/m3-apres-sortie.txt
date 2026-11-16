@@ -1,0 +1,26 @@
+# M-3 APRÈS la correction, build de production — journal brut hors dépôt : sha256 e7911bdec4250c6672ebd8f173740751f8fca0c756f2628ef11800533e6e58d3 · 1537 octets · 25 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+[   1 s] V1 (brouillon) fiche visitée AVANT publication : 404
+[   1 s] V2 fiche visitée (cache rempli) : 200
+[   1 s] V3 fiche visitée (cache rempli) : 200
+[   1 s] V4 fiche visitée (cache rempli) : 200
+[   1 s] V2 : clés de photo avant = 0
+[   1 s] photo ajoutée à V2 : 201
+[   2 s] V3 masquée : 200 · V4 supprimée : 204
+[   2 s] t1 posé (T+0) : V1 publiée, V2 renommée+prix+photo, V3 masquée, V4 supprimée
+[   2 s] LISTE immédiate : V1 présente=true · V2 nouveau nom présent=true · V3 présente=false · V4 présente=false
+[   2 s] V1 : la fiche passe de 404 à 200 à T+1 s
+[   2 s] V2 : le NOUVEAU NOM est servi à T+1 s
+[   2 s] V2 : la NOUVELLE PHOTO est servie à T+1 s
+[   2 s] V3 (masquée) : la fiche passe de 200 à 404 à T+1 s
+[   2 s] V4 (supprimée) : la fiche passe de 200 à 404 à T+1 s
+[   2 s] … T+1 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[  64 s] … T+63 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 126 s] … T+124 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 182 s] … T+181 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 244 s] … T+243 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 306 s] … T+305 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 362 s] … T+361 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 424 s] … T+423 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 486 s] … T+485 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 542 s] … T+541 s : V1=200 V2(nom nouveau=true) V3=404 V4=404
+[ 604 s] … T+603 s : V1=200 V2(nom nouveau=true) V3=404 V4=404

@@ -1,0 +1,597 @@
+# Campagne PUB-1 — blocs d'échec lus, 20 cibles — journal brut hors dépôt : sha256 978871ebae056f636e84661ed4ded6d737798c63c80fc34cdb15f1b81ebfea9f · 42519 octets · 596 lignes lues · 0 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+===== PUB1-1
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (27.9s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: brouillon : jamais publiée
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+    -   "fiche": 404,
+    -   "liste": false,
+    -   "listeAvecDate": false,
+    +   "fiche": 200,
+    +   "liste": true,
+    +   "listeAvecDate": true,
+      }
+
+      414 |     // La TABLE est la pièce : elle est imprimée avant les verdicts.
+      415 |     console.log(`R50-M2-TABLE ${JSON.stringify({ lectures, lecturePro })}`);
+    > 416 |     for (const l of lectures) expect({ liste: l.liste, listeAvecDate: l.listeAvecDate, fiche: l.fiche }, l.condition).toEqual(attendu[l.condition]);
+          |                                                                                                                       ^
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+      419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:416:119
+
+    attachment #1
+
+===== PUB1-2
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (28.1s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: masquée par le pro (HIDDEN)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+        "fiche": 404,
+    -   "liste": false,
+    -   "listeAvecDate": false,
+    +   "liste": true,
+    +   "listeAvecDate": true,
+      }
+
+      414 |     // La TABLE est la pièce : elle est imprimée avant les verdicts.
+      415 |     console.log(`R50-M2-TABLE ${JSON.stringify({ lectures, lecturePro })}`);
+    > 416 |     for (const l of lectures) expect({ liste: l.liste, listeAvecDate: l.listeAvecDate, fiche: l.fiche }, l.condition).toEqual(attendu[l.condition]);
+          |                                                                                                                       ^
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+      419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:416:119
+
+    attachment #1
+
+===== PUB1-3
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (30.8s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: masquée par le pro (HIDDEN)
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+    -   "fiche": 404,
+    +   "fiche": 200,
+        "liste": false,
+        "listeAvecDate": false,
+      }
+
+      414 |     // La TABLE est la pièce : elle est imprimée avant les verdicts.
+      415 |     console.log(`R50-M2-TABLE ${JSON.stringify({ lectures, lecturePro })}`);
+    > 416 |     for (const l of lectures) expect({ liste: l.liste, listeAvecDate: l.listeAvecDate, fiche: l.fiche }, l.condition).toEqual(attendu[l.condition]);
+          |                                                                                                                       ^
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+      419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:416:119
+
+    attachment #1
+
+===== PUB1-4
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (36.8s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: supprimée par le pro
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+    -   "fiche": 404,
+    -   "liste": false,
+    -   "listeAvecDate": false,
+    +   "fiche": 200,
+    +   "liste": true,
+    +   "listeAvecDate": true,
+      }
+
+      414 |     // La TABLE est la pièce : elle est imprimée avant les verdicts.
+      415 |     console.log(`R50-M2-TABLE ${JSON.stringify({ lectures, lecturePro })}`);
+    > 416 |     for (const l of lectures) expect({ liste: l.liste, listeAvecDate: l.listeAvecDate, fiche: l.fiche }, l.condition).toEqual(attendu[l.condition]);
+          |                                                                                                                       ^
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+      419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:416:119
+
+    attachment #1
+
+===== PUB1-5
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (35.9s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: publiée, aucun créneau actif
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "fiche": 200,
+        "liste": true,
+    -   "listeAvecDate": false,
+    +   "listeAvecDate": true,
+      }
+
+      414 |     // La TABLE est la pièce : elle est imprimée avant les verdicts.
+      415 |     console.log(`R50-M2-TABLE ${JSON.stringify({ lectures, lecturePro })}`);
+    > 416 |     for (const l of lectures) expect({ liste: l.liste, listeAvecDate: l.listeAvecDate, fiche: l.fiche }, l.condition).toEqual(attendu[l.condition]);
+          |                                                                                                                       ^
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+      419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:416:119
+
+    attachment #1
+
+===== PUB1-6
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (34.8s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: 300 places pour 450 invités : la salle ne doit PAS être là
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      386 |     await anonyme.close();
+      387 |     expect(invites250, "300 places pour 250 invités : la salle doit être là").toBe(1);
+    > 388 |     expect(invites450, "300 places pour 450 invités : la salle ne doit PAS être là").toBe(0);
+          |                                                                                      ^
+      389 |
+      390 |     // ── Ce que lit le PRO, sur sa liste « Mes salles »
+      391 |     const { contexte, page } = await ouvrirPro(browser, pro);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:388:86
+
+    attachment #1
+
+===== PUB1-7
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.5s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.4s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (11.1s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: jumeau négatif « ville » : la salle ne doit PAS y être
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 445243', exact: true }) })
+    Expected: 0
+    Received: 1
+    Call log:
+      - jumeau négatif « ville » : la salle ne doit PAS y être with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 445243', exact: true }) })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+    > 263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+          |                                                                                                               ^
+      264 |       }
+      265 |       // La date n'écarte pas la salle : elle est libre ce jour-là, donc non grisée.
+      266 |       await charger(page, `${base}?availableOn=${dansDeuxMois()}&minPrice=${salle.prixDinars}&maxPrice=${salle.prixDinars}`);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:263:111
+
+    attachment #1
+
+===== PUB1-8
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.4s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.6s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (16.9s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: jumeau négatif « budget » : la salle ne doit PAS y être
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle eb700d', exact: true }) })
+    Expected: 0
+    Received: 1
+    Call log:
+      - jumeau négatif « budget » : la salle ne doit PAS y être with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle eb700d', exact: true }) })
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+    > 263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+          |                                                                                                               ^
+      264 |       }
+      265 |       // La date n'écarte pas la salle : elle est libre ce jour-là, donc non grisée.
+      266 |       await charger(page, `${base}?availableOn=${dansDeuxMois()}&minPrice=${salle.prixDinars}&maxPrice=${salle.prixDinars}`);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:263:111
+
+    attachment #1
+
+===== PUB1-9
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (7.2s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.8s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (18.6s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: jumeau négatif « équipement » : la salle ne doit PAS y être
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle faf71a', exact: true }) })
+    Expected: 0
+    Received: 1
+    Call log:
+      - jumeau négatif « équipement » : la salle ne doit PAS y être with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle faf71a', exact: true }) })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+    > 263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+          |                                                                                                               ^
+      264 |       }
+      265 |       // La date n'écarte pas la salle : elle est libre ce jour-là, donc non grisée.
+      266 |       await charger(page, `${base}?availableOn=${dansDeuxMois()}&minPrice=${salle.prixDinars}&maxPrice=${salle.prixDinars}`);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:263:111
+
+    attachment #1
+
+===== PUB1-10
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.3s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.5s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (22.3s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: jumeau négatif « style » : la salle ne doit PAS y être
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 3db2b0', exact: true }) })
+    Expected: 0
+    Received: 1
+    Call log:
+      - jumeau négatif « style » : la salle ne doit PAS y être with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 3db2b0', exact: true }) })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+    > 263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+          |                                                                                                               ^
+      264 |       }
+      265 |       // La date n'écarte pas la salle : elle est libre ce jour-là, donc non grisée.
+      266 |       await charger(page, `${base}?availableOn=${dansDeuxMois()}&minPrice=${salle.prixDinars}&maxPrice=${salle.prixDinars}`);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:263:111
+
+    attachment #1
+
+===== PUB1-11
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.7s)
+  x  3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (8.5s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau 
+
+    Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle bf215a', exact: true }) }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - ni « récentes » ni « moins chères » ne porte la salle publiée with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle bf215a', exact: true }) }).first()
+
+
+      231 |       const page = await ctx.newPage();
+      232 |       expect(await charger(page, `/${langue}`)).toBe(200);
+    > 233 |       await expect(carte(page, nom(salle)).first(), "ni « récentes » ni « moins chères » ne porte la salle publiée").toBeVisible();
+          |                                                                                                                      ^
+      234 |       await expect(page.getByText(M.home.venues.previewNotice)).toHaveCount(0);
+      235 |       await ctx.close();
+      236 |     });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:233:118
+
+    attachment #1
+
+===== PUB1-12
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.4s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.6s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (8.6s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle dca265', exact: true }) })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle dca265', exact: true }) })
+
+
+      243 |       // Sans filtre : la salle et pas de bandeau fictif.
+      244 |       expect(await charger(page, base)).toBe(200);
+    > 245 |       await expect(carte(page, nom(salle))).toBeVisible();
+          |                                             ^
+      246 |       await expect(page.getByText(M.search.preview.notice)).toHaveCount(0);
+      247 |
+      248 |       const autreEquipement = salle.other.amenities.find((a) => a.key !== salle.amenity.key)!;
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:245:45
+
+    attachment #1
+
+===== PUB1-13
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (5.5s)
+  x  3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (8.3s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau 
+
+    Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle de2b6b', exact: true }) }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - ni « récentes » ni « moins chères » ne porte la salle publiée with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle de2b6b', exact: true }) }).first()
+
+
+      231 |       const page = await ctx.newPage();
+      232 |       expect(await charger(page, `/${langue}`)).toBe(200);
+    > 233 |       await expect(carte(page, nom(salle)).first(), "ni « récentes » ni « moins chères » ne porte la salle publiée").toBeVisible();
+          |                                                                                                                      ^
+      234 |       await expect(page.getByText(M.home.venues.previewNotice)).toHaveCount(0);
+      235 |       await ctx.close();
+      236 |     });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:233:118
+
+    attachment #1
+
+===== PUB1-14
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (6.0s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.4s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (12.5s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: filtre « invités » : la salle qui lui correspond doit être là
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 7d3e45', exact: true }) })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - filtre « invités » : la salle qui lui correspond doit être là with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 7d3e45', exact: true }) })
+
+
+      258 |       for (const c of cas) {
+      259 |         expect(await charger(page, `${base}?${c.oui}`), `filtre « ${c.filtre} »`).toBe(200);
+    > 260 |         await expect(carte(page, nom(salle)), `filtre « ${c.filtre} » : la salle qui lui correspond doit être là`).toBeVisible();
+          |                                                                                                                    ^
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+      263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:260:116
+
+    attachment #1
+
+===== PUB1-15
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (7.0s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.5s)
+  x  4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (10.6s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) 
+
+    Error: jumeau négatif « ville » : la salle ne doit PAS y être
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 02dd13', exact: true }) })
+    Expected: 0
+    Received: 1
+    Call log:
+      - jumeau négatif « ville » : la salle ne doit PAS y être with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 02dd13', exact: true }) })
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      261 |         await expect(page.getByText(M.search.preview.notice), `filtre « ${c.filtre} » : un résultat réel exclut le bandeau fictif`).toHaveCount(0);
+      262 |         expect(await charger(page, `${base}?${c.non}`), `jumeau négatif « ${c.filtre} »`).toBe(200);
+    > 263 |         await expect(carte(page, nom(salle)), `jumeau négatif « ${c.filtre} » : la salle ne doit PAS y être`).toHaveCount(0);
+          |                                                                                                               ^
+      264 |       }
+      265 |       // La date n'écarte pas la salle : elle est libre ce jour-là, donc non grisée.
+      266 |       await charger(page, `${base}?availableOn=${dansDeuxMois()}&minPrice=${salle.prixDinars}&maxPrice=${salle.prixDinars}`);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:263:111
+
+    attachment #1
+
+===== PUB1-16
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (5.9s)
+  x  3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (8.4s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau 
+
+    Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 095857', exact: true }) }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - ni « récentes » ni « moins chères » ne porte la salle publiée with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle 095857', exact: true }) }).first()
+
+
+      231 |       const page = await ctx.newPage();
+      232 |       expect(await charger(page, `/${langue}`)).toBe(200);
+    > 233 |       await expect(carte(page, nom(salle)).first(), "ni « récentes » ni « moins chères » ne porte la salle publiée").toBeVisible();
+          |                                                                                                                      ^
+      234 |       await expect(page.getByText(M.home.venues.previewNotice)).toHaveCount(0);
+      235 |       await ctx.close();
+      236 |     });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:233:118
+
+    attachment #1
+
+===== PUB1-18
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (5.6s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.4s)
+  ok 4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (17.5s)
+  x  5 [chromium] › specs\r50-salle-publiee.e2e.ts:274:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · la fiche s'ouvre depuis la carte : titre, photo chargée, page de gauche à droite (8.4s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:274:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · la fiche s'ouvre depuis la carte : titre, photo chargée, page de gauche à droite 
+
+    Error: la carte annonce « aucune photo » alors que le pro en a envoyé une
+
+    Timed out 7000ms waiting for expect(locator).toHaveCount(expected)
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle ca3f96', exact: true }) }).locator('.venue-card-nophoto')
+    Expected: 0
+    Received: 1
+    Call log:
+      - la carte annonce « aucune photo » alors que le pro en a envoyé une with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'R50 Salle ca3f96', exact: true }) }).locator('.venue-card-nophoto')
+        11 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      278 |       const c = carte(page, nom(salle));
+      279 |       await expect(c).toBeVisible();
+    > 280 |       await expect(c.locator(".venue-card-nophoto"), "la carte annonce « aucune photo » alors que le pro en a envoyé une").toHaveCount(0);
+          |                                                                                                                            ^
+      281 |       await c.getByRole("link").first().click();
+      282 |       await expect(page).toHaveURL(new RegExp(`/${langue}/salles/${salle.slug}$`));
+      283 |       await expect(page.getByRole("heading", { level: 1, name: nom(salle) })).toBeVisible();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:280:124
+
+    attachment #1
+
+===== PUB1-19
+  ok 2 [chromium] › specs\r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie (5.6s)
+  ok 3 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (1.5s)
+  ok 4 [chromium] › specs\r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif) (17.6s)
+  ok 5 [chromium] › specs\r50-salle-publiee.e2e.ts:274:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · la fiche s'ouvre depuis la carte : titre, photo chargée, page de gauche à droite (2.7s)
+  x  6 [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › AR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau (8.2s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › AR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau 
+
+    Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('li.venue-card').filter({ has: getByRole('heading', { name: 'قاعة الاختبار 881f86', exact: true }) }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - ni « récentes » ni « moins chères » ne porte la salle publiée with timeout 7000ms
+      - waiting for locator('li.venue-card').filter({ has: getByRole('heading', { name: 'قاعة الاختبار 881f86', exact: true }) }).first()
+
+
+      231 |       const page = await ctx.newPage();
+      232 |       expect(await charger(page, `/${langue}`)).toBe(200);
+    > 233 |       await expect(carte(page, nom(salle)).first(), "ni « récentes » ni « moins chères » ne porte la salle publiée").toBeVisible();
+          |                                                                                                                      ^
+      234 |       await expect(page.getByText(M.home.venues.previewNotice)).toHaveCount(0);
+      235 |       await ctx.close();
+      236 |     });
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:233:118
+
+    attachment #1
+
+===== PUB1-20
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:432:7 › R50 · M-3 — la fiche dit la vérité sur une salle qui change d'état après avoir été vue › publiée après une visite en 404 ; renommée ; masquée ; supprimée : chaque relecture de la fiche suit l'état réel (15.1s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:432:7 › R50 · M-3 — la fiche dit la vérité sur une salle qui change d'état après avoir été vue › publiée après une visite en 404 ; renommée ; masquée ; supprimée : chaque relecture de la fiche suit l'état réel 
+
+    Error: la fiche annonce encore l'ancien nom
+
+    Timed out 7000ms waiting for expect(locator).toBeVisible()
+
+    Locator: getByRole('heading', { name: 'R50 M3 RENOMMEE f4e848', level: 1 })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - la fiche annonce encore l'ancien nom with timeout 7000ms
+      - waiting for getByRole('heading', { name: 'R50 M3 RENOMMEE f4e848', level: 1 })
+
+
+      470 |     expect(await charger(page, `/fr/salles/${avantPublication.slug}`), "publiée après une visite en 404 : la fiche s'ouvre").toBe(200);
+      471 |     expect(await charger(page, `/fr/salles/${renommee.slug}`)).toBe(200);
+    > 472 |     await expect(page.getByRole("heading", { level: 1, name: nouveauNom }), "la fiche annonce encore l'ancien nom").toBeVisible();
+          |                                                                                                                     ^
+      473 |     expect(await charger(page, `/fr/salles/${masquee.slug}`), "salle masquée : la fiche doit être un 404").toBe(404);
+      474 |     expect(await charger(page, `/fr/salles/${supprimee.slug}`), "salle supprimée : la fiche doit être un 404").toBe(404);
+      475 |     await ctx.close();
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:472:117
+
+    attachment #1
+
+===== PUB1-21
+  x  2 [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit (31.1s)
+
+  1) [chromium] › specs\r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "En attente de publication par Zwadj"
+    Received string:    "Aucune photo R50 M2 2 c41145 Zéralda Jusqu'à 300 invités 93 000 DA VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=ACTIVE"
+
+      417 |
+      418 |     // Ce que le pro lit : l'état de publication et la visibilité qu'il a choisie — les MOTS de l'application.
+    > 419 |     expect(lecturePro["brouillon"]).toContain(V.publication.draft);
+          |                                     ^
+      420 |     expect(lecturePro["témoin"]).toContain(V.publication.published);
+      421 |     expect(lecturePro["masquée"]).toContain("visibilité=HIDDEN");
+      422 |     expect(lecturePro["indisponible"]).toContain("visibilité=TEMPORARILY_UNAVAILABLE");
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r50-salle-publiee.e2e.ts:419:37
+
+    attachment #1
