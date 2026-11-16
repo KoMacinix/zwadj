@@ -1,0 +1,20 @@
+D348 — contrôle « 0 valeur réelle » (D299) et tri des alertes nouvelles, second versement (les rouges, les mesures M-1 à M-3, les captures)
+
+Audit : docs/preuves/D348/audit-secrets-d348b.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; 5 122 fichiers audités). Code de sortie 1 = alertes, attendu (D298). Durée : environ vingt minutes (la machine faisait en même temps tourner une campagne de neutralisation).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D348/audit-secrets-d348a.txt docs/preuves/D348/audit-secrets-d348b.txt
+  → calibration 2 bras ✓ ; 2364 contextes dans la précédente, 2372 dans la nouvelle ; 8 alertes ABSENTES de la précédente (mot-de-passe 4, jeton 3, url-avec-identifiants 1), lues une à une (lignes 5973, 5975, 5977, 5979, 5981, 5983, 5985, 5987 de la sortie scellée) :
+  · 5973 [mot-de-passe] et 5975 [jeton], docs/preuves/D348/aucune-valeur-reelle.txt:10 et :11 : le tri du premier versement RECITE le titre d'un test d'intégration existant et le gabarit « token= » de D347 — l'écho d'une pièce de D348 commitée après l'audit « a ». Aucune valeur (« valeur trop courte pour une recherche »).
+  · 5977 [url-avec-identifiants], docs/preuves/D348/mesures/pieces/m3-instrument.mjs:9 : l'adresse de la base jetable `zwadj_e2e` du conteneur local (identifiants de développement du `docker-compose.yml`), déjà présente à l'identique dans 3 fichiers suivis hors preuves (dont `e2e/playwright.config.ts:40`). Pas une valeur réelle d'un service.
+  · 5979, 5981 et 5983 [mot-de-passe], m3-instrument.mjs:66 et :73 : le mot de passe FIXE des comptes de test de l'e2e (« Motdepasse1 », `e2e/fixtures/harness.ts:24`), déjà présent dans 51 fichiers suivis hors preuves. Mot de passe d'un compte créé sur une base recréée à chaque lancement.
+  · 5985 [jeton], docs/preuves/D348/regle-e2e.md:10 : la règle nomme le gabarit « token= » ; aucune valeur.
+  · 5987 [jeton], docs/preuves/D348/rouges/rouge-1-e2e-r50-contre-etat-avant.txt:1 : l'en-tête de la pièce rapporte « « token= » restants : 0 (attendu 0) » ; aucune valeur.
+  Aucune n'est une fuite.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), sur le journal BRUT du rouge 1 (hors dépôt) contre tout docs/preuves/D348 :
+  → « occurrences stricte 7 · large 7 (doivent s'accorder) · valeurs distinctes 7 · positif 1 (attendu 1) · négatif 0 » ; « valeurs cherchées : 7 (1 journal) · parcourus : 22 fichiers, 4 305 595 octets · porteurs : 0 (attendu 0) ».
+  Les journaux de la campagne de neutralisation (`.neutralisation-journaux/pub1/`) et ceux des portes seront contrôlés de la même façon à LEUR versement.
+
+ÉCART À LA RÈGLE ÉCRITE (nommé ici, et dans `docs/preuves/D348/rouges/rouges.md`) : `regle-e2e.md` (point 8) annonçait le masquage « par `masquer-jetons.py` (copie de D345) ». La session a employé à la place un script plus court qui RETIRE les lignes portant « token= » (les lignes `[WebServer]` des courriels d'activation) et ASSERTE qu'il n'en reste aucun et qu'aucune suite de 43 caractères de forme jeton ne subsiste ; il est archivé avec la pièce (`docs/preuves/D348/rouges/verser-journal.py`), jamais promu en instrument (D291). Motif : aucun jeton n'a besoin d'être conservé (D347 avait fait de même, « lignes [WebServer] retirées »). Conséquence : les pièces ne portent ni jeton ni numéro de jeton masqué ; l'en-tête de chaque pièce dit combien de lignes ont été retirées.
+
+Pièces versées à ce versement : docs/preuves/D348/rouges/rouges.md · docs/preuves/D348/rouges/rouge-1-e2e-r50-contre-etat-avant.txt · docs/preuves/D348/rouges/verser-journal.py · docs/preuves/D348/mesures/m1-chemin-reel.md · docs/preuves/D348/mesures/m2-table.md · docs/preuves/D348/mesures/m3-delais.md · docs/preuves/D348/mesures/pieces/ (huit images, la table M-2 brute, la sortie brute de M-3, l'instrument de M-3) · docs/preuves/D348/audit-secrets-d348b.txt · ce fichier.

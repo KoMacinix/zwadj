@@ -1,0 +1,53 @@
+{
+ "lectures": [
+  {
+   "condition": "témoin : publiée, visible, un créneau actif",
+   "liste": true,
+   "listeAvecDate": true,
+   "fiche": 200
+  },
+  {
+   "condition": "brouillon : jamais publiée",
+   "liste": false,
+   "listeAvecDate": false,
+   "fiche": 404
+  },
+  {
+   "condition": "masquée par le pro (HIDDEN)",
+   "liste": false,
+   "listeAvecDate": false,
+   "fiche": 404
+  },
+  {
+   "condition": "temporairement indisponible (TEMPORARILY_UNAVAILABLE)",
+   "liste": false,
+   "listeAvecDate": false,
+   "fiche": 200
+  },
+  {
+   "condition": "supprimée par le pro",
+   "liste": false,
+   "listeAvecDate": false,
+   "fiche": 404
+  },
+  {
+   "condition": "publiée, aucun créneau actif",
+   "liste": true,
+   "listeAvecDate": false,
+   "fiche": 200
+  },
+  {
+   "condition": "compte du pro supprimé (salles archivées)",
+   "liste": false,
+   "listeAvecDate": false,
+   "fiche": 404
+  }
+ ],
+ "lecturePro": {
+  "témoin": "Aucune photo R50 M2 1 a5c591 Zéralda Jusqu'à 300 invités 92 000 DA PUBLICATION Publiée VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=ACTIVE",
+  "brouillon": "Aucune photo R50 M2 2 1c6a1c Zéralda Jusqu'à 300 invités 93 000 DA PUBLICATION En attente de publication par Zwadj VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=ACTIVE",
+  "masquée": "Aucune photo R50 M2 3 362500 Zéralda Jusqu'à 300 invités 94 000 DA PUBLICATION Publiée VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=HIDDEN",
+  "indisponible": "Aucune photo R50 M2 4 44860f Zéralda Jusqu'à 300 invités 95 000 DA PUBLICATION Publiée VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=TEMPORARILY_UNAVAILABLE",
+  "sans créneau": "Aucune photo R50 M2 6 d18ab7 Zéralda Jusqu'à 300 invités 97 000 DA PUBLICATION Publiée VISIBILITÉ Visible Masquée Temporairement indisponible Modifier Supprimer || visibilité=ACTIVE"
+ }
+}
