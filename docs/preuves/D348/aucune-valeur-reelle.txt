@@ -1,0 +1,16 @@
+D348 — contrôle « 0 valeur réelle » (D299) et tri des alertes nouvelles (D299), avant le premier versement de pièces
+
+Audit : docs/preuves/D348/audit-secrets-d348a.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; 5 106 fichiers audités, 176 exclus par l'identité de leurs octets ; calibration : 5 bras sur 5). Code de sortie 1 = alertes, attendu (D298 : le tri est humain). Durée : environ douze minutes (135 Mo sous docs/preuves).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D347/audit-secrets-d347b.txt docs/preuves/D348/audit-secrets-d348a.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes, 0 nouvelle ; positif : 2 sur 2) ;
+  → 2360 contextes dans la précédente, 2364 dans la nouvelle ; 4 alertes ABSENTES de la précédente (mot-de-passe 1, jeton 3), toutes sous docs/preuves/D347/aucune-valeur-reelle.txt.
+
+Tri au contexte (lignes 5940, 5946, 5948 et 5950 de la sortie scellée), lues une à une :
+  · ligne 5940 [mot-de-passe], D347/aucune-valeur-reelle.txt:12 : le titre d'un test d'intégration existant (« forgot-password : … CONSTANTE, mais aucun e-mail ne part »), que la pièce de D347 recite. Le mot « mot-de-passe » est le nom du motif ; aucune valeur. Le titre est déjà présent dans des fichiers suivis hors preuves (le tri de D346 l'avait établi).
+  · lignes 5946, 5948 et 5950 [jeton], D347/aucune-valeur-reelle.txt:6, :7 et :11 : le texte de D347 qui NOMME le gabarit « token= » et qui rapporte « restants : 0 (attendu 0) » ; la sortie de l'audit les marque « valeur trop courte pour une recherche » : aucune valeur n'est lue.
+  Les quatre sont l'ÉCHO d'une pièce de D347 (le tri de l'audit précédent), commitée après la sortie scellée de D347 : c'est la configuration que D298 décrit. Aucune n'est une fuite.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) : NON JOUÉ à ce versement, et c'est dit. Il cherche les valeurs d'un JOURNAL qu'on lui nomme ; cette session n'a produit aucun journal à valeurs réelles (aucun serveur lancé, aucune porte jouée, aucun jeton émis) — il n'y a rien à chercher. Il se joue au versement des journaux (portes, passes e2e, mesures), avec ces journaux.
+
+Pièces versées à ce versement : docs/preuves/D348/consigne.md · docs/preuves/D348/lecture-adverse/lecture-adverse.md · docs/preuves/D348/par-carte-fichiers.txt (155 chemins, sortie de `git diff --name-only origin/main origin/par-carte`) · docs/preuves/D348/audit-secrets-d348a.txt · ce fichier. Aucune ne porte de valeur d'accès, de jeton, de clé ou de mot de passe (le seul texte voisin est le nom de motifs).
