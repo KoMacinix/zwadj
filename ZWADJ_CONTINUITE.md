@@ -2674,7 +2674,11 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 49 : CLOS (le parcours « Nouvelle réservation » du pro retrouve une spec navigateur : `e2e/specs/r49-nouvelle-reservation.e2e.ts`, six tests) — D347, 10/11/2026** : lot de **CODE DE TEST** (il ajoute la spec et le harnais `neutralisation/neutralize-r49.py` : il **compte**, D283) ; **aucune ligne d'`apps/`, de `packages/` ni d'`e2e/fixtures/`** ; la **carte** (`docs/preuves/D347/carte.md`) a dit « personne » pour **dix-neuf des vingt gardes** de r32 ; **l'application d'aujourd'hui n'en contredit aucune** (R-3 n'a pas joué) ; **harnais r49 : 36 cibles, 36 mordues, 0 muette, 0 non mesurée** (jouées en deux passes, la seconde partielle : voir la section D347) ; **six portes à 0** sur secteur et **deux passes e2e vertes** de suite (88 passés + 1 ignoré chacune) ; **compteur POUR MÉMOIRE VINGT-DEUX → VINGT-TROIS** (la limite de cinq reste SUSPENDUE par Ko ; aucune certification, aucune marque). Pièces : `docs/preuves/D347/` ; décision : section D347.
 
-⇒ **RANG 50 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 49, section 4) : **le cache d'une heure des référentiels du client** (entrée `[E2E][INFRA]` de `ZWADJ_BACKLOG.md`, « Reports du 09/11/2026 ») — c'est elle qui rend la partie « goûts » de r48 non mesurée dans la suite complète (S-153) ; le filet e2e doit être complet avant L36-4 (R-1 de D344) — **pas arbitré**. Le rang 50 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : aucun geste (D347 n'en demande aucun) ; la ratification de **S-158 à S-163** (section D347, § 4).
+⇒ ~~**RANG 50 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D348 : **PÉRIMÉ** — le rang 50 est arbitré par Ko (adoption, en collant le message, de la consigne du relecteur « RANG 50 — une salle publiée se voit sur le site client ») et **CLOS SUR LE CODE le 16/11/2026** : voir les lignes juste dessous. Le candidat « le cache d'une heure des référentiels du client » n'a PAS été arbitré : il reste candidat, sans rang. Barré avec son motif, pas effacé.)*
+
+⇒ **RANG 50 : CLOS SUR LE CODE (une salle publiée se voit sur le site client — le chemin réel après publication mesuré, un défaut réel trouvé et corrigé : la fiche d'une salle MASQUÉE ou SUPPRIMÉE restait servie en 200) — D348, 16/11/2026** : lot de **CODE** (une ligne d'`apps/client/src/lib/api.ts`, des commentaires dans deux autres fichiers, la spec `e2e/specs/r50-salle-publiee.e2e.ts` et le harnais `neutralisation/neutralize-pub1.py` : il **compte**, D283) ; **M-1 et M-2 : aucun défaut d'affichage** (une salle publiée s'affiche, en FR et en AR, avec chaque filtre qui lui correspond) ; **M-3 : ROUGE sur un build de production** (mesuré, pièces `docs/preuves/D348/mesures/`) ; correction : `getVenueBySlug` sans cache ; **compteur POUR MÉMOIRE VINGT-TROIS → VINGT-QUATRE** (limite de cinq SUSPENDUE par Ko ; aucune certification, aucune marque) ; ⛔ **LA PORTE `test` EST ROUGE (1 échec dans un fichier de `apps/pro` que ce lot ne touche pas) : la clôture est commitée en LOCAL et N'EST PAS POUSSÉE** (D270) — `docs/preuves/D348/portes/test-rouge-instruction.md` ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Détail : section D348.
+
+⇒ **RANG 51 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 50, section 4) : **ADM-1**, la page d'administration côté API (cadrée au rang 28, arbitrée par Ko en D321) ; puis ADM-2 ; puis l'intégration de la branche `par-carte`. **Pas arbitré** : le rang 51 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : (1) **la décision sur la poussée** malgré la porte `test` rouge (section D348, § 6) ; (2) la ratification de **S-164 à S-171** (section D348, § 4) ; (3) la ratification de **S-158 à S-163** (D347), restée ouverte.
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -2763,9 +2767,32 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## PROCHAIN LOT — rang 50 · `[CODE]` **Une salle publiée se voit sur le site client : le chemin réel après publication, mesuré** ⛔ **CLOS SUR LE CODE LE 16/11/2026 (D348) — NON POUSSÉ (porte `test` rouge)**
+
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 50 (D348, 16/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **50 : CLOS SUR LE CODE** — la question de Ko (« qu'une salle publiée soit affichée côté client ») est MESURÉE de bout en bout ; la réponse est dans la section D348 | ordre des rangs |
+| rang suivant | **« RANG 51 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé : ADM-1 ; **pas arbitré** | ordre des rangs |
+| numéros | **D348 est au registre** ; dernier numéro attribué : **D348**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **VINGT-QUATRE** (VINGT-TROIS + D348) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| ce que les mesures ont dit | M-1 et M-2 : **aucun défaut d'affichage** ; M-3 : **un défaut réel**, corrigé (la fiche gardée 300 s restait en 200 pour une salle masquée ou supprimée) | `docs/preuves/D348/mesures/` |
+| la correction | **une ligne de code** : `next: { revalidate: 300 }` → `cache: "no-store"` dans `getVenueBySlug` (`apps/client/src/lib/api.ts`), plus des commentaires ; rejouée sur un build de production : 404 à T+1 s | `docs/preuves/D348/mesures/m3-delais.md` |
+| portes (une passe, secteur, arbre propre) | `typecheck` 0 · `lint` 0 · **`test` 1** (un échec : `apps/pro/src/account/account-settings-page.test.tsx`, garde des avertissements `act`, **rejoué seul : 4 verts sur 5**, fichier hors du lot) · `build` 0 · `test:int` 0 (46 fichiers, 735 tests) · `test:e2e` 0 (97 passés + 1 ignoré) | `docs/preuves/D348/portes/` |
+| e2e | **deux passes vertes de suite** : 97 passés + 1 ignoré chacune (88 + 1 ignoré d'avant, plus les 9 tests de `r50` : un de création et de publication et six de lecture pour M-1, un pour M-2, un pour M-3) | `docs/preuves/D348/portes/test-e2e.txt`, `docs/preuves/D348/e2e/passe-2.txt` |
+| harnais | `neutralize-pub1.py` : **20 cibles, 20 mordues** (lues en `expect(...)`), 0 muette ; jouée en TROIS passes — les deux premières arrêtées par un défaut d'instrument (PUB1-16 mal titrée, PUB1-17 non jugeable puis RETIRÉE), la troisième (harnais final) interrompue à PUB1-13 par l'arrêt de Docker puis REPRISE en `--seulement` (13 à 21) ; campagnes existantes concernées (`404`, `available-on`, `fc10` avec `--e2e`, `horizon`) toutes mordues | `docs/preuves/D348/neutralisation/` |
+| ce que l'arbre garde | **commits LOCAUX, NON POUSSÉS** : `origin/main` est resté à `26ad5c7` | `git log origin/main..HEAD` |
+| écritures sur la machine de Ko | **aucune sur la base de développement** ; sur le serveur PostgreSQL de Docker : `DROP`/`CREATE DATABASE zwadj_e2e` (jetable) à chaque mesure ; **Docker Desktop s'est arrêté pendant la campagne et la session l'a relancé, puis a démarré le conteneur `zwadj-db`** (`docker start zwadj-db`, 16/11/2026) — les données du volume n'ont pas été lues | section D348, § 5 |
+| ce qui RESTE | (1) la décision sur la poussée ; (2) le rang 51, à cadrer ; (3) la ratification de S-164 à S-171 ; (4) les entrées de backlog neuves (« Reports du 16/11/2026 ») | backlog |
+
+## ~~PROCHAIN LOT — rang 49~~ ⛔ *(D348 : l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 50 » juste au-dessus ; le bloc du rang 49 qui suit garde sa date. Barré avec son motif, pas effacé.)*
+
 ## PROCHAIN LOT — rang 49 · `[CODE DE TEST]` **Le parcours « Nouvelle réservation » du pro retrouve une spec navigateur** ⛔ **CLOS SUR LE CODE LE 10/11/2026 (D347)**
 
-### ⛔ ÉTAT À LA CLÔTURE DU RANG 49 (D347, 10/11/2026) — À LIRE EN PREMIER
+### ~~⛔ ÉTAT À LA CLÔTURE DU RANG 49 (D347, 10/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D348 : **PÉRIMÉ** sur « rang suivant : RANG 50 », « compteur VINGT-TROIS » et « ce qui RESTE : le rang 50, à cadrer » ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 50 » juste au-dessus. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -6466,6 +6493,159 @@ reflété en arabe. V-b · il efface les réponses. **Nouveau devis (Q)** — Q-
 vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du serveur. F-b · elle s'ouvre sur un échec. F-c · elle ne
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
+
+## Session du 16/11/2026 — D348 · rang 50 CLOS SUR LE CODE, lot de CODE : une salle publiée se voit sur le site client — le chemin réel mesuré, et la fiche d'une salle MASQUÉE ou SUPPRIMÉE n'est plus servie périmée ; compteur POUR MÉMOIRE VINGT-TROIS → VINGT-QUATRE ; ⛔ NON POUSSÉ (porte `test` rouge)
+
+Consigne : celle du relecteur « RANG 50 », collée par Ko et adoptée par adoption (`docs/preuves/D348/consigne.md` ; mots de Ko, 10/11/2026 : « lot pour qu'une salle publié soit affichant dans la partie client », et 12/11/2026 : « Je sais pas ce que je dois voir, du moment que j'ai pas la main pour accepter de publier » ⇒ **aucune piste de défaut : une vérification**). SHA de départ : `26ad5c7` (= `origin/main`, vérifié après `git fetch`), arbre propre, aucun stash, sur `main`, secteur (`BatteryStatus` = 2), Docker 29.8.0 lancé, `chrome` et `headless_shell` à 0. Dernier numéro lu au registre : D347 → **D348**. Lot de **CODE** (il compte, D283).
+
+### 1. Ce que la reprise a trouvé (lecture adverse : `docs/preuves/D348/lecture-adverse/lecture-adverse.md`, versée AVANT tout `.md` d'autorité)
+**26 lignes lues · 1 écart non bloquant · 1 non vérifiable sans conséquence · 6 nuances qui ont orienté la mesure · 0 écart qui arrête le lot.**
+- **Écart** : une troisième branche distante, `integration-45` (`63511ce`), que la consigne n'annonce pas (elle annonce `front-client` et `par-carte`). Non touchée.
+- **Non vérifiable** : `claude/rang50-message.md` (le message du 10/11) n'est pas dans le dépôt ; la consigne dit qu'il n'est pas adopté.
+- **Nuances qui ont changé la mesure** : le détail d'une salle admet `TEMPORARILY_UNAVAILABLE` (la ligne « statut autre qu'ACTIVE » se dédouble) ; le repli fictif ne joue que sur un catalogue VIDE (donc « avant la publication, des fictives » n'est vrai que sur une base sans salle) ; « publiée sans créneau actif » ne s'obtient pas par l'API (409 à l'écriture) ; l'accueil ne rend que six salles par grille ; dans la suite complète le catalogue n'est pas vide (deux travailleurs publient en parallèle).
+
+### 2. Ce qui a été fait (R-1 à R-8)
+| décision de la consigne | ce qui a été fait |
+|---|---|
+| **R-1** mesure d'abord, M-1 dans un navigateur | `e2e/specs/r50-salle-publiee.e2e.ts` : le pro crée la salle **par l'écran** (essentiel, équipement, style, créneau, prix, photo), l'admin la publie par la route existante (élévation par la base, comme r37) ; puis l'accueil, `/salles` sans filtre et avec **six filtres** (ville, invités, budget, équipement, style, date) **chacun avec son jumeau négatif**, la fiche — en FR **et** en AR. **Résultat : aucun défaut** (7 tests verts). `docs/preuves/D348/mesures/m1-chemin-reel.md` |
+| **R-2** la table des conditions | `docs/preuves/D348/mesures/m2-table.md` : sept conditions JOUÉES (témoin, brouillon, masquée, temporairement indisponible, supprimée, publiée sans créneau actif, compte du pro supprimé) avec la liste, la liste datée, la fiche et ce que le PRO lit. **Toutes conformes à la lecture du code.** Constats : une salle « temporairement indisponible » est absente de la liste mais **ouverte par son adresse** (D33, voulu) ; **aucun écran ne dit au pro** qu'une salle publiée sans créneau actif disparaît des recherches datées, ni quand sa salle vient d'être publiée |
+| **R-3** les délais, sur un build de production | `docs/preuves/D348/mesures/m3-delais.md` : `next build` + `next start`, valeur RÉELLE du cache (300 s). **ROUGE** : la fiche d'une salle masquée ou supprimée est **toujours servie en 200 à T+663 s, à plus de douze minutes, et après un redémarrage du serveur**, l'API répondant 404 ; le nom, le prix et la photo d'une salle modifiée sont périmés **308 s** ; le 404 d'une salle pas encore publiée n'est PAS gardé. La liste (sans cache) est toujours juste |
+| **R-4** corriger ce qui est rouge, rouge versé avant | rouge versé (`9258886`) **avant** le premier commit de code (`411d373`). **Une ligne** : `getVenueBySlug` lit l'API en `cache: "no-store"` (`apps/client/src/lib/api.ts`) ; deux commentaires rendus faux sont mis à jour. Rejouée sur un build de production : masquée et supprimée en **404 à T+1 s**, nom, prix et photo à jour à T+1 s |
+| **R-5** si rien n'est rouge | sans objet : M-3 est rouge ; M-1 et M-2 livrent bien « la preuve qui manquait » |
+| **R-6** `par-carte` | liste versée (`par-carte-fichiers.txt`, 155 chemins). **Un seul fichier du lot est dans cette liste** : `apps/client/src/lib/api.ts` — `par-carte` y modifie l'import (l. 10) et ajoute `getVenueMap` en fin de fichier ; la correction (l. 183 à 199) n'est dans aucun de ses blocs. `git merge-tree --write-tree HEAD origin/par-carte` : **aucun conflit** (un arbre, sans liste de conflits). Rien de ce qui concerne la carte n'est touché |
+| **R-7** aucun contrat, aucune migration, aucun montant | **tenu** : routes existantes seulement ; deux écritures par la base jetable, dites (l'élévation d'un compte, la désactivation d'un créneau publié, que l'API refuse) |
+| **R-8** hors lot | reporté au backlog, rien n'est codé : lien « voir ma salle sur le site », message au pro quand sa salle est publiée, mot au pro sur « temporairement indisponible » et sur la salle sans créneau actif, retrait des salles fictives, l'écran de publication |
+
+**La réponse à « une salle publiée s'affiche-t-elle ? »** : **oui** — sur l'accueil, sur `/salles` (sans filtre et sous chacun des six filtres qui lui correspondent) et sur sa fiche, en français et en arabe, sans salle fictive ni bandeau à côté ; **sauf** que sa fiche restait servie après qu'elle a été masquée ou supprimée (**corrigé**).
+
+### 3. Les gardes, et les portes
+- **Spec** : 9 tests e2e (le préchauffage est déjà dans les 88 d'avant) — M-1 (le test de création/publication + trois tests × deux langues), M-2 (un test), M-3 (la garde de la fiche). Vert contre l'application après la correction ; **ROUGE contre l'état d'avant** pour la seule garde de M-3 (`rouges/rouge-1-e2e-r50-contre-etat-avant.txt`, empreinte de la spec `662f3ebb…` — identique à celle du commit).
+- **Harnais** `neutralisation/neutralize-pub1.py` (rouges lus en `expect(...)`, jamais au code de sortie) : **20 cibles, 20 mordues, 0 muette** — l'API (filtre de publication, statut de la liste, statut du détail, suppression, créneau actif sous une date, filtres invités, ville, budget, équipement, style), le client (repli fictif de l'accueil et de la recherche, accueil qui ne rend plus de salle, budget × 10, ville non transmise, cache de la liste, photo de la carte, nom arabe, **cache de la fiche**), le Pro (le badge de publication). **PUB1-17 est RETIRÉE par écrit** : le préchauffage de la suite garde déjà « une fiche inconnue répond 404 » par un `expect(...).toEqual([])` et rougit avant que la spec ne démarre. Les journaux : `docs/preuves/D348/neutralisation/` (blocs d'échec : `extraits-des-echecs.txt`).
+- **Campagnes existantes concernées** (`lancer-campagnes.py` ne les voit pas : arbre propre, comparaison à `HEAD`) : `404` (12), `available-on` (10), `horizon` (6), `fc10` (4 + 5 avec `--e2e`) — toutes mordues, arbre rendu.
+- **Portes** (pilote de D340, une passe, secteur, arbre propre ; `docs/preuves/D348/portes/_index.txt`) : `typecheck` 0 (20 s) · `lint` 0 (15 s) · **`test` 1 (113 s)** · `build` 0 (35 s) · `test:int` 0 (514 s ; 46 fichiers, 735 tests) · `test:e2e` 0 (442 s ; 97 passés + 1 ignoré).
+- **e2e : deux passes complètes vertes de suite** — 97 passés + 1 ignoré chacune (88 + 9) ; la seconde sur secteur avant et après (`docs/preuves/D348/e2e/`).
+- ⛔ **La porte `test` est rouge** : un test de `apps/pro/src/account/account-settings-page.test.tsx` (garde « avertissements de console `act(...)` »). Rejoué seul cinq fois : **4 verts, 1 rouge, même message, autre test du même bloc**. Mon diff ne touche ni ce fichier ni rien dont il dépend (trois fichiers sous `apps/client`, aucun sous `apps/pro` ni `packages`). `docs/preuves/D348/portes/test-rouge-instruction.md`. ⚠ **C'est un argument de dépendance, pas une mesure sur l'arbre d'avant** : écrit comme inférence.
+
+### 4. Décisions prises par la session seule (une phrase chacune, avec ce qu'elle change pour Ko) — **S-164 à S-171, À RATIFIER PAR KO**
+- **S-164** — La fiche est lue sans cache (R-4 le permet pour une salle masquée ou supprimée). *Pour Ko : la fiche ne ment plus ; elle coûte une lecture de l'API à chaque vue, ce coût n'est pas mesuré.*
+- **S-165** — M-3 est mesurée avec la valeur réelle de 300 s, sans copie du dépôt ni retouche. *Pour Ko : rien à restaurer ; la mesure a duré une dizaine de minutes par passe.*
+- **S-166** — L'état « avant la publication » (6 fictives et le bandeau sur un catalogue vide) est mesuré une fois, spec seule, et n'est pas affirmé dans la suite. *Pour Ko : la suite prouve qu'aucune fictive n'apparaît à côté d'une vraie salle, pas qu'elles disparaissent d'un catalogue qui se remplit.*
+- **S-167** — La cible PUB1-17 est retirée (déjà gardée par le préchauffage). *Pour Ko : 20 cibles au lieu de 21 ; le 404 d'une fiche inconnue reste gardé, par une autre garde.*
+- **S-168** — La campagne est jouée en trois passes, la dernière interrompue à PUB1-13 par l'arrêt de Docker puis reprise en `--seulement` (13 à 21). *Pour Ko : 20 sur 20 mordues avec le même harnais, mais pas d'un seul tenant.*
+- **S-169** — La porte `test` n'est pas relancée en entier et la clôture n'est pas poussée. *Pour Ko : `origin/main` est resté à `26ad5c7` ; rien n'est publié tant que tu n'as pas tranché.*
+- **S-170** — La session a relancé Docker Desktop et démarré le conteneur `zwadj-db` quand Docker s'est arrêté en pleine campagne. *Pour Ko : c'est une action sur ta machine que tu n'avais pas demandée ; la base de développement n'a pas été lue ni écrite.*
+- **S-171** — Les journaux sont versés après retrait des lignes qui portent un jeton (script archivé) plutôt que par `masquer-jetons.py` de D345. *Pour Ko : aucune pièce ne porte de jeton ni de numéro de jeton masqué ; la règle écrite d'avant (`regle-e2e.md`) annonçait l'autre outil, l'écart est nommé.*
+
+### 5. Écritures sur la machine de Ko, et défauts d'instrument (écrits pour ne pas se lire comme tenus)
+- **Base de développement de Ko : aucune écriture, aucune lecture.** Sur le serveur PostgreSQL de Docker : `DROP DATABASE`/`CREATE DATABASE zwadj_e2e` (la base jetable de l'e2e) à chaque mesure, comme `global-setup` le fait.
+- **Docker Desktop** s'est arrêté pendant la campagne (conteneur `zwadj-db` sorti en 255) ; relancé par la session, conteneur redémarré par `docker start zwadj-db` le 16/11/2026. Les données du volume n'ont pas été lues.
+- **Défauts d'instrument de la mesure M-3**, tous écrits : le détecteur du prix de `m3-instrument.mjs` cherchait « 123456 » (contenu dans « 0555123456 », un message présent sur toutes les pages) → faux positif « T+1 s » **rectifié à côté de la pièce** (non retouchée, D295) ; la copie « après » attendait une espace simple devant « DA » alors qu'elle est insécable → arrêtée, prix relu à la main.
+- **Le build de production n'est pas dans la suite** : `docs/preuves/D348/mesures/pieces/m3-instrument.mjs` est une pièce. Rien dans la suite ne rougirait demain si le cache de la fiche revenait **sur un build de production** ; la garde de la suite (M-3 de la spec) le mord sur les serveurs de **développement** — c'est ce que la cible PUB1-20 prouve.
+- **Chaque garde de la spec mord sur un point de l'application, mais** : « l'accueil montre la salle » repose sur ce que la salle soit la plus récente ET la moins chère (90 500 DA contre 100 000 DA et plus pour les autres specs) ; si une autre spec créait une salle moins chère, le test pourrait échouer sans défaut de l'application.
+- Poste : RAM libre 3 à 5 Go, `chrome` > 0 pendant les portes (le navigateur de Ko, pas l'e2e) — sans objet ici (certifications en pause), dit pour ne pas le cacher.
+
+### 6. Ce qui est DÛ à Ko, et la question
+**Une question** : la porte `test` est rouge par un test intermittent de `apps/pro` que ce lot ne touche pas ; **faut-il pousser quand même cette clôture dans `main`** (le précédent de D340 la garderait en local), ou la porte doit-elle d'abord être réparée (un lot à part, entrée de backlog) ? **Gestes de Ko : aucun n'est requis.** Facultatif : ouvrir `docs/preuves/D348/mesures/pieces/avant-fr-salles.png` et `apres-fr-salles.png` pour voir les salles fictives avec leur bandeau, puis une vraie salle.
+
+### 7. Ordre des commits (D328, D334 point 5), relevé par `git log`
+Table d'ouverture seule (`5b739f5`) → consigne, lecture adverse, liste de `par-carte`, règle e2e, audit de secrets et son tri (`f1c4d52`) → extension 1 de la table, seule (`bd896d2`) → extension 2, seule (`cbd901a`) → **rouges et pièces de mesure** (`9258886`) → **correction** (`411d373`) → **spec et harnais** (`ac728d8`) → extension 3, seule (`c67e352`) → pièces de campagne, portes, e2e et audit (commit suivant) → `.md` d'autorité (commit suivant). Les pièces des rouges précèdent le premier commit de code (`git log`). `git diff 26ad5c7..HEAD --name-only` ⊆ la table : voir `docs/preuves/D348/controle-fin-de-lot.txt`.
+
+### 8. La table d'ouverture, recopiée à l'identique (`docs/preuves/D348/table-ouverture.md`, extensions 1 à 3 comprises)
+
+~~~~
+# D348 — rang 50 — table d'ouverture
+
+Lot : **PUB-1 — une salle publiée se voit sur le site client : vérifier le chemin réel après publication, corriger seulement ce qui est rouge.** Consigne du relecteur « RANG 50 » du 14/11/2026, adoptée par Ko par adoption de son message (elle sera versée dans `docs/preuves/D348/consigne.md`). Lot de **CODE DE TEST** au minimum (une spec e2e neuve et son harnais) : il compte (D283), compteur POUR MÉMOIRE VINGT-TROIS → VINGT-QUATRE à sa clôture. Un correctif de code d'application n'est PAS déclaré ici : il exige une extension de cette table, commitée seule avant son fichier (D328, point 4), et un rouge versé avant le code (R-4, D334 point 5).
+
+- **SHA de départ** : `26ad5c77ec03a73d82e92368f7d97c4beac7556f` = `origin/main` (relevé après `git fetch`, avant toute écriture). Branche `main`, arbre propre, aucun stash.
+- **Numéro** : **D348** — dernière ligne du registre lue : D347.
+- **Poste à l'ouverture** : sur secteur (`Win32_Battery.BatteryStatus` = 2, 100 %), RAM libre ≈ 4 028 Mo, `chrome` et `headless_shell` 0, Docker 29.8.0 lancé.
+- **Branches distantes relevées** : `main`, `front-client`, `par-carte`, et `integration-45` (non annoncée par la consigne ; non touchée).
+
+## Fichiers du lot (chemins COMPLETS)
+
+| Fichier | Rôle | Statut |
+|---|---|---|
+| `docs/preuves/D348/table-ouverture.md` | cette table | ferme |
+| `docs/preuves/D348/consigne.md` | la consigne versée | ferme |
+| `docs/preuves/D348/lecture-adverse/lecture-adverse.md` | la lecture adverse de la consigne contre le dépôt, versée AVANT tout `.md` d'autorité | ferme |
+| `docs/preuves/D348/par-carte-fichiers.txt` | R-6 : `git diff --name-only origin/main origin/par-carte` et son recoupement avec les fichiers de ce lot | ferme |
+| `docs/preuves/D348/regle-e2e.md` | la règle des deux passes e2e vertes, commitée avant elles (R-15 de D343) | ferme |
+| `docs/preuves/D348/mesures/m1-chemin-reel.md` | M-1 : le chemin réel, étape par étape, « vu » ou « pas vu », avec renvoi à la pièce | ferme |
+| `docs/preuves/D348/mesures/m2-table.md` | M-2 : la table « pourquoi une salle publiée ne s'affiche pas » (condition, liste, fiche, ce que le pro lit), chaque ligne JOUÉE | ferme |
+| `docs/preuves/D348/mesures/m3-delais.md` | M-3 : les délais sur un build de production local, durée réduite pour la mesure seule | ferme |
+| `docs/preuves/D348/rouges/rouges.md` | les rouges lus (spec contre garde neutralisée, ou contre l'état d'avant) avec l'empreinte sha256 de chaque fichier de test joué ; commité AVANT tout commit de code (D334, point 5) | ferme |
+| `docs/preuves/D348/audit-secrets-d348a.txt` | audit de secrets avant versement (D298) | ferme |
+| `docs/preuves/D348/aucune-valeur-reelle.txt` | contrôle « 0 valeur réelle » (D299) | ferme |
+| `docs/preuves/D348/controle-fin-de-lot.txt` | la sortie du contrôle de fin de lot (D288, D328) | ferme |
+| `e2e/specs/r50-salle-publiee.e2e.ts` | la spec neuve (R-1, R-2), écrite contre le chemin réel | ferme |
+| `neutralisation/neutralize-pub1.py` | le harnais du lot : chaque garde neuve neutralisée, rouge lu, restaurée | ferme |
+| `ZWADJ_CONTINUITE.md` | section D348, registre, ordre des rangs, point d'entrée, compteur | ferme |
+| `ZWADJ_BACKLOG.md` | ce que R-4 et R-8 reportent ; l'entrée du cache des référentiels reste candidate | ferme |
+| `AGENTS.md` | clôture du rang 50 (annotation additive), si une règle permanente en découle | ferme |
+
+## Fichiers CONDITIONNELS (leur existence dépend d'un résultat)
+
+| Fichier | Condition |
+|---|---|
+| `docs/preuves/D348/lecture-adverse/ecarts.md` | seulement si la lecture adverse trouve un écart avec la consigne |
+| `docs/preuves/D348/mesures/pieces/` (sorties brutes, captures) | chaque pièce citée par M-1, M-2 ou M-3 ; déclarée par EXTENSION, avec ses chemins complets, avant son commit ; journaux bruts versés MASQUÉS (`masquer-jetons.py`) |
+| `docs/preuves/D348/rouges/rouge-N.txt` | seulement si une garde est jouée rouge ; un fichier par rouge, déclaré par extension |
+| `docs/preuves/D348/arret.md` | seulement si R-7 joue (contrat d'API neuf, migration ou montant dans le navigateur nécessaire) : le besoin et les options, le lot s'arrête |
+| `docs/preuves/D348/portes/` (les six portes) et `docs/preuves/D348/e2e/` (les deux passes) | les sorties des portes, déclarées par extension avec chemins complets avant leur commit |
+| `docs/preuves/D348/neutralisation/neutralize-pub1.txt` | la sortie du harnais |
+| tout fichier sous `apps/`, `packages/`, `e2e/fixtures/` | **AUCUN n'est déclaré** : un correctif (R-4) ou une aide de préparation absente exige une extension, commitée seule, qui nomme le fichier, le rouge qui le justifie et — pour un fichier de la liste de `par-carte` — chaque ligne déplacée (R-6) |
+| `neutralisation/lancer-campagnes.py` | seulement si le tri par fichiers touchés exige d'enregistrer le harnais ; sinon NON touché |
+
+## Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (16/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait les pièces de mesure par famille (« sorties brutes, captures ») ; la règle (D328, point 4) veut le chemin complet. Aucune de ces pièces n'est encore commitée. Le premier défaut mesuré (la fiche d'une salle masquée ou supprimée reste servie, M-3) ne déclare AUCUN fichier de code ici : sa correction fera l'objet de l'extension 2, après le commit des rouges.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/rouges/rouges.md` | les rouges lus, avec l'empreinte des fichiers joués | à venir |
+| `docs/preuves/D348/rouges/rouge-1-e2e-r50-contre-etat-avant.txt` | la spec contre le code d'avant (9 passés, 1 échec), jetons retirés | à venir |
+| `docs/preuves/D348/mesures/m1-chemin-reel.md` | M-1 rédigée | à venir |
+| `docs/preuves/D348/mesures/m2-table.md` | M-2 rédigée | à venir |
+| `docs/preuves/D348/mesures/m3-delais.md` | M-3, état ROUGE (l'état « après la correction » s'y ajoutera) | à venir |
+| `docs/preuves/D348/mesures/pieces/m2-table-brute.json` | la table M-2 brute, extraite de la sortie du rouge 1 | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-rouge-sortie-brute.txt` | la sortie brute de la mesure de production | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-instrument.mjs` | l'instrument jetable de M-3, archivé comme pièce | à venir |
+| `docs/preuves/D348/mesures/pieces/avant-fr-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-fr-salles.png`, `docs/preuves/D348/mesures/pieces/avant-ar-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-ar-salles.png` | l'état d'avant la publication (catalogue vide : salles fictives et bandeau) | à venir |
+| `docs/preuves/D348/mesures/pieces/apres-fr-salles.png`, `docs/preuves/D348/mesures/pieces/apres-ar-salles.png` | l'état d'après (cartes réelles, pas de bandeau) | à venir |
+| `docs/preuves/D348/audit-secrets-d348b.txt`, `docs/preuves/D348/aucune-valeur-reelle-b.txt` | l'audit de secrets de ce versement et son tri | à venir |
+
+**Extension 2** (16/11/2026, commitée SEULE, AVANT les fichiers qu'elle couvre). Motif : **R-4 joue** — la mesure M-3 a trouvé un défaut réel (la fiche d'une salle MASQUÉE ou SUPPRIMÉE reste servie en 200, sur un build de production, plus de dix minutes et après un redémarrage, alors que l'API répond 404 ; le nom, le prix et les photos d'une salle modifiée restent périmés jusqu'à 5 minutes) ; le rouge est versé (`docs/preuves/D348/rouges/rouges.md`, rouges 1 et 2) AVANT le premier commit de code. La correction est la plus petite possible : **une seule ligne de code** (`next: { revalidate: 300 }` → `cache: "no-store"` dans `getVenueBySlug`), plus les commentaires que cette ligne rendait faux. Les mêmes trois fichiers sont déclarés ici, nominativement :
+
+| chemin | rôle | statut |
+|---|---|---|
+| `apps/client/src/lib/api.ts` | la correction : l'appel de `getVenueBySlug` (1 ligne de code) et son commentaire (+7 −3 lignes de commentaire). ⚠ **Fichier de la liste de `par-carte`** (R-6) : `par-carte` y modifie la ligne d'import (l. 10) et AJOUTE `getVenueMap` en fin de fichier ; les lignes de cette correction (l. 183 à 198) ne sont dans aucun de ses blocs — pas de conflit attendu, à vérifier par `git merge-tree` au rapport | ferme |
+| `apps/client/src/app/[locale]/salles/[slug]/page.tsx` | commentaire d'en-tête seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
+| `apps/client/src/app/[locale]/salles/(recherche)/loading.tsx` | commentaire seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
+| `docs/preuves/D348/rouges/verser-journal.py` | le script qui a retiré les lignes à jeton du journal brut avant versement, archivé comme preuve (jamais promu en instrument, D291) | à venir |
+
+**Extension 3** (16/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait la campagne, les portes et les passes e2e par famille (« la sortie du harnais », « les six portes », « les deux passes ») ; la règle (D328, point 4) veut les chemins complets. Aucune de ces pièces n'est encore commitée. Le code (la correction, la spec, le harnais) est déjà commité (`411d373`, `ac728d8`) ; il n'ajoute aucun fichier hors table.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/neutralisation/campagne-passe-1.txt`, `docs/preuves/D348/neutralisation/campagne-passe-2.txt` | les deux premières passes de la campagne (harnais v1, v2), arrêtées sur PUB1-17 ; versées pour dire ce qu'elles ont montré | à venir |
+| `docs/preuves/D348/neutralisation/campagne-passe-3.txt`, `docs/preuves/D348/neutralisation/campagne-passe-3-reprise-avortee.txt`, `docs/preuves/D348/neutralisation/campagne-passe-3-reprise.txt` | la passe du harnais FINAL (20 cibles) : cibles 1 à 12, puis la reprise avortée (Docker arrêté), puis la reprise déclarée `--seulement` de 13 à 21 | à venir |
+| `docs/preuves/D348/neutralisation/extraits-des-echecs.txt` | par cible, le bloc d'échec lu (20 cibles) | à venir |
+| `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-404.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-available-on.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-fc10.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-fc10-e2e.txt`, `docs/preuves/D348/neutralisation/campagnes-existantes/neutralize-horizon.txt` | les campagnes existantes qui lisent un fichier de ce lot (`lancer-campagnes.py` ne les voit pas : arbre propre, comparaison à `HEAD`) | à venir |
+| `docs/preuves/D348/portes/_index.txt`, `docs/preuves/D348/portes/etat-machine-pendant.txt`, `docs/preuves/D348/portes/typecheck.txt`, `docs/preuves/D348/portes/lint.txt`, `docs/preuves/D348/portes/test.txt`, `docs/preuves/D348/portes/build.txt`, `docs/preuves/D348/portes/test-int.txt`, `docs/preuves/D348/portes/test-e2e.txt` | la passe des six portes (pilote `docs/preuves/D340/portes/passe-secteur.sh`, non modifié) ; `test-e2e.txt` est la PASSE 1 de l'e2e | à venir |
+| `docs/preuves/D348/portes/test-rouge-instruction.md`, `docs/preuves/D348/portes/test-rejeux-fichier-seul.txt` | la porte `test` est rouge (un test de `apps/pro`, hors du lot) : ce qui a été instruit | à venir |
+| `docs/preuves/D348/e2e/passe-2.txt`, `docs/preuves/D348/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D348/e2e/passe-2-batterie-apres.txt` | la seconde passe e2e et l'alimentation avant et après | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-apres-sortie.txt`, `docs/preuves/D348/mesures/pieces/m3-instrument-apres.mjs` | M-3 rejouée APRÈS la correction, et sa copie d'instrument | à venir |
+| `docs/preuves/D348/audit-secrets-d348c.txt` | l'audit de secrets de ce versement | à venir |
+
+**Extension 4** (16/11/2026, commitée SEULE, AVANT le fichier qu'elle couvre). Motif : l'extension 3 nommait l'audit de secrets du dernier versement mais pas son tri ; la table n'avait pas non plus la sortie du contrôle de fin de lot sous son chemin de versement tardif. Aucun de ces fichiers n'est encore commité.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/aucune-valeur-reelle-c.txt` | le tri des alertes nouvelles de l'audit « c » et le contrôle dédié « 0 valeur réelle » (55 journaux, 354 valeurs, 0 porteur) | à venir |
+~~~~
 
 ## Session du 10/11/2026 — D347 · rang 49 CLOS, lot de CODE DE TEST : le parcours « Nouvelle réservation » du pro retrouve une spec navigateur (`r49`, six tests, aucune ligne d'`apps/`) ; compteur POUR MÉMOIRE VINGT-DEUX → VINGT-TROIS
 
@@ -26861,3 +27041,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D345 | A | D345 — rang 47 CLOS le 08/11/2026, lot de **CODE** (il compte, D283), consigne du relecteur adoptée par Ko : **le parcours « Nouvelle réservation » (client sur place) garde son étape et ses saisies quand on change d'onglet** — le brouillon vit dans un fournisseur monté au-dessus des routes, **en mémoire seulement** (jamais le stockage du navigateur : il porte le numéro et le nom d'un client sur un poste partagé), survit à l'aller-retour d'onglet, **pas** au rechargement ni à la fermeture ; le devis affiché est « à recalculer », la chaîne de devis est gardée ; il s'efface à la fin du parcours, à la déconnexion, au changement de compte, par « Recommencer » (le bouton « Annuler » existant, renommé) et quand la salle change ; **un défaut préexistant trouvé par le test** : un parcours commencé pour la salle 1 restait à l'écran à la même étape quand la salle devenait la salle 2 (corrigé : un parcours par salle) ; lecture adverse de la consigne (18 contrôles : 13 ✓ · 2 écarts comblés · 1 limite · 2 à faire) ; rouges lus avant le code (8 sur 16 en vitest, 2 sur 2 en navigateur) ; harnais r47 **25 mordues sur 25** ; six portes à 0 sur secteur et **deux passes de l'e2e vertes** (80 + 1 = 81) ; six décisions prises seule (S-144 à S-149) à ratifier ; **compteur POUR MÉMOIRE VINGT ET UN** ; rang suivant : « RANG 48 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D345, point d'entrée « ÉTAT À LA CLÔTURE DU RANG 47 ». |
 | D346 | A | D346 — rang 48 CLOS le 09/11/2026, lot de **CODE** (il compte, D283), consigne du relecteur adoptée par Ko : **l'assistant de recherche client, les choix déjà faits doivent reparaître** — R-1 jouée dans un navigateur (FR et AR) : **l'assistant est juste, c'est le formulaire des filtres de `/salles` qui ne suivait pas l'adresse** (commune, curseurs de capacité et de budget, cases) ; réparation : **une clé** sur `<SearchFilters>` (`search-view.tsx`), dérivée des huit champs du panneau, jamais page ni tri ; l'adresse reste la seule autorité ; aucun contrat d'API, aucune migration ; **rouges lus avant le code** (10 en composant, 2 en navigateur) ; harnais `neutralize-r48.py` **12 sur 12** ; six portes à 0 et **deux passes e2e vertes** de suite ; compteur POUR MÉMOIRE **VINGT ET UN → VINGT-DEUX** (limite de cinq suspendue, aucune certification) ; S-150 à S-157 prises par la session, à ratifier ; piège hors lot : le cache d'une heure des référentiels du client, vide après le préchauffage de l'e2e. Section D346. |
 | D347 | A | D347 — rang 49 CLOS le 10/11/2026, lot de **CODE DE TEST** (il compte, D283), consigne du relecteur adoptée par Ko : **le parcours « Nouvelle réservation » du pro retrouve une spec navigateur** — `e2e/specs/r49-nouvelle-reservation.e2e.ts` (six tests : règles de saisie, parcours jusqu'à la demande enregistrée avec montants du serveur et fenêtre APRÈS la réponse, « Bloquer la date », échec du serveur, calendrier, arabe à 360 px), écrite contre l'écran d'aujourd'hui ; la carte a dit « personne » pour dix-neuf des vingt gardes de r32, l'application n'en contredit aucune (R-3 n'a pas joué) ; aucune ligne d'`apps/` ; harnais `neutralize-r49.py` **36 mordues sur 36** (deux passes, une mutation équivalente réorientée) ; rouges commités avant le code ; six portes à 0 et **deux passes e2e vertes** (88 + 1 ignoré) ; S-150 à S-157 ratifiées par adoption, réponse de Ko : pas de bouton « Précédent » pour l'instant ; six décisions prises seule (S-158 à S-163) à ratifier ; **compteur POUR MÉMOIRE VINGT-DEUX → VINGT-TROIS** (limite de cinq suspendue, aucune certification) ; rang suivant : « RANG 50 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D347. |
+| D348 | A | D348 — rang 50 ARBITRÉ PAR KO le 16/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 50 — une salle publiée se voit sur le site client : vérifier le chemin réel après publication, corriger seulement ce qui est rouge ») et **CLOS SUR LE CODE le 16/11/2026**, lot de **CODE** (il compte, D283) : **PUB-1** — M-1 (le chemin réel dans un navigateur : le pro crée la salle par l'écran, l'admin la publie, l'accueil, `/salles` avec six filtres et leurs jumeaux négatifs, la fiche, en FR et en AR : **aucun défaut**), M-2 (la table « pourquoi une salle publiée ne s'affiche pas » : sept conditions jouées, avec ce que le pro lit), M-3 (les délais sur un build de production : **ROUGE** — la fiche d'une salle masquée ou supprimée reste servie en 200 plus de dix minutes et après un redémarrage, alors que l'API répond 404 ; le nom, le prix et les photos d'une salle modifiée sont périmés 308 s) ; **correction : une ligne** (`getVenueBySlug` en `cache: "no-store"`), rejouée sur un build de production : 404 et données à jour à T+1 s ; spec `e2e/specs/r50-salle-publiee.e2e.ts` (9 tests e2e) et harnais `neutralisation/neutralize-pub1.py` (20 cibles, 20 mordues) ; **compteur POUR MÉMOIRE VINGT-TROIS → VINGT-QUATRE** ; ⛔ **porte `test` ROUGE (un test intermittent de `apps/pro`, hors du lot) : clôture en LOCAL, NON POUSSÉE** ; huit décisions prises seule (S-164 à S-171) à ratifier ; rang suivant : « RANG 51 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Section D348. |
