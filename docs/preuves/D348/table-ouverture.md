@@ -45,3 +45,19 @@ Lot : **PUB-1 — une salle publiée se voit sur le site client : vérifier le c
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (16/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait les pièces de mesure par famille (« sorties brutes, captures ») ; la règle (D328, point 4) veut le chemin complet. Aucune de ces pièces n'est encore commitée. Le premier défaut mesuré (la fiche d'une salle masquée ou supprimée reste servie, M-3) ne déclare AUCUN fichier de code ici : sa correction fera l'objet de l'extension 2, après le commit des rouges.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/rouges/rouges.md` | les rouges lus, avec l'empreinte des fichiers joués | à venir |
+| `docs/preuves/D348/rouges/rouge-1-e2e-r50-contre-etat-avant.txt` | la spec contre le code d'avant (9 passés, 1 échec), jetons retirés | à venir |
+| `docs/preuves/D348/mesures/m1-chemin-reel.md` | M-1 rédigée | à venir |
+| `docs/preuves/D348/mesures/m2-table.md` | M-2 rédigée | à venir |
+| `docs/preuves/D348/mesures/m3-delais.md` | M-3, état ROUGE (l'état « après la correction » s'y ajoutera) | à venir |
+| `docs/preuves/D348/mesures/pieces/m2-table-brute.json` | la table M-2 brute, extraite de la sortie du rouge 1 | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-rouge-sortie-brute.txt` | la sortie brute de la mesure de production | à venir |
+| `docs/preuves/D348/mesures/pieces/m3-instrument.mjs` | l'instrument jetable de M-3, archivé comme pièce | à venir |
+| `docs/preuves/D348/mesures/pieces/avant-fr-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-fr-salles.png`, `docs/preuves/D348/mesures/pieces/avant-ar-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-ar-salles.png` | l'état d'avant la publication (catalogue vide : salles fictives et bandeau) | à venir |
+| `docs/preuves/D348/mesures/pieces/apres-fr-salles.png`, `docs/preuves/D348/mesures/pieces/apres-ar-salles.png` | l'état d'après (cartes réelles, pas de bandeau) | à venir |
+| `docs/preuves/D348/audit-secrets-d348b.txt`, `docs/preuves/D348/aucune-valeur-reelle-b.txt` | l'audit de secrets de ce versement et son tri | à venir |
