@@ -61,3 +61,12 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `docs/preuves/D348/mesures/pieces/avant-fr-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-fr-salles.png`, `docs/preuves/D348/mesures/pieces/avant-ar-accueil.png`, `docs/preuves/D348/mesures/pieces/avant-ar-salles.png` | l'état d'avant la publication (catalogue vide : salles fictives et bandeau) | à venir |
 | `docs/preuves/D348/mesures/pieces/apres-fr-salles.png`, `docs/preuves/D348/mesures/pieces/apres-ar-salles.png` | l'état d'après (cartes réelles, pas de bandeau) | à venir |
 | `docs/preuves/D348/audit-secrets-d348b.txt`, `docs/preuves/D348/aucune-valeur-reelle-b.txt` | l'audit de secrets de ce versement et son tri | à venir |
+
+**Extension 2** (16/11/2026, commitée SEULE, AVANT les fichiers qu'elle couvre). Motif : **R-4 joue** — la mesure M-3 a trouvé un défaut réel (la fiche d'une salle MASQUÉE ou SUPPRIMÉE reste servie en 200, sur un build de production, plus de dix minutes et après un redémarrage, alors que l'API répond 404 ; le nom, le prix et les photos d'une salle modifiée restent périmés jusqu'à 5 minutes) ; le rouge est versé (`docs/preuves/D348/rouges/rouges.md`, rouges 1 et 2) AVANT le premier commit de code. La correction est la plus petite possible : **une seule ligne de code** (`next: { revalidate: 300 }` → `cache: "no-store"` dans `getVenueBySlug`), plus les commentaires que cette ligne rendait faux. Les mêmes trois fichiers sont déclarés ici, nominativement :
+
+| chemin | rôle | statut |
+|---|---|---|
+| `apps/client/src/lib/api.ts` | la correction : l'appel de `getVenueBySlug` (1 ligne de code) et son commentaire (+7 −3 lignes de commentaire). ⚠ **Fichier de la liste de `par-carte`** (R-6) : `par-carte` y modifie la ligne d'import (l. 10) et AJOUTE `getVenueMap` en fin de fichier ; les lignes de cette correction (l. 183 à 198) ne sont dans aucun de ses blocs — pas de conflit attendu, à vérifier par `git merge-tree` au rapport | ferme |
+| `apps/client/src/app/[locale]/salles/[slug]/page.tsx` | commentaire d'en-tête seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
+| `apps/client/src/app/[locale]/salles/(recherche)/loading.tsx` | commentaire seulement (3 lignes) ; HORS de la liste de `par-carte` | ferme |
+| `docs/preuves/D348/rouges/verser-journal.py` | le script qui a retiré les lignes à jeton du journal brut avant versement, archivé comme preuve (jamais promu en instrument, D291) | à venir |
