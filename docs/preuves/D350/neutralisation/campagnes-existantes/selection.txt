@@ -1,0 +1,18 @@
+D350 — la SÉLECTION des campagnes existantes concernées par les fichiers que le lot touche (règle e2e, point 9 ; D348, S-171 : `lancer-campagnes.py` compare à HEAD et ne voit rien sur un arbre propre)
+Méthode : `git diff --name-only b8e5511..HEAD` (SHA de départ) croisé avec, pour chaque campagne `neutralisation/neutralize-*.py`, les chemins de fichiers existants que ses chaînes littérales désignent (les fonctions `campagnes()` et `fichiers_lus()` de `lancer-campagnes.py`, importées telles quelles). Relevé le 17/11/2026 15:32 sur 3fbbc96 :
+
+fichiers modifiés depuis b8e5511 : 69
+campagnes parcourues : 62
+neutralisation\neutralize-adm1.py 12 lus · 4 en commun : apps/api/src/account/account-deletion.service.ts, apps/api/src/common/admin-audit.ts, apps/api/src/venues/venues-admin.service.ts, packages/types/src/venue-moderation.ts
+neutralisation\neutralize-adm2.py 19 lus · 19 en commun : apps/api/src/account/account-deletion.service.ts, apps/api/src/common/admin-audit.ts, apps/api/src/venues/venues-admin.service.ts, apps/pro/src/App.tsx, apps/pro/src/admin/admin-format.ts, apps/pro/src/admin/admin-shell.tsx, apps/pro/src/admin/admin-texts.ts, apps/pro/src/admin/deletion-requests-pag
+neutralisation\neutralize-fc5.py 8 lus · 2 en commun : apps/pro/src/App.tsx, apps/pro/src/routes.ts
+neutralisation\neutralize-r29.py 7 lus · 2 en commun : apps/pro/src/App.tsx, apps/pro/src/routes.ts
+neutralisation\neutralize-r30.py 4 lus · 1 en commun : apps/pro/src/venues/edit-venue-page.tsx
+neutralisation\neutralize-r32.py 14 lus · 1 en commun : apps/pro/src/venues/edit-venue-page.tsx
+neutralisation\neutralize-r33.py 11 lus · 2 en commun : packages/i18n/messages/ar.json, packages/i18n/messages/fr.json
+neutralisation\neutralize-r37.py 4 lus · 2 en commun : apps/pro/src/shell/pro-venues-context.tsx, apps/pro/src/venues/edit-venue-page.tsx
+neutralisation\neutralize-r38.py 10 lus · 1 en commun : packages/i18n/messages/ar.json
+neutralisation\neutralize-r39.py 12 lus · 1 en commun : packages/i18n/messages/ar.json
+neutralisation\neutralize-s9.py 4 lus · 1 en commun : apps/pro/src/venues/venue-client-context.tsx
+
+Jouées chacune séparément, par invocation explicite (`--int` pour adm1, r33 et r39, qui en ont ; adm2 avec `--int --e2e`) : les journaux sont ceux de ce dossier. adm1 et adm2 sont les campagnes du lot (passes versées à côté).

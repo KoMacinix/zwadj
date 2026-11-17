@@ -1,0 +1,10 @@
+D350 — rapport de masquage des sorties brutes versées (procédure : masquer-jetons.py, copie octet pour octet de docs/preuves/D348/masquage/masquer-jetons.py ; calibration à deux bras jouée à chaque appel).
+Chaque sortie brute a d'abord perdu ses codes de couleur ANSI (sed), puis a été masquée. Les sorties BRUTES restent hors dépôt (D291).
+
+six portes, passe 2 — typecheck : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 627 octets sha256 542a26326b05193babc5b862d1839b3fa63c8818b3a300842ce42c9c42d5f7b6
+six portes, passe 2 — lint : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 526 octets sha256 019af86ce4510730dbfece717ed7d0963f50279a6b8e98b5963528388721c716
+six portes, passe 2 — test : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 60877 octets sha256 cf0d1bfd7ff4eee76e3e825eecb8ab6b8c298c65b6c5d4256c70d477075f75b1
+six portes, passe 2 — build : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 8476 octets sha256 22bfaeb4bd5cad8c37d390f9639020bd89d9ff66fc16cc22487e64c60abe1b2b
+six portes, passe 2 — test-int : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 96443 octets sha256 7c612682ed129c6faca97f39bdf0987d29801388d386807d68980e22c497d30d
+six portes, passe 2 — test-e2e : 123 occurrence(s) · 123 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2240894 octets sha256 4dd9861bc420fc8df9c4e59c167f7c706c8937ad6862470d9facc5da6595432a
+seconde passe e2e (pnpm test:e2e seul) : 123 occurrence(s) · 123 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2238682 octets sha256 6f27fefcfa0c7ba0ff869cbb76991c3a34cc549c2c08e6a2d0551c564fab69f7
