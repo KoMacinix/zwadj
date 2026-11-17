@@ -1,0 +1,10 @@
+D348 (suite) — REJEU UNIQUE de pnpm test — départ 16/11/2026 23:35:18
+SHA: f53fdefcdc95cf27dd869ad241df06535980d9d3
+origin/main: 26ad5c77ec03a73d82e92368f7d97c4beac7556f
+arbre (git status --short): []
+état machine JUSTE AVANT: 23:35:18 | SECTEUR | RAM libre 3,716 Mo | chrome 8 | headless_shell 0 | node 0
+=== test — départ 23:35:19 — 23:35:19 | SECTEUR | RAM libre 3,683 Mo | chrome 8 | headless_shell 0 | node 0
+    test : code de sortie 0 · durée 123 s · fin 23:37:23 — 23:37:24 | SECTEUR | RAM libre 3,854 Mo | chrome 8 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 23:37:25 | SECTEUR | RAM libre 3,795 Mo | chrome 8 | headless_shell 0 | node 0
+arbre après le rejeu (git status --short): []
+fin 16/11/2026 23:37:25

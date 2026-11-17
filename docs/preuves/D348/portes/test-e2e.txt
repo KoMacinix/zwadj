@@ -1,4 +1,8 @@
-# Porte test:e2e — PASSE 1 (pilote) — journal brut hors dépôt : sha256 afaee82bd2bd84a898745dfbc3c2150ed8930739e0b1ae2307986563fc29d0bf · 2167505 octets · 3460 lignes lues · 112 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+⛔ PIÈCE MASQUÉE — Porte test:e2e — PASSE 1 (pilote). La sortie brute porte 112 occurrence(s) de 112 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2167505 octets, sha256 afaee82bd2bd84a898745dfbc3c2150ed8930739e0b1ae2307986563fc29d0bf. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
 
 > zwadj@ test:e2e C:\Users\benla\Desktop\MyProjct\Zwadj
 > pnpm --filter @zwadj/e2e test:e2e
@@ -291,6 +295,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #1 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -302,6 +307,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #2 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -321,6 +327,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #3 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -332,6 +339,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #4 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -359,6 +367,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #5 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -370,6 +379,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #6 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -406,6 +416,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #7 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -419,6 +430,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #8 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -444,6 +456,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #9 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -456,6 +469,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #10 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -480,6 +494,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #11 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -497,6 +512,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #12 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -515,6 +531,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #13 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -563,6 +580,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #14 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -575,6 +593,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #15 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -591,6 +610,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #16 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -617,6 +637,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #17 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -631,6 +652,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #18 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -670,6 +692,7 @@ Running 98 tests using 2 workers
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #19 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -710,6 +733,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #20 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -722,6 +746,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #21 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -733,6 +758,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #22 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -748,6 +774,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #23 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -768,6 +795,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #24 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -787,6 +815,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #25 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -810,6 +839,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #26 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -825,6 +855,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #27 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -846,6 +877,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #28 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -858,6 +890,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #29 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -869,6 +902,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #30 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -898,6 +932,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #31 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -909,6 +944,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #32 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -969,6 +1005,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #33 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -980,6 +1017,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #34 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -996,6 +1034,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #35 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1010,6 +1049,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #36 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1022,6 +1062,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #37 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1064,6 +1105,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #38 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1089,6 +1131,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #39 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1119,6 +1162,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #40 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1136,6 +1180,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #41 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1157,6 +1202,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #42 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1168,6 +1214,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #43 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1183,6 +1230,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #44 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1195,6 +1243,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #45 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1206,6 +1255,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #46 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1305,6 +1355,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #47 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1316,6 +1367,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #48 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1327,6 +1379,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #49 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1338,6 +1391,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #50 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1359,6 +1413,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #51 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1453,6 +1508,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #52 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1465,6 +1521,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #53 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1514,6 +1571,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #54 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1527,6 +1585,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #55 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1539,6 +1598,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #56 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1582,6 +1642,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #57 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1602,6 +1663,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #58 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1652,6 +1714,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #59 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1696,6 +1759,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #60 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1707,6 +1771,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #61 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1740,6 +1805,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #62 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1759,6 +1825,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #63 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1784,6 +1851,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #64 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1796,6 +1864,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #65 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1868,6 +1937,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #66 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1879,6 +1949,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #67 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1906,6 +1977,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #68 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1917,6 +1989,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #69 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1958,6 +2031,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #70 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -1969,6 +2043,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #71 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2001,6 +2076,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #72 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2014,6 +2090,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #73 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2066,6 +2143,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #74 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2077,6 +2155,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #75 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2096,6 +2175,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #76 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2107,6 +2187,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #77 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2161,6 +2242,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #78 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2172,6 +2254,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #79 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2188,6 +2271,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #80 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2211,6 +2295,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #81 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2222,6 +2307,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #82 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2258,6 +2344,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #83 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2278,6 +2365,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #84 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2294,6 +2382,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #85 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2328,6 +2417,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #86 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2339,6 +2429,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #87 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2351,6 +2442,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #88 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2366,6 +2458,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #89 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2463,6 +2556,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #90 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2474,6 +2568,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #91 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2537,6 +2632,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #92 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2548,6 +2644,7 @@ D265 garde — fermeture d'une connexion inactive mesurée à 6009 ms ; blocage 
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #93 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2624,6 +2721,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/fr/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #94 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2635,6 +2733,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/fr/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #95 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2668,6 +2767,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/fr/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #96 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2680,6 +2780,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/fr/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #97 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2752,6 +2853,7 @@ MESURE-ASSISTANT 9-retour-navigateur-guests guests {"voulu":"","vu":""}
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #98 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2764,6 +2866,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-guests {"url":"/ar/salles?cityId=01a1e342-
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #99 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2806,6 +2909,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #100 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2817,6 +2921,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #101 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2853,6 +2958,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #102 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2864,6 +2970,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #103 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2898,6 +3005,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #104 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2913,6 +3021,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #105 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2953,6 +3062,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #106 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -2964,6 +3074,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #107 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -3107,6 +3218,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #108 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -3119,6 +3231,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #109 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -3156,6 +3269,7 @@ MESURE-FORMULAIRE 9-retour-navigateur-city {"url":"/ar/salles?guide=city","voulu
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #110 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -3259,6 +3373,7 @@ R50-M2-TABLE {"lectures":[{"condition":"témoin : publiée, visible, un créneau
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #111 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -3270,6 +3385,7 @@ R50-M2-TABLE {"lectures":[{"condition":"témoin : publiée, visible, un créneau
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #112 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m

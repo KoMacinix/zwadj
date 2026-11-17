@@ -1,0 +1,14 @@
+D348 (suite) — R-2 : le masquage des trois journaux versés par retrait de lignes (16/11/2026)
+Procédure : docs/preuves/D348/masquage/masquer-jetons.py = COPIE octet pour octet de docs/preuves/D345/portes/masquer-jetons.py (cmp : identique). Archivée avec la pièce, jamais promue en instrument (D291). Calibration à trois paires de bras rejouée à chaque lancement (le script abandonne si une seule manque).
+Les trois bruts d'origine existaient encore, HORS dépôt ; leur sha256 a été confronté à l'en-tête de la version précédemment versée avant le masquage : tous les trois IDENTIQUES (f8197d21…, afaee82b…, 59526e16…). S-171 n'est donc PLUS un écart : la version masquée est tirée du brut d'origine.
+Nombre de lignes : brut + 5 lignes d'en-tête ; occurrences remplacées = lignes retirées de la version d'avant (112, 112, 7) — le masquage remplace le jeton, il ne retire AUCUNE ligne.
+
+Passe e2e 2 (pnpm test:e2e seul) : 112 occurrence(s) · 112 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2168508 octets sha256 f8197d219600abcfaeb5d2566191910ab46d5c808eb50519924bd6798629d119
+Porte test:e2e — PASSE 1 (pilote) : 112 occurrence(s) · 112 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2167505 octets sha256 afaee82bd2bd84a898745dfbc3c2150ed8930739e0b1ae2307986563fc29d0bf
+ROUGE 1 — pnpm --filter @zwadj/e2e exec playwright test specs/r50-salle-publiee.e2e.ts, code d'application d'AVANT (26ad5c7) : 7 occurrence(s) · 7 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 393138 octets sha256 59526e16d7b89425d2d4b296576100dae1db7eefbe4f2b977c97ddd77fe76420
+
+Contrôle de reproductibilité : les trois sorties de cette relecture sont comparées aux fichiers versés.
+passe-2.txt : identique
+test-e2e.txt : identique
+rouge-1 : identique
+Ce que le rapport ne dit pas : le MASQUAGE ne dit pas que les suites remplacées étaient les seules valeurs sensibles ; c'est le contrôle « 0 valeur réelle » (aucune-valeur-reelle-d.txt) qui cherche les valeurs des bruts dans tout le dossier.

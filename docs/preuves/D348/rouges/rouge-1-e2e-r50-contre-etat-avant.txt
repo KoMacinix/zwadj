@@ -1,4 +1,8 @@
-# ROUGE 1 — pnpm --filter @zwadj/e2e exec playwright test specs/r50-salle-publiee.e2e.ts, code d'application d'AVANT (26ad5c7) — journal brut hors dépôt : sha256 59526e16d7b89425d2d4b296576100dae1db7eefbe4f2b977c97ddd77fe76420 · 393138 octets · 728 lignes lues · 7 lignes retirées (jetons de développement des courriels d'activation) · « token= » restants : 0 (attendu 0) · suites de forme jeton restantes : 0 (attendu 0)
+⛔ PIÈCE MASQUÉE — ROUGE 1 — pnpm --filter @zwadj/e2e exec playwright test specs/r50-salle-publiee.e2e.ts, code d'application d'AVANT (26ad5c7). La sortie brute porte 7 occurrence(s) de 7 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 393138 octets, sha256 59526e16d7b89425d2d4b296576100dae1db7eefbe4f2b977c97ddd77fe76420. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
 [2m[WebServer] [22m[00:59:28.723] [32mINFO[39m (12488): [36mStarting Nest application...[39m [90m{"context":"NestFactory"}[39m
 [2m[WebServer] [22m[00:59:28.723] [32mINFO[39m (12488): [36mConfigModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
 [2m[WebServer] [22m[00:59:28.723] [32mINFO[39m (12488): [36mConfigHostModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
@@ -286,6 +290,7 @@ Running 10 tests using 1 worker
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #1 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -297,6 +302,7 @@ Running 10 tests using 1 worker
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #2 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -447,6 +453,7 @@ Running 10 tests using 1 worker
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #3 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -459,6 +466,7 @@ Running 10 tests using 1 worker
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #4 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -496,6 +504,7 @@ Running 10 tests using 1 worker
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #5 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -599,6 +608,7 @@ R50-M2-TABLE {"lectures":[{"condition":"témoin : publiée, visible, un créneau
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:3100/fr/auth/verification-email?token=<jeton masqué #6 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
@@ -610,6 +620,7 @@ R50-M2-TABLE {"lectures":[{"condition":"témoin : publiée, visible, un créneau
 [2m[WebServer] [22mBonjour,
 [2m[WebServer] [22m
 [2m[WebServer] [22mBienvenue sur Zwadj ! Pour activer votre compte, ouvrez ce lien :
+[2m[WebServer] [22mhttp://localhost:5273/auth/verification-email?token=<jeton masqué #7 (43 car.)>
 [2m[WebServer] [22m
 [2m[WebServer] [22mCe lien expire dans 48 heures.
 [2m[WebServer] [22m
