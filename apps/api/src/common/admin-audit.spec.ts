@@ -34,8 +34,8 @@ describe("venuePublishEntry", () => {
 });
 
 describe("venueRejectEntry", () => {
-  it("le MOTIF est dans la ligne — publier l'efface de la colonne, le journal garde l'histoire (R-2)", () => {
-    const e = venueRejectEntry(ADMIN, VENUE_ID, "Photos floues, merci de les remplacer.");
+  it("le MOTIF est dans la ligne — publier l'efface de la colonne, le journal garde l'histoire (R-2) ; au PREMIER rejet, « avant » est « jamais rejetée »", () => {
+    const e = venueRejectEntry(ADMIN, VENUE_ID, "Photos floues, merci de les remplacer.", null);
     expect(e).toEqual({
       actorId: ADMIN.userId,
       actorRole: UserRole.ADMIN,
@@ -45,6 +45,20 @@ describe("venueRejectEntry", () => {
       before: { rejectionReason: null },
       after: { rejectionReason: "Photos floues, merci de les remplacer." }
     });
+  });
+
+  it("R-3 (D350) — une CORRECTION garde l'ANCIEN ET le NOUVEAU motif : « avant » est le motif en vigueur, « après » le nouveau ; l'action reste `venue.reject` (la date du refus est celle de la dernière ligne)", () => {
+    const e = venueRejectEntry(ADMIN, VENUE_ID, "Photos floues et capacité fausse.", "Photos floues.");
+    expect(e.action).toBe(AdminAuditAction.VENUE_REJECT);
+    expect(e.before).toEqual({ rejectionReason: "Photos floues." });
+    expect(e.after).toEqual({ rejectionReason: "Photos floues et capacité fausse." });
+  });
+
+  it("R-3 — le motif précédent est celui qu'on passe, jamais déduit : deux motifs différents donnent deux « avant » différents", () => {
+    const a = venueRejectEntry(ADMIN, VENUE_ID, "Nouveau", "Premier");
+    const b = venueRejectEntry(ADMIN, VENUE_ID, "Nouveau", "Deuxième");
+    expect(a.before).not.toEqual(b.before);
+    expect(a.after).toEqual(b.after);
   });
 });
 
@@ -88,7 +102,8 @@ describe("promoteAdminEntry — le script du premier admin (D-3)", () => {
 describe("aucune ligne ne porte de donnée personnelle ni de valeur composée", () => {
   const LIGNES = [
     venuePublishEntry(ADMIN, VENUE_ID, VenuePublicationStatus.DRAFT),
-    venueRejectEntry(ADMIN, VENUE_ID, "Motif"),
+    venueRejectEntry(ADMIN, VENUE_ID, "Motif", null),
+    venueRejectEntry(ADMIN, VENUE_ID, "Nouveau motif", "Ancien motif"),
     deletionDecisionEntry(ADMIN, REQUEST_ID, "APPROVED", 1),
     deletionDecisionEntry(ADMIN, REQUEST_ID, "REJECTED"),
     promoteAdminEntry(USER_ID, UserRole.CLIENT)

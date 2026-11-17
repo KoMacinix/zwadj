@@ -1,0 +1,96 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/session-switch.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/session-switch.test.tsx (3 tests | 3 failed) 277ms
+   × MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > le PRO A lit ses salles et garde un brouillon ; il se déconnecte : ni la liste ni le brouillon ne restent lisibles 129ms
+     → la liste de A ne survit pas à sa déconnexion: expected 'Salle de A' not to contain 'Salle de A'
+   × MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > un ADMIN qui se connecte après un PRO ne voit pas la liste des salles du PRO, ni son brouillon 56ms
+     → la liste du PRO est encore tenue sous un ADMIN: expected 'Salle de A' not to contain 'Salle de A'
+   × MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > PRO A → ADMIN → PRO B : à l'INSTANT où B arrive (sa lecture n'est pas revenue), la liste de A n'est pas rendue ; B lit ensuite les siennes ; le brouillon de A n'est pas le sien 91ms
+     → la liste de A est rendue à B pendant que la sienne charge: expected 'Salle de A' not to contain 'Salle de A'
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/admin-source-guard.test.ts [ src/admin/admin-source-guard.test.ts ]
+Error: ENOENT: no such file or directory, open 'C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro\src\auth\require-admin.tsx'
+ ❯ src/admin/admin-source-guard.test.ts:67:76
+     65| 
+     66| const ADMIN = sourcesDe("admin");
+     67| const GARDES = [{ chemin: "auth/require-admin.tsx", code: sansCommenta…
+       |                                                                            ^
+     68| 
+     69| describe("ce que la lecture a parcouru (D290)", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/venues/publication-review.test.tsx [ src/venues/publication-review.test.tsx ]
+Error: Failed to resolve import "./publication-review" from "src/venues/publication-review.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/venues/publication-review.test.tsx:20:33
+  10 |  import { NetworkError } from "../lib/auth-client";
+  11 |  import { makeAuthDouble, makeBookingsProDouble, makeQuotesDouble, makeReferentialsDouble, makeServicesDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+  12 |  import { formatReviewDate } from "./publication-review";
+     |                                    ^
+  13 |  initI18n();
+  14 |  const FR = messages.fr.publicationReview;
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/session-switch.test.tsx > MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > le PRO A lit ses salles et garde un brouillon ; il se déconnecte : ni la liste ni le brouillon ne restent lisibles
+AssertionError: la liste de A ne survit pas à sa déconnexion: expected 'Salle de A' not to contain 'Salle de A'
+ ❯ src/admin/session-switch.test.tsx:123:78
+    121|     await deconnexion();
+    122|     expect(brouillonLisible()).toBe("absent");
+    123|     expect(lu("salles"), "la liste de A ne survit pas à sa déconnexion…
+       |                                                                              ^
+    124|   });
+    125| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/admin/session-switch.test.tsx > MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > un ADMIN qui se connecte après un PRO ne voit pas la liste des salles du PRO, ni son brouillon
+AssertionError: la liste du PRO est encore tenue sous un ADMIN: expected 'Salle de A' not to contain 'Salle de A'
+ ❯ src/admin/session-switch.test.tsx:134:80
+    132|     await deconnexion();
+    133|     await connexion(ADMIN.id);
+    134|     expect(lu("salles"), "la liste du PRO est encore tenue sous un ADM…
+       |                                                                                ^
+    135|     expect(brouillonLisible()).toBe("absent");
+    136|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/admin/session-switch.test.tsx > MD-ADM-10 — PRO → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > PRO A → ADMIN → PRO B : à l'INSTANT où B arrive (sa lecture n'est pas revenue), la liste de A n'est pas rendue ; B lit ensuite les siennes ; le brouillon de A n'est pas le sien
+AssertionError: la liste de A est rendue à B pendant que la sienne charge: expected 'Salle de A' not to contain 'Salle de A'
+ ❯ src/admin/session-switch.test.tsx:150:91
+    148| 
+    149|     // La lecture de B est RETENUE : ce qui est rendu maintenant ne pe…
+    150|     expect(lu("salles"), "la liste de A est rendue à B pendant que la …
+       |                                                                                           ^
+    151|     // Et à AUCUN rendu depuis l'arrivée de B — pas même l'instant ava…
+    152|     expect(rendus.filter((r) => r.startsWith(`${PRO_B.id}|`) && r.incl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed (3)
+   Start at  11:09:47
+   Duration  4.15s (transform 1.09s, setup 836ms, collect 1.67s, tests 277ms, environment 4.14s, prepare 701ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/publication-review.test.tsx src/admin/session-switch.test.tsx src/admin/admin-source-guard.test.ts

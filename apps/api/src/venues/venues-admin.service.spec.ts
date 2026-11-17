@@ -215,8 +215,10 @@ describe("VenuesAdminService.publish", () => {
   });
 });
 
-describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé", () => {
+describe("VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE", () => {
   const MOTIF = "Les photos sont floues. Merci de les remplacer.";
+  const PREMIER = "Un premier motif";
+  const brouillon = (rejectionReason: string | null) => ({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason });
 
   it("id hors motif UUID : 404 VENUE_NOT_FOUND sans toucher la base", async () => {
     const { service, prisma } = buildService();
@@ -226,8 +228,9 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
 
-  it("un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, jamais rejetée) qui n'écrit QUE le motif — le statut ne bouge pas", async () => {
+  it("un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, motif PRÉCÉDENT = jamais rejetée) qui n'écrit QUE le motif — le statut ne bouge pas", async () => {
     const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(null));
     prisma.venue.updateMany.mockResolvedValue({ count: 1 });
 
     const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
@@ -244,20 +247,22 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     });
   });
 
-  it("R-5 — UNE ligne de journal dans la transaction, qui porte le MOTIF ; la date rendue est celle de CETTE ligne", async () => {
+  it("R-5 — UNE ligne de journal dans la transaction, qui porte le MOTIF (« jamais rejetée » → le motif) ; la date rendue est celle de CETTE ligne", async () => {
     const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(null));
     prisma.venue.updateMany.mockResolvedValue({ count: 1 });
 
     await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
 
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
     expect(prisma.auditLog.create).toHaveBeenCalledTimes(1);
-    expect((prisma.auditLog.create.mock.calls[0]?.[0] as { data: unknown }).data).toEqual(venueRejectEntry(ADMIN, VENUE_ID, MOTIF));
+    expect((prisma.auditLog.create.mock.calls[0]?.[0] as { data: unknown }).data).toEqual(venueRejectEntry(ADMIN, VENUE_ID, MOTIF, null));
     expect(prisma.venue.updateMany.mock.invocationCallOrder[0]).toBeLessThan(prisma.auditLog.create.mock.invocationCallOrder[0]!);
   });
 
   it("R-1 — le rejet n'écrit ni ne lit AUCUN taux : la charge utile de l'écriture et la réponse n'en portent pas", async () => {
     const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(null));
     prisma.venue.updateMany.mockResolvedValue({ count: 1 });
 
     const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
@@ -267,32 +272,91 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     expect(JSON.stringify(res)).not.toMatch(/commissionRateBps|cashbackRateBps/);
   });
 
-  it("compte 0, salle absente ou supprimée : 404 indistinct, AUCUNE ligne de journal", async () => {
+  it("salle absente ou supprimée : 404 indistinct, AUCUNE écriture, AUCUNE ligne de journal", async () => {
     const { service, prisma } = buildService();
-    prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.venue.findFirst.mockResolvedValue(null);
 
     const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
     expect(echec).toBeInstanceOf(NotFoundException);
     expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
+    expect(prisma.venue.updateMany).not.toHaveBeenCalled();
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
-  it("MD-ADM-4 — compte 0 sur une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est écrit, AUCUNE ligne de journal", async () => {
+  it("MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est écrit, AUCUNE ligne de journal", async () => {
     const { service, prisma } = buildService();
-    prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "PUBLISHED", rejectionReason: null });
 
     const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
     expect(echec).toBeInstanceOf(ConflictException);
     expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_NOT_DRAFT);
+    expect(prisma.venue.updateMany).not.toHaveBeenCalled();
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
-  it("MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE nouvelle ligne de journal", async () => {
+  it("MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE écriture, AUCUNE nouvelle ligne de journal", async () => {
     const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(MOTIF));
+    prisma.auditLog.findFirst.mockResolvedValue({ createdAt: REJETE_LE });
+
+    const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF }).catch((e: unknown) => e);
+
+    expect(res).toEqual({
+      id: VENUE_ID,
+      publicationStatus: VenuePublicationStatus.DRAFT,
+      rejection: { reason: MOTIF, rejectedAt: REJETE_LE.toISOString() }
+    });
+    expect(prisma.venue.updateMany).not.toHaveBeenCalled();
+    expect(prisma.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it("R-3 — un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(PREMIER));
+    prisma.venue.updateMany.mockResolvedValue({ count: 1 });
+
+    const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
+
+    expect(prisma.venue.updateMany).toHaveBeenCalledTimes(1);
+    expect(prisma.venue.updateMany).toHaveBeenCalledWith({
+      where: { id: VENUE_ID, deletedAt: null, publicationStatus: { in: [...REJECTABLE_FROM] }, rejectionReason: PREMIER },
+      data: { rejectionReason: MOTIF }
+    });
+    expect(prisma.auditLog.create).toHaveBeenCalledTimes(1);
+    expect((prisma.auditLog.create.mock.calls[0]?.[0] as { data: unknown }).data).toEqual(venueRejectEntry(ADMIN, VENUE_ID, MOTIF, PREMIER));
+    expect(res).toEqual({
+      id: VENUE_ID,
+      publicationStatus: VenuePublicationStatus.DRAFT,
+      rejection: { reason: MOTIF, rejectedAt: REJETE_LE.toISOString() }
+    });
+  });
+
+  it("R-3 — la correction ne lit ni n'écrit aucun taux non plus", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValue(brouillon(PREMIER));
+    prisma.venue.updateMany.mockResolvedValue({ count: 1 });
+    const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
+    expect(JSON.stringify(prisma.venue.updateMany.mock.calls[0]?.[0])).not.toMatch(/commissionRateBps|cashbackRateBps/);
+    expect(JSON.stringify(res)).not.toMatch(/commissionRateBps|cashbackRateBps/);
+  });
+
+  it("MD-ADM-4 — compte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValueOnce(brouillon(PREMIER)).mockResolvedValueOnce(brouillon("Le motif d'un autre admin"));
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
-    prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: MOTIF });
+
+    const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+
+    expect(echec).toBeInstanceOf(ConflictException);
+    expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_ALREADY_REJECTED);
+    expect(prisma.auditLog.create).not.toHaveBeenCalled();
+    expect(prisma.venue.updateMany).toHaveBeenCalledTimes(1); // la seule tentative est la conditionnée, jamais une seconde écriture
+  });
+
+  it("MD-ADM-4 — compte 0 et l'autre admin a posé le MÊME motif : 200 (même état, même réponse), AUCUNE ligne de journal", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findFirst.mockResolvedValueOnce(brouillon(PREMIER)).mockResolvedValueOnce(brouillon(MOTIF));
+    prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.auditLog.findFirst.mockResolvedValue({ createdAt: REJETE_LE });
 
     const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF }).catch((e: unknown) => e);
@@ -305,24 +369,33 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
-  it("DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED, le motif stocké n'est PAS écrasé", async () => {
-    const { service, prisma } = buildService();
-    prisma.venue.updateMany.mockResolvedValue({ count: 0 });
-    prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: "Un premier motif" });
+  it("MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal", async () => {
+    const publiee = buildService();
+    publiee.prisma.venue.findFirst.mockResolvedValueOnce(brouillon(PREMIER)).mockResolvedValueOnce({ id: VENUE_ID, publicationStatus: "PUBLISHED", rejectionReason: null });
+    publiee.prisma.venue.updateMany.mockResolvedValue({ count: 0 });
+    const e1 = await erreurDe(publiee.service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+    expect(e1).toBeInstanceOf(ConflictException);
+    expect(codeOf(e1)).toBe(VenueModerationErrorCode.VENUE_NOT_DRAFT);
+    expect(publiee.prisma.auditLog.create).not.toHaveBeenCalled();
 
-    const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
-    expect(echec).toBeInstanceOf(ConflictException);
-    expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_ALREADY_REJECTED);
-    expect(prisma.auditLog.create).not.toHaveBeenCalled();
-    expect(prisma.venue.updateMany).toHaveBeenCalledTimes(1); // la seule tentative est la conditionnée, jamais une seconde écriture
+    const supprimee = buildService();
+    supprimee.prisma.venue.findFirst.mockResolvedValueOnce(brouillon(PREMIER)).mockResolvedValueOnce(null);
+    supprimee.prisma.venue.updateMany.mockResolvedValue({ count: 0 });
+    const e2 = await erreurDe(supprimee.service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+    expect(e2).toBeInstanceOf(NotFoundException);
+    expect(codeOf(e2)).toBe("VENUE_NOT_FOUND");
+    expect(supprimee.prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
-  it("MD-ADM-6 — un journal qui échoue fait ÉCHOUER le rejet", async () => {
-    const { service, prisma } = buildService();
-    prisma.venue.updateMany.mockResolvedValue({ count: 1 });
-    prisma.auditLog.create.mockRejectedValue(new Error("journal indisponible"));
+  it("MD-ADM-6 — un journal qui échoue fait ÉCHOUER le rejet, et la correction", async () => {
+    for (const precedent of [null, PREMIER]) {
+      const { service, prisma } = buildService();
+      prisma.venue.findFirst.mockResolvedValue(brouillon(precedent));
+      prisma.venue.updateMany.mockResolvedValue({ count: 1 });
+      prisma.auditLog.create.mockRejectedValue(new Error("journal indisponible"));
 
-    await expect(service.reject(VENUE_ID, ADMIN, { reason: MOTIF })).rejects.toThrow("journal indisponible");
+      await expect(service.reject(VENUE_ID, ADMIN, { reason: MOTIF })).rejects.toThrow("journal indisponible");
+    }
   });
 });
 

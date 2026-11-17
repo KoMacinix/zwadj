@@ -1,0 +1,182 @@
+
+> @zwadj/api@0.0.0 test:int C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run -c vitest.config.int.ts "test/int/admin-moderation.int-spec.ts"
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:20816) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/admin-moderation.int-spec.ts (35 tests | 7 failed) 86719ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans créneau, une dont les créneaux sont tous inactifs  755ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide  524ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création ; une page peut chevaucher les deux  487ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > une salle rejetée porte son motif et la DATE de la ligne du journal ; une autre n'a pas de refus  425ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-1 — la réponse ne porte AUCUN taux, nulle part  400ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > les paramètres hors bornes sont refusés : taille 51, page 0, clé inconnue  388ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > l'URL `pending-publication` n'est PAS lue comme un identifiant (la route statique passe avant `:id`)  393ms
+   ✓ GET /admin/venues/:id — le détail > rend la vue admin (les taux EXISTANTS, en lecture), le numéro, la ville, le propriétaire, les créneaux actifs ; un brouillon jamais rejeté n'a pas de refus  439ms
+   ✓ GET /admin/venues/:id — le détail > une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante) ; une rejetée porte son motif et sa date  432ms
+   ✓ GET /admin/venues/:id — le détail > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse  431ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > la salle reste en BROUILLON avec son créneau ; le motif est stocké (rogné) ; la réponse dit le refus ; UNE ligne de journal le porte  408ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > le motif est OBLIGATOIRE : corps vide, motif vide ou blanc, trop long, clé inconnue ⇒ 400, rien n'est écrit  406ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse, AUCUNE ligne de journal  414ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal  389ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal  394ms
+   × POST /admin/venues/:id/reject — D-4, R-2 > R-3 (D350, 1 c de la consigne) — un AUTRE motif sur une salle déjà rejetée la CORRIGE : 200, le nouveau motif REMPLACE l'ancien sur la salle, la réponse porte le nouveau motif, la salle reste un brouillon 409ms
+     → expected 409 to be 200 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > la ligne de journal d'une correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus) 400ms
+     → expected [ { …(10) } ] to have a length of 2 but got 1
+   × POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — corriger avec le MÊME motif que celui en vigueur (rejeu) : 200, la même réponse, AUCUNE ligne de plus 414ms
+     → expected 409 to be 200 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif 397ms
+     → expected 409 to be 200 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > la file ET le détail montrent le NOUVEAU motif et la date de la CORRECTION 417ms
+     → expected 'Les photos sont floues. Merci de les …' to be 'Un autre motif' // Object.is equality
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > le motif corrigé est ROGNÉ et BORNÉ comme le premier : trop long ⇒ 400, rien n'est écrit, l'ancien motif reste, aucune ligne de plus  403ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > rejetée, PUBLIÉE (le motif s'efface), puis un rejet : 409 VENUE_NOT_DRAFT — le sens unique d'A3-④ tient, la salle publiée ne se corrige pas  419ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal porte le rejet ET la publication, dans cet ordre  412ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > re-publier est IDEMPOTENT : 200, AUCUNE nouvelle ligne de journal, `updatedAt` ne bouge pas  421ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, la salle reste un brouillon, aucune ligne de journal  415ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > 404 sur une salle supprimée : aucune ligne de journal  386ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé  1159ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal  555ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier DEUX FOIS en même temps : deux 200, UNE ligne de journal  671ms
+   × R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > deux corrections à motifs DIFFÉRENTS sur une salle déjà rejetée, bloquées sur la même ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue 10426ms
+     → requêtes bloquées sur le verrou de la ligne (attendu au moins 1): expected 0 to be greater than or equal to 1
+   × R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > une correction et une PUBLICATION bloquées sur la même ligne, la publication d'abord : la publication gagne, la correction est refusée (409 VENUE_NOT_DRAFT), la salle est publiée sans motif 60449ms
+     → requêtes bloquées sur le verrou de la ligne (attendu au moins 2): expected 1 to be greater than or equal to 2
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > l'état de publication, le motif et la date — rien d'autre ; la date est celle de la ligne du journal  468ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > 404 indistincts : la salle d'un AUTRE pro, supprimée, uuid inconnu, id malformé — la même réponse  589ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > les rôles : un ADMIN → 403, un CLIENT → 403, anonyme → 401  544ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > R-3 — le contrat PRINCIPAL ne change pas : même une salle rejetée ne laisse passer ni le motif, ni la date, ni `rejectionReason` dans `GET /pro/venues/:id` et `GET /pro/venues`  428ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > R-3 (D350, 1 c de la consigne) — un AUTRE motif sur une salle déjà rejetée la CORRIGE : 200, le nouveau motif REMPLACE l'ancien sur la salle, la réponse porte le nouveau motif, la salle reste un brouillon
+AssertionError: expected 409 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 409
+
+ ❯ test/int/admin-moderation.int-spec.ts:296:24
+    294|     await reject(id);
+    295|     const res = await reject(id, { reason: "Un autre motif" });
+    296|     expect(res.status).toBe(200);
+       |                        ^
+    297|     expect(res.body.publicationStatus).toBe("DRAFT");
+    298|     expect(res.body.rejection.reason).toBe("Un autre motif");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > la ligne de journal d'une correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus)
+AssertionError: expected [ { …(10) } ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/int/admin-moderation.int-spec.ts:309:20
+    307|     const corrigee = await reject(id, { reason: "Un autre motif" });
+    308|     const lignes = await journalOf(id);
+    309|     expect(lignes).toHaveLength(2);
+       |                    ^
+    310|     expect(lignes.map((l) => l.action)).toEqual([AdminAuditAction.VENU…
+    311|     expect(lignes[0]?.before).toEqual({ rejectionReason: null });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — corriger avec le MÊME motif que celui en vigueur (rejeu) : 200, la même réponse, AUCUNE ligne de plus
+AssertionError: expected 409 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 409
+
+ ❯ test/int/admin-moderation.int-spec.ts:325:26
+    323|     const rejeu = await reject(id, { reason: "Un autre motif" });
+    324|     const encore = await reject(id, { reason: "  Un autre motif  " });
+    325|     expect(rejeu.status).toBe(200);
+       |                          ^
+    326|     expect(encore.status).toBe(200);
+    327|     expect(encore.body).toEqual(rejeu.body);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif
+AssertionError: expected 409 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 409
+
+ ❯ test/int/admin-moderation.int-spec.ts:333:110
+    331|   it("corriger TROIS fois de suite : la chaîne du journal est continue…
+    332|     const id = await seedVenue();
+    333|     for (const reason of ["Premier", "Deuxième", "Troisième"]) expect(…
+       |                                                                                                              ^
+    334|     const lignes = await journalOf(id);
+    335|     expect(lignes.map((l) => [l.before, l.after])).toEqual([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > la file ET le détail montrent le NOUVEAU motif et la date de la CORRECTION
+AssertionError: expected 'Les photos sont floues. Merci de les …' to be 'Un autre motif' // Object.is equality
+
+Expected: "Un autre motif"
+Received: "Les photos sont floues. Merci de les remplacer."
+
+ ❯ test/int/admin-moderation.int-spec.ts:349:38
+    347|     const file = await queue();
+    348|     const ligne = (file.body.items as { id: string; rejection: { reaso…
+    349|     expect(ligne?.rejection?.reason).toBe("Un autre motif");
+       |                                      ^
+    350|     expect(ligne?.rejection?.rejectedAt).toBe(corrigee.body.rejection.…
+    351|     const detail = await api().get(`/api/v1/admin/venues/${id}`).set(a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > deux corrections à motifs DIFFÉRENTS sur une salle déjà rejetée, bloquées sur la même ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue
+AssertionError: requêtes bloquées sur le verrou de la ligne (attendu au moins 1): expected 0 to be greater than or equal to 1
+ ❯ waitBlocked test/int/row-lock.ts:60:91
+     58|     await new Promise<void>((resolve) => setTimeout(resolve, 25));
+     59|   }
+     60|   expect(bloquees, `requêtes bloquées sur le verrou de la ligne (atten…
+       |                                                                                           ^
+     61| }
+     62| 
+ ❯ test/int/admin-moderation.int-spec.ts:472:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > une correction et une PUBLICATION bloquées sur la même ligne, la publication d'abord : la publication gagne, la correction est refusée (409 VENUE_NOT_DRAFT), la salle est publiée sans motif
+AssertionError: requêtes bloquées sur le verrou de la ligne (attendu au moins 2): expected 1 to be greater than or equal to 2
+ ❯ waitBlocked test/int/row-lock.ts:60:91
+     58|     await new Promise<void>((resolve) => setTimeout(resolve, 25));
+     59|   }
+     60|   expect(bloquees, `requêtes bloquées sur le verrou de la ligne (atten…
+       |                                                                                           ^
+     61| }
+     62| 
+ ❯ test/int/admin-moderation.int-spec.ts:501:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 28 passed (35)
+   Start at  10:55:32
+   Duration  92.09s (transform 1.37s, setup 33ms, collect 4.54s, tests 86.72s, environment 0ms, prepare 168ms)
+
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @zwadj/api@0.0.0 test:int: `vitest run -c vitest.config.int.ts "test/int/admin-moderation.int-spec.ts"`
+Exit status 1

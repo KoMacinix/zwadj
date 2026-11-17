@@ -1,0 +1,113 @@
+
+> @zwadj/api@0.0.0 test:int C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run -c vitest.config.int.ts "test/int/account-deletion-race.int-spec.ts"
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/account-deletion-race.int-spec.ts (4 tests | 4 failed) 2543ms
+   × R-2 — approuver pendant que l'utilisateur ANNULE : le compte ne s'anonymise pas > l'annulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail 741ms
+     → {"id":"01a1ea38-43bb-7992-81e8-f69fe62f9a25","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.327Z","decidedAt":"2026-11-17T15:55:18.376Z","decisionNote":null}: expected 200 to be 400 // Object.is equality
+   × R-2 — approuver DEUX fois en même temps : une approbation, une trace, un e-mail > deux approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail 535ms
+     → {"id":"01a1ea38-45b0-76fa-bd25-a246a37ee9da","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.829Z","decidedAt":"2026-11-17T15:55:18.843Z","decisionNote":null} / {"id":"01a1ea38-45b0-76fa-bd25-a246a37ee9da","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.829Z","decidedAt":"2026-11-17T15:55:18.906Z","decisionNote":null}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+   × R-2 — rejeter × approuver : une décision, une seule, dans l'ordre d'arrivée > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject` 486ms
+     → {"id":"01a1ea38-47ae-768e-9180-ac42983cd23e","status":"REJECTED","reason":null,"requestedAt":"2026-11-17T15:55:19.339Z","decidedAt":"2026-11-17T15:55:19.356Z","decisionNote":"Commissions en cours."} / {"id":"01a1ea38-47ae-768e-9180-ac42983cd23e","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:19.339Z","decidedAt":"2026-11-17T15:55:19.410Z","decisionNote":null}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+   × R-2 — rejeter × approuver : une décision, une seule, dans l'ordre d'arrivée > l'APPROBATION arrive en première, le rejet derrière : l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus 519ms
+     → {"id":"01a1ea38-49ad-71c4-8734-148778197c9b","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:19.849Z","decidedAt":"2026-11-17T15:55:19.863Z","decisionNote":null} / {"id":"01a1ea38-49ad-71c4-8734-148778197c9b","status":"REJECTED","reason":null,"requestedAt":"2026-11-17T15:55:19.849Z","decidedAt":"2026-11-17T15:55:19.909Z","decisionNote":"Commissions en cours."}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/account-deletion-race.int-spec.ts > R-2 — approuver pendant que l'utilisateur ANNULE : le compte ne s'anonymise pas > l'annulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail
+AssertionError: {"id":"01a1ea38-43bb-7992-81e8-f69fe62f9a25","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.327Z","decidedAt":"2026-11-17T15:55:18.376Z","decisionNote":null}: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ test/int/account-deletion-race.int-spec.ts:82:50
+     80|     const res = await reponse;
+     81| 
+     82|     expect(res.status, JSON.stringify(res.body)).toBe(400);
+       |                                                  ^
+     83|     expect(res.body.message.code).toBe(NOT_PENDING);
+     84|     expect((await requestRow()).status).toBe("CANCELLED");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/int/account-deletion-race.int-spec.ts > R-2 — approuver DEUX fois en même temps : une approbation, une trace, un e-mail > deux approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail
+AssertionError: {"id":"01a1ea38-45b0-76fa-bd25-a246a37ee9da","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.829Z","decidedAt":"2026-11-17T15:55:18.843Z","decisionNote":null} / {"id":"01a1ea38-45b0-76fa-bd25-a246a37ee9da","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:18.829Z","decidedAt":"2026-11-17T15:55:18.906Z","decisionNote":null}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+
+- Expected
++ Received
+
+  [
+    200,
+-   400,
++   200,
+  ]
+
+ ❯ test/int/account-deletion-race.int-spec.ts:107:80
+    105| 
+    106|     const statuts = [ra.status, rb.status].sort();
+    107|     expect(statuts, `${JSON.stringify(ra.body)} / ${JSON.stringify(rb.…
+       |                                                                                ^
+    108|     const perdante = ra.status === 400 ? ra : rb;
+    109|     expect(perdante.body.message.code).toBe(NOT_PENDING);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/int/account-deletion-race.int-spec.ts > R-2 — rejeter × approuver : une décision, une seule, dans l'ordre d'arrivée > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+AssertionError: {"id":"01a1ea38-47ae-768e-9180-ac42983cd23e","status":"REJECTED","reason":null,"requestedAt":"2026-11-17T15:55:19.339Z","decidedAt":"2026-11-17T15:55:19.356Z","decisionNote":"Commissions en cours."} / {"id":"01a1ea38-47ae-768e-9180-ac42983cd23e","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:19.339Z","decidedAt":"2026-11-17T15:55:19.410Z","decisionNote":null}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+
+- Expected
++ Received
+
+  [
+    200,
+-   400,
++   200,
+  ]
+
+ ❯ test/int/account-deletion-race.int-spec.ts:134:95
+    132|     const [rr, ra] = await Promise.all([rejet, approbation]);
+    133| 
+    134|     expect([rr.status, ra.status], `${JSON.stringify(rr.body)} / ${JSO…
+       |                                                                                               ^
+    135|     expect(ra.body.message.code).toBe(NOT_PENDING);
+    136|     expect((await requestRow()).status).toBe("REJECTED");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/int/account-deletion-race.int-spec.ts > R-2 — rejeter × approuver : une décision, une seule, dans l'ordre d'arrivée > l'APPROBATION arrive en première, le rejet derrière : l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+AssertionError: {"id":"01a1ea38-49ad-71c4-8734-148778197c9b","status":"APPROVED","reason":null,"requestedAt":"2026-11-17T15:55:19.849Z","decidedAt":"2026-11-17T15:55:19.863Z","decisionNote":null} / {"id":"01a1ea38-49ad-71c4-8734-148778197c9b","status":"REJECTED","reason":null,"requestedAt":"2026-11-17T15:55:19.849Z","decidedAt":"2026-11-17T15:55:19.909Z","decisionNote":"Commissions en cours."}: expected [ 200, 200 ] to deeply equal [ 200, 400 ]
+
+- Expected
++ Received
+
+  [
+    200,
+-   400,
++   200,
+  ]
+
+ ❯ test/int/account-deletion-race.int-spec.ts:156:95
+    154|     const [ra, rr] = await Promise.all([approbation, rejet]);
+    155| 
+    156|     expect([ra.status, rr.status], `${JSON.stringify(ra.body)} / ${JSO…
+       |                                                                                               ^
+    157|     expect(rr.body.message.code).toBe(NOT_PENDING);
+    158|     expect((await requestRow()).status).toBe("APPROVED");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  10:55:10
+   Duration  9.34s (transform 1.44s, setup 38ms, collect 5.33s, tests 2.54s, environment 0ms, prepare 172ms)
+
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @zwadj/api@0.0.0 test:int: `vitest run -c vitest.config.int.ts "test/int/account-deletion-race.int-spec.ts"`
+Exit status 1

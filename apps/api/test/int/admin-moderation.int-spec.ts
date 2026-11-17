@@ -8,6 +8,7 @@ import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { AdminAuditAction, AdminAuditEntity } from "@zwadj/types";
 import { createTestApp, loginAs, registerUser, truncateAll, verifyLastRegistered, type TestContext } from "./helpers";
+import { holdRow, waitBlocked } from "./row-lock";
 
 let ctx: TestContext;
 
@@ -288,14 +289,90 @@ describe("POST /admin/venues/:id/reject — D-4, R-2", () => {
     expect(await journalOf(id)).toHaveLength(1);
   });
 
-  it("DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED, le motif stocké n'est PAS écrasé, aucune seconde ligne", async () => {
+  it("R-3 (D350, 1 c de la consigne) — un AUTRE motif sur une salle déjà rejetée la CORRIGE : 200, le nouveau motif REMPLACE l'ancien sur la salle, la réponse porte le nouveau motif, la salle reste un brouillon", async () => {
     const id = await seedVenue();
     await reject(id);
     const res = await reject(id, { reason: "Un autre motif" });
-    expect(res.status).toBe(409);
-    expect(res.body.message.code).toBe("VENUE_ALREADY_REJECTED");
+    expect(res.status).toBe(200);
+    expect(res.body.publicationStatus).toBe("DRAFT");
+    expect(res.body.rejection.reason).toBe("Un autre motif");
+    const salle = await venueOf(id);
+    expect(salle.rejectionReason).toBe("Un autre motif");
+    expect(salle.publicationStatus).toBe("DRAFT");
+  });
+
+  it("la ligne de journal d'une correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus)", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    const corrigee = await reject(id, { reason: "Un autre motif" });
+    const lignes = await journalOf(id);
+    expect(lignes).toHaveLength(2);
+    expect(lignes.map((l) => l.action)).toEqual([AdminAuditAction.VENUE_REJECT, AdminAuditAction.VENUE_REJECT]);
+    expect(lignes[0]?.before).toEqual({ rejectionReason: null });
+    expect(lignes[0]?.after).toEqual({ rejectionReason: MOTIF });
+    expect(lignes[1]?.before).toEqual({ rejectionReason: MOTIF });
+    expect(lignes[1]?.after).toEqual({ rejectionReason: "Un autre motif" });
+    // La date de la réponse est celle de la ligne de la CORRECTION, pas celle du premier rejet.
+    expect(corrigee.body.rejection.rejectedAt).toBe(lignes[1]?.createdAt.toISOString());
+  });
+
+  it("MD-ADM-4 — corriger avec le MÊME motif que celui en vigueur (rejeu) : 200, la même réponse, AUCUNE ligne de plus", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    await reject(id, { reason: "Un autre motif" });
+    const rejeu = await reject(id, { reason: "Un autre motif" });
+    const encore = await reject(id, { reason: "  Un autre motif  " });
+    expect(rejeu.status).toBe(200);
+    expect(encore.status).toBe(200);
+    expect(encore.body).toEqual(rejeu.body);
+    expect(await journalOf(id)).toHaveLength(2);
+  });
+
+  it("corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif", async () => {
+    const id = await seedVenue();
+    for (const reason of ["Premier", "Deuxième", "Troisième"]) expect((await reject(id, { reason })).status).toBe(200);
+    const lignes = await journalOf(id);
+    expect(lignes.map((l) => [l.before, l.after])).toEqual([
+      [{ rejectionReason: null }, { rejectionReason: "Premier" }],
+      [{ rejectionReason: "Premier" }, { rejectionReason: "Deuxième" }],
+      [{ rejectionReason: "Deuxième" }, { rejectionReason: "Troisième" }]
+    ]);
+    expect((await venueOf(id)).rejectionReason).toBe("Troisième");
+  });
+
+  it("la file ET le détail montrent le NOUVEAU motif et la date de la CORRECTION", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    const corrigee = await reject(id, { reason: "Un autre motif" });
+    const file = await queue();
+    const ligne = (file.body.items as { id: string; rejection: { reason: string; rejectedAt: string } | null }[]).find((i) => i.id === id);
+    expect(ligne?.rejection?.reason).toBe("Un autre motif");
+    expect(ligne?.rejection?.rejectedAt).toBe(corrigee.body.rejection.rejectedAt);
+    const detail = await api().get(`/api/v1/admin/venues/${id}`).set(authH(adminToken));
+    expect(detail.body.rejection.reason).toBe("Un autre motif");
+    expect(detail.body.rejection.rejectedAt).toBe(corrigee.body.rejection.rejectedAt);
+  });
+
+  it("le motif corrigé est ROGNÉ et BORNÉ comme le premier : trop long ⇒ 400, rien n'est écrit, l'ancien motif reste, aucune ligne de plus", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    const trop = await reject(id, { reason: "x".repeat(1001) });
+    const vide = await reject(id, { reason: "   " });
+    expect([trop.status, vide.status]).toEqual([400, 400]);
     expect((await venueOf(id)).rejectionReason).toBe(MOTIF);
     expect(await journalOf(id)).toHaveLength(1);
+  });
+
+  it("rejetée, PUBLIÉE (le motif s'efface), puis un rejet : 409 VENUE_NOT_DRAFT — le sens unique d'A3-④ tient, la salle publiée ne se corrige pas", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    expect((await publish(id)).status).toBe(200);
+    const res = await reject(id, { reason: "Trop tard." });
+    expect(res.status).toBe(409);
+    expect(res.body.message.code).toBe("VENUE_NOT_DRAFT");
+    const salle = await venueOf(id);
+    expect(salle.publicationStatus).toBe("PUBLISHED");
+    expect(salle.rejectionReason).toBeNull();
   });
 });
 
@@ -384,6 +461,59 @@ describe("MD-ADM-4 — la course publier / rejeter : le statut se décide DANS l
     }
   });
 });
+
+describe("R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage", () => {
+  it("deux corrections à motifs DIFFÉRENTS sur une salle déjà rejetée, bloquées sur la même ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    const verrou = holdRow(ctx.prisma, "venues", id);
+    await verrou.ready;
+    const a = reject(id, { reason: "Motif A" }).then((r) => r);
+    await waitBlocked(ctx.prisma, 1);
+    const b = reject(id, { reason: "Motif B" }).then((r) => r);
+    try {
+      await waitBlocked(ctx.prisma, 2);
+    } finally {
+      verrou.release();
+    }
+    await verrou.done;
+    const [ra, rb] = await Promise.all([a, b]);
+
+    expect([ra.status, rb.status], `${JSON.stringify(ra.body)} / ${JSON.stringify(rb.body)}`).toEqual([200, 409]);
+    expect(rb.body.message.code).toBe("VENUE_ALREADY_REJECTED");
+    expect((await venueOf(id)).rejectionReason).toBe("Motif A");
+    const lignes = await journalOf(id);
+    expect(lignes.map((l) => [l.before, l.after])).toEqual([
+      [{ rejectionReason: null }, { rejectionReason: MOTIF }],
+      [{ rejectionReason: MOTIF }, { rejectionReason: "Motif A" }]
+    ]);
+  });
+
+  it("une correction et une PUBLICATION bloquées sur la même ligne, la publication d'abord : la publication gagne, la correction est refusée (409 VENUE_NOT_DRAFT), la salle est publiée sans motif", async () => {
+    const id = await seedVenue();
+    await reject(id);
+    const verrou = holdRow(ctx.prisma, "venues", id);
+    await verrou.ready;
+    const p = publish(id).then((r) => r);
+    await waitBlocked(ctx.prisma, 1);
+    const c = reject(id, { reason: "Trop tard." }).then((r) => r);
+    try {
+      await waitBlocked(ctx.prisma, 2);
+    } finally {
+      verrou.release();
+    }
+    await verrou.done;
+    const [rp, rc] = await Promise.all([p, c]);
+
+    expect([rp.status, rc.status], `${JSON.stringify(rp.body)} / ${JSON.stringify(rc.body)}`).toEqual([200, 409]);
+    expect(rc.body.message.code).toBe("VENUE_NOT_DRAFT");
+    const salle = await venueOf(id);
+    expect(salle.publicationStatus).toBe("PUBLISHED");
+    expect(salle.rejectionReason).toBeNull();
+    expect((await journalOf(id)).map((l) => l.action)).toEqual([AdminAuditAction.VENUE_REJECT, AdminAuditAction.VENUE_PUBLISH]);
+  });
+});
+
 
 describe("GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2)", () => {
   const read = (id: string, token = proToken) => api().get(`/api/v1/pro/venues/${id}/publication`).set(authH(token));

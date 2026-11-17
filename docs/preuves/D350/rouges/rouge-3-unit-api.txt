@@ -1,0 +1,358 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/admin-audit.spec.ts (11 tests | 2 failed) 19ms
+   ✓ venuePublishEntry > l'acteur, l'action et l'entité sont ceux de l'autorité ; avant → après porte le seul statut 2ms
+   ✓ venuePublishEntry > le statut de départ est celui qu'on passe (le cas d'un `PENDING` verrouillé ne s'écrit pas « DRAFT ») 0ms
+   ✓ venueRejectEntry > le MOTIF est dans la ligne — publier l'efface de la colonne, le journal garde l'histoire (R-2) ; au PREMIER rejet, « avant » est « jamais rejetée » 0ms
+   × venueRejectEntry > R-3 (D350) — une CORRECTION garde l'ANCIEN ET le NOUVEAU motif : « avant » est le motif en vigueur, « après » le nouveau ; l'action reste `venue.reject` (la date du refus est celle de la dernière ligne) 9ms
+     → expected { rejectionReason: null } to deeply equal { rejectionReason: 'Photos floues.' }
+   × venueRejectEntry > R-3 — le motif précédent est celui qu'on passe, jamais déduit : deux motifs différents donnent deux « avant » différents 1ms
+     → expected { rejectionReason: null } to not deeply equal { rejectionReason: null }
+   ✓ deletionDecisionEntry > approuver : le nombre de salles archivées voyage, AUCUN identifiant du compte, AUCUNE note de décision 0ms
+   ✓ deletionDecisionEntry > rejeter : pas de clé `archivedVenues` (rien n'a été archivé) 1ms
+   ✓ promoteAdminEntry — le script du premier admin (D-3) > pas d'acteur-compte (aucun admin n'existe encore) : `SCRIPT` ; l'entité est le compte, avant → après porte le seul rôle 0ms
+   ✓ aucune ligne ne porte de donnée personnelle ni de valeur composée > les clés de chaque ligne sont exactement les sept clés de `audit_logs` que le module écrit 1ms
+   ✓ aucune ligne ne porte de donnée personnelle ni de valeur composée > `before` et `after` ne contiennent que des valeurs simples (chaîne, nombre, booléen, null) — jamais d'objet imbriqué 0ms
+   ✓ aucune ligne ne porte de donnée personnelle ni de valeur composée > aucune clé n'est un nom de donnée personnelle (e-mail, téléphone, nom, note de décision) 2ms
+ ❯ src/venues/venues-admin.service.spec.ts (39 tests | 6 failed) 51ms
+   ✓ VenuesAdminService.publish > id hors motif UUID : 404 VENUE_NOT_FOUND sans toucher la base, sans ouvrir de transaction 3ms
+   ✓ VenuesAdminService.publish > DRAFT → UN updateMany conditionné au statut (check-and-set), qui efface le motif ; le WHERE admin voit toutes les vivantes 4ms
+   ✓ VenuesAdminService.publish > R-5 — la ligne de journal s'écrit DANS la transaction, APRÈS l'écriture, avec l'acteur et le statut de départ 2ms
+   ✓ VenuesAdminService.publish > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, aucune écriture, aucune ligne de journal 1ms
+   ✓ VenuesAdminService.publish > déjà PUBLISHED : idempotent — AUCUNE écriture, AUCUNE ligne de journal (updatedAt intact, tri « recent » non faussé) 0ms
+   ✓ VenuesAdminService.publish > MD-ADM-4 — la course perdue : le compte est 0 parce qu'un AUTRE geste a publié entre-temps ⇒ 200 idempotent, AUCUNE ligne de journal 1ms
+   ✓ VenuesAdminService.publish > MD-ADM-4 — le compte est 0 parce que la salle a été SUPPRIMÉE entre-temps ⇒ 404 indistinct, AUCUNE ligne de journal 0ms
+   ✓ VenuesAdminService.publish > MD-ADM-6 — un journal qui échoue fait ÉCHOUER la publication (l'erreur remonte : la transaction l'annule, mesuré en intégration) 1ms
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > id hors motif UUID : 404 VENUE_NOT_FOUND sans toucher la base 1ms
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, motif PRÉCÉDENT = jamais rejetée) qui n'écrit QUE le motif — le statut ne bouge pas 1ms
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-5 — UNE ligne de journal dans la transaction, qui porte le MOTIF (« jamais rejetée » → le motif) ; la date rendue est celle de CETTE ligne 0ms
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-1 — le rejet n'écrit ni ne lit AUCUN taux : la charge utile de l'écriture et la réponse n'en portent pas 0ms
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > salle absente ou supprimée : 404 indistinct, AUCUNE écriture, AUCUNE ligne de journal 10ms
+     → expected TypeError: Cannot destructure property 'c… to be an instance of NotFoundException
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est écrit, AUCUNE ligne de journal 2ms
+     → expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE écriture, AUCUNE nouvelle ligne de journal 4ms
+     → expected TypeError: Cannot destructure property 'c… to deeply equal { …(3) }
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-3 — un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau 2ms
+     → expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -9,9 +9,9 @@
+        "publicationStatus": {
+          "in": [
+            "DRAFT",
+          ],
+        },
+-       "rejectionReason": "Un premier motif",
++       "rejectionReason": null,
+      },
+    },
+  ]
+
+
+Number of calls: 1
+
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-3 — la correction ne lit ni n'écrit aucun taux non plus 0ms
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal 1ms
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et l'autre admin a posé le MÊME motif : 200 (même état, même réponse), AUCUNE ligne de journal 2ms
+     → expected ConflictException: admin.errors.venueAlre… { …(3) } to deeply equal { …(3) }
+   × VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal 3ms
+     → expected 'VENUE_ALREADY_REJECTED' to be 'VENUE_NOT_DRAFT' // Object.is equality
+   ✓ VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-6 — un journal qui échoue fait ÉCHOUER le rejet, et la correction 1ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la condition de la file : brouillon VIVANT avec au moins un créneau ACTIF (la condition même de la publication) 0ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > MD-ADM-8 — le filtre vit dans le WHERE : le compte et la lecture de CHAQUE groupe partagent le MÊME where (D225) 1ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > R-2 — les non rejetées d'abord, les rejetées ensuite ; chaque groupe trié par date de création puis id (déterministe) 1ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > le total, la page et la taille sont l'ÉCHO de ce qui a été appliqué ; le total est celui du jeu FILTRÉ 0ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > une page qui tient dans le premier groupe n'interroge PAS le second ; une page à cheval interroge les deux avec les bons sauts 1ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > une page entièrement dans le second groupe passe son saut RELATIF au second ; le premier n'est pas interrogé 0ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la forme d'une ligne : nom, ville, propriétaire, nombre de créneaux actifs, dates ISO ; « déjà rejetée » avec motif ET date LUE AU JOURNAL 0ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la date des refus se lit en UNE requête pour toute la page (pas une par ligne), sur les seules salles rejetées de la page 1ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > aucun refus sur la page : le journal n'est pas interrogé 0ms
+   ✓ VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > R-1 — la lecture de la file ne sélectionne AUCUN taux 0ms
+   ✓ VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1) > id hors motif UUID : 404 sans toucher la base 0ms
+   ✓ VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1) > inexistante ou supprimée : le MÊME 404 (le WHERE admin exclut les supprimées) 1ms
+   ✓ VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1) > rend la vue admin + numéro, ville, propriétaire, créneaux actifs ; un brouillon jamais rejeté n'a pas de refus 1ms
+   ✓ VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1) > un brouillon rejeté : le motif et la date lue au journal ; la clé brute `rejectionReason` n'est JAMAIS une clé de la réponse 1ms
+   ✓ VenuesAdminService.setRates — fusion D35 contre l'existant (R-1 : INCHANGÉ) > cashback seul > commission stockée : 400 CASHBACK_EXCEEDS_COMMISSION, update jamais appelé 1ms
+   ✓ VenuesAdminService.setRates — fusion D35 contre l'existant (R-1 : INCHANGÉ) > égalité admise (cashback = commission, D35 : ≤) ; corps partiel écrit tel quel 1ms
+   ✓ VenuesAdminService.setRates — fusion D35 contre l'existant (R-1 : INCHANGÉ) > baisser la commission SOUS le cashback stocké est refusé aussi (fusion symétrique) 0ms
+   ✓ VenuesAdminService.setRates — fusion D35 contre l'existant (R-1 : INCHANGÉ) > R-1 — le réglage des taux n'écrit AUCUNE ligne de journal (il ne l'était pas avant, il ne l'est pas : MD-ADM-17) 0ms
+ ❯ src/account/account-deletion.service.spec.ts (30 tests | 4 failed) 52ms
+   ✓ approve — anonymisation, JAMAIS de suppression > aucun `delete` n'est appelé sur QUOI QUE CE SOIT 5ms
+   ✓ approve — anonymisation, JAMAIS de suppression > seules les salles VIVANTES sont archivées, et la trace les recense EXACTEMENT 3ms
+   ✓ approve — anonymisation, JAMAIS de suppression > pro sans salle vivante : aucune écriture d'archive (pas de ligne vide) 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > compte CLIENT (pas de ProProfile) : l'étape salles et l'étape profil pro sont sautées 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > googleSub remis à null, e-mail non routable, PII effacée 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > sessions révoquées ET liens encore vivants invalidés (reset, vérification, changement d'e-mail) 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > businessName CONSERVÉ, coordonnées effacées 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > l'e-mail de décision part à l'adresse CAPTURÉE, avec le nombre de salles archivées 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > emailHash = SHA-256 de l'adresse RÉELLEMENT détruite 1ms
+   ✓ approve — anonymisation, JAMAIS de suppression > un e-mail qui échoue ne fait PAS échouer la décision (déjà commitée) 1ms
+   ✓ transitions > demande déjà décidée : 400 DELETION_REQUEST_NOT_PENDING, aucune écriture 1ms
+   ✓ transitions > id inconnu : 404 DELETION_REQUEST_NOT_FOUND 1ms
+   ✓ transitions > reject : AUCUN effet sur le compte, qui reste ACTIVE — et l'utilisateur est notifié 1ms
+   ✓ transitions > cancel sans demande en attente : 404 (check-and-set, 0 ligne touchée) 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > approve : UNE ligne `account_deletion.approve`, dans la transaction, APRÈS la clôture de la demande, avec le nombre de salles archivées 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > approve : AUCUNE donnée personnelle ni note de décision dans la ligne (ni l'adresse e-mail, ni l'identifiant du compte) 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > approve : un compte sans salle vivante écrit `archivedVenues: 0` (le nombre est celui de ce qui a été archivé) 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > MD-ADM-6 — approve : un journal qui échoue fait ÉCHOUER la décision ; l'e-mail de décision ne part PAS (il part après le commit) 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > reject : UNE ligne `account_deletion.reject`, dans une TRANSACTION (il n'en avait aucune), APRÈS l'écriture de la décision 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > MD-ADM-6 — reject : un journal qui échoue fait ÉCHOUER le refus ; l'utilisateur n'est PAS notifié d'une décision qui n'a pas eu lieu 1ms
+   ✓ journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture) 5ms
+   × R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > approve : AUCUNE lecture de la demande avant l'ouverture de la transaction (la lecture d'avant décidait, D117 / D121) 7ms
+     → expected 258 to be greater than 259
+   × R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > reject : AUCUNE lecture de la demande avant l'ouverture de la transaction 1ms
+     → expected 275 to be greater than 276
+   × R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > approve : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant toute salle archivée, toute anonymisation, toute révocation 4ms
+     → expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+
+Number of calls: 0
+
+   × R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > reject : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant la décision écrite et la ligne de journal 1ms
+     → expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+
+Number of calls: 0
+
+   ✓ R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail 1ms
+   ✓ R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié 2ms
+   ✓ R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject 2ms
+   ✓ R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur une demande que la relecture dit ENCORE en attente : une erreur d'ÉTAT IMPOSSIBLE, jamais un succès silencieux 1ms
+   ✓ R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > l'e-mail de décision n'est lu qu'à l'INTÉRIEUR de la transaction, AVANT l'anonymisation : l'adresse capturée est celle de la ligne lue après le check-and-set 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/account/account-deletion.service.spec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > approve : AUCUNE lecture de la demande avant l'ouverture de la transaction (la lecture d'avant décidait, D117 / D121)
+AssertionError: expected 258 to be greater than 259
+ ❯ src/account/account-deletion.service.spec.ts:310:40
+    308|     const lecture = [...prisma.accountDeletionRequest.findUnique.mock.…
+    309|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    310|     for (const o of lecture) expect(o).toBeGreaterThan(ordre(prisma.$t…
+       |                                        ^
+    311|   });
+    312| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/account/account-deletion.service.spec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > reject : AUCUNE lecture de la demande avant l'ouverture de la transaction
+AssertionError: expected 275 to be greater than 276
+ ❯ src/account/account-deletion.service.spec.ts:318:40
+    316|     const lecture = [...prisma.accountDeletionRequest.findUnique.mock.…
+    317|     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    318|     for (const o of lecture) expect(o).toBeGreaterThan(ordre(prisma.$t…
+       |                                        ^
+    319|   });
+    320| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/account/account-deletion.service.spec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > approve : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant toute salle archivée, toute anonymisation, toute révocation
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+
+Number of calls: 0
+
+ ❯ src/account/account-deletion.service.spec.ts:325:54
+    323|     await service.approve(REQUEST_ID, ADMIN_ID, undefined);
+    324| 
+    325|     expect(prisma.accountDeletionRequest.updateMany).toHaveBeenCalledW…
+       |                                                      ^
+    326|     const cas = ordre(prisma.accountDeletionRequest.updateMany);
+    327|     expect(cas).toBeGreaterThan(ordre(prisma.$transaction));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/account/account-deletion.service.spec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > reject : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant la décision écrite et la ligne de journal
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+
+Number of calls: 0
+
+ ❯ src/account/account-deletion.service.spec.ts:337:54
+    335|     await service.reject(REQUEST_ID, ADMIN_ID, "Pas maintenant");
+    336| 
+    337|     expect(prisma.accountDeletionRequest.updateMany).toHaveBeenCalledW…
+       |                                                      ^
+    338|     const cas = ordre(prisma.accountDeletionRequest.updateMany);
+    339|     expect(cas).toBeGreaterThan(ordre(prisma.$transaction));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/common/admin-audit.spec.ts > venueRejectEntry > R-3 (D350) — une CORRECTION garde l'ANCIEN ET le NOUVEAU motif : « avant » est le motif en vigueur, « après » le nouveau ; l'action reste `venue.reject` (la date du refus est celle de la dernière ligne)
+AssertionError: expected { rejectionReason: null } to deeply equal { rejectionReason: 'Photos floues.' }
+
+- Expected
++ Received
+
+  {
+-   "rejectionReason": "Photos floues.",
++   "rejectionReason": null,
+  }
+
+ ❯ src/common/admin-audit.spec.ts:53:22
+     51|     const e = venueRejectEntry(ADMIN, VENUE_ID, "Photos floues et capa…
+     52|     expect(e.action).toBe(AdminAuditAction.VENUE_REJECT);
+     53|     expect(e.before).toEqual({ rejectionReason: "Photos floues." });
+       |                      ^
+     54|     expect(e.after).toEqual({ rejectionReason: "Photos floues et capac…
+     55|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/common/admin-audit.spec.ts > venueRejectEntry > R-3 — le motif précédent est celui qu'on passe, jamais déduit : deux motifs différents donnent deux « avant » différents
+AssertionError: expected { rejectionReason: null } to not deeply equal { rejectionReason: null }
+
+Compared values have no visual difference.
+
+ ❯ src/common/admin-audit.spec.ts:60:26
+     58|     const a = venueRejectEntry(ADMIN, VENUE_ID, "Nouveau", "Premier");
+     59|     const b = venueRejectEntry(ADMIN, VENUE_ID, "Nouveau", "Deuxième");
+     60|     expect(a.before).not.toEqual(b.before);
+       |                          ^
+     61|     expect(a.after).toEqual(b.after);
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > salle absente ou supprimée : 404 indistinct, AUCUNE écriture, AUCUNE ligne de journal
+AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of NotFoundException
+ ❯ src/venues/venues-admin.service.spec.ts:280:19
+    278| 
+    279|     const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { rea…
+    280|     expect(echec).toBeInstanceOf(NotFoundException);
+       |                   ^
+    281|     expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
+    282|     expect(prisma.venue.updateMany).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est écrit, AUCUNE ligne de journal
+AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+ ❯ src/venues/venues-admin.service.spec.ts:291:19
+    289| 
+    290|     const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { rea…
+    291|     expect(echec).toBeInstanceOf(ConflictException);
+       |                   ^
+    292|     expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_NOT_DRAF…
+    293|     expect(prisma.venue.updateMany).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE écriture, AUCUNE nouvelle ligne de journal
+AssertionError: expected TypeError: Cannot destructure property 'c… to deeply equal { …(3) }
+
+- Expected
++ Received
+
+- {
+-   "id": "018f0000-0000-7000-8000-00000000eeee",
+-   "publicationStatus": "DRAFT",
+-   "rejection": {
+-     "reason": "Les photos sont floues. Merci de les remplacer.",
+-     "rejectedAt": "2026-11-10T09:30:00.000Z",
+-   },
++ TypeError {
++   "message": "Cannot destructure property 'count' of '(intermediate value)' as it is undefined.",
+  }
+
+ ❯ src/venues/venues-admin.service.spec.ts:304:17
+    302|     const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF …
+    303| 
+    304|     expect(res).toEqual({
+       |                 ^
+    305|       id: VENUE_ID,
+    306|       publicationStatus: VenuePublicationStatus.DRAFT,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-3 — un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau
+AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+
+Received: 
+
+  1st spy call:
+
+@@ -9,9 +9,9 @@
+        "publicationStatus": {
+          "in": [
+            "DRAFT",
+          ],
+        },
+-       "rejectionReason": "Un premier motif",
++       "rejectionReason": null,
+      },
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/venues/venues-admin.service.spec.ts:321:37
+    319| 
+    320|     expect(prisma.venue.updateMany).toHaveBeenCalledTimes(1);
+    321|     expect(prisma.venue.updateMany).toHaveBeenCalledWith({
+       |                                     ^
+    322|       where: { id: VENUE_ID, deletedAt: null, publicationStatus: { in:…
+    323|       data: { rejectionReason: MOTIF }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et l'autre admin a posé le MÊME motif : 200 (même état, même réponse), AUCUNE ligne de journal
+AssertionError: expected ConflictException: admin.errors.venueAlre… { …(3) } to deeply equal { …(3) }
+
+- Expected
++ Received
+
+- {
+-   "id": "018f0000-0000-7000-8000-00000000eeee",
+-   "publicationStatus": "DRAFT",
+-   "rejection": {
+-     "reason": "Les photos sont floues. Merci de les remplacer.",
+-     "rejectedAt": "2026-11-10T09:30:00.000Z",
++ ConflictException {
++   "message": "admin.errors.venueAlreadyRejected",
++   "response": {
++     "code": "VENUE_ALREADY_REJECTED",
++     "message": "admin.errors.venueAlreadyRejected",
+    },
++   "status": 409,
++   "options": {},
++   "name": "ConflictException",
+  }
+
+ ❯ src/venues/venues-admin.service.spec.ts:364:17
+    362|     const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF …
+    363| 
+    364|     expect(res).toEqual({
+       |                 ^
+    365|       id: VENUE_ID,
+    366|       publicationStatus: VenuePublicationStatus.DRAFT,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal
+AssertionError: expected 'VENUE_ALREADY_REJECTED' to be 'VENUE_NOT_DRAFT' // Object.is equality
+
+Expected: "VENUE_NOT_DRAFT"
+Received: "VENUE_ALREADY_REJECTED"
+
+ ❯ src/venues/venues-admin.service.spec.ts:378:24
+    376|     const e1 = await erreurDe(publiee.service.reject(VENUE_ID, ADMIN, …
+    377|     expect(e1).toBeInstanceOf(ConflictException);
+    378|     expect(codeOf(e1)).toBe(VenueModerationErrorCode.VENUE_NOT_DRAFT);
+       |                        ^
+    379|     expect(publiee.prisma.auditLog.create).not.toHaveBeenCalled();
+    380| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  12 failed | 68 passed (80)
+   Start at  10:54:53
+   Duration  2.50s (transform 786ms, setup 0ms, collect 3.82s, tests 123ms, environment 1ms, prepare 914ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/account/account-deletion.service.spec.ts src/common/admin-audit.spec.ts src/venues/venues-admin.service.spec.ts

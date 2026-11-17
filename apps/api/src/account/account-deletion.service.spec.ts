@@ -48,7 +48,8 @@ function build(opts: { pro?: boolean; livingVenues?: string[]; status?: string }
       findMany: vi.fn().mockResolvedValue([]),
       create: vi.fn().mockResolvedValue(REQUEST_ROW),
       update: vi.fn().mockResolvedValue({ ...REQUEST_ROW, status: "APPROVED" }),
-      updateMany: vi.fn().mockResolvedValue({ count: 1 })
+      // D350 (R-2) : le contrôle de statut est un CHECK-AND-SET (`updateMany` conditionné à PENDING) — sur une demande qui n'est plus en attente, la base rend 0 ligne touchée.
+      updateMany: vi.fn().mockResolvedValue({ count: opts.status !== undefined && opts.status !== "PENDING" ? 0 : 1 })
     },
     accountDeletionArchivedVenue: { createMany: vi.fn().mockResolvedValue({}) },
     venue: { findMany: vi.fn().mockResolvedValue(living), updateMany: vi.fn().mockResolvedValue({}) },
@@ -205,6 +206,7 @@ describe("transitions", () => {
 
   it("id inconnu : 404 DELETION_REQUEST_NOT_FOUND", async () => {
     const { service, prisma } = build();
+    prisma.accountDeletionRequest.updateMany.mockResolvedValue({ count: 0 });
     prisma.accountDeletionRequest.findUnique.mockResolvedValue(null);
     await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(NotFoundException);
   });
@@ -290,5 +292,109 @@ describe("journal des décisions admin (R-5, MD-ADM-6)", () => {
     await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
     await expect(service.reject(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
+  });
+});
+
+// ── D350 (R-2) — le statut d'une demande se décide DANS la transaction, en check-and-set ─────────────────────────────────────────────────────────────────────────────────────────────────────
+// Le relecteur a constaté PAR LECTURE (et `test:int` le MESURE : `account-deletion-race.int-spec.ts`) que `approve` et `reject` lisaient « en attente » AVANT leur transaction puis écrivaient par `id` :
+// deux approbations simultanées écrivaient deux lignes, une approbation pendant l'annulation anonymisait un compte dont la demande venait d'être annulée (D117, D121). Ici, ce qui se prouve sans base :
+// la décision est UN `updateMany` conditionné à `PENDING`, PREMIER geste du rappel de la transaction, aucune lecture de la demande n'a lieu avant l'ouverture de la transaction, et un compte 0 n'écrit RIEN.
+describe("R-2 (D350) — le statut se décide DANS la transaction, en check-and-set", () => {
+  const ordre = (m: { mock: { invocationCallOrder: number[] } }, i = 0): number => m.mock.invocationCallOrder[i] as number;
+
+  it("approve : AUCUNE lecture de la demande avant l'ouverture de la transaction (la lecture d'avant décidait, D117 / D121)", async () => {
+    const { service, prisma } = build();
+    await service.approve(REQUEST_ID, ADMIN_ID, undefined);
+    const lecture = [...prisma.accountDeletionRequest.findUnique.mock.invocationCallOrder, ...prisma.accountDeletionRequest.findFirst.mock.invocationCallOrder];
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    for (const o of lecture) expect(o).toBeGreaterThan(ordre(prisma.$transaction));
+  });
+
+  it("reject : AUCUNE lecture de la demande avant l'ouverture de la transaction", async () => {
+    const { service, prisma } = build();
+    await service.reject(REQUEST_ID, ADMIN_ID, "Pas maintenant");
+    const lecture = [...prisma.accountDeletionRequest.findUnique.mock.invocationCallOrder, ...prisma.accountDeletionRequest.findFirst.mock.invocationCallOrder];
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    for (const o of lecture) expect(o).toBeGreaterThan(ordre(prisma.$transaction));
+  });
+
+  it("approve : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant toute salle archivée, toute anonymisation, toute révocation", async () => {
+    const { service, prisma } = build();
+    await service.approve(REQUEST_ID, ADMIN_ID, undefined);
+
+    expect(prisma.accountDeletionRequest.updateMany).toHaveBeenCalledWith({ where: { id: REQUEST_ID, status: "PENDING" }, data: expect.objectContaining({ status: "APPROVED" }) });
+    const cas = ordre(prisma.accountDeletionRequest.updateMany);
+    expect(cas).toBeGreaterThan(ordre(prisma.$transaction));
+    for (const effet of [prisma.venue.findMany, prisma.venue.updateMany, prisma.user.update, prisma.refreshToken.updateMany, prisma.proProfile.update, prisma.auditLog.create]) {
+      expect(ordre(effet)).toBeGreaterThan(cas);
+    }
+  });
+
+  it("reject : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant la décision écrite et la ligne de journal", async () => {
+    const { service, prisma } = build();
+    await service.reject(REQUEST_ID, ADMIN_ID, "Pas maintenant");
+
+    expect(prisma.accountDeletionRequest.updateMany).toHaveBeenCalledWith({ where: { id: REQUEST_ID, status: "PENDING" }, data: expect.objectContaining({ status: "REJECTED" }) });
+    const cas = ordre(prisma.accountDeletionRequest.updateMany);
+    expect(cas).toBeGreaterThan(ordre(prisma.$transaction));
+    expect(ordre(prisma.accountDeletionRequest.update)).toBeGreaterThan(cas);
+    expect(ordre(prisma.auditLog.create)).toBeGreaterThan(cas);
+  });
+
+  it("compte 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail", async () => {
+    const { service, prisma, emails } = build();
+    prisma.accountDeletionRequest.updateMany.mockResolvedValue({ count: 0 });
+    prisma.accountDeletionRequest.findUnique.mockResolvedValue({ id: REQUEST_ID, status: "CANCELLED" });
+
+    await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
+
+    expect(prisma.venue.findMany).not.toHaveBeenCalled();
+    expect(prisma.venue.updateMany).not.toHaveBeenCalled();
+    expect(prisma.user.update).not.toHaveBeenCalled();
+    expect(prisma.refreshToken.updateMany).not.toHaveBeenCalled();
+    expect(prisma.auditLog.create).not.toHaveBeenCalled();
+    expect(emails.sendDeletionApproved).not.toHaveBeenCalled();
+  });
+
+  it("compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié", async () => {
+    for (const statut of ["APPROVED", "REJECTED"]) {
+      const approuve = build({ status: statut });
+      await expect(approuve.service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
+      expect(approuve.prisma.user.update).not.toHaveBeenCalled();
+      expect(approuve.prisma.auditLog.create).not.toHaveBeenCalled();
+      expect(approuve.emails.sendDeletionApproved).not.toHaveBeenCalled();
+
+      const rejete = build({ status: statut });
+      await expect(rejete.service.reject(REQUEST_ID, ADMIN_ID, "Motif")).rejects.toBeInstanceOf(BadRequestException);
+      expect(rejete.prisma.accountDeletionRequest.update).not.toHaveBeenCalled();
+      expect(rejete.prisma.auditLog.create).not.toHaveBeenCalled();
+      expect(rejete.emails.sendDeletionRejected).not.toHaveBeenCalled();
+    }
+  });
+
+  it("compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject", async () => {
+    const { service, prisma } = build();
+    prisma.accountDeletionRequest.updateMany.mockResolvedValue({ count: 0 });
+    prisma.accountDeletionRequest.findUnique.mockResolvedValue(null);
+    await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.reject(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it("compte 0 sur une demande que la relecture dit ENCORE en attente : une erreur d'ÉTAT IMPOSSIBLE, jamais un succès silencieux", async () => {
+    const { service, prisma } = build();
+    prisma.accountDeletionRequest.updateMany.mockResolvedValue({ count: 0 });
+    prisma.accountDeletionRequest.findUnique.mockResolvedValue({ id: REQUEST_ID, status: "PENDING" });
+    const e = await service.approve(REQUEST_ID, ADMIN_ID, undefined).then(() => null, (x: unknown) => x);
+    expect(e).toBeInstanceOf(Error);
+    expect(e).not.toBeInstanceOf(BadRequestException);
+    expect(e).not.toBeInstanceOf(NotFoundException);
+    expect(prisma.user.update).not.toHaveBeenCalled();
+  });
+
+  it("l'e-mail de décision n'est lu qu'à l'INTÉRIEUR de la transaction, AVANT l'anonymisation : l'adresse capturée est celle de la ligne lue après le check-and-set", async () => {
+    const { service, prisma, emails } = build();
+    await service.approve(REQUEST_ID, ADMIN_ID, undefined);
+    expect(ordre(prisma.accountDeletionRequest.findUnique)).toBeLessThan(ordre(prisma.user.update));
+    expect(emails.sendDeletionApproved).toHaveBeenCalledWith({ email: "pro@example.dz", role: "PRO", locale: "fr" }, 2);
   });
 });

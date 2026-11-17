@@ -11,7 +11,8 @@ import { messages } from "@zwadj/i18n";
 import type { AuthClient } from "./lib/auth-client";
 import { initI18n } from "./i18n";
 import { AppProviders, AppRoutes } from "./App";
-import type { VenueProDTO } from "@zwadj/types";
+import type { AuthUserDTO, VenueProDTO } from "@zwadj/types";
+import { aVenue, makeAdminServerDouble } from "./test-support/admin-doubles";
 import * as ROUTES from "./routes";
 import { LOGIN_PATH } from "./routes";
 import {
@@ -130,7 +131,7 @@ function rendreConnecteA(chemin: string) {
 // La table lue comme un dictionnaire NON typé (unions de littéraux : un prédicat `[string, string]` ne s'y applique pas, TS2677).
 const ADRESSES_DU_PRO = Object.entries(ROUTES as Record<string, unknown>).filter(
   (entree): entree is [string, string] =>
-    typeof entree[1] === "string" && !entree[0].startsWith("CLIENT_") && entree[0] !== "VENUE_PATH_PATTERN" && entree[1] !== "/"
+    typeof entree[1] === "string" && !entree[0].startsWith("CLIENT_") && !entree[0].endsWith("_PATTERN") && entree[1] !== "/"
 );
 
 describe("FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322)", () => {
@@ -160,5 +161,68 @@ describe("FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (p
   it("calibration, bras négatif CONNECTÉ : une adresse sans route est quittée (renvoyée au tableau de bord)", async () => {
     rendreConnecteA("/salles/v1/calendrier");
     await waitFor(() => expect(screen.getByText(/^adresse=/).textContent).not.toBe("adresse=/salles/v1/calendrier"));
+  });
+});
+
+// ── ADM-2 (D350, rang 52) — chaque adresse `/admin` est une route DÉCLARÉE ────────────────────────────────────────────────────────────────────────────────
+// Les constantes `ADMIN_*` sont lues dans le MODULE (comme ci-dessus) : une adresse d'administration ajoutée demain est vérifiée sans toucher ce test. Elles se jouent avec un ADMIN, sous la garde ADMIN
+// (un PRO y voit le refus, un anonyme est renvoyé à la connexion : `require-admin.test.tsx`). Le bras négatif : une adresse `/admin/…` sans route est QUITTÉE.
+const ADMIN_CONNECTE: AuthUserDTO = {
+  id: "u-admin",
+  email: "admin@exemple.dz",
+  role: "ADMIN",
+  locale: "fr",
+  emailVerified: true,
+  firstName: null,
+  lastName: null,
+  phone: null,
+  hasPassword: true,
+  hasGoogle: false,
+  proProfile: null
+};
+const ADRESSES_ADMIN = ADRESSES_DU_PRO.filter(([nom]) => nom.startsWith("ADMIN_"));
+
+function rendreAdminA(chemin: string, salle = aVenue()) {
+  render(
+    <MemoryRouter initialEntries={[chemin]}>
+      <AppProviders
+        client={makeAuthDouble({ bootstrap: vi.fn().mockResolvedValue(ADMIN_CONNECTE) })}
+        adminClient={makeAdminServerDouble({ venues: [salle] }).client}
+        venues={makeVenueClientDouble(null)}
+        referentials={makeReferentialsDouble()}
+      >
+        <AppRoutes />
+        <Adresse />
+      </AppProviders>
+    </MemoryRouter>
+  );
+}
+
+describe("ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322)", () => {
+  it("la table porte des adresses d'administration (D290 : un zéro sur zéro ne mesure rien)", () => {
+    expect(ADRESSES_ADMIN.map(([nom]) => nom).sort()).toEqual(["ADMIN_DELETIONS_PATH", "ADMIN_PATH"]);
+  });
+
+  for (const [nom, adresse] of ADRESSES_ADMIN) {
+    it(`${nom} (« ${adresse} ») : un ADMIN y voit sa page, et l'adresse RESTE celle demandée`, async () => {
+      rendreAdminA(adresse);
+      await waitFor(() => expect(screen.queryByRole("heading", { level: 1 })).not.toBeNull());
+      expect(screen.getByText(/^adresse=/).textContent).toBe(`adresse=${adresse}`);
+    });
+  }
+
+  it("adminVenuePath(id) — le détail d'une salle : l'ADMIN y voit la salle, et l'adresse RESTE celle demandée", async () => {
+    const adminVenuePath = (ROUTES as Record<string, unknown>).adminVenuePath;
+    expect(typeof adminVenuePath).toBe("function");
+    const salle = aVenue();
+    const adresse = (adminVenuePath as (id: string) => string)(salle.id);
+    rendreAdminA(adresse, salle);
+    await waitFor(() => expect(screen.queryByRole("heading", { level: 1, name: salle.nameFr })).not.toBeNull());
+    expect(screen.getByText(/^adresse=/).textContent).toBe(`adresse=${adresse}`);
+  });
+
+  it("calibration, bras négatif ADMIN : une adresse `/admin/…` sans route est quittée (renvoyée sous `/admin`)", async () => {
+    rendreAdminA("/admin/inconnue");
+    await waitFor(() => expect(screen.getByText(/^adresse=/).textContent).not.toBe("adresse=/admin/inconnue"));
   });
 });

@@ -1,0 +1,221 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/routes.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/routes.test.tsx (19 tests | 2 failed) 478ms
+   ✓ LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > à LOGIN_PATH, la page de connexion se rend, et l'adresse RESTE celle demandée 152ms
+   ✓ LOGIN_PATH du Pro — vérifiée contre sa page (rang 29, D321) > calibration, bras négatif : une adresse SANS route est quittée (l'ancienne cible `/connexion` du client) 31ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > la table porte plus que la connexion (D290 : un zéro sur zéro ne mesure rien) 0ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > LOGIN_PATH (« /auth/connexion ») : la page s'y rend, et l'adresse RESTE celle demandée 21ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > REGISTER_PATH (« /auth/inscription ») : la page s'y rend, et l'adresse RESTE celle demandée 21ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > FORGOT_PASSWORD_PATH (« /auth/mot-de-passe-oublie ») : la page s'y rend, et l'adresse RESTE celle demandée 15ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > RESET_PASSWORD_PATH (« /auth/reinitialisation ») : la page s'y rend, et l'adresse RESTE celle demandée 13ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > VERIFY_EMAIL_PATH (« /auth/verification-email ») : la page s'y rend, et l'adresse RESTE celle demandée 12ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > REQUESTS_PATH (« /demandes ») : la page s'y rend, et l'adresse RESTE celle demandée 18ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > CALENDAR_PATH (« /calendrier ») : la page s'y rend, et l'adresse RESTE celle demandée 12ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > BOOKINGS_PATH (« /reservations ») : la page s'y rend, et l'adresse RESTE celle demandée 16ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > ACCOUNT_PATH (« /compte ») : la page s'y rend, et l'adresse RESTE celle demandée 39ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > VENUES_PATH (« /salles ») : la page s'y rend, et l'adresse RESTE celle demandée 15ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > NEW_VENUE_PATH (« /salles/nouvelle ») : la page s'y rend, et l'adresse RESTE celle demandée 36ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > venuePath(id) — l'assistant d'une salle : la page s'y rend, et l'adresse RESTE celle demandée 39ms
+   ✓ FC-5 — chaque adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > calibration, bras négatif CONNECTÉ : une adresse sans route est quittée (renvoyée au tableau de bord) 12ms
+   × ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322) > la table porte des adresses d'administration (D290 : un zéro sur zéro ne mesure rien) 11ms
+     → expected [] to deeply equal [ Array(2) ]
+   × ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322) > adminVenuePath(id) — le détail d'une salle : l'ADMIN y voit la salle, et l'adresse RESTE celle demandée 2ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   ✓ ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322) > calibration, bras négatif ADMIN : une adresse `/admin/…` sans route est quittée (renvoyée sous `/admin`) 8ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/auth/require-admin.test.tsx [ src/auth/require-admin.test.tsx ]
+Error: Failed to resolve import "../admin/admin-texts" from "src/auth/require-admin.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/auth/require-admin.test.tsx:17:28
+  8  |  import { AppProviders, AppRoutes } from "../App";
+  9  |  import { ADMIN_PATH, ADMIN_DELETIONS_PATH, DASHBOARD_PATH, LOGIN_PATH, VENUES_PATH, adminVenuePath } from "../routes";
+  10 |  import { ADMIN_TEXTS } from "../admin/admin-texts";
+     |                               ^
+  11 |  import { aVenue, makeAdminServerDouble } from "../test-support/admin-doubles";
+  12 |  import { makeAuthDouble, makeReferentialsDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/admin/admin-shell.test.tsx [ src/admin/admin-shell.test.tsx ]
+Error: Failed to resolve import "./admin-texts" from "src/admin/admin-shell.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/admin-shell.test.tsx:12:28
+  6  |  import { initI18n } from "../i18n";
+  7  |  import { ADMIN_PATH, ADMIN_DELETIONS_PATH } from "../routes";
+  8  |  import { ADMIN_TEXTS } from "./admin-texts";
+     |                               ^
+  9  |  import { makeAdminServerDouble } from "../test-support/admin-doubles";
+  10 |  import { makeAuthDouble, makeReferentialsDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/admin/admin-texts.test.ts [ src/admin/admin-texts.test.ts ]
+Error: Failed to resolve import "./admin-texts" from "src/admin/admin-texts.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/admin-texts.test.ts:9:76
+  2  |  import { AccountErrorCode, VenueErrorCode, VenueModerationErrorCode, deletionDecisionSchema, venuePendingQuerySchema, venueRejectSchema } from "@zwadj/types";
+  3  |  import { ApiError, NetworkError } from "../lib/auth-client";
+  4  |  import { ADMIN_TEXTS, classifyAdminError, formatAdminDate, formatBps } from "./admin-texts";
+     |                                                                               ^
+  5  |  const CODES_REÇUS = [
+  6  |    ...Object.values(VenueModerationErrorCode),
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx [ src/admin/deletion-requests-page.test.tsx ]
+Error: Failed to resolve import "./admin-client-context" from "src/admin/deletion-requests-page.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/deletion-requests-page.test.tsx:14:36
+  4  |  import { afterEach, describe, expect, it } from "vitest";
+  5  |  import { initI18n } from "../i18n";
+  6  |  import { AdminClientProvider } from "./admin-client-context";
+     |                                       ^
+  7  |  import { ADMIN_TEXTS, formatAdminDate } from "./admin-texts";
+  8  |  import { DeletionRequestsPage } from "./deletion-requests-page";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/admin/use-no-index.test.tsx [ src/admin/use-no-index.test.tsx ]
+Error: Failed to resolve import "./admin-texts" from "src/admin/use-no-index.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/use-no-index.test.tsx:15:28
+  7  |  import { initI18n } from "../i18n";
+  8  |  import { ADMIN_PATH, ADMIN_DELETIONS_PATH, VENUES_PATH } from "../routes";
+  9  |  import { ADMIN_TEXTS } from "./admin-texts";
+     |                               ^
+  10 |  import { useNoIndex } from "./use-no-index";
+  11 |  import { makeAdminServerDouble } from "../test-support/admin-doubles";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx [ src/admin/venue-queue-page.test.tsx ]
+Error: Failed to resolve import "./admin-client-context" from "src/admin/venue-queue-page.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/venue-queue-page.test.tsx:14:36
+  6  |  import { initI18n } from "../i18n";
+  7  |  import { ADMIN_PATH, adminVenuePath } from "../routes";
+  8  |  import { AdminClientProvider } from "./admin-client-context";
+     |                                       ^
+  9  |  import { ADMIN_TEXTS, formatAdminDate } from "./admin-texts";
+  10 |  import { VenueQueuePage } from "./venue-queue-page";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx [ src/admin/venue-review-page.test.tsx ]
+Error: Failed to resolve import "./admin-client-context" from "src/admin/venue-review-page.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro/src/admin/venue-review-page.test.tsx:15:36
+  6  |  import { initI18n } from "../i18n";
+  7  |  import { ADMIN_PATH, ADMIN_VENUE_PATH_PATTERN, adminVenuePath } from "../routes";
+  8  |  import { AdminClientProvider } from "./admin-client-context";
+     |                                       ^
+  9  |  import { ADMIN_TEXTS, formatAdminDate, formatBps } from "./admin-texts";
+  10 |  import { VenueReviewPage } from "./venue-review-page";
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/routes.test.tsx > ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322) > la table porte des adresses d'administration (D290 : un zéro sur zéro ne mesure rien)
+AssertionError: expected [] to deeply equal [ Array(2) ]
+
+- Expected
++ Received
+
+- [
+-   "ADMIN_DELETIONS_PATH",
+-   "ADMIN_PATH",
+- ]
++ []
+
+ ❯ src/routes.test.tsx:203:55
+    201| describe("ADM-2 — chaque adresse `/admin` de la table est une route DÉ…
+    202|   it("la table porte des adresses d'administration (D290 : un zéro sur…
+    203|     expect(ADRESSES_ADMIN.map(([nom]) => nom).sort()).toEqual(["ADMIN_…
+       |                                                       ^
+    204|   });
+    205| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  src/routes.test.tsx > ADM-2 — chaque adresse `/admin` de la table est une route DÉCLARÉE (patron de D322) > adminVenuePath(id) — le détail d'une salle : l'ADMIN y voit la salle, et l'adresse RESTE celle demandée
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/routes.test.tsx:216:35
+    214|   it("adminVenuePath(id) — le détail d'une salle : l'ADMIN y voit la s…
+    215|     const adminVenuePath = (ROUTES as Record<string, unknown>).adminVe…
+    216|     expect(typeof adminVenuePath).toBe("function");
+       |                                   ^
+    217|     const salle = aVenue();
+    218|     const adresse = (adminVenuePath as (id: string) => string)(salle.i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  8 failed (8)
+      Tests  2 failed | 17 passed (19)
+   Start at  11:09:38
+   Duration  6.62s (transform 1.43s, setup 2.30s, collect 2.71s, tests 478ms, environment 12.34s, prepare 2.06s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/routes.test.tsx src/auth/require-admin.test.tsx src/admin/admin-shell.test.tsx src/admin/venue-queue-page.test.tsx src/admin/venue-review-page.test.tsx src/admin/deletion-requests-page.test.tsx src/admin/admin-texts.test.ts src/admin/use-no-index.test.tsx
