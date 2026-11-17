@@ -82,7 +82,9 @@ describe("la coquille `/admin`", () => {
 
   it("D-2 — les écrans de l'administration sont en FRANÇAIS, ltr, quelle que soit la langue du Pro (`lang=\"fr\"` posé sur la coquille)", async () => {
     renderAt(ADMIN_PATH);
-    const main = await screen.findByRole("main");
+    // Le titre d'abord : pendant le démarrage de la session, le loader de marque rend lui aussi un `<main>` (sans `lang`) — la mesure aurait porté sur lui.
+    await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title });
+    const main = screen.getByRole("main");
     const racine = main.closest("[lang]");
     expect(racine).not.toBeNull();
     expect(racine?.getAttribute("lang")).toBe("fr");

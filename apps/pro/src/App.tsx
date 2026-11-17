@@ -25,11 +25,17 @@
 import { Navigate, Route, Routes, BrowserRouter } from "react-router";
 import { AuthProvider } from "./auth/auth-context";
 import type { AuthClient } from "./lib/auth-client";
-import type { BookingsProClient, ProClientsClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient } from "@zwadj/api-client";
+import type { AdminClient, BookingsProClient, ProClientsClient, ReferentialsClient, QuotesClient, ServicesClient, VenueProClient, VenuePublicationClient } from "@zwadj/api-client";
 import { LoginPage } from "./auth/login-page";
 import { RegisterPage } from "./auth/register-page";
 import { ForgotPage, ResetPage, VerifyEmailPage } from "./auth/recovery-pages";
 import { RedirectIfSession, RequireProSession } from "./auth/require-pro";
+import { RequireAdminSession } from "./auth/require-admin";
+import { AdminClientProvider } from "./admin/admin-client-context";
+import { AdminShell } from "./admin/admin-shell";
+import { DeletionRequestsPage } from "./admin/deletion-requests-page";
+import { VenueQueuePage } from "./admin/venue-queue-page";
+import { VenueReviewPage } from "./admin/venue-review-page";
 import { VenueProvider } from "./venues/venue-client-context";
 import { ProVenuesProvider } from "./shell/pro-venues-context";
 import { WalkinDraftProvider } from "./dashboard/walkin-draft-context";
@@ -41,7 +47,7 @@ import { DashboardPage } from "./dashboard/dashboard-page";
 import { RequestsPage } from "./venues/requests-page";
 import { CalendarPage } from "./venues/calendar-page";
 import { BookingsPage } from "./venues/bookings-page";
-import { ACCOUNT_PATH, BOOKINGS_PATH, CALENDAR_PATH, DASHBOARD_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH, NEW_VENUE_PATH, REGISTER_PATH, REQUESTS_PATH, RESET_PASSWORD_PATH, VENUE_PATH_PATTERN, VENUES_PATH, VERIFY_EMAIL_PATH } from "./routes";
+import { ACCOUNT_PATH, ADMIN_DELETIONS_PATH, ADMIN_PATH, ADMIN_VENUE_PATH_PATTERN, BOOKINGS_PATH, CALENDAR_PATH, DASHBOARD_PATH, FORGOT_PASSWORD_PATH, LOGIN_PATH, NEW_VENUE_PATH, REGISTER_PATH, REQUESTS_PATH, RESET_PASSWORD_PATH, VENUE_PATH_PATTERN, VENUES_PATH, VERIFY_EMAIL_PATH } from "./routes";
 
 export function AppProviders({
   children,
@@ -51,7 +57,9 @@ export function AppProviders({
   bookingsPro,
   servicesClient,
   quotesClient,
-  clientsClient
+  clientsClient,
+  adminClient,
+  publicationClient
 }: {
   children: React.ReactNode;
   client?: AuthClient;
@@ -63,6 +71,10 @@ export function AppProviders({
   quotesClient?: QuotesClient;
   /** Rang 41 (D336) — le client des fiches client (`/pro/clients`). */
   clientsClient?: ProClientsClient;
+  /** ADM-2 (D350) — le client de l'ADMINISTRATION (`/admin`). */
+  adminClient?: AdminClient;
+  /** ADM-2 (D350) — le client de lecture du refus par le pro (`GET /pro/venues/:id/publication`). */
+  publicationClient?: VenuePublicationClient;
 }) {
   return (
     <AuthProvider client={client}>
@@ -75,6 +87,7 @@ export function AppProviders({
         servicesClient={servicesClient}
         quotesClient={quotesClient}
         clientsClient={clientsClient}
+        publicationClient={publicationClient}
       >
         {/* UIP-A — la liste des salles est lue UNE FOIS pour toute la coquille :
             libellé adaptatif de la nav, sélecteur de portée et panneau gauche
@@ -83,7 +96,10 @@ export function AppProviders({
         {/* Rang 47 (D345) — le brouillon du parcours « Nouvelle réservation », EN MÉMOIRE, au-dessus des routes : il survit au changement d'onglet (R-1, R-2).
             Il ne lit AUCUNE liste de salles : « une seule source » de `ProVenuesProvider` tient (R-5). */}
         <ProVenuesProvider>
-          <WalkinDraftProvider>{children}</WalkinDraftProvider>
+          <WalkinDraftProvider>
+            {/* ADM-2 (D350) : le client de l'administration ne garde AUCUNE donnée — chaque écran lit à son montage (MD-ADM-10). */}
+            <AdminClientProvider client={adminClient}>{children}</AdminClientProvider>
+          </WalkinDraftProvider>
         </ProVenuesProvider>
       </VenueProvider>
     </AuthProvider>
@@ -191,6 +207,37 @@ export function AppRoutes() {
           <RequireProSession>
             <EditVenuePage />
           </RequireProSession>
+        }
+      />
+      {/* ADM-2 (D350, D-1) — la section d'ADMINISTRATION : un ADMIN y entre, un PRO ou un CLIENT y lit un refus explicite, un anonyme est renvoyé à la connexion (`RequireAdminSession`). */}
+      <Route
+        path={ADMIN_PATH}
+        element={
+          <RequireAdminSession>
+            <AdminShell>
+              <VenueQueuePage />
+            </AdminShell>
+          </RequireAdminSession>
+        }
+      />
+      <Route
+        path={ADMIN_DELETIONS_PATH}
+        element={
+          <RequireAdminSession>
+            <AdminShell>
+              <DeletionRequestsPage />
+            </AdminShell>
+          </RequireAdminSession>
+        }
+      />
+      <Route
+        path={ADMIN_VENUE_PATH_PATTERN}
+        element={
+          <RequireAdminSession>
+            <AdminShell>
+              <VenueReviewPage />
+            </AdminShell>
+          </RequireAdminSession>
         }
       />
       <Route path="*" element={<Navigate to="/" replace />} />

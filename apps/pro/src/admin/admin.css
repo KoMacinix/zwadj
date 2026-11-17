@@ -1,0 +1,135 @@
+/* ADM-2 (D350, rang 52) — les styles des écrans `/admin`, dans un fichier NEUF : le `theme.css` de l'app Pro est écrit par la branche `par-carte` (R-9), un bloc de plus y ferait un conflit à l'intégration.
+   Propriétés LOGIQUES seulement (jamais left/right), tokens partagés seulement (aucune couleur en dur : `--ink`, `--line`, `--bg-2`, `--accent`…). Les écrans sont en français, de gauche à droite (D-2). */
+.admin-shell {
+  min-block-size: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+}
+.admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding-block: 12px;
+  padding-inline: 20px;
+  border-block-end: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.admin-brand {
+  margin: 0;
+  font-weight: 600;
+  margin-inline-end: auto;
+}
+.admin-nav {
+  display: flex;
+  gap: 16px;
+}
+.admin-nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+  padding-block: 6px;
+  border-block-end: 2px solid transparent;
+}
+.admin-nav a[aria-current="page"] {
+  color: var(--ink);
+  border-block-end-color: var(--accent);
+}
+.admin-main {
+  max-inline-size: 960px;
+  margin-inline: auto;
+  padding-block: 24px;
+  padding-inline: 20px;
+}
+.admin-main h1 {
+  margin-block: 0 8px;
+  font-size: 1.5rem;
+}
+.admin-hint {
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  margin-block: 0 16px;
+}
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.admin-card {
+  padding-block: 14px;
+  padding-inline: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+.admin-card h2 {
+  margin-block: 0 4px;
+  font-size: 1.05rem;
+}
+.admin-card p {
+  margin-block: 2px;
+}
+.admin-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+}
+.admin-badge {
+  display: inline-block;
+  padding-block: 2px;
+  padding-inline: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  background: var(--bg);
+}
+.admin-rejected {
+  margin-block-start: 8px;
+  padding-block: 8px;
+  padding-inline: 12px;
+  border-inline-start: 3px solid var(--danger);
+  background: var(--bg);
+}
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 12px;
+}
+.admin-form {
+  display: grid;
+  gap: 8px;
+  margin-block-start: 12px;
+}
+.admin-form textarea {
+  inline-size: 100%;
+  min-block-size: 96px;
+  font: inherit;
+}
+.admin-field-error {
+  margin: 0;
+  color: var(--danger-ink);
+  font-size: 0.875rem;
+}
+.admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-block-start: 16px;
+}
+.admin-rates {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+  margin-block: 8px;
+}
+.admin-rates dt {
+  color: var(--ink-2);
+}
+.admin-rates dd {
+  margin: 0;
+}

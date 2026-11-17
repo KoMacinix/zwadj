@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 import { BrandLoader } from "@zwadj/ui";
 import { useAuth } from "./auth-context";
 import { LangToggle } from "./auth-ui";
-import { LOGIN_PATH } from "../routes";
+import { ADMIN_PATH, DASHBOARD_PATH, LOGIN_PATH } from "../routes";
 
 export function RequireProSession({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
@@ -25,6 +25,11 @@ export function RequireProSession({ children }: { children: React.ReactNode }) {
 
   if (status === "anonymous" || !user) {
     return <Navigate to={LOGIN_PATH} replace />;
+  }
+
+  // ADM-2 (D350, D-1) : un ADMIN n'a rien à faire hors de `/admin` — il y est RENVOYÉ (jamais la carte « mauvais rôle »). L'API reste l'autorité (MD-ADM-1).
+  if (user.role === "ADMIN") {
+    return <Navigate to={ADMIN_PATH} replace />;
   }
 
   // D23 : un compte CLIENT connecté ici est refusé EXPLICITEMENT (pas de
@@ -90,9 +95,10 @@ export function RedirectIfSession({ children }: { children: React.ReactNode }) {
   // ⚠ Tout rôle, pas seulement PRO. Un CLIENT connecté renvoyé sur « / » y trouve
   // la carte « mauvais rôle » de `RequireProSession`, avec son bouton de
   // déconnexion — un message explicite, là où le formulaire de connexion lui
-  // laissait croire qu'il n'était pas connecté du tout.
+  // laissait croire qu'il n'était pas connecté du tout. ADM-2 (D350, D-1) : un ADMIN, lui, est
+  // renvoyé sous `/admin`, la seule section que l'app Pro lui ouvre.
   if (status === "authenticated" && user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={user.role === "ADMIN" ? ADMIN_PATH : DASHBOARD_PATH} replace />;
   }
 
   return <>{children}</>;

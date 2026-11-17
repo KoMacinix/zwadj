@@ -40,6 +40,20 @@ export function venuePath(id: string): string {
   return `${VENUES_PATH}/${id}`;
 }
 
+// ── ADM-2 (D350, rang 52, D-1 de D321) — la section d'ADMINISTRATION de l'app Pro. « Une section `/admin` dans l'app Pro. D23 devient : l'app Pro accepte un PRO hors de `/admin`, et un ADMIN sous
+// `/admin` seulement. » Les trois écrans sont déclarés ICI, comme toutes les routes du Pro ; aucune adresse `/admin` ne s'écrit ailleurs (garde de source : `admin-source-guard.test.ts`).
+/** Écran 1 : la file des salles en attente de validation. */
+export const ADMIN_PATH = "/admin";
+/** Écran 3 : les demandes de suppression de compte. */
+export const ADMIN_DELETIONS_PATH = `${ADMIN_PATH}/suppressions`;
+/** Le motif DÉCLARÉ de l'écran 2 (le détail d'une salle) ; les liens passent par `adminVenuePath`. */
+export const ADMIN_VENUE_PATH_PATTERN = `${ADMIN_PATH}/salles/:id`;
+
+/** Le détail d'une salle pour l'administration (`ADMIN_VENUE_PATH_PATTERN`). */
+export function adminVenuePath(id: string): string {
+  return `${ADMIN_PATH}/salles/${id}`;
+}
+
 /** Pages du SITE CLIENT liées depuis le pro (inscription) : elles doivent nommer les pages du client — la garde
  *  `adresses-guard.test.ts` les confronte à `TERMS_PATH` et `PRIVACY_PATH` de `apps/client/src/lib/routes.ts`. */
 export const CLIENT_TERMS_PATH = "/cgu";

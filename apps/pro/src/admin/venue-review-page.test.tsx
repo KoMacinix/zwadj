@@ -58,8 +58,10 @@ describe("le détail — ce que l'admin lit", () => {
     renderReview(makeAdminServerDouble({ venues: [v] }), v);
     await screen.findByRole("heading", { level: 1, name: v.nameFr });
 
-    expect(screen.getByText(formatBps(250), { exact: false })).toBeInTheDocument();
-    expect(screen.getByText(formatBps(125), { exact: false })).toBeInTheDocument();
+    // L'espace avant « % » est INSÉCABLE : Testing Library normalise le DOM d'un seul côté (D209 n° 6) — on compare donc APRÈS normalisation des deux.
+    const texteDuTaux = (bps: number) => (contenu: string) => contenu.replace(/\s+/g, " ") === formatBps(bps).replace(/\s+/g, " ");
+    expect(screen.getByText(texteDuTaux(250))).toBeInTheDocument();
+    expect(screen.getByText(texteDuTaux(125))).toBeInTheDocument();
     expect(screen.getByText(ADMIN_TEXTS.review.ratesReadOnly, { exact: false })).toBeInTheDocument();
     expect(screen.queryAllByRole("spinbutton")).toHaveLength(0);
     expect(screen.queryAllByRole("slider")).toHaveLength(0);

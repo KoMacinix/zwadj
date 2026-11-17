@@ -6,7 +6,7 @@ import { ApiError } from "../lib/auth-client";
 import { validate, type FieldErrors } from "@zwadj/api-client";
 import { useAuth } from "./auth-context";
 import { Field, FormError, PasswordField, ProAuthShell, useApiErrorMessage, useValidationMessage } from "./auth-ui";
-import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../routes";
+import { ADMIN_PATH, DASHBOARD_PATH, FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../routes";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -37,8 +37,9 @@ export function LoginPage() {
     setFieldErrors({});
     setSubmitting(true);
     try {
-      await login(checked.data);
-      void navigate("/"); // la garde de rôle (D23) prend le relais si CLIENT
+      const user = await login(checked.data);
+      // ADM-2 (D350, D-1) : la destination suit le RÔLE — un ADMIN arrive sous `/admin`, tout autre compte au tableau de bord (la garde de rôle, D23, prend le relais si CLIENT).
+      void navigate(user.role === "ADMIN" ? ADMIN_PATH : DASHBOARD_PATH);
     } catch (err) {
       if (err instanceof ApiError && err.code === "EMAIL_NOT_VERIFIED") {
         setNotVerified(true);
