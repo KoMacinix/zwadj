@@ -1,0 +1,32 @@
+D348 — contrôle de fin de lot, SUITE « RANG 50 (SUITE) » (D288, D328, D334) — 17 commits depuis 26ad5c7
+
+1. premier commit du lot, SEUL :
+  ✓ 5b739f5 : ['docs/preuves/D348/table-ouverture.md'] → table seule
+
+2. git diff 26ad5c7..HEAD --name-only : 72 fichiers examinés ; 92 chemins déclarés dans la table (extensions 1 à 5 comprises) ; hors table :
+  ✓ [] (attendu [])
+   dont la SUITE (2b9a5e1..HEAD) : 18 fichiers, tous couverts par l'extension 5 ou déjà déclarés :
+  ✓ fichiers de la suite absents de l'extension 5 : [] (attendu [])
+
+3. ordre, relevé par git log :
+  ✓ extension 5 (5bb8cbf) < règle du rejeu (f53fdef) < rejeu et masquage (0008e1e) < contrôles R-4 (7174233) < .md d'autorité (ba87c7d)
+  ✓ lecture adverse (f1c4d52, rang 2) avant tout .md d'autorité (1fd132f, rang 11)
+  ✓ rouges (9258886, rang 5) avant le premier commit de code (411d373, rang 6) (D334 point 5)
+
+4. sous apps/ et packages/ (code d'application) depuis le départ :
+  ✓ 3 fichiers : ['apps/client/src/app/[locale]/salles/(recherche)/loading.tsx', 'apps/client/src/app/[locale]/salles/[slug]/page.tsx', 'apps/client/src/lib/api.ts'] (attendu : les trois déclarés à l'extension 2)
+  ✓ la SUITE (2b9a5e1..HEAD) ne touche aucun fichier de code ni de test (apps/, packages/, e2e/, neutralisation/)
+
+5. ÉTAT AVANT LA POUSSÉE de la clôture :
+   local HEAD  = ba87c7d70991896486f8ad6580c59999c3708fa5
+   origin/main = 26ad5c77ec03a73d82e92368f7d97c4beac7556f
+   commits locaux à pousser : 17
+   arbre : [] ; stash : []
+
+BILAN : 0 contrôle(s) en échec (attendu 0)
+
+6. APRÈS LA POUSSÉE de la clôture (git push origin main puis git fetch), relevé le 17/11/2026 :
+   local HEAD  = ba87c7d70991896486f8ad6580c59999c3708fa5
+   origin/main = ba87c7d70991896486f8ad6580c59999c3708fa5
+   identiques : oui · arbre propre : NON
+   ⚠ Ce fichier est commité et poussé APRÈS cette mesure (S-178) : une pièce ne peut pas contenir le SHA de son propre commit. L'égalité finale local = origin/main, après ce dernier push, est vérifiée et rapportée dans le message de fin de lot.
