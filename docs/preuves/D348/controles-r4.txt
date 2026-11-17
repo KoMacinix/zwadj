@@ -1,0 +1,57 @@
+D348 (suite) — R-4 : les quatre contrôles avant la poussée
+
+SHA de la mesure : 0008e1e11f391b5b44bcc78de9b1fbfee9ca100d (arbre : écritures d'autorité non encore commitées)
+
+(i) `@@` et fins de ligne — les quatre fichiers d'autorité
+    ⚠ `@@` n'est PAS attendu à zéro : `@@unique` et `@@index` y sont écrits en toutes lettres. Ce qui vaut zéro est le GABARIT du marqueur non remplacé (deux arobases, un nom en majuscules, deux arobases),
+    et les `@@` des lignes INCHANGÉES ne doivent pas avoir bougé depuis `26ad5c7` (avant le lot) ; les lignes NOUVELLES qui en portent doivent nommer le contrôle (elles sont listées). Calibration : le motif trouve bien un gabarit dans un texte qui en porte un, et rien dans un texte qui n'en porte pas.
+  ✓ calibration du motif : positif 1 (attendu 1) · négatif 0 (attendu 0)
+  ✓ AGENTS.md              examiné   254319 octets · CRLF 1683 · LF nu 0 (attendu 0)
+  ✓ AGENTS.md              gabarit (deux arobases, nom en majuscules, deux arobases) : 0 (attendu 0)
+  ✓ AGENTS.md              « @@ » : 8 dans l'arbre, dont 0 sur 0 ligne(s) NOUVELLE(S) ; 8 hors d'elles contre 8 à 26ad5c7 (attendu égal)
+  ✓ AGENTS.md              lignes nouvelles portant « @@ » : 0 (attendu 0 hors ZWADJ_CONTINUITE.md)
+  ✓ CLAUDE.md              examiné     5605 octets · CRLF 114 · LF nu 0 (attendu 0)
+  ✓ CLAUDE.md              gabarit (deux arobases, nom en majuscules, deux arobases) : 0 (attendu 0)
+  ✓ CLAUDE.md              « @@ » : 0 dans l'arbre, dont 0 sur 0 ligne(s) NOUVELLE(S) ; 0 hors d'elles contre 0 à 26ad5c7 (attendu égal)
+  ✓ CLAUDE.md              lignes nouvelles portant « @@ » : 0 (attendu 0 hors ZWADJ_CONTINUITE.md)
+  ✓ ZWADJ_CONTINUITE.md    examiné  3456326 octets · CRLF 27099 · LF nu 0 (attendu 0)
+  ✓ ZWADJ_CONTINUITE.md    gabarit (deux arobases, nom en majuscules, deux arobases) : 0 (attendu 0)
+  ✓ ZWADJ_CONTINUITE.md    « @@ » : 19 dans l'arbre, dont 8 sur 3 ligne(s) NOUVELLE(S) ; 11 hors d'elles contre 11 à 26ad5c7 (attendu égal)
+  ✓       ligne nouvelle (nomme le contrôle : True) : | **R-4 (i)** | `@@` **n'est pas à zéro** : 8 (`AGENTS.md`), 0 (`CLAUDE.md`), 11 (`ZWADJ_CONTINUIT…
+  ✓       ligne nouvelle (nomme le contrôle : True) : - **S-176** — R-4 (i) : le « `@@` = 0 » est lu comme « le **gabarit** (deux arobases, un nom en…
+  ✓       ligne nouvelle (nomme le contrôle : True) : | `docs/preuves/D348/controles-r4.txt` | R-4 : les sorties des quatre contrôles avant la poussée (…
+  ✓ ZWADJ_BACKLOG.md       examiné   752567 octets · CRLF 5781 · LF nu 0 (attendu 0)
+  ✓ ZWADJ_BACKLOG.md       gabarit (deux arobases, nom en majuscules, deux arobases) : 0 (attendu 0)
+  ✓ ZWADJ_BACKLOG.md       « @@ » : 2 dans l'arbre, dont 0 sur 0 ligne(s) NOUVELLE(S) ; 2 hors d'elles contre 2 à 26ad5c7 (attendu égal)
+  ✓ ZWADJ_BACKLOG.md       lignes nouvelles portant « @@ » : 0 (attendu 0 hors ZWADJ_CONTINUITE.md)
+
+(ii) `neutralisation/neutralize-pub1.py` — l'empreinte dans les passes de la campagne
+    empreinte sha256 du fichier d'aujourd'hui : e2b5408c31e580b8677ac1a51222233e579c48313f5504948cc9c6a80b21c561
+    commits qui l'ont touché : ['ac728d8'] (attendu : un seul, la version FINALE)
+    date de modification : 2026-11-16T02:06:38 (heure locale)
+    journaux examinés : passe 1 17 · passe 2 17 · harnais FINAL (passe 3 puis sa reprise) 20
+  ✓ comptes de journaux : 17 + 17 + 20 (attendu 17 + 17 + 20 — chacune des deux premières passes s'est arrêtée À PUB1-17, dont le journal est compté ; le harnais final joue les 20 cibles)
+  ✓ tous les journaux de la passe 1 (harnais v1) sont ANTÉRIEURS à la date du fichier final : ce n'est pas une passe de CE fichier
+  ✓ les 17 journaux de la passe 2 tiennent dans 15 ms (attendu < 1 000 ms) : un ARCHIVAGE EN BLOC — leur date est celle de la copie, pas celle de leur écriture ; elle ne dit RIEN de l'ordre avec le fichier final (écrit : la passe 2 n'est pas datable par mtime)
+  ✓ tous les journaux du harnais FINAL (passe 3 et sa reprise) sont POSTÉRIEURS à la date du fichier : joués sous ce fichier, aucune modification entre eux
+    ⚠ LECTURE : l'empreinte n'est PAS la même dans les trois passes (v1, v2, final : écrit). Le harnais final a été joué EN ENTIER sous un seul fichier ; la preuve est la DATE de modification, pas une empreinte enregistrée (le harnais n'en enregistre pas).
+  ✓ `--ancres` (en mémoire, rien n'est écrit) : 'pose : 20 cible(s) · 0 non posable(s)' (attendu 20 cibles · 0 non posable) · code 0
+
+(iii) les trois constats de M-2 (côté pro) sont chacun une entrée de backlog avec ce qu'elle bloque
+  ✓ entrée « UNE SALLE « TEMPORAIREMENT INDISPONIBLE » RESTE OUVERTE PAR SON ADRESS… » : 1 (attendu 1)
+  ✓    porte « ⇒ BLOQUE : rien ; à ordonner par Ko » ET un coût
+  ✓ entrée « UNE SALLE PUBLIÉE SANS CRÉNEAU ACTIF DISPARAÎT DES RECHERCHES DATÉES, … » : 1 (attendu 1)
+  ✓    porte « ⇒ BLOQUE : rien ; à ordonner par Ko » ET un coût
+  ✓ entrée « LE PRO NE SAIT PAS QUAND SA SALLE EST PUBLIÉE (constat 3 de M-2, D348)… » : 1 (attendu 1)
+  ✓    porte « ⇒ BLOQUE : rien ; à ordonner par Ko » ET un coût
+
+(iv) R-5 — l'entrée du coût de la fiche sans cache
+  ✓ étiquette `[CLIENT][PERF]` : 1 (attendu 1)
+  ✓    l'option « cache invalidé à la publication, au masquage et à la suppression » est écrite comme option, pas comme décision
+
+(v) « six portes après la dernière modification de CODE » — ce que les commits de la suite ont touché
+    fichiers touchés entre ac728d8 (dernière modification de code) et HEAD : 46 examinés
+  ✓ fichiers qui ne sont ni un `.md` d'autorité de la racine ni une pièce de `docs/preuves/` : 0 (attendu 0) []
+  ✓ fichiers sous apps/, packages/, e2e/, neutralisation/ : 0 (attendu 0) []
+
+BILAN : 0 contrôle(s) en échec (attendu 0)
