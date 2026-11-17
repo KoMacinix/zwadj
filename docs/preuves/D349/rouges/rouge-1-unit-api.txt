@@ -1,0 +1,436 @@
+# D349 — rouge-1-unit-api : sortie de vitest, jouée contre le code d'AVANT (aucun code d'application encore écrit)
+# commande : cd apps/api && pnpm exec vitest run <les huit fichiers de specs unitaires du lot>
+# journal brut (hors dépôt) : sha256 915e8bd42c1d88a700e769b0ab4884802aa4dc066cff526ab43cb7832fec6d82 · 40418 octets · 432 lignes
+# transformation : codes ANSI retirés, AUCUNE ligne retirée ; « token= » : 0 · suites de forme jeton (43 car., minuscules+majuscules+chiffre) : 0 (attendu 0 et 0)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/venue-moderation.schemas.spec.ts (12 tests | 12 failed) 16ms
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif de deux phrases est accepté, et rendu rogné 6ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne est INCLUSE : un motif d'exactement la longueur maximale passe, un caractère de plus est refusé 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne se mesure APRÈS le rognage : des espaces autour d'un motif long ne le font pas refuser 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif vide, blanc ou absent est REFUSÉ — jamais un rejet sans raison 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif qui n'est pas une chaîne est refusé 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venueRejectSchema — le motif est OBLIGATOIRE (D-4) > une clé inconnue est refusée (`.strict()`) : on ne glisse pas un statut ni un taux dans le corps d'un rejet 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venuePendingQuerySchema — la file « en attente » > sans paramètre : page 1, taille par défaut 0ms
+     → Cannot read properties of undefined (reading 'parse')
+   × venuePendingQuerySchema — la file « en attente » > une querystring (chaînes) est convertie en nombres 0ms
+     → Cannot read properties of undefined (reading 'parse')
+   × venuePendingQuerySchema — la file « en attente » > la taille maximale est INCLUSE, la suivante est refusée ; zéro et le négatif sont refusés 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venuePendingQuerySchema — la file « en attente » > une page non entière ou non numérique est refusée 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venuePendingQuerySchema — la file « en attente » > une clé inconnue est refusée : la file n'a AUCUN filtre de statut, de taux ni d'identifiant 0ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × venuePendingQuerySchema — la file « en attente » > les bornes sont celles de la liste publique d'A3-⑤ (page/pageSize, défaut 12, maximum 50) : même enveloppe, mêmes nombres 4ms
+     → expected undefined to be 12 // Object.is equality
+ ❯ src/venues/venue-store.prisma.spec.ts (19 tests | 5 failed) 27ms
+   ✓ PrismaVenueStore — le WHERE d'appartenance n'existe qu'à UN endroit > ⛔ `trouverVivante` : id + vivante + à moi, en un seul WHERE, avec l'allow-list 4ms
+   ✓ PrismaVenueStore — le WHERE d'appartenance n'existe qu'à UN endroit > ⚠ `trouverIdVivante` : MÊME WHERE, mais un select ID SEUL 1ms
+   ✓ PrismaVenueStore — le WHERE d'appartenance n'existe qu'à UN endroit > les deux rendent `null` — jamais une exception : le port ne lève pas 1ms
+   ✓ PrismaVenueStore.creer — P2002 devient une RÉPONSE, le reste remonte > ⛔ collision d'unicité : `{ ok: false, raison: 'slugPris' }` 1ms
+   ✓ PrismaVenueStore.creer — P2002 devient une RÉPONSE, le reste remonte > ⛔ toute AUTRE erreur remonte — une base en panne n'est pas un slug pris 1ms
+   ✓ PrismaVenueStore.creer — P2002 devient une RÉPONSE, le reste remonte > ⚠ le slug et le propriétaire sont écrits, jamais le statut de publication 1ms
+   ✓ PrismaVenueStore.mettreAJour — le remplacement d'ensemble s'écrit ici > ⛔ `deleteMany` + `create` dans le MÊME update — atomique, et `@updatedAt` bouge 1ms
+   ✓ PrismaVenueStore.mettreAJour — le remplacement d'ensemble s'écrit ici > ⚠ `undefined` ne touche PAS l'ensemble — une liste VIDE l'efface 1ms
+   ✓ PrismaVenueStore.mettreAJour — le remplacement d'ensemble s'écrit ici > ⛔ `archiver` est un SOFT delete — jamais un DELETE sur `venues` 1ms
+   ✓ PrismaReferentielsExistence — une DÉCISION, pas un compte > ⛔ une liste VIDE est vraie SANS interroger la base 1ms
+   ✓ PrismaReferentielsExistence — une DÉCISION, pas un compte > ⛔ un id manquant rend FAUX — la comparaison est faite ici, pas chez l'appelant 1ms
+   ✓ PrismaReferentielsExistence — une DÉCISION, pas un compte > `communeExiste` rend un booléen, jamais la ligne 1ms
+   ✓ PrismaReferentielsExistence — une DÉCISION, pas un compte > ⚠ `idProfilPro` CONSTATE l'absence, il ne la juge pas 0ms
+   × PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > ⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ; le select est EXACTEMENT {état, motif, id} 8ms
+     → ctx.salles.lireRefus is not a function
+   × PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > une salle qui n'est pas la mienne (ou supprimée, ou absente) : `null`, et le journal n'est PAS interrogé 1ms
+     → ctx.salles.lireRefus is not a function
+   × PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > jamais rejetée : pas de requête au journal, la date est `null` 0ms
+     → ctx.salles.lireRefus is not a function
+   × PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la requête ne sélectionne que `createdAt` 1ms
+     → ctx.salles.lireRefus is not a function
+   × PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée mais le journal n'a pas de ligne (motif écrit à la main) : le motif est rendu, la date est `null` — jamais inventée 0ms
+     → ctx.salles.lireRefus is not a function
+   ✓ PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > R-3 — la liste blanche de `VENUE_PRO_SELECT` ne bouge pas : toujours AUCUN motif, aucun taux 0ms
+ ❯ src/venues/venues.service.spec.ts (15 tests | 5 failed) 25ms
+   ✓ VenuesService — 404 indistincts > id hors motif UUID : 404 SANS toucher la base (pas de P2023 driver) 3ms
+   ✓ VenuesService — 404 indistincts > le port rend `null` (inexistante / supprimée / à un autre pro) : même 404 2ms
+   ✓ VenuesService.update — mise à jour PARTIELLE réelle > mise à jour partielle sans cityId : la ville n'est PAS re-vérifiée ; { status } seul passe tel quel 2ms
+   ✓ VenuesService.create — slug unique avec reprise > collision P2002 sur le premier candidat : retente avec le suffixe -2 1ms
+   ✓ VenuesService.create — slug unique avec reprise > une panne du port remonte telle quelle — pas de reprise aveugle sur huit slugs 2ms
+   ✓ VenuesService.create — slug unique avec reprise > PRO sans ProProfile : rupture d'invariant D3 → Error (500), jamais un 4xx 1ms
+   ✓ VenuesService.update — amenityIds (A3-① : remplacement d'ensemble) > id inconnu du référentiel : 400 AMENITY_NOT_FOUND (comptage), update jamais appelé 1ms
+   ✓ VenuesService.update — amenityIds (A3-① : remplacement d'ensemble) > doublons dédupliqués AVANT comptage et écriture ; remplacement imbriqué atomique (deleteMany + create) 1ms
+   ✓ VenuesService — forme du DTO pro (allow-list) > Decimal→number, dates ISO, et JAMAIS commissionRateBps/rejectionReason/deletedAt/ownerId 1ms
+   × VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > id hors motif UUID : 404 indistinct SANS toucher le port 5ms
+     → service.getPublicationReview is not a function
+   × VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > le port rend `null` (inexistante, supprimée, à un autre pro) : le MÊME 404 indistinct 1ms
+     → service.getPublicationReview is not a function
+   × VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > un brouillon rejeté : l'état, le motif et la date — et RIEN d'autre (exactement deux clés, exactement deux clés dans le refus) 1ms
+     → service.getPublicationReview is not a function
+   × VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > un brouillon jamais rejeté : pas de refus 1ms
+     → service.getPublicationReview is not a function
+   × VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > une salle publiée ne montre JAMAIS de refus, même si une valeur périmée traîne dans la colonne 1ms
+     → service.getPublicationReview is not a function
+   ✓ VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > R-3 — le détail pro (`getMine`) ne change PAS : même une salle rejetée ne laisse pas passer le motif (la route de lecture est la SEULE sortie) 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/first-admin.spec.ts [ src/admin/first-admin.spec.ts ]
+Error: Cannot find module '../common/admin-audit' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/admin/first-admin.spec.ts'
+ ❯ src/admin/first-admin.spec.ts:7:1
+      5| import { describe, expect, it, vi } from "vitest";
+      6| import { AdminAuditAction, UserRole, UserStatus } from "@zwadj/types";
+      7| import { promoteAdminEntry } from "../common/admin-audit";
+       | ^
+      8| import { judgePromotion, normalizeAdminEmail, promoteFirstAdmin, type …
+      9| 
+
+Caused by: Error: Failed to load url ../common/admin-audit (resolved id: ../common/admin-audit) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/admin/first-admin.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  src/common/admin-audit.spec.ts [ src/common/admin-audit.spec.ts ]
+Error: Cannot find module './admin-audit' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/common/admin-audit.spec.ts'
+ ❯ src/common/admin-audit.spec.ts:9:1
+      7| import { describe, expect, it } from "vitest";
+      8| import { AdminAuditAction, AdminAuditEntity, UserRole, VenuePublicatio…
+      9| import { deletionDecisionEntry, promoteAdminEntry, venuePublishEntry, …
+       | ^
+     10| 
+     11| const ADMIN = { userId: "018f0000-0000-7000-8000-0000000000ad", role: …
+
+Caused by: Error: Failed to load url ./admin-audit (resolved id: ./admin-audit) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/common/admin-audit.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  src/account/account-deletion.service.spec.ts [ src/account/account-deletion.service.spec.ts ]
+Error: Cannot find module '../common/admin-audit' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/account/account-deletion.service.spec.ts'
+ ❯ src/account/account-deletion.service.spec.ts:14:1
+     12| import { describe, expect, it, vi } from "vitest";
+     13| import { UserRole } from "@zwadj/types";
+     14| import { deletionDecisionEntry } from "../common/admin-audit";
+       | ^
+     15| import { AccountDeletionService } from "./account-deletion.service";
+     16| 
+
+Caused by: Error: Failed to load url ../common/admin-audit (resolved id: ../common/admin-audit) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/admin/first-admin.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  src/venues/venue-review-queue.spec.ts [ src/venues/venue-review-queue.spec.ts ]
+Error: Cannot find module './venue-review-queue' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/venues/venue-review-queue.spec.ts'
+ ❯ src/venues/venue-review-queue.spec.ts:11:1
+      9| import { describe, expect, it } from "vitest";
+     10| import { VenuePublicationStatus } from "@zwadj/types";
+     11| import {
+       | ^
+     12|   PUBLISHABLE_FROM,
+     13|   REJECTABLE_FROM,
+
+Caused by: Error: Failed to load url ./venue-review-queue (resolved id: ./venue-review-queue) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/venues/venues-admin.service.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  src/venues/venues-admin.service.spec.ts [ src/venues/venues-admin.service.spec.ts ]
+Error: Cannot find module '../common/admin-audit' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/venues/venues-admin.service.spec.ts'
+ ❯ src/venues/venues-admin.service.spec.ts:11:1
+      9| import { describe, expect, it, vi } from "vitest";
+     10| import { AdminAuditAction, AdminAuditEntity, UserRole, VenueModeration…
+     11| import { venuePublishEntry, venueRejectEntry } from "../common/admin-a…
+       | ^
+     12| import type { PrismaService } from "../prisma/prisma.service";
+     13| import { PUBLISHABLE_FROM, REJECTABLE_FROM } from "./venue-review-queu…
+
+Caused by: Error: Failed to load url ../common/admin-audit (resolved id: ../common/admin-audit) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/admin/first-admin.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 22 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif de deux phrases est accepté, et rendu rogné
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:16:33
+     14| describe("venueRejectSchema — le motif est OBLIGATOIRE (D-4)", () => {
+     15|   it("un motif de deux phrases est accepté, et rendu rogné", () => {
+     16|     const r = venueRejectSchema.safeParse({ reason: "  Les photos sont…
+       |                                 ^
+     17|     expect(r.success).toBe(true);
+     18|     if (r.success) expect(r.data.reason).toBe("Les photos sont floues.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne est INCLUSE : un motif d'exactement la longueur maximale passe, un caractère de plus est refusé
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:22:30
+     20| 
+     21|   it("la borne est INCLUSE : un motif d'exactement la longueur maximal…
+     22|     expect(venueRejectSchema.safeParse({ reason: "x".repeat(VENUE_REJE…
+       |                              ^
+     23|     expect(venueRejectSchema.safeParse({ reason: "x".repeat(VENUE_REJE…
+     24|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne se mesure APRÈS le rognage : des espaces autour d'un motif long ne le font pas refuser
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:27:30
+     25| 
+     26|   it("la borne se mesure APRÈS le rognage : des espaces autour d'un mo…
+     27|     expect(venueRejectSchema.safeParse({ reason: `  ${"x".repeat(VENUE…
+       |                              ^
+     28|   });
+     29| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif vide, blanc ou absent est REFUSÉ — jamais un rejet sans raison
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:31:30
+     29| 
+     30|   it("un motif vide, blanc ou absent est REFUSÉ — jamais un rejet sans…
+     31|     expect(venueRejectSchema.safeParse({ reason: "" }).success).toBe(f…
+       |                              ^
+     32|     expect(venueRejectSchema.safeParse({ reason: "   \n\t " }).success…
+     33|     expect(venueRejectSchema.safeParse({}).success).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif qui n'est pas une chaîne est refusé
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:37:30
+     35| 
+     36|   it("un motif qui n'est pas une chaîne est refusé", () => {
+     37|     expect(venueRejectSchema.safeParse({ reason: 42 }).success).toBe(f…
+       |                              ^
+     38|     expect(venueRejectSchema.safeParse({ reason: null }).success).toBe…
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > une clé inconnue est refusée (`.strict()`) : on ne glisse pas un statut ni un taux dans le corps d'un rejet
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:42:30
+     40| 
+     41|   it("une clé inconnue est refusée (`.strict()`) : on ne glisse pas un…
+     42|     expect(venueRejectSchema.safeParse({ reason: "Motif", publicationS…
+       |                              ^
+     43|     expect(venueRejectSchema.safeParse({ reason: "Motif", commissionRa…
+     44|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > sans paramètre : page 1, taille par défaut
+TypeError: Cannot read properties of undefined (reading 'parse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:49:39
+     47| describe("venuePendingQuerySchema — la file « en attente »", () => {
+     48|   it("sans paramètre : page 1, taille par défaut", () => {
+     49|     const r = venuePendingQuerySchema.parse({});
+       |                                       ^
+     50|     expect(r).toEqual({ page: 1, pageSize: VENUE_PENDING_PAGE_SIZE_DEF…
+     51|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > une querystring (chaînes) est convertie en nombres
+TypeError: Cannot read properties of undefined (reading 'parse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:54:36
+     52| 
+     53|   it("une querystring (chaînes) est convertie en nombres", () => {
+     54|     expect(venuePendingQuerySchema.parse({ page: "3", pageSize: "50" }…
+       |                                    ^
+     55|   });
+     56| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > la taille maximale est INCLUSE, la suivante est refusée ; zéro et le négatif sont refusés
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:58:36
+     56| 
+     57|   it("la taille maximale est INCLUSE, la suivante est refusée ; zéro e…
+     58|     expect(venuePendingQuerySchema.safeParse({ pageSize: VENUE_PENDING…
+       |                                    ^
+     59|     expect(venuePendingQuerySchema.safeParse({ pageSize: VENUE_PENDING…
+     60|     expect(venuePendingQuerySchema.safeParse({ pageSize: 0 }).success)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > une page non entière ou non numérique est refusée
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:66:36
+     64| 
+     65|   it("une page non entière ou non numérique est refusée", () => {
+     66|     expect(venuePendingQuerySchema.safeParse({ page: "1.5" }).success)…
+       |                                    ^
+     67|     expect(venuePendingQuerySchema.safeParse({ page: "abc" }).success)…
+     68|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > une clé inconnue est refusée : la file n'a AUCUN filtre de statut, de taux ni d'identifiant
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/venues/venue-moderation.schemas.spec.ts:71:36
+     69| 
+     70|   it("une clé inconnue est refusée : la file n'a AUCUN filtre de statu…
+     71|     expect(venuePendingQuerySchema.safeParse({ status: "PUBLISHED" }).…
+       |                                    ^
+     72|     expect(venuePendingQuerySchema.safeParse({ commissionRateBps: "100…
+     73|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+ FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > les bornes sont celles de la liste publique d'A3-⑤ (page/pageSize, défaut 12, maximum 50) : même enveloppe, mêmes nombres
+AssertionError: expected undefined to be 12 // Object.is equality
+
+- Expected: 
+12
+
++ Received: 
+undefined
+
+ ❯ src/venues/venue-moderation.schemas.spec.ts:76:45
+     74| 
+     75|   it("les bornes sont celles de la liste publique d'A3-⑤ (page/pageSiz…
+     76|     expect(VENUE_PENDING_PAGE_SIZE_DEFAULT).toBe(12);
+       |                                             ^
+     77|     expect(VENUE_PENDING_PAGE_SIZE_MAX).toBe(50);
+     78|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/27]⎯
+
+ FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > ⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ; le select est EXACTEMENT {état, motif, id}
+TypeError: ctx.salles.lireRefus is not a function
+ ❯ src/venues/venue-store.prisma.spec.ts:200:22
+    198|   it("⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ;…
+    199|     ctx.prisma.venue.findFirst.mockResolvedValue(null);
+    200|     await ctx.salles.lireRefus(USER_ID, VENUE_ID);
+       |                      ^
+    201|     expect(ctx.prisma.venue.findFirst).toHaveBeenCalledWith({
+    202|       where: { id: VENUE_ID, deletedAt: null, owner: { userId: USER_ID…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/27]⎯
+
+ FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > une salle qui n'est pas la mienne (ou supprimée, ou absente) : `null`, et le journal n'est PAS interrogé
+TypeError: ctx.salles.lireRefus is not a function
+ ❯ src/venues/venue-store.prisma.spec.ts:209:29
+    207|   it("une salle qui n'est pas la mienne (ou supprimée, ou absente) : `…
+    208|     ctx.prisma.venue.findFirst.mockResolvedValue(null);
+    209|     await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toB…
+       |                             ^
+    210|     expect(ctx.prisma.auditLog.findFirst).not.toHaveBeenCalled();
+    211|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/27]⎯
+
+ FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > jamais rejetée : pas de requête au journal, la date est `null`
+TypeError: ctx.salles.lireRefus is not a function
+ ❯ src/venues/venue-store.prisma.spec.ts:215:29
+    213|   it("jamais rejetée : pas de requête au journal, la date est `null`",…
+    214|     ctx.prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publi…
+    215|     await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toE…
+       |                             ^
+    216|     expect(ctx.prisma.auditLog.findFirst).not.toHaveBeenCalled();
+    217|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/27]⎯
+
+ FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la requête ne sélectionne que `createdAt`
+TypeError: ctx.salles.lireRefus is not a function
+ ❯ src/venues/venue-store.prisma.spec.ts:224:29
+    222|     ctx.prisma.auditLog.findFirst.mockResolvedValue({ createdAt: quand…
+    223| 
+    224|     await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toE…
+       |                             ^
+    225|       publicationStatus: "DRAFT",
+    226|       rejectionReason: "Photos floues",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/27]⎯
+
+ FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée mais le journal n'a pas de ligne (motif écrit à la main) : le motif est rendu, la date est `null` — jamais inventée
+TypeError: ctx.salles.lireRefus is not a function
+ ❯ src/venues/venue-store.prisma.spec.ts:239:29
+    237|     ctx.prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publi…
+    238|     ctx.prisma.auditLog.findFirst.mockResolvedValue(null);
+    239|     await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toM…
+       |                             ^
+    240|   });
+    241| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/27]⎯
+
+ FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > id hors motif UUID : 404 indistinct SANS toucher le port
+TypeError: service.getPublicationReview is not a function
+ ❯ src/venues/venues.service.spec.ts:280:26
+    278|   it("id hors motif UUID : 404 indistinct SANS toucher le port", async…
+    279|     const { service, salles } = buildService();
+    280|     await expect(service.getPublicationReview(USER_ID, "pas-un-uuid"))…
+       |                          ^
+    281|     expect(salles.lireRefus).not.toHaveBeenCalled();
+    282|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/27]⎯
+
+ FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > le port rend `null` (inexistante, supprimée, à un autre pro) : le MÊME 404 indistinct
+TypeError: service.getPublicationReview is not a function
+ ❯ src/venues/venues.service.spec.ts:287:26
+    285|     const { service, salles } = buildService();
+    286|     salles.lireRefus.mockResolvedValue(null);
+    287|     await expect(service.getPublicationReview(USER_ID, VENUE_ID)).reje…
+       |                          ^
+    288|     expect(salles.lireRefus).toHaveBeenCalledWith(USER_ID, VENUE_ID);
+    289|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/27]⎯
+
+ FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > un brouillon rejeté : l'état, le motif et la date — et RIEN d'autre (exactement deux clés, exactement deux clés dans le refus)
+TypeError: service.getPublicationReview is not a function
+ ❯ src/venues/venues.service.spec.ts:295:31
+    293|     salles.lireRefus.mockResolvedValue({ publicationStatus: "DRAFT", r…
+    294| 
+    295|     const dto = await service.getPublicationReview(USER_ID, VENUE_ID);
+       |                               ^
+    296| 
+    297|     expect(dto).toEqual({ publicationStatus: "DRAFT", rejection: { rea…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/27]⎯
+
+ FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > un brouillon jamais rejeté : pas de refus
+TypeError: service.getPublicationReview is not a function
+ ❯ src/venues/venues.service.spec.ts:304:26
+    302|     const { service, salles } = buildService();
+    303|     salles.lireRefus.mockResolvedValue({ publicationStatus: "DRAFT", r…
+    304|     await expect(service.getPublicationReview(USER_ID, VENUE_ID)).reso…
+       |                          ^
+    305|   });
+    306| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/27]⎯
+
+ FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > une salle publiée ne montre JAMAIS de refus, même si une valeur périmée traîne dans la colonne
+TypeError: service.getPublicationReview is not a function
+ ❯ src/venues/venues.service.spec.ts:310:26
+    308|     const { service, salles } = buildService();
+    309|     salles.lireRefus.mockResolvedValue({ publicationStatus: "PUBLISHED…
+    310|     await expect(service.getPublicationReview(USER_ID, VENUE_ID)).reso…
+       |                          ^
+    311|   });
+    312| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/27]⎯
+
+
+ Test Files  8 failed (8)
+      Tests  22 failed | 24 passed (46)
+   Start at  02:49:05
+   Duration  2.59s (transform 1.13s, setup 0ms, collect 3.88s, tests 68ms, environment 3ms, prepare 3.59s)
+

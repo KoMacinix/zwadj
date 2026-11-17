@@ -26,7 +26,8 @@ function build() {
     city: { findUnique: vi.fn() },
     amenity: { count: vi.fn() },
     venueStyle: { count: vi.fn() },
-    venue: { create: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), update: vi.fn() }
+    venue: { create: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), update: vi.fn() },
+    auditLog: { findFirst: vi.fn() }
   };
   const client = prisma as unknown as PrismaService;
   return { prisma, salles: new PrismaVenueStore(client), referentiels: new PrismaReferentielsExistence(client) };
@@ -183,5 +184,64 @@ describe("PrismaReferentielsExistence — une DÉCISION, pas un compte", () => {
     const { prisma, salles } = build();
     prisma.proProfile.findUnique.mockResolvedValue(null);
     await expect(salles.idProfilPro(USER_ID)).resolves.toBeNull();
+  });
+});
+
+// ADM-1 (D349, R-3) — la lecture du refus : le WHERE d'appartenance est LE MÊME que celui de `trouverVivante` (il n'existe qu'à un endroit), le select est ÉTROIT (état, motif, id — jamais un taux),
+// la date se lit au JOURNAL par une requête qui ne sélectionne que `createdAt`.
+describe("PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149)", () => {
+  let ctx: ReturnType<typeof build>;
+  beforeEach(() => {
+    ctx = build();
+  });
+
+  it("⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ; le select est EXACTEMENT {état, motif, id}", async () => {
+    ctx.prisma.venue.findFirst.mockResolvedValue(null);
+    await ctx.salles.lireRefus(USER_ID, VENUE_ID);
+    expect(ctx.prisma.venue.findFirst).toHaveBeenCalledWith({
+      where: { id: VENUE_ID, deletedAt: null, owner: { userId: USER_ID } },
+      select: { id: true, publicationStatus: true, rejectionReason: true }
+    });
+  });
+
+  it("une salle qui n'est pas la mienne (ou supprimée, ou absente) : `null`, et le journal n'est PAS interrogé", async () => {
+    ctx.prisma.venue.findFirst.mockResolvedValue(null);
+    await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toBeNull();
+    expect(ctx.prisma.auditLog.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("jamais rejetée : pas de requête au journal, la date est `null`", async () => {
+    ctx.prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: null });
+    await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toEqual({ publicationStatus: "DRAFT", rejectionReason: null, rejectedAt: null });
+    expect(ctx.prisma.auditLog.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la requête ne sélectionne que `createdAt`", async () => {
+    const quand = new Date("2026-11-10T09:30:00.000Z");
+    ctx.prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: "Photos floues" });
+    ctx.prisma.auditLog.findFirst.mockResolvedValue({ createdAt: quand });
+
+    await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toEqual({
+      publicationStatus: "DRAFT",
+      rejectionReason: "Photos floues",
+      rejectedAt: quand
+    });
+    expect(ctx.prisma.auditLog.findFirst).toHaveBeenCalledWith({
+      where: { action: "venue.reject", entityType: "venue", entityId: VENUE_ID },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      select: { createdAt: true }
+    });
+  });
+
+  it("rejetée mais le journal n'a pas de ligne (motif écrit à la main) : le motif est rendu, la date est `null` — jamais inventée", async () => {
+    ctx.prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: "Photos floues" });
+    ctx.prisma.auditLog.findFirst.mockResolvedValue(null);
+    await expect(ctx.salles.lireRefus(USER_ID, VENUE_ID)).resolves.toMatchObject({ rejectionReason: "Photos floues", rejectedAt: null });
+  });
+
+  it("R-3 — la liste blanche de `VENUE_PRO_SELECT` ne bouge pas : toujours AUCUN motif, aucun taux", () => {
+    expect(Object.keys(VENUE_PRO_SELECT)).not.toContain("rejectionReason");
+    expect(Object.keys(VENUE_PRO_SELECT)).not.toContain("commissionRateBps");
+    expect(Object.keys(VENUE_PRO_SELECT)).not.toContain("cashbackRateBps");
   });
 });

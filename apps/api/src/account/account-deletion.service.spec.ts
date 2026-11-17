@@ -10,6 +10,8 @@
 //  - un refus ne touche PAS le compte.
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { describe, expect, it, vi } from "vitest";
+import { UserRole } from "@zwadj/types";
+import { deletionDecisionEntry } from "../common/admin-audit";
 import { AccountDeletionService } from "./account-deletion.service";
 
 const USER_ID = "00000000-0000-7000-8000-000000000001";
@@ -56,6 +58,8 @@ function build(opts: { pro?: boolean; livingVenues?: string[]; status?: string }
     passwordResetToken: { updateMany: vi.fn().mockResolvedValue({}) },
     emailVerificationToken: { updateMany: vi.fn().mockResolvedValue({}) },
     emailChangeToken: { updateMany: vi.fn().mockResolvedValue({}) },
+    // ADM-1 (D349, R-5) — le journal des décisions admin s'écrit DANS la transaction, sur le même double.
+    auditLog: { create: vi.fn().mockResolvedValue({}) },
     $transaction: vi.fn(async (fn: (tx: unknown) => unknown) => fn(prisma))
   };
   const account = { requireActiveActor: vi.fn().mockResolvedValue({ id: USER_ID }) };
@@ -222,5 +226,69 @@ describe("transitions", () => {
     const { service, prisma } = build();
     prisma.accountDeletionRequest.updateMany.mockResolvedValue({ count: 0 });
     await expect(service.cancel(USER_ID)).rejects.toBeInstanceOf(NotFoundException);
+  });
+});
+
+// ADM-1 (D349, R-5) — « approuver » et « rejeter » une demande de suppression écrivent UNE ligne de journal DANS la transaction de la décision (D-8) :
+// une décision sans trace, ou une trace sans décision, est MD-ADM-6. Le contrôle de statut n'est pas déplacé (rapporté au backlog, pas corrigé ici).
+describe("journal des décisions admin (R-5, MD-ADM-6)", () => {
+  const ADMIN = { userId: ADMIN_ID, role: UserRole.ADMIN } as const;
+
+  it("approve : UNE ligne `account_deletion.approve`, dans la transaction, APRÈS la clôture de la demande, avec le nombre de salles archivées", async () => {
+    const { service, prisma } = build();
+    await service.approve(REQUEST_ID, ADMIN_ID, "Note de décision confidentielle");
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(prisma.auditLog.create).toHaveBeenCalledTimes(1);
+    expect(prisma.auditLog.create).toHaveBeenCalledWith({ data: deletionDecisionEntry(ADMIN, REQUEST_ID, "APPROVED", 2) });
+    // l'ordre : la ligne n'est écrite qu'après la clôture de la demande (étape 5), dans le même rappel de transaction
+    expect(prisma.accountDeletionRequest.update.mock.invocationCallOrder[0]).toBeLessThan(prisma.auditLog.create.mock.invocationCallOrder[0]!);
+  });
+
+  it("approve : AUCUNE donnée personnelle ni note de décision dans la ligne (ni l'adresse e-mail, ni l'identifiant du compte)", async () => {
+    const { service, prisma } = build();
+    await service.approve(REQUEST_ID, ADMIN_ID, "Note de décision confidentielle");
+    const ligne = JSON.stringify(prisma.auditLog.create.mock.calls[0]?.[0]);
+    expect(ligne).not.toContain("pro@example.dz");
+    expect(ligne).not.toContain("Note de décision confidentielle");
+    expect(ligne).not.toContain(USER_ID);
+  });
+
+  it("approve : un compte sans salle vivante écrit `archivedVenues: 0` (le nombre est celui de ce qui a été archivé)", async () => {
+    const { service, prisma } = build({ livingVenues: [] });
+    await service.approve(REQUEST_ID, ADMIN_ID, undefined);
+    expect(prisma.auditLog.create).toHaveBeenCalledWith({ data: deletionDecisionEntry(ADMIN, REQUEST_ID, "APPROVED", 0) });
+  });
+
+  it("MD-ADM-6 — approve : un journal qui échoue fait ÉCHOUER la décision ; l'e-mail de décision ne part PAS (il part après le commit)", async () => {
+    const { service, prisma, emails } = build();
+    prisma.auditLog.create.mockRejectedValue(new Error("journal indisponible"));
+    await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toThrow("journal indisponible");
+    expect(emails.sendDeletionApproved).not.toHaveBeenCalled();
+  });
+
+  it("reject : UNE ligne `account_deletion.reject`, dans une TRANSACTION (il n'en avait aucune), APRÈS l'écriture de la décision", async () => {
+    const { service, prisma } = build();
+    await service.reject(REQUEST_ID, ADMIN_ID, "Pas maintenant");
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(prisma.auditLog.create).toHaveBeenCalledTimes(1);
+    expect(prisma.auditLog.create).toHaveBeenCalledWith({ data: deletionDecisionEntry(ADMIN, REQUEST_ID, "REJECTED") });
+    expect(prisma.accountDeletionRequest.update.mock.invocationCallOrder[0]).toBeLessThan(prisma.auditLog.create.mock.invocationCallOrder[0]!);
+    expect(JSON.stringify(prisma.auditLog.create.mock.calls[0]?.[0])).not.toContain("Pas maintenant");
+  });
+
+  it("MD-ADM-6 — reject : un journal qui échoue fait ÉCHOUER le refus ; l'utilisateur n'est PAS notifié d'une décision qui n'a pas eu lieu", async () => {
+    const { service, prisma, emails } = build();
+    prisma.auditLog.create.mockRejectedValue(new Error("journal indisponible"));
+    await expect(service.reject(REQUEST_ID, ADMIN_ID, undefined)).rejects.toThrow("journal indisponible");
+    expect(emails.sendDeletionRejected).not.toHaveBeenCalled();
+  });
+
+  it("une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)", async () => {
+    const { service, prisma } = build({ status: "APPROVED" });
+    await expect(service.approve(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
+    await expect(service.reject(REQUEST_ID, ADMIN_ID, undefined)).rejects.toBeInstanceOf(BadRequestException);
+    expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 });

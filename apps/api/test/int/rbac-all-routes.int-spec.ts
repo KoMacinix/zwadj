@@ -131,7 +131,8 @@ describe("B10 — RBAC sur TOUTES les routes réelles (D119)", () => {
     const admin = routes.filter((r) => r.roles.includes("ADMIN"));
     expect(routes.length).toBeGreaterThan(60);
     expect(pro.length).toBeGreaterThanOrEqual(38);
-    expect(admin.length).toBeGreaterThanOrEqual(5);
+    // ADM-1 (D349) : 5 routes à `9ec8abf` + 3 neuves (la file « en attente », le détail, le rejet) = 8. Le plancher monte AVEC elles : à 5, trois routes admin retirées resteraient invisibles.
+    expect(admin.length).toBeGreaterThanOrEqual(8);
   });
 
   /**
@@ -218,6 +219,18 @@ describe("B10 — RBAC sur TOUTES les routes réelles (D119)", () => {
       if (res.status < 400 || res.status >= 500) fuites.push(`${route.method.toUpperCase()} ${route.path} → ${res.status}`);
     }
     expect(fuites, `routes admin atteintes par un PRO :\n${fuites.join("\n")}`).toEqual([]);
+  });
+
+  it("un ADMIN authentifié ne franchit AUCUNE route réservée au PRO — dont la route de lecture du refus (ADM-1, R-7)", async () => {
+    // Le sens qu'on oublie : l'admin n'est pas « plus haut » que le pro, c'est un autre rôle (même doctrine que le test du PRO sur les routes client).
+    const proOnly = collectRoutes(ctx.app).filter((r) => r.roles.includes("PRO") && !r.roles.includes("ADMIN"));
+    expect(proOnly.some((r) => r.path === "/api/v1/pro/venues/:id/publication" && r.method === "get")).toBe(true);
+    const fuites: string[] = [];
+    for (const route of proOnly) {
+      const res = await call(route, adminToken);
+      if (res.status < 400 || res.status >= 500) fuites.push(`${route.method.toUpperCase()} ${route.path} → ${res.status}`);
+    }
+    expect(fuites, `routes pro atteintes par un ADMIN :\n${fuites.join("\n")}`).toEqual([]);
   });
 
   it("un PRO authentifié ne franchit AUCUNE route réservée au CLIENT", async () => {

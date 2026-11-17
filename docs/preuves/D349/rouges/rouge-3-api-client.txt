@@ -1,0 +1,51 @@
+# D349 — rouge-3-api-client : sortie de vitest, jouée contre le code d'AVANT (aucun code d'application encore écrit)
+# commande : cd packages/api-client && pnpm run test src/admin-client.test.ts src/venue-publication-client.test.ts
+# journal brut (hors dépôt) : sha256 979fb656f0c6cea5de0db5530296409c6649779d68965e75f307935813b01a4e · 3421 octets · 47 lignes
+# transformation : codes ANSI retirés, AUCUNE ligne retirée ; « token= » : 0 · suites de forme jeton (43 car., minuscules+majuscules+chiffre) : 0 (attendu 0 et 0)
+
+> @zwadj/api-client@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client
+> vitest run "src/admin-client.test.ts" "src/venue-publication-client.test.ts"
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin-client.test.ts [ src/admin-client.test.ts ]
+Error: Cannot find module './admin-client' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/admin-client.test.ts'
+ ❯ src/admin-client.test.ts:9:1
+      7| import { join } from "node:path";
+      8| import { describe, expect, it } from "vitest";
+      9| import { createAdminClient } from "./admin-client";
+       | ^
+     10| import type { AuthedRequest } from "./venue-client";
+     11| 
+
+Caused by: Error: Failed to load url ./admin-client (resolved id: ./admin-client) in C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/admin-client.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/venue-publication-client.test.ts [ src/venue-publication-client.test.ts ]
+Error: Cannot find module './venue-publication-client' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/venue-publication-client.test.ts'
+ ❯ src/venue-publication-client.test.ts:4:1
+      2| // L'adresse est relevée dans la source par `contract-api-client.int-s…
+      3| import { describe, expect, it } from "vitest";
+      4| import { createVenuePublicationClient } from "./venue-publication-clie…
+       | ^
+      5| import type { AuthedRequest } from "./venue-client";
+      6| 
+
+Caused by: Error: Failed to load url ./venue-publication-client (resolved id: ./venue-publication-client) in C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client/src/venue-publication-client.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  02:34:29
+   Duration  684ms (transform 71ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 471ms)
+
+ ELIFECYCLE  Test failed. See above for more details.

@@ -1,0 +1,736 @@
+# D349 — rouge-2-int : sortie de vitest, jouée contre le code d'AVANT (aucun code d'application encore écrit)
+# commande : cd apps/api && pnpm run test:int <les quatre fichiers d'intégration du lot>   (PostgreSQL réel, base zwadj_test recréée par setup-global)
+# journal brut (hors dépôt) : sha256 f7da2241fd259e3baed16e13bb0d7b361d0a03bc460aa398198fa3fa27a8b44d · 58024 octets · 732 lignes
+# transformation : codes ANSI retirés, AUCUNE ligne retirée ; « token= » : 0 · suites de forme jeton (43 car., minuscules+majuscules+chiffre) : 0 (attendu 0 et 0)
+
+> @zwadj/api@0.0.0 test:int C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run -c vitest.config.int.ts "test/int/admin-moderation.int-spec.ts" "test/int/admin-audit.int-spec.ts" "test/int/first-admin.int-spec.ts" "test/int/rbac-all-routes.int-spec.ts"
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:19144) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/admin-moderation.int-spec.ts (27 tests | 23 failed) 11639ms
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans créneau, une dont les créneaux sont tous inactifs 787ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide 479ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création ; une page peut chevaucher les deux 410ms
+     → Cannot read properties of undefined (reading 'map')
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > une salle rejetée porte son motif et la DATE de la ligne du journal ; une autre n'a pas de refus 403ms
+     → expected 404 to be 200 // Object.is equality
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-1 — la réponse ne porte AUCUN taux, nulle part  387ms
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > les paramètres hors bornes sont refusés : taille 51, page 0, clé inconnue 383ms
+     → expected 404 to be 400 // Object.is equality
+   × GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > l'URL `pending-publication` n'est PAS lue comme un identifiant (la route statique passe avant `:id`) 379ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /admin/venues/:id — le détail > rend la vue admin (les taux EXISTANTS, en lecture), le numéro, la ville, le propriétaire, les créneaux actifs ; un brouillon jamais rejeté n'a pas de refus 390ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /admin/venues/:id — le détail > une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante) ; une rejetée porte son motif et sa date 378ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /admin/venues/:id — le détail > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse 389ms
+     → expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+   × POST /admin/venues/:id/reject — D-4, R-2 > la salle reste en BROUILLON avec son créneau ; le motif est stocké (rogné) ; la réponse dit le refus ; UNE ligne de journal le porte 378ms
+     → expected 404 to be 200 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > le motif est OBLIGATOIRE : corps vide, motif vide ou blanc, trop long, clé inconnue ⇒ 400, rien n'est écrit 384ms
+     → expected 404 to be 400 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse, AUCUNE ligne de journal 397ms
+     → expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+   × POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal 383ms
+     → expected 404 to be 409 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal 388ms
+     → expected 404 to be 200 // Object.is equality
+   × POST /admin/venues/:id/reject — D-4, R-2 > DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED, le motif stocké n'est PAS écrasé, aucune seconde ligne 376ms
+     → expected 404 to be 409 // Object.is equality
+   × POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal porte le rejet ET la publication, dans cet ordre 445ms
+     → Cannot read properties of undefined (reading 'VENUE_REJECT')
+   × POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > re-publier est IDEMPOTENT : 200, AUCUNE nouvelle ligne de journal, `updatedAt` ne bouge pas 429ms
+     → expected [] to have a length of 1 but got +0
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, la salle reste un brouillon, aucune ligne de journal  393ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > 404 sur une salle supprimée : aucune ligne de journal  395ms
+   × MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé 424ms
+     → tour 0 : rejeter: expected [ 200, 409 ] to include 404
+   × MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal 386ms
+     → tour 0: expected [ 404, 404 ] to deeply equal [ 200, 200 ]
+   × MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier DEUX FOIS en même temps : deux 200, UNE ligne de journal 429ms
+     → tour 0: expected [] to have a length of 1 but got +0
+   × GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > l'état de publication, le motif et la date — rien d'autre ; la date est celle de la ligne du journal 393ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > 404 indistincts : la salle d'un AUTRE pro, supprimée, uuid inconnu, id malformé — la même réponse 576ms
+     → expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+   × GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > les rôles : un ADMIN → 403, un CLIENT → 403, anonyme → 401 388ms
+     → expected 404 to be 403 // Object.is equality
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > R-3 — le contrat PRINCIPAL ne change pas : même une salle rejetée ne laisse passer ni le motif, ni la date, ni `rejectionReason` dans `GET /pro/venues/:id` et `GET /pro/venues`  433ms
+(node:12732) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/admin-audit.int-spec.ts (13 tests | 9 failed) 5931ms
+   × chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > publier une salle : `venue.publish`, entité `venue`, l'admin, le statut avant → après 695ms
+     → expected [] to have a length of 1 but got +0
+   × chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées (vivantes seulement) — et NI l'adresse e-mail, NI la note, NI l'identifiant du compte 469ms
+     → expected [] to have a length of 1 but got +0
+   × chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > rejeter une suppression : `account_deletion.reject`, sans la note 417ms
+     → expected [] to have a length of 1 but got +0
+   × chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > une demande déjà décidée : 400, AUCUNE nouvelle ligne 450ms
+     → expected [] to have a length of 1 but got +0
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > R-1 — le réglage des taux n'écrit AUCUNE ligne (MD-ADM-17 : il n'est pas journalisé)  414ms
+   × MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > publier : la route répond 500, la salle reste un BROUILLON, aucune ligne ; sans le déclencheur, le même appel réussit 396ms
+     → Cannot read properties of undefined (reading 'VENUE_PUBLISH')
+   × MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une salle : 500, AUCUN motif écrit, aucune ligne ; sans le déclencheur, le même appel réussit 384ms
+     → Cannot read properties of undefined (reading 'VENUE_REJECT')
+   × MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > approuver une suppression : 500, le compte N'EST PAS anonymisé, les salles ne sont PAS archivées, la demande reste PENDING, aucun e-mail ne part, aucune ligne 396ms
+     → Cannot read properties of undefined (reading 'DELETION_APPROVE')
+   × MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une suppression : 500, la demande reste PENDING, l'utilisateur n'est PAS notifié, aucune ligne ; sans le déclencheur, le même appel réussit 394ms
+     → Cannot read properties of undefined (reading 'DELETION_REJECT')
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > publier : un échec au COMMIT annule aussi la ligne  435ms
+   × MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une salle : un échec au COMMIT annule aussi la ligne 403ms
+     → expected 404 to be 500 // Object.is equality
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > approuver une suppression : un échec au COMMIT annule aussi la ligne  430ms
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une suppression : un échec au COMMIT annule aussi la ligne  424ms
+ ❯ test/int/rbac-all-routes.int-spec.ts (9 tests | 2 failed) 1581ms
+   × B10 — RBAC sur TOUTES les routes réelles (D119) > l'extraction de routes trouve bien la matrice attendue (garde-fou du garde-fou) 8ms
+     → expected 5 to be greater than or equal to 8
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > aucune route authentifiée n'est SANS rôle par accident (liste blanche) 1ms
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > un CLIENT authentifié ne franchit AUCUNE route pro 245ms
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > un CLIENT authentifié ne franchit AUCUNE route admin 21ms
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > un PRO authentifié ne franchit AUCUNE route admin 20ms
+   × B10 — RBAC sur TOUTES les routes réelles (D119) > un ADMIN authentifié ne franchit AUCUNE route réservée au PRO — dont la route de lecture du refus (ADM-1, R-7) 4ms
+     → expected false to be true // Object.is equality
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > un PRO authentifié ne franchit AUCUNE route réservée au CLIENT 31ms
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > SANS jeton, aucune route à rôle n'est atteignable — et c'est un 401, pas un 403 217ms
+   ✓ B10 — RBAC sur TOUTES les routes réelles (D119) > l'ADMIN garde bien accès à SES routes (le test ne prouve pas juste que tout est fermé) 78ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/first-admin.int-spec.ts [ test/int/first-admin.int-spec.ts ]
+Error: Cannot find module '../../src/admin/first-admin' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/first-admin.int-spec.ts'
+ ❯ test/int/first-admin.int-spec.ts:9:1
+      7| import { afterAll, beforeAll, beforeEach, describe, expect, it } from …
+      8| import { AdminAuditAction, AdminAuditEntity } from "@zwadj/types";
+      9| import { promoteFirstAdmin, type PromotionDb } from "../../src/admin/f…
+       | ^
+     10| import { createTestApp, loginAs, registerUser, truncateAll, verifyLast…
+     11| 
+
+Caused by: Error: Failed to load url ../../src/admin/first-admin (resolved id: ../../src/admin/first-admin) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/first-admin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/35]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 34 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > publier une salle : `venue.publish`, entité `venue`, l'admin, le statut avant → après
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-audit.int-spec.ts:123:20
+    121| 
+    122|     const lignes = await journalOf(id);
+    123|     expect(lignes).toHaveLength(1);
+       |                    ^
+    124|     expect(lignes[0]).toMatchObject({
+    125|       actorId: adminId,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées (vivantes seulement) — et NI l'adresse e-mail, NI la note, NI l'identifiant du compte
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-audit.int-spec.ts:142:20
+    140| 
+    141|     const lignes = await journalOf(requestId);
+    142|     expect(lignes).toHaveLength(1);
+       |                    ^
+    143|     expect(lignes[0]).toMatchObject({
+    144|       actorId: adminId,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > rejeter une suppression : `account_deletion.reject`, sans la note
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-audit.int-spec.ts:164:20
+    162| 
+    163|     const lignes = await journalOf(requestId);
+    164|     expect(lignes).toHaveLength(1);
+       |                    ^
+    165|     expect(lignes[0]).toMatchObject({
+    166|       action: AdminAuditAction.DELETION_REJECT,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > une demande déjà décidée : 400, AUCUNE nouvelle ligne
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-audit.int-spec.ts:180:40
+    178|     const res = await api().post(`/api/v1/admin/deletion-requests/${re…
+    179|     expect(res.status).toBe(400);
+    180|     expect(await journalOf(requestId)).toHaveLength(1);
+       |                                        ^
+    181|   });
+    182| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > publier : la route répond 500, la salle reste un BROUILLON, aucune ligne ; sans le déclencheur, le même appel réussit
+TypeError: Cannot read properties of undefined (reading 'VENUE_PUBLISH')
+ ❯ test/int/admin-audit.int-spec.ts:198:48
+    196|     const avant = await ctx.prisma.venue.findUniqueOrThrow({ where: { …
+    197|     try {
+    198|       await forceAuditFailure(AdminAuditAction.VENUE_PUBLISH);
+       |                                                ^
+    199|       const res = await api().post(`/api/v1/admin/venues/${id}/publish…
+    200|       expect(res.status).toBe(500);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une salle : 500, AUCUN motif écrit, aucune ligne ; sans le déclencheur, le même appel réussit
+TypeError: Cannot read properties of undefined (reading 'VENUE_REJECT')
+ ❯ test/int/admin-audit.int-spec.ts:217:48
+    215|     const id = await seedVenue(profil.id);
+    216|     try {
+    217|       await forceAuditFailure(AdminAuditAction.VENUE_REJECT);
+       |                                                ^
+    218|       const res = await api().post(`/api/v1/admin/venues/${id}/reject`…
+    219|       expect(res.status).toBe(500);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > approuver une suppression : 500, le compte N'EST PAS anonymisé, les salles ne sont PAS archivées, la demande reste PENDING, aucun e-mail ne part, aucune ligne
+TypeError: Cannot read properties of undefined (reading 'DELETION_APPROVE')
+ ❯ test/int/admin-audit.int-spec.ts:234:48
+    232|     const emailsAvant = ctx.emails.length;
+    233|     try {
+    234|       await forceAuditFailure(AdminAuditAction.DELETION_APPROVE);
+       |                                                ^
+    235|       const res = await api().post(`/api/v1/admin/deletion-requests/${…
+    236|       expect(res.status).toBe(500);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une suppression : 500, la demande reste PENDING, l'utilisateur n'est PAS notifié, aucune ligne ; sans le déclencheur, le même appel réussit
+TypeError: Cannot read properties of undefined (reading 'DELETION_REJECT')
+ ❯ test/int/admin-audit.int-spec.ts:259:48
+    257|     const emailsAvant = ctx.emails.length;
+    258|     try {
+    259|       await forceAuditFailure(AdminAuditAction.DELETION_REJECT);
+       |                                                ^
+    260|       const res = await api().post(`/api/v1/admin/deletion-requests/${…
+    261|       expect(res.status).toBe(500);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/35]⎯
+
+ FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une salle : un échec au COMMIT annule aussi la ligne
+AssertionError: expected 404 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 404
+
+ ❯ test/int/admin-audit.int-spec.ts:295:26
+    293|       await forceCommitFailure("venues");
+    294|       const res = await api().post(`/api/v1/admin/venues/${id}/reject`…
+    295|       expect(res.status).toBe(500);
+       |                          ^
+    296|     } finally {
+    297|       await restoreAudit();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans créneau, une dont les créneaux sont tous inactifs
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:117:24
+    115| 
+    116|     const res = await queue();
+    117|     expect(res.status).toBe(200);
+       |                        ^
+    118|     expect(idsOf(res)).toEqual([a, b, mixte]);
+    119|     expect(res.body.total).toBe(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:132:26
+    130|     for (const page of [1, 2, 3]) {
+    131|       const res = await queue(`?page=${page}&pageSize=2`);
+    132|       expect(res.status).toBe(200);
+       |                          ^
+    133|       expect(res.body).toMatchObject({ total: 5, page, pageSize: 2 });
+    134|       vus.push(...idsOf(res));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création ; une page peut chevaucher les deux
+TypeError: Cannot read properties of undefined (reading 'map')
+ ❯ idsOf test/int/admin-moderation.int-spec.ts:87:78
+     85| const publish = (id: string, token = adminToken) => api().post(`/api/v…
+     86| const queue = (query = "", token = adminToken) => api().get(`/api/v1/a…
+     87| const idsOf = (res: { body: { items: { id: string }[] } }) => res.body…
+       |                                                                              ^
+     88| 
+     89| beforeAll(async () => {
+ ❯ test/int/admin-moderation.int-spec.ts:146:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > une salle rejetée porte son motif et la DATE de la ligne du journal ; une autre n'a pas de refus
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:155:44
+    153|     const libre = await seedVenue({ minutes: 1 });
+    154|     const rejetee = await seedVenue({ minutes: 2 });
+    155|     expect((await reject(rejetee)).status).toBe(200);
+       |                                            ^
+    156|     const ligne = (await journalOf(rejetee)).find((l) => l.action === …
+    157| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > les paramètres hors bornes sont refusés : taille 51, page 0, clé inconnue
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:172:50
+    170| 
+    171|   it("les paramètres hors bornes sont refusés : taille 51, page 0, clé…
+    172|     expect((await queue("?pageSize=51")).status).toBe(400);
+       |                                                  ^
+    173|     expect((await queue("?page=0")).status).toBe(400);
+    174|     expect((await queue("?status=PUBLISHED")).status).toBe(400);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > l'URL `pending-publication` n'est PAS lue comme un identifiant (la route statique passe avant `:id`)
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:179:24
+    177|   it("l'URL `pending-publication` n'est PAS lue comme un identifiant (…
+    178|     const res = await queue();
+    179|     expect(res.status).toBe(200);
+       |                        ^
+    180|     expect(res.body).toHaveProperty("items");
+    181|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/:id — le détail > rend la vue admin (les taux EXISTANTS, en lecture), le numéro, la ville, le propriétaire, les créneaux actifs ; un brouillon jamais rejeté n'a pas de refus
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:188:24
+    186|     const id = await seedVenue({ slots: [true, true, false] });
+    187|     const res = await api().get(`/api/v1/admin/venues/${id}`).set(auth…
+    188|     expect(res.status).toBe(200);
+       |                        ^
+    189|     expect(res.body).toMatchObject({
+    190|       id,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/:id — le détail > une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante) ; une rejetée porte son motif et sa date
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:206:96
+    204|   it("une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante…
+    205|     const publiee = await seedVenue({ publicationStatus: "PUBLISHED" }…
+    206|     expect((await api().get(`/api/v1/admin/venues/${publiee}`).set(aut…
+       |                                                                                                ^
+    207| 
+    208|     const rejetee = await seedVenue();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/:id — le détail > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse
+AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "code": "VENUE_NOT_FOUND",
+-   "message": "venue.errors.notFound",
++   "code": "ROUTE_NOT_FOUND",
++   "message": "common.errors.routeNotFound",
+  }
+
+ ❯ test/int/admin-moderation.int-spec.ts:220:32
+    218|       const res = await api().get(`/api/v1/admin/venues/${id}`).set(au…
+    219|       expect(res.status).toBe(404);
+    220|       expect(res.body.message).toEqual(NOT_FOUND);
+       |                                ^
+    221|     }
+    222|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > la salle reste en BROUILLON avec son créneau ; le motif est stocké (rogné) ; la réponse dit le refus ; UNE ligne de journal le porte
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:230:24
+    228|     const res = await reject(id, { reason: `  ${MOTIF}  ` });
+    229| 
+    230|     expect(res.status).toBe(200);
+       |                        ^
+    231|     const ligne = (await journalOf(id))[0]!;
+    232|     expect(res.body).toEqual({ id, publicationStatus: "DRAFT", rejecti…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > le motif est OBLIGATOIRE : corps vide, motif vide ou blanc, trop long, clé inconnue ⇒ 400, rien n'est écrit
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:253:47
+    251|     const id = await seedVenue();
+    252|     for (const body of [{}, { reason: "" }, { reason: "   " }, { reaso…
+    253|       expect((await reject(id, body)).status).toBe(400);
+       |                                               ^
+    254|     }
+    255|     expect((await venueOf(id)).rejectionReason).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse, AUCUNE ligne de journal
+AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "code": "VENUE_NOT_FOUND",
+-   "message": "venue.errors.notFound",
++   "code": "ROUTE_NOT_FOUND",
++   "message": "common.errors.routeNotFound",
+  }
+
+ ❯ test/int/admin-moderation.int-spec.ts:264:32
+    262|       const res = await reject(id);
+    263|       expect(res.status).toBe(404);
+    264|       expect(res.body.message).toEqual(NOT_FOUND);
+       |                                ^
+    265|     }
+    266|     expect(await ctx.prisma.auditLog.count()).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal
+AssertionError: expected 404 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:272:24
+    270|     const id = await seedVenue({ publicationStatus: "PUBLISHED" });
+    271|     const res = await reject(id);
+    272|     expect(res.status).toBe(409);
+       |                        ^
+    273|     expect(res.body.message.code).toBe("VENUE_NOT_DRAFT");
+    274|     expect((await venueOf(id)).rejectionReason).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:282:23
+    280|     const un = await reject(id);
+    281|     const deux = await reject(id);
+    282|     expect(un.status).toBe(200);
+       |                       ^
+    283|     expect(deux.status).toBe(200);
+    284|     expect(deux.body).toEqual(un.body);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED, le motif stocké n'est PAS écrasé, aucune seconde ligne
+AssertionError: expected 404 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:292:24
+    290|     await reject(id);
+    291|     const res = await reject(id, { reason: "Un autre motif" });
+    292|     expect(res.status).toBe(409);
+       |                        ^
+    293|     expect(res.body.message.code).toBe("VENUE_ALREADY_REJECTED");
+    294|     expect((await venueOf(id)).rejectionReason).toBe(MOTIF);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal porte le rejet ET la publication, dans cet ordre
+TypeError: Cannot read properties of undefined (reading 'VENUE_REJECT')
+ ❯ test/int/admin-moderation.int-spec.ts:311:67
+    309|     expect(salle.rejectionReason).toBeNull();
+    310|     const lignes = await journalOf(id);
+    311|     expect(lignes.map((l) => l.action)).toEqual([AdminAuditAction.VENU…
+       |                                                                   ^
+    312|     expect(lignes[0]!.after).toEqual({ rejectionReason: MOTIF }); // l…
+    313|     expect(lignes[1]).toMatchObject({ actorId: adminId, actorRole: "AD…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > re-publier est IDEMPOTENT : 200, AUCUNE nouvelle ligne de journal, `updatedAt` ne bouge pas
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-moderation.int-spec.ts:324:33
+    322|     expect(deux.status).toBe(200);
+    323|     expect((await venueOf(id)).updatedAt.toISOString()).toBe(apres.upd…
+    324|     expect(await journalOf(id)).toHaveLength(1);
+       |                                 ^
+    325|   });
+    326| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé
+AssertionError: tour 0 : rejeter: expected [ 200, 409 ] to include 404
+ ❯ test/int/admin-moderation.int-spec.ts:350:52
+    348| 
+    349|       expect(p.status, `tour ${tour} : publier`).toBe(200);
+    350|       expect([200, 409], `tour ${tour} : rejeter`).toContain(r.status);
+       |                                                    ^
+    351|       const salle = await venueOf(id);
+    352|       expect(salle.publicationStatus, `tour ${tour}`).toBe("PUBLISHED"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal
+AssertionError: tour 0: expected [ 404, 404 ] to deeply equal [ 200, 200 ]
+
+- Expected
++ Received
+
+  [
+-   200,
+-   200,
++   404,
++   404,
+  ]
+
+ ❯ test/int/admin-moderation.int-spec.ts:367:52
+    365|       const id = await seedVenue();
+    366|       const [a, b] = await Promise.all([reject(id), reject(id)]);
+    367|       expect([a.status, b.status], `tour ${tour}`).toEqual([200, 200]);
+       |                                                    ^
+    368|       expect(a.body, `tour ${tour}`).toEqual(b.body);
+    369|       expect(await journalOf(id), `tour ${tour}`).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier DEUX FOIS en même temps : deux 200, UNE ligne de journal
+AssertionError: tour 0: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/admin-moderation.int-spec.ts:378:51
+    376|       const [a, b] = await Promise.all([publish(id), publish(id)]);
+    377|       expect([a.status, b.status], `tour ${tour}`).toEqual([200, 200]);
+    378|       expect(await journalOf(id), `tour ${tour}`).toHaveLength(1);
+       |                                                   ^
+    379|     }
+    380|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > l'état de publication, le motif et la date — rien d'autre ; la date est celle de la ligne du journal
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:389:26
+    387|     const id = await seedVenue();
+    388|     const avant = await read(id);
+    389|     expect(avant.status).toBe(200);
+       |                          ^
+    390|     expect(avant.body).toEqual({ publicationStatus: "DRAFT", rejection…
+    391| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > 404 indistincts : la salle d'un AUTRE pro, supprimée, uuid inconnu, id malformé — la même réponse
+AssertionError: expected { code: 'ROUTE_NOT_FOUND', …(1) } to deeply equal { code: 'VENUE_NOT_FOUND', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "code": "VENUE_NOT_FOUND",
+-   "message": "venue.errors.notFound",
++   "code": "ROUTE_NOT_FOUND",
++   "message": "common.errors.routeNotFound",
+  }
+
+ ❯ test/int/admin-moderation.int-spec.ts:412:32
+    410|       const res = await read(id);
+    411|       expect(res.status).toBe(404);
+    412|       expect(res.body.message).toEqual(NOT_FOUND);
+       |                                ^
+    413|     }
+    414|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/35]⎯
+
+ FAIL  test/int/admin-moderation.int-spec.ts > GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > les rôles : un ADMIN → 403, un CLIENT → 403, anonyme → 401
+AssertionError: expected 404 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 404
+
+ ❯ test/int/admin-moderation.int-spec.ts:418:49
+    416|   it("les rôles : un ADMIN → 403, un CLIENT → 403, anonyme → 401", asy…
+    417|     const id = await seedVenue();
+    418|     expect((await read(id, adminToken)).status).toBe(403);
+       |                                                 ^
+    419|     const clientToken = await session(CLIENT);
+    420|     expect((await read(id, clientToken)).status).toBe(403);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/35]⎯
+
+ FAIL  test/int/rbac-all-routes.int-spec.ts > B10 — RBAC sur TOUTES les routes réelles (D119) > l'extraction de routes trouve bien la matrice attendue (garde-fou du garde-fou)
+AssertionError: expected 5 to be greater than or equal to 8
+ ❯ test/int/rbac-all-routes.int-spec.ts:135:26
+    133|     expect(pro.length).toBeGreaterThanOrEqual(38);
+    134|     // ADM-1 (D349) : 5 routes à `9ec8abf` + 3 neuves (la file « en at…
+    135|     expect(admin.length).toBeGreaterThanOrEqual(8);
+       |                          ^
+    136|   });
+    137| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/35]⎯
+
+ FAIL  test/int/rbac-all-routes.int-spec.ts > B10 — RBAC sur TOUTES les routes réelles (D119) > un ADMIN authentifié ne franchit AUCUNE route réservée au PRO — dont la route de lecture du refus (ADM-1, R-7)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/int/rbac-all-routes.int-spec.ts:227:104
+    225|     // Le sens qu'on oublie : l'admin n'est pas « plus haut » que le p…
+    226|     const proOnly = collectRoutes(ctx.app).filter((r) => r.roles.inclu…
+    227|     expect(proOnly.some((r) => r.path === "/api/v1/pro/venues/:id/publ…
+       |                                                                                                        ^
+    228|     const fuites: string[] = [];
+    229|     for (const route of proOnly) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/35]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  34 failed | 15 passed (49)
+   Start at  02:49:09
+   Duration  30.76s (transform 1.34s, setup 81ms, collect 9.34s, tests 19.15s, environment 1ms, prepare 659ms)
+
+ ELIFECYCLE  Command failed with exit code 1.

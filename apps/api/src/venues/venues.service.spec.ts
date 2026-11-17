@@ -84,7 +84,8 @@ function buildService() {
     trouverIdVivante: vi.fn(),
     mettreAJour: vi.fn(),
     archiver: vi.fn(),
-    idProfilPro: vi.fn()
+    idProfilPro: vi.fn(),
+    lireRefus: vi.fn()
   } satisfies VenueStore;
   const referentiels = {
     communeExiste: vi.fn().mockResolvedValue(true),
@@ -267,5 +268,53 @@ describe("VenuesService — forme du DTO pro (allow-list)", () => {
         "updatedAt"
       ].sort()
     );
+  });
+});
+
+// ADM-1 (D349, R-3) — la route de LECTURE du refus : un contrat ÉTROIT, séparé de `VenueProDTO`, qui garde sa liste blanche (le test juste au-dessus reste ENTIER).
+describe("VenuesService.getPublicationReview — le pro lit son refus (D-5, p2)", () => {
+  const REJETE_LE = new Date("2026-11-10T09:30:00.000Z");
+
+  it("id hors motif UUID : 404 indistinct SANS toucher le port", async () => {
+    const { service, salles } = buildService();
+    await expect(service.getPublicationReview(USER_ID, "pas-un-uuid")).rejects.toSatisfy(isNotFoundVenue);
+    expect(salles.lireRefus).not.toHaveBeenCalled();
+  });
+
+  it("le port rend `null` (inexistante, supprimée, à un autre pro) : le MÊME 404 indistinct", async () => {
+    const { service, salles } = buildService();
+    salles.lireRefus.mockResolvedValue(null);
+    await expect(service.getPublicationReview(USER_ID, VENUE_ID)).rejects.toSatisfy(isNotFoundVenue);
+    expect(salles.lireRefus).toHaveBeenCalledWith(USER_ID, VENUE_ID);
+  });
+
+  it("un brouillon rejeté : l'état, le motif et la date — et RIEN d'autre (exactement deux clés, exactement deux clés dans le refus)", async () => {
+    const { service, salles } = buildService();
+    salles.lireRefus.mockResolvedValue({ publicationStatus: "DRAFT", rejectionReason: "Photos floues", rejectedAt: REJETE_LE });
+
+    const dto = await service.getPublicationReview(USER_ID, VENUE_ID);
+
+    expect(dto).toEqual({ publicationStatus: "DRAFT", rejection: { reason: "Photos floues", rejectedAt: "2026-11-10T09:30:00.000Z" } });
+    expect(Object.keys(dto).sort()).toEqual(["publicationStatus", "rejection"]);
+  });
+
+  it("un brouillon jamais rejeté : pas de refus", async () => {
+    const { service, salles } = buildService();
+    salles.lireRefus.mockResolvedValue({ publicationStatus: "DRAFT", rejectionReason: null, rejectedAt: null });
+    await expect(service.getPublicationReview(USER_ID, VENUE_ID)).resolves.toEqual({ publicationStatus: "DRAFT", rejection: null });
+  });
+
+  it("une salle publiée ne montre JAMAIS de refus, même si une valeur périmée traîne dans la colonne", async () => {
+    const { service, salles } = buildService();
+    salles.lireRefus.mockResolvedValue({ publicationStatus: "PUBLISHED", rejectionReason: "Périmé", rejectedAt: REJETE_LE });
+    await expect(service.getPublicationReview(USER_ID, VENUE_ID)).resolves.toEqual({ publicationStatus: "PUBLISHED", rejection: null });
+  });
+
+  it("R-3 — le détail pro (`getMine`) ne change PAS : même une salle rejetée ne laisse pas passer le motif (la route de lecture est la SEULE sortie)", async () => {
+    const { service, salles } = buildService();
+    salles.trouverVivante.mockResolvedValue(ligne({ rejectionReason: "Photos floues" }));
+    const dto = await service.getMine(USER_ID, VENUE_ID);
+    expect(Object.keys(dto)).not.toContain("rejectionReason");
+    expect(JSON.stringify(dto)).not.toContain("Photos floues");
   });
 });
