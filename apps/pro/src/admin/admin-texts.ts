@@ -6,8 +6,7 @@
 //
 // Ce fichier porte aussi les deux formateurs de l'écran (la date à l'heure d'Alger, le taux en pour cent) et la DISTINCTION entre un REFUS métier et une PANNE (MD-ADM-15, D217) : un refus n'est
 // jamais présenté comme une panne, une panne jamais comme un refus ni comme une action faite.
-import { VenuePublicationStatus } from "@zwadj/types";
-import { ApiError } from "../lib/auth-client";
+// ⚠ AUCUN import : ce module est lu aussi par la spec e2e (`e2e/specs/r52-administration.e2e.ts`), qui ne résout ni `@zwadj/types` ni le client d'API de l'application — un module sans dépendance est le seul que les deux mondes partagent.
 
 export const ADMIN_TEXTS = {
   shell: {
@@ -49,11 +48,12 @@ export const ADMIN_TEXTS = {
   },
   review: {
     number: (n: number): string => `Salle n° ${n}`,
+    /** Les trois états de publication (les valeurs de `VenuePublicationStatus`). */
     status: {
-      [VenuePublicationStatus.DRAFT]: "Brouillon",
-      [VenuePublicationStatus.PENDING]: "En cours de validation",
-      [VenuePublicationStatus.PUBLISHED]: "Publiée"
-    } satisfies Record<VenuePublicationStatus, string>,
+      DRAFT: "Brouillon",
+      PENDING: "En cours de validation",
+      PUBLISHED: "Publiée"
+    },
     commission: "Commission",
     cashback: "Remise (cashback)",
     ratesReadOnly: "Ces deux taux sont affichés à titre d'information : ils ne se modifient pas depuis cet écran.",
@@ -132,7 +132,7 @@ export const ADMIN_TEXTS = {
 export type AdminProblem = { kind: "refused" | "rights" | "unknown"; text: string };
 
 export function classifyAdminError(error: unknown): AdminProblem {
-  if (error instanceof ApiError) {
+  if (isApiError(error)) {
     if (error.status === 401 || error.status === 403) return { kind: "rights", text: ADMIN_TEXTS.errors.rights };
     if (error.status >= 400 && error.status < 500) {
       const connu = (ADMIN_TEXTS.errors.codes as Record<string, string | undefined>)[error.code];
@@ -140,6 +140,13 @@ export function classifyAdminError(error: unknown): AdminProblem {
     }
   }
   return { kind: "unknown", text: ADMIN_TEXTS.errors.unknownOutcome };
+}
+
+/** Une erreur d'API (`ApiError` : un statut HTTP et un code métier), reconnue par sa FORME et son nom — ce module n'importe rien. Le réseau coupé (`NetworkError`), une valeur levée qui n'est pas une erreur
+ *  et tout le reste ne sont PAS des erreurs d'API : l'issue est inconnue. */
+function isApiError(error: unknown): error is { status: number; code: string } {
+  const e = error as { name?: unknown; status?: unknown; code?: unknown } | null;
+  return typeof e === "object" && e !== null && e.name === "ApiError" && typeof e.status === "number" && typeof e.code === "string";
 }
 
 /** Le texte français d'une clé de validation (message d'un schéma partagé), ou le texte générique d'un refus. */
