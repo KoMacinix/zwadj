@@ -13,7 +13,8 @@ import { VENUE_REJECTION_REASON_MAX, VenuePublicationStatus } from "@zwadj/types
 import { initI18n } from "../i18n";
 import { ADMIN_PATH, ADMIN_VENUE_PATH_PATTERN, adminVenuePath } from "../routes";
 import { AdminClientProvider } from "./admin-client-context";
-import { ADMIN_TEXTS, formatAdminDate, formatBps } from "./admin-texts";
+import { ADMIN_TEXTS } from "./admin-texts";
+import { formatAdminDate, formatBps } from "./admin-format";
 import { VenueReviewPage } from "./venue-review-page";
 import { ApiError, NetworkError, aVenue, makeAdminServerDouble, type AdminServerDouble, type FakeVenue } from "../test-support/admin-doubles";
 

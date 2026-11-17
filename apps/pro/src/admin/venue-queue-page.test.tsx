@@ -12,7 +12,8 @@ import { VENUE_PENDING_PAGE_SIZE_DEFAULT } from "@zwadj/types";
 import { initI18n } from "../i18n";
 import { ADMIN_PATH, adminVenuePath } from "../routes";
 import { AdminClientProvider } from "./admin-client-context";
-import { ADMIN_TEXTS, formatAdminDate } from "./admin-texts";
+import { ADMIN_TEXTS } from "./admin-texts";
+import { formatAdminDate } from "./admin-format";
 import { VenueQueuePage } from "./venue-queue-page";
 import { NetworkError, aVenue, makeAdminServerDouble, type AdminServerDouble } from "../test-support/admin-doubles";
 

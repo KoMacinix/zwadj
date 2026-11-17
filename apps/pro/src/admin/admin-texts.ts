@@ -4,8 +4,9 @@
 // aux écrans `/admin`. » Ce fichier est cette exemption : aucun autre écran ne lit ce module, aucun catalogue ne porte de bloc `admin` (garde de source : `admin-source-guard.test.ts`). ⚠ Ce que le PRO lit d'un
 // refus (D-5) reste bilingue, dans `packages/i18n`, sous la porte de parité — l'exemption ne couvre que ce que l'ADMIN lit.
 //
-// Ce fichier porte aussi les deux formateurs de l'écran (la date à l'heure d'Alger, le taux en pour cent) et la DISTINCTION entre un REFUS métier et une PANNE (MD-ADM-15, D217) : un refus n'est
+// Ce fichier porte aussi la DISTINCTION entre un REFUS métier et une PANNE (MD-ADM-15, D217) : un refus n'est
 // jamais présenté comme une panne, une panne jamais comme un refus ni comme une action faite.
+// ⚠ Les deux formateurs de l'écran (la date à l'heure d'Alger, le taux en pour cent) vivent à part, dans `admin-format.ts` : ils emploient `intlLocale` de `@zwadj/types` (garde FC-6), ce que ce module sans import ne peut pas faire.
 // ⚠ AUCUN import : ce module est lu aussi par la spec e2e (`e2e/specs/r52-administration.e2e.ts`), qui ne résout ni `@zwadj/types` ni le client d'API de l'application — un module sans dépendance est le seul que les deux mondes partagent.
 
 export const ADMIN_TEXTS = {
@@ -152,15 +153,4 @@ function isApiError(error: unknown): error is { status: number; code: string } {
 /** Le texte français d'une clé de validation (message d'un schéma partagé), ou le texte générique d'un refus. */
 export function validationText(key: string | undefined): string {
   return (key !== undefined ? (ADMIN_TEXTS.errors.validation as Record<string, string | undefined>)[key] : undefined) ?? ADMIN_TEXTS.errors.refusedGeneric;
-}
-
-/** UNE date, à l'heure d'ALGER (UTC+1, sans heure d'été) — le fuseau n'est jamais dérivé de la locale (D48, D56). Pas d'heure : ce que l'admin lit est le JOUR du refus ou de la demande (D57 interdit
- *  `Intl` pour l'heure). */
-export function formatAdminDate(iso: string): string {
-  return new Intl.DateTimeFormat("fr-DZ", { timeZone: "Africa/Algiers", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
-}
-
-/** Un taux en points de base, en pour cent, avec ses décimales significatives (250 → « 2,5 % »). */
-export function formatBps(bps: number): string {
-  return `${new Intl.NumberFormat("fr-DZ", { maximumFractionDigits: 2 }).format(bps / 100)}\u00a0%`;
 }

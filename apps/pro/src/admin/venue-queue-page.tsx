@@ -9,7 +9,8 @@ import { Link, useSearchParams } from "react-router";
 import type { VenuePendingItemDTO, VenuePendingPageDTO } from "@zwadj/types";
 import { ADMIN_PATH, adminVenuePath } from "../routes";
 import { useAdminClient } from "./admin-client-context";
-import { ADMIN_TEXTS, classifyAdminError, formatAdminDate } from "./admin-texts";
+import { ADMIN_TEXTS, classifyAdminError } from "./admin-texts";
+import { formatAdminDate } from "./admin-format";
 
 type State = { kind: "loading" } | { kind: "error"; rights: boolean } | { kind: "ready"; data: VenuePendingPageDTO };
 

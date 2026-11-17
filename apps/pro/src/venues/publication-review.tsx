@@ -10,7 +10,7 @@
 // d'étape. ⚠ Le motif est écrit par l'admin (en français, le plus souvent) : il est rendu tel quel, avec `dir="auto"` — la phrase de l'interface autour de lui suit la langue du pro.
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { VenuePublicationStatus, type VenuePublicationReviewDTO } from "@zwadj/types";
+import { VenuePublicationStatus, intlLocale, type VenuePublicationReviewDTO } from "@zwadj/types";
 import { usePublicationClient } from "./venue-client-context";
 import { PublicationBadge } from "./venue-form";
 
@@ -26,7 +26,7 @@ function isReview(data: unknown): data is VenuePublicationReviewDTO {
 
 /** Le jour du refus, à l'heure d'ALGER (UTC+1, sans heure d'été) — le fuseau n'est jamais dérivé de la locale (D48, D56) ; pas d'heure (D57). `locale` est la langue de l'interface du pro. */
 export function formatReviewDate(iso: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar-DZ" : "fr-DZ", { timeZone: "Africa/Algiers", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
+  return new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "Africa/Algiers", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
 }
 
 /**

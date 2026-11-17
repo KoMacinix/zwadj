@@ -6,7 +6,8 @@
 import { describe, expect, it } from "vitest";
 import { AccountErrorCode, VenueErrorCode, VenueModerationErrorCode, deletionDecisionSchema, venuePendingQuerySchema, venueRejectSchema } from "@zwadj/types";
 import { ApiError, NetworkError } from "../lib/auth-client";
-import { ADMIN_TEXTS, classifyAdminError, formatAdminDate, formatBps } from "./admin-texts";
+import { ADMIN_TEXTS, classifyAdminError } from "./admin-texts";
+import { formatAdminDate, formatBps } from "./admin-format";
 
 /** Les codes que les trois écrans peuvent recevoir d'un appel qu'ils déclenchent : les deux codes de modération, les deux refus de la publication (`SLOT_TEMPLATE_REQUIRED`, 404), les deux de la file de suppression. */
 const CODES_REÇUS = [

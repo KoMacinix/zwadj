@@ -10,7 +10,8 @@ import { useCallback, useEffect, useId, useState } from "react";
 import { ConfirmDialog } from "@zwadj/ui";
 import { deletionDecisionSchema, type AdminDeletionRequestDTO } from "@zwadj/types";
 import { useAdminClient } from "./admin-client-context";
-import { ADMIN_TEXTS, classifyAdminError, formatAdminDate, validationText, type AdminProblem } from "./admin-texts";
+import { ADMIN_TEXTS, classifyAdminError, validationText, type AdminProblem } from "./admin-texts";
+import { formatAdminDate } from "./admin-format";
 
 type Load = { kind: "loading" } | { kind: "error"; rights: boolean } | { kind: "ready"; rows: AdminDeletionRequestDTO[] };
 

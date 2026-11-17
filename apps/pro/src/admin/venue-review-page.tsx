@@ -10,7 +10,8 @@ import { VenuePublicationStatus, venueRejectSchema, type VenueAdminDetailDTO } f
 import { ApiError } from "../lib/auth-client";
 import { ADMIN_PATH } from "../routes";
 import { useAdminClient } from "./admin-client-context";
-import { ADMIN_TEXTS, classifyAdminError, formatAdminDate, formatBps, validationText, type AdminProblem } from "./admin-texts";
+import { ADMIN_TEXTS, classifyAdminError, validationText, type AdminProblem } from "./admin-texts";
+import { formatAdminDate, formatBps } from "./admin-format";
 
 type Load = { kind: "loading" } | { kind: "notFound" } | { kind: "error"; rights: boolean } | { kind: "ready"; venue: VenueAdminDetailDTO };
 

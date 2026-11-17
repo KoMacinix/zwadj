@@ -12,7 +12,8 @@ import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it } from "vitest";
 import { initI18n } from "../i18n";
 import { AdminClientProvider } from "./admin-client-context";
-import { ADMIN_TEXTS, formatAdminDate } from "./admin-texts";
+import { ADMIN_TEXTS } from "./admin-texts";
+import { formatAdminDate } from "./admin-format";
 import { DeletionRequestsPage } from "./deletion-requests-page";
 import { NetworkError, aDeletion, makeAdminServerDouble, type AdminServerDouble } from "../test-support/admin-doubles";
 
