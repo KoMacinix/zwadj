@@ -38,15 +38,18 @@ export function venuePublishEntry(actor: AdminAuditActor, venueId: string, from:
   };
 }
 
-/** `before` est toujours « jamais rejetée » : un second rejet à motif différent est refusé (R-2), le motif stocké n'est jamais remplacé. */
-export function venueRejectEntry(actor: AdminAuditActor, venueId: string, reason: string): AdminAuditEntry {
+/**
+ * Un rejet, ou la CORRECTION de son motif (D350, R-3, réponse de Ko : « le nouveau motif remplace l'ancien sur la salle ; la ligne de journal garde l'ancien ET le nouveau »). `previous` est le motif
+ * en vigueur AVANT cette écriture — `null` au premier rejet. L'action reste `venue.reject` : la date du refus que l'écran affiche est celle de la ligne la plus récente, donc du DERNIER motif.
+ */
+export function venueRejectEntry(actor: AdminAuditActor, venueId: string, reason: string, previous: string | null): AdminAuditEntry {
   return {
     actorId: actor.userId,
     actorRole: actor.role,
     action: AdminAuditAction.VENUE_REJECT,
     entityType: AdminAuditEntity.VENUE,
     entityId: venueId,
-    before: { rejectionReason: null },
+    before: { rejectionReason: previous },
     after: { rejectionReason: reason }
   };
 }

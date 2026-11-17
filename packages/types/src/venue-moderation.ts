@@ -126,7 +126,8 @@ export interface VenuePublicationReviewDTO {
 export const VenueModerationErrorCode = {
   /** 409 — on ne rejette pas une salle qui n'est plus un brouillon : une salle publiée ne se dépublie pas (sens unique, A3-④). */
   VENUE_NOT_DRAFT: "VENUE_NOT_DRAFT",
-  /** 409 — la salle est déjà rejetée avec UN AUTRE motif. Le motif stocké n'est pas écrasé. Comportement PROVISOIRE : « corriger un motif » est une décision produit non tranchée (R-2). */
+  /** 409 — le motif de la salle a CHANGÉ entre la lecture de l'admin et son écriture (une autre correction est passée) : l'écriture perdante est rejetée, le motif stocké n'est pas écrasé. Depuis D350
+   *  (R-3, réponse de Ko) corriger le motif d'une salle déjà rejetée est PERMIS — ce code ne dit plus « déjà rejetée avec un autre motif », il ne sort que d'une correction concurrente. */
   VENUE_ALREADY_REJECTED: "VENUE_ALREADY_REJECTED"
 } as const;
 export type VenueModerationErrorCode = (typeof VenueModerationErrorCode)[keyof typeof VenueModerationErrorCode];
