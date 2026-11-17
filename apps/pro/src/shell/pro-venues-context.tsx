@@ -94,8 +94,13 @@ export function ProVenuesProvider({ children }: { children: React.ReactNode }) {
 
   // ⚠ L'état ET le dernier compte connu vivent dans UN seul `useState` : deux `setState` par lecture doubleraient le nombre de « not wrapped in act(...) » de chaque fichier de test
   // dont la lecture se termine après la fin du test (les plafonds de console de `src/test-setup.ts` les comptent).
-  const [snap, setSnap] = useState<{ state: ProVenuesState; knownCount: number }>({ state: { kind: "loading" }, knownCount: 0 });
-  const { state, knownCount } = snap;
+  const [snap, setSnap] = useState<{ state: ProVenuesState; knownCount: number; ownerId: string | null }>({ state: { kind: "loading" }, knownCount: 0, ownerId: null });
+  // ADM-2 (D350, R-7, MD-ADM-10) — LA LISTE N'APPARTIENT QU'AU COMPTE QUI L'A LUE. Mesuré avant ce changement (`session-switch.test.tsx`) : la liste du pro A survivait à sa déconnexion et sous un ADMIN, et était
+  // RENDUE au pro B pendant que sa propre lecture n'était pas revenue. L'état porte l'identifiant du compte qui l'a lu ; un rendu pour un AUTRE compte (ou aucun) part de « chargement », jamais de la liste de l'autre.
+  const ownerId = user?.id ?? null;
+  const mine = snap.ownerId === ownerId;
+  const state: ProVenuesState = mine ? snap.state : { kind: "loading" };
+  const knownCount = mine ? snap.knownCount : 0;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
   /** Armé par `revalidate()`, consommé par la prochaine exécution de l'effet. */
@@ -109,7 +114,7 @@ export function ProVenuesProvider({ children }: { children: React.ReactNode }) {
     if (!isPro) return;
     let cancelled = false;
     // Une relecture silencieuse ne masque la liste que si elle n'est pas connue.
-    setSnap((prev) => (silent && prev.state.kind === "ready" ? prev : { state: { kind: "loading" }, knownCount: prev.knownCount }));
+    setSnap((prev) => (silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "loading" }, knownCount: prev.ownerId === ownerId ? prev.knownCount : 0, ownerId }));
     venuesApi
       .listMine()
       .then((list) => {
@@ -120,23 +125,23 @@ export function ProVenuesProvider({ children }: { children: React.ReactNode }) {
         // la cascade de la leçon C5b, en pire.
         if (!Array.isArray(list)) {
           // Une relecture d'entrée ne remplace pas une liste connue par une liste VIDE : un compte faux présenté comme un fait.
-          setSnap((prev) => (silent && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }, knownCount: 0 }));
+          setSnap((prev) => (silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }, knownCount: 0, ownerId }));
           idleRef.current = true;
           return;
         }
-        setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length });
+        setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length, ownerId });
         idleRef.current = true;
       })
       .catch(() => {
         if (cancelled) return;
         // Un échec de relecture silencieuse LAISSE la liste connue ; un échec de lecture voulue est un ÉTAT.
-        setSnap((prev) => (silent && prev.state.kind === "ready" ? prev : { state: { kind: "error" }, knownCount: prev.knownCount }));
+        setSnap((prev) => (silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "error" }, knownCount: prev.ownerId === ownerId ? prev.knownCount : 0, ownerId }));
         idleRef.current = silent;
       });
     return () => {
       cancelled = true;
     };
-  }, [venuesApi, isPro, attempt]);
+  }, [venuesApi, isPro, ownerId, attempt]);
 
   const venues = state.kind === "ready" ? state.venues : [];
 
