@@ -1,0 +1,15 @@
+D350 — tri des alertes nouvelles de l'audit de secrets « a » (D299), avant le premier versement de pièces
+
+Audit : docs/preuves/D350/audit-secrets-d350a.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; sceau sha256:1d3c129ae457a08601a98b37914c7e891fc54b64051f3a478d48a312352111df ; 883 404 octets ; code de sortie 0 ; lancé à 10:36:37, terminé avant 10:51:15 le 17/11/2026).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D349/audit-secrets-d349d.txt docs/preuves/D350/audit-secrets-d350a.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes lus, 0 nouvelle ; positif : 244 et 92 contextes, 2 nouvelles, les deux chemins attendus) ;
+  → 2930 contextes dans la précédente, 2933 dans la nouvelle ; 3 alertes ABSENTES de la précédente, ventilation par motif : jeton = 2, mot-de-passe = 1 (autres motifs 0).
+
+Tri au contexte (lignes 6651, 6653 et 6655 de la sortie scellée), lues une à une :
+  · ligne 6651 [mot-de-passe] et lignes 6653 et 6655 [jeton], toutes dans docs/preuves/D349/aucune-valeur-reelle-d.txt (lignes 9 et 10) : le tri de l'audit PRÉCÉDENT, pièce de D349 ajoutée après la sortie scellée que ce tri compare. Elle CITE le titre d'un test d'intégration existant (« … forgot-password : réponse CONSTANTE, mais aucun e-mail … », que l'outil prend pour un mot de passe) et NOMME le gabarit « token= » pour décrire le marqueur de masquage. Des phrases de tri, pas des valeurs : l'outil a lui-même dit « valeur trop courte pour une recherche » ou « valeur déjà présente dans un fichier suivi hors preuves ».
+  Les trois sont l'ÉCHO d'une pièce de tri ; aucune n'est une fuite. Aucune valeur réelle n'a été vue ni écrite par cette session.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) : NON JOUÉ à ce versement, et c'est dit. Il cherche les valeurs d'un JOURNAL qu'on lui nomme ; cette session n'a produit AUCUN journal brut à ce stade. Il sera joué quand des journaux bruts (e2e, portes) seront versés, après leur masquage.
+
+Pièces versées à ce versement : docs/preuves/D350/consigne.md · docs/preuves/D350/etat-des-lieux/releve.py · docs/preuves/D350/etat-des-lieux/releve-sortie.txt · docs/preuves/D350/lecture-adverse/lecture-adverse.md · docs/preuves/D350/par-carte-fichiers.txt · docs/preuves/D350/regle-e2e.md · docs/preuves/D350/audit-secrets-d350a.txt · docs/preuves/D350/aucune-valeur-reelle.txt.
