@@ -248,3 +248,9 @@ Le correctif : `intlLocale(...)` comme premier argument de chaque formateur (mê
 | `docs/preuves/D350/portes/passe-1/_index.txt`, `docs/preuves/D350/portes/passe-1/test.txt`, `docs/preuves/D350/portes/passe-1/lecture.md` | la PREMIÈRE passe des six portes (rouge sur `test`) : l'index, la sortie de `test` (MASQUÉE) et sa lecture ; **les autres sorties brutes de cette passe (verte, sur le code d'avant le correctif) restent hors dépôt** | ferme |
 | `docs/preuves/D350/audit-secrets-d350c0.txt`, `docs/preuves/D350/aucune-valeur-reelle-c0.txt` | l'audit de secrets « c0 » du versement de cette pièce de rouge, scellé, et son tri | ferme |
 | `docs/preuves/D350/neutralisation/campagne-adm2-passe-3.txt` | la campagne d'ADM-2 rejouée EN ENTIER après le correctif (la passe 2 d'`adm2`, déclarée par l'extension 4, est celle d'AVANT : elle reste versée et porte l'empreinte d'un harnais antérieur ; les extraits déclarés par l'extension 3 sont ceux de la passe 3) | à venir |
+
+**Extension 6** (17/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre et AVANT la seconde passe des six portes). Motif : la campagne existante `neutralize-r37.py` a été jouée TROIS fois, pas deux (première : arrêt au pré-vol, trois ancres ; seconde : 20 sur 21, une muette lue, P-3 ; troisième : 20 sur 20) ; l'extension 4 ne déclarait que deux journaux. Aucun fichier de code n'est ajouté par cette extension.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D350/neutralisation/campagnes-existantes/r37-passe-3.txt` | la troisième passe de `neutralize-r37.py`, après le retrait de P-3 par écrit : 20 sur 20, 0 muette, arbre rendu | à venir |
