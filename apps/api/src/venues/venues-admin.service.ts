@@ -155,48 +155,56 @@ export class VenuesAdminService {
   }
 
   /**
-   * Rejet (D-4, Ko : « la salle rejetée reste en brouillon ; motif obligatoire, stocké sur la salle ; le rejet est aussi journalisé »). Même patron que `publish` : check-and-set sur DRAFT ET
-   * « jamais rejetée », UNE transaction, UNE ligne de journal qui PORTE le motif. ⛔ R-1 : il n'écrit que `rejection_reason`, ne lit aucun taux, et ne rend PAS un `VenueAdminDTO`.
+   * Rejet (D-4, Ko : « la salle rejetée reste en brouillon ; motif obligatoire, stocké sur la salle ; le rejet est aussi journalisé ») ET correction du motif (D350, R-3, réponse de Ko du 17/11/2026 :
+   * « l'admin PEUT corriger le motif d'une salle déjà rejetée. Le nouveau motif remplace l'ancien sur la salle ; la ligne de journal garde l'ancien ET le nouveau »). Même patron que `publish` : UNE
+   * transaction, UNE ligne de journal, l'écriture est un CHECK-AND-SET — `updateMany` conditionné au statut DRAFT ET au motif PRÉCÉDENT (`null` au premier rejet), compte = 1 exigé ; la lecture du motif
+   * en tête de transaction ne décide pas, seul le compte décide (D117, D121). ⛔ R-1 : il n'écrit que `rejection_reason`, ne lit aucun taux, et ne rend PAS un `VenueAdminDTO`.
    *  · salle publiée : 409 `VENUE_NOT_DRAFT` (le sens unique, MD-ADM-4) ;
    *  · supprimée, inconnue, id malformé : le même 404 indistinct ;
-   *  · déjà rejetée avec le MÊME motif : 200, la même réponse, AUCUNE écriture ni ligne (« même état, même requête, même réponse », MD-ADM-4) ;
-   *  · déjà rejetée avec un AUTRE motif : 409 `VENUE_ALREADY_REJECTED`, le motif stocké n'est pas écrasé — comportement PROVISOIRE, décision produit non tranchée (R-2, rapportée).
+   *  · le MÊME motif que celui en vigueur : 200, la même réponse, AUCUNE écriture ni ligne (« même état, même requête, même réponse », MD-ADM-4) ;
+   *  · un AUTRE motif : il REMPLACE l'ancien, et la ligne de journal porte l'ancien ET le nouveau ;
+   *  · compte 0 (un autre geste est passé entre la lecture et l'écriture) : la relecture ne sert qu'à choisir le code — publiée : 409 `VENUE_NOT_DRAFT` ; supprimée : 404 ; le même motif posé par un autre admin :
+   *    200 sans ligne ; un TROISIÈME motif : 409 `VENUE_ALREADY_REJECTED` (le motif a changé entre-temps : l'écriture perdante est rejetée, jamais écrasée).
    */
   async reject(venueId: string, admin: AdminAuditActor, input: VenueRejectInput): Promise<VenueRejectResultDTO> {
     if (!UUID_PATTERN.test(venueId)) this.throwNotFound();
     const reason = input.reason;
     return this.prisma.$transaction(async (tx) => {
+      const current = await tx.venue.findFirst({ where: { id: venueId, deletedAt: null }, select: { id: true, publicationStatus: true, rejectionReason: true } });
+      if (!current) this.throwNotFound();
+      if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {
+        throw new ConflictException({ code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueNotDraft" });
+      }
+      if (current.rejectionReason === reason) return this.sameRejection(tx, venueId, reason);
+
+      const previous = current.rejectionReason;
       const { count } = await tx.venue.updateMany({
-        where: { id: venueId, deletedAt: null, publicationStatus: { in: [...REJECTABLE_FROM] }, rejectionReason: null },
+        where: { id: venueId, deletedAt: null, publicationStatus: { in: [...REJECTABLE_FROM] }, rejectionReason: previous },
         data: { rejectionReason: reason }
       });
       if (count === 1) {
-        const ligne = await tx.auditLog.create({ data: venueRejectEntry(admin, venueId, reason), select: { createdAt: true } });
+        const ligne = await tx.auditLog.create({ data: venueRejectEntry(admin, venueId, reason, previous), select: { createdAt: true } });
         return { id: venueId, publicationStatus: VenuePublicationStatus.DRAFT, rejection: { reason, rejectedAt: ligne.createdAt.toISOString() } };
       }
 
-      // Compte 0 : on relit pour choisir le code, jamais pour décider.
-      const now = await tx.venue.findFirst({
-        where: { id: venueId, deletedAt: null },
-        select: { id: true, publicationStatus: true, rejectionReason: true }
-      });
+      // Compte 0 : un autre geste est passé entre la lecture et l'écriture. On relit pour choisir le code, jamais pour décider.
+      const now = await tx.venue.findFirst({ where: { id: venueId, deletedAt: null }, select: { id: true, publicationStatus: true, rejectionReason: true } });
       if (!now) this.throwNotFound();
       if (now.publicationStatus !== VenuePublicationStatus.DRAFT) {
         throw new ConflictException({ code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueNotDraft" });
       }
-      if (now.rejectionReason === null) {
-        throw new Error("reject : compte 0 sur un brouillon vivant jamais rejeté — état impossible");
-      }
-      if (now.rejectionReason === reason) {
-        const rejectedAt = await this.latestRejectionDate(tx, venueId);
-        return {
-          id: venueId,
-          publicationStatus: VenuePublicationStatus.DRAFT,
-          rejection: { reason, rejectedAt: rejectedAt === null ? null : rejectedAt.toISOString() }
-        };
+      if (now.rejectionReason === reason) return this.sameRejection(tx, venueId, reason);
+      if (now.rejectionReason === previous) {
+        throw new Error("reject : compte 0 sur un brouillon vivant dont le motif n'a pas changé — état impossible");
       }
       throw new ConflictException({ code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueAlreadyRejected" });
     });
+  }
+
+  /** « Même état, même requête, même réponse » : le refus en vigueur est déjà celui qu'on demande. Aucune écriture, aucune ligne ; la date est celle de la ligne la plus récente du journal. */
+  private async sameRejection(tx: Prisma.TransactionClient, venueId: string, reason: string): Promise<VenueRejectResultDTO> {
+    const rejectedAt = await this.latestRejectionDate(tx, venueId);
+    return { id: venueId, publicationStatus: VenuePublicationStatus.DRAFT, rejection: { reason, rejectedAt: rejectedAt === null ? null : rejectedAt.toISOString() } };
   }
 
   /**
