@@ -119,8 +119,10 @@ cible("P-1. `revalidate` perd son garde `idleRef` : il relit pendant un chargeme
       "if (!idleRef.current) return;", "void 0;", {"pro-fournisseur": T_P_CHARGEMENT, "pro-fournisseur#2": T_P_ERREUR, "pro-relecture": T_ENTREE_ERREUR})
 cible("P-2. la relecture d'entrée n'est plus silencieuse : elle masque la liste connue pendant la lecture", FOURNISSEUR,
       "silentRef.current = true;", "silentRef.current = false;", {"pro-fournisseur": T_P_CONNUE, "pro-relecture": T_ENTREE_CONNUE})
-cible("P-3. ⛔ le drapeau silencieux n'est plus consommé quand aucun PRO n'est connecté : la première lecture de la session suivante est silencieuse (la liste de l'ancien compte reste à l'écran)", FOURNISSEUR,
-      "silentRef.current = false;\n    if (!isPro) return;", "if (!isPro) return;\n    silentRef.current = false;", {"pro-fournisseur": T_P_SESSION})
+# ⛔ CIBLE P-3 RETIRÉE PAR ÉCRIT (rang 52, D350 — MUTATION ÉQUIVALENTE, D325) : « le drapeau silencieux n'est plus consommé quand aucun PRO n'est connecté » mesurait que la liste de l'ancien compte ne reste pas à l'écran
+# pour le compte suivant. Depuis ADM-2 (R-7, MD-ADM-10), l'état du fournisseur PORTE l'identifiant du compte qui l'a lu : une lecture « silencieuse » ne garde la liste connue que si `prev.ownerId === ownerId`, et un rendu pour un
+# autre compte part de « chargement ». La mutation ne change donc plus rien de visible — rejouée le 17/11/2026 : le test nommé (F-12/F-13) reste VERT sous la mutation (muette, lue : `docs/preuves/D350/neutralisation/campagnes-existantes/r37-passe-2.txt`).
+# Le défaut que cette cible mesurait est mesuré, à l'état d'aujourd'hui, par la cible C-1 de `neutralize-adm2.py` (la liste d'un compte n'est pas rendue à un autre).
 cible("P-4. un échec de la relecture d'entrée remplace la liste connue par l'état « error »", FOURNISSEUR,
       'silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', 'false && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', {"pro-fournisseur": T_P_ECHEC})
 cible("P-5. ⛔ une réponse qui n'est pas un tableau remplace la liste connue par une liste VIDE (un compte faux présenté comme un fait)", FOURNISSEUR,
