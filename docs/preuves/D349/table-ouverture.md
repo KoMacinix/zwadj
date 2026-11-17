@@ -156,3 +156,10 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `docs/preuves/D349/rouges/rouge-1-unit-api.txt` | la sortie brute de vitest sur les specs unitaires de l'API écrites par ce lot, contre le code d'AVANT (aucun code d'application encore écrit) | à venir |
 | `docs/preuves/D349/rouges/rouge-2-int.txt` | la sortie brute de vitest d'intégration (PostgreSQL réel) sur les specs d'intégration de ce lot, contre le code d'AVANT | à venir |
 | `docs/preuves/D349/rouges/rouge-3-api-client.txt` | la sortie brute de vitest sur les specs de `@zwadj/api-client` de ce lot, contre le code d'AVANT | à venir |
+
+**Extension 2** (17/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : le versement des rouges (tests et pièces) exige son audit de secrets et le tri de ses alertes nouvelles (D298, D299) ; la table n'avait que ceux du premier versement. Aucune de ces pièces n'est encore commitée. Aucun fichier de code n'est ajouté.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D349/audit-secrets-d349b.txt` | l'audit de secrets « b » (avant le versement des tests et des rouges), scellé | à venir |
+| `docs/preuves/D349/aucune-valeur-reelle-b.txt` | le tri de ses alertes nouvelles | à venir |
