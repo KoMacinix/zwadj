@@ -1,0 +1,73 @@
+D350 — PASSE D277, LES DEUX SENS (D277, D287) — texte APLATI, ventilation par motif, avant et après les écritures d'autorité
+
+Instrument : docs/preuves/D350/passe-d277.txt est la SORTIE ; la procédure est le script écrit pour la passe (garde en scratchpad, non versé : jamais promu en instrument, D291) — il aplatit les espaces de chaque fichier (les fichiers sont enveloppés à ~95 colonnes : toute expression de plus de quelques mots y est coupée), cherche chaque motif par expression régulière, imprime le NOMBRE D'OCCURRENCES par motif et par fichier, et ce qu'il a parcouru (D290).
+
+⚠ **UN MOTIF À ZÉRO EST UNE HYPOTHÈSE À VÉRIFIER, UN MOTIF AU COMPTE INVRAISEMBLABLE AUSSI (D295).** Un motif a rendu **50** occurrences dans `ZWADJ_CONTINUITE.md` (« ADM-1 … ADM-2 … certification » dans les 40 caractères) : c'est la CHAÎNE D'ORDRE D-10 (« … → ADM-1 → ADM-2 → certification »), recopiée dans chacune de ses révisions datées. Il compte TOUT et ne mesure rien d'actuel : voir plus bas. Les motifs à zéro ont été vérifiés un à un contre le fichier (le motif « le pro ne lit pas son refus » ne trouve rien dans `AGENTS.md` ; la phrase est dans le backlog et la section D348, lue).
+
+Fichiers parcourus : AGENTS.md, ZWADJ_CONTINUITE.md, ZWADJ_BACKLOG.md (3). Lignes : 34 680 avant, 34 800 après (+120 : les écritures du lot).
+
+| sens | motif | fichier | avant | après |
+|---|---|---|---|---|
+| SENS 1 (invalidé) | ADM-1 et ADM-2 attendent chacun un rang | AGENTS.md | 2 | 3 |
+| SENS 1 (invalidé) | ADM-1 et ADM-2 attendent chacun un rang | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | ADM-1 et ADM-2 attendent chacun un rang | ZWADJ_CONTINUITE.md | 2 | 4 |
+| SENS 1 (invalidé) | ADM-2 attend / n'est pas codé | AGENTS.md | 4 | 6 |
+| SENS 1 (invalidé) | ADM-2 attend / n'est pas codé | ZWADJ_BACKLOG.md | 1 | 2 |
+| SENS 1 (invalidé) | ADM-2 attend / n'est pas codé | ZWADJ_CONTINUITE.md | 8 | 10 |
+| SENS 1 (invalidé) | RequireProSession refuse tout rôle ≠ PRO | AGENTS.md | 1 | 2 |
+| SENS 1 (invalidé) | RequireProSession refuse tout rôle ≠ PRO | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | RequireProSession refuse tout rôle ≠ PRO | ZWADJ_CONTINUITE.md | 0 | 0 |
+| SENS 1 (invalidé) | VENUE_ALREADY_REJECTED en attendant | AGENTS.md | 0 | 0 |
+| SENS 1 (invalidé) | VENUE_ALREADY_REJECTED en attendant | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | VENUE_ALREADY_REJECTED en attendant | ZWADJ_CONTINUITE.md | 1 | 1 |
+| SENS 1 (invalidé) | aucun texte pour les codes d'erreur neufs | AGENTS.md | 0 | 0 |
+| SENS 1 (invalidé) | aucun texte pour les codes d'erreur neufs | ZWADJ_BACKLOG.md | 1 | 1 |
+| SENS 1 (invalidé) | aucun texte pour les codes d'erreur neufs | ZWADJ_CONTINUITE.md | 2 | 3 |
+| SENS 1 (invalidé) | aucun écran admin / aucun dossier admin | AGENTS.md | 0 | 0 |
+| SENS 1 (invalidé) | aucun écran admin / aucun dossier admin | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | aucun écran admin / aucun dossier admin | ZWADJ_CONTINUITE.md | 4 | 4 |
+| SENS 1 (invalidé) | contrôle de statut de la file non déplacé | AGENTS.md | 1 | 2 |
+| SENS 1 (invalidé) | contrôle de statut de la file non déplacé | ZWADJ_BACKLOG.md | 1 | 1 |
+| SENS 1 (invalidé) | contrôle de statut de la file non déplacé | ZWADJ_CONTINUITE.md | 1 | 2 |
+| SENS 1 (invalidé) | le pro ne lit pas son refus | AGENTS.md | 0 | 0 |
+| SENS 1 (invalidé) | le pro ne lit pas son refus | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | le pro ne lit pas son refus | ZWADJ_CONTINUITE.md | 0 | 1 |
+| SENS 1 (invalidé) | premier admin avec ADM-2 | AGENTS.md | 0 | 0 |
+| SENS 1 (invalidé) | premier admin avec ADM-2 | ZWADJ_BACKLOG.md | 1 | 1 |
+| SENS 1 (invalidé) | premier admin avec ADM-2 | ZWADJ_CONTINUITE.md | 1 | 1 |
+| SENS 1 (invalidé) | rang 52 en attente | AGENTS.md | 1 | 2 |
+| SENS 1 (invalidé) | rang 52 en attente | ZWADJ_BACKLOG.md | 1 | 1 |
+| SENS 1 (invalidé) | rang 52 en attente | ZWADJ_CONTINUITE.md | 2 | 4 |
+| SENS 1 (invalidé) | second rejet 409 provisoire | AGENTS.md | 2 | 3 |
+| SENS 1 (invalidé) | second rejet 409 provisoire | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 1 (invalidé) | second rejet 409 provisoire | ZWADJ_CONTINUITE.md | 3 | 4 |
+| SENS 2 (permission périmée) | aucune certification entre ADM-1 et ADM-2 | AGENTS.md | 8 | 8 |
+| SENS 2 (permission périmée) | aucune certification entre ADM-1 et ADM-2 | ZWADJ_BACKLOG.md | 3 | 3 |
+| SENS 2 (permission périmée) | aucune certification entre ADM-1 et ADM-2 | ZWADJ_CONTINUITE.md | 50 | 50 |
+| SENS 2 (permission périmée) | candidat proposé : ADM-2 | AGENTS.md | 0 | 0 |
+| SENS 2 (permission périmée) | candidat proposé : ADM-2 | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 2 (permission périmée) | candidat proposé : ADM-2 | ZWADJ_CONTINUITE.md | 2 | 2 |
+| SENS 2 (permission périmée) | le rang suivant est ADM-2 | AGENTS.md | 0 | 0 |
+| SENS 2 (permission périmée) | le rang suivant est ADM-2 | ZWADJ_BACKLOG.md | 0 | 0 |
+| SENS 2 (permission périmée) | le rang suivant est ADM-2 | ZWADJ_CONTINUITE.md | 0 | 0 |
+| SENS 2 (permission périmée) | un lot de code / ADM-2 peut s'ouvrir | AGENTS.md | 0 | 0 |
+| SENS 2 (permission périmée) | un lot de code / ADM-2 peut s'ouvrir | ZWADJ_BACKLOG.md | 2 | 2 |
+| SENS 2 (permission périmée) | un lot de code / ADM-2 peut s'ouvrir | ZWADJ_CONTINUITE.md | 1 | 1 |
+| SENS 2 (permission périmée) | à faire après ADM-2 / avec ADM-2 | AGENTS.md | 0 | 0 |
+| SENS 2 (permission périmée) | à faire après ADM-2 / avec ADM-2 | ZWADJ_BACKLOG.md | 2 | 2 |
+| SENS 2 (permission périmée) | à faire après ADM-2 / avec ADM-2 | ZWADJ_CONTINUITE.md | 4 | 4 |
+
+## Ce que la passe a trouvé, et ce qui en a été fait — TOUTES les occurrences lues, une à une (contextes de 160 caractères)
+
+**Traitées par une annotation « (D350 : … ) » à l'endroit où elles sont écrites, sans rien réécrire** (`git diff` : 16 lignes modifiées, chacune par INSERTION seule — contrôle par `difflib` sur chaque paire ancienne / nouvelle ligne : 0 suppression, hors les cases `[ ]` → `[x]` du backlog ; deux appariements ambigus, les deux lignes du bloc des arbitrages dont l'annotation de D349 se termine pareil, ont été départagés par le début de la ligne) :
+- `AGENTS.md` : « ADM-1 et ADM-2 attendent chacun un rang » et « ADM-2 … attend son rang, le 52 » (bloc des arbitrages d'administration) ; « Aujourd'hui `RequireProSession` refuse tout rôle ≠ PRO — c'est ADM-2 qui écrira la garde ADMIN » (paragraphe de D23) ; « un second rejet à motif DIFFÉRENT répond 409 en attendant une décision » et « le contrôle de statut de la file de suppression n'est PAS déplacé » (invariant de D349) ; « RANG 52 : EN ATTENTE » (annotation de D349 sur le compteur : l'annotation de D350 la dit PÉRIMÉE).
+- `ZWADJ_CONTINUITE.md` : l'ordre des rangs (« RANG 52 : EN ATTENTE DE CADRAGE DU RELECTEUR » barré avec son motif, ses deux « Ce qui attend » annotés) ; les deux endroits où l'annotation de D349 écrivait « ADM-2 … attend son rang, le 52 » (les décisions produit tranchées, point 4 ; la liste des arbitrages D-1 à D-11 du cadrage du rang 28) ; dans la section D349 : S-183 (textes), S-184 (« LA QUESTION »), S-187 (contrôle de statut non déplacé) et le § 4 (« Aucun écran », « Aucune correction du défaut croisé », « Aucun texte pour les codes d'erreur neufs »).
+- `ZWADJ_BACKLOG.md` : quatre entrées de D349 closes `[x]` avec leur annotation (le second rejet, ADM-2, la file de suppression lue avant la transaction, le texte des codes neufs) ; l'entrée « D23 » (« Réalisé par ADM-2, qui attend son rang ; tout rôle ≠ PRO reste refusé ») ; « la première promotion réelle, avec ADM-2 » (reste le geste 0 de Ko).
+
+**Lues et LAISSÉES, avec leur raison** : (1) le bloc « ÉTAT À LA CLÔTURE DU RANG 51 » de `ZWADJ_CONTINUITE.md` (« RANG 52 : EN ATTENTE », « le premier compte admin se crée avec ADM-2 ») : son titre est BARRÉ par D350 (« l'état courant est le bloc ÉTAT À LA CLÔTURE DU RANG 52 ») ; (2) la section de session D349 pour tout ce qui décrit ce que D349 a trouvé ou mesuré à sa date (« aucun dossier `admin` dans `apps/pro/src` », « aucun écran n'existe (ADM-2) », S-188 « la promotion se fait avec ADM-2 par la procédure versée », la ligne de registre de D349) : un relevé daté garde sa date ; (3) la chaîne d'ordre D-10 et ses révisions (« … ADM-1 → ADM-2 → certification »), dans AGENTS et dans le cadrage du rang 28 et les sections D322 à D336, **qui est une SUCCESSION DE RÉVISIONS DATÉES, chacune annotée là où elle est écrite** ; la plus récente (sixième, D336) dit déjà « l'ordre de la section 5 de la consigne, sans certification » ; aucune de ces phrases n'autorise l'ouverture d'un lot sous une condition que ce lot a changée ; (4) les annotations de D349 et de D350 elles-mêmes, qui CITENT les phrases périmées pour les dire périmées (leur présence fait monter les comptes « après »).
+
+## Le SENS 2 (D287) — ce que le lot REND PERMIS ou PÉRIME comme permission
+
+Cherché : toute phrase qui dit qu'un lot, un rang ou un code peut s'ouvrir, et dont la CONDITION vient de changer. **Trouvé : aucune permission périmée par ce lot.** ADM-2 n'était soumis à aucune condition que ce lot lève (« aucune certification entre ADM-1 et ADM-2 » ne vaut plus rien comme permission : ADM-2 est fait) ; la phrase « le rang 52 attend le cadrage du relecteur » (backlog, entrée ADM-2) est dans l'entrée close `[x]` annotée ; le rang suivant (53) n'est PAS nommé par la session. ⚠ **Ce que le lot RÉTRÉCIT comme permission, et qui est écrit** : aucun lot de code de l'administration ne reste (ADM-1 et ADM-2 sont faits) ; **tout déploiement reste interdit** tant que la MFA et la relecture du rôle en base ne sont pas faites (D-7, D-9 e3-c — inchangé).
+
+⚠ **Ce que cette passe ne garantit pas** : elle cherche des motifs ÉCRITS à l'avance ; une affirmation invalidée par une formule que je n'ai pas prévue ne s'y trouve pas. Une passe faite par une session adverse, à froid, est ce qui rattraperait cela (aucune n'est ordonnée pour ce lot).

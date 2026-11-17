@@ -1,0 +1,17 @@
+D350 — tri des alertes nouvelles de l'audit de secrets « d » (D299), avant le versement des trois fichiers d'autorité, de la passe D277 et du contrôle de fin de lot
+
+Audit : docs/preuves/D350/audit-secrets-d350d.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; SCEAU sha256:901cbb9316b0e28f316e709efb0a3ad3ebe28c53636e82879c5406eb2dcb6d4e ; 948616 octets ; lancé à 16:46, fini à 17:02 le 17/11/2026, sur l'arbre : HEAD `c621d5d` plus les trois `.md` d'autorité modifiés, `docs/preuves/D350/passe-d277.txt`, `controle-fin-de-lot.txt` et la pièce de tri « c »).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D350/audit-secrets-d350c.txt docs/preuves/D350/audit-secrets-d350d.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes lus, 0 nouvelle ; positif : 244 et 92 contextes, 2 nouvelles, les deux chemins attendus) ;
+  → 6 alertes ABSENTES de la précédente, ventilation par fichier : docs/preuves/D350/aucune-valeur-reelle-c.txt = 6 ; par motif : jeton = 4, mot-de-passe = 2.
+
+Tri au contexte (lignes lues une à une dans la sortie scellée) :
+  · les six sont dans docs/preuves/D350/aucune-valeur-reelle-c.txt (lignes 10, 11 et 12) : le tri de l'audit PRÉCÉDENT (« c »), pièce de CE lot ajoutée après la sortie scellée que ce tri compare. Il CITE les alertes de « c » : le motif « token= » lu sur un remplacement de masque, le titre de test « forgot-password : réponse CONSTANTE », la ligne d'en-tête des extraits d'échecs. Ce sont des ÉCHOS de la pièce de tri « c » ; aucune n'est une fuite.
+  · **Aucune alerte ne vient** des trois fichiers d'autorité (AGENTS.md, ZWADJ_CONTINUITE.md, ZWADJ_BACKLOG.md : leurs contextes d'alerte étaient déjà dans la sortie « c » et rien de neuf ne s'y est ajouté), de `passe-d277.txt`, de `controle-fin-de-lot.txt`, ni d'un fichier de code ou de test.
+
+Contrôle indépendant : les 66 fichiers de docs/preuves/D350/ ne portent aucune suite de 43 caractères base64url mêlant minuscules, majuscules et chiffres (contrôle de « c », rejoué sur les pièces ajoutées depuis : aucune).
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) : NON JOUÉ à ce versement, et c'est dit : aucun journal à valeurs réelles dans la session (la même raison que « c »).
+
+Pièces versées à ce versement : AGENTS.md · ZWADJ_CONTINUITE.md · ZWADJ_BACKLOG.md · docs/preuves/D350/passe-d277.txt · docs/preuves/D350/controle-fin-de-lot.txt · docs/preuves/D350/audit-secrets-d350d.txt · cette pièce.

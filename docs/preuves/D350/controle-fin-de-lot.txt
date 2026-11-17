@@ -1,0 +1,22 @@
+D350 — contrôle de fin de lot (D288, D328, D334) : chaque contrôle rend ce qu'il a PARCOURU à côté de son verdict, et l'ATTENDU à côté du mesuré
+HEAD au moment du contrôle : c621d5dfaefb4d4f47c4e31584be8e16cebc67f5  (arbre de travail : les trois `.md` d'autorité et la pièce `passe-d277.txt` peuvent être modifiés, non commités)
+SHA de départ : b8e5511d20c1ad037b431f221170eda7b0d7786b
+
+[1] premier commit du lot : 6e23d00 (25 commits depuis le départ) · fichiers : ['docs/preuves/D350/table-ouverture.md'] · attendu : ['docs/preuves/D350/table-ouverture.md'] · ✓
+[2] fichiers modifiés depuis le départ : 112 (commits + arbre de travail) · chemins complets déclarés par la table : 169 · NON déclarés : 0 [] (attendu 0) · ✓
+    arbre de travail (git status --short) : 4 ligne(s) : [' M AGENTS.md', ' M ZWADJ_BACKLOG.md', ' M ZWADJ_CONTINUITE.md', '?? docs/preuves/D350/passe-d277.txt'] (attendu : les trois `.md` d'autorité et la pièce de la passe D277, rien d'autre)
+    fichiers CONDITIONNELS de la table : existent-ils dans le diff ? [('docs/preuves/D350/arret.md', False), ('docs/preuves/D350/lecture-adverse/ecarts.md', False), ('apps/pro/src/shell/pro-venues-context.test.tsx', False)]
+[3] lecture adverse : commit 98696c1 ; premier commit d'un `.md` d'autorité : (aucun : pas encore commité) · lecture avant autorité : ✓
+    rouges (R-2 à R-7) : commit 8a75e6b ; premier commit de CODE d'application : 1cfca34 · les rouges le précèdent : ✓
+    fichiers du commit des rouges sous apps/ et packages/ : 18, tous des fichiers de test ou d'aide de test : ✓
+    second rouge (garde FC-6, première passe des portes) : commit de la pièce 98d69da ; premier commit du correctif (admin-format.ts) 9600e45 · la pièce le précède : ✓
+    extensions de la table : 6 commits « extension N » ; chacun ne touche QUE la table : [('1fea9f8', True), ('1d1b01a', True), ('6a75cc7', True), ('0507202', True), ('508183e', True), ('ee211b1', True)] · ✓
+[4] R-1 — apps/api/src/venues/venues-admin.service.ts : textes comparés à `b8e5511` (lus par `git show`) : lignes comparées {setRates: 19, VENUE_ADMIN_SELECT: 5} · identiques {'setRates': True, 'VENUE_ADMIN_SELECT': True} (attendu True · True) · ✓
+    écrans d'administration parcourus : 8 fichiers · occurrences de « commission-rate » : 0 (attendu 0) · ✓
+    venue-form.tsx, venue.ts, venues.module.ts : diff depuis le départ = [] (attendu vide) · ✓
+[5] fusion d'essai de `origin/par-carte` dans HEAD (`git merge-tree --write-tree`, n'écrit AUCUNE référence) : code 0 · lignes listées après l'arbre : 0 [] · (code 0 = aucun conflit ; attendu 0) · ✓
+[6] AGENTS.md : 265344 octets · CRLF 1690 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[6] ZWADJ_CONTINUITE.md : 3520028 octets · CRLF 27298 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[6] ZWADJ_BACKLOG.md : 768663 octets · CRLF 5812 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[7] scenarios-ko.md : 7327 caractères · renvoie à `premier-admin-ko.md` : True · dit que la session n'a rien joué sur la base de développement : True · nomme la MFA et la relecture du rôle : True
+[8] verdict global des contrôles : ✓
