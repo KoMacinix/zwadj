@@ -1,0 +1,16 @@
+D350 — tri des alertes nouvelles de l'audit de secrets « c0 » (D299), avant le versement de la pièce du rouge de la première passe des portes
+
+Audit : docs/preuves/D350/audit-secrets-d350c0.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; SCEAU sha256:18d2a84473f7b8514c56518e9806cfb5c66f5cb4a3ae9874bd8d3cb6cd25f86d ; 888093 octets ; lancé à 15:18, fini à 15:28 le 17/11/2026, sur l'arbre : HEAD `508183e` plus les trois pièces à verser, `docs/preuves/D350/portes/passe-1/` et `docs/preuves/D350/masquage/masquer-jetons.py`).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D350/audit-secrets-d350b.txt docs/preuves/D350/audit-secrets-d350c0.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes lus, 0 nouvelle ; positif : 244 et 92 contextes, 2 nouvelles, les deux chemins attendus) ;
+  → 2935 contextes dans la précédente, 2945 dans la nouvelle ; 10 alertes ABSENTES de la précédente, ventilation par motif : mot-de-passe = 1, jeton = 9 (autres motifs 0).
+
+Tri au contexte (lignes 7179 à 7201 de la sortie scellée), lues une à une :
+  · lignes 7179 [mot-de-passe] et 7181 [jeton], dans docs/preuves/D350/aucune-valeur-reelle-b.txt:10 : le tri de l'audit PRÉCÉDENT (« b »), pièce de CE lot ajoutée après la sortie scellée que ce tri compare ; il CITE les numéros de ligne et les motifs des deux alertes du tri « a ». Écho ; aucune n'est une fuite.
+  · lignes 7187 à 7201 [jeton] (huit contextes), dans docs/preuves/D350/masquage/masquer-jetons.py (lignes 1, 27, 27, 45, 48, 49, 50, 56) : le texte du script de masquage, copie OCTET POUR OCTET de docs/preuves/D348/masquage/masquer-jetons.py (`cmp` identique, relevé avant la copie versée). Ce sont les MÊMES huit contextes que l'audit de D348 avait relevés et triés dans son fichier d'origine (« 8 contextes dans docs/preuves/D348/masquage/masquer-jetons.py »), dont les valeurs sont des masques « <N car. masques> », des noms de variables ou des fragments de calibration à construction synthétique, jamais une valeur réelle. Aucune n'est une fuite.
+  Aucune alerte ne vient de la pièce de rouge elle-même (docs/preuves/D350/portes/passe-1/test.txt, _index.txt, lecture.md : 0 alerte) ni d'un fichier de code.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) : NON JOUÉ à ce versement, et c'est dit. Il cherche les valeurs d'un JOURNAL qu'on lui nomme ; la pièce versée est une sortie de `pnpm test` (aucune clé, aucun jeton : 0 occurrence à masquer, 0 restante, relevé par le script de masquage) et il n'existe pas, dans cette session, de journal à valeurs réelles à lui donner.
+
+Pièces versées à ce versement : docs/preuves/D350/portes/passe-1/ (_index.txt, test.txt, lecture.md) · docs/preuves/D350/masquage/masquer-jetons.py · docs/preuves/D350/audit-secrets-d350c0.txt · cette pièce.
