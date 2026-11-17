@@ -24,7 +24,6 @@ import {
   PlaceFields,
   PresentationFields,
   StylesPicker,
-  PublicationBadge,
   StatusSelect,
   buildCreateInput,
   buildUpdateDiff,
@@ -40,6 +39,7 @@ import { GuardedSection } from "./guarded-section";
 import { DepositSection } from "./deposit-section";
 import { ServicesSection } from "./services-section";
 import { VirtualTourSection } from "./virtual-tour-section";
+import { PublicationHeaderState, PublicationRefusalNotice, usePublicationReview } from "./publication-review";
 import { CALENDAR_PATH, VENUES_PATH } from "../routes";
 
 type LoadState =
@@ -61,6 +61,8 @@ export function EditVenuePage() {
   const referentials = useReferentialsData();
 
   const [state, setState] = useState<LoadState>({ kind: "loading" });
+  // ADM-2 (D350, R-6, D-5) : le refus de publication, lu UNE fois par ouverture de la salle (rien à lire avant que la salle le soit, ni pour une salle publiée).
+  const publication = usePublicationReview(id, state.kind === "ready" ? state.venue.publicationStatus : null);
   const [values, setValues] = useState<VenueFormValues | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -364,6 +366,8 @@ export function EditVenuePage() {
       reachable: ouverte,
       body: (
         <>
+          {/* ADM-2 (D350, R-6) : le REFUS (motif, date) — un composant neuf, `venue-form.tsx` n'est pas touché. */}
+          <PublicationRefusalNotice review={publication.state} retry={publication.retry} />
           {/* D33 — même contrôle à 3 entrées que sur la liste. */}
           <Field label={t("venue.ui.status.label")} hint={t("venue.ui.status.hint")} error={tval(fieldErrors.status)}>
             {({ id: statusId, describedBy }) => (
@@ -409,7 +413,7 @@ export function EditVenuePage() {
           ) : null}
 
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
-            <PublicationBadge status={venue.publicationStatus} />
+            <PublicationHeaderState status={venue.publicationStatus} review={publication.state} />
           </div>
 
           {/* ⚠ AUCUN <form> ici, et ce n'est pas une négligence. Les étapes 4 à 7

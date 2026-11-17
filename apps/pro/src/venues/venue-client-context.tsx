@@ -13,6 +13,7 @@ import {
   createServicesClient,
   createReferentialsClient,
   createVenueProClient,
+  createVenuePublicationClient,
   type BookingsProClient,
   type ProClientsClient,
   type QuotesClient,
@@ -24,7 +25,8 @@ import {
   type VenuePricingRuleClient,
   type VenueSlotTemplateClient,
   type VenueVisitClient,
-  type VenueProClient
+  type VenueProClient,
+  type VenuePublicationClient
 } from "@zwadj/api-client";
 import type { AmenityDTO, WilayaDTO, VenueStyleDTO } from "@zwadj/types";
 import { useAuth } from "../auth/auth-context";
@@ -42,6 +44,8 @@ interface VenueClients {
   quotes: QuotesClient;
   /** Rang 41 (D336) — les FICHES CLIENT du pro vivent sur `/pro/clients`, hors de `/pro/venues` : une fiche est au pro, commune à toutes ses salles. */
   clients: ProClientsClient;
+  /** ADM-2 (D350, R-6) — la lecture du REFUS de publication par le pro vit sur `/pro/venues/:id/publication` : un client à part (`VenueCrudClient` n'est pas étendu, ses doubles vivent dans `apps/pro`). */
+  publication: VenuePublicationClient;
 }
 
 const VenueClientsContext = createContext<VenueClients | null>(null);
@@ -53,7 +57,8 @@ export function VenueProvider({
   bookingsPro,
   servicesClient,
   quotesClient,
-  clientsClient
+  clientsClient,
+  publicationClient
 }: {
   children: React.ReactNode;
   /** Injectables pour les tests de composants. */
@@ -63,6 +68,7 @@ export function VenueProvider({
   servicesClient?: ServicesClient;
   quotesClient?: QuotesClient;
   clientsClient?: ProClientsClient;
+  publicationClient?: VenuePublicationClient;
 }) {
   const { api } = useAuth();
 
@@ -74,9 +80,10 @@ export function VenueProvider({
       bookingsPro: bookingsPro ?? createBookingsProClient(api.authedRequest),
       services: servicesClient ?? createServicesClient(api.authedRequest),
       quotes: quotesClient ?? createQuotesClient(api.authedRequest),
-      clients: clientsClient ?? createProClientsClient(api.authedRequest)
+      clients: clientsClient ?? createProClientsClient(api.authedRequest),
+      publication: publicationClient ?? createVenuePublicationClient(api.authedRequest)
     }),
-    [api, venues, referentials, bookingsPro, servicesClient, quotesClient, clientsClient]
+    [api, venues, referentials, bookingsPro, servicesClient, quotesClient, clientsClient, publicationClient]
   );
 
   return <VenueClientsContext.Provider value={value}>{children}</VenueClientsContext.Provider>;
@@ -151,6 +158,11 @@ export function useBookingsPro(): BookingsProClient {
 
 export function useProClients(): ProClientsClient {
   return useVenueClients().clients;
+}
+
+/** ADM-2 (D350, R-6) — la lecture du refus de publication de SA salle. */
+export function usePublicationClient(): VenuePublicationClient {
+  return useVenueClients().publication;
 }
 
 export function useReferentials(): ReferentialsClient {

@@ -514,6 +514,14 @@
     "title": "Zwadj Pro",
     "cta": "Commencer"
   },
+  "publicationReview": {
+    "refusedBadge": "Refusée",
+    "noticeTitle": "Zwadj n'a pas publié votre salle",
+    "noticeDate": "Refus du {date}",
+    "noticeHelp": "Votre salle reste en brouillon : vous pouvez la corriger. Elle n'apparaît pas dans la recherche tant qu'elle n'est pas publiée.",
+    "loadError": "Impossible de vérifier si votre salle a été refusée.",
+    "retry": "Réessayer"
+  },
   "quote": {
     "errors": {
       "notFound": "Ce devis est introuvable.",

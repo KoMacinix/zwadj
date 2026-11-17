@@ -514,6 +514,14 @@
     "title": "زواج برو",
     "cta": "ابدأ"
   },
+  "publicationReview": {
+    "refusedBadge": "مرفوضة",
+    "noticeTitle": "لم تنشر Zwadj قاعتك",
+    "noticeDate": "تاريخ الرفض: {date}",
+    "noticeHelp": "تبقى قاعتك مسودة: يمكنك تصحيحها. لا تظهر في البحث ما دامت غير منشورة.",
+    "loadError": "تعذّر التحقق من رفض قاعتك.",
+    "retry": "إعادة المحاولة"
+  },
   "quote": {
     "errors": {
       "notFound": "هذا العرض غير موجود.",
