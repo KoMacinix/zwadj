@@ -199,3 +199,10 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | `docs/preuves/D350/rouges/rouge-5-pro-refus-et-compte.txt` | la sortie brute de vitest sur les specs du refus lu par le pro, du changement de compte et des gardes de source, contre le code d'AVANT | à venir |
 | `docs/preuves/D350/rouges/rouges.md` | (déjà `ferme` plus haut) les rouges LUS, avec l'empreinte sha256 de chaque fichier de test joué | à venir |
 | `docs/preuves/D350/audit-secrets-d350b.txt`, `docs/preuves/D350/aucune-valeur-reelle-b.txt` | l'audit de secrets « b » (avant le versement des tests et des rouges), scellé, et le tri de ses alertes nouvelles | à venir |
+
+**Extension 2** (17/11/2026, commitée SEULE, AVANT le fichier de code qu'elle couvre et AVANT les tests et rouges qui la motivent). Motif : **la mesure de MD-ADM-10 (consigne, R-7) est ROUGE** — `apps/pro/src/admin/session-switch.test.tsx` joué contre le code d'avant (`docs/preuves/D350/rouges/rouge-5-pro-refus-et-compte.txt`, versé dans le commit des rouges, qui suit cette extension) montre que `ProVenuesProvider` garde la liste de salles du PRO A après sa déconnexion et sous un ADMIN, et la rend au PRO B un instant avant que sa propre lecture ne parte. La lecture adverse (B7) avait écrit : « s'il est rouge, la correction entre dans `pro-venues-context.tsx` par une extension de la table, avec ce rouge pour motif ». Aucun fichier de code d'application n'est écrit par cette extension.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `apps/pro/src/shell/pro-venues-context.tsx` | le fournisseur de la liste des salles du pro ne garde l'état d'un compte QUE pour ce compte : l'état porte l'identifiant du compte qui l'a lu, et un rendu pour un autre compte (déconnexion, ADMIN, autre PRO) part de « chargement » — jamais de la liste de l'autre ; le brouillon du parcours sur place (`WalkinDraftProvider`) est mesuré et n'est PAS touché | ferme |
+| `apps/pro/src/shell/pro-venues-context.test.tsx` | sa spec existante, seulement si une assertion doit suivre ce changement | **CONDITIONNEL** |
