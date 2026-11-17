@@ -147,3 +147,12 @@ calendrier, ni celui qui suit la certification de D324** ; il vient après le ra
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (17/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table n'avait pas la pièce du TRI de l'audit de secrets « a » (le tri des alertes nouvelles, D299) ni les chemins complets des sorties de rouges, nommées par famille (« un fichier par rouge »). Aucune de ces pièces n'est encore commitée. Aucun fichier de code n'est ajouté par cette extension.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D349/aucune-valeur-reelle.txt` | le tri des 7 alertes nouvelles de l'audit « a » et la mention du contrôle dédié « 0 valeur réelle » (non joué à ce versement : aucun journal brut) | à venir |
+| `docs/preuves/D349/rouges/rouge-1-unit-api.txt` | la sortie brute de vitest sur les specs unitaires de l'API écrites par ce lot, contre le code d'AVANT (aucun code d'application encore écrit) | à venir |
+| `docs/preuves/D349/rouges/rouge-2-int.txt` | la sortie brute de vitest d'intégration (PostgreSQL réel) sur les specs d'intégration de ce lot, contre le code d'AVANT | à venir |
+| `docs/preuves/D349/rouges/rouge-3-api-client.txt` | la sortie brute de vitest sur les specs de `@zwadj/api-client` de ce lot, contre le code d'AVANT | à venir |
