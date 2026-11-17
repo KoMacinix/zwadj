@@ -100,14 +100,18 @@ function buildService() {
   return { service: new VenuesAdminService(prisma as unknown as PrismaService, fakeStorage), prisma };
 }
 
+/** Rend l'erreur levée par la promesse (ou `null` si elle se résout). ⛔ Les verdicts de ce lot s'écrivent en assertions NATIVES (`toBeInstanceOf`, `toBe`, `toEqual`) : le matcher `toSatisfy` lève une `Error`
+ *  et non une `AssertionError`, et n'est donc pas une morsure sous la lecture de R1 (D304, D305, D316) — mesuré sur la première campagne du lot (S-5, S-6, S-11, S-12). */
+const erreurDe = (p: Promise<unknown>): Promise<unknown> => p.then(() => null, (e: unknown) => e);
+
 const codeOf = (e: unknown): string | undefined => (e as { getResponse?: () => { code?: string } }).getResponse?.().code;
 
 describe("VenuesAdminService.publish", () => {
   it("id hors motif UUID : 404 VENUE_NOT_FOUND sans toucher la base, sans ouvrir de transaction", async () => {
     const { service, prisma } = buildService();
-    await expect(service.publish("pas-un-uuid", ADMIN)).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeOf(e) === "VENUE_NOT_FOUND"
-    );
+    const echec = await erreurDe(service.publish("pas-un-uuid", ADMIN));
+    expect(echec).toBeInstanceOf(NotFoundException);
+    expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
     expect(prisma.venue.findFirst).not.toHaveBeenCalled();
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
@@ -156,9 +160,9 @@ describe("VenuesAdminService.publish", () => {
     prisma.venue.findFirst.mockResolvedValue(adminRow());
     prisma.slotTemplate.count.mockResolvedValue(0);
 
-    await expect(service.publish(VENUE_ID, ADMIN)).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && codeOf(e) === "SLOT_TEMPLATE_REQUIRED"
-    );
+    const echec = await erreurDe(service.publish(VENUE_ID, ADMIN));
+    expect(echec).toBeInstanceOf(ConflictException);
+    expect(codeOf(echec)).toBe("SLOT_TEMPLATE_REQUIRED");
     expect(prisma.venue.updateMany).not.toHaveBeenCalled();
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
@@ -181,6 +185,8 @@ describe("VenuesAdminService.publish", () => {
       .mockResolvedValueOnce(adminRow()) // vue DRAFT à la lecture…
       .mockResolvedValueOnce(adminRow({ publicationStatus: "PUBLISHED" })); // …publiée quand on relit pour choisir le code
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
+    // le chemin d'un SUCCÈS (compte 1) relit la salle : sans ce double, une mutation « compte 0 = succès » tomberait sur un TypeError au lieu d'atteindre l'assertion du journal
+    prisma.venue.findUniqueOrThrow.mockResolvedValue(adminRow({ publicationStatus: "PUBLISHED" }));
 
     const dto = await service.publish(VENUE_ID, ADMIN);
 
@@ -193,9 +199,9 @@ describe("VenuesAdminService.publish", () => {
     prisma.venue.findFirst.mockResolvedValueOnce(adminRow()).mockResolvedValueOnce(null);
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
 
-    await expect(service.publish(VENUE_ID, ADMIN)).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeOf(e) === "VENUE_NOT_FOUND"
-    );
+    const echec = await erreurDe(service.publish(VENUE_ID, ADMIN));
+    expect(echec).toBeInstanceOf(NotFoundException);
+    expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
@@ -214,9 +220,9 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
 
   it("id hors motif UUID : 404 VENUE_NOT_FOUND sans toucher la base", async () => {
     const { service, prisma } = buildService();
-    await expect(service.reject("pas-un-uuid", ADMIN, { reason: MOTIF })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeOf(e) === "VENUE_NOT_FOUND"
-    );
+    const echec = await erreurDe(service.reject("pas-un-uuid", ADMIN, { reason: MOTIF }));
+    expect(echec).toBeInstanceOf(NotFoundException);
+    expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
 
@@ -266,9 +272,9 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.venue.findFirst.mockResolvedValue(null);
 
-    await expect(service.reject(VENUE_ID, ADMIN, { reason: MOTIF })).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeOf(e) === "VENUE_NOT_FOUND"
-    );
+    const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+    expect(echec).toBeInstanceOf(NotFoundException);
+    expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
@@ -277,9 +283,9 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "PUBLISHED", rejectionReason: null });
 
-    await expect(service.reject(VENUE_ID, ADMIN, { reason: MOTIF })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && codeOf(e) === VenueModerationErrorCode.VENUE_NOT_DRAFT
-    );
+    const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+    expect(echec).toBeInstanceOf(ConflictException);
+    expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_NOT_DRAFT);
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
   });
 
@@ -289,7 +295,7 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: MOTIF });
     prisma.auditLog.findFirst.mockResolvedValue({ createdAt: REJETE_LE });
 
-    const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF });
+    const res = await service.reject(VENUE_ID, ADMIN, { reason: MOTIF }).catch((e: unknown) => e);
 
     expect(res).toEqual({
       id: VENUE_ID,
@@ -304,9 +310,9 @@ describe("VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, 
     prisma.venue.updateMany.mockResolvedValue({ count: 0 });
     prisma.venue.findFirst.mockResolvedValue({ id: VENUE_ID, publicationStatus: "DRAFT", rejectionReason: "Un premier motif" });
 
-    await expect(service.reject(VENUE_ID, ADMIN, { reason: MOTIF })).rejects.toSatisfy(
-      (e: unknown) => e instanceof ConflictException && codeOf(e) === VenueModerationErrorCode.VENUE_ALREADY_REJECTED
-    );
+    const echec = await erreurDe(service.reject(VENUE_ID, ADMIN, { reason: MOTIF }));
+    expect(echec).toBeInstanceOf(ConflictException);
+    expect(codeOf(echec)).toBe(VenueModerationErrorCode.VENUE_ALREADY_REJECTED);
     expect(prisma.auditLog.create).not.toHaveBeenCalled();
     expect(prisma.venue.updateMany).toHaveBeenCalledTimes(1); // la seule tentative est la conditionnée, jamais une seconde écriture
   });
@@ -472,16 +478,16 @@ describe("VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en at
 describe("VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1)", () => {
   it("id hors motif UUID : 404 sans toucher la base", async () => {
     const { service, prisma } = buildService();
-    await expect(service.detail("pas-un-uuid")).rejects.toSatisfy((e: unknown) => e instanceof NotFoundException);
+    expect(await erreurDe(service.detail("pas-un-uuid"))).toBeInstanceOf(NotFoundException);
     expect(prisma.venue.findFirst).not.toHaveBeenCalled();
   });
 
   it("inexistante ou supprimée : le MÊME 404 (le WHERE admin exclut les supprimées)", async () => {
     const { service, prisma } = buildService();
     prisma.venue.findFirst.mockResolvedValue(null);
-    await expect(service.detail(VENUE_ID)).rejects.toSatisfy(
-      (e: unknown) => e instanceof NotFoundException && codeOf(e) === "VENUE_NOT_FOUND"
-    );
+    const echec = await erreurDe(service.detail(VENUE_ID));
+    expect(echec).toBeInstanceOf(NotFoundException);
+    expect(codeOf(echec)).toBe("VENUE_NOT_FOUND");
     expect(prisma.venue.findFirst).toHaveBeenCalledWith(expect.objectContaining({ where: { id: VENUE_ID, deletedAt: null } }));
   });
 

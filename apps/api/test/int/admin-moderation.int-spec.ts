@@ -19,6 +19,7 @@ const MOTIF = "Les photos sont floues. Merci de les remplacer.";
 const NOT_FOUND = { code: "VENUE_NOT_FOUND", message: "venue.errors.notFound" };
 
 const api = () => request(ctx.app.getHttpServer());
+const pause = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 const authH = (token: string) => ({ Authorization: `Bearer ${token}` });
 
 let adminToken: string;
@@ -88,6 +89,8 @@ const idsOf = (res: { body: { items: { id: string }[] } }) => res.body.items.map
 
 beforeAll(async () => {
   ctx = await createTestApp();
+  // Un serveur qui ÉCOUTE : sans lui, supertest ouvre et FERME un serveur éphémère par requête, et deux requêtes décalées dans le temps (la course) se marchent dessus (`read ECONNRESET`).
+  await ctx.app.listen(0);
 });
 afterAll(async () => {
   await ctx.app.close();
@@ -344,7 +347,9 @@ describe("MD-ADM-4 — la course publier / rejeter : le statut se décide DANS l
   it("publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé", async () => {
     for (let tour = 0; tour < 20; tour += 1) {
       const id = await seedVenue();
-      const [p, r] = await Promise.all([publish(id), reject(id)]);
+      // Le rejet part avec un décalage de 0 à 24 ms selon le tour. Sans lui, le rejet (deux écritures) finit presque toujours AVANT la publication (cinq) et la course « le rejet arrive APRÈS la publication »
+      // ne se produit jamais : mesuré à la première campagne du lot, la mutation « le rejet n'est plus conditionné au statut » laissait ce test VERT. Le décalage balaie les entrelacements.
+      const [p, r] = await Promise.all([publish(id), pause((tour % 5) * 6).then(() => reject(id))]);
 
       expect(p.status, `tour ${tour} : publier`).toBe(200);
       expect([200, 409], `tour ${tour} : rejeter`).toContain(r.status);
