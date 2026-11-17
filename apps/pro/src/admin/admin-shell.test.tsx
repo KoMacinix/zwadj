@@ -63,14 +63,14 @@ describe("la coquille `/admin`", () => {
     const suppressions = within(nav).getByRole("link", { name: ADMIN_TEXTS.shell.deletions });
     expect(salles).toHaveAttribute("href", ADMIN_PATH);
     expect(suppressions).toHaveAttribute("href", ADMIN_DELETIONS_PATH);
-    expect(salles).toHaveAttribute("aria-current", "page");
-    expect(suppressions).not.toHaveAttribute("aria-current");
+    expect(salles.getAttribute("aria-current")).toBe("page");
+    expect(suppressions.hasAttribute("aria-current")).toBe(false);
 
     fireEvent.click(suppressions);
     expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.deletions.title })).toBeInTheDocument();
     expect(screen.getByTestId("chemin").textContent).toBe(ADMIN_DELETIONS_PATH);
-    expect(within(nav).getByRole("link", { name: ADMIN_TEXTS.shell.deletions })).toHaveAttribute("aria-current", "page");
-    expect(within(nav).getByRole("link", { name: ADMIN_TEXTS.shell.venues })).not.toHaveAttribute("aria-current");
+    expect(within(nav).getByRole("link", { name: ADMIN_TEXTS.shell.deletions }).getAttribute("aria-current")).toBe("page");
+    expect(within(nav).getByRole("link", { name: ADMIN_TEXTS.shell.venues }).hasAttribute("aria-current")).toBe(false);
   });
 
   it("« Se déconnecter » appelle `logout`", async () => {

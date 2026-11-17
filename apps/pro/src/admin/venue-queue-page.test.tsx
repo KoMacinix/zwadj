@@ -45,8 +45,8 @@ describe("la file — ce que l'admin lit", () => {
     const lien = await screen.findByRole("link", { name: v.nameFr });
     expect(lien).toHaveAttribute("href", adminVenuePath(v.id));
     const arabe = screen.getByText(v.nameAr);
-    expect(arabe).toHaveAttribute("lang", "ar");
-    expect(arabe).toHaveAttribute("dir", "rtl");
+    expect(arabe.getAttribute("lang")).toBe("ar");
+    expect(arabe.getAttribute("dir")).toBe("rtl");
     const ligne = lien.closest("li");
     expect(ligne).not.toBeNull();
     const dedans = within(ligne as HTMLElement);
@@ -127,12 +127,12 @@ describe("la file — la pagination suit ce que le serveur a APPLIQUÉ", () => {
     renderQueue(server);
     expect(await screen.findByText(ADMIN_TEXTS.queue.pagination.page(1, 2))).toBeInTheDocument();
     expect(screen.getAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(VENUE_PENDING_PAGE_SIZE_DEFAULT);
-    expect(screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.previous })).toBeDisabled();
+    expect((screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.previous }) as HTMLButtonElement).disabled).toBe(true);
 
     fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.next }));
     expect(await screen.findByText(ADMIN_TEXTS.queue.pagination.page(2, 2))).toBeInTheDocument();
     expect(screen.getAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(2);
-    expect(screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.next })).toBeDisabled();
+    expect((screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.next }) as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByTestId("chemin").textContent).toBe(`${ADMIN_PATH}?page=2`);
     expect(server.calls.filter((c) => c[0] === "listPendingVenues").map((c) => (c[1] as { page?: number } | undefined)?.page)).toEqual([1, 2]);
   });

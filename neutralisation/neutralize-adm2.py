@@ -188,7 +188,7 @@ cible("V-5. ⛔ R-3 — une correction concurrente perdante ne répond plus VENU
       {"api-admin": "MD-ADM-4 — compte 0 (un autre geste est passé entre la lecture et l'éc", "int-moderation": "deux corrections à motifs DIFFÉRENTS sur une salle déjà rejetée, bloqu"})
 cible("V-6. ⛔ MD-ADM-4 — une salle PUBLIÉE n'est plus refusée en tête (409 VENUE_NOT_DRAFT) : le sens unique ne tient que par la condition du check-and-set", SERVICE_ADMIN,
       "if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {", "if (current.publicationStatus === VenuePublicationStatus.DRAFT) {",
-      {"api-admin": "un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante"})
+      {"api-admin": "MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est é"})
 cible("V-7. ⛔ MD-ADM-4 — le check-and-set de la correction accepte aussi une salle PUBLIÉE (la condition de statut est élargie : la publication concurrente ne protège plus)", SERVICE_ADMIN,
       "publicationStatus: { in: [...REJECTABLE_FROM] }, rejectionReason: previous }", "publicationStatus: { in: [...REJECTABLE_FROM, VenuePublicationStatus.PUBLISHED] }, rejectionReason: previous }",
       {"int-moderation": "publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publié"})

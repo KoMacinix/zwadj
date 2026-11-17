@@ -131,7 +131,7 @@ describe("Publier — jamais affiché comme fait avant la réponse (MD-ADM-15)",
     const liberer = server.hold();
     fireEvent.click(publish());
     await waitFor(() => expect(server.calls.some((c) => c[0] === "publishVenue")).toBe(true));
-    expect(publish()).toBeDisabled();
+    expect((publish() as HTMLButtonElement).disabled).toBe(true);
     expect(screen.queryByText(ADMIN_TEXTS.review.published)).toBeNull();
     expect(screen.getByText(ADMIN_TEXTS.review.status[VenuePublicationStatus.DRAFT])).toBeInTheDocument();
 
@@ -150,7 +150,7 @@ describe("Publier — jamais affiché comme fait avant la réponse (MD-ADM-15)",
     fireEvent.click(publish());
     const a = await alerte();
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.codes.SLOT_TEMPLATE_REQUIRED);
-    expect(a).toHaveTextContent(ADMIN_TEXTS.errors.refusedPrefix);
+    expect(a.textContent).toContain(ADMIN_TEXTS.errors.refusedPrefix);
     expect(a).not.toHaveTextContent(ADMIN_TEXTS.errors.unknownOutcome);
     expect(screen.queryByText(ADMIN_TEXTS.review.published)).toBeNull();
     expect(screen.getByText(ADMIN_TEXTS.review.status[VenuePublicationStatus.DRAFT])).toBeInTheDocument();
@@ -283,7 +283,7 @@ describe("Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refu
 
     const a = await alerte();
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.codes.VENUE_NOT_DRAFT);
-    expect(a).toHaveTextContent(ADMIN_TEXTS.errors.refusedPrefix);
+    expect(a.textContent).toContain(ADMIN_TEXTS.errors.refusedPrefix);
     expect(screen.queryByText(ADMIN_TEXTS.review.rejectSaved)).toBeNull();
     expect(await screen.findByText(ADMIN_TEXTS.review.status[VenuePublicationStatus.PUBLISHED])).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: ADMIN_TEXTS.review.reject })).toBeNull();
@@ -305,7 +305,7 @@ describe("Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refu
 
     const a = await alerte();
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.codes.VENUE_ALREADY_REJECTED);
-    expect(a).toHaveTextContent(ADMIN_TEXTS.errors.refusedPrefix);
+    expect(a.textContent).toContain(ADMIN_TEXTS.errors.refusedPrefix);
     const bloc = (await screen.findByText("Motif de l'autre admin.")).closest("section") as HTMLElement;
     expect(within(bloc).queryByText("Mon motif.")).toBeNull();
   });

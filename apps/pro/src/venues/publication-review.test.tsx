@@ -105,7 +105,7 @@ describe("une salle REFUSÉE : le pro lit le refus", () => {
 
     expect(await screen.findByText(FR.noticeTitle)).toBeInTheDocument();
     const motif = screen.getByText(MOTIF);
-    expect(motif).toHaveAttribute("dir", "auto");
+    expect(motif.getAttribute("dir")).toBe("auto");
     expect(screen.getByText(FR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "fr")), { exact: false })).toBeInTheDocument();
     expect(screen.getByText(FR.noticeHelp)).toBeInTheDocument();
     expect(pub.getPublicationReview).toHaveBeenCalledWith("v1");
@@ -191,7 +191,7 @@ describe("l'arabe — la parité, et le sens de l'écriture", () => {
     expect(screen.getByText(AR.refusedBadge)).toBeInTheDocument();
     expect(screen.getByText(AR.noticeHelp)).toBeInTheDocument();
     expect(screen.getByText(AR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "ar")), { exact: false })).toBeInTheDocument();
-    expect(screen.getByText(MOTIF)).toHaveAttribute("dir", "auto");
+    expect(screen.getByText(MOTIF).getAttribute("dir")).toBe("auto");
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
   });
 
