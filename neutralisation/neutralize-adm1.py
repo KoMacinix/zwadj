@@ -36,6 +36,11 @@ CAUSE d'un 500 sous échec forcé : on mesure que l'état est celui d'AVANT, pas
 
 POURQUOI IL EXISTE : CLAUDE.md, « une garde qui ne mord pas n'est pas une garde ». Lecteur, calibration et boucle : COPIÉS de `neutralize-r43.py` (lui-même calibré D316 / D325 / D331 / D332 / D333) ; changent : les noms,
 le jeu de cibles, l'empreinte du harnais en tête de journal (R-9) et le contrôle d'invariance de R-1.
+
+⛔ RÉORIENTÉ PAR LE RANG 52 (D350, R-3) : le comportement « un AUTRE motif sur une salle déjà rejetée répond 409 » est REMPLACÉ par la correction du motif. Trois cibles de cette campagne mesuraient l'ancien : Q-2 et S-7
+(leur mesure « rejeter une salle PUBLIÉE est refusé » de l'intégration est désormais ABSORBÉE par la lecture de tête du statut — elle ne distingue plus la mutation ; la condition du check-and-set se mesure par la course « publier
+et rejeter en MÊME TEMPS », que Q-2 vise maintenant et que S-7 garde) et S-12 (le code d'un refus de correction PERDUE en course : c'est « le motif est devenu un TROISIÈME »). Première passe de D350 : 69 sur 72, ces trois muettes,
+toutes lues (`docs/preuves/D350/neutralisation/`). Campagne REJOUÉE EN ENTIER après la réorientation (harnais modifié).
 """
 
 import hashlib
@@ -179,7 +184,7 @@ cible("Q-1. ⛔ publier ne part plus du `PENDING` verrouillé", FILE,
 cible("Q-2. ⛔ MD-ADM-4 — rejeter part aussi d'une salle PUBLIÉE (le sens unique d'A3-④ tombe)", FILE,
       "REJECTABLE_FROM: readonly VenuePublicationStatus[] = [VenuePublicationStatus.DRAFT];",
       "REJECTABLE_FROM: readonly VenuePublicationStatus[] = [VenuePublicationStatus.DRAFT, VenuePublicationStatus.PUBLISHED];",
-      {"file": "rejeter ne part que de DRAFT", "int-moderation": "rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT)"})
+      {"file": "rejeter ne part que de DRAFT", "int-moderation": "publier et rejeter en MÊME TEMPS"})
 cible("Q-3. ⛔ une page entièrement dans le second groupe repart du DÉBUT du second (les rejetées se répètent d'une page à l'autre)", FILE,
       "  const secondSkip = Math.max(0, offset - firstTotal);", "  const secondSkip = 0;",
       {"file": "une page entièrement dans le second groupe", "int-moderation": "les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres"})
@@ -218,7 +223,7 @@ cible("S-6. ⛔ D46 — la garde « au moins un créneau actif » ne refuse plus
       {"service-admin": "D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED", "int-moderation": "D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED"})
 cible("S-7. ⛔ le rejet n'écrit plus SOUS CONDITION d'un brouillon (un rejet s'écrit sur une salle publiée : la course publier / rejeter)", SERVICE_ADMIN,
       "publicationStatus: { in: [...REJECTABLE_FROM] }, ", "publicationStatus: undefined, ",
-      {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "MD-ADM-4 — rejeter une salle PUBLIÉE est refusé", "int-moderation#2": "publier et rejeter en MÊME TEMPS"})
+      {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "publier et rejeter en MÊME TEMPS"})
 cible("S-8. ⛔ le rejet n'écrit plus SOUS CONDITION « jamais rejetée » (un second motif écrase le premier)", SERVICE_ADMIN,
       ", rejectionReason: previous },\n        data: { rejectionReason: reason }", ", rejectionReason: undefined },\n        data: { rejectionReason: reason }",
       {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "deux corrections à motifs DIFFÉRENTS"})
@@ -232,9 +237,9 @@ cible("S-11. ⛔ rejeter une salle publiée répond avec le code d'un AUTRE refu
       'if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {\n        throw new ConflictException({ code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueNotDraft" });',
       'if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {\n        throw new ConflictException({ code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueNotDraft" });',
       {"service-admin": "MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique)"})
-cible("S-12. ⛔ rejeter avec un AUTRE motif répond avec le code d'un AUTRE refus", SERVICE_ADMIN,
+cible("S-12. ⛔ R-3 — le refus d'une correction PERDUE en course (compte 0, le motif est devenu un troisième) répond avec le code d'un AUTRE refus", SERVICE_ADMIN,
       'code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueAlreadyRejected"', 'code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueAlreadyRejected"',
-      {"service-admin": "un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED"})
+      {"service-admin": "et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED"})
 cible("S-13. ⛔ R-1 — le rejet écrit un taux en plus du motif", SERVICE_ADMIN,
       "        data: { rejectionReason: reason }", "        data: { rejectionReason: reason, cashbackRateBps: 0 }",
       {"service-admin": "R-1 — le rejet n'écrit ni ne lit AUCUN taux"})

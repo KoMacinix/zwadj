@@ -122,9 +122,9 @@ cible("P-2. la relecture d'entrée n'est plus silencieuse : elle masque la liste
 cible("P-3. ⛔ le drapeau silencieux n'est plus consommé quand aucun PRO n'est connecté : la première lecture de la session suivante est silencieuse (la liste de l'ancien compte reste à l'écran)", FOURNISSEUR,
       "silentRef.current = false;\n    if (!isPro) return;", "if (!isPro) return;\n    silentRef.current = false;", {"pro-fournisseur": T_P_SESSION})
 cible("P-4. un échec de la relecture d'entrée remplace la liste connue par l'état « error »", FOURNISSEUR,
-      'silent && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', 'false && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', {"pro-fournisseur": T_P_ECHEC})
+      'silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', 'false && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "error" }', {"pro-fournisseur": T_P_ECHEC})
 cible("P-5. ⛔ une réponse qui n'est pas un tableau remplace la liste connue par une liste VIDE (un compte faux présenté comme un fait)", FOURNISSEUR,
-      'silent && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }', 'false && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }',
+      'silent && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }', 'false && prev.ownerId === ownerId && prev.state.kind === "ready" ? prev : { state: { kind: "ready", venues: [] }',
       {"pro-fournisseur": T_P_TABLEAU})
 cible("P-6. ⛔ la lecture précédente n'est plus annulée : une réponse tardive écrase la plus fraîche", FOURNISSEUR, "cancelled = true;", "void 0;", {"pro-fournisseur": T_P_COURSE})
 cible("P-7. `count` ne garde plus le dernier compte connu pendant une relecture voulue : le libellé « Mes salles » clignote", FOURNISSEUR,
@@ -134,8 +134,8 @@ cible("P-8. le drapeau « liste connue » reste coincé après un échec silenci
 cible("P-9. ⛔ la relecture VOULUE devient silencieuse : la salle supprimée reste montrée comme présente, et l'échec d'une relecture après écriture est avalé", FOURNISSEUR,
       "silentRef.current = false;\n    idleRef.current = false;", "silentRef.current = true;\n    idleRef.current = false;", {"pro-relecture": T_SUPPR_HONNETE, "pro-fournisseur": T_P_VOULUE})
 cible("P-10. le drapeau « liste connue » n'est plus relevé après une lecture réussie : la relecture d'entrée ne part jamais", FOURNISSEUR,
-      'setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length });\n        idleRef.current = true;',
-      'setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length });\n        void 0;', {"pro-relecture": T_ENTREE, "pro-fournisseur": T_P_CONNUE})
+      'setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length, ownerId });\n        idleRef.current = true;',
+      'setSnap({ state: { kind: "ready", venues: list }, knownCount: list.length, ownerId });\n        void 0;', {"pro-relecture": T_ENTREE, "pro-fournisseur": T_P_CONNUE})
 
 # ── E — l'ASSISTANT : relire après un enregistrement réussi et après une suppression réussie, à la bonne place.
 cible("E-1. ⛔ l'enregistrement réussi ne fait plus relire la liste : « Ma salle », le libellé et la salle courante restent ceux d'avant (S4 de D327)", EDITION,
