@@ -163,3 +163,20 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 |---|---|---|
 | `docs/preuves/D349/audit-secrets-d349b.txt` | l'audit de secrets « b » (avant le versement des tests et des rouges), scellé | à venir |
 | `docs/preuves/D349/aucune-valeur-reelle-b.txt` | le tri de ses alertes nouvelles | à venir |
+
+**Extension 3** (17/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : la table nommait la campagne, les portes, les deux passes e2e et le masquage par famille (« sorties du harnais », « les six portes », « les deux passes ») ; la règle (D328, point 4) veut les chemins complets. Le code (types, modules purs, services, routes, clients, script, harnais) est déjà commité (`bf939d9`, `5f39779`, `055d403`) ; il n'ajoute aucun fichier hors table. Aucune de ces pièces n'est encore commitée.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D349/neutralisation/campagne-passe-1.txt` | la PREMIÈRE campagne de `neutralisation/neutralize-adm1.py` (60 gardes mordues sur 72, douze non mordues, toutes lues) ; sa première ligne est l'empreinte sha256 du harnais d'alors (R-9) | à venir |
+| `docs/preuves/D349/neutralisation/campagne-passe-2-reprise-des-douze.txt` | l'ESSAI des douze cibles corrigées (reprise déclarée `ADM1_SEULEMENT`, 12 sur 12) — jamais un verdict de campagne | à venir |
+| `docs/preuves/D349/neutralisation/campagne-passe-3-finale.txt` | la campagne FINALE, EN ENTIER, sous le fichier commité `055d403` (72 sur 72) ; sa première ligne est l'empreinte du harnais (R-9) | à venir |
+| `docs/preuves/D349/neutralisation/extraits-des-echecs.txt` | par mesure de la campagne finale, les tests en échec et la première ligne de leur bloc (99 journaux) | à venir |
+| `docs/preuves/D349/neutralisation/campagnes-existantes/neutralize-s10a.txt` | l'UNE des campagnes existantes concernée par les fichiers touchés (`venue-store.types.ts`, `venue-store.prisma.ts`, `venues.service.ts`) : 13 sur 13 | à venir |
+| `docs/preuves/D349/rouges/apres-les-rouges.md` | ce qui a changé dans deux fichiers de test APRÈS les rouges, avec les deux empreintes de chacun | à venir |
+| `docs/preuves/D349/portes/_index.txt`, `docs/preuves/D349/portes/etat-machine-pendant.txt`, `docs/preuves/D349/portes/typecheck.txt`, `docs/preuves/D349/portes/lint.txt`, `docs/preuves/D349/portes/test.txt`, `docs/preuves/D349/portes/build.txt`, `docs/preuves/D349/portes/test-int.txt`, `docs/preuves/D349/portes/test-e2e.txt` | la passe des six portes (pilote `docs/preuves/D340/portes/passe-secteur.sh`, non modifié) ; `test-e2e.txt` est la PASSE 1 de l'e2e, versée MASQUÉE | à venir |
+| `docs/preuves/D349/e2e/passe-2.txt`, `docs/preuves/D349/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D349/e2e/passe-2-batterie-apres.txt` | la seconde passe e2e (MASQUÉE) et l'alimentation avant et après | à venir |
+| `docs/preuves/D349/masquage/masquer-jetons.py`, `docs/preuves/D349/masquage/rapport-masquage.txt` | la procédure de masquage (copie octet pour octet de `docs/preuves/D348/masquage/masquer-jetons.py`) et son compte rendu | à venir |
+| `docs/preuves/D349/audit-secrets-d349c.txt`, `docs/preuves/D349/aucune-valeur-reelle-c.txt` | l'audit de secrets « c » de ce versement et son tri | à venir |
+| `docs/preuves/D349/audit-secrets-d349d.txt`, `docs/preuves/D349/aucune-valeur-reelle-d.txt` | l'audit de secrets « d » du versement des `.md` d'autorité et son tri | à venir |
+| `docs/preuves/D349/passe-d277.txt` | la passe D277 dans les trois fichiers d'autorité (les deux sens), texte aplati, ventilation par motif | à venir |
