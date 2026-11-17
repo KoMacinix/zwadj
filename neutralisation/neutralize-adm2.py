@@ -7,7 +7,7 @@ Ce que le lot ajoute, et que chaque cible neutralise (une garde neuve dont on n'
   · la CORRECTION du motif (`venues-admin.service.ts`, `admin-audit.ts`) : le motif précédent comme condition, le même motif sans écriture, l'ancien dans la ligne de journal, la course (V-*, A-*) ;
   · la GARDE de rôle (`require-pro.tsx`, `require-admin.tsx`, `login-page.tsx`) : l'ADMIN renvoyé sous `/admin`, le PRO et le CLIENT refusés, l'anonyme renvoyé, le chargement silencieux (G-*) ;
   · la COQUILLE et la balise `noindex` (`admin-shell.tsx`, `use-no-index.ts`) (S-*, N-*) ;
-  · les TEXTES et la distinction refus / panne (`admin-texts.ts`) (T-*) ;
+  · les TEXTES et la distinction refus / panne (`admin-texts.ts`) et les deux FORMATEURS, la date à l'heure d'Alger et le taux (`admin-format.ts`, extension 5 : déplacés par le correctif de la garde FC-6) (T-*) ;
   · les TROIS ÉCRANS (`venue-queue-page.tsx`, `venue-review-page.tsx`, `deletion-requests-page.tsx`) : la panne n'est pas le vide, l'ordre du serveur, la pagination, le motif obligatoire, « fait » seulement à la réponse,
     l'irréversible confirmé avant l'appel, un refus lu comme un refus (Q-*, P-*, X-*) ;
   · le REFUS lu par le pro (`publication-review.tsx`, `edit-venue-page.tsx`) : la lecture une fois, la panne n'est pas « pas refusée », l'en-tête, l'étape (R-*) ;
@@ -129,6 +129,7 @@ LOGIN = "apps/pro/src/auth/login-page.tsx"
 COQUILLE = "apps/pro/src/admin/admin-shell.tsx"
 NOINDEX = "apps/pro/src/admin/use-no-index.ts"
 TEXTES = "apps/pro/src/admin/admin-texts.ts"
+FORMATS = "apps/pro/src/admin/admin-format.ts"
 FILE = "apps/pro/src/admin/venue-queue-page.tsx"
 DETAIL = "apps/pro/src/admin/venue-review-page.tsx"
 SUPPRESSIONS = "apps/pro/src/admin/deletion-requests-page.tsx"
@@ -265,10 +266,10 @@ cible("T-3. ⛔ MD-ADM-15 / D217 — une erreur 5xx est lue comme un REFUS méti
 cible("T-4. ⛔ MD-ADM-15 — une erreur d'API n'est plus reconnue (tout devient « issue inconnue »)", TEXTES,
       'e.name === "ApiError"', 'e.name !== "ApiError"',
       {"textes": "un code connu en 4xx : un REFUS, avec le texte du code"})
-cible("T-5. ⛔ D48 — la date s'écrit à l'heure UTC et non à l'heure d'Alger (le 12 à 23 h 30 reste le 12)", TEXTES,
+cible("T-5. ⛔ D48 — la date s'écrit à l'heure UTC et non à l'heure d'Alger (le 12 à 23 h 30 reste le 12)", FORMATS,
       '{ timeZone: "Africa/Algiers", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso))', '{ timeZone: "UTC", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso))',
       {"textes": "une date s'écrit à l'heure d'ALGER (UTC+1, sans heure d'été) : 23 h 30"})
-cible("T-6. ⛔ MD-ADM-7 — le taux perd ses décimales (2,5 % s'affiche 3 %)", TEXTES,
+cible("T-6. ⛔ MD-ADM-7 — le taux perd ses décimales (2,5 % s'affiche 3 %)", FORMATS,
       "{ maximumFractionDigits: 2 }", "{ maximumFractionDigits: 0 }",
       {"textes": "un taux en points de base s'écrit en pour cent, avec ses décimales sig"})
 cible("T-7. ⛔ S-183 — un code inconnu affiche son identifiant technique au lieu du texte générique", TEXTES,
