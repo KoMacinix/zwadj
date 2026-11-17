@@ -184,3 +184,18 @@ Source : `ZWADJ_CONTINUITE.md`, « ⛔ CADRAGE DU RANG 28 », **§ 3 « Modes de
 ## Extensions de la table
 
 Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fichier qu'elle couvre, avec son motif. *(Aucune à l'ouverture.)*
+
+**Extension 1** (17/11/2026, commitée SEULE, AVANT les pièces et les fichiers qu'elle couvre). Motif : (a) l'audit de secrets « a » est fait et exige son tri (D299) ; (b) la lecture du code a montré que la course de deux corrections (R-3) et celles de la file des suppressions (R-2) ont besoin du MÊME verrou de ligne : une aide de test partagée, plutôt qu'une copie dans chaque fichier (un seul endroit par formule) ; (c) la coquille de l'administration (titre, navigation, déconnexion) a sa spec, que la table ne nommait pas ; (d) les pièces de rouges et le second audit, avec leurs chemins complets (D328, point 4). Aucun fichier de code d'application n'est écrit par cette extension.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D350/aucune-valeur-reelle.txt` | le tri des alertes nouvelles de l'audit « a » (D299) et la mention du contrôle dédié « 0 valeur réelle » (non joué à ce versement : aucun journal brut) | à venir |
+| `apps/api/test/int/row-lock.ts` | **NEUF** : l'aide des tests d'intégration qui FORCE un entrelacement — une transaction tenue hors du service verrouille une ligne, on attend par `pg_stat_activity` que les requêtes soient bloquées, puis on la relâche ; utilisée par `account-deletion-race.int-spec.ts` et `admin-moderation.int-spec.ts` ; l'attente échoue en ASSERTION | ferme |
+| `apps/pro/src/admin/admin-shell.test.tsx` | **NEUF** : la spec de la coquille de l'administration (navigation nommée, `aria-current`, déconnexion, français) | ferme |
+| `docs/preuves/D350/rouges/rouge-1-int-account-deletion-race.txt` | la sortie brute de `test:int` sur `account-deletion-race.int-spec.ts` contre le code d'AVANT (R-2) | à venir |
+| `docs/preuves/D350/rouges/rouge-2-int-admin-moderation.txt` | la sortie brute de `test:int` sur `admin-moderation.int-spec.ts` (la correction du motif, R-3) contre le code d'AVANT | à venir |
+| `docs/preuves/D350/rouges/rouge-3-unit-api.txt` | la sortie brute de vitest sur les specs unitaires de l'API écrites ou changées par ce lot (`admin-audit.spec.ts`, `venues-admin.service.spec.ts`, `account-deletion.service.spec.ts`) contre le code d'AVANT | à venir |
+| `docs/preuves/D350/rouges/rouge-4-pro-garde-et-ecrans.txt` | la sortie brute de vitest sur les specs de l'app Pro de la garde ADMIN, de la coquille et des trois écrans, contre le code d'AVANT (modules absents : collecte tombée, nommée comme telle) | à venir |
+| `docs/preuves/D350/rouges/rouge-5-pro-refus-et-compte.txt` | la sortie brute de vitest sur les specs du refus lu par le pro, du changement de compte et des gardes de source, contre le code d'AVANT | à venir |
+| `docs/preuves/D350/rouges/rouges.md` | (déjà `ferme` plus haut) les rouges LUS, avec l'empreinte sha256 de chaque fichier de test joué | à venir |
+| `docs/preuves/D350/audit-secrets-d350b.txt`, `docs/preuves/D350/aucune-valeur-reelle-b.txt` | l'audit de secrets « b » (avant le versement des tests et des rouges), scellé, et le tri de ses alertes nouvelles | à venir |
