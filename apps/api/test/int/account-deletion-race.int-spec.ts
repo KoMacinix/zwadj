@@ -119,7 +119,7 @@ describe("R-2 — approuver DEUX fois en même temps : une approbation, une trac
   });
 });
 
-describe("R-2 — rejeter × approuver : une décision, une seule, dans l'ordre d'arrivée", () => {
+describe("R-2 — rejeter CONTRE approuver : une décision, une seule, dans l'ordre d'arrivée", () => {
   it("le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`", async () => {
     const verrou = holdRequestRow();
     await verrou.ready;

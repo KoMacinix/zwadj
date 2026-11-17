@@ -220,17 +220,18 @@ cible("S-7. ⛔ le rejet n'écrit plus SOUS CONDITION d'un brouillon (un rejet s
       "publicationStatus: { in: [...REJECTABLE_FROM] }, ", "publicationStatus: undefined, ",
       {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "MD-ADM-4 — rejeter une salle PUBLIÉE est refusé", "int-moderation#2": "publier et rejeter en MÊME TEMPS"})
 cible("S-8. ⛔ le rejet n'écrit plus SOUS CONDITION « jamais rejetée » (un second motif écrase le premier)", SERVICE_ADMIN,
-      ", rejectionReason: null },\n        data: { rejectionReason: reason }", ", rejectionReason: undefined },\n        data: { rejectionReason: reason }",
-      {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "un AUTRE motif sur une salle déjà rejetée"})
+      ", rejectionReason: previous },\n        data: { rejectionReason: reason }", ", rejectionReason: undefined },\n        data: { rejectionReason: reason }",
+      {"service-admin": "un brouillon jamais rejeté : UN updateMany conditionné", "int-moderation": "deux corrections à motifs DIFFÉRENTS"})
 cible("S-9. ⛔ MD-ADM-6 — la ligne de journal du rejet s'écrit HORS de la transaction", SERVICE_ADMIN,
       "const ligne = await tx.auditLog.create({", "const ligne = await this.prisma.auditLog.create({",
       {"int-journal": "rejeter une salle : un échec au COMMIT annule aussi la ligne"})
 cible("S-10. ⛔ « même état, même requête, même réponse » — le MÊME motif rejoué répond un conflit", SERVICE_ADMIN,
-      "      if (now.rejectionReason === reason) {", "      if (false) {",
+      "if (current.rejectionReason === reason) return this.sameRejection(tx, venueId, reason);", "if (false) return this.sameRejection(tx, venueId, reason);",
       {"service-admin": "« même état, même requête, même réponse » — le MÊME motif", "int-moderation": "rejeter DEUX FOIS avec le même motif : la même réponse"})
 cible("S-11. ⛔ rejeter une salle publiée répond avec le code d'un AUTRE refus", SERVICE_ADMIN,
-      'code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueNotDraft"', 'code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueNotDraft"',
-      {"service-admin": "compte 0 sur une salle PUBLIÉE : 409 VENUE_NOT_DRAFT"})
+      'if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {\n        throw new ConflictException({ code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueNotDraft" });',
+      'if (current.publicationStatus !== VenuePublicationStatus.DRAFT) {\n        throw new ConflictException({ code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueNotDraft" });',
+      {"service-admin": "MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique)"})
 cible("S-12. ⛔ rejeter avec un AUTRE motif répond avec le code d'un AUTRE refus", SERVICE_ADMIN,
       'code: VenueModerationErrorCode.VENUE_ALREADY_REJECTED, message: "admin.errors.venueAlreadyRejected"', 'code: VenueModerationErrorCode.VENUE_NOT_DRAFT, message: "admin.errors.venueAlreadyRejected"',
       {"service-admin": "un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED"})
@@ -314,10 +315,10 @@ cible("D-2. ⛔ la ligne d'une approbation ne porte plus le nombre de salles arc
       'pending.id, "APPROVED", archived.length)', 'pending.id, "APPROVED", 0)',
       {"suppression": "approve : UNE ligne `account_deletion.approve`, dans la transaction", "int-journal": "approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées"})
 cible("D-3. ⛔ MD-ADM-6 — la ligne de journal d'un REFUS de suppression s'écrit hors de la transaction", SUPPRESSION,
-      "await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, \"REJECTED\")", "await this.prisma.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, \"REJECTED\")",
+      "await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, requestId, \"REJECTED\")", "await this.prisma.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, requestId, \"REJECTED\")",
       {"int-journal": "rejeter une suppression : un échec au COMMIT annule aussi la ligne"})
 cible("D-4. ⛔ la ligne d'un refus de suppression écrit « approuvé »", SUPPRESSION,
-      'pending.id, "REJECTED")', 'pending.id, "APPROVED")',
+      'role: UserRole.ADMIN }, requestId, "REJECTED")', 'role: UserRole.ADMIN }, requestId, "APPROVED")',
       {"suppression": "reject : UNE ligne `account_deletion.reject`, dans une TRANSACTION"})
 
 # ── F — le PREMIER ADMIN (`first-admin.ts`).
