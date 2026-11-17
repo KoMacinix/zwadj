@@ -206,3 +206,21 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 |---|---|---|
 | `apps/pro/src/shell/pro-venues-context.tsx` | le fournisseur de la liste des salles du pro ne garde l'état d'un compte QUE pour ce compte : l'état porte l'identifiant du compte qui l'a lu, et un rendu pour un autre compte (déconnexion, ADMIN, autre PRO) part de « chargement » — jamais de la liste de l'autre ; le brouillon du parcours sur place (`WalkinDraftProvider`) est mesuré et n'est PAS touché | ferme |
 | `apps/pro/src/shell/pro-venues-context.test.tsx` | sa spec existante, seulement si une assertion doit suivre ce changement | **CONDITIONNEL** |
+
+**Extension 3** (17/11/2026, commitée SEULE, AVANT les pièces qu'elle couvre). Motif : le code est écrit et commité (R-2, R-3, la garde ADMIN, les trois écrans, le refus lu par le pro, la spec e2e) ; la table nommait les pièces de campagne, des portes, des deux passes e2e, du masquage, des audits et de la passe D277 par FAMILLE ; la règle (D328, point 4) veut les chemins complets. Trois fichiers de TEST ont changé APRÈS le commit des rouges (`8a75e6b`) et leur écart est écrit (`apres-les-rouges.md`). Le harnais `neutralisation/neutralize-adm1.py` a eu cinq ancres REPOSÉES (S-8, S-10, S-11, D-3, D-4) parce que R-2 et R-3 ont déplacé le code qu'elles visent : le fichier conditionnel de la table existe. Aucun fichier de code n'est ajouté par cette extension.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D350/rouges/apres-les-rouges.md` | ce qui a changé dans trois fichiers de test APRÈS les rouges, avec les deux empreintes de chacun | à venir |
+| `docs/preuves/D350/neutralisation/decouverte.txt` | la sortie du mode DÉCOUVERTE de `neutralize-adm2.py` (aucun verdict : les tests qui rougissent, par cible, d'où les titres ont été relevés) | à venir |
+| `docs/preuves/D350/neutralisation/campagne-adm2-passe-1.txt` | la campagne `neutralize-adm2.py --int` ; sa première ligne est l'empreinte sha256 du harnais | à venir |
+| `docs/preuves/D350/neutralisation/campagne-adm1-passe-1.txt` | la campagne `neutralize-adm1.py --int` rejouée EN ENTIER (cinq ancres reposées) ; sa première ligne est l'empreinte du harnais | à venir |
+| `docs/preuves/D350/neutralisation/extraits-des-echecs-adm2.txt`, `docs/preuves/D350/neutralisation/extraits-des-echecs-adm1.txt` | par mesure, les tests en échec et la première ligne de leur bloc, relevés dans les journaux de chaque campagne | à venir |
+| `docs/preuves/D350/neutralisation/campagnes-existantes/` (un fichier par campagne existante concernée par les fichiers touchés) | les campagnes déjà au dépôt que ce lot touche, jouées par invocation explicite | à venir |
+| `docs/preuves/D350/neutralisation/e2e-a-la-main.md` | la neutralisation À LA MAIN des gardes de la spec e2e (procédure, mutation, rouge lu, restauration prouvée) | à venir |
+| `docs/preuves/D350/portes/_index.txt`, `docs/preuves/D350/portes/etat-machine-pendant.txt`, `docs/preuves/D350/portes/typecheck.txt`, `docs/preuves/D350/portes/lint.txt`, `docs/preuves/D350/portes/test.txt`, `docs/preuves/D350/portes/build.txt`, `docs/preuves/D350/portes/test-int.txt`, `docs/preuves/D350/portes/test-e2e.txt` | la passe des six portes (pilote `docs/preuves/D340/portes/passe-secteur.sh`, non modifié) | à venir |
+| `docs/preuves/D350/e2e/passe-2.txt`, `docs/preuves/D350/e2e/passe-2-batterie-avant.txt`, `docs/preuves/D350/e2e/passe-2-batterie-apres.txt` | la seconde passe e2e (MASQUÉE) et l'alimentation avant et après | à venir |
+| `docs/preuves/D350/masquage/masquer-jetons.py`, `docs/preuves/D350/masquage/rapport-masquage.txt` | la procédure de masquage (copie octet pour octet de `docs/preuves/D348/masquage/masquer-jetons.py`) et son compte rendu | à venir |
+| `docs/preuves/D350/audit-secrets-d350c.txt`, `docs/preuves/D350/aucune-valeur-reelle-c.txt` | l'audit de secrets « c » (code, harnais, campagnes, portes) et son tri | à venir |
+| `docs/preuves/D350/audit-secrets-d350d.txt`, `docs/preuves/D350/aucune-valeur-reelle-d.txt` | l'audit de secrets « d » du versement des `.md` d'autorité et son tri | à venir |
+| `docs/preuves/D350/passe-d277.txt` | la passe D277 dans les trois fichiers d'autorité (les deux sens), texte aplati, ventilation par motif | à venir |
