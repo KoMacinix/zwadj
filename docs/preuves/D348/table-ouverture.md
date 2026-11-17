@@ -90,3 +90,18 @@ Chaque extension s'ajoute ici, dans un commit propre, **avant** le commit du fic
 | chemin | rôle | statut |
 |---|---|---|
 | `docs/preuves/D348/aucune-valeur-reelle-c.txt` | le tri des alertes nouvelles de l'audit « c » et le contrôle dédié « 0 valeur réelle » (55 journaux, 354 valeurs, 0 porteur) | à venir |
+
+**Extension 5** (16/11/2026, commitée SEULE, AVANT les fichiers qu'elle couvre). Motif : **« RANG 50 (SUITE) »** — consigne du relecteur adoptée par Ko le 16/11/2026 (R-1 à R-5) : la porte `test` se rejoue UNE fois, les journaux versés par retrait de lignes se versent MASQUÉS (R-2), quatre contrôles précèdent la poussée (R-4), deux entrées de backlog s'écrivent (R-3, R-5). Aucun fichier de code de `apps/` ou de `packages/` n'est touché : toutes les écritures de cette suite sont documentaires ou des pièces de `docs/preuves/D348/`. Aucun de ces fichiers n'est encore commité.
+
+| chemin | rôle | statut |
+|---|---|---|
+| `docs/preuves/D348/portes/regle-rejeu.md` | la règle du rejeu (R-1), écrite et commitée AVANT son lancement : « une seule passe ; verte ⇒ poussée ; rouge ⇒ rien n'est poussé, rapport » | ferme |
+| `docs/preuves/D348/portes/rejeu-test.sh` | le pilote du rejeu : copie de `docs/preuves/D340/portes/rejeu-portes.sh` (non modifié) réduite à la seule porte `test`, plus le refus sur batterie (R-9 de D340) ; l'écart à l'original est déclaré dans son en-tête | ferme |
+| `docs/preuves/D348/portes/rejeu-test.txt`, `docs/preuves/D348/portes/rejeu-index.txt`, `docs/preuves/D348/portes/rejeu-etat-machine.txt` | la sortie du rejeu, son index (SHA, état machine avant/pendant/après) | à venir |
+| `docs/preuves/D348/portes/lecture-rejeu.md` | **CONDITIONNEL** — la lecture des deux sorties côte à côte (la rouge et la rejouée) : écrite dans les deux cas (R-1) | à venir |
+| `docs/preuves/D348/masquage/masquer-jetons.py`, `docs/preuves/D348/masquage/rapport-masquage.txt` | R-2 : la procédure de masquage (copie de `docs/preuves/D345/portes/masquer-jetons.py`, non modifiée) et son compte rendu (sha256 des trois bruts, suites masquées, restants) | à venir |
+| `docs/preuves/D348/e2e/passe-2.txt`, `docs/preuves/D348/portes/test-e2e.txt`, `docs/preuves/D348/rouges/rouge-1-e2e-r50-contre-etat-avant.txt` | **MODIFIÉS** (R-2) : les trois journaux versés par retrait de lignes (112, 112 et 7 lignes retirées) sont REMPLACÉS par leur version MASQUÉE, tirée des bruts d'origine (hors dépôt, sha256 vérifiés contre les en-têtes versés) | à venir |
+| `docs/preuves/D348/audit-secrets-d348d.txt`, `docs/preuves/D348/aucune-valeur-reelle-d.txt` | l'audit de secrets de ce versement (scellé) et le contrôle « 0 valeur réelle » rejoué sur les bruts | à venir |
+| `docs/preuves/D348/controles-r4.txt` | R-4 : les sorties des quatre contrôles avant la poussée ((i) `@@` et CRLF ; (ii) empreinte de `neutralize-pub1.py` dans les trois passes ; (iii) les trois constats de M-2 côté pro dans le backlog ; (iv) l'entrée de coût de S-164, R-5) | à venir |
+| `docs/preuves/D348/controle-fin-de-lot-suite.txt` | le contrôle de fin de lot rejoué après la poussée (D288, D328) | à venir |
+| `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md` | déjà dans la table ; modifiés ADDITIVEMENT (section D348 : la suite ; backlog : R-3 et R-5 et ses entrées ; AGENTS.md : seulement la ligne de la chaîne d'annotations de D348 si l'état d'un lot change) | ferme |
