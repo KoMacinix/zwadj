@@ -1,0 +1,20 @@
+D349 — contrôle de fin de lot (D288, D328, D334) : chaque contrôle rend ce qu'il a PARCOURU à côté de son verdict, et l'ATTENDU à côté du mesuré
+HEAD au moment du contrôle : e8130f6f7b72e9ed375c3406bcd0ba194238c42e  (arbre de travail : les trois `.md` d'autorité peuvent être modifiés, non commités)
+SHA de départ : 9ec8abf702068069dff5aa07605a884a7483f9b5
+
+[1] premier commit du lot : 2359d67 (10 commits depuis le départ) · fichiers : ['docs/preuves/D349/table-ouverture.md'] · attendu : ['docs/preuves/D349/table-ouverture.md'] · ✓
+[2] fichiers modifiés depuis le départ : 72 (commits + arbre de travail) · chemins complets déclarés par la table : 114 · NON déclarés : 0 [] (attendu 0) · ✓
+    arbre de travail (git status --short) : 4 ligne(s) : [' M AGENTS.md', ' M ZWADJ_BACKLOG.md', ' M ZWADJ_CONTINUITE.md', '?? docs/preuves/D349/passe-d277.txt'] (attendu : les trois `.md` d'autorité et rien d'autre)
+    fichiers CONDITIONNELS de la table : existent-ils dans le diff ? [('docs/preuves/D349/arret.md', False), ('docs/preuves/D349/lecture-adverse/ecarts.md', False), ('apps/api/test/int/venues-admin.int-spec.ts', False), ('apps/api/test/int/contract-api-client.int-spec.ts', False), ('neutralisation/lancer-campagnes.py', False)] (attendu : aucun ; leur condition ne s'est pas réalisée)
+[3] lecture adverse : commit c4fd717 ; premier commit d'un `.md` d'autorité : (aucun : pas encore commité) · lecture avant autorité : ✓
+    rouges : commit 499296d ; premier commit touchant `apps/` ou `packages/` : 499296d (c'est le commit des TESTS lui-même : True) ; fichiers de ce commit sous apps/ et packages/ : 14, tous des fichiers de test : True
+    premier commit de CODE d'application (admin-audit.ts, venue-moderation.ts) : bf939d9 · les rouges (499296d) le précèdent : ✓
+[4] R-1 — apps/api/src/venues/venues-admin.service.ts : 14 hunk(s) de diff entre le départ et HEAD ; zones à ne pas toucher (lignes du fichier de `9ec8abf`) : {'VENUE_ADMIN_SELECT': (23, 27), 'setRates': (82, 100)}
+    hunks (ligne ancienne, nombre de lignes anciennes) : [(6, 0), (9, 0), (10, 0), (12, 1), (13, 0), (21, 0), (30, 0), (46, 3), (50, 10), (61, 4), (66, 1), (68, 4), (73, 1), (112, 0)]
+    chevauchements avec les deux zones : [] (attendu : aucun) · ✓
+    textes comparés à `9ec8abf` (lus par `git show`) : VENUE_ADMIN_SELECT identique True · setRates identique True (attendu True · True) · ✓
+[5] fusion d'essai de `origin/par-carte` dans HEAD (`git merge-tree --write-tree`, n'écrit AUCUNE référence) : code 0 · fichiers listés après l'arbre : 0 [] · (code 0 = aucun conflit ; attendu 0)
+[6] AGENTS.md : 258630 octets · CRLF 1685 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[6] ZWADJ_CONTINUITE.md : 3485335 octets · CRLF 27198 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[6] ZWADJ_BACKLOG.md : 761104 octets · CRLF 5797 · LF nu 0 (attendu 0) · gabarit « @@NOM@@ » non remplacé : 0 (attendu 0) · ✓
+[7] premier-admin-ko.md : 4248 caractères · nomme `admin:promote` : True · nomme `--dry-run` : True · dit « jamais jouée » : True

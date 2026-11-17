@@ -1,0 +1,16 @@
+D349 — tri des alertes nouvelles de l'audit de secrets « d » (D299) et contrôle dédié « 0 valeur réelle » (D299), avant le commit de clôture (les trois `.md` d'autorité, la passe D277, le contrôle de fin de lot)
+
+Audit : docs/preuves/D349/audit-secrets-d349d.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; 882 096 octets ; lancé sur l'arbre qui portait déjà les trois `.md` d'autorité modifiés, `passe-d277.txt` et `controle-fin-de-lot.txt`).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D349/audit-secrets-d349c.txt docs/preuves/D349/audit-secrets-d349d.txt
+  → calibration 2 bras ✓ ; 2925 contextes dans la précédente, 2930 dans la nouvelle ; 5 alertes ABSENTES de la précédente (jeton 4, mot-de-passe 1), TOUTES dans docs/preuves/D349/aucune-valeur-reelle-c.txt.
+
+Tri au contexte (lignes 6639, 6641, 6643, 6645 et 6647 de la sortie scellée), lues une à une :
+  · ligne 6639 [mot-de-passe], aucune-valeur-reelle-c.txt:19 : la phrase du tri « c » qui CITE le titre d'un test d'intégration existant (« … forgot-password : … CONSTANTE, mais aucun e-mail ne part ») — un titre, déjà trié à D347, D348 et D349 « c » ;
+  · lignes 6641, 6643, 6645 et 6647 [jeton], aucune-valeur-reelle-c.txt:13, :17 (deux contextes) et :18 : les phrases du tri « c » qui NOMMENT le gabarit « token= » et décrivent le marqueur de masquage (« token=<jeton masqué #N (43 car.)> »). Écho d'une pièce de tri écrite APRÈS la sortie scellée « c » : la configuration que D298 décrit.
+  Les cinq sont l'écho de la pièce du versement précédent. Les trois `.md` d'autorité, `passe-d277.txt` et `controle-fin-de-lot.txt` ne rendent AUCUNE alerte.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), sur les DEUX journaux e2e BRUTS (hors dépôt), contre `docs/preuves/D349`, `AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `CLAUDE.md`, `apps`, `packages`, `e2e` et `neutralisation` :
+  → calibration à deux bras par journal ✓ ; **224 valeurs cherchées · 76 144 fichiers parcourus (1 997 983 157 octets) · porteurs : 0 (attendu 0)**.
+
+Pièces versées à ce commit : ZWADJ_CONTINUITE.md · AGENTS.md · ZWADJ_BACKLOG.md · docs/preuves/D349/passe-d277.txt · docs/preuves/D349/controle-fin-de-lot.txt · docs/preuves/D349/audit-secrets-d349d.txt · cette pièce.

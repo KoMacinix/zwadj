@@ -1,0 +1,115 @@
+D349 — passe D277 : les deux sens (ce que le lot INVALIDE, ce qu'il REND PERMIS), sur le texte APLATI des trois fichiers d'autorité (ZWADJ_CONTINUITE.md, AGENTS.md, ZWADJ_BACKLOG.md)
+Instrument : un script JETABLE de la session (D291 : archivé comme pièce, jamais promu en instrument) ; le texte est aplati (retours à la ligne et espaces réduits à un blanc) AVANT toute recherche — les fichiers sont enveloppés à ~95 colonnes, une expression de plus de quelques mots y est coupée (D289, balayage D-aplati). Chaque motif imprime son COMPTE à côté de ce qu'il a examiné.
+
+Motifs (douze, deux sens) :
+  · S1 · RANG 51 en attente : /RANG 51 ?:? ?\*{0,2} ?EN ATTENTE/
+  · S1 · ADM-1 « attend / à venir / non codé / pas codé » : /ADM-1[^.]{0,160}(attend|à venir|n'est pas codé|pas encore codé|rien n'est codé|non codé)/
+  · S1 · ADM-1 et ADM-2 attendent chacun un rang : /ADM-1 et ADM-2 attendent chacun un rang/
+  · S1 · aucun écrivain d'audit_logs : /(0 écrivain|AUCUN écrivain|aucun écrivain|sans écrivain)[^.]{0,80}(audit|rejection)|(audit_logs|AuditLog)[^.]{0,120}(0 écrivain|sans écrivain|aucun écrivain)/
+  · S1 · rejection_reason sans écrivain : /rejection_reason[^.]{0,120}(AUCUN|aucun|sans) écrivain|(AUCUN|aucun|sans) écrivain[^.]{0,120}rejection_reason/
+  · S1 · aucune méthode admin/ du client : /aucune méthode `?admin/`?/
+  · S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant) : /compteur POUR MÉMOIRE \*{0,2}VINGT-QUATRE/
+  · S1 · S-172 à S-179 à ratifier : /S-172 à S-179[^.]{0,80}(à ratifier|restent|reste)/
+  · S1 · le prochain lot de code de l'administration est ADM-1 : /prochain lot de code de l'administration est ADM-1/
+  · S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51 : /(PEUT|peut) s'ouvrir[^.]{0,120}rang 51|rang 51[^.]{0,120}(PEUT|peut) s'ouvrir/
+  · S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat » : /ADM-1[^.]{0,100}(peut s'ouvrir|s'ouvre|candidat)/
+  · S2 · EN ATTENTE DE CADRAGE (tous rangs) : /RANG (\d+) ?:? ?\*{0,2} ?EN ATTENTE (DE CADRAGE DU RELECTEUR|D'ARBITRAGE DE KO)/
+
+══ COMPTES AVANT les annotations de cette passe (les trois fichiers déjà écrits par le lot)
+=== AGENTS.md — 244602 caractères examinés (texte aplati)
+  [  2] S1 · RANG 51 en attente
+  [  3] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  2] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  0] S1 · aucun écrivain d'audit_logs
+  [  0] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  1] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  2] S1 · S-172 à S-179 à ratifier
+  [  1] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  0] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [ 37] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+=== ZWADJ_CONTINUITE.md — 3314953 caractères examinés (texte aplati)
+  [  3] S1 · RANG 51 en attente
+  [  9] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  2] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  4] S1 · aucun écrivain d'audit_logs
+  [  1] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  4] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  2] S1 · S-172 à S-179 à ratifier
+  [  0] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  1] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [226] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+=== ZWADJ_BACKLOG.md — 716605 caractères examinés (texte aplati)
+  [  0] S1 · RANG 51 en attente
+  [  0] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  0] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  0] S1 · aucun écrivain d'audit_logs
+  [  0] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  0] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  0] S1 · S-172 à S-179 à ratifier
+  [  0] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  0] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [ 14] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+caractères examinés au total : 4276160
+
+══ COMPTES APRÈS les annotations de cette passe (trois annotations dans ZWADJ_CONTINUITE.md, une dans ZWADJ_BACKLOG.md)
+=== AGENTS.md — 244602 caractères examinés (texte aplati)
+  [  2] S1 · RANG 51 en attente
+  [  3] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  2] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  0] S1 · aucun écrivain d'audit_logs
+  [  0] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  1] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  2] S1 · S-172 à S-179 à ratifier
+  [  1] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  0] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [ 37] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+=== ZWADJ_CONTINUITE.md — 3315847 caractères examinés (texte aplati)
+  [  3] S1 · RANG 51 en attente
+  [ 11] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  2] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  4] S1 · aucun écrivain d'audit_logs
+  [  1] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  4] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  2] S1 · S-172 à S-179 à ratifier
+  [  0] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  1] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [226] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+=== ZWADJ_BACKLOG.md — 716605 caractères examinés (texte aplati)
+  [  0] S1 · RANG 51 en attente
+  [  0] S1 · ADM-1 « attend / à venir / non codé / pas codé »
+  [  0] S1 · ADM-1 et ADM-2 attendent chacun un rang
+  [  0] S1 · aucun écrivain d'audit_logs
+  [  0] S1 · rejection_reason sans écrivain
+  [  0] S1 · aucune méthode admin/ du client
+  [  0] S1 · compteur POUR MÉMOIRE VINGT-QUATRE (courant)
+  [  0] S1 · S-172 à S-179 à ratifier
+  [  0] S1 · le prochain lot de code de l'administration est ADM-1
+  [  0] S2 · lot de code PEUT s'ouvrir dès que Ko arbitre le rang 51
+  [  0] S2 · ADM-1 « peut s'ouvrir / s'ouvre / candidat »
+  [ 14] S2 · EN ATTENTE DE CADRAGE (tous rangs)
+caractères examinés au total : 4277054
+
+══ TRI — chaque classe de résultat, lue au contexte
+SENS 1 — ce que le lot INVALIDE
+  · « RANG 51 : EN ATTENTE » (AGENTS.md 2, ZWADJ_CONTINUITE.md 3) : la ligne de l'ordre des rangs est BARRÉE avec son motif (écrit par le lot) ; les autres occurrences sont le texte de la chaîne de D348 d'AGENTS.md (que la note de D349 annote : « ci-dessus est PÉRIMÉ »), la ligne « rang suivant » du bloc d'état du rang 50 (daté ; le pointeur barré de D349 juste au-dessus dit que l'état courant est celui du rang 51) et la ligne de registre de D348 (un enregistrement daté). Aucune n'est courante.
+  · « ADM-1 attend / non codé » (AGENTS.md 3, ZWADJ_CONTINUITE.md 11) et « ADM-1 et ADM-2 attendent chacun un rang » (2 + 2) : TROIS occurrences étaient COURANTES et sont ANNOTÉES « ADM-1 est FAIT » — la décision produit n° 4 (tout en haut de ZWADJ_CONTINUITE.md : « Les décisions produit tranchées »), le § 6 du cadrage du rang 28 (où vivent D-1 à D-10) et le bloc des arbitrages de D321 d'AGENTS.md. Les autres sont dans des sections DATÉES (D320, D321, D322, D325, D327, D329 — chacune garde sa date et porte déjà les annotations qui l'ont supplantée) ou sont les textes de D349 eux-mêmes (le motif attrape « ADM-2 attend » dans les annotations).
+  · « aucun écrivain d'audit_logs » (ZWADJ_CONTINUITE.md 4) et « rejection_reason sans écrivain » (1) : le § 1 du cadrage du rang 28 (relevé du 01/10/2026) est ANNOTÉ (cinq lignes du tableau 1.4 périmées, ce qui reste vrai) ; les autres sont des lignes datées de D320 ; l'occurrence de `rejection_reason` est le texte de D349 qui dit l'état À `9ec8abf`. Côté backlog : l'entrée « Model `AuditLog` » reste ouverte et reçoit l'annotation « le journal des actions admin est ÉCRIT ».
+  · « compteur POUR MÉMOIRE VINGT-QUATRE (courant) » (AGENTS.md 1, ZWADJ_CONTINUITE.md 4) : aucune ne dit VINGT-QUATRE comme état COURANT — ce sont « VINGT-QUATRE → VINGT-CINQ » (D349) et des lignes de D348 (l'état d'alors).
+  · « S-172 à S-179 à ratifier » (2 + 2) : les occurrences de D348 sont datées ; D349 écrit « ratifiées par adoption » (ordre des rangs, chaîne d'AGENTS.md, section D349).
+  · « le prochain lot de code de l'administration est ADM-1 » (AGENTS.md 1) : la note de D321, supplantée par D322 (la note qui la SUIT dans la même chaîne) et maintenant par D349.
+  · « aucune méthode `admin/` du client » : 0.
+SENS 2 — ce que le lot REND PERMIS
+  · « un lot de code PEUT s'ouvrir … rang 51 » : 0 dans les trois fichiers — la permission que le rang 51 consommait n'est écrite nulle part en cours.
+  · « ADM-1 peut s'ouvrir / candidat » : 1 (ZWADJ_CONTINUITE.md) — le texte de D349 « ADM-2 (les écrans) est le rang 52 candidat » : un candidat PROPOSÉ, écrit comme tel, **pas une permission** (« Pas arbitré : le rang 52 n'est pas nommé par la session »).
+  · « EN ATTENTE DE … » (tous rangs : AGENTS.md 37, ZWADJ_CONTINUITE.md 226, ZWADJ_BACKLOG.md 14) : comptés et NON triés un par un — chacune est l'état d'un rang antérieur, daté, déjà barré par la ligne suivante de l'ordre des rangs ; la SEULE courante est « RANG 52 : EN ATTENTE DE CADRAGE DU RELECTEUR » (écrite par ce lot). Limite écrite, pas tue.
+LIMITE DE CETTE PASSE (écrite pour ne pas se lire comme complète) : douze motifs, choisis par la session d'après ce que le lot change (rang, compteur, ADM-1, journal, colonne du motif, client) ; une affirmation périmée écrite avec d'AUTRES mots n'est pas vue. Les compteurs sont imprimés à côté des caractères examinés (D290) ; la calibration d'un instrument jetable n'a pas été faite (limite : si un motif rendait 0 à tort, la passe ne le dirait pas ; les motifs « RANG 51 : EN ATTENTE » et « ADM-1 et ADM-2 attendent chacun un rang » trouvent bien, par ailleurs, leurs occurrences connues).
