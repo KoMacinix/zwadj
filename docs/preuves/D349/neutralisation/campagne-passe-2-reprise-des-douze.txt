@@ -1,0 +1,65 @@
+empreinte du harnais (sha256) : 30b2a615cb0566298144bbb413226c9d60ffdcdbbd52c87b0a497a0112dc8f90  (neutralize-adm1.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+contrôle R-1 (`setRates` et `VENUE_ADMIN_SELECT` identiques à `9ec8abf`) :
+  contrôle R-1 ✓ le bloc `VENUE_ADMIN_SELECT` : 5 ligne(s) comparée(s) à `9ec8abf` · identique (attendu identique)
+  contrôle R-1 ✓ la méthode `setRates` : 19 ligne(s) comparée(s) à `9ec8abf` · identique (attendu identique)
+⚠ REPRISE DÉCLARÉE : seules les cibles S-4, S-5, S-6, S-7, S-10, S-11, S-12, S-16, S-17, S-18, C-3, K-2 sont jouées (ADM1_SEULEMENT) — jamais après une modification du harnais.
+cibles : 72 déclarées · 12 jouées · 0 non jouée(s) (sans --int) · 3 mesure(s) distincte(s) · 3 fichier(s) muté(s)
+  pré-vol client-admin : code 0 · passés 9 · en échec 0
+  pré-vol int-moderation : code 0 · passés 27 · en échec 0
+  pré-vol service-admin : code 0 · passés 35 · en échec 0
+✓ S-4. ⛔ la course perdue écrit tout de même une ligne de journal (compte 0 traité comme un succès)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 33 · en échec 2 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ S-5. ⛔ un compte 0 sur une salle supprimée entre-temps répond un conflit au lieu du 404 indistinct
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected ConflictException: admin.errors.venueChan… { …(3) } to be an instance of NotFoundException
+✓ S-6. ⛔ D46 — la garde « au moins un créneau actif » ne refuse plus la publication
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ S-7. ⛔ le rejet n'écrit plus SOUS CONDITION d'un brouillon (un rejet s'écrit sur une salle publiée : la course publier / rejeter)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+   [int-moderation] code 1 · passés 25 · en échec 2 · AssertionError: expected 200 to be 409 // Object.is equality
+   [int-moderation#2] code 1 · passés 25 · en échec 2 · AssertionError: tour 2 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+✓ S-10. ⛔ « même état, même requête, même réponse » — le MÊME motif rejoué répond un conflit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected ConflictException: admin.errors.venueAlre… { …(3) } to deeply equal { …(3) }
+   [int-moderation] code 1 · passés 25 · en échec 2 · AssertionError: expected 409 to be 200 // Object.is equality
+✓ S-11. ⛔ rejeter une salle publiée répond avec le code d'un AUTRE refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected 'VENUE_ALREADY_REJECTED' to be 'VENUE_NOT_DRAFT' // Object.is equality
+✓ S-12. ⛔ rejeter avec un AUTRE motif répond avec le code d'un AUTRE refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+✓ S-16. ⛔ MD-ADM-8 — le total de la file ne suit plus le filtre (le compte du premier groupe ignore sa condition)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected [ { deletedAt: null, …(2) }, …(1) ] to deeply equal [ { deletedAt: null, …(3) }, …(1) ]
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected [ …(2) ] to deeply equal [ …(3) ]
+✓ S-17. ⛔ la file n'est plus départagée par l'identifiant (l'ordre de deux salles créées au même instant n'est plus déterministe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected [ { createdAt: 'asc' } ] to deeply equal [ { createdAt: 'asc' }, { id: 'asc' } ]
+✓ S-18. ⛔ le second groupe de la file ignore son saut (une page profonde dans les rejetées repart du début)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected { …(5) } to match object { …(3) }
+✓ C-3. ⛔ la route de la file change de nom (le client appellerait une route qui n'existe plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-moderation] code 1 · passés 21 · en échec 6 · AssertionError: expected 404 to be 200 // Object.is equality
+✓ K-2. ⛔ l'adresse de la file n'est plus celle du serveur (le client appellerait une route qui n'existe pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-admin] code 1 · passés 8 · en échec 1 · AssertionError: expected '/admin/venues/pending' to be '/admin/venues/pending-publication' // Object.is equality
+  empreintes : 12 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+12 garde(s) mordue(s) sur 12 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 12 sur 12, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.

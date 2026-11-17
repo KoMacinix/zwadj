@@ -1,0 +1,11 @@
+D349 — rapport de masquage (copie non modifiée de `docs/preuves/D348/masquage/masquer-jetons.py`)
+
+- test-e2e : brut (hors dépôt) sha256 9a982e93f65027e9c77b77c70a654f4266eda51e9b8950e558619980e3bdac19 · 2172998 octets · « token= » 112 · suites de forme jeton 112 → pièce versée docs/preuves/D349/portes/test-e2e.txt (2172191 octets) · 113 jeton(s) remplacé(s) par un marqueur · « token= » suivi d'un jeton NON masqué : 0 · suites de forme jeton restantes : 0 (attendu 0 et 0)
+- passe-2 : brut (hors dépôt) sha256 eec180f7400ea70c5c7af8bca401294268b757cd9eb05795157c8a487a03b7ad · 2168668 octets · « token= » 112 · suites de forme jeton 112 → pièce versée docs/preuves/D349/e2e/passe-2.txt (2167860 octets) · 113 jeton(s) remplacé(s) par un marqueur · « token= » suivi d'un jeton NON masqué : 0 · suites de forme jeton restantes : 0 (attendu 0 et 0)
+- typecheck : copié octet pour octet (627 octets, sha256 944b4cf46542689bf3c77d98c466c0aaf934ce3adc2faaf81574e2b8db68ec4b) · « token= » 0 · suites de forme jeton 0
+- lint : copié octet pour octet (526 octets, sha256 4228e81be262bf64590e318cdaad8b34e1c530982744e40746cec206057cac80) · « token= » 0 · suites de forme jeton 0
+- test : copié octet pour octet (73845 octets, sha256 950fe36bf1cc9542fc9e93da498e5f8165e245c3b14f8f0b15ddccad8e8e8903) · « token= » 0 · suites de forme jeton 0
+- build : copié octet pour octet (10498 octets, sha256 d93246bebcfaa7aab8c7e1c393af4b7cc90322a66ff19cabc41d284d20ff433f) · « token= » 0 · suites de forme jeton 0
+- test-int : copié octet pour octet (111314 octets, sha256 c122cc0ad6a16d669f9f283b21bc312b978f4d3a0675cb6af3b4a50564154a1e) · « token= » 0 · suites de forme jeton 0
+- _index.txt : copié octet pour octet (2201 octets)
+- etat-machine-pendant.txt : copié octet pour octet (2778 octets)

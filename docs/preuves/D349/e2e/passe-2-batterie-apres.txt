@@ -1,0 +1,1 @@
+SECTEUR | RAM libre 4,695 Mo | chrome 0 | headless_shell 0 | node 0

@@ -1,0 +1,280 @@
+empreinte du harnais (sha256) : 6c8aecbee8dc25bc1da5ef5615ff084f8b3044987b8af5dc732367a286fd14a6  (neutralize-adm1.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+contrôle R-1 (`setRates` et `VENUE_ADMIN_SELECT` identiques à `9ec8abf`) :
+  contrôle R-1 ✓ le bloc `VENUE_ADMIN_SELECT` : 5 ligne(s) comparée(s) à `9ec8abf` · identique (attendu identique)
+  contrôle R-1 ✓ la méthode `setRates` : 19 ligne(s) comparée(s) à `9ec8abf` · identique (attendu identique)
+cibles : 72 déclarées · 72 jouées · 0 non jouée(s) (sans --int) · 15 mesure(s) distincte(s) · 12 fichier(s) muté(s)
+  pré-vol audit : code 0 · passés 9 · en échec 0
+  pré-vol client-admin : code 0 · passés 9 · en échec 0
+  pré-vol client-pro : code 0 · passés 2 · en échec 0
+  pré-vol file : code 0 · passés 15 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+  pré-vol int-journal : code 0 · passés 13 · en échec 0
+  pré-vol int-moderation : code 0 · passés 27 · en échec 0
+  pré-vol int-premier-admin : code 0 · passés 10 · en échec 0
+  pré-vol int-rbac : code 0 · passés 9 · en échec 0
+  pré-vol magasin : code 0 · passés 19 · en échec 0
+  pré-vol premier-admin : code 0 · passés 15 · en échec 0
+  pré-vol schemas : code 0 · passés 12 · en échec 0
+  pré-vol service-admin : code 0 · passés 35 · en échec 0
+  pré-vol service-pro : code 0 · passés 15 · en échec 0
+  pré-vol suppression : code 0 · passés 21 · en échec 0
+✓ T-1. ⛔ D-4 — le motif d'un rejet redevient FACULTATIF (un rejet sans raison laisserait le pro sans rien à corriger)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 11 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected 200 to be 400 // Object.is equality
+✓ T-2. ⛔ le motif n'est plus rogné (des espaces autour passeraient, et un motif d'espaces seuls serait accepté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 9 · en échec 3 · AssertionError: expected '  Les photos sont floues. Merci de le…' to be 'Les photos sont floues. Merci de les …' // Object.is equality
+✓ T-3. ⛔ la borne du motif passe d'un caractère (un motif d'un caractère de trop est accepté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 11 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-4. ⛔ le corps d'un rejet accepte une clé inconnue (un statut ou un taux glissé dans le corps)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 11 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-5. ⛔ la file accepte une clé inconnue (un filtre de statut, un taux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 11 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ T-6. ⛔ la taille de page maximale n'est plus celle de la liste publique (A3-⑤)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [schemas] code 1 · passés 11 · en échec 1 · AssertionError: expected 100 to be 50 // Object.is equality
+✓ T-7. ⛔ le nom de l'action du rejet n'est plus celui que la lecture du refus cherche au journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
+✓ A-1. ⛔ R-2 — la ligne d'un rejet ne porte plus le MOTIF (publier l'efface de la colonne : l'histoire serait perdue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 8 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-moderation] code 1 · passés 25 · en échec 2 · AssertionError: expected { …(10) } to match object { …(7) }
+✓ A-2. ⛔ la ligne d'une approbation ne porte plus le NOMBRE de salles archivées
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 8 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected { …(10) } to match object { …(7) }
+✓ A-3. ⛔ la ligne d'une décision de suppression désigne l'ACTEUR comme entité (et non la demande)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 8 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+✓ A-4. ⛔ R-5 — une ligne porte une note de décision (une donnée que la règle interdit d'écrire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 7 · en échec 2 · AssertionError: expected [ 'status', 'decisionNote', …(2) ] to not include 'decisionNote'
+✓ A-5. ⛔ la ligne d'une publication écrit toujours DRAFT comme statut de départ (le PENDING verrouillé se lirait « brouillon »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 8 · en échec 1 · AssertionError: expected { publicationStatus: 'DRAFT' } to deeply equal { publicationStatus: 'PENDING' }
+✓ A-6. ⛔ la ligne de promotion désigne un acteur-compte (aucun admin n'existe encore : l'acteur est `SCRIPT`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit] code 1 · passés 8 · en échec 1 · AssertionError: expected { actorId: null, …(6) } to deeply equal { actorId: null, …(6) }
+✓ Q-1. ⛔ publier ne part plus du `PENDING` verrouillé
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [file] code 1 · passés 14 · en échec 1 · AssertionError: expected [ 'DRAFT' ] to deeply equal [ 'DRAFT', 'PENDING' ]
+✓ Q-2. ⛔ MD-ADM-4 — rejeter part aussi d'une salle PUBLIÉE (le sens unique d'A3-④ tombe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 14 · en échec 1 · AssertionError: expected [ 'DRAFT', 'PUBLISHED' ] to deeply equal [ 'DRAFT' ]
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ Q-3. ⛔ une page entièrement dans le second groupe repart du DÉBUT du second (les rejetées se répètent d'une page à l'autre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 12 · en échec 3 · AssertionError: expected { first: { skip: 2, take: +0 }, …(1) } to deeply equal { first: { skip: 2, take: +0 }, …(1) }
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected [ …(2) ] to deeply equal [ Array(1) ]
+✓ Q-4. ⛔ le second groupe demande plus de lignes qu'il n'en a (une page au-delà de la fin n'est plus vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 12 · en échec 3 · AssertionError: expected 5 to be +0 // Object.is equality
+✓ Q-5. ⛔ une salle PUBLIÉE porte de nouveau un refus (une valeur périmée de la colonne se lirait comme un refus en cours)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 14 · en échec 1 · AssertionError: expected { reason: 'Photos floues', …(1) } to be null
+   [service-pro] code 1 · passés 14 · en échec 1 · AssertionError: expected { Object (publicationStatus, rejection) } to deeply equal { Object (publicationStatus, rejection) }
+✓ Q-6. ⛔ la date d'un refus est celle de la ligne la plus ANCIENNE (la dernière lue gagne)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 14 · en échec 1 · AssertionError: expected '2026-11-01T10:00:00.000Z' to be '2026-11-12T10:00:00.000Z' // Object.is equality
+✓ Q-7. ⛔ une date de refus INVENTÉE quand le journal n'a pas de ligne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 14 · en échec 1 · AssertionError: expected { reason: 'Photos floues', …(1) } to deeply equal { reason: 'Photos floues', …(1) }
+✓ S-1. ⛔ MD-ADM-4 — publier n'écrit plus SOUS CONDITION du statut (le check-and-set redevient une écriture par identifiant)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+✓ S-2. ⛔ R-2 — publier n'efface plus le motif d'un refus (une salle publiée garderait « rejetée »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+   [int-moderation] code 1 · passés 25 · en échec 2 · AssertionError: expected 'Les photos sont floues. Merci de les …' to be null
+✓ S-3. ⛔ MD-ADM-6 — la ligne de journal de la publication s'écrit HORS de la transaction (une trace sans action reste possible)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+✗ S-4. ⛔ la course perdue écrit tout de même une ligne de journal (compte 0 traité comme un succès)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : TypeError: Cannot read properties of undefined (reading 'id')
+✗ S-5. ⛔ un compte 0 sur une salle supprimée entre-temps répond un conflit au lieu du 404 indistinct
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : Error: expect(received).toSatisfy()
+✗ S-6. ⛔ D46 — la garde « au moins un créneau actif » ne refuse plus la publication
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : Error: expect(received).toSatisfy()
+   [int-moderation] code 1 · MORD — passés 26 · en échec 1 · AssertionError: expected 200 to be 409 // Object.is equality
+✗ S-7. ⛔ le rejet n'écrit plus SOUS CONDITION d'un brouillon (un rejet s'écrit sur une salle publiée : la course publier / rejeter)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · MORD — passés 34 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+   [int-moderation] code 1 · SANS-TITRE — en échec 1, aucun « × » ne porte « publier et rejeter en MÊME TEMPS, vingt fois »
+✓ S-8. ⛔ le rejet n'écrit plus SOUS CONDITION « jamais rejetée » (un second motif écrase le premier)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+   [int-moderation] code 1 · passés 24 · en échec 3 · AssertionError: expected 200 to be 409 // Object.is equality
+✓ S-9. ⛔ MD-ADM-6 — la ligne de journal du rejet s'écrit HORS de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+✗ S-10. ⛔ « même état, même requête, même réponse » — le MÊME motif rejoué répond un conflit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : ConflictException: admin.errors.venueAlreadyRejected
+   [int-moderation] code 1 · MORD — passés 25 · en échec 2 · AssertionError: expected 409 to be 200 // Object.is equality
+✗ S-11. ⛔ rejeter une salle publiée répond avec le code d'un AUTRE refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : Error: expect(received).toSatisfy()
+✗ S-12. ⛔ rejeter avec un AUTRE motif répond avec le code d'un AUTRE refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · PAS-ASSERTION — première ligne du bloc : Error: expect(received).toSatisfy()
+✓ S-13. ⛔ R-1 — le rejet écrit un taux en plus du motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 33 · en échec 2 · AssertionError: expected '{"where":{"id":"018f0000-0000-7000-80…' not to match /commissionRateBps|cashbackRateBps/
+✓ S-14. ⛔ D-6 (l2) — la file contient aussi les salles SUPPRIMÉES
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected { publicationStatus: 'DRAFT', …(1) } to deeply equal { deletedAt: null, …(2) }
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected [ …(4) ] to deeply equal [ …(3) ]
+✓ S-15. ⛔ D-6 (l2) — la file contient aussi les brouillons SANS créneau actif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected { deletedAt: null, …(1) } to deeply equal { deletedAt: null, …(2) }
+   [int-moderation] code 1 · passés 25 · en échec 2 · AssertionError: expected [ …(5) ] to deeply equal [ …(3) ]
+✗ S-16. ⛔ MD-ADM-8 — le total de la file ne suit plus le filtre (le compte du premier groupe ignore sa condition)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · MORD — passés 34 · en échec 1 · AssertionError: expected [ { deletedAt: null, …(2) }, …(1) ] to deeply equal [ { deletedAt: null, …(3) }, …(1) ]
+   [int-moderation] code 1 · SANS-TITRE — en échec 1, aucun « × » ne porte « le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ »
+✗ S-17. ⛔ la file n'est plus départagée par l'identifiant (l'ordre de deux salles créées au même instant n'est plus déterministe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · SANS-TITRE — en échec 1, aucun « × » ne porte « les non rejetées d'abord, les rejetées ensuite ; chaque groupe par date de création puis id »
+✗ S-18. ⛔ le second groupe de la file ignore son saut (une page profonde dans les rejetées repart du début)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · SANS-TITRE — en échec 1, aucun « × » ne porte « une page entièrement dans le second groupe passe son saut relatif au second »
+✓ S-19. ⛔ la date des refus se lit pour TOUTES les salles de la page (et plus pour les seules rejetées)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected { where: { …(3) }, …(2) } to match object { where: { …(3) }, …(1) }
+✓ S-20. ⛔ R-1 — la file sélectionne un taux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected '{"id":true,"number":true,"slug":true,…' not to match /commissionRateBps|cashbackRateBps/
+✓ S-21. ⛔ le détail ne lit plus la date du refus au journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected { Object (reason, rejectedAt) } to deeply equal { reason: 'Un motif', …(1) }
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+✓ S-22. ⛔ R-1 — le réglage des taux écrit une ligne de journal (MD-ADM-17 : un journal des taux ajouté sans décision)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [service-admin] code 1 · passés 34 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ C-1. ⛔ la publication ne transmet plus l'ACTEUR (la ligne de journal désignerait quelqu'un d'autre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 11 · en échec 2 · AssertionError: expected 500 to be 200 // Object.is equality
+✓ C-2. ⛔ MD-ADM-1 — le contrôleur admin accepte aussi un PRO (le rôle de classe n'est plus ADMIN seul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-rbac] code 1 · passés 8 · en échec 1 · AssertionError: routes admin atteintes par un PRO :
+✗ C-3. ⛔ la route de la file change de nom (le client appellerait une route qui n'existe plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-moderation] code 1 · MORD — passés 21 · en échec 6 · AssertionError: expected 404 to be 200 // Object.is equality
+   [int-contrat] code 0 · VERT — passés 6 · en échec 0
+✓ C-4. ⛔ la lecture du refus reçoit l'identifiant de la SALLE à la place de celui du pro (un identifiant qui « ressemble », D149)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected 404 to be 200 // Object.is equality
+✓ P-1. ⛔ la lecture du refus ne court-circuite plus un identifiant mal formé (le port est interrogé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-pro] code 1 · passés 14 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ P-2. ⛔ une salle qui n'est pas la mienne répond un contenu au lieu du 404 indistinct
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-pro] code 1 · passés 14 · en échec 1 · AssertionError: promise resolved "{ publicationStatus: 'DRAFT', …(1) }" instead of rejecting
+✓ P-3. ⛔ le refus perd sa DATE (le motif seul est rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-pro] code 1 · passés 13 · en échec 2 · AssertionError: expected { publicationStatus: 'DRAFT', …(1) } to deeply equal { publicationStatus: 'DRAFT', …(1) }
+✓ V-1. ⛔ D149 — la lecture du refus n'exige plus l'APPARTENANCE (la salle d'un autre pro se lit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+   [int-moderation] code 1 · passés 26 · en échec 1 · AssertionError: expected 200 to be 404 // Object.is equality
+✓ V-2. ⛔ R-3 — la lecture du refus sélectionne aussi un taux (un contrat étroit qui s'élargit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+✓ V-3. ⛔ la date du refus se lit au journal SANS filtrer sur la salle (la date d'une autre salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
+✓ V-4. ⛔ la date du refus est celle de la ligne la plus ANCIENNE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 18 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
+✓ D-1. ⛔ MD-ADM-6 — la ligne de journal d'une APPROBATION s'écrit hors de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+✓ D-2. ⛔ la ligne d'une approbation ne porte plus le nombre de salles archivées
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppression] code 1 · passés 20 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { data: { …(7) } } ]
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected { …(10) } to match object { …(7) }
+✓ D-3. ⛔ MD-ADM-6 — la ligne de journal d'un REFUS de suppression s'écrit hors de la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 12 · en échec 1 · AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+✓ D-4. ⛔ la ligne d'un refus de suppression écrit « approuvé »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppression] code 1 · passés 20 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { data: { …(7) } } ]
+✓ F-1. ⛔ D-3 — un compte suspendu ou anonymisé est promu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 12 · en échec 3 · AssertionError: SUSPENDED: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, reason: 'NOT_ACTIVE' }
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { outcome: 'REFUSED', …(1) }
+✓ F-2. ⛔ D-3 — un compte dont l'e-mail n'est pas vérifié est promu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 13 · en échec 2 · AssertionError: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, …(1) }
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { outcome: 'REFUSED', …(1) }
+✓ F-3. ⛔ MD-ADM-3 — un compte PRO est promu (il perdrait l'accès à ses salles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 13 · en échec 2 · AssertionError: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, reason: 'IS_PRO' }
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { Object (outcome, reason) }
+✓ F-4. ⛔ l'écriture n'est plus conditionnée au rôle CLIENT (deux promotions simultanées, ou un compte qui a changé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 14 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, …(1) } ]
+✓ F-5. ⛔ D-3 — le script écrit aussi un mot de passe (« aucun mot de passe manipulé »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 14 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, …(1) } ]
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected null to be '$argon2id$v=19$m=65536,t=3,p=4$iVAe+W…' // Object.is equality
+✓ F-6. ⛔ la promotion n'écrit plus de ligne de journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 13 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { data: { actorId: null, …(6) } } ]
+   [int-premier-admin] code 1 · passés 6 · en échec 4 · AssertionError: expected [] to have a length of 1 but got +0
+✓ F-7. ⛔ un compte qui a changé entre la lecture et l'écriture est tout de même journalisé (compte 0 non refusé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 14 · en échec 1 · AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'REFUSED', …(1) }
+✓ F-8. ⛔ --dry-run écrit tout de même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 14 · en échec 1 · AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'WOULD_PROMOTE', …(1) }
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected 'PROMOTED' to be 'WOULD_PROMOTE' // Object.is equality
+✓ F-9. ⛔ l'adresse saisie n'est plus abaissée en minuscules (l'inscription les stocke en minuscules)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 13 · en échec 2 · AssertionError: expected 'Ko@Example.DZ' to be 'ko@example.dz' // Object.is equality
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected 'REFUSED' to be 'PROMOTED' // Object.is equality
+✓ F-10. ⛔ deux promotions simultanées écrivent deux lignes (le compte conditionné ne protège plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [premier-admin] code 1 · passés 14 · en échec 1 · AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'ALREADY_ADMIN', …(1) }
+   [int-premier-admin] code 1 · passés 9 · en échec 1 · AssertionError: expected 'REFUSED' to be 'ALREADY_ADMIN' // Object.is equality
+✓ K-1. ⛔ le rejet envoie le motif sous une autre clé (le serveur répondrait 400)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-admin] code 1 · passés 8 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+✗ K-2. ⛔ l'adresse de la file n'est plus celle du serveur (le client appellerait une route qui n'existe pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-admin] code 1 · MORD — passés 8 · en échec 1 · AssertionError: expected '/admin/venues/pending' to be '/admin/venues/pending-publication' // Object.is equality
+   [int-contrat] code 0 · VERT — passés 6 · en échec 0
+✓ K-3. ⛔ l'identifiant d'une salle n'est plus encodé dans l'adresse (un `/` sortirait de son segment)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-admin] code 1 · passés 8 · en échec 1 · AssertionError: expected '/admin/venues/a/b' to be '/admin/venues/a%2Fb' // Object.is equality
+✓ K-4. ⛔ MD-ADM-7 — le client admin gagne une méthode qui écrit un taux
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [client-admin] code 1 · passés 8 · en échec 1 · AssertionError: expected 'import type {\n  AdminDeletionRequest…' not to match /commission-rate/
+✓ K-5. ⛔ l'adresse de la lecture du refus n'est plus celle du serveur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-pro] code 1 · passés 0 · en échec 2 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+  empreintes : 12 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+60 garde(s) mordue(s) sur 72 cible(s) jouée(s) · 12 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 72 sur 72, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.

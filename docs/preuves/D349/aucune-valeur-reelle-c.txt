@@ -1,0 +1,27 @@
+D349 — tri des alertes nouvelles de l'audit de secrets « c » (D299) et contrôle dédié « 0 valeur réelle » (D299), avant le versement des pièces de campagne, de portes et d'e2e
+
+Audit : docs/preuves/D349/audit-secrets-d349c.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; 880 209 octets).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D349/audit-secrets-d349b.txt docs/preuves/D349/audit-secrets-d349c.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes, 0 nouvelle ; positif : 2 sur 2) ;
+  → 2673 contextes dans la précédente, 2925 dans la nouvelle ; 252 alertes ABSENTES de la précédente (jeton 251, mot-de-passe 1), ventilées par fichier :
+      112 · docs/preuves/D349/portes/test-e2e.txt          (la PASSE 1 de l'e2e, versée MASQUÉE)
+      112 · docs/preuves/D349/e2e/passe-2.txt                (la PASSE 2, versée MASQUÉE)
+        9 · docs/preuves/D349/masquage/rapport-masquage.txt  (le compte rendu du masquage, qui nomme le gabarit)
+        9 · docs/preuves/D349/aucune-valeur-reelle-b.txt     (le tri précédent, qui nomme le gabarit)
+        8 · docs/preuves/D349/masquage/masquer-jetons.py     (la procédure de masquage, copie octet pour octet de D348 : son texte nomme le motif)
+        1 · docs/preuves/D349/neutralisation/extraits-des-echecs.txt (l'en-tête de la pièce : « token= … : 0 · suites de forme jeton … : 0 »)
+        1 · docs/preuves/D349/portes/test-int.txt             [mot-de-passe] (ligne 461 : le TITRE d'un test d'intégration existant)
+
+Tri au contexte, lues une à une (lignes 6619 à 6635, 6645 à 7127, 6903 et 7129 de la sortie scellée) :
+  · les 224 alertes des deux journaux e2e : chaque contexte est `…/auth/verification-email?token=<jeton masqué #N (43 car.)>` — le paramètre du lien est suivi du MARQUEUR que `masquer-jetons.py` pose, jamais d'une valeur. L'audit marque la chaîne « token= » suivie d'un mot ; ce mot est « <jeton masqué #N … » (l'outil le montre lui-même : « <6 car. masques> masqué #N (43 car.)> »). Le journal BRUT (hors dépôt, 112 jetons par passe) a été masqué par `masquer-jetons.py` avec « restantes après masquage : 0 », et le contrôle dédié ci-dessous le confirme.
+  · les 9 de `rapport-masquage.txt`, les 9 de `aucune-valeur-reelle-b.txt`, les 8 de `masquer-jetons.py` et l'1 de `extraits-des-echecs.txt` : des textes de ce lot ou de D348 qui NOMMENT le gabarit (« token= », « restants : 0 ») ; aucune valeur. Même classe que les 8 contextes de `masquer-jetons.py` de D348.
+  · l'alerte [mot-de-passe] de `portes/test-int.txt:461` : le titre d'un test d'intégration EXISTANT (« §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : … CONSTANTE, mais aucun e-mail ne part ») — la phrase du titre, déjà triée à D347 et D348 ; l'outil masque lui-même le mot.
+  Les 252 sont l'ÉCHO de journaux déjà masqués ou de textes qui nomment le motif ; aucune n'est une fuite.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py), sur les DEUX journaux e2e BRUTS (hors dépôt : la passe 1 du pilote et la passe 2), contre `docs/preuves/D349`, `apps`, `packages`, `e2e` et `neutralisation` :
+  → calibration à deux bras par journal ✓ (positif 1 sur 1, négatif 0 sur 0) ; occurrences « stricte » 112 et « large » 112 qui s'accordent, 112 valeurs distinctes par journal ; chaque journal LU COMME UNE CIBLE porte ses 112 valeurs (attendu ≥ 112) ;
+  → **224 valeurs cherchées · 76 136 fichiers parcourus (1 992 572 021 octets) · porteurs : 0 (attendu 0)**.
+  Le contrôle dit « les valeurs ne sont nulle part dans ce qui part » ; l'audit dit « les formes ne sont pas dans les nouveaux versements » — les deux se lisent ensemble.
+
+Pièces versées à ce versement : docs/preuves/D349/neutralisation/campagne-passe-1.txt · docs/preuves/D349/neutralisation/campagne-passe-2-reprise-des-douze.txt · docs/preuves/D349/neutralisation/campagne-passe-3-finale.txt · docs/preuves/D349/neutralisation/extraits-des-echecs.txt · docs/preuves/D349/neutralisation/campagnes-existantes/neutralize-s10a.txt · docs/preuves/D349/rouges/apres-les-rouges.md · docs/preuves/D349/portes/ (huit pièces) · docs/preuves/D349/e2e/ (trois pièces) · docs/preuves/D349/masquage/ (deux pièces) · docs/preuves/D349/audit-secrets-d349c.txt · cette pièce.

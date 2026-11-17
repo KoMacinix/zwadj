@@ -1,0 +1,24 @@
+D340 — PASSE SUR SECTEUR (R-8) — départ 17/11/2026 03:34:03
+SHA: 055d403235ba65696b1043f53d52e8ce013e5c6a
+origin/main: 9ec8abf702068069dff5aa07605a884a7483f9b5
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 03:34:03 | SECTEUR | RAM libre 4,540 Mo | chrome 0 | headless_shell 0 | node 0
+docker: zwadj-db Up 16 hours
+ports d'e2e occupés (3100 3101 5273 5274): []
+=== typecheck — départ 03:34:06 — 03:34:06 | SECTEUR | RAM libre 4,473 Mo | chrome 0 | headless_shell 0 | node 0
+    typecheck : code de sortie 0 · durée 16 s · fin 03:34:23 — 03:34:24 | SECTEUR | RAM libre 4,502 Mo | chrome 0 | headless_shell 0 | node 0
+=== lint — départ 03:34:24 — 03:34:25 | SECTEUR | RAM libre 4,492 Mo | chrome 0 | headless_shell 0 | node 0
+    lint : code de sortie 0 · durée 14 s · fin 03:34:39 — 03:34:39 | SECTEUR | RAM libre 4,479 Mo | chrome 0 | headless_shell 0 | node 0
+=== test — départ 03:34:39 — 03:34:40 | SECTEUR | RAM libre 4,480 Mo | chrome 0 | headless_shell 0 | node 0
+    test : code de sortie 0 · durée 117 s · fin 03:36:37 — 03:36:38 | SECTEUR | RAM libre 4,450 Mo | chrome 0 | headless_shell 0 | node 0
+=== build — départ 03:36:38 — 03:36:39 | SECTEUR | RAM libre 4,433 Mo | chrome 0 | headless_shell 0 | node 0
+    build : code de sortie 0 · durée 36 s · fin 03:37:15 — 03:37:15 | SECTEUR | RAM libre 4,375 Mo | chrome 0 | headless_shell 0 | node 0
+=== test-int — départ 03:37:16 — 03:37:16 | SECTEUR | RAM libre 4,363 Mo | chrome 0 | headless_shell 0 | node 0
+    test-int : code de sortie 0 · durée 493 s · fin 03:45:29 — 03:45:29 | SECTEUR | RAM libre 4,173 Mo | chrome 0 | headless_shell 0 | node 0
+=== test-e2e — départ 03:45:29 — 03:45:30 | SECTEUR | RAM libre 4,170 Mo | chrome 0 | headless_shell 0 | node 0
+    test-e2e : code de sortie 0 · durée 382 s · fin 03:51:52 — 03:51:53 | SECTEUR | RAM libre 4,721 Mo | chrome 0 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 03:51:53 | SECTEUR | RAM libre 4,742 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après la passe (git status --short): []
+fin 17/11/2026 03:51:54
+PASSE TERMINEE — échantillons sur BATTERIE pendant la passe : 0 sur 35

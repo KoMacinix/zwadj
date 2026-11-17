@@ -1,0 +1,467 @@
+# D349 — extraits des journaux de la campagne finale de `neutralisation/neutralize-adm1.py` : par mesure (une ligne `===` = un journal), les tests EN ÉCHEC et la première ligne de leur bloc d'erreur, et la ligne « Tests »
+# journaux examinés : 99 (hors pré-vol) · 7615 lignes · première ligne de CHACUN (R-9) : « empreinte du harnais (sha256) : 30b2a615cb0566298144bbb413226c9d60ffdcdbbd52c87b0a497a0112dc8f90  (neutralize-adm1.py) » — identique dans les 99
+# « token= » : 0 · suites de forme jeton (43 car., minuscules+majuscules+chiffre) : 0 (attendu 0 et 0)
+=== A-1-audit.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > venueRejectEntry > le MOTIF est dans la ligne — publier l'efface de la colonne, le journal garde l'histoire (R-2)
+     ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+=== A-1-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > la salle reste en BROUILLON avec son créneau ; le motif est stocké (rogné) ; la réponse dit le refus ; UNE ligne de journal le porte
+     ↳ AssertionError: expected { …(10) } to match object { …(7) }
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal
+     ↳ AssertionError: expected { rejectionReason: null } to deeply equal { Object (rejectionReason) }
+=== A-2-audit.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > deletionDecisionEntry > approuver : le nombre de salles archivées voyage, AUCUN identifiant du compte, AUCUNE note de décision
+     ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+=== A-2-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées (vivantes seulement) — 
+     ↳ AssertionError: expected { …(10) } to match object { …(7) }
+=== A-3-audit.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > deletionDecisionEntry > approuver : le nombre de salles archivées voyage, AUCUN identifiant du compte, AUCUNE note de décision
+     ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+=== A-4-audit.log
+  Tests  2 failed | 7 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > deletionDecisionEntry > approuver : le nombre de salles archivées voyage, AUCUN identifiant du compte, AUCUNE note de décision
+     ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+  FAIL  src/common/admin-audit.spec.ts > aucune ligne ne porte de donnée personnelle ni de valeur composée > aucune clé n'est un nom de donnée personnelle (e-mail, téléphone, nom, note de décision)
+     ↳ AssertionError: expected [ 'status', 'decisionNote', …(2) ] to not include 'decisionNote'
+=== A-5-audit.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > venuePublishEntry > le statut de départ est celui qu'on passe (le cas d'un `PENDING` verrouillé ne s'écrit pas « DRAFT »)
+     ↳ AssertionError: expected { publicationStatus: 'DRAFT' } to deeply equal { publicationStatus: 'PENDING' }
+=== A-6-audit.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/common/admin-audit.spec.ts > promoteAdminEntry — le script du premier admin (D-3) > pas d'acteur-compte (aucun admin n'existe encore) : `SCRIPT` ; l'entité est le compte, avant → après porte le seul rôle
+     ↳ AssertionError: expected { actorId: null, …(6) } to deeply equal { actorId: null, …(6) }
+=== C-1-int-journal.log
+  Tests  2 failed | 11 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > publier une salle : `venue.publish`, entité `venue`, l'admin, le statut avant → après
+     ↳ AssertionError: expected 500 to be 200 // Object.is equality
+  FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > publier : la route répond 500, la salle reste un BROUILLON, aucune ligne ; sans le déclencheur, le même 
+     ↳ AssertionError: expected 500 to be 200 // Object.is equality
+=== C-2-int-rbac.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  test/int/rbac-all-routes.int-spec.ts > B10 — RBAC sur TOUTES les routes réelles (D119) > un PRO authentifié ne franchit AUCUNE route admin
+     ↳ AssertionError: routes admin atteintes par un PRO :
+=== C-3-int-moderation.log
+  Tests  6 failed | 21 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans 
+     ↳ AssertionError: expected 404 to be 200 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide
+     ↳ AssertionError: expected 404 to be 200 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création 
+     ↳ TypeError: Cannot read properties of undefined (reading 'map')
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > une salle rejetée porte son motif et la DATE de la ligne du journal ; une autre n'a pas de refus
+     ↳ TypeError: Cannot read properties of undefined (reading 'find')
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > les paramètres hors bornes sont refusés : taille 51, page 0, clé inconnue
+     ↳ AssertionError: expected 404 to be 400 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > l'URL `pending-publication` n'est PAS lue comme un identifiant (la route statique passe avant `:id`)
+     ↳ AssertionError: expected 404 to be 200 // Object.is equality
+=== C-4-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > l'état de publication, le motif et la date — rien d'autre ; la date est celle de la ligne du journal
+     ↳ AssertionError: expected 404 to be 200 // Object.is equality
+=== D-1-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > approuver une suppression : un échec au COMMIT annule aussi la ligne
+     ↳ AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+=== D-2-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées (vivantes seulement) — 
+     ↳ AssertionError: expected { …(10) } to match object { …(7) }
+=== D-2-suppression.log
+  Tests  1 failed | 20 passed (21)
+  FAIL  src/account/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > approve : UNE ligne `account_deletion.approve`, dans la transaction, APRÈS la clôture de la demande, avec le nombre de salles archi
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { …(7) } } ]
+=== D-3-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une suppression : un échec au COMMIT annule aussi la ligne
+     ↳ AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+=== D-4-suppression.log
+  Tests  1 failed | 20 passed (21)
+  FAIL  src/account/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > reject : UNE ligne `account_deletion.reject`, dans une TRANSACTION (il n'en avait aucune), APRÈS l'écriture de la décision
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { …(7) } } ]
+=== F-1-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > tout autre compte est REFUSÉ — et rien n'est écrit > compte suspendu : NOT_ACTIVE
+     ↳ AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { outcome: 'REFUSED', …(1) }
+=== F-1-premier-admin.log
+  Tests  3 failed | 12 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > judgePromotion — qui peut être promu > un compte suspendu ou anonymisé : refus NOT_ACTIVE — pour CHAQUE statut autre que ACTIVE (dérivé de l'énumération)
+     ↳ AssertionError: SUSPENDED: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, reason: 'NOT_ACTIVE' }
+  FAIL  src/admin/first-admin.spec.ts > judgePromotion — qui peut être promu > l'ordre des refus : un compte suspendu ET non vérifié est refusé pour son statut ; un admin suspendu n'est PAS « déjà admin »
+     ↳ AssertionError: expected { ok: false, …(1) } to deeply equal { ok: false, reason: 'NOT_ACTIVE' }
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > chaque refus : AUCUNE écriture, AUCUNE ligne de journal
+     ↳ AssertionError: expected 'PROMOTED' to be 'REFUSED' // Object.is equality
+=== F-10-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > tout autre compte est REFUSÉ — et rien n'est écrit > un compte déjà ADMIN : ALREADY_ADMIN, rien n'est écrit — relancer le script est sans danger
+     ↳ AssertionError: expected 'REFUSED' to be 'ALREADY_ADMIN' // Object.is equality
+=== F-10-premier-admin.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > un compte déjà ADMIN : ALREADY_ADMIN, aucune écriture, aucune ligne de journal (relancer le script est sans danger)
+     ↳ AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'ALREADY_ADMIN', …(1) }
+=== F-2-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > tout autre compte est REFUSÉ — et rien n'est écrit > e-mail NON vérifié : EMAIL_NOT_VERIFIED, le rôle ne bouge pas
+     ↳ AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { outcome: 'REFUSED', …(1) }
+=== F-2-premier-admin.log
+  Tests  2 failed | 13 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > judgePromotion — qui peut être promu > un compte dont l'e-mail n'est pas vérifié : refus EMAIL_NOT_VERIFIED (il ne pourrait de toute façon pas se connecter, D1)
+     ↳ AssertionError: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, …(1) }
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > chaque refus : AUCUNE écriture, AUCUNE ligne de journal
+     ↳ AssertionError: expected 'PROMOTED' to be 'REFUSED' // Object.is equality
+=== F-3-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > tout autre compte est REFUSÉ — et rien n'est écrit > MD-ADM-3 « le mauvais compte » — un compte PRO : IS_PRO, il garde son rôle et l'accès à ses salles
+     ↳ AssertionError: expected { outcome: 'REFUSED', …(1) } to match object { Object (outcome, reason) }
+=== F-3-premier-admin.log
+  Tests  2 failed | 13 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > judgePromotion — qui peut être promu > MD-ADM-3 « le mauvais compte » — un compte PRO est refusé (IS_PRO) : il perdrait l'accès à ses salles
+     ↳ AssertionError: expected { ok: true, action: 'PROMOTE' } to deeply equal { ok: false, reason: 'IS_PRO' }
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > chaque refus : AUCUNE écriture, AUCUNE ligne de journal
+     ↳ AssertionError: expected 'PROMOTED' to be 'REFUSED' // Object.is equality
+=== F-4-premier-admin.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > promeut : UN updateMany conditionné (CLIENT, ACTIF, e-mail vérifié) qui n'écrit QUE le rôle — AUCUN mot de passe n'est lu ni écrit
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, …(1) } ]
+=== F-5-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > un compte vérifié et actif est promu > le rôle devient ADMIN ; une connexion NEUVE ouvre les routes ADMIN ; le hachage du mot de passe est INTACT ; UNE ligne de journal sans e-mail
+     ↳ AssertionError: expected null to be '$argon2id$v=19$m=65536,t=3,p=4$kQIXxb…' // Object.is equality
+=== F-5-premier-admin.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > promeut : UN updateMany conditionné (CLIENT, ACTIF, e-mail vérifié) qui n'écrit QUE le rôle — AUCUN mot de passe n'est lu ni écrit
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, …(1) } ]
+=== F-6-int-premier-admin.log
+  Tests  4 failed | 6 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > un compte vérifié et actif est promu > le rôle devient ADMIN ; une connexion NEUVE ouvre les routes ADMIN ; le hachage du mot de passe est INTACT ; UNE ligne de journal sans e-mail
+     ↳ AssertionError: expected [] to have a length of 1 but got +0
+  FAIL  test/int/first-admin.int-spec.ts > tout autre compte est REFUSÉ — et rien n'est écrit > un compte déjà ADMIN : ALREADY_ADMIN, rien n'est écrit — relancer le script est sans danger
+     ↳ AssertionError: expected [] to have a length of 1 but got +0
+  FAIL  test/int/first-admin.int-spec.ts > atomicité (MD-ADM-6 appliqué au premier admin) > DEUX promotions simultanées : un seul PROMOTED, UNE seule ligne de journal
+     ↳ AssertionError: tour 0: expected [] to have a length of 1 but got +0
+  FAIL  test/int/first-admin.int-spec.ts > atomicité (MD-ADM-6 appliqué au premier admin) > un journal qui échoue ANNULE la promotion : le compte reste CLIENT ; sans le déclencheur, le même appel réussit
+     ↳ AssertionError: promise resolved "{ outcome: 'PROMOTED', …(1) }" instead of rejecting
+=== F-6-premier-admin.log
+  Tests  2 failed | 13 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > R-5/D-8 — UNE ligne de journal dans la MÊME transaction, après l'écriture, sans e-mail
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { actorId: null, …(6) } } ]
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > un journal qui échoue fait ÉCHOUER la promotion (l'erreur remonte : la transaction l'annule)
+     ↳ AssertionError: promise resolved "{ outcome: 'PROMOTED', …(1) }" instead of rejecting
+=== F-7-premier-admin.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > la course perdue : le compte a changé entre la lecture et l'écriture (compte 0) ⇒ refus CHANGED, AUCUNE ligne de journal
+     ↳ AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'REFUSED', …(1) }
+=== F-8-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > un compte vérifié et actif est promu > --dry-run : dit ce qui SERAIT fait, n'écrit RIEN (ni rôle, ni ligne)
+     ↳ AssertionError: expected 'PROMOTED' to be 'WOULD_PROMOTE' // Object.is equality
+=== F-8-premier-admin.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > --dry-run : rend ce qui SERAIT fait, n'écrit RIEN
+     ↳ AssertionError: expected { outcome: 'PROMOTED', …(1) } to deeply equal { outcome: 'WOULD_PROMOTE', …(1) }
+=== F-9-int-premier-admin.log
+  Tests  1 failed | 9 passed (10)
+  FAIL  test/int/first-admin.int-spec.ts > un compte vérifié et actif est promu > l'adresse saisie au terminal est normalisée : majuscules et espaces autour ne font pas échouer
+     ↳ AssertionError: expected 'REFUSED' to be 'PROMOTED' // Object.is equality
+=== F-9-premier-admin.log
+  Tests  2 failed | 13 passed (15)
+  FAIL  src/admin/first-admin.spec.ts > normalizeAdminEmail — la saisie du terminal > rogne les espaces et passe en minuscules (l'inscription stocke l'e-mail en minuscules)
+     ↳ AssertionError: expected 'Ko@Example.DZ' to be 'ko@example.dz' // Object.is equality
+  FAIL  src/admin/first-admin.spec.ts > promoteFirstAdmin — ce que le script écrit > promeut : UN updateMany conditionné (CLIENT, ACTIF, e-mail vérifié) qui n'écrit QUE le rôle — AUCUN mot de passe n'est lu ni écrit
+     ↳ AssertionError: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+=== K-1-client-admin.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/admin-client.test.ts > le client admin — publier et rejeter > `rejectVenue` POSTE `/admin/venues/:id/reject` avec le motif, tel quel (le rognage est celui du serveur)
+     ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+=== K-2-client-admin.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/admin-client.test.ts > le client admin — la file et le détail des salles > `listPendingVenues` LIT `/admin/venues/pending-publication`, avec la page et la taille en querystring
+     ↳ AssertionError: expected '/admin/venues/pending' to be '/admin/venues/pending-publication' // Object.is equality
+=== K-3-client-admin.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/admin-client.test.ts > le client admin — la file et le détail des salles > `getVenue` encode un identifiant qui contiendrait un `/` : il ne sort pas de son segment
+     ↳ AssertionError: expected '/admin/venues/a/b' to be '/admin/venues/a%2Fb' // Object.is equality
+=== K-4-client-admin.log
+  Tests  1 failed | 8 passed (9)
+  FAIL  src/admin-client.test.ts > MD-ADM-7 (R-1) — aucune méthode du client n'écrit un taux > la SOURCE du client admin ne nomme ni `commission-rate`, ni `commissionRateBps`, ni `cashbackRateBps`
+     ↳ AssertionError: expected 'import type {\n  AdminDeletionRequest…' not to match /commission-rate/
+=== K-5-client-pro.log
+  Tests  2 failed (2)
+  FAIL  src/venue-publication-client.test.ts > getPublicationReview — le pro lit l'état de publication de SA salle et, le cas échéant, son refus > LIT `/pro/venues/:id/publication` (GET, aucun corps) et rend la réponse telle quelle
+     ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+  FAIL  src/venue-publication-client.test.ts > getPublicationReview — le pro lit l'état de publication de SA salle et, le cas échéant, son refus > encode l'identifiant : un `/` ne sort pas de son segment
+     ↳ AssertionError: expected '/pro/venues/a%2Fb/publication-review' to be '/pro/venues/a%2Fb/publication' // Object.is equality
+=== K-5-int-contrat.log
+  Tests  1 failed | 5 passed (6)
+  FAIL  test/int/contract-api-client.int-spec.ts > B6 — contrat de CHEMINS entre le client et l'API (D122) > CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest
+     ↳ AssertionError: Le client appelle des routes que l'API n'expose pas :
+=== P-1-service-pro.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > id hors motif UUID : 404 indistinct SANS toucher le port
+     ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+=== P-2-service-pro.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > le port rend `null` (inexistante, supprimée, à un autre pro) : le MÊME 404 indistinct
+     ↳ AssertionError: promise resolved "{ publicationStatus: 'DRAFT', …(1) }" instead of rejecting
+=== P-3-service-pro.log
+  Tests  2 failed | 13 passed (15)
+  FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > un brouillon rejeté : l'état, le motif et la date — et RIEN d'autre (exactement deux clés, exactement deux clés dans l
+     ↳ AssertionError: expected { publicationStatus: 'DRAFT', …(1) } to deeply equal { publicationStatus: 'DRAFT', …(1) }
+  FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > une salle publiée ne montre JAMAIS de refus, même si une valeur périmée traîne dans la colonne
+     ↳ AssertionError: expected { Object (publicationStatus, rejection) } to deeply equal { Object (publicationStatus, rejection) }
+=== Q-1-file.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > statuts sources — confrontés à l'énumération > publier part de TOUT ce qui n'est pas déjà publié (DRAFT et le PENDING verrouillé), jamais de PUBLISHED
+     ↳ AssertionError: expected [ 'DRAFT' ] to deeply equal [ 'DRAFT', 'PENDING' ]
+=== Q-2-file.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > statuts sources — confrontés à l'énumération > rejeter ne part que de DRAFT : ni PUBLISHED (sens unique), ni le PENDING verrouillé
+     ↳ AssertionError: expected [ 'DRAFT', 'PUBLISHED' ] to deeply equal [ 'DRAFT' ]
+=== Q-2-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal
+     ↳ AssertionError: expected 200 to be 409 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ;
+     ↳ AssertionError: tour 2 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+=== Q-3-file.log
+  Tests  3 failed | 12 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > une page entièrement dans le second groupe : le premier n'est pas interrogé, le saut est relatif au second
+     ↳ AssertionError: expected { first: { skip: 2, take: +0 }, …(1) } to deeply equal { first: { skip: 2, take: +0 }, …(1) }
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > une page au-delà de la fin : AUCUNE ligne demandée — jamais une page qui REPREND le début, jamais une requête pou
+     ↳ AssertionError: expected 2 to be +0 // Object.is equality
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > PROPRIÉTÉ : sur toutes les pages, les tranches réunies sont les n1 + n2 lignes, dans l'ordre, sans trou ni doublo
+     ↳ AssertionError: n1=0 n2=2 taille=1: expected [ +0, +0 ] to deeply equal [ +0, 1 ]
+=== Q-3-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création 
+     ↳ AssertionError: expected [ …(2) ] to deeply equal [ Array(1) ]
+=== Q-4-file.log
+  Tests  3 failed | 12 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > un second groupe vide, ou les deux : rien de plus que ce qui existe
+     ↳ AssertionError: expected { first: { skip: +0, take: 3 }, …(1) } to deeply equal { first: { skip: +0, take: 3 }, …(1) }
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > une page au-delà de la fin : AUCUNE ligne demandée — jamais une page qui REPREND le début, jamais une requête pou
+     ↳ AssertionError: expected 5 to be +0 // Object.is equality
+  FAIL  src/venues/venue-review-queue.spec.ts > pageAcrossGroups — la page se découpe sur deux groupes, dans l'ordre > PROPRIÉTÉ : sur toutes les pages, les tranches réunies sont les n1 + n2 lignes, dans l'ordre, sans trou ni doublo
+     ↳ AssertionError: n1=0 n2=0 taille=1: expected [ +0 ] to deeply equal []
+=== Q-5-file.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > toRejection — ce que le pro et l'admin lisent d'un refus > une salle PUBLIÉE ne porte jamais de refus, même si une valeur périmée traîne dans la colonne
+     ↳ AssertionError: expected { reason: 'Photos floues', …(1) } to be null
+=== Q-5-service-pro.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venues.service.spec.ts > VenuesService.getPublicationReview — le pro lit son refus (D-5, p2) > une salle publiée ne montre JAMAIS de refus, même si une valeur périmée traîne dans la colonne
+     ↳ AssertionError: expected { Object (publicationStatus, rejection) } to deeply equal { Object (publicationStatus, rejection) }
+=== Q-6-file.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > latestDatePerEntity — une requête pour toute la page, la ligne la plus récente de chaque salle > rend, par entité, la PREMIÈRE ligne d'une liste triée du plus récent au plus ancien
+     ↳ AssertionError: expected '2026-11-01T10:00:00.000Z' to be '2026-11-12T10:00:00.000Z' // Object.is equality
+=== Q-7-file.log
+  Tests  1 failed | 14 passed (15)
+  FAIL  src/venues/venue-review-queue.spec.ts > toRejection — ce que le pro et l'admin lisent d'un refus > le journal n'a pas de ligne (motif écrit à la main) : le motif est rendu, la date est `null` — jamais inventée
+     ↳ AssertionError: expected { reason: 'Photos floues', …(1) } to deeply equal { reason: 'Photos floues', …(1) }
+=== S-1-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > DRAFT → UN updateMany conditionné au statut (check-and-set), qui efface le motif ; le WHERE admin voit toutes les vivantes
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+=== S-10-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal
+     ↳ AssertionError: expected 409 to be 200 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal
+     ↳ AssertionError: tour 0: expected [ 200, 409 ] to deeply equal [ 200, 200 ]
+=== S-10-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une sal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueAlre… { …(3) } to deeply equal { …(3) }
+=== S-11-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > MD-ADM-4 — compte 0 sur une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens uniqu
+     ↳ AssertionError: expected 'VENUE_ALREADY_REJECTED' to be 'VENUE_NOT_DRAFT' // Object.is equality
+=== S-12-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejeté
+     ↳ AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+=== S-13-service-admin.log
+  Tests  2 failed | 33 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, jamais
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > R-1 — le rejet n'écrit ni ne lit AUCUN taux : la charge utile de l'écriture et
+     ↳ AssertionError: expected '{"where":{"id":"018f0000-0000-7000-80…' not to match /commissionRateBps|cashbackRateBps/
+=== S-14-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans 
+     ↳ AssertionError: expected [ …(4) ] to deeply equal [ …(3) ]
+=== S-14-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la condition de la file : brouillon VIVANT avec au moins un créneau ACTIF (la condition mê
+     ↳ AssertionError: expected { publicationStatus: 'DRAFT', …(1) } to deeply equal { deletedAt: null, …(2) }
+=== S-15-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans 
+     ↳ AssertionError: expected [ …(5) ] to deeply equal [ …(3) ]
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide
+     ↳ AssertionError: expected { …(4) } to match object { total: 5, page: 1, pageSize: 2 }
+=== S-15-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la condition de la file : brouillon VIVANT avec au moins un créneau ACTIF (la condition mê
+     ↳ AssertionError: expected { deletedAt: null, …(1) } to deeply equal { deletedAt: null, …(2) }
+=== S-16-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création 
+     ↳ AssertionError: expected [ …(2) ] to deeply equal [ …(3) ]
+=== S-16-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > MD-ADM-8 — le filtre vit dans le WHERE : le compte et la lecture de CHAQUE groupe partagen
+     ↳ AssertionError: expected [ { deletedAt: null, …(2) }, …(1) ] to deeply equal [ { deletedAt: null, …(3) }, …(1) ]
+=== S-17-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > R-2 — les non rejetées d'abord, les rejetées ensuite ; chaque groupe trié par date de créa
+     ↳ AssertionError: expected [ { createdAt: 'asc' } ] to deeply equal [ { createdAt: 'asc' }, { id: 'asc' } ]
+=== S-18-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > une page entièrement dans le second groupe passe son saut RELATIF au second ; le premier n
+     ↳ AssertionError: expected { …(5) } to match object { …(3) }
+=== S-19-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > la date des refus se lit en UNE requête pour toute la page (pas une par ligne), sur les se
+     ↳ AssertionError: expected { where: { …(3) }, …(2) } to match object { where: { …(3) }, …(1) }
+=== S-2-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal
+     ↳ AssertionError: expected 'Les photos sont floues. Merci de les …' to be null
+  FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ;
+     ↳ AssertionError: tour 0 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+=== S-2-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > DRAFT → UN updateMany conditionné au statut (check-and-set), qui efface le motif ; le WHERE admin voit toutes les vivantes
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, data: { …(2) } } ]
+=== S-20-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.listPending (D-6 l2, MD-ADM-8) — la file « en attente de publication » > R-1 — la lecture de la file ne sélectionne AUCUN taux
+     ↳ AssertionError: expected '{"id":true,"number":true,"slug":true,…' not to match /commissionRateBps|cashbackRateBps/
+=== S-21-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /admin/venues/:id — le détail > une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante) ; une rejetée porte son motif et sa date
+     ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+=== S-21-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.detail — une salle pour l'admin (taux AFFICHÉS en lecture seule, R-1) > un brouillon rejeté : le motif et la date lue au journal ; la clé brute `rejectionReason` n
+     ↳ AssertionError: expected { Object (reason, rejectedAt) } to deeply equal { reason: 'Un motif', …(1) }
+=== S-22-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > R-1 — le réglage des taux n'écrit AUCUNE ligne (MD-ADM-17 : il n'est pas journalisé)
+     ↳ AssertionError: expected 1 to be +0 // Object.is equality
+=== S-22-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.setRates — fusion D35 contre l'existant (R-1 : INCHANGÉ) > R-1 — le réglage des taux n'écrit AUCUNE ligne de journal (il ne l'était pas avant, il ne l'est pas : MD
+     ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+=== S-3-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > publier : un échec au COMMIT annule aussi la ligne
+     ↳ AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+=== S-4-service-admin.log
+  Tests  2 failed | 33 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > MD-ADM-4 — la course perdue : le compte est 0 parce qu'un AUTRE geste a publié entre-temps ⇒ 200 idempotent, AUCUNE ligne de journal
+     ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > MD-ADM-4 — le compte est 0 parce que la salle a été SUPPRIMÉE entre-temps ⇒ 404 indistinct, AUCUNE ligne de journal
+     ↳ AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of NotFoundException
+=== S-5-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > MD-ADM-4 — le compte est 0 parce que la salle a été SUPPRIMÉE entre-temps ⇒ 404 indistinct, AUCUNE ligne de journal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueChan… { …(3) } to be an instance of NotFoundException
+=== S-6-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, la salle reste un brouillon, aucune
+     ↳ AssertionError: expected 200 to be 409 // Object.is equality
+=== S-6-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.publish > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, aucune écriture, aucune ligne de journal
+     ↳ AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+=== S-7-int-moderation.log
+  Tests  2 failed | 25 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal
+     ↳ AssertionError: expected 200 to be 409 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ;
+     ↳ AssertionError: tour 2 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+=== S-7-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, jamais
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+=== S-8-int-moderation.log
+  Tests  3 failed | 24 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal
+     ↳ AssertionError: expected { …(3) } to deeply equal { …(3) }
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > DÉCISION MANQUANTE (R-2, rapportée) — un AUTRE motif sur une salle déjà rejetée : 409 VENUE_ALREADY_REJECTED, le motif stocké n'est PAS écras
+     ↳ AssertionError: expected 200 to be 409 // Object.is equality
+  FAIL  test/int/admin-moderation.int-spec.ts > MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal
+     ↳ AssertionError: tour 0: expected { …(3) } to deeply equal { …(3) }
+=== S-8-service-admin.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  src/venues/venues-admin.service.spec.ts > VenuesAdminService.reject (D-4, R-2) — la salle RESTE en brouillon, le motif est stocké et journalisé > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, jamais
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+=== S-9-int-journal.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  test/int/admin-audit.int-spec.ts > MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une salle : un échec au COMMIT annule aussi la ligne
+     ↳ AssertionError: expected [ { …(10) } ] to have a length of +0 but got 1
+=== T-1-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > le motif est OBLIGATOIRE : corps vide, motif vide ou blanc, trop long, clé inconnue ⇒ 400, rien n'est écrit
+     ↳ AssertionError: expected 200 to be 400 // Object.is equality
+=== T-1-schemas.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif vide, blanc ou absent est REFUSÉ — jamais un rejet sans raison
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== T-2-schemas.log
+  Tests  3 failed | 9 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif de deux phrases est accepté, et rendu rogné
+     ↳ AssertionError: expected '  Les photos sont floues. Merci de le…' to be 'Les photos sont floues. Merci de les …' // Object.is equality
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne se mesure APRÈS le rognage : des espaces autour d'un motif long ne le font pas refuser
+     ↳ AssertionError: expected false to be true // Object.is equality
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > un motif vide, blanc ou absent est REFUSÉ — jamais un rejet sans raison
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== T-3-schemas.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > la borne est INCLUSE : un motif d'exactement la longueur maximale passe, un caractère de plus est refusé
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== T-4-schemas.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venueRejectSchema — le motif est OBLIGATOIRE (D-4) > une clé inconnue est refusée (`.strict()`) : on ne glisse pas un statut ni un taux dans le corps d'un rejet
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== T-5-schemas.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > une clé inconnue est refusée : la file n'a AUCUN filtre de statut, de taux ni d'identifiant
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== T-6-schemas.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  src/venues/venue-moderation.schemas.spec.ts > venuePendingQuerySchema — la file « en attente » > les bornes sont celles de la liste publique d'A3-⑤ (page/pageSize, défaut 12, maximum 50) : même enveloppe, mêmes nombres
+     ↳ AssertionError: expected 100 to be 50 // Object.is equality
+=== T-7-magasin.log
+  Tests  1 failed | 18 passed (19)
+  FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la req
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
+=== V-1-int-moderation.log
+  Tests  1 failed | 26 passed (27)
+  FAIL  test/int/admin-moderation.int-spec.ts > GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > 404 indistincts : la salle d'un AUTRE pro, supprimée, uuid inconnu, id malformé — la même réponse
+     ↳ AssertionError: expected 200 to be 404 // Object.is equality
+=== V-1-magasin.log
+  Tests  1 failed | 18 passed (19)
+  FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > ⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ; le select est EXACTEMENT {état,
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+=== V-2-magasin.log
+  Tests  1 failed | 18 passed (19)
+  FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > ⛔ le WHERE est celui d'`trouverVivante` — id + vivante + à moi ; le select est EXACTEMENT {état,
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(1) } ]
+=== V-3-magasin.log
+  Tests  1 failed | 18 passed (19)
+  FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la req
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
+=== V-4-magasin.log
+  Tests  1 failed | 18 passed (19)
+  FAIL  src/venues/venue-store.prisma.spec.ts > PrismaVenueStore.lireRefus — un contrat étroit, par la relation d'appartenance (D149) > rejetée : la date est celle de la ligne `venue.reject` LA PLUS RÉCENTE de CETTE salle, et la req
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(3) }, …(2) } ]
