@@ -1,0 +1,189 @@
+D349 — R-8 : les fichiers de `par-carte` et leur recoupement avec ceux de ce lot
+commande : git diff --name-only origin/main...origin/par-carte
+origin/main = 9ec8abf702068069dff5aa07605a884a7483f9b5
+origin/par-carte = 7fdc67961727a3280f8e2210594ba507a0fbfb97
+merge-base = 26ad5c77ec03a73d82e92368f7d97c4beac7556f
+fichiers modifiés par par-carte depuis le merge-base : 155
+
+apps/api/src/venues/venue-map.controller.ts
+apps/api/src/venues/venue-map.spec.ts
+apps/api/src/venues/venue-map.ts
+apps/api/src/venues/venues-public.service.spec.ts
+apps/api/src/venues/venues-public.service.ts
+apps/api/src/venues/venues.module.ts
+apps/api/test/int/venue-map.int-spec.ts
+apps/client/.env.example
+apps/client/src/app/[locale]/page.test.tsx
+apps/client/src/app/theme.css
+apps/client/src/components/home-view.tsx
+apps/client/src/components/map/map-test-support.tsx
+apps/client/src/components/map/near-viewport-map.test.tsx
+apps/client/src/components/map/near-viewport-map.tsx
+apps/client/src/components/map/venue-map-loader.test.tsx
+apps/client/src/components/map/venue-map-loader.tsx
+apps/client/src/components/map/venue-points-map.test.tsx
+apps/client/src/components/map/venue-points-map.tsx
+apps/client/src/components/search/search-view.test.tsx
+apps/client/src/components/search/search-view.tsx
+apps/client/src/components/ui-map-tiles.test.ts
+apps/client/src/components/venue/venue-detail-view.test.tsx
+apps/client/src/components/venue/venue-detail-view.tsx
+apps/client/src/components/venue/venue-location-map.test.tsx
+apps/client/src/components/venue/venue-location-map.tsx
+apps/client/src/lib/api.test.ts
+apps/client/src/lib/api.ts
+apps/client/src/lib/leaflet-import-guard.test.ts
+apps/client/src/lib/map-tiles-env.ts
+apps/client/src/lib/search-query.test.ts
+apps/client/src/lib/search-query.ts
+apps/pro/.env.example
+apps/pro/src/lib/map-tiles-env.ts
+apps/pro/src/theme.css
+apps/pro/src/venues/place-fields-map.test.tsx
+apps/pro/src/venues/venue-form.tsx
+apps/pro/src/venues/venue-pin-map.test.tsx
+apps/pro/src/venues/venue-pin-map.tsx
+docs/preuves/parallele/carte/BILAN.md
+docs/preuves/parallele/carte/CA-1/audit-secrets-ca1.txt
+docs/preuves/parallele/carte/CA-1/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-1/neutralisation/neutralize-ca1.txt
+docs/preuves/parallele/carte/CA-1/portes/_index.txt
+docs/preuves/parallele/carte/CA-1/portes/build.txt
+docs/preuves/parallele/carte/CA-1/portes/lint.txt
+docs/preuves/parallele/carte/CA-1/portes/portes.md
+docs/preuves/parallele/carte/CA-1/portes/test-int.txt
+docs/preuves/parallele/carte/CA-1/portes/test.txt
+docs/preuves/parallele/carte/CA-1/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-1/rouges/int-venue-map.txt
+docs/preuves/parallele/carte/CA-1/rouges/rouges.md
+docs/preuves/parallele/carte/CA-1/rouges/unit-venue-map.txt
+docs/preuves/parallele/carte/CA-1/rouges/unit-venues-public-service.txt
+docs/preuves/parallele/carte/CA-1/table-ouverture.md
+docs/preuves/parallele/carte/CA-1/tri-audit-ca1.txt
+docs/preuves/parallele/carte/CA-2/audit-secrets-ca2.txt
+docs/preuves/parallele/carte/CA-2/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-2/neutralisation/neutralize-ca2.txt
+docs/preuves/parallele/carte/CA-2/poids/build-apres.txt
+docs/preuves/parallele/carte/CA-2/poids/build-avant.txt
+docs/preuves/parallele/carte/CA-2/poids/poids.md
+docs/preuves/parallele/carte/CA-2/portes/_index.txt
+docs/preuves/parallele/carte/CA-2/portes/build.txt
+docs/preuves/parallele/carte/CA-2/portes/lint.txt
+docs/preuves/parallele/carte/CA-2/portes/portes.md
+docs/preuves/parallele/carte/CA-2/portes/test-int.txt
+docs/preuves/parallele/carte/CA-2/portes/test.txt
+docs/preuves/parallele/carte/CA-2/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-2/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-2/rouges/rouges.md
+docs/preuves/parallele/carte/CA-2/table-ouverture.md
+docs/preuves/parallele/carte/CA-2/tri-audit-ca2.txt
+docs/preuves/parallele/carte/CA-3/audit-secrets-ca3.txt
+docs/preuves/parallele/carte/CA-3/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-3/neutralisation/neutralize-ca3.txt
+docs/preuves/parallele/carte/CA-3/portes/_index.txt
+docs/preuves/parallele/carte/CA-3/portes/build.txt
+docs/preuves/parallele/carte/CA-3/portes/lint.txt
+docs/preuves/parallele/carte/CA-3/portes/portes.md
+docs/preuves/parallele/carte/CA-3/portes/test-int.txt
+docs/preuves/parallele/carte/CA-3/portes/test.txt
+docs/preuves/parallele/carte/CA-3/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-3/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-3/rouges/rouges.md
+docs/preuves/parallele/carte/CA-3/table-ouverture.md
+docs/preuves/parallele/carte/CA-3/tri-audit-ca3.txt
+docs/preuves/parallele/carte/CA-4/audit-secrets-ca4.txt
+docs/preuves/parallele/carte/CA-4/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-4/neutralisation/neutralize-ca4.txt
+docs/preuves/parallele/carte/CA-4/portes/_index.txt
+docs/preuves/parallele/carte/CA-4/portes/build.txt
+docs/preuves/parallele/carte/CA-4/portes/lint.txt
+docs/preuves/parallele/carte/CA-4/portes/portes.md
+docs/preuves/parallele/carte/CA-4/portes/test-int.txt
+docs/preuves/parallele/carte/CA-4/portes/test.txt
+docs/preuves/parallele/carte/CA-4/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-4/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-4/rouges/rouges.md
+docs/preuves/parallele/carte/CA-4/table-ouverture.md
+docs/preuves/parallele/carte/CA-4/tri-audit-ca4.txt
+docs/preuves/parallele/carte/CA-5/audit-secrets-ca5.txt
+docs/preuves/parallele/carte/CA-5/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-5/neutralisation/neutralize-ca5.txt
+docs/preuves/parallele/carte/CA-5/poids/build-pro.txt
+docs/preuves/parallele/carte/CA-5/portes/_index.txt
+docs/preuves/parallele/carte/CA-5/portes/build.txt
+docs/preuves/parallele/carte/CA-5/portes/lint.txt
+docs/preuves/parallele/carte/CA-5/portes/portes.md
+docs/preuves/parallele/carte/CA-5/portes/test-int.txt
+docs/preuves/parallele/carte/CA-5/portes/test.txt
+docs/preuves/parallele/carte/CA-5/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-5/rouges/pro-vitest.txt
+docs/preuves/parallele/carte/CA-5/rouges/rouges.md
+docs/preuves/parallele/carte/CA-5/table-ouverture.md
+docs/preuves/parallele/carte/CA-5/tri-audit-ca5.txt
+docs/preuves/parallele/carte/CA-6/audit-secrets-ca6.txt
+docs/preuves/parallele/carte/CA-6/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-6/neutralisation/neutralize-ca6.txt
+docs/preuves/parallele/carte/CA-6/portes/_index.txt
+docs/preuves/parallele/carte/CA-6/portes/build.txt
+docs/preuves/parallele/carte/CA-6/portes/lint.txt
+docs/preuves/parallele/carte/CA-6/portes/portes.md
+docs/preuves/parallele/carte/CA-6/portes/test-e2e-passe-1.txt
+docs/preuves/parallele/carte/CA-6/portes/test-e2e-passe-2.txt
+docs/preuves/parallele/carte/CA-6/portes/test-int.txt
+docs/preuves/parallele/carte/CA-6/portes/test.txt
+docs/preuves/parallele/carte/CA-6/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-6/rouges/e2e-ca6.txt
+docs/preuves/parallele/carte/CA-6/rouges/rouges.md
+docs/preuves/parallele/carte/CA-6/table-ouverture.md
+docs/preuves/parallele/carte/CA-6/tri-audit-ca6.txt
+docs/preuves/parallele/carte/a-reporter-au-backlog.md
+docs/preuves/parallele/carte/arabe-a-relire.md
+docs/preuves/parallele/carte/audit-secrets-ouverture.txt
+docs/preuves/parallele/carte/ce-qui-part-vers-le-tiers.md
+docs/preuves/parallele/carte/consigne.md
+docs/preuves/parallele/carte/controle-fin.txt
+docs/preuves/parallele/carte/lecture-adverse.txt
+e2e/specs/ca6-carte.e2e.ts
+neutralisation/neutralize-ca1.py
+neutralisation/neutralize-ca2.py
+neutralisation/neutralize-ca3.py
+neutralisation/neutralize-ca4.py
+neutralisation/neutralize-ca5.py
+neutralisation/neutralize-ca6.py
+packages/i18n/messages/ar.json
+packages/i18n/messages/fr.json
+packages/types/src/venue.ts
+packages/ui/package.json
+packages/ui/src/index.ts
+packages/ui/src/map/leaflet-canvas.tsx
+packages/ui/src/map/map-tiles.ts
+packages/ui/src/map/venue-map.tsx
+packages/ui/styles.css
+pnpm-lock.yaml
+
+fichiers de la table d'ouverture examinés : 53 (lignes de la table parcourues : 150)
+RECOUPEMENT table ∩ par-carte : 0 fichier(s) []  (attendu : 0)
+
+les fichiers que R-8 interdit de toucher, et leur présence dans la liste de par-carte (calibration : ils doivent y figurer) :
+  PRÉSENT  apps/api/src/venues/venues-public.service.ts
+  PRÉSENT  apps/api/src/venues/venues-public.service.spec.ts
+  PRÉSENT  apps/api/src/venues/venue-map.ts
+  PRÉSENT  apps/api/src/venues/venue-map.controller.ts
+  PRÉSENT  apps/api/src/venues/venue-map.spec.ts
+  PRÉSENT  apps/api/src/venues/venues.module.ts
+  PRÉSENT  apps/pro/src/venues/venue-form.tsx
+  PRÉSENT  packages/types/src/venue.ts
+  PRÉSENT  packages/i18n/messages/fr.json
+  PRÉSENT  packages/i18n/messages/ar.json
+
+les fichiers du lot qui sont dans un dossier proche de par-carte, et ne sont PAS dans sa liste :
+  absent  packages/types/src/index.ts
+  absent  packages/api-client/src/index.ts
+  absent  apps/api/package.json
+  absent  apps/api/src/venues/venues-admin.service.ts
+  absent  apps/api/src/venues/venues-admin.controller.ts
+  absent  apps/api/src/venues/venues.controller.ts
+  absent  apps/api/src/venues/venues.service.ts
+  absent  apps/api/src/venues/venue-store.types.ts
+  absent  apps/api/src/venues/venue-store.prisma.ts
+  absent  apps/api/src/account/account-deletion.service.ts

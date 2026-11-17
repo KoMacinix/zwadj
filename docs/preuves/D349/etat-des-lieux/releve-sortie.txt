@@ -1,0 +1,52 @@
+D349 — état des lieux du § 1 du cadrage du rang 28, RE-MESURÉ
+HEAD = 2359d67fe7284828debcc5620f2325f87d6d33e6
+origin/main = 9ec8abf702068069dff5aa07605a884a7483f9b5
+empreinte de ce script : c51067967ff95e337fd7421264be79d8ad963d9e26c5749c7810ff880b40ae67
+
+[0] CALIBRATION
+  calibration · bras positif  account-admin.controller.ts → contrôleur ADMIN, 3 routes (attendu : contrôleur ADMIN, 3 routes) · ✓
+  calibration · bras négatif  venues.controller.ts → absent (attendu : absent) · ✓
+
+[1.1] CONTRÔLEURS ADMIN — fichiers source de l'API parcourus (hors tests, hors generated) : 140
+  apps/api/src/account/account-admin.controller.ts  @Controller("admin/deletion-requests")  @Roles(UserRole.ADMIN) de classe
+      GET /api/v1/admin/deletion-requests
+      POST /api/v1/admin/deletion-requests/:id/approve
+      POST /api/v1/admin/deletion-requests/:id/reject
+  apps/api/src/venues/venues-admin.controller.ts  @Controller("admin/venues")  @Roles(UserRole.ADMIN) de classe
+      POST /api/v1/admin/venues/:id/publish
+      PATCH /api/v1/admin/venues/:id/commission-rate
+  MESURÉ : 2 contrôleur(s) ADMIN, 5 route(s) · PARCOURU : 140 fichiers · ATTENDU : 2 contrôleurs, 5 routes (consigne, section 2)
+  apps/api/test/int/rbac-all-routes.int-spec.ts existe : True (attendu : True) · plancher des routes admin qu'il asserte : 5, 0
+
+[1.4] ÉCRIVAINS D'`audit_logs` dans apps/api/src (hors tests, hors generated)
+  apps/api/src/staff/staff-store.prisma.ts:74  await client.auditLog.create({
+  apps/api/src/venues/quote-store.prisma.ts:322  await tx.auditLog.create({
+  MESURÉ : 2 appel(s) d'écriture dans 2 fichier(s) : ['quote-store.prisma.ts', 'staff-store.prisma.ts'] · PARCOURU : 140 fichiers · ATTENDU : staff-store.prisma.ts et quote-store.prisma.ts, AUCUN pour publier / rejeter / approuver / rejeter une suppression
+  écrivains dans venues-admin.* ou account-deletion.* : 0 (attendu : 0)
+
+[1.4] @zwadj/api-client — fichiers parcourus (hors tests) : 11
+  MESURÉ : 0 chemin(s) `/admin…` · PARCOURU : 11 fichiers · ATTENDU : 0
+
+[1.3] apps/pro/src — dossiers parcourus : 7 ; fichiers .ts/.tsx : 106
+  MESURÉ : dossier(s) `admin` : 0 [] · ATTENDU : 0
+  MESURÉ : 0 référence(s) · PARCOURU : 106 fichiers · ATTENDU : le refus de tout rôle ≠ PRO de `require-pro.tsx` (D23) ; aucune route `/admin`
+
+[D-4] `rejection_reason` — migration initiale lue : apps/api/prisma/migrations/20260707000000_init/migration.sql (848 lignes)
+  apps/api/prisma/migrations/20260707000000_init/migration.sql:148  "rejection_reason" TEXT,
+  apps/api/prisma/migrations/20260707000000_init/migration.sql:446  "rejection_reason" TEXT,
+  apps/api/prisma/schema.prisma:538  rejectionReason   String?                @map("rejection_reason") // Phase 12 : rejet admin → draft + raison
+  apps/api/prisma/schema.prisma:1418  rejectionReason      String?             @map("rejection_reason")
+  autres migrations qui nomment `rejection_reason` : 0 [] (parcourues : 32)
+  apps/api/src/venues/venues.controller.ts:37  [mention] @ApiCreatedResponse({ description: "VenueProDTO — jamais de commissionRateBps ni rejectionReason." })
+  apps/api/src/venues/venues.service.ts:3  [mention] //    cashbackRateBps (à venir, A3) et rejectionReason ne QUITTENT JAMAIS la
+  MESURÉ : 2 mention(s) de `rejectionReason` dans 140 fichiers source, dont 0 écriture(s) en code (`rejectionReason: <valeur>`) · ATTENDU : colonne présente depuis la migration initiale, AUCUN écrivain
+
+[R-1] la carte du chemin de l'argent — docs/preuves/D304/carte-chemin-argent/carte-sortie.txt (112 lignes parcourues)
+  apps/api/src/venues/venues-admin.service.ts
+  packages/types/src/venue.ts
+  docs/preuves/D304/carte-chemin-argent/tri.txt:31  DEDANS  venues/venues-admin.service.ts      cashback ≤ commission (commission, D35)
+  docs/preuves/D304/carte-chemin-argent/tri.txt:50  commission    venues-admin.service.ts, packages/types/src/venue.ts (candidats, dedans)
+  docs/preuves/D304/carte-chemin-argent/tri.txt:51  remise D35    au registre, D35 = « taux de cashback variable par salle » : venues-admin et
+  MESURÉ : 2 ligne(s) de la carte qui nomment `venues-admin.service.ts` ou `venue.ts` · ATTENDU : le relecteur n'a pas relevé cette entrée (la clause d'ARRÊT de R-1 vise « un fichier de la carte »)
+
+[fin] relevé terminé

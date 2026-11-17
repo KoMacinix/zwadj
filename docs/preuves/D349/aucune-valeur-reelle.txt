@@ -1,0 +1,16 @@
+D349 — tri des alertes nouvelles de l'audit de secrets « a » (D299), avant le premier versement de pièces
+
+Audit : docs/preuves/D349/audit-secrets-d349a.txt (scellé par `neutralisation/audit-secrets.py --sortie`, jamais par redirection ; sortie relue identique : True, sceau vérifié à la relecture : True ; 12 min 41 s).
+
+Tri différentiel : docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D348/audit-secrets-d348d.txt docs/preuves/D349/audit-secrets-d349a.txt
+  → calibration 2 bras ✓ (négatif : 92 contextes, 0 nouvelle ; positif : 2 sur 2, les deux chemins attendus) ;
+  → 2655 contextes dans la précédente, 2662 dans la nouvelle ; 7 alertes ABSENTES de la précédente, ventilation par motif : jeton = 7 (mot-de-passe 0, autres motifs 0).
+
+Tri au contexte (lignes 6023, 6025, 6027, 6029, 6031, 6033 et 6601 de la sortie scellée), lues une à une :
+  · lignes 6023, 6025, 6027, 6029, 6031 et 6033 [jeton], docs/preuves/D348/aucune-valeur-reelle-d.txt:6, :7, :8, :11 et :13 : le tri de l'audit PRÉCÉDENT, qui NOMME le gabarit « token= » (« 0 occurrence de token= », « restants : 0 ») et décrit le masquage des journaux e2e de D348. Texte écrit par D348 APRÈS la sortie scellée de son dernier audit (« d »), donc absent de la sortie que cet audit compare : c'est l'ÉCHO que D298 décrit (une pièce de tri qui recite le motif qu'elle vient de trier). Les contextes sont des phrases, des comptes et des chemins ; l'outil le dit lui-même (« valeur trop courte pour une recherche » pour cinq d'entre eux : le « motif » est la chaîne « token= » suivie d'un nombre de caractères masqués, pas une valeur).
+  · ligne 6601 [jeton], docs/preuves/D349/regle-e2e.md:8 : la règle de ce lot, point 6, qui NOMME le même gabarit (« token= restants : 0 ») pour dire que les journaux bruts versés seront MASQUÉS. Une phrase de règle, pas une valeur : l'outil trouve la chaîne dans 4 fichiers suivis hors preuves, tous des commentaires et des pilotes de masquage versés par les lots précédents.
+  Les sept sont l'ÉCHO de pièces qui décrivent le masquage ; aucune n'est une fuite. Aucune valeur réelle n'a été vue ni écrite par cette session.
+
+Contrôle dédié « 0 valeur réelle » (docs/preuves/D299/outils/aucune-valeur-reelle.py) : NON JOUÉ à ce versement, et c'est dit. Il cherche les valeurs d'un JOURNAL qu'on lui nomme ; cette session n'a produit AUCUN journal brut à ce stade (les portes et l'e2e n'ont pas été lancées). Il sera joué avant le versement de tout journal brut de serveur (règle e2e, point 6).
+
+Pièces versées à ce versement : docs/preuves/D349/consigne.md · docs/preuves/D349/etat-des-lieux/releve.py · docs/preuves/D349/etat-des-lieux/releve-sortie.txt · docs/preuves/D349/lecture-adverse/lecture-adverse.md · docs/preuves/D349/par-carte-fichiers.txt (155 chemins, sortie de `git diff --name-only origin/main...origin/par-carte`) · docs/preuves/D349/regle-e2e.md · docs/preuves/D349/audit-secrets-d349a.txt · cette pièce.
