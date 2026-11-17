@@ -2,16 +2,25 @@
 // 1) SELECT allow-list (patron AUTH_USER_SELECT) — commissionRateBps,
 //    cashbackRateBps (à venir, A3) et rejectionReason ne QUITTENT JAMAIS la
 //    base sur les chemins pro, il n'y a rien à « filtrer » ensuite ;
+//    ⚠ sauf la route de lecture du refus, D-5 (D321), D349 : un contrat ÉTROIT,
+//    séparé de `VenueProDTO` (qui garde sa liste blanche), pour SA salle seulement ;
 // 2) 404 INDISTINCTS (VENUE_NOT_FOUND) pour tout ce qui n'est pas « ma salle
 //    vivante » : inexistante, supprimée, id malformé, salle d'un autre pro —
 //    anti-énumération, même doctrine que /media/:key ;
 // 3) soft delete uniquement (deletedAt) — jamais de DELETE SQL sur venues.
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { randomBytes } from "node:crypto";
-import { VenueErrorCode, type VenueCreateInput, type VenueProDTO, type VenueUpdateInput } from "@zwadj/types";
+import {
+  VenueErrorCode,
+  type VenueCreateInput,
+  type VenueProDTO,
+  type VenuePublicationReviewDTO,
+  type VenueUpdateInput
+} from "@zwadj/types";
 import { MEDIA_STORAGE, type MediaStorage } from "../media/media.types";
 import { toSlotTemplateDTO } from "./slot-templates.service";
 import { slugify } from "./slug";
+import { toRejection } from "./venue-review-queue";
 import {
   REFERENTIELS_EXISTENCE,
   type ReferentielsExistence,
@@ -68,6 +77,18 @@ export class VenuesService {
 
   async getMine(userId: string, venueId: string): Promise<VenueProDTO> {
     return toVenueProDTO(await this.ownedLivingVenue(userId, venueId), this.urlOf);
+  }
+
+  /**
+   * ADM-1 (D349, R-3, D-5 p2) — le pro lit l'état de publication de SA salle et son refus (motif, date). Un contrat ÉTROIT, SÉPARÉ de `getMine` : `VenueProDTO` garde sa liste blanche (jamais de motif,
+   * jamais de taux). Même court-circuit UUID et même 404 INDISTINCT que toute lecture « ma salle vivante » (inexistante, supprimée, id malformé, salle d'un autre pro). Une salle publiée ne montre
+   * jamais de refus : publier efface le motif, et une valeur périmée ne doit pas se lire comme un refus en cours.
+   */
+  async getPublicationReview(userId: string, venueId: string): Promise<VenuePublicationReviewDTO> {
+    this.assertUuidShapeOr404(venueId);
+    const lu = await this.salles.lireRefus(userId, venueId);
+    if (!lu) this.throwNotFound();
+    return { publicationStatus: lu.publicationStatus, rejection: toRejection(lu.publicationStatus, lu.rejectionReason, lu.rejectedAt) };
   }
 
   // ── Mise à jour partielle (arbitrage A2-③) ─────────────────────────────────

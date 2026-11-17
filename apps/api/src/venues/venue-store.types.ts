@@ -22,7 +22,7 @@
 // plutôt qu'un P2002 ; les lectures rendent `null` plutôt qu'un 404. Traduire
 // en exception Nest est le travail du service, qui seul connaît les codes et
 // les clés i18n.
-import type { VenueCreateInput, VenueUpdateInput } from "@zwadj/types";
+import type { VenueCreateInput, VenuePublicationStatus, VenueUpdateInput } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
 import { RULE_SELECT } from "./pricing-rules.service";
 
@@ -125,6 +125,14 @@ export interface MiseAJourSalle {
   readonly styleIds?: string[];
 }
 
+/** ADM-1 (D349, R-3) — ce que la route de LECTURE du refus lit d'une salle : l'état de publication, le motif d'un rejet et la date de ce rejet (lue au journal). ⛔ JAMAIS un taux, jamais le
+ *  propriétaire, jamais une autre colonne : c'est un contrat ÉTROIT, séparé de `VenueProRow`. `rejectedAt` vaut `null` quand le journal n'a pas de ligne (motif écrit à la main). */
+export interface LectureRefus {
+  readonly publicationStatus: VenuePublicationStatus;
+  readonly rejectionReason: string | null;
+  readonly rejectedAt: Date | null;
+}
+
 export const VENUE_STORE = Symbol("VENUE_STORE");
 
 /** L'agrégat Salle vu par le service. Sept méthodes, une par décision. */
@@ -156,6 +164,10 @@ export interface VenueStore {
    *  D'INVARIANT (D3 : un PRO en a toujours un), mais c'est au service de le
    *  dire — le port constate, il ne juge pas. */
   idProfilPro(userId: string): Promise<string | null>;
+
+  /** ADM-1 (D349, R-3, D-5 p2) — l'état de publication de SA salle et son refus. ⚠ `null` si la salle n'est pas « ma salle vivante » : MÊME WHERE d'appartenance que `trouverVivante`, défini à UN
+   *  seul endroit dans l'adaptateur (une seconde définition rouvrirait un trou d'énumération). Le port constate, il ne juge pas : le 404 indistinct est traduit par le service. */
+  lireRefus(userId: string, venueId: string): Promise<LectureRefus | null>;
 }
 
 export const REFERENTIELS_EXISTENCE = Symbol("REFERENTIELS_EXISTENCE");

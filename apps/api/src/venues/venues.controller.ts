@@ -19,6 +19,7 @@ import {
   venueUpdateSchema,
   type VenueCreateInput,
   type VenueProDTO,
+  type VenuePublicationReviewDTO,
   type VenueUpdateInput
 } from "@zwadj/types";
 import { CurrentUser, Roles } from "../auth/auth.decorators";
@@ -54,6 +55,14 @@ export class VenuesController {
   @ApiNotFoundResponse({ description: "404 indistinct : inexistante, supprimée, id malformé ou salle d'un autre pro." })
   getMine(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<VenueProDTO> {
     return this.venues.getMine(user.userId, id);
+  }
+
+  @Get("pro/venues/:id/publication")
+  @ApiOperation({ summary: "L'état de publication de MA salle et, le cas échéant, son refus (motif et date) — contrat étroit, séparé de VenueProDTO (ADM-1, R-3)" })
+  @ApiOkResponse({ description: "VenuePublicationReviewDTO — exactement deux clés ; jamais un taux." })
+  @ApiNotFoundResponse({ description: "404 indistinct : inexistante, supprimée, id malformé ou salle d'un autre pro." })
+  getPublicationReview(@CurrentUser() user: AuthenticatedUser, @Param("id") id: string): Promise<VenuePublicationReviewDTO> {
+    return this.venues.getPublicationReview(user.userId, id);
   }
 
   @Patch("venues/:id")

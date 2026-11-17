@@ -3,11 +3,13 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { PinoLogger } from "nestjs-pino";
 import {
   AccountErrorCode,
+  UserRole,
   type AdminDeletionRequestDTO,
   type DeletionRequestDTO,
   type DeletionRequestQueryInput
 } from "@zwadj/types";
 import { TokenService } from "../auth/token.service";
+import { deletionDecisionEntry } from "../common/admin-audit";
 import { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { AccountEmailsService } from "./account-emails.service";
@@ -165,15 +167,21 @@ export class AccountDeletionService {
    *  fonctionne toujours. */
   async reject(requestId: string, adminId: string, decisionNote: string | undefined): Promise<DeletionRequestDTO> {
     const pending = await this.loadPending(requestId);
-    const row = await this.prisma.accountDeletionRequest.update({
-      where: { id: pending.id },
-      data: {
-        status: "REJECTED",
-        decidedAt: new Date(),
-        decidedById: adminId,
-        decisionNote: decisionNote ?? null
-      },
-      select: REQUEST_SELECT
+    // ADM-1 (D349, R-5, D-8) — la décision et sa ligne de journal dans UNE transaction : une décision sans trace, ou une trace sans décision, est MD-ADM-6. Le contrôle de statut n'est PAS déplacé
+    // ici (`loadPending` lit avant la transaction et l'écriture se fait par `id` : D117 / D121 — défaut croisé RAPPORTÉ au backlog, non corrigé par ce lot).
+    const row = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.accountDeletionRequest.update({
+        where: { id: pending.id },
+        data: {
+          status: "REJECTED",
+          decidedAt: new Date(),
+          decidedById: adminId,
+          decisionNote: decisionNote ?? null
+        },
+        select: REQUEST_SELECT
+      });
+      await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, "REJECTED") });
+      return updated;
     });
 
     await this.notify(() =>
@@ -284,6 +292,9 @@ export class AccountDeletionService {
         },
         select: REQUEST_SELECT
       });
+
+      // 6. ADM-1 (D349, R-5, D-8) — la ligne de journal, DANS la même transaction : le nombre de salles archivées, JAMAIS l'adresse, la note ni l'identifiant du compte (elle a été anonymisée plus haut).
+      await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, "APPROVED", archived.length) });
 
       return { row: updated, archivedCount: archived.length };
     });

@@ -6,9 +6,11 @@
 // Les tests qui les mesuraient ont déménagé avec elles
 // (`venue-store.prisma.spec.ts`) : ils n'ont pas disparu, ils ont suivi le code.
 import { Injectable } from "@nestjs/common";
+import { AdminAuditAction, AdminAuditEntity } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
 import {
   type DonneesCreationSalle,
+  type LectureRefus,
   type MiseAJourSalle,
   type ReferentielsExistence,
   type ResultatCreationSalle,
@@ -123,6 +125,26 @@ export class PrismaVenueStore implements VenueStore {
   async idProfilPro(userId: string): Promise<string | null> {
     const profil = await this.prisma.proProfile.findUnique({ where: { userId }, select: { id: true } });
     return profil?.id ?? null;
+  }
+
+  /**
+   * ADM-1 (D349, R-3, D-5 p2) — la lecture du refus. MÊME WHERE d'appartenance que `trouverVivante` (`appartenance`, défini une fois) ; un select ÉTROIT — l'état, le motif et l'id, JAMAIS un taux ni
+   * une autre colonne ; la DATE du refus se lit au JOURNAL (D-8 : la ligne `venue.reject` la plus récente de CETTE salle), en une requête qui ne sélectionne que `createdAt`.
+   * Une salle jamais rejetée n'interroge pas le journal ; un motif sans ligne (écrit à la main) rend la date `null` — jamais une date inventée.
+   */
+  async lireRefus(userId: string, venueId: string): Promise<LectureRefus | null> {
+    const row = await this.prisma.venue.findFirst({
+      where: this.appartenance(userId, venueId),
+      select: { id: true, publicationStatus: true, rejectionReason: true }
+    });
+    if (!row) return null;
+    if (row.rejectionReason === null) return { publicationStatus: row.publicationStatus, rejectionReason: null, rejectedAt: null };
+    const ligne = await this.prisma.auditLog.findFirst({
+      where: { action: AdminAuditAction.VENUE_REJECT, entityType: AdminAuditEntity.VENUE, entityId: row.id },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      select: { createdAt: true }
+    });
+    return { publicationStatus: row.publicationStatus, rejectionReason: row.rejectionReason, rejectedAt: ligne === null ? null : ligne.createdAt };
   }
 }
 

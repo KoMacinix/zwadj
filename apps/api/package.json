@@ -15,7 +15,8 @@
     "db:seed": "prisma db seed",
     "test:int": "vitest run -c vitest.config.int.ts",
     "prisma:migrate:dev": "node -e \"console.error('INTERDIT — voir AGENTS.md : migrate dev supprime les garanties SQL ecrites a la main (EXCLUDE anti-double-booking, index partiels, FK composite). Ecrire la migration a la main, puis pnpm prisma:migrate.'); process.exit(1)\"",
-    "db:seed:demo": "tsx prisma/seed-demo.ts"
+    "db:seed:demo": "tsx prisma/seed-demo.ts",
+    "admin:promote": "tsx prisma/promote-first-admin.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",

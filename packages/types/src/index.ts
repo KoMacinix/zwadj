@@ -1,6 +1,7 @@
 export * from "./enums";
 export * from "./user";
 export * from "./venue";
+export * from "./venue-moderation";
 export * from "./booking";
 export * from "./service";
 export * from "./quote";

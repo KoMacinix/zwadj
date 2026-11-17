@@ -20,6 +20,8 @@ export {
   type VenueProClient
 } from "./venue-client";
 export { createAccountClient, type AccountClient } from "./account-client";
+export { createAdminClient, type AdminClient } from "./admin-client";
+export { createVenuePublicationClient, type VenuePublicationClient } from "./venue-publication-client";
 export {
   createVisitBookingsClient,
   type VisitBookingsClient

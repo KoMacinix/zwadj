@@ -394,7 +394,7 @@ describe("GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2)
     const apres = await read(id);
     expect(apres.body).toEqual({ publicationStatus: "DRAFT", rejection: { reason: MOTIF, rejectedAt: ligne!.createdAt.toISOString() } });
     expect(Object.keys(apres.body).sort()).toEqual(["publicationStatus", "rejection"]);
-    expect(Object.keys(apres.body.rejection).sort()).toEqual(["rejectedAt", "reason"]);
+    expect(Object.keys(apres.body.rejection).sort()).toEqual(["reason", "rejectedAt"]);
 
     await publish(id);
     expect((await read(id)).body).toEqual({ publicationStatus: "PUBLISHED", rejection: null });
