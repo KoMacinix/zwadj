@@ -26,6 +26,8 @@ const authH = (token: string) => ({ Authorization: `Bearer ${token}` });
 let adminToken: string;
 let clientToken: string;
 let requestId: string;
+/** L'identifiant du compte, pris AVANT toute décision : l'approbation ANONYMISE l'adresse, un compte ne se retrouve plus par elle. */
+let userId: string;
 
 beforeAll(async () => {
   ctx = await createTestApp();
@@ -44,6 +46,7 @@ beforeEach(async () => {
   adminToken = await loginAs(ctx, ADMIN.email, ADMIN.password);
   await registerUser(ctx, CLIENT);
   clientToken = await loginAs(ctx, CLIENT.email, CLIENT.password);
+  userId = (await ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT.email } })).id;
   const created = await api().post("/api/v1/me/deletion-request").set(authH(clientToken)).send({});
   requestId = (created.body as DeletionRequestDTO).id;
   ctx.emails.length = 0;
@@ -57,7 +60,7 @@ const holdRequestRow = (action?: Parameters<typeof holdRow>[3]) => holdRow(ctx.p
 const waitBlocked = (n: number) => waitBlockedOn(ctx.prisma, n);
 
 const requestRow = () => ctx.prisma.accountDeletionRequest.findUniqueOrThrow({ where: { id: requestId } });
-const userRow = () => ctx.prisma.user.findUniqueOrThrow({ where: { email: CLIENT.email } });
+const userRow = () => ctx.prisma.user.findUniqueOrThrow({ where: { id: userId } });
 const journal = () =>
   ctx.prisma.auditLog.findMany({ where: { entityType: AdminAuditEntity.DELETION_REQUEST, entityId: requestId }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] });
 /** Les e-mails de DÉCISION partis (l'adresse a été capturée avant l'anonymisation : c'est elle qui les reçoit). */

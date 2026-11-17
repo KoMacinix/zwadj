@@ -162,34 +162,31 @@ export class AccountDeletionService {
   }
 
   // ── POST /admin/deletion-requests/:id/reject ──────────────────────────────
-  /** Aucun effet sur le compte, qui reste `ACTIVE`. L'utilisateur est notifié
-   *  du motif — sinon il resterait dans l'incertitude alors que son compte
-   *  fonctionne toujours. */
+  /** Aucun effet sur le compte, qui reste `ACTIVE`. L'utilisateur est notifié du motif — sinon il resterait dans l'incertitude alors que son compte
+   *  fonctionne toujours.
+   *
+   *  ADM-2 (D350, R-2) — le STATUT se décide DANS la transaction, en check-and-set (`claim`) : un rejet qui a lu « en attente » avant qu'une approbation ou
+   *  une annulation ne passe n'écrase plus rien. Mesuré sur PostgreSQL réel AVANT ce changement (`account-deletion-race.int-spec.ts`) : rejeter et approuver
+   *  répondaient tous deux 200. La décision et sa ligne de journal restent dans UNE transaction (ADM-1, R-5, D-8 : une décision sans trace, ou une trace sans
+   *  décision, est MD-ADM-6). */
   async reject(requestId: string, adminId: string, decisionNote: string | undefined): Promise<DeletionRequestDTO> {
-    const pending = await this.loadPending(requestId);
-    // ADM-1 (D349, R-5, D-8) — la décision et sa ligne de journal dans UNE transaction : une décision sans trace, ou une trace sans décision, est MD-ADM-6. Le contrôle de statut n'est PAS déplacé
-    // ici (`loadPending` lit avant la transaction et l'écriture se fait par `id` : D117 / D121 — défaut croisé RAPPORTÉ au backlog, non corrigé par ce lot).
-    const row = await this.prisma.$transaction(async (tx) => {
+    const { row, recipient } = await this.prisma.$transaction(async (tx) => {
+      await this.claim(tx, requestId, "REJECTED");
+      const pending = await this.contextOf(tx, requestId);
       const updated = await tx.accountDeletionRequest.update({
-        where: { id: pending.id },
+        where: { id: requestId },
         data: {
-          status: "REJECTED",
           decidedAt: new Date(),
           decidedById: adminId,
           decisionNote: decisionNote ?? null
         },
         select: REQUEST_SELECT
       });
-      await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, "REJECTED") });
-      return updated;
+      await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, requestId, "REJECTED") });
+      return { row: updated, recipient: { email: pending.user.email, role: pending.user.role, locale: pending.user.locale } };
     });
 
-    await this.notify(() =>
-      this.emails.sendDeletionRejected(
-        { email: pending.user.email, role: pending.user.role, locale: pending.user.locale },
-        decisionNote ?? null
-      )
-    );
+    await this.notify(() => this.emails.sendDeletionRejected(recipient, decisionNote ?? null));
     return toDTO(row);
   }
 
@@ -199,13 +196,22 @@ export class AccountDeletionService {
    *
    * L'adresse e-mail est capturée AVANT : après commit elle n'existe plus, et
    * l'e-mail de décision n'aurait plus de destinataire.
+   *
+   * ADM-2 (D350, R-2) — LE STATUT SE DÉCIDE DANS LA TRANSACTION, EN CHECK-AND-SET, ET C'EST SON PREMIER GESTE (`claim`) : un `updateMany` conditionné à
+   * `PENDING`, compte = 1 exigé (D117, D121). La demande n'est plus lue AVANT la transaction pour décider : mesuré sur PostgreSQL réel avant ce changement
+   * (`account-deletion-race.int-spec.ts`), une approbation qui avait lu « en attente » passait la demande de ANNULÉE à APPROUVÉE et anonymisait le compte,
+   * et deux approbations répondaient toutes deux 200. Le verrou de ligne que prend cette première écriture tient jusqu'au commit : une annulation ou une
+   * autre décision qui arrive pendant l'exécution attend, puis trouve la demande décidée.
    */
   async approve(requestId: string, adminId: string, decisionNote: string | undefined): Promise<DeletionRequestDTO> {
-    const pending = await this.loadPending(requestId);
     const now = new Date();
-    const recipient = { email: pending.user.email, role: pending.user.role, locale: pending.user.locale };
 
-    const { row, archivedCount } = await this.prisma.$transaction(async (tx) => {
+    const { row, archivedCount, recipient, userId } = await this.prisma.$transaction(async (tx) => {
+      // 0. LA DÉCISION d'abord, avant tout effet : un compte 0 lève (400 ou 404) et rien n'a été écrit.
+      await this.claim(tx, requestId, "APPROVED");
+      const pending = await this.contextOf(tx, requestId);
+      const recipient = { email: pending.user.email, role: pending.user.role, locale: pending.user.locale };
+
       // 1. Salles du pro → archivées. VIVANTES uniquement (règle 3 ci-dessus).
       let archived: { id: string }[] = [];
       const proProfileId = pending.user.proProfile?.id;
@@ -284,7 +290,6 @@ export class AccountDeletionService {
       const updated = await tx.accountDeletionRequest.update({
         where: { id: pending.id },
         data: {
-          status: "APPROVED",
           decidedAt: now,
           decidedById: adminId,
           decisionNote: decisionNote ?? null,
@@ -296,11 +301,11 @@ export class AccountDeletionService {
       // 6. ADM-1 (D349, R-5, D-8) — la ligne de journal, DANS la même transaction : le nombre de salles archivées, JAMAIS l'adresse, la note ni l'identifiant du compte (elle a été anonymisée plus haut).
       await tx.auditLog.create({ data: deletionDecisionEntry({ userId: adminId, role: UserRole.ADMIN }, pending.id, "APPROVED", archived.length) });
 
-      return { row: updated, archivedCount: archived.length };
+      return { row: updated, archivedCount: archived.length, recipient, userId: pending.userId };
     });
 
     this.logger.warn(
-      { userId: pending.userId, requestId: pending.id, archivedVenues: archivedCount, decidedBy: adminId },
+      { userId, requestId, archivedVenues: archivedCount, decidedBy: adminId },
       "Demande de suppression approuvée : compte anonymisé, salles archivées"
     );
 
@@ -311,33 +316,49 @@ export class AccountDeletionService {
     return toDTO(row);
   }
 
-  /** Charge une demande PENDING + le contexte nécessaire à la décision. */
-  private async loadPending(requestId: string) {
-    const row = await this.prisma.accountDeletionRequest.findUnique({
+  /**
+   * LE CHECK-AND-SET (D350, R-2) : passe la demande de `PENDING` à `status`, PREMIER geste de la transaction. `updateMany` conditionné à `PENDING`, compte = 1
+   * exigé. Sous READ COMMITTED, une écriture qui attend le verrou d'une autre transaction réévalue sa condition quand celle-ci se termine : si cette autre
+   * transaction a annulé ou décidé la demande, la condition ne tient plus et le compte est 0. À 0, une relecture ne sert qu'à choisir le CODE d'erreur
+   * (`refusalFor`), jamais à décider.
+   */
+  private async claim(tx: Prisma.TransactionClient, requestId: string, status: "APPROVED" | "REJECTED"): Promise<void> {
+    const { count } = await tx.accountDeletionRequest.updateMany({ where: { id: requestId, status: "PENDING" }, data: { status } });
+    if (count !== 1) throw await this.refusalFor(tx, requestId);
+  }
+
+  /** Le contexte de la décision (compte, rôle, langue, profil pro), lu APRÈS le `claim` et AVANT toute anonymisation : l'adresse capturée est celle qui existe encore. */
+  private async contextOf(tx: Prisma.TransactionClient, requestId: string) {
+    const row = await tx.accountDeletionRequest.findUnique({
       where: { id: requestId },
       select: {
         id: true,
         userId: true,
-        status: true,
         user: { select: { email: true, role: true, locale: true, proProfile: { select: { id: true } } } }
       }
     });
+    // La demande vient d'être décidée par CETTE transaction : elle existe. Une absence serait un état impossible, jamais un 404 (le 404 est celui du `claim`).
+    if (!row) throw new Error("décision de suppression : la demande qui vient d'être décidée est introuvable — état impossible");
+    return row;
+  }
+
+  /** Le code d'erreur d'un compte 0 : demande inconnue (404), ou qui n'est plus en attente — décidée par un autre admin, ou annulée par l'utilisateur (400, code DISTINCT du 404 : ici l'admin est
+   *  légitime et doit savoir que la file a bougé). Une demande ENCORE en attente alors que le compte est 0 est impossible : une erreur, jamais un succès silencieux. */
+  private async refusalFor(tx: Prisma.TransactionClient, requestId: string): Promise<Error> {
+    const row = await tx.accountDeletionRequest.findUnique({ where: { id: requestId }, select: { id: true, status: true } });
     if (!row) {
-      throw new NotFoundException({
+      return new NotFoundException({
         code: AccountErrorCode.DELETION_REQUEST_NOT_FOUND,
         message: "account.errors.deletionNotFound"
       });
     }
-    // Transition explicite : une demande déjà décidée (ou annulée par
-    // l'utilisateur entre-temps) ne se re-décide pas. Code DISTINCT du 404 —
-    // ici l'admin est légitime et doit savoir que la file a bougé.
     if (row.status !== "PENDING") {
-      throw new BadRequestException({
+      return new BadRequestException({
         code: AccountErrorCode.DELETION_REQUEST_NOT_PENDING,
         message: "account.errors.deletionNotPending"
       });
     }
-    return row;
+    return new Error("décision de suppression : compte 0 sur une demande encore en attente — état impossible");
   }
 
   /** Envoi best-effort : un échec est loggé, jamais bloquant (doctrine
