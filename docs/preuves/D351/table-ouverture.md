@@ -271,3 +271,10 @@ Toutes sous `docs/preuves/D351/`. Les journaux de campagne, dont le nombre dépe
 Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
 
 **Extension 1** (18/11/2026, commitée SEULE, AVANT les pièces d'ouverture) — **rectification d'un compte, aucun fichier ajouté.** La table dit « D350, dernière des 306 lignes `| Dnnn |` » : `grep -c '^| D[0-9]* | '` rend bien 306, mais l'une de ces lignes est l'**en-tête** du tableau du registre (`| D | où | ligne de définition relevée |`, ligne 26972 de `ZWADJ_CONTINUITE.md`). Les décisions numérotées sont **305** (`grep -c '^| D[0-9][0-9]* | '`), et la dernière est bien D350 : le numéro attribué, D351, ne change pas. Relevé par la lecture adverse de la consigne (`docs/preuves/D351/lecture-adverse/`), dont la première passe comptait 133 lignes parce qu'elle ne lisait que la colonne « A » du registre (défaut d'instrument n° 1).
+
+**Extension 2** (18/11/2026, commitée SEULE, AVANT les deux pièces qu'elle déclare, et AVANT la première passe des portes) — **l'attendu de l'e2e, écrit AVANT elle** (`regle-portes.md` § 4.1 : « son total est écrit […] avant la première passe » ; la règle le plaçait dans `portes/portes.md`, qui est un compte rendu écrit APRÈS les passes : pour que `git` prouve l'avant, l'attendu a sa propre pièce, commitée avant). Deux fichiers neufs, tous deux sous `docs/preuves/D351/portes/` :
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D351/portes/attendu-e2e.txt` | le total des tests de l'e2e DÉRIVÉ par `pnpm --filter @zwadj/e2e exec playwright test --list` sur l'état fusionné (HEAD = `4a0367b`, après le commit du repère de parité), et ce qu'on en attend : 110 listés, dont un ignoré ; écrit AVANT la première passe |
+| `docs/preuves/D351/portes/e2e-liste.txt` | la sortie complète de `--list`, codes ANSI retirés (110 lignes de tests, le total) |
