@@ -278,3 +278,12 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 |---|---|
 | `docs/preuves/D351/portes/attendu-e2e.txt` | le total des tests de l'e2e DÉRIVÉ par `pnpm --filter @zwadj/e2e exec playwright test --list` sur l'état fusionné (HEAD = `4a0367b`, après le commit du repère de parité), et ce qu'on en attend : 110 listés, dont un ignoré ; écrit AVANT la première passe |
 | `docs/preuves/D351/portes/e2e-liste.txt` | la sortie complète de `--list`, codes ANSI retirés (110 lignes de tests, le total) |
+
+**Extension 3** (18/11/2026, commitée SEULE, AVANT les pièces qu'elle déclare — relevé en comparant les fichiers de la passe des portes aux chemins COMPLETS de cette table, après la fin des deux passes e2e : quatre fichiers non prévus à l'ouverture, tous écrits par la seconde passe et par le masquage). Tous sous `docs/preuves/D351/portes/` :
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D351/portes/passe2.sh` | le lanceur de la SECONDE passe e2e (`pnpm test:e2e` seul, juste après celle du pilote) : même relevé d'état machine que le pilote (copie de sa fonction `etat`), toutes les 30 s ; il refuse de démarrer sur batterie (code 3) |
+| `docs/preuves/D351/portes/_index-passe-2.txt` | l'index de la seconde passe : SHA, arbre, état machine avant et après, ports, code de sortie, durée |
+| `docs/preuves/D351/portes/FIN-2` | le marqueur de fin de la seconde passe |
+| `docs/preuves/D351/portes/rapport-masquage.txt` | le rapport du masquage des deux sorties e2e : tailles, empreintes des bruts, comptes (129 suites masquées par passe, 0 restante), balayage indépendant de la forme d'un jeton |
