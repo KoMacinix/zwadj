@@ -2730,7 +2730,153 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 53 : CLOS SUR LE CODE (D351, 18/11/2026) — l'intégration, dans `main`, de la branche `par-carte` (la carte), rejouée sur le poste de Ko** : lot de **CODE** par destination (il compte, D283), **sans migration**, sans session adverse ni certification (pause de Ko) ; la fusion `--no-ff` (`02b2d62`, 21 commits de la branche conservés avec leurs SHA, 155 fichiers) est **identique à l'arbre que `git merge-tree` recalcule seul** ; **les six portes sont à 0 dès la première passe sur le poste de Ko** (`test:int` 51 fichiers / 807 tests : la réserve du BILAN est levée ; `test:e2e` 109 passés + 1 ignoré, **deux passes consécutives vertes**, zéro rejeu) ; `lancer-campagnes.py --tout` (68 campagnes, **1 135 gardes mordues, 0 muette**) et sept campagnes à mode (84 sur 84 ; **les 116 gardes de la branche rejouées : 116 sur 116**), 68 empreintes de harnais identiques, aucune ancre périmée ; R-4 : le filtre public est UN (`publicFilter`), **deux trous en backlog dont le `no-store` de la carte, mesuré non gardé** ; R-5 : le repère de parité **943 → 1 296** ; **compteur POUR MÉMOIRE VINGT-SIX → TRENTE-TROIS** ⚠ (S-212 : la lettre de la consigne disait TRENTE-DEUX ; ce lot a écrit une ligne de test, D283) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de `ce-qui-part-vers-le-tiers.md` BLOQUENT LE LANCEMENT** ; les 22 décisions du BILAN et S-193 à S-204 de D350 sont **ratifiées par adoption**, **S-192 est REFUSÉE (R-8)**, **S-205 à S-217 sont à ratifier** ; **les gestes de Ko restent à jouer** (les sept scénarios de la carte, `docs/preuves/D351/scenarios-ko.md` — la consigne n'en fait pas une condition de clôture : le rang est clos **sur le code**, pas sur ce regard) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Point d'entrée : « ÉTAT À LA CLÔTURE DU RANG 53 ».
 
-⇒ **RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 53, § 4) : **« Refusée » dans la liste « Mes salles » du pro** (réponse de Ko, 1 d : « oui » — ⛔ **contrat d'API : s'arrêter et demander**, un champ de plus dans la liste ou une route de lecture groupée) **et les 29 gardes de S-192 en assertion native** (R-8 ; `neutralize-adm2.py` rejoué EN ENTIER). **Pas arbitré** : le rang 54 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D351/scenarios-ko.md`, les sept de la carte ; puis, s'ils ne sont pas faits, ceux de `docs/preuves/D350/scenarios-ko.md`, dont le premier compte administrateur) ; la ratification de **S-205 à S-217** (section D351, § 5) ; **la relecture humaine des 29 clés arabes** du bloc `map` ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+⇒ ~~**RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D352, 18/11/2026 : **PÉRIMÉ** — le rang 54 est arbitré par Ko par adoption de la consigne du relecteur « RANG 54 — LA LISTE « MES SALLES » DIT « REFUSÉE », ET LES 29 GARDES DES ÉCRANS `/admin` PASSENT EN ASSERTION NATIVE » : voir le bloc « ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 54 » juste dessous ; la suite de cette ligne — « Candidat **proposé** … **Pas arbitré** » — dit ce qui était vrai AVANT. Barré avec son motif, pas effacé.)* *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 53, § 4) : **« Refusée » dans la liste « Mes salles » du pro** (réponse de Ko, 1 d : « oui » — ⛔ **contrat d'API : s'arrêter et demander**, un champ de plus dans la liste ou une route de lecture groupée) **et les 29 gardes de S-192 en assertion native** (R-8 ; `neutralize-adm2.py` rejoué EN ENTIER). **Pas arbitré** : le rang 54 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D351/scenarios-ko.md`, les sept de la carte ; puis, s'ils ne sont pas faits, ceux de `docs/preuves/D350/scenarios-ko.md`, dont le premier compte administrateur) ; la ratification de **S-205 à S-217** (section D351, § 5) ; **la relecture humaine des 29 clés arabes** du bloc `map` ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+
+⛔ **ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 54 : LA LISTE « MES SALLES » DIT « REFUSÉE », ET LES 29 GARDES DES ÉCRANS `/admin` PASSENT EN ASSERTION NATIVE, mot pour mot : les SECTIONS 0 à 4 de la consigne du relecteur (première écriture d'autorité du lot D352 ; la table d'ouverture `16ff81d`, son extension 1 `fc5e216`, la consigne en pièce, la règle des portes, la lecture adverse `68d4b2d` et les rouges de R-1 `d5f5195` la précèdent — `git` le prouve).** ⚠ Le texte est celui du relecteur, **collé par Ko** et adopté tel quel (« texte proposé par le relecteur le 18/11/2026, adopté par Ko tel quel ») : la section 1 s'écrit **par adoption** ; R-1 à R-5 sont des décisions du relecteur (chat), déléguées par Ko ; ni les R-n ni les S-n ne sont des numéros du registre. La consigne entière est versée en pièce : `docs/preuves/D352/consigne.md`.
+
+- **[1a] Le rang 54 = DEUX entrées du backlog** : (i) « LA LISTE « MES SALLES » DOIT DIRE « REFUSÉE » POUR UNE SALLE REFUSÉE » (réponse de Ko au rang 53, 1 d : « oui ») ; (ii) « S-192 EST REFUSÉE : LES 29 GARDES D'ÉCRAN DE `neutralize-adm2.py` … PASSENT EN ASSERTION NATIVE ». Numéro : **D352**, pris en LISANT le registre (dernier : D351 ; « D352 » dans aucun des quatre fichiers d'autorité, texte aplati : 0, 0, 0, 0). **Lot de CODE** : il compte (D283), compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE à la clôture.
+- **[1b] Ratifié par adoption** : les décisions prises seule par la session de D351 (**S-205 à S-217**). **Le compteur TRENTE-TROIS est le BON** (la question de D351) : le repère de parité est une ligne de code de test, que D283 fait compter ; la consigne du rang 53 disait TRENTE-DEUX parce que le relecteur avait oublié la ligne que sa propre R-5 permettait. Rien n'est à rectifier.
+- **[1c] Deux erreurs de la consigne du rang 53, nommées** : R-5 disait « les 8 » clés `publicationReview` (**il y en a 6**) ; R-2 citait D338 comme précédent du rejeu unique (**c'est D339**). *(Confrontées au dépôt par la lecture adverse de ce lot : `docs/preuves/D352/lecture-adverse/`, contrôles R-1.c et R-2.e.)*
+- **[R-1] « Refusée » dans la liste.** Constat du relecteur (95b68af), à mesurer : la liste rend `PublicationBadge` (`venue-form.tsx`, `venue-list-page.tsx` l. 205) ; une salle refusée y lit « En attente de publication par Zwadj » ; l'en-tête de l'assistant et l'étape « Publication » lisent déjà le refus (`publication-review.tsx`, D350). `par-carte` étant intégrée, `venue-form.tsx` n'est plus interdit. **La voie, dans cet ordre** : **(A)** SANS contrat neuf — la liste lit l'état de chaque salle par la route existante `GET pro/venues/:id/publication` (D349) ; **(B)** seulement si l'on MESURE que (A) ne tient pas (motif écrit : nombre d'appels, affichage qui saute, refus d'une garde), un champ BOOLÉEN « refusée » dans la liste du pro — contrat neuf autorisé par l'adoption de ce message, et lui seul. **Dans les deux cas, le MOTIF n'entre jamais dans la liste** : la garde de `apps/api/src/venues/venues.service.spec.ts` (« JAMAIS … rejectionReason ») reste ENTIÈRE ; le motif se lit en ouvrant la salle. Texte du badge en FR ET AR (`packages/i18n`, parité) ; clés arabes neuves listées « à relire par un humain ».
+- **[R-2] Les 29 gardes de S-192** : chacune reçoit une assertion NATIVE dans son test (`expect(…).toBe…`, jamais seulement une requête Testing Library qui lève ni un matcher jest-dom — `AGENTS.md`, D304, D316 ; précédents D325, D345). Puis `neutralize-adm2.py` est rejoué EN ENTIER, d'un seul tenant, sur le harnais final, chaque verdict lu à la première ligne du bloc d'échec (D304). L'écart déclaré dans l'en-tête du harnais est **barré avec son motif**.
+- **[R-3] Rouges d'abord** : pour R-1, le test qui montre « En attente » sur une salle refusée, versé avant le code. Pour R-2, **il n'y a pas de rouge à produire avant** : ce sont les mêmes gardes, mieux écrites ; la preuve est la campagne rejouée.
+- **[R-4] Aucune migration, rien dans `apps/client`, rien sur le chemin de l'argent** (D316, par la fonction). `setRates` et `VENUE_ADMIN_SELECT` intouchés.
+- **[R-5] HORS lot, candidat du rang 55 : « la mémoire du site client »** — (i) le `no-store` de `getVenueMap` qu'aucun test ne garde (entrée `[TESTS][CARTE]` de D351 : mutation mesurée, la suite client reste verte) ; (ii) « sans créneau actif (avec une date) » non joué sur la carte ; (iii) le cache d'une heure des référentiels (wilayas, équipements, styles), message jamais adopté `claude/rang50-message.md`, à renuméroter. Motif du regroupement : les trois touchent ce que le site client garde ou ne garde pas (`apps/client/src/lib/api.ts`), et D348 a mesuré qu'une réponse non-200 laisse l'ancienne entrée du cache de Next en place. **Rien de cela n'est codé ici.** ⚠ *Relevé par la lecture adverse de ce lot (contrôle R-5)* : `claude/rang50-message.md` n'est **dans aucun fichier du dépôt** à ce SHA (`git cat-file -e` : absent) — le message vit hors dépôt ; non vérifiable contre le dépôt.
+- **[3, 4] La forme et la fin** : premier commit = la table d'ouverture SEULE ; extension = commit seul avant son fichier ; lecture adverse avant tout `.md` d'autorité ; **les rouges AVANT le code** ; harnais : empreinte en tête de chaque journal, campagne rejouée EN ENTIER si le harnais change, journaux bruts masqués ; audits de secrets avant chaque versement (D298) ; six portes après la dernière modification ; **deux passes e2e vertes de suite**, règle commitée avant (R-15 de D343) ; contrôle de fin de lot (`--first-parent`, D351), push puis fetch ; « RANG 54 : CLOS » puis « RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat proposé : la mémoire du site client, R-5) ; gestes de Ko dans `docs/preuves/D352/scenarios-ko.md` ; rapport en français, au plus une question. **Une session, un lot.**
+
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 54 est **la liste « Mes salles » qui dit « Refusée » ET les 29 gardes en assertion native** : lot de **CODE** (il compte, D283), **sans migration**, sans session adverse ni certification (pause de Ko) ; **(b)** ~~« RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR »~~ est **PÉRIMÉ** — voir la ligne « RANG 54 : OUVERT » juste dessous ; **(c)** S-205 à S-217 (D351) sont **ratifiées par adoption** ; la mention « TRENTE-DEUX par la lettre de la consigne » de D351 est **corrigée par Ko** : TRENTE-TROIS tient ; **(d)** la table d'ouverture, recopiée plus bas, porte les extensions 1 et 2 ; **(e)** ce qui n'est PAS fait à ce commit : aucune clôture, aucun chiffre de porte, aucune décision S-n du lot (elles s'écrivent à la clôture, mesurées).
+
+⇒ **RANG 54 : OUVERT (D352, 18/11/2026) — la liste « Mes salles » du pro dit « Refusée » pour une salle refusée (R-1, voie (A) d'abord) et les 29 gardes de S-192 passent en assertion native (R-2)** : lot de **CODE** (il compte, D283), **sans migration** ; compteur POUR MÉMOIRE **TRENTE-TROIS** à l'entrée, **TRENTE-QUATRE** à la clôture ; la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque** ; **R-1 est déjà codée et rouge-d'abord** (les rouges `d5f5195` précèdent le code `fca8da9`) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. ⚠ **À CE COMMIT, rien n'est clos** : la clôture écrit le rang suivant (« RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR », candidat proposé : la mémoire du site client).
+
+⛔ **TABLE D'OUVERTURE DU RANG 54 (D352), recopiée à l'IDENTIQUE de `docs/preuves/D352/table-ouverture.md`** (premier commit du lot, `16ff81d`, SEUL ; extension 1 `fc5e216`, extension 2 `c0d7f55`, chacune en commit propre AVANT le fichier qu'elle couvre ; les extensions suivantes s'ajoutent à cette copie à la clôture, la copie de la CLÔTURE faisant foi) :
+
+~~~~markdown
+# D352 — rang 54 — table d'ouverture
+
+Lot : **la liste « Mes salles » du pro dit « Refusée » pour une salle refusée (R-1), et les 29 gardes d'écran des écrans `/admin` passent en assertion native (R-2, S-192 refusée)** — consigne du relecteur du 18/11/2026 adoptée par Ko tel quel (`docs/preuves/D352/consigne.md`, versée dans le commit suivant). Lot de **CODE** (il compte, D283) : compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE à la clôture ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** (pause de Ko).
+
+- **SHA de départ** : `95b68af01273fd40140089a2c1320ba1ae775016` (clôture de D351). `HEAD` = `origin/main` après `git fetch` (les deux sur ce SHA), arbre propre (`git status --short` : 0 ligne), aucun stash (0 ligne), branche `main`. Branches distantes gardées, relevées : `origin/front-client` = `43996e2`, `origin/integration-45` = `63511ce`, `origin/par-carte` = `7fdc679` (conformes à l'attendu de la consigne, § 0).
+- **Numéro** : D352 — pris en lisant le registre de `ZWADJ_CONTINUITE.md` : 306 lignes `| Dnnn |` (expression `^\| D(\d+) \|`), dernier numéro **351** ; `D352` ne figure dans aucun des quatre fichiers d'autorité (compte 0 sur le texte APLATI : 0, 0, 0, 0 ; caractères aplatis examinés : 3 422 141, 743 698, 255 873, 5 206).
+- **Reprise (consigne, § 0), relevée avant toute écriture** : rang 53 CLOS (D351) ; compteur POUR MÉMOIRE TRENTE-TROIS ; « RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR » ; ordre des rangs, ligne « ⇒ RANG 54 » lue (`ZWADJ_CONTINUITE.md`, ordre des rangs) ; les deux entrées du backlog du rang 54 lues (« LA LISTE « MES SALLES » DU PRO DOIT DIRE « REFUSÉE »… » et « S-192 EST REFUSÉE… ») ; **aucun écart**.
+- **Poste à l'ouverture** : **sur secteur** (`BatteryStatus` = 2, `PowerLineStatus` = Online, charge 100), RAM libre 4 037 Mo, `chrome` 0, `headless_shell` 0, `node` 0, Docker 29.8.0 lancé, conteneur `zwadj-db` « Up 2 days », ports 3100, 3101, 5273 et 5274 libres.
+- **Le constat de la consigne (R-1), relevé au dépôt avant d'écrire** : `venue-list-page.tsx` rend `<PublicationBadge status={venue.publicationStatus} />` (« En attente de publication par Zwadj » pour `DRAFT`, que la salle soit refusée ou non) ; l'assistant d'une salle lit le refus par `usePublicationReview` + `PublicationHeaderState` (`publication-review.tsx`, D350) et la clé `publicationReview.refusedBadge` (« Refusée ») **existe déjà** dans les deux catalogues. La liste n'a aujourd'hui **aucun** appel à `GET /pro/venues/:id/publication`. `venue-list.test.tsx` monte `AppProviders` **sans** client de publication (le client réel est construit sur `authedRequest`, un `vi.fn()`).
+- **Un piège relevé avant d'écrire** : `e2e/specs/a2-mount-effects.e2e.ts` compte `net.count("/api/v1/pro/venues")` par `includes` (`e2e/fixtures/harness.ts`, `count`) : une lecture `GET /api/v1/pro/venues/:id/publication` par carte de salle non publiée **entrerait dans ce compte** si un compte de ces tests porte une salle. À mesurer à l'e2e (deux passes) ; **si la garde refuse la voie (A), c'est un motif écrit pour la voie (B)** (consigne, R-1) — ou une révision écrite du compte, jamais un assouplissement silencieux.
+- **Les 29 gardes de R-2, relevées au dépôt** (passe 3 de D350, `docs/preuves/D350/neutralisation/campagne-adm2-passe-3.txt`, 304 lignes examinées : 30 lignes « TestingLibraryElementError » pour 29 cibles — G-4 compte deux mesures) : `G-1 G-4 G-5 G-6 G-7 G-9` (`require-admin.test.tsx`, `use-no-index.test.tsx`), `Q-1 Q-2 Q-4 Q-5 Q-6 Q-8 Q-10 Q-11` (`venue-queue-page.test.tsx`), `P-2 P-3 P-6 P-9 P-10 P-11` (`venue-review-page.test.tsx`), `X-1 X-2 X-3 X-6 X-8` (`deletion-requests-page.test.tsx`), `R-2 R-3 R-6 R-7` (`publication-review.test.tsx`) = 6 + 8 + 6 + 5 + 4 = **29**.
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 et D334 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) la consigne en pièce, la règle des portes (écrite et commitée AVANT les passes) et la sortie de la lecture adverse de la consigne contre le dépôt, **avant tout `.md` d'autorité** ; (3) **les pièces des rouges de R-1 (R-3 : « le test qui montre « En attente » sur une salle refusée »), avec l'empreinte sha256 de chaque fichier de test joué, AVANT le premier commit de code** ; (4) le code ; (5) les tests de R-2 (assertions natives), puis le harnais corrigé ; (6) les campagnes, les portes, l'e2e ; (7) les `.md` d'autorité, les arbitrages de Ko en première écriture ; (8) le contrôle de fin de lot, push puis fetch. Toute extension de cette table : un commit propre qui l'ajoute **avant** le commit du fichier qu'elle couvre.
+- **Règle d'arrêt** (consigne, § 0) : « Un écart : tu t'arrêtes et tu le dis. » Aucun écart à l'ouverture. **Et** (R-1) : la voie (A) d'abord, sans contrat neuf ; la voie (B) — un champ BOOLÉEN « refusée » dans la liste du pro — **seulement si (A) est mesuré insuffisant, avec le motif écrit** (nombre d'appels, affichage qui saute, refus d'une garde) ; dans les deux cas **le motif d'un refus n'entre jamais dans la liste** (la garde de `venues.service.spec.ts`, « JAMAIS … rejectionReason », reste ENTIÈRE).
+- **Écrit pour ne pas se lire comme tenu** : cette table ne dit pas que la voie (A) tient — elle dit qu'elle est tentée la première. Elle ne dit pas non plus que les 29 gardes de R-2 mordent déjà en assertion native : c'est la campagne `neutralize-adm2.py` rejouée EN ENTIER sur le harnais final qui le dira, chaque verdict lu à la première ligne du bloc d'échec (D304).
+
+## A. Le départ
+
+Voir les puces ci-dessus (SHA, numéro, reprise, poste). Aucun fichier n'est modifié à l'ouverture : ce fichier est le premier commit du lot.
+
+## B. Les fichiers de CE lot — chemins COMPLETS
+
+Code et tests de R-1 (la liste « Mes salles »), de R-2 (les 29 gardes), harnais :
+
+```
+apps/pro/src/venues/venue-list-page.tsx
+apps/pro/src/venues/publication-review.tsx
+apps/pro/src/venues/venue-form.tsx
+apps/pro/src/venues/venue-list.test.tsx
+apps/pro/src/venues/publication-review.test.tsx
+apps/pro/src/auth/require-admin.test.tsx
+apps/pro/src/admin/use-no-index.test.tsx
+apps/pro/src/admin/venue-queue-page.test.tsx
+apps/pro/src/admin/venue-review-page.test.tsx
+apps/pro/src/admin/deletion-requests-page.test.tsx
+neutralisation/neutralize-adm2.py
+neutralisation/neutralize-r54.py
+```
+
+Pièces du lot (celles qu'on connaît à l'ouverture ; les autres entrent par extension, avant leur commit) :
+
+```
+docs/preuves/D352/table-ouverture.md
+docs/preuves/D352/consigne.md
+docs/preuves/D352/regle-portes.md
+docs/preuves/D352/lecture-adverse/confronter-consigne.py
+docs/preuves/D352/lecture-adverse/confronter-sortie.txt
+docs/preuves/D352/scenarios-ko.md
+docs/preuves/D352/controle-fin-de-lot.txt
+```
+
+## C. Les fichiers d'autorité — écrits en dernier, les arbitrages de Ko en première écriture
+
+```
+ZWADJ_CONTINUITE.md
+ZWADJ_BACKLOG.md
+AGENTS.md
+```
+
+`AGENTS.md` : annotations seules (le bloc « LES ÉCRANS `/admin` » dit encore que « la LISTE « Mes salles » du pro dit encore « en attente » pour une salle refusée » et que « 29 gardes d'écran se lisent en erreur de requête de Testing Library (S-192, à ratifier) » ; le compteur) — annoté, pas réécrit. `CLAUDE.md` n'est pas modifié.
+
+## D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucune migration, rien dans `apps/client`, rien sur le chemin de l'argent** (consigne, R-4 ; D316, par la fonction). `setRates` et `VENUE_ADMIN_SELECT` (`apps/api/src/venues/venues-admin.service.ts`) **intouchés** : le contrôle d'invariance de `neutralize-adm2.py` (comparaison au texte de `b8e5511`) le prouve.
+- **Pas de contrat d'API neuf par défaut** : `packages/types/src/venue.ts`, `apps/api/src/venues/venues.service.ts`, `packages/api-client/src/venue-client.ts` ne sont déclarés qu'au titre de la voie (B), ci-dessous.
+- **`neutralisation/lancer-campagnes.py`** n'est pas modifié (il découvre `neutralize-*.py`) ; **`packages/i18n/messages/*.json`** ne sont déclarés qu'au titre des fichiers conditionnels : la clé `publicationReview.refusedBadge` existe déjà en FR et en AR.
+- **Le candidat du rang 55** (« la mémoire du site client », consigne R-5) : rien n'en est codé ici.
+
+## Fichiers CONDITIONNELS (leur existence ou leur modification dépend d'un résultat)
+
+Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesquels existent.
+
+| fichier | condition |
+|---|---|
+| `packages/i18n/messages/fr.json`, `packages/i18n/messages/ar.json` | seulement si une clé neuve s'avère nécessaire à l'état « vérification » de la carte (attendu : aucune ; `publicationReview.refusedBadge` et `publicationReview.loadError` existent) ; alors les deux catalogues, la parité, les clés arabes listées « à relire par un humain » |
+| `apps/pro/src/test-support/client-doubles.ts` | seulement si un double du client de publication partagé s'avère nécessaire (le test de la liste en construit un localement, comme `publication-review.test.tsx`) |
+| `e2e/specs/a2-mount-effects.e2e.ts` | seulement si l'e2e MESURE que le compte `net.count("/api/v1/pro/venues")` change par la lecture de la voie (A) ; sa révision serait **écrite, avec sa mesure** |
+| `packages/types/src/venue.ts`, `apps/api/src/venues/venues.service.ts`, `apps/api/src/venues/venues.service.spec.ts`, `packages/api-client/src/venue-client.ts`, `packages/api-client/src/venue-client.test.ts`, `apps/api/test/int/contract-api-client.int-spec.ts` | **voie (B) seulement** : un champ BOOLÉEN « refusée » dans la liste du pro, si (A) est MESURÉ insuffisant ; le motif est écrit dans l'extension **avant** le premier de ces fichiers ; `venues.service.spec.ts` n'y gagne qu'un champ, la garde « JAMAIS … rejectionReason » y reste ENTIÈRE |
+
+## Extensions de la table
+
+*(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement, des rouges de R-1 et de la mesure de la voie (A), et le fichier d'aide des assertions natives
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse avec le premier audit de secrets, et **avant** le commit des rouges. Chemins COMPLETS :
+
+```
+docs/preuves/D352/audit-secrets-d352a.txt
+docs/preuves/D352/tri-audit-d352a.txt
+docs/preuves/D352/audit-secrets-d352b.txt
+docs/preuves/D352/tri-audit-d352b.txt
+docs/preuves/D352/rouges/rouges.md
+docs/preuves/D352/rouges/venue-list-rouge-brut.txt
+docs/preuves/D352/mesures/diagnostic-appels.md
+docs/preuves/D352/mesures/diagnostic-appels-sortie-1.txt
+docs/preuves/D352/mesures/diagnostic-appels-sortie.txt
+docs/preuves/D352/mesures/zz-diag-r54.test.tsx.txt
+apps/pro/src/test-support/native-presence.ts
+```
+
+- **Les audits de secrets (D298)** : `audit-secrets-d352a.txt` couvre le premier versement (consigne, règle, lecture adverse) ; `audit-secrets-d352b.txt` couvre les rouges et la mesure. Chaque sortie est scellée (`--sortie`), chaque tri est celui de `docs/preuves/D299/outils/alertes-nouvelles.py`.
+- **Les rouges de R-1** (`rouges/`) : la sortie brute du fichier de test de la liste joué CONTRE L'ANCIEN CODE (10 échecs sur 24, tous en `AssertionError`), l'empreinte sha256 de `apps/pro/src/venues/venue-list.test.tsx` à cet instant, la lecture de chaque échec. **Elles entrent dans un commit ANTÉRIEUR au premier commit de code** (D334, item 5).
+- **La mesure de la voie (A)** (`mesures/`) : un test JETABLE (copié ici en `.txt`, retiré de `apps/pro`) compte les lectures du refus à la relecture silencieuse d'entrée et à la relecture voulue ; sa sortie est versée, **avec celle du premier essai** (`diagnostic-appels-sortie-1.txt`, NON représentatif — la liste du double répondait à l'instant et les cartes n'ont jamais été démontées : gardé, dit tel quel dans `diagnostic-appels.md`). C'est la mesure du critère 1 de `regle-portes.md`.
+- **`apps/pro/src/test-support/native-presence.ts`** (code de test, NEUF, déclaré conditionnel à l'ouverture — « seulement si… » n'était pas écrit pour lui ; il l'est ici) : deux fonctions, `elementPresent` et `elementAttendu`, qui écrivent le verdict de présence d'un élément en assertion NATIVE (`queryBy…` + `expect(…).not.toBeNull()`). Motif : les 29 gardes de R-2 passent en assertion native dans six fichiers ; la règle s'écrit UNE fois, pas six. Elle ne remplace aucune autorité (D78).
+- **Le fichier de test de la liste** (`venue-list.test.tsx`) et le code de R-1 (`venue-list-page.tsx`, `publication-review.tsx`, `venue-form.tsx`) étaient déjà déclarés à l'ouverture.
+
+### Extension 2 — la mesure du critère 4 (l'e2e et la latence), le spec `r50` corrigé, la copie du masqueur et le troisième audit
+
+Écrite **avant** le commit qui verse ces pièces (avec l'audit « c »), et le commit des pièces précède le commit du spec corrigé (les rouges avant le code, D334 item 5). Chemins COMPLETS :
+
+```
+e2e/specs/r50-salle-publiee.e2e.ts
+docs/preuves/D352/mesures/e2e-latence.md
+docs/preuves/D352/mesures/e2e-latence-rouge.txt
+docs/preuves/D352/mesures/e2e-latence-vert.txt
+docs/preuves/D352/mesures/e2e-sous-ensemble-avant-correctif.txt
+docs/preuves/D352/mesures/zz-r50-latence.e2e.ts.txt
+docs/preuves/D352/portes/masquer-jetons.py
+docs/preuves/D352/audit-secrets-d352c.txt
+docs/preuves/D352/tri-audit-d352c.txt
+```
+
+- **`e2e/specs/r50-salle-publiee.e2e.ts`** (déclaré **conditionnel** à l'extension 1 comme « seulement si l'e2e MESURE… » : `a2-mount-effects` est écarté ; c'est `r50` que la mesure a cité) : une ligne d'attente web-first avant la lecture `innerText()` de la carte. **Le rouge** (`e2e-latence-rouge.txt`) a été produit sur une COPIE jetable du spec (`zz-r50-latence.e2e.ts.txt`, retirée de `e2e/specs/` avant tout commit) avec 1,5 s de latence injectée sur la route de lecture du refus ; **le vert** (`e2e-latence-vert.txt`) sur la même copie reprise du spec corrigé.
+- **`portes/masquer-jetons.py`** : copie NON modifiée de `docs/preuves/D351/portes/masquer-jetons.py` ; les trois sorties e2e versées sont MASQUÉES (3, 3 et 26 suites de forme jeton remplacées, 0 restante).
+- **Les audits** : « c » couvre ce versement ; un audit « d » couvrira les pièces des portes, des campagnes et de la clôture (extension 3).
+~~~~
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
