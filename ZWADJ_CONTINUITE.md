@@ -2686,7 +2686,47 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 52 : CLOS SUR LE CODE (ADM-2 — les écrans `/admin` de l'application Pro : la garde de rôle ADMIN, la file des salles en attente, le détail, publier, rejeter et CORRIGER le motif, la file des suppressions de compte ; le pro qui lit son refus ; la file des suppressions rendue sûre sous course ; le fournisseur des salles qui ne garde rien d'un autre compte) — D350, 17/11/2026** : lot de **CODE** (il compte, D283) ; **aucune migration** ; **compteur POUR MÉMOIRE VINGT-CINQ → VINGT-SIX** (la limite de cinq reste SUSPENDUE par Ko ; aucune certification, aucune marque) ; **R-2 : ROUGE sur PostgreSQL réel, corrigé** (le statut d'une demande de suppression se décide dans la transaction, en check-and-set) ; **R-3 : l'admin corrige le motif d'une salle déjà rejetée** (200 là où D349 répondait 409) ; **MD-ADM-10 : UNE FUITE MESURÉE puis corrigée** (la liste des salles du pro A était rendue au pro B) ; **`setRates` et `VENUE_ADMIN_SELECT` identiques à `b8e5511`**, aucun taux modifiable ; **la première passe des six portes était ROUGE** (la garde FC-6 des formateurs `Intl`, trouvée par une garde de l'autre application — un défaut du lot, corrigé, campagne et portes rejouées en entier) ; la pause du paiement en ligne (E3 et R1) est **inchangée** ; ⛔ **MFA (D-7) ET relecture du rôle en base sur les routes ADMIN (D-9, e3-c) BLOQUENT TOUJOURS TOUT DÉPLOIEMENT** — aucun code de ce lot ne les lève. Pièces : `docs/preuves/D350/` ; décision : section D350.
 
-⇒ **RANG 53 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 52, R-9 : « `par-carte` s'intègre APRÈS ») : **l'intégration de la branche `par-carte` dans `main`** — après lecture de son bilan, rejeu des six portes et de `lancer-campagnes.py --tout` sur le poste de Ko (`par-carte` écrit dans `fr.json` et `ar.json`, que ce lot a touchés : un bloc neuf chacun). **Pas arbitré** : le rang 53 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D350/scenarios-ko.md`, dont le premier compte admin) ; la ratification de **S-192 à S-204** (section D350, § 5) ; **la relecture humaine des six clés arabes** du bloc `publicationReview`.
+⇒ ~~**RANG 53 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D351, 18/11/2026 : **PÉRIMÉ** — le rang 53 est arbitré par Ko par adoption de la consigne du relecteur « RANG 53 — L'INTÉGRATION, DANS `main`, DE LA BRANCHE `par-carte` » du 18/11/2026 ; voir le bloc « ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 53 » juste dessous. Le candidat proposé par D350 est devenu le rang. Annoté, pas réécrit.)* *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 52, R-9 : « `par-carte` s'intègre APRÈS ») : **l'intégration de la branche `par-carte` dans `main`** — après lecture de son bilan, rejeu des six portes et de `lancer-campagnes.py --tout` sur le poste de Ko (`par-carte` écrit dans `fr.json` et `ar.json`, que ce lot a touchés : un bloc neuf chacun). **Pas arbitré** : le rang 53 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D350/scenarios-ko.md`, dont le premier compte admin) ; la ratification de **S-192 à S-204** (section D350, § 5) ; **la relecture humaine des six clés arabes** du bloc `publicationReview`.
+
+⛔ **ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 53 : L'INTÉGRATION, DANS `main`, DE LA BRANCHE `par-carte`, REJOUÉE SUR LE POSTE DE KO, mot pour mot : les SECTIONS 0 à 4 de la consigne du relecteur (première écriture d'autorité du lot D351 ; la table d'ouverture `94b3e6f`, son extension 1 `0e6f0a0`, la consigne en pièce, la règle des portes et la lecture adverse la précèdent — `git` le prouve).** ⚠ Le texte est celui du relecteur, **collé par Ko** et adopté tel quel (« texte proposé par le relecteur le 18/11/2026, adopté par Ko tel quel ») : la section 1 s'écrit **par adoption** ; R-1 à R-9 sont des décisions du relecteur (chat), déléguées par Ko ; ni les R-n ni les S-n ne sont des numéros du registre. La consigne entière est versée en pièce : `docs/preuves/D351/consigne.md`.
+
+**1. Ce que Ko adopte — par adoption de ce message**
+- a) Rang 53 = l'intégration de `par-carte` (six lots CA-1 à CA-6, du 13 au 14/11/2026, session cloud). Numéro attendu : D351, pris EN LISANT le registre. Lot de CODE par destination (précédent D342). Compteur : les six lots de code de la branche comptent (R-5 de D342) : VINGT-SIX → TRENTE-DEUX. La limite de cinq reste suspendue ; ce chiffre dit ce qu'une certification devra couvrir avant le premier client réel.
+- b) Les décisions prises seule par la session cloud (BILAN § 6, n° 1 à 22) sont ratifiées par adoption. Le n° 20 (titre de l'accueil « Carte des salles · Alger ») reste tel quel pour l'instant ; c'est un texte de Ko, il pourra le changer.
+- c) Les décisions prises seule par la session de D350 (S-193 à S-204) sont ratifiées par adoption. S-192 est REFUSÉE : voir R-8.
+- d) Réponse de Ko à la question de D350 : oui, la liste « Mes salles » du pro doit dire « Refusée » pour une salle refusée. Ce n'est PAS ce lot : c'est le candidat du rang 54 (section 4).
+- e) Le fournisseur des fonds de carte en production reste une décision de Ko, ouverte ; elle BLOQUE le lancement, pas l'intégration (en développement, la carte prend le défaut OpenStreetMap de `resolveMapTiles`).
+
+**2. Décisions du relecteur (chat), déléguées par Ko**
+- R-1. La méthode (précédent D342) : sur `main`, `git merge --no-ff origin/par-carte`, sans rebase ni réécriture de la branche. Mesuré par le relecteur à 5951b2c : `git merge-tree --write-tree origin/main origin/par-carte` sort en 0, aucun conflit ; les seuls fichiers de code touchés des deux côtés depuis 26ad5c7 sont apps/client/src/lib/api.ts (D348 : getVenueBySlug en no-store ; la carte : une fonction neuve, autre zone) et packages/i18n/messages/fr.json, ar.json (blocs neufs). Tu vérifies que l'arbre fusionné est IDENTIQUE à celui que `git merge-tree` recalcule seul. Un conflit, ou un arbre différent : tu t'arrêtes et tu rapportes.
+- R-2. La réserve du BILAN (§ 2) est levée ICI ou pas du tout : la session cloud n'a jamais joué sur le poste de Ko, et `test:int` y était rouge dès l'entrée (pro-clients.int-spec.ts, quote-numbering.int-spec.ts : ECONNRESET, PostgreSQL 16, sans Docker). Sur le poste de Ko, après `pnpm install` (dépendance neuve : leaflet 1.9.4, @types/leaflet) et la régénération Prisma selon AGENTS.md : les six portes après la fusion, `test:int` compris ; deux passes e2e vertes de suite, règle commitée avant (R-15 de D343). Un rouge sur un fichier que la fusion ne touche pas : rejeu UNIQUE, règle commitée avant (précédents D338, D342, D348) ; rouge au rejeu ⇒ rien n'est poussé, rapport.
+- R-3. `lancer-campagnes.py --tout`, jamais lancé par la session cloud, se joue ici, sur le poste de Ko. Les quatre harnais antérieurs que la session cloud a vus en erreur (fins de ligne Windows écrites en dur, garde de fuseau muette en UTC, ancre périmée : a-reporter-au-backlog.md) : tu lis chaque sortie sur Windows et tu dis ce qui reste. Une ancre que la FUSION a rendue périmée (par exemple une cible qui ancrait `revalidate: 300` dans api.ts) se repose, déclarée ligne par ligne ; tout autre défaut de harnais va au backlog. Règles de campagne : empreinte du harnais en tête de chaque journal ; harnais modifié en cours de campagne ⇒ campagne rejouée EN ENTIER ; journaux bruts masqués (masquer-jetons.py).
+- R-4. Une seule autorité du filtre public. Constat du BILAN, à mesurer : la liste et la carte appellent la même fonction `publicFilter` (apps/api/src/venues/venues-public.service.ts). Tu verses la preuve, après fusion, qu'une salle masquée, supprimée ou non publiée est absente de la liste ET de la carte, et que la carte reste en no-store (invariant de D348 : la fiche n'est jamais en cache). Par les specs existantes (r50, ca6) si elles le mesurent ; un trou ⇒ entrée de backlog, pas de code ici.
+- R-5. Le repère de apps/api/src/common/i18n-parity.spec.ts (« le total ne recule pas ») : relevé après fusion (BILAN § 4 : 29 clés neuves, non relevées par la session cloud, plus les 8 du bloc publicationReview de D350). Le relever est permis ; le baisser, jamais.
+- R-6. AUCUN code neuf au-delà de la fusion, sauf ce que la fusion casse (ancre de R-3, repère de R-5), déclaré ligne par ligne. Un défaut produit trouvé (de la carte ou d'ailleurs) : tu ne corriges ni la spec ni l'application, tu le rapportes et tu ouvres une entrée de backlog (précédent R-3 de D344).
+- R-7. Le backlog de la branche : chaque entrée de docs/preuves/parallele/carte/a-reporter-au-backlog.md entre dans ZWADJ_BACKLOG.md, ADDITIVEMENT, avec ce qu'elle bloque — dont : le fournisseur des tuiles (BLOQUE le lancement, décision de Ko) ; ce-qui-part-vers-le-tiers.md à faire relire par un juriste (BLOQUE le lancement) ; les 29 clés arabes du bloc `map` à relire par un humain ; le regroupement des points (n° 21) ; le glissement du point du pro jamais joué dans un navigateur ; aucun build de production joué dans un navigateur. Les pièces de la branche restent où elles sont (D295).
+- R-8. S-192 refusée. Motif : AGENTS.md (D304, D316) — « sous une lecture fermée, un verdict s'écrit en assertion native » — et les précédents D325 (neuf gardes) et D345 (deux gardes) : une garde qui ne rougit que par une requête Testing Library reçoit une assertion native. Les 29 gardes de neutralize-adm2.py concernées passent en assertion native au rang 54 (le lot qui retouche ces écrans), harnais rejoué EN ENTIER. Ici : une entrée de backlog qui le dit, rien d'autre.
+- R-9. La base de développement de Ko : intouchée. `zwadj_test` et `zwadj_e2e` seules, jetables.
+
+**3. Forme.** Premier commit : docs/preuves/D351/table-ouverture.md SEUL, chemins complets ; extension = commit seul avant son fichier ; lecture adverse de la consigne et du BILAN contre le dépôt avant tout .md d'autorité ; consigne versée ; la liste des fichiers de la fusion versée ; audits de secrets avant chaque versement (D298) ; ce-qui-part-vers-le-tiers.md relu pour une valeur réelle (0 attendu). Six portes après la dernière modification ; deux passes e2e vertes de suite.
+
+**4. Fin.** Contrôle de fin de lot (D288, D328), push puis fetch, local = origin/main ; la branche `par-carte` est GARDÉE (comme `front-client`). Ordre des rangs : « RANG 53 : CLOS », puis « RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat proposé : « Refusée » dans la liste « Mes salles » du pro (1 d), et les 29 gardes de S-192 en assertion native (R-8)). Gestes de Ko (`docs/preuves/D351/scenarios-ko.md`) : les sept scénarios du BILAN § 8, sur son poste, serveurs de développement ; et, s'ils ne sont pas faits, ceux de `docs/preuves/D350/scenarios-ko.md`. Rapport en français : fait, pas fait, écarts, décisions prises seule, au plus une question. Une session, un lot.
+
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 53 est **l'intégration de `par-carte` dans `main`** : lot de **CODE** par destination — la fusion apporte le code de six lots — qui **n'écrit aucune ligne de code neuve** au-delà de ce que la fusion casse (R-6) ; ni session adverse B ni certification (DR1 de D336, pause de Ko) ; **(b)** 1 a à 1 e sont écrites **par adoption** ; **(c)** R-1 à R-9 sont écrites ici comme décisions du relecteur, sans retouche ; **(d)** la lecture adverse de la consigne et du BILAN (`docs/preuves/D351/lecture-adverse/`) : **45 contrôles — 31 ✓ · 10 ≈ · 1 ✗ · 3 ?**, et sept défauts d'instrument réparés, la première passe versée telle quelle ; la règle d'arrêt de la consigne (§ 0) **n'a pas joué** (les neuf points de la reprise tiennent) ; **(e)** les écarts que la lecture adverse a relevés, **dits ici parce que chacun engage un fichier d'autorité ou une instruction** :
+- **[1d] La question posée à Ko et sa réponse ne sont dans aucun fichier du dépôt** — elles vivaient dans le chat (D276). Elles sont écrites ici : **oui, la liste « Mes salles » du pro doit dire « Refusée » pour une salle refusée** ; c'est le candidat du rang 54 (S-193 de D350 le dit : la liste garde son badge « En attente »).
+- **[R-2.c] R-2 et R-15 de D343 ne se recouvrent pas** : R-15 écrit « un seul rouge ⇒ arrêt, pas de poussée », R-2 admet UN rejeu pour un rouge hors de la fusion. La session les combine par écrit dans `docs/preuves/D351/regle-portes.md` (§ 4.3 : la séquence admise est *rouge lu → rejeu vert → seconde passe verte*) — **décision dérivée par la session, à ratifier par le relecteur**.
+- **[R-2.d] « précédents D338, D342, D348 »** : D338 est le cadrage du rang 43, sans rejeu ; **le précédent du rejeu unique est D339 (R-6 de D339)** — D342 et D348 tiennent.
+- **[R-3.c] ✗ Le BILAN et `a-reporter-au-backlog.md` disent l'ancre H6 de `neutralize-horizon.py` « périmée AVANT la session » : c'est FAUX.** Mesuré : sur l'arbre Windows de ce poste (CRLF), l'ancre est **trouvée** (1 occurrence) ; dans un clone en LF elle n'est pas trouvée parce que le harnais écrit `\r\n` en dur — **la même classe que `available-on` et `r49`**, pas une ancre périmée. L'entrée de backlog est écrite avec ce diagnostic, pas avec celui du BILAN. (Un ✗ de la lecture adverse ne vise pas § 0 : la règle d'arrêt ne joue pas.)
+- **[R-3.d] « une cible qui ancrait `revalidate: 300` dans api.ts »** est un exemple : aucun harnais n'ancre cette chaîne (les deux occurrences de `neutralize-pub1.py` sont des REMPLACEMENTS) ; seule la fusion rejouée dira si une ancre est périmée.
+- **[R-4.c] « la carte reste en no-store »** : la fonction `getVenueMap` est NEUVE et appelée depuis le navigateur ; le `no-store` y est écrit, **mais aucun test ni aucune cible de harnais de la branche ne l'affirme** (`api.test.ts` ne lit que le chemin et la requête ; aucune cible de `neutralize-ca1.py` à `ca6.py` ne mentionne `no-store`) — **trou, entrée de backlog, pas de code ici** (R-4, R-6).
+- **[R-5] Le bloc `publicationReview` de D350 compte SIX clés, pas huit** ; le repère de `i18n-parity.spec.ts` vaut **943** alors que `main` porte **1 267** clés avant la fusion (**1 296** après) : la porte « le total ne recule pas » ne voit une perte qu'au-delà de 324 clés. Le repère sera relevé sur les fichiers, après la fusion (le total mesuré, jamais un chiffre estimé).
+- **[R-7.a] « le glissement du point du pro » et « aucun build de production joué »** ne sont pas dans `a-reporter-au-backlog.md` : ils sont dans le BILAN § 3 ; la clôture les écrit depuis le BILAN.
+- **[R-7.c] `a-reporter-au-backlog.md` demande de retirer trois clés de catalogue mortes « à l'intégration »** : retirer des clés change `fr.json` et `ar.json` (R-6 : aucun code neuf) et ferait reculer le total de 1 296 à 1 293 (R-5 : « le baisser, jamais ») — **ce lot ne les retire pas** ; entrée de backlog.
+- **[F-2] Compteur** : VINGT-SIX → TRENTE-DEUX tient arithmétiquement (26 + 6) ; mais un lot qui touche un TEST ou un HARNAIS compte (D283, D292) : si ce lot retouche `i18n-parity.spec.ts` (R-5) ou l'ancre d'un harnais (R-3), il écrit lui-même du code de test — **décidé et écrit à la clôture**, avec ce que cela change pour Ko.
+- **[F-4] La décision produit n° 2 (« Carte interactive : reportée post-MVP, placeholder »)** devient fausse par la fusion ; `a-reporter-au-backlog.md` demande de l'annoter « à l'intégration, par la session qui écrit les fichiers d'autorité » — la consigne ne la liste pas ; **annotée à la clôture**, pas réécrite.
+- Les trois « ? » : **[R-2.a]** le rouge de `test:int` du conteneur cloud n'est pas rejouable ici — c'est ce que les portes de ce lot mesurent ; **[R-4.b]** ce que `r50`, `ca6` et `venue-map.int-spec.ts` mesurent se lit APRÈS la fusion ; **[R-9]** « la base de Ko intouchée » se constate à la clôture.
+
+⇒ **RANG 53 : OUVERT (D351, 18/11/2026) — l'intégration, dans `main`, de la branche `par-carte`** : la table d'ouverture, la lecture adverse et les arbitrages sont écrits **avant la fusion** ; à cette écriture **la fusion n'a pas eu lieu**, rien n'est mesuré après elle, le compteur POUR MÉMOIRE reste **VINGT-SIX**. Point d'entrée : « PROCHAIN LOT — rang 53 ».
 
 ⚠ **DÉCISION DUE À KO, SANS RANG (D302) : LE SORT DES ÉTIQUETTES P0-P3 EXISTANTES DU BACKLOG.** Ko a supprimé
 la priorité par urgence pour les entrées **neuves** (règle dans `AGENTS.md`, « Méthode ») et a gardé les
@@ -2774,6 +2814,303 @@ porte redeviendra rouge, un matin, sans qu'une ligne ait bougé — et la procha
 session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ, pas
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
+
+## PROCHAIN LOT — rang 53 · `[CODE]` **L'intégration de la branche `par-carte` dans `main`, rejouée sur le poste de Ko** ⛔ **OUVERT LE 18/11/2026 (D351) — TABLE, LECTURE ADVERSE ET ARBITRAGES ÉCRITS AVANT LA FUSION**
+
+### ⛔ ÉTAT À L'OUVERTURE DE LA SESSION D351 (18/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à l'OUVERTURE, avant la fusion.** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige. Ce bloc sera rafraîchi **à la clôture** (D294), et la section D351 écrite alors dira ce que la fusion a donné.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **53 : OUVERT** — l'intégration, dans `main`, de la branche `par-carte` (six lots CA-1 à CA-6, du 13 au 14/11/2026, session cloud, 21 commits, partie de `26ad5c7`) ; lot de **CODE** par destination ; arbitré par Ko par adoption de la consigne du relecteur du 18/11/2026 | bloc « ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 53 » (ordre des rangs) |
+| numéro | **D351**, pris en lisant le registre (dernier numéro attribué avant : D350 ; **305** décisions numérotées) ; D351 n'est **pas encore au registre** : il y entre à la clôture | registre |
+| SHA de départ | `5951b2cbee9fad52cdec5ddcbecf52d96a4d5e35` (= `origin/main` après `git fetch`) ; `origin/par-carte` = `7fdc67961727a3280f8e2210594ba507a0fbfb97` ; base commune `26ad5c77ec03a73d82e92368f7d97c4beac7556f` ; arbre propre, aucun stash, branche `main` ; la reprise de la consigne (§ 0) : **aucun écart** | table d'ouverture (recopiée plus bas) |
+| ce que la fusion apporte | **155 fichiers** (130 ajoutés, 25 modifiés, 0 supprimé) : 100 pièces sous `docs/preuves/parallele/carte/`, 24 sous `apps/client`, 7 sous `apps/pro`, 7 sous `apps/api`, 6 sous `packages/ui`, 2 sous `packages/i18n`, 1 sous `packages/types`, 6 harnais `neutralize-ca1.py` à `ca6.py`, 1 spec e2e `ca6-carte.e2e.ts`, `pnpm-lock.yaml` ; **0 migration, 0 fichier d'autorité ; une dépendance neuve** (Leaflet 1.9.4, `@types/leaflet`) ; trois fichiers modifiés des deux côtés (`apps/client/src/lib/api.ts`, `fr.json`, `ar.json`), sans conflit textuel | table d'ouverture |
+| essai de fusion | `git merge-tree --write-tree origin/main origin/par-carte` : code 0, arbre prédit `9c12458f5ae5af484ce0d58c6c47b7e0badcc95d` ; **le contrôle de la fusion rejoue** `git merge-tree --write-tree HEAD^1 HEAD^2` et exige l'arbre du commit de fusion | table d'ouverture ; `docs/preuves/D351/fusion/` |
+| lecture adverse | **45 contrôles — 31 ✓ · 10 ≈ · 1 ✗ · 3 ?** ; le ✗ : le BILAN dit l'ancre H6 de `neutralize-horizon.py` « périmée avant la session », **elle est trouvée sur l'arbre Windows** (même classe `\r\n` que `available-on` et `r49`) ; les dix ≈ et les trois ? sont dits dans le bloc d'arbitrage | `docs/preuves/D351/lecture-adverse/` |
+| compteur | POUR MÉMOIRE **VINGT-SIX**, inchangé à l'ouverture (VINGT-SIX → TRENTE-DEUX à la clôture par la lettre de la consigne ; voir [F-2] du bloc d'arbitrage) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| rang suivant | **« RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR »** s'écrit à la clôture (candidat proposé par la consigne : « Refusée » dans la liste « Mes salles » du pro, et les 29 gardes de S-192 en assertion native) | consigne § 4 |
+| ce qui RESTE | la fusion, ses six portes, `lancer-campagnes.py --tout`, la preuve R-4, le repère R-5, le backlog R-7 et R-8, les gestes de Ko, le contrôle de fin de lot | cette section |
+| écritures sur la machine de Ko | **aucune à cette écriture** ; les portes recréeront `zwadj_test` et `zwadj_e2e` (jetables, serveur de `zwadj-db`) — déclarées à la clôture (règle de D337) ; **la base de développement n'est ni lue ni écrite** (R-9) | section D351 à la clôture |
+
+**La table d'ouverture, recopiée à l'identique** de `docs/preuves/D351/table-ouverture.md` au commit `0e6f0a0` (la table `94b3e6f` plus son extension 1) ; seuls les niveaux de titre sont décalés de trois crans. Les extensions ULTÉRIEURES vivent dans le fichier de la table, jamais recopiées ici.
+
+#### D351 — rang 53 — table d'ouverture
+
+Lot : **l'intégration, dans `main`, de la branche `par-carte`** (session cloud des 13 et 14/11/2026 : la carte — recherche, accueil, fiche, point posé par le pro —, six lots CA-1 à CA-6, 21 commits, partie de `26ad5c7`), **rejouée sur le poste de Ko**, sur la consigne du relecteur adoptée par Ko, collée en tête de la session (`docs/preuves/D351/consigne.md`). Lot de **CODE par destination** — la fusion apporte le code de six lots — mais **ce lot n'écrit aucune ligne de code neuve au-delà de la fusion**, sauf ce que la fusion casse : l'ancre d'un harnais qu'elle périme (R-3) et le repère de parité des clés (R-5), chacun déclaré ligne par ligne, par extension de cette table, avant son commit (consigne, R-6). Méthode : les règles de `AGENTS.md`, sans session adverse ni certification (pause de Ko, DR1 de D336).
+
+- **SHA de départ** : `5951b2cbee9fad52cdec5ddcbecf52d96a4d5e35` (clôture de D350). `HEAD` = `origin/main` après `git fetch` (les deux sur ce SHA), arbre propre (`git status --short` : 0 ligne), aucun stash (0 ligne), branche `main`. `origin/par-carte` = `7fdc67961727a3280f8e2210594ba507a0fbfb97`. Base commune : `26ad5c77ec03a73d82e92368f7d97c4beac7556f`. Commits : 21 sur la branche et absents de `main`, 55 sur `main` et absents de la branche, 0 fusion sur la branche.
+- **Numéro** : D351 — pris en lisant la dernière ligne du registre de `ZWADJ_CONTINUITE.md` (D350, dernière des 306 lignes `| Dnnn |`) ; `D351` ne figure dans aucun des quatre fichiers d'autorité (compte 0 sur le texte aplati : 0, 0, 0, 0), ni dans `main` ni dans la branche (`git grep -l` : 0 fichier des deux côtés).
+- **Reprise (consigne, § 0), relevée avant toute écriture** : rang 52 CLOS (D350) ; compteur POUR MÉMOIRE VINGT-SIX ; « RANG 53 : EN ATTENTE DE CADRAGE DU RELECTEUR », candidat : l'intégration de `par-carte` ; `origin/main` = `5951b2c` ; `origin/par-carte` = `7fdc679` ; arbre propre, aucun stash, branche `main`. **Aucun écart : la règle d'arrêt n'a pas joué.**
+- **Poste à l'ouverture** : **sur secteur** (`BatteryStatus` = 2, `PowerOnline` = vrai), RAM libre 5 452 Mo sur 16 095, `chrome` 0, `headless_shell` 0, `node` 0, Docker 29.8.0 lancé, conteneur `zwadj-db` « Up 38 hours » (postgres:18, port 5432 relayé par Docker). Les ports 3000, 3100, 3101, 4000, 4100 et 5173 ne sont pas en écoute (`Get-NetTCPConnection`) ; les ports 5273 et 5274 de l'e2e sont relevés par le pilote de passe lui-même, qui refuse de démarrer s'ils sont occupés. Sur batterie au moment des portes de clôture : aucune porte ne se lance (R-9 de D340 ; le pilote refuse lui-même, code 3).
+- **Ce que la fusion apporte** (mesuré avant d'écrire, `git diff --name-status origin/main...origin/par-carte`) : **155 fichiers — 130 ajoutés, 25 modifiés, 0 supprimé** ; 100 sous `docs/preuves/parallele/carte/`, 24 sous `apps/client`, 7 sous `apps/pro`, 7 sous `apps/api`, 6 sous `packages/ui`, 2 sous `packages/i18n`, 1 sous `packages/types`, 6 sous `neutralisation/` (les harnais `neutralize-ca1.py` à `neutralize-ca6.py`), 1 sous `e2e/specs` (`ca6-carte.e2e.ts`), 1 à la racine (`pnpm-lock.yaml`). **0 migration, 0 fichier `.sql`, 0 fichier d'autorité** (`AGENTS.md`, `CLAUDE.md`, `ZWADJ_*` : 0). **Une dépendance neuve** : `packages/ui/package.json` et `pnpm-lock.yaml` (Leaflet 1.9.4 et `@types/leaflet`, d'après le BILAN) — `pnpm install` est donc exigé après la fusion (consigne, R-2).
+- **Trois fichiers sont modifiés des deux côtés** depuis la base commune : `apps/client/src/lib/api.ts` (D348 : `getVenueBySlug` en `no-store` ; la carte : une fonction neuve, dans une autre zone du fichier), `packages/i18n/messages/ar.json` et `packages/i18n/messages/fr.json` (un bloc neuf chacun). La fusion y passe sans conflit **textuel** ; seuls les tests disent si le résultat est juste.
+- **Essai de fusion, sans rien écrire dans l'arbre** : `git merge-tree --write-tree origin/main origin/par-carte` → code de sortie 0, arbre prédit `9c12458f5ae5af484ce0d58c6c47b7e0badcc95d` (l'arbre de `origin/main` est `3642e3f283bf94e5bc9b63ffdb224826db9c4700`). La fusion réelle se fait sur `HEAD` après les commits de pièces de ce lot : son arbre différera donc de celui-ci par les seuls fichiers de `docs/preuves/D351/` et des fichiers d'autorité ; le contrôle de la fusion le prouve par un **rejeu** : `git merge-tree --write-tree HEAD^1 HEAD^2` doit rendre exactement l'arbre du commit de fusion (consigne, R-1).
+- **Clés de catalogue, mesurées avant d'écrire** (`fr.json` à plat) : `origin/main` 1 267 clés (FR = AR) ; `origin/par-carte` 1 290 ; arbre prédit de la fusion **1 296** = 1 267 + 29 (le bloc `map`). Le repère de `apps/api/src/common/i18n-parity.spec.ts` (« le TOTAL ne RECULE pas ») vaut **943** : il est à 324 clés sous le total de `main` avant la fusion. Le bloc `publicationReview` de D350 compte **6** clés (la consigne, R-5, dit « les 8 » : écart de compte, relevé par la lecture adverse).
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 et D334 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) la consigne en pièce, la règle des portes (écrite et commitée AVANT les passes, R-2), la sortie de la lecture adverse de la consigne et du BILAN, l'audit de secrets scellé et son tri, **avant toute écriture d'autorité** ; (3) l'essai de fusion, la liste des fichiers de la fusion, l'audit de secrets scellé de l'ARBRE DE LA FUSION D'ESSAI (les 100 fichiers de `docs/preuves/parallele/carte/` compris) et son tri, **avant la fusion** ; (4) **la première écriture d'autorité** : les arbitrages de Ko (section 1 de la consigne, par adoption) et les décisions du relecteur R-1 à R-9, écrites comme telles, la table recopiée à l'identique, le point d'entrée du rang 53 (OUVERT) — **avant la fusion**, comme à D342 ; (5) **la fusion `--no-ff`** (R-1), jamais un rebase ni un squash ; (6) le contrôle de la fusion ; (7) les éventuels correctifs de ce que la fusion casse (R-6), **chacun précédé de son extension de table** ; (8) les pièces des portes, des campagnes et des preuves R-4, R-5, R-7 ; (9) les trois `.md` d'autorité de clôture ; (10) le contrôle de fin de lot, écrit **après** la poussée (D288). Aucun fichier de code, de test ni de harnais n'est écrit par ce lot hors ceux de la section B « fichiers de code que le lot peut écrire ».
+- **Règle d'arrêt** (consigne, § 0, mot pour mot) : « Un écart : tu t'arrêtes et tu le dis. » — les points de la reprise ont été relevés avant toute écriture : aucun écart. **Et** (consigne, R-1 et R-2) : un conflit de fusion, ou un arbre fusionné différent de celui que `git merge-tree` recalcule, ⇒ arrêt et rapport ; un rouge sur un fichier que la fusion ne touche pas ⇒ **un seul rejeu**, règle commitée avant ; **rouge au rejeu ⇒ rien n'est poussé**, un rapport. Un rouge dans un fichier de la fusion ⇒ aucune correction : le lot fautif est cherché en rejouant le test sur le commit de clôture de chaque lot de la branche (D332, troisième condition).
+- **Écrit pour ne pas se lire comme tenu** : cette table ne dit pas que la fusion est sans conflit **sémantique** — elle dit qu'elle l'est sans conflit **textuel**. Ce qui le dit, pour les trois fichiers modifiés des deux côtés, ce sont les six portes et les campagnes, après la fusion. Elle ne dit pas non plus que la carte « marche » : la session cloud n'a jamais joué sur le poste de Ko, personne n'a vu la carte avec son fond (BILAN, § 3) ; c'est un geste de Ko.
+
+##### A. Les fichiers que la fusion apporte — 155 chemins COMPLETS
+
+Sortie de `git diff --name-only origin/main...origin/par-carte`, **versée telle quelle** (une ligne par chemin, 155 lignes, 7 618 octets, sha256 `62dd5428455843af40d79e76ba5005d187122676df9c0bd7084a477bf4114c55`). Aucun préfixe : « 0 fichier non déclaré » doit pouvoir être faux (D328).
+
+```
+apps/api/src/venues/venue-map.controller.ts
+apps/api/src/venues/venue-map.spec.ts
+apps/api/src/venues/venue-map.ts
+apps/api/src/venues/venues-public.service.spec.ts
+apps/api/src/venues/venues-public.service.ts
+apps/api/src/venues/venues.module.ts
+apps/api/test/int/venue-map.int-spec.ts
+apps/client/.env.example
+apps/client/src/app/[locale]/page.test.tsx
+apps/client/src/app/theme.css
+apps/client/src/components/home-view.tsx
+apps/client/src/components/map/map-test-support.tsx
+apps/client/src/components/map/near-viewport-map.test.tsx
+apps/client/src/components/map/near-viewport-map.tsx
+apps/client/src/components/map/venue-map-loader.test.tsx
+apps/client/src/components/map/venue-map-loader.tsx
+apps/client/src/components/map/venue-points-map.test.tsx
+apps/client/src/components/map/venue-points-map.tsx
+apps/client/src/components/search/search-view.test.tsx
+apps/client/src/components/search/search-view.tsx
+apps/client/src/components/ui-map-tiles.test.ts
+apps/client/src/components/venue/venue-detail-view.test.tsx
+apps/client/src/components/venue/venue-detail-view.tsx
+apps/client/src/components/venue/venue-location-map.test.tsx
+apps/client/src/components/venue/venue-location-map.tsx
+apps/client/src/lib/api.test.ts
+apps/client/src/lib/api.ts
+apps/client/src/lib/leaflet-import-guard.test.ts
+apps/client/src/lib/map-tiles-env.ts
+apps/client/src/lib/search-query.test.ts
+apps/client/src/lib/search-query.ts
+apps/pro/.env.example
+apps/pro/src/lib/map-tiles-env.ts
+apps/pro/src/theme.css
+apps/pro/src/venues/place-fields-map.test.tsx
+apps/pro/src/venues/venue-form.tsx
+apps/pro/src/venues/venue-pin-map.test.tsx
+apps/pro/src/venues/venue-pin-map.tsx
+docs/preuves/parallele/carte/BILAN.md
+docs/preuves/parallele/carte/CA-1/audit-secrets-ca1.txt
+docs/preuves/parallele/carte/CA-1/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-1/neutralisation/neutralize-ca1.txt
+docs/preuves/parallele/carte/CA-1/portes/_index.txt
+docs/preuves/parallele/carte/CA-1/portes/build.txt
+docs/preuves/parallele/carte/CA-1/portes/lint.txt
+docs/preuves/parallele/carte/CA-1/portes/portes.md
+docs/preuves/parallele/carte/CA-1/portes/test-int.txt
+docs/preuves/parallele/carte/CA-1/portes/test.txt
+docs/preuves/parallele/carte/CA-1/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-1/rouges/int-venue-map.txt
+docs/preuves/parallele/carte/CA-1/rouges/rouges.md
+docs/preuves/parallele/carte/CA-1/rouges/unit-venue-map.txt
+docs/preuves/parallele/carte/CA-1/rouges/unit-venues-public-service.txt
+docs/preuves/parallele/carte/CA-1/table-ouverture.md
+docs/preuves/parallele/carte/CA-1/tri-audit-ca1.txt
+docs/preuves/parallele/carte/CA-2/audit-secrets-ca2.txt
+docs/preuves/parallele/carte/CA-2/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-2/neutralisation/neutralize-ca2.txt
+docs/preuves/parallele/carte/CA-2/poids/build-apres.txt
+docs/preuves/parallele/carte/CA-2/poids/build-avant.txt
+docs/preuves/parallele/carte/CA-2/poids/poids.md
+docs/preuves/parallele/carte/CA-2/portes/_index.txt
+docs/preuves/parallele/carte/CA-2/portes/build.txt
+docs/preuves/parallele/carte/CA-2/portes/lint.txt
+docs/preuves/parallele/carte/CA-2/portes/portes.md
+docs/preuves/parallele/carte/CA-2/portes/test-int.txt
+docs/preuves/parallele/carte/CA-2/portes/test.txt
+docs/preuves/parallele/carte/CA-2/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-2/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-2/rouges/rouges.md
+docs/preuves/parallele/carte/CA-2/table-ouverture.md
+docs/preuves/parallele/carte/CA-2/tri-audit-ca2.txt
+docs/preuves/parallele/carte/CA-3/audit-secrets-ca3.txt
+docs/preuves/parallele/carte/CA-3/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-3/neutralisation/neutralize-ca3.txt
+docs/preuves/parallele/carte/CA-3/portes/_index.txt
+docs/preuves/parallele/carte/CA-3/portes/build.txt
+docs/preuves/parallele/carte/CA-3/portes/lint.txt
+docs/preuves/parallele/carte/CA-3/portes/portes.md
+docs/preuves/parallele/carte/CA-3/portes/test-int.txt
+docs/preuves/parallele/carte/CA-3/portes/test.txt
+docs/preuves/parallele/carte/CA-3/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-3/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-3/rouges/rouges.md
+docs/preuves/parallele/carte/CA-3/table-ouverture.md
+docs/preuves/parallele/carte/CA-3/tri-audit-ca3.txt
+docs/preuves/parallele/carte/CA-4/audit-secrets-ca4.txt
+docs/preuves/parallele/carte/CA-4/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-4/neutralisation/neutralize-ca4.txt
+docs/preuves/parallele/carte/CA-4/portes/_index.txt
+docs/preuves/parallele/carte/CA-4/portes/build.txt
+docs/preuves/parallele/carte/CA-4/portes/lint.txt
+docs/preuves/parallele/carte/CA-4/portes/portes.md
+docs/preuves/parallele/carte/CA-4/portes/test-int.txt
+docs/preuves/parallele/carte/CA-4/portes/test.txt
+docs/preuves/parallele/carte/CA-4/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-4/rouges/client-vitest.txt
+docs/preuves/parallele/carte/CA-4/rouges/rouges.md
+docs/preuves/parallele/carte/CA-4/table-ouverture.md
+docs/preuves/parallele/carte/CA-4/tri-audit-ca4.txt
+docs/preuves/parallele/carte/CA-5/audit-secrets-ca5.txt
+docs/preuves/parallele/carte/CA-5/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-5/neutralisation/neutralize-ca5.txt
+docs/preuves/parallele/carte/CA-5/poids/build-pro.txt
+docs/preuves/parallele/carte/CA-5/portes/_index.txt
+docs/preuves/parallele/carte/CA-5/portes/build.txt
+docs/preuves/parallele/carte/CA-5/portes/lint.txt
+docs/preuves/parallele/carte/CA-5/portes/portes.md
+docs/preuves/parallele/carte/CA-5/portes/test-int.txt
+docs/preuves/parallele/carte/CA-5/portes/test.txt
+docs/preuves/parallele/carte/CA-5/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-5/rouges/pro-vitest.txt
+docs/preuves/parallele/carte/CA-5/rouges/rouges.md
+docs/preuves/parallele/carte/CA-5/table-ouverture.md
+docs/preuves/parallele/carte/CA-5/tri-audit-ca5.txt
+docs/preuves/parallele/carte/CA-6/audit-secrets-ca6.txt
+docs/preuves/parallele/carte/CA-6/campagnes/lancer-campagnes.txt
+docs/preuves/parallele/carte/CA-6/neutralisation/neutralize-ca6.txt
+docs/preuves/parallele/carte/CA-6/portes/_index.txt
+docs/preuves/parallele/carte/CA-6/portes/build.txt
+docs/preuves/parallele/carte/CA-6/portes/lint.txt
+docs/preuves/parallele/carte/CA-6/portes/portes.md
+docs/preuves/parallele/carte/CA-6/portes/test-e2e-passe-1.txt
+docs/preuves/parallele/carte/CA-6/portes/test-e2e-passe-2.txt
+docs/preuves/parallele/carte/CA-6/portes/test-int.txt
+docs/preuves/parallele/carte/CA-6/portes/test.txt
+docs/preuves/parallele/carte/CA-6/portes/typecheck.txt
+docs/preuves/parallele/carte/CA-6/rouges/e2e-ca6.txt
+docs/preuves/parallele/carte/CA-6/rouges/rouges.md
+docs/preuves/parallele/carte/CA-6/table-ouverture.md
+docs/preuves/parallele/carte/CA-6/tri-audit-ca6.txt
+docs/preuves/parallele/carte/a-reporter-au-backlog.md
+docs/preuves/parallele/carte/arabe-a-relire.md
+docs/preuves/parallele/carte/audit-secrets-ouverture.txt
+docs/preuves/parallele/carte/ce-qui-part-vers-le-tiers.md
+docs/preuves/parallele/carte/consigne.md
+docs/preuves/parallele/carte/controle-fin.txt
+docs/preuves/parallele/carte/lecture-adverse.txt
+e2e/specs/ca6-carte.e2e.ts
+neutralisation/neutralize-ca1.py
+neutralisation/neutralize-ca2.py
+neutralisation/neutralize-ca3.py
+neutralisation/neutralize-ca4.py
+neutralisation/neutralize-ca5.py
+neutralisation/neutralize-ca6.py
+packages/i18n/messages/ar.json
+packages/i18n/messages/fr.json
+packages/types/src/venue.ts
+packages/ui/package.json
+packages/ui/src/index.ts
+packages/ui/src/map/leaflet-canvas.tsx
+packages/ui/src/map/map-tiles.ts
+packages/ui/src/map/venue-map.tsx
+packages/ui/styles.css
+pnpm-lock.yaml
+```
+
+##### B. Les pièces de D351 — chemins complets
+
+Toutes sous `docs/preuves/D351/`. Les journaux de campagne, dont le nombre dépend de ce que les passes rendent, sont déclarés par extension.
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D351/table-ouverture.md` | ce fichier — premier commit du lot, SEUL |
+| `docs/preuves/D351/consigne.md` | la consigne du relecteur, versée telle quelle (la copie du message collé) |
+| `docs/preuves/D351/regle-portes.md` | la règle des portes, de l'e2e (deux passes, un rejeu unique au plus) et des campagnes (R-2, R-3), ÉCRITE ET COMMITÉE AVANT toute passe |
+| `docs/preuves/D351/lecture-adverse/confronter-consigne.py` | l'instrument de la lecture adverse de la consigne et du BILAN contre le dépôt, calibré sur deux bras |
+| `docs/preuves/D351/lecture-adverse/confronter-sortie.txt` | sa sortie, versée avant toute écriture d'autorité |
+| `docs/preuves/D351/audit-secrets-d351a.txt` | audit de secrets scellé (`neutralisation/audit-secrets.py --sortie`), avant le commit de la consigne et de la lecture adverse |
+| `docs/preuves/D351/tri-audit-d351a.txt` | son tri différentiel contre la dernière sortie scellée (`docs/preuves/D350/audit-secrets-d350d.txt`) |
+| `docs/preuves/D351/fusion/essai-fusion.txt` | l'essai de fusion sans écriture : l'arbre prédit, le code de sortie, les 155 fichiers, les trois fichiers modifiés des deux côtés |
+| `docs/preuves/D351/fusion/fichiers-de-la-fusion.txt` | la liste des 155 fichiers de la fusion, versée (consigne, § 3) |
+| `docs/preuves/D351/audit-secrets-d351b.txt` | audit de secrets scellé de l'ARBRE DE LA FUSION D'ESSAI (copie de travail hors dépôt), avant la fusion : il couvre les 100 fichiers de `docs/preuves/parallele/carte/` |
+| `docs/preuves/D351/tri-audit-d351b.txt` | son tri différentiel contre `audit-secrets-d351a.txt` |
+| `docs/preuves/D351/fusion/controle-fusion.py` | le contrôle de la fusion : `--no-ff`, deux parents, arbre rejoué par `git merge-tree`, les 21 commits de la branche ancêtres, diff = liste A |
+| `docs/preuves/D351/fusion/controle-fusion.txt` | sa sortie |
+| `docs/preuves/D351/r5/releve-parite.txt` | R-5 : le total des clés avant et après la fusion, relevé sur les fichiers, et le repère avant et après |
+| `docs/preuves/D351/portes/_index.txt` | l'index de la passe sur secteur (`docs/preuves/D340/portes/passe-secteur.sh`, employé tel quel) |
+| `docs/preuves/D351/portes/typecheck.txt` | la sortie de la porte `typecheck` |
+| `docs/preuves/D351/portes/lint.txt` | la sortie de la porte `lint` |
+| `docs/preuves/D351/portes/test.txt` | la sortie de la porte `test` |
+| `docs/preuves/D351/portes/build.txt` | la sortie de la porte `build` |
+| `docs/preuves/D351/portes/test-int.txt` | la sortie de la porte `test:int` |
+| `docs/preuves/D351/portes/test-e2e.txt` | la sortie de l'e2e, première passe — pièce MASQUÉE (le dépôt est public, D200) |
+| `docs/preuves/D351/portes/test-e2e-passe-2.txt` | la sortie de l'e2e, seconde passe (`pnpm test:e2e` seul, juste après) — pièce MASQUÉE |
+| `docs/preuves/D351/portes/masquer-jetons.py` | la procédure qui a masqué les jetons des sorties e2e, archivée à côté des pièces (copie de celle de D350, jamais promue en instrument, D291) |
+| `docs/preuves/D351/portes/etat-machine-pendant.txt` | l'état machine relevé toutes les 30 s pendant la passe du pilote |
+| `docs/preuves/D351/portes/etat-machine-passe-2.txt` | l'état machine relevé avant et après la seconde passe e2e |
+| `docs/preuves/D351/portes/FIN` | le marqueur de fin de passe écrit par le pilote |
+| `docs/preuves/D351/portes/portes.md` | les six portes, chacune avec son code de sortie et ses chiffres lus dans la sortie brute (D275) |
+| `docs/preuves/D351/r4/preuve-filtre-public.md` | R-4 : la preuve (ou le trou) qu'une salle masquée, supprimée ou non publiée est absente de la liste ET de la carte, et que la carte reste en no-store |
+| `docs/preuves/D351/tiers/relecture.md` | la relecture de `ce-qui-part-vers-le-tiers.md` pour une valeur réelle (0 attendu), consigne § 3 |
+| `docs/preuves/D351/neutralisation/lancer-campagnes-tout.txt` | la sortie complète de `neutralisation/lancer-campagnes.py --tout` (R-3) |
+| `docs/preuves/D351/neutralisation/rapport-campagnes.md` | la lecture, campagne par campagne, de ce qui a été joué, ce qui reste et ce que la fusion a périmé (R-3) |
+| `docs/preuves/D351/scenarios-ko.md` | les gestes de Ko (consigne, § 4) : les sept scénarios du BILAN, § 8, et un renvoi à ceux de D350 — **non joués par la session** |
+| `docs/preuves/D351/passe-d277/passe-d277.py` | la passe D277 des deux sens, motifs dérivés des affirmations du lot |
+| `docs/preuves/D351/passe-d277/sortie-avant.txt` | sa sortie avant les écritures d'autorité de clôture |
+| `docs/preuves/D351/passe-d277/sortie-apres.txt` | sa sortie après |
+| `docs/preuves/D351/passe-d277.md` | le compte rendu de la passe D277 (avant → après, triage de chaque motif) — **déclaré d'avance** (il n'existe pas encore) |
+| `docs/preuves/D351/aucune-valeur-reelle.txt` | la sortie du contrôle dédié « 0 valeur réelle sur N fichiers » (D299) |
+| `docs/preuves/D351/audit-secrets-d351c.txt` | audit de secrets scellé, AVANT le commit des pièces de portes |
+| `docs/preuves/D351/tri-audit-d351c.txt` | son tri différentiel contre `audit-secrets-d351b.txt` |
+| `docs/preuves/D351/audit-secrets-d351d.txt` | audit de secrets scellé, AVANT le commit des campagnes, des preuves R-4 et R-5 et des gestes de Ko |
+| `docs/preuves/D351/tri-audit-d351d.txt` | son tri différentiel contre `audit-secrets-d351c.txt` |
+| `docs/preuves/D351/audit-secrets-d351e.txt` | audit de secrets scellé de la clôture, AVANT les `.md` d'autorité de clôture |
+| `docs/preuves/D351/tri-audit-d351e.txt` | son tri différentiel contre `audit-secrets-d351d.txt` |
+| `docs/preuves/D351/controle-fin-de-lot.py` | le contrôle de fin de lot (D288, D328), écrit APRÈS la poussée |
+| `docs/preuves/D351/controle-fin-de-lot.txt` | sa sortie |
+
+###### Fichiers de code que le lot peut écrire (consigne, R-6) — la seule exception à « aucun code neuf »
+
+| chemin | ce que le lot peut y changer |
+|---|---|
+| `apps/api/src/common/i18n-parity.spec.ts` | R-5 : **le repère de « le TOTAL ne RECULE pas »**, relevé sur les fichiers après la fusion (le total mesuré, jamais un chiffre estimé) ; **le relever est permis, le baisser jamais** ; un commentaire d'historique. Aucune autre ligne. |
+
+###### Pièces CONDITIONNELLES (leur existence dépend d'un défaut ou d'un cas — D328)
+
+| chemin | condition |
+|---|---|
+| `docs/preuves/D351/lecture-adverse/defauts-instrument.txt` | si la première passe de l'instrument de lecture adverse montre un défaut d'instrument |
+| `docs/preuves/D351/lecture-adverse/confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` | idem : la première passe, gardée TELLE QUELLE |
+| `neutralisation/neutralize-*.py` (chemins complets par extension, **chacun précédé de son extension de table**) | si la FUSION a périmé l'ancre d'une cible (R-3) : l'ancre se repose, déclarée ligne par ligne ; tout autre défaut de harnais va au backlog, **sans correction** |
+| `docs/preuves/D351/portes/rejeu-*.txt`, `docs/preuves/D351/portes/rejeu-etat-machine.txt`, `docs/preuves/D351/portes/rejeu-resultat.md` (chemins complets par extension) | si une porte rend un rouge HORS des fichiers de la fusion : un seul rejeu, la règle écrite avant (`regle-portes.md`) |
+| `docs/preuves/D351/portes/lot-fautif/` (chemins complets par extension) | si une porte rend un rouge DANS un fichier de la fusion : le test rejoué sur le commit de clôture de chaque lot (D332) |
+| `docs/preuves/D351/neutralisation/` — les journaux de campagne et les sorties des campagnes `--int` et `--e2e` (chemins complets par extension) | les campagnes que `--tout`, `--int` et `--e2e` jouent : leur liste dépend de ce que le lanceur rend |
+| `docs/preuves/D351/r4/` — sorties de specs jouées pour R-4 (chemins complets par extension) | si la preuve du filtre public se lit dans la sortie d'une spec jouée seule |
+| `docs/preuves/D351/passe-d277/` — outils de lecture supplémentaires (chemins complets par extension) | si un compte de motifs ne suffit pas à trier (D341, extension 3) |
+| `docs/preuves/D351/audit-secrets-d351f.txt`, `docs/preuves/D351/tri-audit-d351f.txt` | si un versement a lieu après `audit-secrets-d351e.txt` |
+
+##### C. Les fichiers d'autorité — la première écriture est celle des arbitrages de Ko, AVANT la fusion
+
+| chemin | ce que le lot y écrit |
+|---|---|
+| `ZWADJ_CONTINUITE.md` | **première écriture, avant la fusion** : la section 1 de la consigne (a à e — par adoption, jamais comme une parole de Ko hors ses citations) et les décisions du relecteur R-1 à R-9, écrites comme telles, les écarts de la lecture adverse dits, la table recopiée à l'identique, le point d'entrée du rang 53 (OUVERT) ; **puis, EN DERNIER**, la section D351 (les six lots, leurs SHA, ce que la fusion a donné, les décisions prises seul, ce qui reste), l'ordre des rangs (« RANG 53 : CLOS », puis « RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR »), le registre (D351), le point d'entrée, la passe D277 |
+| `ZWADJ_BACKLOG.md` | les entrées de `a-reporter-au-backlog.md` (R-7), ADDITIVEMENT, avec ce qu'elles bloquent ; l'entrée de R-8 (les 29 gardes en assertion native, au rang 54) ; les entrées neuves que les passes révèlent (forme D302 : ce qu'elles bloquent ou « à ordonner par Ko », leur coût, aucune durée) ; les entrées que la branche a traitées, cochées avec le renvoi au lot |
+| `AGENTS.md` | le compteur POUR MÉMOIRE (VINGT-SIX → TRENTE-DEUX, consigne § 1 a), l'annotation de ce qui est devenu faux ou permis par la fusion (la décision produit n° 2 « carte reportée après le MVP », la ligne de la table des routes si elle change), un invariant de la carte si un fait mesuré en impose un — annotées, pas réécrites |
+
+##### D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucun fichier de code, de test, de harnais, de migration ni de dépendance n'est écrit par ce lot, hors** le commit de fusion (qui n'apporte que ceux de la liste A) **et** les deux exceptions de la section B (le repère de parité ; l'ancre d'un harnais que la fusion périme, par extension). Si le diff final en contient un autre, c'est un incident, pas une omission.
+- **`CLAUDE.md`** n'est pas déclaré : la consigne nomme trois fichiers d'autorité.
+- **`neutralisation/lancer-campagnes.py` et les autres instruments de `neutralisation/`** ne sont pas retouchés : leur promotion est un autre lot.
+- **Le sort de la branche `par-carte`** : elle est GARDÉE (comme `front-client`), jamais supprimée dans cette session (consigne, § 4).
+- **Les gestes de Ko** (consigne, § 4) : la session écrit `scenarios-ko.md`, elle ne les joue pas ; **la base de développement de Ko n'est ni lue ni écrite** (consigne, R-9) — seules `zwadj_test` et `zwadj_e2e`, jetables, sont recréées par les portes. Aucun fichier `.env` n'est lu.
+- **Le fournisseur des fonds de carte de production** (consigne, § 1 e) : une décision de Ko, ouverte ; elle BLOQUE le lancement, pas cette intégration.
+- **Le diff final** (`git diff 5951b2cbee9fad52cdec5ddcbecf52d96a4d5e35..HEAD --name-only`) doit rester inclus dans cette table, extensions comprises ; un fichier hors table est un incident.
+
+##### Extensions de la table
+
+Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** le commit du fichier qu'elle couvre. *(Aucune à l'ouverture.)*
+
+**Extension 1** (18/11/2026, commitée SEULE, AVANT les pièces d'ouverture) — **rectification d'un compte, aucun fichier ajouté.** La table dit « D350, dernière des 306 lignes `| Dnnn |` » : `grep -c '^| D[0-9]* | '` rend bien 306, mais l'une de ces lignes est l'**en-tête** du tableau du registre (`| D | où | ligne de définition relevée |`, ligne 26972 de `ZWADJ_CONTINUITE.md`). Les décisions numérotées sont **305** (`grep -c '^| D[0-9][0-9]* | '`), et la dernière est bien D350 : le numéro attribué, D351, ne change pas. Relevé par la lecture adverse de la consigne (`docs/preuves/D351/lecture-adverse/`), dont la première passe comptait 133 lignes parce qu'elle ne lisait que la colonne « A » du registre (défaut d'instrument n° 1).
+
+## ~~PROCHAIN LOT — rang 52~~ ⛔ *(D351 : l'état courant est le bloc « ÉTAT À L'OUVERTURE DE LA SESSION D351 » juste au-dessus ; le bloc du rang 52 qui suit garde sa date. Barré avec son motif, pas effacé.)*
 
 ## PROCHAIN LOT — rang 52 · `[CODE]` **ADM-2 : les écrans `/admin` dans l'application Pro (la garde de rôle ADMIN, la file des salles en attente, le détail, publier, rejeter et corriger le motif, la file des suppressions de compte), et le pro qui lit son refus** ⛔ **CLOS SUR LE CODE LE 17/11/2026 (D350)**
 
