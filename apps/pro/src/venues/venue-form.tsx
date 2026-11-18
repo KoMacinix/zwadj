@@ -343,8 +343,10 @@ export function buildUpdateDiff(values: VenueFormValues, venue: VenueProDTO): Ve
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Badge LECTURE SEULE : la publication est un acte admin, il n'existe aucune
- *  action « soumettre » au MVP (§4). Le pro constate, il ne déclenche pas. */
-export function PublicationBadge({ status }: { status: VenuePublicationStatus }) {
+ *  action « soumettre » au MVP (§4). Le pro constate, il ne déclenche pas.
+ *  ⛔ Rang 54 (D352, R-1) : `status === null` est « l'état n'est PAS CONNU » — le badge ne dit alors AUCUN état (le libellé « Publication » seul) : la carte de « Mes salles » ne sait pas
+ *  encore si la salle est refusée, et n'affirme pas « en attente » avant de le savoir. `busy` ajoute `aria-busy` tant que la lecture est en cours. */
+export function PublicationBadge({ status, busy }: { status: VenuePublicationStatus | null; busy?: boolean }) {
   const { t } = useTranslation();
   const labels: Record<VenuePublicationStatus, string> = {
     [VenuePublicationStatus.DRAFT]: t("venue.ui.publication.draft"),
@@ -355,6 +357,7 @@ export function PublicationBadge({ status }: { status: VenuePublicationStatus })
   const published = status === VenuePublicationStatus.PUBLISHED;
   return (
     <span
+      aria-busy={busy ? true : undefined}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -372,7 +375,7 @@ export function PublicationBadge({ status }: { status: VenuePublicationStatus })
       <span style={{ textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink-mute)" }}>
         {t("venue.ui.publication.label")}
       </span>
-      {labels[status]}
+      {status === null ? null : labels[status]}
     </span>
   );
 }

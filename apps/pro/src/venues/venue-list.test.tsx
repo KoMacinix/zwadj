@@ -9,12 +9,13 @@ import i18next from "i18next";
 import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { messages } from "@zwadj/i18n";
-import type { ReferentialsClient, VenueProClient } from "@zwadj/api-client";
-import type { VenueProDTO, WilayaDTO } from "@zwadj/types";
-import { ApiError, type AuthClient } from "../lib/auth-client";
+import type { ReferentialsClient, VenueProClient, VenuePublicationClient } from "@zwadj/api-client";
+import type { VenuePublicationReviewDTO, VenueProDTO, WilayaDTO } from "@zwadj/types";
+import { ApiError, NetworkError, type AuthClient } from "../lib/auth-client";
 import { makeVenueClientDouble } from "../test-support/client-doubles";
 import { initI18n } from "../i18n";
 import { AppProviders } from "../App";
+import { formatReviewDate } from "./publication-review";
 import { VenueListPage } from "./venue-list-page";
 
 initI18n();
@@ -113,10 +114,21 @@ function makeReferentials(overrides: Partial<ReferentialsClient> = {}): Referent
   };
 }
 
-function renderList(venues: VenueProClient, referentials: ReferentialsClient = makeReferentials()) {
+// ══ RANG 54 (D352), R-1 — la carte lit le refus de chaque salle NON publiée (`GET pro/venues/:id/publication`, D349). Par défaut, le double répond « jamais refusée » : ce qui n'est pas l'objet d'un test ne reçoit pas un client réel
+// construit sur `authedRequest` (un `vi.fn()` qui rend `undefined`, c'est-à-dire une panne de lecture). ⚠ La lecture est ASYNCHRONE : un test qui lit l'état de publication d'une carte l'ATTEND (`waitFor`, `findBy…`).
+const MOTIF = "Les photos sont floues. Merci de les remplacer.";
+const DATE_ISO = "2026-11-12T10:15:00.000Z";
+const JAMAIS: VenuePublicationReviewDTO = { publicationStatus: "DRAFT", rejection: null } as VenuePublicationReviewDTO;
+const REFUSEE: VenuePublicationReviewDTO = { publicationStatus: "DRAFT", rejection: { reason: MOTIF, rejectedAt: DATE_ISO } } as VenuePublicationReviewDTO;
+
+function publicationDouble(review: unknown = JAMAIS): VenuePublicationClient & { getPublicationReview: ReturnType<typeof vi.fn> } {
+  return { getPublicationReview: vi.fn((_venueId: string) => (review instanceof Error ? Promise.reject(review) : Promise.resolve(review as VenuePublicationReviewDTO))) };
+}
+
+function renderList(venues: VenueProClient, referentials: ReferentialsClient = makeReferentials(), publication: VenuePublicationClient = publicationDouble()) {
   return render(
     <MemoryRouter initialEntries={["/"]}>
-      <AppProviders client={makeAuth()} venues={venues} referentials={referentials}>
+      <AppProviders client={makeAuth()} venues={venues} referentials={referentials} publicationClient={publication}>
         <VenueListPage />
       </AppProviders>
     </MemoryRouter>
@@ -135,7 +147,8 @@ describe("Liste des salles — rendu des cartes", () => {
     // Sans photo : le bloc placeholder, et AUCUNE gestion de média.
     expect(screen.getByText("Aucune photo")).toBeInTheDocument();
     // Publication : badge LECTURE SEULE, aucun bouton « publier/soumettre ».
-    expect(screen.getByText("En attente de publication par Zwadj")).toBeInTheDocument();
+    // Rang 54 : l'état de publication d'une salle non publiée se lit à la RÉPONSE de la route du refus — on l'attend.
+    expect(await screen.findByText("En attente de publication par Zwadj")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /publier|soumettre/i })).not.toBeInTheDocument();
   });
 
@@ -295,5 +308,118 @@ describe("Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma sall
       expect(source(f), f).not.toMatch(/venue\.ui\.nav\.myVenue/);
     }
     expect(source("src/venues/venue-list-page.tsx")).not.toMatch(/venue\.ui\.list\.title/);
+  });
+});
+
+// ══ RANG 54 (D352), R-1 — LA LISTE « MES SALLES » DIT « REFUSÉE » POUR UNE SALLE REFUSÉE ══════════════════════════════════════════════════════════════════════════════════════
+// Le défaut : la carte rendait `PublicationBadge` — « En attente de publication par Zwadj » pour TOUTE salle en brouillon, refusée ou non (le refus n'était lisible que DANS la salle, D350). Le pro qui a été refusé croyait attendre.
+// La voie (A), sans contrat neuf (consigne, R-1) : la carte d'une salle NON publiée lit `GET pro/venues/:id/publication` (D349) ; une salle publiée n'appelle rien. Cinq mesures (docs/preuves/D352/regle-portes.md, § 1) :
+//   1. le nombre d'appels est borné ; 2. une panne de lecture n'est jamais « pas refusée » (D133, D142, D120) ; 3. l'affichage ne SAUTE pas (rien n'est affirmé avant la réponse) ; 4. l'e2e ne refuse pas la voie ; 5. le MOTIF n'entre jamais dans la liste.
+// ⛔ Verdicts NATIFS (`expect` sur `null` / `toBe` / `toEqual`) : aucun verdict ne repose sur une requête qui lève ni sur un matcher jest-dom (AGENTS.md, D304, D316).
+describe("Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée", () => {
+  const REFUSEE_FR = messages.fr.publicationReview.refusedBadge;
+  const EN_ATTENTE_FR = messages.fr.venue.ui.publication.draft;
+  const salle = (id: string, publicationStatus: "DRAFT" | "PUBLISHED"): VenueProDTO => ({ ...VENUE, id, slug: `salle-${id}`, nameFr: `Salle ${id}`, nameAr: `قاعة ${id}`, publicationStatus });
+
+  afterEach(async () => {
+    cleanup();
+    await act(async () => {
+      await i18next.changeLanguage("fr");
+    });
+  });
+
+  it("une salle REFUSÉE : la carte dit « Refusée » et ne dit PLUS « En attente de publication par Zwadj »", async () => {
+    const pub = publicationDouble(REFUSEE);
+    renderList(makeVenues(), makeReferentials(), pub);
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(screen.queryByText(REFUSEE_FR)).not.toBeNull());
+    expect(screen.queryByText(EN_ATTENTE_FR)).toBeNull();
+    expect(pub.getPublicationReview).toHaveBeenCalledWith("v1");
+  });
+
+  it("en ARABE : la carte dit le mot du catalogue arabe, et plus l'attente (la parité des clés est mesurée ailleurs : `i18n-parity.spec.ts`)", async () => {
+    await act(async () => {
+      await i18next.changeLanguage("ar");
+    });
+    renderList(makeVenues(), makeReferentials(), publicationDouble(REFUSEE));
+    await screen.findByRole("heading", { name: VENUE.nameAr });
+    await waitFor(() => expect(screen.queryByText(messages.ar.publicationReview.refusedBadge)).not.toBeNull());
+    expect(screen.queryByText(messages.ar.venue.ui.publication.draft)).toBeNull();
+    expect(messages.ar.publicationReview.refusedBadge === messages.fr.publicationReview.refusedBadge, "le mot arabe n'est pas le mot français").toBe(false);
+  });
+
+  it("une salle JAMAIS refusée garde « En attente de publication par Zwadj », après la lecture de SON état", async () => {
+    const pub = publicationDouble(JAMAIS);
+    renderList(makeVenues(), makeReferentials(), pub);
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(screen.queryByText(EN_ATTENTE_FR)).not.toBeNull());
+    expect(screen.queryByText(REFUSEE_FR)).toBeNull();
+    expect(pub.getPublicationReview).toHaveBeenCalledWith("v1");
+  });
+
+  it("une salle PUBLIÉE : « Publiée », et AUCUNE lecture du refus (publier efface le motif : il n'y a rien à lire)", async () => {
+    const pub = publicationDouble(REFUSEE);
+    renderList(makeVenues({ listMine: vi.fn().mockResolvedValue([salle("p1", "PUBLISHED")]) }), makeReferentials(), pub);
+    await screen.findByRole("heading", { name: "Salle p1" });
+    expect(screen.queryByText(messages.fr.venue.ui.publication.published)).not.toBeNull();
+    expect(screen.queryByText(REFUSEE_FR)).toBeNull();
+    expect(pub.getPublicationReview).toHaveBeenCalledTimes(0);
+  });
+
+  it("⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En attente… » NI « Refusée » (elle ne connaît pas l'état) ; elle le porte `aria-busy` ; la réponse rend l'état vrai", async () => {
+    let liberer: (review: VenuePublicationReviewDTO) => void = () => undefined;
+    const pub = { getPublicationReview: vi.fn((_venueId: string) => new Promise<VenuePublicationReviewDTO>((resolve) => { liberer = resolve; })) };
+    renderList(makeVenues(), makeReferentials(), pub);
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(pub.getPublicationReview).toHaveBeenCalledTimes(1));
+    expect(screen.queryByText(EN_ATTENTE_FR), "avant la réponse, la carte ne dit pas « en attente » : elle ne le sait pas").toBeNull();
+    expect(screen.queryByText(REFUSEE_FR), "avant la réponse, la carte ne dit pas « refusée » non plus").toBeNull();
+    expect(document.querySelector('[aria-busy="true"]'), "la carte annonce qu'elle attend").not.toBeNull();
+    await act(async () => {
+      liberer(REFUSEE);
+    });
+    await waitFor(() => expect(screen.queryByText(REFUSEE_FR)).not.toBeNull());
+    expect(document.querySelector('[aria-busy="true"]'), "la réponse levée, plus rien n'attend").toBeNull();
+  });
+
+  it("⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En attente… », elle dit qu'elle n'a pas pu vérifier ; la salle reste listée", async () => {
+    renderList(makeVenues(), makeReferentials(), publicationDouble(new NetworkError()));
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(screen.queryByText(messages.fr.publicationReview.loadError)).not.toBeNull());
+    expect(screen.queryByText(EN_ATTENTE_FR)).toBeNull();
+    expect(screen.queryByText(REFUSEE_FR)).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Salle El Ryad" })).not.toBeNull();
+  });
+
+  it.each([
+    ["null", null],
+    ["un objet sans état de publication", {}],
+    ["un refus sans motif", { publicationStatus: "DRAFT", rejection: {} }]
+  ])("⛔ D120 — une réponse MALFORMÉE (%s) est une PANNE, jamais un « pas refusée »", async (_nom, mauvaise) => {
+    renderList(makeVenues(), makeReferentials(), publicationDouble(mauvaise));
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(screen.queryByText(messages.fr.publicationReview.loadError)).not.toBeNull());
+    expect(screen.queryByText(EN_ATTENTE_FR)).toBeNull();
+  });
+
+  it("le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et pas une de plus une fois les états rendus", async () => {
+    const pub = publicationDouble(JAMAIS);
+    const salles = [salle("a", "DRAFT"), salle("b", "DRAFT"), salle("c", "DRAFT"), salle("d", "PUBLISHED")];
+    renderList(makeVenues({ listMine: vi.fn().mockResolvedValue(salles) }), makeReferentials(), pub);
+    await screen.findByRole("heading", { name: "Salle d" });
+    await waitFor(() => expect(screen.queryAllByText(EN_ATTENTE_FR).length).toBe(3));
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(pub.getPublicationReview.mock.calls.map((appel) => appel[0]).sort()).toEqual(["a", "b", "c"]);
+  });
+
+  it("⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien de plus (ils se lisent en OUVRANT la salle, D350)", async () => {
+    renderList(makeVenues(), makeReferentials(), publicationDouble(REFUSEE));
+    await screen.findByRole("heading", { name: "Salle El Ryad" });
+    await waitFor(() => expect(screen.queryByText(REFUSEE_FR)).not.toBeNull());
+    const texte = document.body.textContent ?? "";
+    expect(texte.includes(MOTIF), "le motif écrit par l'admin n'est pas dans la liste").toBe(false);
+    expect(texte.includes(formatReviewDate(DATE_ISO, "fr")), "la date du refus n'est pas dans la liste").toBe(false);
   });
 });

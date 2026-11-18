@@ -22,7 +22,8 @@ import { mediaSrc } from "../lib/media-url";
 import { useProVenues } from "../shell/pro-venues-context";
 import { venuesLabelKey } from "../shell/venues-label";
 import { useReferentialsData, useVenueCrud } from "./venue-client-context";
-import { PublicationBadge, StatusSelect } from "./venue-form";
+import { PublicationListBadge } from "./publication-review";
+import { StatusSelect } from "./venue-form";
 import { NEW_VENUE_PATH, venuePath } from "../routes";
 
 export function VenueListPage() {
@@ -202,7 +203,8 @@ export function VenueListPage() {
                     <p style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>{formatDZD(venue.basePriceCents, locale)}</p>
 
                     <div style={{ marginBlockStart: "auto", paddingBlockStart: 10, display: "flex", flexDirection: "column", gap: 10 }}>
-                      <PublicationBadge status={venue.publicationStatus} />
+                      {/* Rang 54 (D352, R-1) : « Refusée » pour une salle refusée — la carte lit l'état de SA salle ; le motif ne vient JAMAIS ici, il se lit en ouvrant la salle. */}
+                      <PublicationListBadge venue={venue} />
 
                       <div className="field" style={{ gap: 4 }}>
                         <label htmlFor={`status-${venue.id}`} style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--ink-2)" }}>

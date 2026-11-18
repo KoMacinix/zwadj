@@ -10,7 +10,7 @@
 // d'étape. ⚠ Le motif est écrit par l'admin (en français, le plus souvent) : il est rendu tel quel, avec `dir="auto"` — la phrase de l'interface autour de lui suit la langue du pro.
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { VenuePublicationStatus, intlLocale, type VenuePublicationReviewDTO } from "@zwadj/types";
+import { VenuePublicationStatus, intlLocale, type VenueProDTO, type VenuePublicationReviewDTO } from "@zwadj/types";
 import { usePublicationClient } from "./venue-client-context";
 import { PublicationBadge } from "./venue-form";
 
@@ -89,6 +89,32 @@ export function PublicationHeaderState({ status, review }: { status: VenuePublic
     );
   }
   return <PublicationBadge status={status} />;
+}
+
+/**
+ * Rang 54 (D352, R-1) — l'état de publication sur la CARTE de « Mes salles ». Une salle PUBLIÉE n'appelle rien (publier efface le motif) ; une salle NON publiée lit son refus par la même route et le même crochet
+ * que l'assistant (`GET /pro/venues/:id/publication`, D349 — aucun contrat neuf). ⛔ Trois règles, mesurées par `venue-list.test.tsx` :
+ *  · tant que la lecture n'a pas répondu, la carte n'affirme AUCUN état (badge sans libellé, `aria-busy`) : « en attente » avant la réponse serait faux pour une salle refusée — un affichage qui saute ;
+ *  · une PANNE de lecture n'est pas « pas refusée » (D133, D142) : la carte le dit (`publicationReview.loadError`, la phrase de l'étape « Publication ») au lieu d'afficher « en attente » ;
+ *  · ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien de plus — ils se lisent en OUVRANT la salle (`PublicationRefusalNotice`).
+ * La lecture part UNE fois par montage de la carte (`usePublicationReview`).
+ */
+export function PublicationListBadge({ venue }: { venue: Pick<VenueProDTO, "id" | "publicationStatus"> }) {
+  const { t } = useTranslation();
+  const { state } = usePublicationReview(venue.id, venue.publicationStatus);
+  if (venue.publicationStatus === VenuePublicationStatus.PUBLISHED) return <PublicationBadge status={venue.publicationStatus} />;
+  if (state.kind === "ready") return <PublicationHeaderState status={venue.publicationStatus} review={state} />;
+  if (state.kind === "error") {
+    return (
+      <>
+        <PublicationBadge status={null} />
+        <p className="field-hint" style={{ margin: 0 }}>
+          {t("publicationReview.loadError")}
+        </p>
+      </>
+    );
+  }
+  return <PublicationBadge status={null} busy />;
 }
 
 /** L'étape « Publication » : le refus complet (motif, date), ou la panne de lecture avec son bouton. Ni alerte ni statut : un avis qui reste, qui ne prend pas la place du message d'enregistrement. */
