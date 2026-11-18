@@ -1,0 +1,20 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/zz-diag-r54.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/venues/zz-diag-r54.test.tsx > diagnostic D352 > relecture silencieuse d'entrée ET relecture voulue : nombre de lectures du refus
+MESURE-1 listMine=2 lectures-du-refus=3 ids=a,b,c
+
+stdout | src/venues/zz-diag-r54.test.tsx > diagnostic D352 > relecture silencieuse d'entrée ET relecture voulue : nombre de lectures du refus
+MESURE-2 listMine=3 lectures-du-refus avant=3 apres=6
+
+ ✓ src/venues/zz-diag-r54.test.tsx (1 test) 600ms
+   ✓ diagnostic D352 > relecture silencieuse d'entrée ET relecture voulue : nombre de lectures du refus  598ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  17:25:59
+   Duration  10.30s (transform 2.10s, setup 638ms, collect 4.08s, tests 600ms, environment 3.85s, prepare 570ms)
+

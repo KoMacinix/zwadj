@@ -1,0 +1,21 @@
+D352 — tri différentiel de l'audit de secrets « b » (deuxième versement : les rouges de R-1 et la mesure de la voie (A))
+
+Instrument d'audit : python3 neutralisation/audit-secrets.py --sortie docs/preuves/D352/audit-secrets-d352b.txt (1 040 108 octets, 0 CR ; lancé vers 17:53, fini à 18:06 le 18/11/2026), joué dans le dépôt de travail, en arrière-plan. Sceau : sha256:70330c47d4fb06917de0ea1828e2333e42ff0d062e99d4e546aa10a34f845edb — « relue identique : True · sceau vérifié à la relecture : True » (console de l'outil). Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri (négatif 0 nouvelle ; positif 2 nouvelles, chemins attendus).
+
+Procédure du tri : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D352/audit-secrets-d352a.txt docs/preuves/D352/audit-secrets-d352b.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d352a) : 5 700 fichiers parcourus, 5 498 audités, 202 exclus, 3 530 alertes.
+  · nouvelle (d352b)   : 5 708 fichiers parcourus, 5 505 audités, 203 exclus, 3 536 alertes = 3 530 + 6. Contrôle de l'outil : audités + exclus = 5 708 (attendu 5 708, les parcourus).
+  · Exclus : 203 contre 202, soit un de plus — la sortie scellée « a » (sceau vérifié) ; aucune exclusion de « a » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 708 fichiers APRÈS l'audit, sortie scellée « b » comprise ; l'audit en a parcouru 5 708. Entre « a » et « b » il est entré 8 fichiers : `tri-audit-d352a.txt` (1), `rouges/` (2), `mesures/` (4), et la sortie scellée « b » elle-même (1) = 8. L'arithmétique ferme.
+
+⚠ RECTIFICATION DU TRI « a » (`docs/preuves/D352/tri-audit-d352a.txt`, NON retouché : une pièce versée ne se corrige pas sur place, D291, D295) : ce tri écrivait « écart de UN fichier NON EXPLIQUÉ » (5 699 présents pendant l'audit contre 5 700 parcourus). **L'écart s'explique, et il ne s'agissait pas d'un écart** : l'audit parcourt SA PROPRE sortie, qui existe déjà quand il marche le dossier (`--sortie`), donc « disque APRÈS l'audit, sortie scellée comprise » (5 700) est bien égal à « parcourus » (5 700) ; le tri « a » avait soustrait ce fichier d'un côté sans le soustraire de l'autre. Même arithmétique ci-dessus pour « b » (5 708 = 5 708). ⚠ C'est une INFÉRENCE arithmétique, sur deux audits, **pas une lecture du code de l'instrument** : elle n'a pas été confrontée à `neutralisation/audit-secrets.py`.
+
+Résultat du tri différentiel : 6 alertes ABSENTES de la sortie précédente. Ventilation par motif : trois du motif « mot de passe », deux du motif « jeton », une du motif « valeur nommée secrète ». Triées AU CONTEXTE (lignes 8395 à 8405 de la sortie scellée « b », valeurs masquées par l'outil) :
+  · **4 dans `docs/preuves/D352/mesures/zz-diag-r54.test.tsx.txt`** : les NOMS de propriétés d'un double de test du client d'authentification (trois noms de la famille « mot de passe » : l'indicateur d'existence d'un mot de passe, la demande d'oubli, la réinitialisation — des fonctions factices, jamais une valeur) et, sur une ligne voisine, l'accesseur d'un jeton d'accès factice (une chaîne de TROIS lettres, que tous les fichiers de test de l'app Pro posent à l'identique). Aucune valeur réelle : un double et des noms.
+  · **2 dans `docs/preuves/D352/tri-audit-d352a.txt`** (un compte pour le motif « valeur nommée secrète », un pour le motif « jeton ») : la ligne de ventilation du tri « a » **recite le NOM des motifs** de l'alerte qu'il triait — l'écho d'un écho, comme le tri de D351 que cette ligne décrivait. Aucune valeur.
+  **Aucune des six n'est une valeur réelle.** Les autres pièces neuves de ce versement (`rouges/rouges.md`, `rouges/venue-list-rouge-brut.txt`, `mesures/diagnostic-appels.md`, `mesures/diagnostic-appels-sortie.txt`, `mesures/diagnostic-appels-sortie-1.txt`) : 0 alerte (aucun de leurs chemins ne paraît dans les contextes d'alerte nouveaux).
+Pour ne pas prolonger la chaîne, ce tri-ci ne recopie AUCUN contexte brut des alertes (il ne cite que les noms de motifs et les noms de variables ci-dessus, sans valeur).
+
+Contrôle « 0 valeur réelle » (D299) : NON joué à ce versement — aucun journal à valeurs réelles n'existe encore dans la session (les journaux d'e2e, qui portent des jetons de développement, sont versés MASQUÉS au versement suivant, où le contrôle sera joué).

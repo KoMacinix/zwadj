@@ -1,0 +1,60 @@
+// DIAGNOSTIC JETABLE (D352) — mesure le nombre de lectures du refus : (1) relecture SILENCIEUSE d'entrée ; (2) relecture VOULUE après une écriture. Non versé au code : supprimé après lecture, sortie versée comme pièce.
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { useState } from "react";
+import { MemoryRouter } from "react-router";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import type { VenuePublicationReviewDTO, VenueProDTO } from "@zwadj/types";
+import { makeVenueClientDouble } from "../test-support/client-doubles";
+import { initI18n } from "../i18n";
+import { AppProviders } from "../App";
+import { useProVenues } from "../shell/pro-venues-context";
+import { VenueListPage } from "./venue-list-page";
+
+initI18n();
+afterEach(cleanup);
+
+const BASE = {
+  slug: "s", cityId: "c", nameFr: "N", nameAr: "ن", taglineFr: null, taglineAr: null, descriptionFr: null, descriptionAr: null, districtFr: null, districtAr: null, address: null, lat: null, lng: null,
+  capacityMax: 400, basePriceCents: 1, bookingMode: "SINGLE_SLOT", depositRateBps: 3000, depositAmountCents: null, status: "ACTIVE", amenityIds: [], styleIds: [], ceremonyType: null, photos: [], slotTemplates: [],
+  matterportModelId: null, createdAt: "2026-01-05T10:00:00.000Z", updatedAt: "2026-01-06T10:00:00.000Z"
+};
+const salle = (id: string, publicationStatus: string) => ({ ...BASE, id, slug: `s-${id}`, nameFr: `Salle ${id}`, publicationStatus }) as unknown as VenueProDTO;
+const AUTH = {
+  bootstrap: vi.fn().mockResolvedValue({ id: "u1", email: "a@b.dz", role: "PRO", locale: "fr", emailVerified: true, firstName: null, lastName: null, phone: null, hasPassword: true, hasGoogle: false, proProfile: { businessName: "x", phone: "+213551234567", phone2: null } }),
+  login: vi.fn(), googleAuth: vi.fn(), register: vi.fn(), logout: vi.fn(), me: vi.fn(), verifyEmail: vi.fn(), resendVerification: vi.fn(), forgotPassword: vi.fn(), resetPassword: vi.fn(), authedRequest: vi.fn(), getAccessToken: () => "jwt"
+};
+function Porte() {
+  const { state } = useProVenues();
+  const [vu, setVu] = useState(false);
+  if (state.kind === "ready" && !vu) setVu(true);
+  return vu ? <VenueListPage /> : null;
+}
+
+describe("diagnostic D352", () => {
+  it("relecture silencieuse d'entrée ET relecture voulue : nombre de lectures du refus", async () => {
+    const salles = [salle("a", "DRAFT"), salle("b", "DRAFT"), salle("c", "DRAFT"), salle("d", "PUBLISHED")];
+    const venues = makeVenueClientDouble(null, { listMine: vi.fn().mockImplementation(() => new Promise((r) => setTimeout(() => r(salles), 30))), update: vi.fn().mockImplementation((_id: string, p: object) => Promise.resolve({ ...salles[0], ...p })) });
+    const pub = { getPublicationReview: vi.fn(async (_id: string) => ({ publicationStatus: "DRAFT", rejection: null }) as unknown as VenuePublicationReviewDTO) };
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <AppProviders client={AUTH as never} venues={venues} publicationClient={pub}>
+          <Porte />
+        </AppProviders>
+      </MemoryRouter>
+    );
+    await screen.findByRole("heading", { name: "Salle d" });
+    await waitFor(() => expect(screen.queryAllByText("En attente de publication par Zwadj").length).toBe(3));
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)); });
+    console.log(`MESURE-1 listMine=${(venues.listMine as ReturnType<typeof vi.fn>).mock.calls.length} lectures-du-refus=${pub.getPublicationReview.mock.calls.length} ids=${pub.getPublicationReview.mock.calls.map((c) => c[0]).join(",")}`);
+    // relecture VOULUE : on change la visibilité de la 1re salle → `update` puis `load()` (reload : passe par `loading`)
+    const avant = pub.getPublicationReview.mock.calls.length;
+    const select = screen.getAllByLabelText("Visibilité")[0] as HTMLSelectElement;
+    fireEvent.change(select, { target: { value: "HIDDEN" } });
+    await waitFor(() => expect((venues.update as ReturnType<typeof vi.fn>).mock.calls.length).toBe(1));
+    await waitFor(() => expect(screen.queryByText("Chargement de vos salles…")).not.toBeNull());
+    await screen.findByRole("heading", { name: "Salle d" });
+    await waitFor(() => expect(screen.queryAllByText("En attente de publication par Zwadj").length).toBe(3));
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)); });
+    console.log(`MESURE-2 listMine=${(venues.listMine as ReturnType<typeof vi.fn>).mock.calls.length} lectures-du-refus avant=${avant} apres=${pub.getPublicationReview.mock.calls.length}`);
+  });
+});
