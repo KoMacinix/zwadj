@@ -1,0 +1,31 @@
+D351 — tri différentiel de l'audit de secrets « c » (AVANT le commit des pièces de portes : les six sorties de porte, la seconde passe e2e, leur masquage et leur rapport)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351b.txt docs/preuves/D351/audit-secrets-d351c.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351c.txt (1 025 224 octets, 0 CR, 8 521 lignes ; lancé à 03:58, fini à 04:05 le 18/11/2026), joué dans le dépôt de travail (arbre : les 19 pièces de `portes/` non commitées).
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau) : 80f45329cf7e7f78… — identique à celui que la sortie porte. Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri
+(négatif : « D298 contre elle-même », 0 nouvelle ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351b) : 5 552 fichiers parcourus, 5 355 audités, 197 exclus, 3 223 alertes.
+  · nouvelle (d351c)   : 5 585 fichiers parcourus, 5 387 audités, 198 exclus, 3 498 alertes = 3 223 + 275. Contrôle de l'outil : audités + exclus = 5 585 (attendu 5 585, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque (compte relevé après l'audit) : 5 585 fichiers sous docs/preuves, dont la sortie scellée elle-même, écrite APRÈS l'audit : 5 584 présents pendant l'audit + `.gitattributes` (que l'outil ajoute) = 5 585 — l'arithmétique ferme.
+    L'écart avec « b » (+33) se décompose : + les 23 pièces versées depuis (la sortie scellée « b », son tri, le contrôle de la fusion, la pièce du repère de parité, les 19 fichiers de `portes/`) + les 10 résidus `__pycache__/*.pyc` ignorés par git, présents dans le dépôt de travail
+    et absents de la copie jetable de « b » = 33. Parmi les 5 584 : 17 + 1 fichiers de D351 non suivis au moment de l'audit (les 17 fichiers `portes/` non encore commités + la sortie scellée « c »), les 10 résidus `.pyc` ignorés.
+  · Exclus : 198 contre 197, soit un de plus — la sortie scellée « b » (`docs/preuves/D351/audit-secrets-d351b.txt`, sceau vérifié) ; aucune exclusion de « b » n'a disparu.
+
+Résultat du tri différentiel : 275 alertes ABSENTES de la sortie précédente, à trier au contexte (D299). Ventilation par motif : jeton = 273 · mot-de-passe = 2. Par fichier, avec le contexte lu (normalisé : numéros remplacés) :
+  · docs/preuves/D351/portes/test-e2e.txt (129 — jeton) et docs/preuves/D351/portes/test-e2e-passe-2.txt (129 — jeton) : les deux sorties e2e MASQUÉES. Le contexte de chacune des 258 est l'une de DEUX lignes de journal de serveur —
+    « [WebServer] http://localhost:N/auth/verification-email?token=<jeton masqué #N (43 car.)> » (68 par fichier) et « [WebServer] http://localhost:N/fr/auth/verification-email?token=<jeton masqué #N (43 car.)> » (61 par fichier) — soit 129 par fichier :
+    EXACTEMENT les 129 suites distinctes que le masquage a remplacées (`portes/rapport-masquage.txt`). L'outil lit le motif « token= » devant un REMPLACEMENT de masque : c'est l'écho de D350 (« le motif « token= » lu sur un remplacement de masque »). Les valeurs
+    réelles, elles, ne sont pas dans le fichier : l'outil de masquage a asserté 0 suite restante avant d'écrire, et un balayage indépendant de la forme d'un jeton (43 caractères base64url mêlant minuscules, majuscules et chiffres) rend 0 sur chacun des deux fichiers
+    versés et 129 sur chacun des deux bruts (calibration : le positif trouve, le négatif non). **Lues au contexte : des masques, pas des valeurs.**
+  · docs/preuves/D351/portes/masquer-jetons.py (8 — jeton) : la procédure de masquage, COPIE NON MODIFIÉE de celle de D350 (sha256 identique : 7d48c6bfcf52e8b25580703df9f912d5a9730793af8f0fe6c0bfddc10d5e8d1a) ; ses huit contextes sont des lignes de son code et de sa documentation qui écrivent le
+    motif « token= » (`apres_token = texte[…] == "token="`, « un jeton SANS CHIFFRE est masqué APRÈS « token= » »…) — les mêmes que celles de la pièce d'origine, rendues sous un autre chemin. Aucune valeur.
+  · docs/preuves/D351/portes/rapport-masquage.txt (2 — jeton) : MA PROPRE pièce, en prose : elle écrit « token= » suivi de 16 caractères ou plus dans la phrase qui décrit le balayage. Aucune valeur.
+  · docs/preuves/D351/portes/test-int.txt (1 — mot-de-passe) : le TITRE d'un test de la suite d'intégration, « ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : <7 car. masques> CONSTANTE, mais aucun e-mail ne part » — le même titre que les sorties
+    versées par la branche (tri « b »). Aucune valeur.
+  · docs/preuves/D351/tri-audit-d351b.txt (6 — 5 jeton, 1 mot-de-passe) : MA PROPRE pièce, versée après l'audit « b », qui recite les titres de tests et la phrase « token= » du tri précédent. Aucune valeur.
+  Total : 258 + 8 + 2 + 1 + 6 = 275 ✓. Les deux lignes « -> » de l'outil sous chaque alerte donnent le même verdict que pour « b » (mots ordinaires, « valeur trop courte » ou « déjà présente dans N fichiers suivis hors preuves »).
+  **Aucune valeur réelle.** Rien n'est caché : les 275 lignes sont dans la sortie scellée.
+
+Contrôle « 0 valeur réelle » (D299) : non rejoué à cette étape — il se rejoue UNE fois, à la clôture, sur tous les fichiers versés par le lot (docs/preuves/D351/aucune-valeur-reelle.txt), contre les journaux BRUTS de la passe des portes (la base jetable de l'e2e), qui sont hors dépôt.

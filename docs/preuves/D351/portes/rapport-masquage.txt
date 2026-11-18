@@ -1,0 +1,14 @@
+D351 — rapport du masquage des sorties e2e (regle-portes.md § 4.4 ; R-3 « journaux bruts masqués »)
+
+Le dépôt est public (D200). Les sorties de l'e2e portent les journaux des serveurs de développement, donc les courriels d'activation journalisés de la base JETABLE `zwadj_e2e` : des suites de 43 caractères base64url de la forme exacte d'un jeton opaque de ce dépôt. Elles sont masquées par
+`docs/preuves/D351/portes/masquer-jetons.py`, COPIE NON MODIFIÉE de `docs/preuves/D350/masquage/masquer-jetons.py` (sha256 identique des deux fichiers : 7d48c6bfcf52e8b25580703df9f912d5a9730793af8f0fe6c0bfddc10d5e8d1a), puis versées. Le brut reste HORS dépôt.
+
+Procédure, pour chacune des deux passes : (1) codes ANSI retirés et retours chariot (CR) retirés de la sortie brute ; (2) `python3 masquer-jetons.py <brut sans ANSI> <masqué> <libellé>` ; (3) le compte des suites restantes est asserté à ZÉRO par l'outil avant l'écriture ; (4) un balayage INDÉPENDANT de la forme d'un jeton (43 caractères base64url mêlant minuscules, majuscules et chiffres ; ou « token= » suivi de 16 caractères ou plus), écrit pour cette étape : brut = 129 occurrences, masqué = 0 (les deux bras de calibration : le positif trouve, le négatif ne trouve rien).
+
+| pièce versée | sortie brute (ANSI compris) | brut sans ANSI | sha256 du brut sans ANSI | occurrences masquées | suites distinctes | restantes | octets versés |
+|---|---|---|---|---|---|---|---|
+| portes/test-e2e.txt (passe 1, dans le pilote) | 2 436 474 o | 2 338 524 o | f84ac938331ed07dade8a8f844502fdddb27fa9bf47e95fcb3d560ff28e182dc | 129 | 129 | 0 | 2 337 516 o |
+| portes/test-e2e-passe-2.txt (passe 2, `pnpm test:e2e` seul) | 2 431 749 o | 2 333 925 o | a4103660da95b81925fd09ec1e08d720ed92738f00eb187e94e8e9ec66ed6483 | 129 | 129 | 0 | 2 332 925 o |
+
+Les cinq autres sorties de porte (`typecheck`, `lint`, `test`, `build`, `test:int`) sont versées SANS masquage, codes ANSI et CR retirés : le même balayage y rend 0 suite de forme de jeton et 0 « token= » suivi de 16 caractères ou plus ; leurs tailles : 627, 526, 61 444, 8 876 et 90 445 octets.
+Ce que ce rapport ne dit PAS : que ces sorties soient exemptes de toute AUTRE valeur sensible — c'est le rôle de l'audit de secrets scellé « c » et de son tri, qui précèdent le commit de ces pièces.

@@ -1,0 +1,564 @@
+
+> zwadj@ test:int C:\Users\benla\Desktop\MyProjct\Zwadj
+> pnpm --filter @zwadj/api test:int
+
+
+> @zwadj/api@0.0.0 test:int C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run -c vitest.config.int.ts
+
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:27728) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/bookings.int-spec.ts (60 tests) 50012ms
+   ✓ Reprise des salles existantes (migration D81) > une salle créée sans rien dire reçoit 30 % — les 30 % implicites d'avant  1069ms
+   ✓ Reprise des salles existantes (migration D81) > l'acompte est exposé sur la fiche PUBLIQUE, avant la demande  818ms
+   ✓ POST /venues/:slug/bookings — création > crée une demande PENDING et NE VERROUILLE RIEN  880ms
+   ✓ POST /venues/:slug/bookings — création > expiresAt vaut la fenêtre de réponse PRO, encadrée par deux instants mesurés ici  822ms
+   ✓ POST /venues/:slug/bookings — création > le créneau 20h→02h produit une plage qui finit LE LENDEMAIN (D55/D77)  785ms
+   ✓ POST /venues/:slug/bookings — création > DEUX demandes concurrentes sur la même date coexistent en PENDING  877ms
+   ✓ POST /venues/:slug/bookings — création > le pro est notifié — sans notification, la demande expirerait toute seule  845ms
+   ✓ POST /venues/:slug/bookings — création > ⚠ la ligne Notification est RÉSOLUE, pas laissée en QUEUED (S2-bis)  865ms
+   ✓ POST /venues/:slug/bookings — création > un envoi qui TOMBE laisse la demande enregistrée (D63)  851ms
+   ✓ POST /venues/:slug/bookings — création > des montants PÉRIMÉS rendent 409 avec les montants RÉELS (D75)  802ms
+   ✓ POST /venues/:slug/bookings — création > un ACOMPTE périmé suffit à refuser, même si le total est bon  784ms
+   ✓ POST /venues/:slug/bookings — création > plus d'invités que la capacité : refusé AVANT l'écriture  766ms
+   ✓ POST /venues/:slug/bookings — création > une date au-delà de l'horizon de 18 mois se REFUSE, elle ne se déplace pas (D49)  791ms
+   ✓ POST /venues/:slug/bookings — création > un créneau d'une AUTRE salle : « n'existe pas », pas « est pris »  814ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > un acompte fixe SUPÉRIEUR au total est écrêté, la demande passe  883ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > le PATCH refuse un pourcentage ET un montant à la fois  776ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > le PATCH refuse la paire incomplète  780ms
+   ✓ Acompte — le cas limite REEL (D81/D55) > un taux de 4 % est sous le plancher  790ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > la SECONDE acceptation reçoit 409 via le 23P01, et la première survit  974ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > annuler la première LIBÈRE le créneau : la seconde passe alors  924ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > ⚠ le pro NE PEUT PAS annuler une demande encore PENDING — il la REFUSE (S3)  809ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > un BLOCAGE recouvrant refuse l'acceptation — contrôle applicatif sous verrou  831ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > accepter deux fois : BOOKING_STATUS_CONFLICT, avec le statut réel  819ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > l'acceptation pose paymentDueAt et prévient le client  788ms
+   ✓ Acceptation — l'exclusivité appartient à la BASE (D78) > paymentDueAt − acceptedAt vaut EXACTEMENT la fenêtre d'acompte  823ms
+   ✓ Acceptation CONCURRENTE (D117) > deux acceptations SIMULTANÉES de la MÊME demande : une seule aboutit, l'autre 409 — jamais 500  834ms
+   ✓ Acceptation CONCURRENTE (D117) > deux demandes DIFFÉRENTES acceptées simultanément sur le même créneau : 201 + 409 BOOKING_SLOT_TAKEN  871ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux refus SIMULTANÉS : un seul aboutit, un seul e-mail au client  832ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux annulations PRO SIMULTANÉES d'une demande acceptée : une seule aboutit  835ms
+   ✓ Acceptation CONCURRENTE (D117) > D121 — deux annulations CLIENT SIMULTANÉES : une seule aboutit, jamais 500  827ms
+   ✓ Acceptation CONCURRENTE (D117) > trois acceptations SIMULTANÉES de la même demande : une seule passe, deux 409  897ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre un refus — un REFUS commite pendant l'acceptation : 409 avec le statut réel, la ligne refusée intacte  882ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F1 contre une annulation — une ANNULATION client commite pendant l'acceptation : 409 avec le statut réel, la ligne annulée intacte  910ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > F5 — une ACCEPTATION commite pendant l'annulation client SANS motif : 400 cancelReasonRequired, la ligne acceptée intacte  898ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-8 — l'ORDRE des refus d'accept : une demande déjà REFUSÉE sous un blocage rend son statut réel, pas le blocage  843ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > MD-F1-5 — un BLOCAGE commite pendant l'acceptation : 409 BOOKING_BLOCKED_PERIOD, la demande reste en attente  884ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > C1 — un client annule une demande déjà REFUSÉE : 409 avec le statut réel, la ligne refusée intacte  850ms
+   ✓ Rang 23 · 23a — deux commandes DIFFÉRENTES sur la même demande (F1, F5) > C2 — un REFUS commite pendant l'annulation client SANS motif : 409 avec le statut réel, pas 400 motif manquant  855ms
+   ✓ SINGLE_SLOT — la journée entière (D77) > la plage couvre les 24 heures locales, sans règle applicative en plus  793ms
+   ✓ SINGLE_SLOT — la journée entière (D77) > le créneau reste la source du PRIX, même si ses heures sont ignorées  795ms
+   ✓ Refus et annulations (D83) > le pro refuse SANS motif — c'est permis  802ms
+   ✓ Refus et annulations (D83) > le client annule une demande PENDING sans motif  792ms
+   ✓ Refus et annulations (D83) > le client DOIT un motif pour annuler une demande ACCEPTÉE  824ms
+   ✓ Refus et annulations (D83) > 404 INDISTINCT sur la demande d'un autre client (D47)  779ms
+   ✓ Lectures > GET /me/bookings ne rend QUE mes demandes, refusées comprises  894ms
+   ✓ Lectures > le pro voit les CONFLITS, calculés à la lecture  830ms
+   ✓ Lectures > ⚠ une réservation ACCEPTÉE dispute ENCORE — `locks()` n'était exercé QUE par des PENDING (S2-bis)  827ms
+   ✓ Lectures > ⚠ une réservation CONFIRMED dispute ENCORE — le paiement ne la sort pas de la vue (S2-bis)  805ms
+   ✓ Lectures > une demande REFUSÉE ne dispute plus rien : elle sort des conflits  827ms
+   ✓ Lectures > le pro voit le CONTACT — il doit pouvoir rappeler  778ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — e-mail seul : 201, PENDING, `contact_phone` est NULL en base et l'e-mail est gardé  881ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-2 — le pro la voit avec l'e-mail, sans numéro : `contactPhone` est null (jamais une chaîne vide)  779ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-5 — le pro est prévenu et le message lui donne l'E-MAIL « pour rappeler » : ni « null », ni « undefined », ni un trou  758ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-4 — avec un numéro ET un e-mail, les DEUX sont gardés : la réservation d'avant n'a pas bougé  761ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-4 — avec un numéro seul (le parcours d'avant), `contact_email` reste NULL  796ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-3 (S-55, SIGNALEMENT) — l'e-mail est gardé tel que saisi, rogné seulement : « Amina@Example.DZ »  771ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, et AUCUNE ligne n'est écrite  762ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-8 — un numéro SAISI et invalide est refusé même avec un e-mail valide : 400, aucune ligne  766ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-9 et ML-10 — un numéro VIDE ou `null` n'est pas un numéro absent : 400, aucune ligne  749ms
+   ✓ ⛔ L36-1 (D337) — une réservation par e-mail seul > ML-11 — la BASE refuse ce que l'API ne verrait pas : retirer le dernier moyen de joindre le client est refusé par la contrainte  814ms
+(node:24892) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quotes.int-spec.ts (87 tests) 32217ms
+   ✓ Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne  609ms
+   ✓ Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer  426ms
+   ✓ Remise du devis (D160) > enregistre le canal et l'horodatage SANS changer le statut  319ms
+   ✓ Remise du devis (D160) > est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises  362ms
+   ✓ Remise du devis (D160) > refuse un canal HORS LISTE — le jeu de valeurs a une seule autorité  410ms
+   ✓ Remise du devis (D160) > ⚠ un devis REFUSÉ ne se remet plus au client  360ms
+   ✓ Remise du devis (D160) > deux remises SIMULTANÉES ne rendent jamais 500  342ms
+   ✓ Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base  424ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > l'index partiel des SENT est TOUJOURS EN BASE, et mord encore  382ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > un devis LEGACY en SENT reste LISIBLE et manipulable  405ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > SUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ  376ms
+   ✓ Concurrence (D121) > D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500  352ms
+   ✓ Concurrence (D121) > D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500  336ms
+   ✓ Concurrence (D121) > deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version  325ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > convertir crée une demande PENDING, et le devis NE BOUGE PAS  311ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date  349ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > un devis ne se convertit qu'UNE fois : réviser, pas reconvertir  310ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande  362ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED  349ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une chaîne CLOSE ne se révise plus  306ms
+   ✓ Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire  349ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant  305ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit  474ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent  364ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne  324ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte  328ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte  313ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est  360ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400  475ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > ⛔ D-8 — UN SEUL compteur : brouillon, officiel, brouillon ⇒ 0001, 0002, 0003 ; annuler le premier et promouvoir le troisième ne sautent ni ne réutilisent aucun numéro  386ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (clos), pas « pas officiel » — à la remise comme à la conversion  304ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > D-14 — le PDF d'un brouillon annulé est refusé comme celui de tout devis clos (non-régression), celui d'un brouillon ouvert est servi  3483ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > la liste des devis d'une salle rend le drapeau de CHAQUE ligne  319ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ la révision ne choisit PAS son drapeau : `isOfficial` (vrai ou faux) est une clé inconnue — 400 — et aucune version n'est écrite  323ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ une révision d'un brouillon qui porte une FICHE ou un NOM : 409 `QUOTE_DRAFT_HAS_NO_CLIENT` et AUCUNE ligne écrite (le geste est la promotion)  314ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ v1 brouillon, v2 PROMUE : réviser la v1 (une ANCIENNE version) HÉRITE de la v2 — la v3 est OFFICIELLE (le drapeau est lu sur la plus haute version, pas sur la parente)  344ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > D-15 en base — un brouillon qui porterait une fiche, un nom arabe ou un nom latin est refusé par la CHECK (SQLSTATE 23514), CHAQUE colonne seule  352ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ la promotion rend le devis OFFICIEL : même identifiant, même numéro (`DEVIS-…` à la place de `BROUILLON-…`), la fiche et les DEUX copies du nom inscrites, les montants INCHANGÉS, rien remis  309ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-11 — UNE ligne d'audit : `quote.promote`, l'entité, l'identifiant, l'acteur ET son rôle, le drapeau et l'identifiant de fiche — et AUCUN nom, AUCUN numéro, AUCUN e-mail  302ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — deux promotions : la seconde est un 409 `QUOTE_ALREADY_OFFICIAL`, et il n'y a TOUJOURS qu'une ligne d'audit  328ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — CINQ promotions SIMULTANÉES de la même demande : EXACTEMENT un 201, quatre 409 `QUOTE_ALREADY_OFFICIAL`, EXACTEMENT une ligne d'audit  379ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut  392ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promotion ‖ révision SIMULTANÉES : le verrou de la chaîne les sérialise ; l'issue est toujours cohérente (la chaîne n'a jamais deux têtes de nature différente)  355ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promouvoir un brouillon ANNULÉ : 409 « statut » (clos) ; promouvoir un devis OFFICIEL annulé : 409 « déjà officiel » — l'ordre se mesure sur des cas doublement fautifs  433ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture  589ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 `CLIENT_RECORD_LINKED`, et le brouillon reste un brouillon  454ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ après la promotion, le devis est REMIS puis CONVERTI comme tout devis officiel (la chaîne complète du comptoir : brouillon, refusé à la remise, promu, puis remis)  394ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 409, AUCUNE copie écrite ; sur le devis promu il fonctionne comme avant > ⛔ la boîte de langue ne pose pas de nom sur un brouillon : 409 `QUOTE_DRAFT_HAS_NO_CLIENT`, les deux colonnes restent NULL  405ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 409, AUCUNE copie écrite ; sur le devis promu il fonctionne comme avant > ⚠ une fois promu avec UN nom, K-5 complète l'AUTRE écriture (la copie présente n'est jamais remplacée)  351ms
+   ✓ ⛔ D-1, D-3 en base — la CHECK `quotes_unofficial_inert` : un brouillon n'est ni remis, ni accepté ; un devis OFFICIEL n'est pas gêné > ⛔ `sent_via`, `sent_at`, le statut ACCEPTED (avec `accepted_at`) et les statuts hérités sont REFUSÉS sur un brouillon (SQLSTATE 23514, `quotes_unofficial_inert`)  360ms
+   ✓ ⛔ D-1, D-3 en base — la CHECK `quotes_unofficial_inert` : un brouillon n'est ni remis, ni accepté ; un devis OFFICIEL n'est pas gêné > ⚠ ce que la CHECK AUTORISE : annuler un brouillon (CANCELLED), et un devis OFFICIEL peut tout porter (canal, fiche, noms)  413ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⛔ un INSERT direct sur un brouillon est REFUSÉ (23514, `bookings_quote_must_be_official`), et aucune ligne n'est écrite  368ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⛔ R-4 — un UPDATE de `quote_id` vers un brouillon est REFUSÉ aussi, et la réservation est INCHANGÉE  518ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⚠ ce que le déclencheur LAISSE PASSER : une réservation SANS devis, une réservation sur un devis OFFICIEL, et un UPDATE d'une AUTRE colonne  342ms
+(node:21276) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/visit-bookings.int-spec.ts (27 tests) 24364ms
+   ✓ POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61) > plage 09:20→10:20 : 09:20 et 09:50 sont réservables, 09:40 est REFUSÉ  1246ms
+   ✓ POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61) > 10:00 tombe DANS la plage mais ne rend pas un créneau entier → refusé  864ms
+   ✓ POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61) > un jour SANS plage → refusé ; une plage SUSPENDUE → refusée  888ms
+   ✓ POST /venues/:slug/visit-bookings — le créneau doit EXISTER (D55, D61) > créneau PASSÉ (dernier dimanche écoulé) et date au-delà de l'horizon 18 mois → refusés  868ms
+   ✓ POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59) > deux clients sur le MÊME créneau : le second reçoit 409 VISIT_SLOT_TAKEN, le premier survit  933ms
+   ✓ POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59) > le créneau reste RENDU par /visit-slots, marqué taken  887ms
+   ✓ POST /venues/:slug/visit-bookings — exclusivité garantie par la BASE (D59) > ANNULER libère le créneau : le même horaire se réserve à nouveau  918ms
+   ✓ POST /venues/:slug/visit-bookings — un rendez-vous à venir par salle (D62) > second créneau dans la MÊME salle → 409 ; dans une AUTRE salle → 201  901ms
+   ✓ POST /venues/:slug/visit-bookings — un rendez-vous à venir par salle (D62) > un rendez-vous déjà PASSÉ ne bloque rien : le client revient  869ms
+   ✓ POST /venues/:slug/visit-bookings — visibilité, rôles, contact > salle MASQUÉE ou brouillon → 404 indistinct ; TEMPORAIREMENT INDISPONIBLE → 201  908ms
+   ✓ POST /venues/:slug/visit-bookings — visibilité, rôles, contact > le PRO n'est pas un client : 403 ; anonyme : 401  840ms
+   ✓ POST /venues/:slug/visit-bookings — visibilité, rôles, contact > téléphone : le corps l'emporte, à défaut le profil, à défaut null (D61)  908ms
+   ✓ GET /me/visit-bookings > ne rend que MES rendez-vous, triés par date croissante, annulés INCLUS  924ms
+   ✓ DELETE /visit-bookings/:id (D62) > le rendez-vous d'un AUTRE client → 404 indistinct, comme un id inconnu ou malformé  880ms
+   ✓ DELETE /visit-bookings/:id (D62) > annuler DEUX fois rend 204 sans réécrire cancelledAt  888ms
+   ✓ DELETE /visit-bookings/:id (D62) > un rendez-vous déjà PASSÉ ne s'annule plus → 409 VISIT_BOOKING_PAST  848ms
+   ✓ Notifications (D60, D63) > par défaut : 1 e-mail au pro, 1 confirmation au client, 2 lignes Notification  851ms
+   ✓ Notifications (D60, D63) > pro en notifyBySms : un WhatsApp part sur SON numéro, en plus de l'e-mail  867ms
+   ✓ Notifications (D60, D63) > l'annulation notifie le pro que le créneau est libéré  880ms
+   ✓ Notifications (D60, D63) > transport en PANNE : le rendez-vous est confirmé quand même, la ligne passe FAILED (D63)  848ms
+   ✓ Repère civil (D48, D51) > 09:20 à Alger est stocké à 08:20 UTC, et relu 09:20 — le décalage n'apparaît nulle part dans le DTO  849ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > le pro lit les rendez-vous de SA salle, triés, annulés inclus et marqués  925ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > la fenêtre isole la salle ET les dates : rien de la salle voisine, rien du lundi  901ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > un CLIENT est REFUSÉ sur la route pro — le @Roles de méthode remplace celui de la classe  830ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > le pro annule : le créneau est LIBÉRÉ et le client reçoit un e-mail  875ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > annuler DEUX fois est idempotent : la date d'annulation ne bouge plus  897ms
+   ✓ C3b — les rendez-vous vus et annulés par le PRO > 404 INDISTINCT : salle inconnue, id malformé — un pro ne découvre pas ce qui existe ailleurs  834ms
+(node:28364) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-document.int-spec.ts (30 tests) 21769ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le propriétaire télécharge : application/pdf, pièce jointe, non mise en cache, langue appliquée — et la ligne du devis est INCHANGÉE (la route n'écrit rien)  578ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > le VRAI moteur : un PDF valide, la police du dépôt embarquée et seule  2574ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > ⛔ un AUTRE pro est refusé en 404 indistinct — rien n'est rendu : un identifiant deviné ne livre pas les données d'un client  529ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > un CLIENT est refusé (403), un anonyme aussi (401), une salle SUPPRIMÉE rend le même 404  450ms
+   ✓ La route — rôles, propriété, contrat (décision 4) > la langue de repli est OBLIGATOIRE et se limite à fr / ar : absente ou autre, 400  324ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > après une révision, le PDF de la v1 est REFUSÉ (409, `latestVersion` 2) et celui de la v2 est servi  352ms
+   ✓ ⛔ La VERSION ACTIVE (décision 1) — le serveur ne sert ni l'ancienne valeur ni une autre version à sa place > une chaîne dont la dernière version est ANNULÉE rend le 409 de statut ; une ANCIENNE version annulée reste « pas la version active » (ordre des refus)  376ms
+   ✓ ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 1 — l'acompte stocké, qui n'est PAS 30 % du total, s'imprime tel quel  307ms
+   ✓ ⛔ LA RÈGLE DES MONTANTS — le PDF imprime la valeur STOCKÉE, jamais un recalcul (précision de Ko, décision 1) > test 2 — un changement des RÈGLES DE PRIX APRÈS le devis ne change PAS le montant imprimé (et un NOUVEAU devis, lui, suit les nouvelles règles)  345ms
+   ✓ La langue du PDF (rang 38, décision A de Ko) — celle que le pro DEMANDE à ce téléchargement, jamais celle du compte du client > dans les deux sens, avec ou sans fiche : `Content-Language` et la langue du HTML sont la langue DEMANDÉE  374ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie LATINE en français, la copie ARABE en arabe — jamais l'autre écriture  330ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ S-52 — une copie ABSENTE dans la langue du document s'imprime « — », jamais l'AUTRE écriture en repli  311ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ MD-12 — la fiche MODIFIÉE après la création du devis ne change pas le PDF : il imprime la copie STOCKÉE  311ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > ⛔ M-7 — le COMPTE n'est plus lu : un devis hérité lié à un compte (`client_id` posé en base) et SANS copie imprime « — », jamais le nom du compte  404ms
+   ✓ ⛔ D336 (M-7, S-52) — le PDF imprime la COPIE du nom du devis, celle de la LANGUE DU DOCUMENT, et rien d'autre > la copie complétée par la boîte de langue (K-5) est celle que le PDF imprime ensuite  304ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le détail suit le TYPE : « par invité » et « à l'unité » la quantité stockée, « à paliers » le nom du palier choisi (FR et AR), « fixe » rien — et chaque montant est celui du devis  393ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > ⛔ le nom du palier est celui de la LIGNE stockée : renommer le palier dans le catalogue APRÈS le devis ne change PAS le PDF (P-3)  385ms
+   ✓ rang 38 (L35-2) — le PDF d'un devis à prestations de chaque type : DB-9, la valeur STOCKÉE, le nom du palier de la LIGNE > le VRAI moteur rend ce devis dans les deux langues : un PDF valide, la police du dépôt embarquée et seule  3293ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > chaque canal de la liste d'autorité est accepté ET relu en base : un canal accepté par le type mais refusé par la base casserait ici  578ms
+   ✓ Le canal « e-mail » (décision 8) — réellement ÉCRIT en base, libellé mesuré, compté par l'entonnoir > l'entonnoir COMPTE le canal e-mail : un devis remis par e-mail entre dans `delivered`  312ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ CALIBRATION à deux bras, sur le vrai Chromium : la couleur du filigrane posée par un élément témoin est COMPTÉE, le même document sans lui rend ZÉRO  1471ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ le lecteur de couleur ne se laisse pas tromper par un AUTRE bleu : une couleur voisine n'est pas comptée  405ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ (fr) UN devis de 70 prestations, officiel puis brouillon : le MÊME nombre de pages, plusieurs pages ; le brouillon pose le filigrane sur CHAQUE page, l'officiel nulle part  1235ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ (ar) UN devis de 70 prestations, officiel puis brouillon : le MÊME nombre de pages, plusieurs pages ; le brouillon pose le filigrane sur CHAQUE page, l'officiel nulle part  1370ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ un brouillon d'UNE page : une page, un filigrane — et le même nombre de pages que le même devis officiel  1219ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ la mutation `absolute` (le bras FAUX) est vue : un filigrane `absolute` ne se pose pas sur chaque page — le test ne serait pas vert pour toute position  722ms
+   ✓ ⛔ D-19 (R-5) — le filigrane, mesuré dans le PDF que Chromium écrit > ⛔ le PDF d'un brouillon porte toujours la police du DÉPÔT, embarquée, comme celui d'un devis officiel (le filigrane arabe ne retombe pas sur une police système)  1352ms
+   ✓ ⛔ L36-2 (D339) — par la VRAIE route : le PDF d'un brouillon, avec son nom de fichier ; promu, il perd son filigrane et sa référence change de préfixe > ⛔ le brouillon est servi : `BROUILLON-…_fr_v1.pdf`, et le HTML confié au moteur porte le filigrane ; le même devis PROMU : `DEVIS-…`, aucun filigrane  357ms
+ ✓ test/int/migration-non-empty.int-spec.ts (31 tests) 12476ms
+   ✓ B9 — la dernière migration sur une base NON VIDE (D123) > prépare une base à l'avant-dernière migration, puis la sème  530ms
+   ✓ L35-3 — la numérotation des salles et des devis sur une base NON VIDE > ⛔ la migration de numérotation des devis LÈVE si une ligne resterait sans numéro (une révision orpheline) — et ne laisse RIEN derrière elle  481ms
+   ✓ ⛔ L35-4 (D336, MD-13) — la fiche client et la copie du nom sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée d'un pro, d'un compte client, d'une salle et de devis (une tête, une révision, un devis hérité lié à un compte)  471ms
+   ✓ ⛔ L36-1 (D337, ML-12) — le numéro facultatif et le CHECK, sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux réservations (numéro + e-mail ; numéro seul) — où `contact_phone` est encore NOT NULL  462ms
+   ✓ ⛔ L36-2 (D339, D-10) — le devis brouillon (`is_official`, la CHECK, le déclencheur) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de huit devis dans CHAQUE état (hérités compris), d'une fiche, et de deux réservations (l'une rattachée à un devis)  698ms
+   ✓ ⛔ L36-3a-1 (D341, MP-38) — la couche du personnel (trois tables, trois énumérations, deux colonnes) sur une base NON VIDE > prépare : une base RECRÉÉE, migrée jusqu'à AVANT la migration du lot, semée de deux profils de pros (dont un avec un second numéro) et de trois lignes d'audit (dont une avec auteur)  426ms
+ ✓ test/int/staff-login.int-spec.ts (34 tests) 17684ms
+   ✓ K-15 — la connexion nominale > 200 : le membre est rendu, une SESSION neuve est ouverte et son cookie posé, `last_login_at` est écrit, les compteurs sont à zéro, UNE ligne d'audit `staff.login`  612ms
+   ✓ K-15 — la connexion nominale > la recherche du membre se fait sur la CLÉ normalisée : « AMINE », « amine » et « Âmine » ouvrent le même compte  652ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — un poste déjà reconnu (son cookie d'appareil) RÉUTILISE l'appareil : aucun cookie d'appareil neuf, aucune ligne d'appareil de plus, `last_used_at` écrit  379ms
+   ✓ K-15 — la connexion nominale > un poste NEUF (aucun cookie d'appareil) reçoit un appareil neuf et son cookie  379ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'un AUTRE MEMBRE de la même salle n'est pas réutilisé : un appareil neuf est créé, l'appareil de l'autre n'est pas touché  378ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-3 — le cookie d'appareil d'une AUTRE SALLE n'est pas réutilisé, même pour le même nom de compte  622ms
+   ✓ K-15 — la connexion nominale > un appareil RÉVOQUÉ ou EXPIRÉ n'est pas réutilisé  474ms
+   ✓ K-15 — la connexion nominale > ⛔ MP-8 — un mot de passe juste ne paie QU'UN hachage réel, aucun factice  386ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ compte inconnu, mauvais mot de passe, membre désactivé, salle sans couche : même statut 401, même code `STAFF_INVALID_CREDENTIALS`, même corps (hors horodatage)  918ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ MP-4 — un membre DÉSACTIVÉ n'accumule AUCUN échec et ne paie qu'un hachage FACTICE (compte éteint = compte inconnu)  395ms
+   ✓ R-3 (D341) / MP-8 — tous les refus sont IDENTIQUES à l'octet > ⛔ MP-18 — le nom d'un membre d'une AUTRE salle est inconnu ici : 401 identique, aucun compteur de l'autre salle ne bouge  1013ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ VINGT connexions parallèles au mauvais mot de passe : exactement CINQ comptées, au plus CINQ vérifications du VRAI hachage, les quinze autres paient le factice ; vingt corps identiques ; la pause court  1177ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ PENDANT la pause, le BON mot de passe est refusé du même refus, sans vérifier le vrai hachage, sans toucher aux compteurs — et la pause ne se prolonge pas  851ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ la pause n'est JAMAIS définitive : une fois son échéance passée (vieillissement SQL), le bon mot de passe ouvre une session et remet les compteurs à zéro  814ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > ⛔ après l'échéance, un mauvais mot de passe REPART du début (1 échec, pas 6) : le compteur ne survit pas à la pause  782ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > quatre échecs ne font PAS de pause ; un bon mot de passe les remet à zéro (échecs CONSÉCUTIFS)  1019ms
+   ✓ MP-16 / MP-17 / S-102 — la pause de 5 échecs, jamais définitive > la pause d'un membre ne touche pas un autre membre, ni une autre salle  1028ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ JUSTE AVANT le seuil (9 min 30 s) : la requête passe ET l'activité est rafraîchie (la fenêtre glisse)  313ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > ⛔ JUSTE APRÈS le seuil (10 min 30 s) : 401 `STAFF_SESSION_REQUIRED`, et la fin `IDLE` est ÉCRITE sur la ligne de la session  311ms
+   ✓ MP-13 — l'inactivité et le plafond, côté serveur, à l'heure de la BASE > une session inactive ne ressuscite pas : une fois refusée, un second essai est refusé aussi (la fin est écrite)  332ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > 200 `{ status: 'ok' }` : la session courante prend `LOGOUT`, le cookie de session est EFFACÉ, l'APPAREIL reste, UNE ligne d'audit `staff.logout`  312ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > ⛔ MP-19 — rejouer l'ANCIEN cookie après la déconnexion : 401 `STAFF_SESSION_REQUIRED` à l'instant (révocable à l'instant)  339ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > se déconnecter deux fois : la seconde est refusée (la session n'existe plus) ; aucune seconde ligne d'audit  315ms
+   ✓ K-16 — la déconnexion, MP-19 — le jeton rejoué > ⛔ MP-4 — un membre DÉSACTIVÉ pendant que sa session est ouverte : la requête suivante est refusée (401) et la session prend la fin `DISABLED`  300ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > ⛔ une session TERMINÉE n'est pas rendue comme vivante (200, `member: null`) — et le poste reste reconnu  323ms
+   ✓ K-17 — l'état de session : exemptée, jamais un refus, jamais une prolongation > ⛔ MP-3 — seuls les membres de CETTE salle sont reconnus : le cookie d'appareil d'une autre salle n'ajoute personne ; un appareil révoqué ou expiré non plus  582ms
+   ✓ MP-11 — AUCUN jeton du personnel dans la sortie RÉELLE du journal des requêtes > ⛔ activer, se connecter, se déconnecter, lire l'état, changer son mot de passe : les valeurs des cookies posés et les mots de passe ne sont NULLE PART dans la sortie, et chaque route a bien été journalisée  723ms
+(node:19020) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/admin-moderation.int-spec.ts (35 tests) 17072ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > ne rend QUE les brouillons vivants qui ont au moins un créneau ACTIF — jamais une publiée, une supprimée, une sans créneau, une dont les créneaux sont tous inactifs  692ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > MD-ADM-8 — le filtre vit dans le WHERE : le total est celui du jeu FILTRÉ et la dernière page n'est pas vide  516ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-2 — les salles déjà rejetées RESTENT dans la file, rangées APRÈS les autres ; chaque groupe par date de création ; une page peut chevaucher les deux  471ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > une salle rejetée porte son motif et la DATE de la ligne du journal ; une autre n'a pas de refus  422ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > R-1 — la réponse ne porte AUCUN taux, nulle part  390ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > les paramètres hors bornes sont refusés : taille 51, page 0, clé inconnue  397ms
+   ✓ GET /admin/venues/pending-publication — la file (D-6 l2, MD-ADM-8) > l'URL `pending-publication` n'est PAS lue comme un identifiant (la route statique passe avant `:id`)  387ms
+   ✓ GET /admin/venues/:id — le détail > rend la vue admin (les taux EXISTANTS, en lecture), le numéro, la ville, le propriétaire, les créneaux actifs ; un brouillon jamais rejeté n'a pas de refus  417ms
+   ✓ GET /admin/venues/:id — le détail > une salle PUBLIÉE se lit aussi (l'admin voit toute salle vivante) ; une rejetée porte son motif et sa date  481ms
+   ✓ GET /admin/venues/:id — le détail > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse  460ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > la salle reste en BROUILLON avec son créneau ; le motif est stocké (rogné) ; la réponse dit le refus ; UNE ligne de journal le porte  401ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > le motif est OBLIGATOIRE : corps vide, motif vide ou blanc, trop long, clé inconnue ⇒ 400, rien n'est écrit  400ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > 404 indistincts : supprimée, uuid inconnu, id malformé — la même réponse, AUCUNE ligne de journal  405ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — rejeter une salle PUBLIÉE est refusé (409 VENUE_NOT_DRAFT) : rien n'est écrit, aucune ligne de journal  383ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > « même état, même requête, même réponse » — rejeter DEUX FOIS avec le même motif : la même réponse, UNE seule ligne de journal  409ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > R-3 (D350, 1 c de la consigne) — un AUTRE motif sur une salle déjà rejetée la CORRIGE : 200, le nouveau motif REMPLACE l'ancien sur la salle, la réponse porte le nouveau motif, la salle reste un brouillon  414ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > la ligne de journal d'une correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus)  396ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — corriger avec le MÊME motif que celui en vigueur (rejeu) : 200, la même réponse, AUCUNE ligne de plus  420ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif  423ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > la file ET le détail montrent le NOUVEAU motif et la date de la CORRECTION  425ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > le motif corrigé est ROGNÉ et BORNÉ comme le premier : trop long ⇒ 400, rien n'est écrit, l'ancien motif reste, aucune ligne de plus  411ms
+   ✓ POST /admin/venues/:id/reject — D-4, R-2 > rejetée, PUBLIÉE (le motif s'efface), puis un rejet : 409 VENUE_NOT_DRAFT — le sens unique d'A3-④ tient, la salle publiée ne se corrige pas  429ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > rejetée puis publiée : le motif est effacé de la colonne, la salle est PUBLIÉE, le journal porte le rejet ET la publication, dans cet ordre  406ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > re-publier est IDEMPOTENT : 200, AUCUNE nouvelle ligne de journal, `updatedAt` ne bouge pas  400ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > D46 — sans créneau ACTIF : 409 SLOT_TEMPLATE_REQUIRED, la salle reste un brouillon, aucune ligne de journal  386ms
+   ✓ POST /admin/venues/:id/publish — publier efface le motif, le journal garde l'histoire (R-2) > 404 sur une salle supprimée : aucune ligne de journal  388ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé  1213ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > rejeter DEUX FOIS en même temps (même motif) : deux 200, UNE ligne de journal  618ms
+   ✓ MD-ADM-4 — la course publier / rejeter : le statut se décide DANS la transaction > publier DEUX FOIS en même temps : deux 200, UNE ligne de journal  760ms
+   ✓ R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > deux corrections à motifs DIFFÉRENTS sur une salle déjà rejetée, bloquées sur la même ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue  535ms
+   ✓ R-3 — la course de deux corrections (MD-ADM-4) : l'entrelacement est FORCÉ par un verrou de ligne, pas par un décalage > une correction et une PUBLICATION bloquées sur la même ligne, la publication d'abord : la publication gagne, la correction est refusée (409 VENUE_NOT_DRAFT), la salle est publiée sans motif  553ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > l'état de publication, le motif et la date — rien d'autre ; la date est celle de la ligne du journal  460ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > 404 indistincts : la salle d'un AUTRE pro, supprimée, uuid inconnu, id malformé — la même réponse  605ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > les rôles : un ADMIN → 403, un CLIENT → 403, anonyme → 401  541ms
+   ✓ GET /pro/venues/:id/publication — le pro lit SON refus (R-3, D-5 p2) > R-3 — le contrat PRINCIPAL ne change pas : même une salle rejetée ne laisse passer ni le motif, ni la date, ni `rejectionReason` dans `GET /pro/venues/:id` et `GET /pro/venues`  432ms
+(node:26844) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/availability.int-spec.ts (28 tests) 13491ms
+   ✓ Disponibilité — forme de la réponse > une salle publiée rend un jour par date, bornes incluses, créneaux dans l'ordre SLOT_ORDER_BY  803ms
+   ✓ Disponibilité — forme de la réponse > les métadonnées de créneau sortent UNE fois — days[].slots ne porte ni nom ni minutes  483ms
+   ✓ Disponibilité — forme de la réponse > aucun ruleId ne sort de l'endpoint public  469ms
+   ✓ Disponibilité — forme de la réponse > une soirée 20h→02h expose endMinutes au-delà de 1440, sans être tronquée  454ms
+   ✓ Disponibilité — statuts > ⚠ une réservation CONFIRMED verrouille AUSSI — le statut d'une réservation payée (S2-bis)  466ms
+   ✓ Disponibilité — statuts > une réservation ACCEPTED rend BOOKED ; une PENDING rend REQUESTED sans verrouiller  474ms
+   ✓ Disponibilité — statuts > une réservation CANCELLED ne rend rien du tout — le créneau redevient AVAILABLE  476ms
+   ✓ Disponibilité — statuts > un walk-in sans slotTemplateId ferme le créneau qu'il recouvre à l'heure  466ms
+   ✓ Disponibilité — statuts > une soirée 20h→02h du dernier jour voit une réservation de 00h30 le LENDEMAIN  454ms
+   ✓ Disponibilité — statuts > un blocage qui enjambe toute la fenêtre est chargé, alors qu'il ne commence pas dedans  455ms
+   ✓ Disponibilité — statuts > SINGLE_SLOT : une réservation dure ferme la journée entière, un BLOCKED n'est pas écrasé  464ms
+   ✓ Disponibilité — prix > une règle de saison change le prix rendu, sans changer le statut  458ms
+   ✓ Disponibilité — prix > un férié du 1er novembre est marqué isHoliday et applique la règle HOLIDAY  454ms
+   ✓ Disponibilité — bornes D49 > from dans le passé : 200, et le from RENVOYÉ est aujourd'hui  453ms
+   ✓ Disponibilité — bornes D49 > to au-delà de 18 mois : 200, et le to RENVOYÉ est l'horizon  453ms
+   ✓ Disponibilité — bornes D49 > une fenêtre entièrement passée rend 200 et zéro jour, jamais une erreur  446ms
+   ✓ Disponibilité — bornes D49 > fenêtre de 93 jours : 400 · 2027-02-31 : 400 · to < from : 400  468ms
+   ✓ Disponibilité — bornes D49 > un jusqu'en 2099 reste un 400 : l'écrêtage ne rattrape pas une fenêtre trop large  454ms
+   ✓ Disponibilité — visibilité D33 > salle HIDDEN, brouillon, supprimée, slug inconnu : 404 VENUE_NOT_FOUND indistinct  464ms
+   ✓ Disponibilité — visibilité D33 > un slug hors motif est refusé AVANT la base — même court-circuit que l'uuid pro  437ms
+   ✓ Disponibilité — visibilité D33 > salle TEMPORARILY_UNAVAILABLE : 200 — même règle de visibilité que le détail  443ms
+   ✓ Disponibilité — visibilité D33 > salle sans créneau actif : 200, slots vide, jamais 404  453ms
+   ✓ Disponibilité — visibilité D33 > un créneau désactivé disparaît, les autres restent  459ms
+   ✓ ⚠ Porte PRO — le calendrier de SA salle, publiée ou non > MÊME moteur : sur une salle publiée, les deux portes rendent la même chose  441ms
+   ✓ ⚠ Porte PRO — le calendrier de SA salle, publiée ou non > la salle d'un AUTRE pro : 404 indistinct, jamais 403  612ms
+   ✓ ⚠ Porte PRO — le calendrier de SA salle, publiée ou non > un CLIENT n'entre pas par la porte pro  610ms
+   ✓ ⚠ Porte PRO — le calendrier de SA salle, publiée ou non > ⚠ la fenêtre de 92 jours BORNES INCLUSES passe, 93 est refusée  462ms
+(node:18884) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/services.int-spec.ts (15 tests) 9941ms
+   ✓ Catalogue — le service et son tarif naissent ENSEMBLE (D89) > FIXED : une seule requête rend la prestation ET son prix  901ms
+   ✓ Catalogue — le service et son tarif naissent ENSEMBLE (D89) > TIERED : les paliers naissent avec, et un TIERED n'a PAS de ligne de tarif  640ms
+   ✓ Catalogue — le service et son tarif naissent ENSEMBLE (D89) > un TIERED sans palier est refusé : personne ne pourrait le choisir  612ms
+   ✓ Catalogue — le service et son tarif naissent ENSEMBLE (D89) > un champ étranger au type est refusé : l'union est discriminée  609ms
+   ✓ Catalogue — le service et son tarif naissent ENSEMBLE (D89) > PER_UNIT sans libellé d'unité est refusé : « 3 » sans unité ne veut rien dire  594ms
+   ✓ Catalogue — suppression et retrait de la vente > une prestation JAMAIS utilisée se supprime  619ms
+   ✓ Catalogue — suppression et retrait de la vente > une prestation VENDUE ne se supprime plus : SERVICE_IN_USE  705ms
+   ✓ Catalogue — suppression et retrait de la vente > le retrait de la vente est RÉVERSIBLE et n'efface rien  655ms
+   ✓ Catalogue — suppression et retrait de la vente > 404 INDISTINCT sur la prestation d'un autre pro (D47)  599ms
+   ✓ Lignes de devis sur la demande (D91) > PER_GUEST : la quantité EST le nombre d'invités, et le total suit  671ms
+   ✓ Lignes de devis sur la demande (D91) > une quantité SAISIE sur un PER_GUEST est refusée : 10 couverts pour 250 personnes  621ms
+   ✓ Lignes de devis sur la demande (D91) > l'ACOMPTE porte sur le total prestations comprises  624ms
+   ✓ Lignes de devis sur la demande (D91) > un total périmé (prestations non comptées) rend 409 avec le VRAI montant (D75)  620ms
+   ✓ Lignes de devis sur la demande (D91) > une prestation RETIRÉE de la vente ne se commande plus  653ms
+   ✓ Lignes de devis sur la demande (D91) > une demande SANS prestation reste parfaitement valable  607ms
+ ✓ test/int/pro-clients.int-spec.ts (32 tests) 9150ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > une fiche absente : 200 et `{ found: false }`, sans aucune autre clé  419ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-10 — ÉGALITÉ STRICTE : le numéro d'un COMPTE Zwadj et un numéro inconnu rendent la même réponse (statut, type, corps à l'octet)  312ms
+   ✓ K-1 — la recherche ne regarde QUE les fiches du pro, et sa réponse ne dit RIEN d'un compte (M-4) > ⛔ MD-11 — la fiche d'un AUTRE pro n'est pas trouvée : la réponse est celle d'un numéro inconnu  396ms
+   ✓ K-3 — COMPLÈTE un nom manquant, ne remplace jamais > ⛔ MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED  307ms
+   ✓ K-3b — MODIFIE une fiche (DB-11) ; refusé pour une fiche liée ; jamais une fusion > ⛔ MD-6 — une fiche LIÉE n'est pas modifiable (champs grisés) : 409 CLIENT_RECORD_LINKED, la fiche intacte  314ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > K-3 et K-3b sur la fiche d'un autre pro rendent le MÊME 404 qu'un identifiant inexistant, et la fiche reste intacte  412ms
+   ✓ ⛔ MD-11 — la fiche d'un AUTRE pro : ni complétée, ni modifiée — 404 indistinct d'un identifiant inexistant > un CLIENT connecté n'atteint aucune route des fiches (403)  369ms
+   ✓ Les garanties de la BASE (D186) — la migration est l'autorité, pas le service > les unicités sont PARTIELLES et PAR PRO : un même numéro chez deux pros, deux fiches sans e-mail ; jamais deux fois le même numéro chez un pro  465ms
+(node:11756) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/visit-slots.int-spec.ts (17 tests) 8862ms
+   ✓ Créneaux de visite — projection hebdomadaire > une plage du dimanche ne sort QUE les dimanches  771ms
+   ✓ Créneaux de visite — projection hebdomadaire > un reliquat de plage ne crée PAS de créneau tronqué  485ms
+   ✓ Créneaux de visite — projection hebdomadaire > une plage SUSPENDUE disparaît, sans être supprimée  480ms
+   ✓ Créneaux de visite — projection hebdomadaire > sans aucune plage : 200 et zéro créneau, jamais 404  445ms
+   ✓ Créneaux de visite — rendez-vous pris (D47) > un rendez-vous CONFIRMÉ marque le créneau sans le retirer  542ms
+   ✓ Créneaux de visite — rendez-vous pris (D47) > un rendez-vous ANNULÉ libère son créneau  535ms
+   ✓ Créneaux de visite — bornes et visibilité > fenêtre entièrement passée : 200 et zéro créneau  514ms
+   ✓ Créneaux de visite — bornes et visibilité > fenêtre de 93 jours : 400 · date irréelle : 400  484ms
+   ✓ Créneaux de visite — bornes et visibilité > salle brouillon, supprimée ou slug inconnu : 404 VENUE_NOT_FOUND indistinct  456ms
+   ✓ Créneaux de visite — bornes et visibilité > les visites ignorent TOTALEMENT les réservations de fête (D47)  455ms
+   ✓ D59 — un rendez-vous pris est EXCLUSIF (supersède D47) > la base REFUSE un second rendez-vous confirmé sur le même créneau  552ms
+   ✓ D59 — un rendez-vous pris est EXCLUSIF (supersède D47) > une visite ANNULÉE LIBÈRE son créneau : l'index est partiel, pas total  568ms
+   ✓ D59 — un rendez-vous pris est EXCLUSIF (supersède D47) > le même créneau dans une AUTRE salle reste libre  550ms
+   ✓ D59 — un rendez-vous pris est EXCLUSIF (supersède D47) > un créneau pris reste RENDU, marqué taken — il ne disparaît pas de la liste  535ms
+   ✓ D60 — canaux de notification du pro > par défaut, un pro est notifié par e-mail et pas par SMS  430ms
+   ✓ D60 — canaux de notification du pro > le SMS seul est un choix valide  426ms
+   ✓ D60 — canaux de notification du pro > la base INTERDIT de tout couper — un pro sans canal ne verrait plus rien arriver  419ms
+(node:24908) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/staff-session-guard.int-spec.ts (18 tests) 8530ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`  905ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint  507ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas  359ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)  342ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)  609ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)  540ms
+   ✓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`  2145ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > ⛔ le MÊME Bearer : la requête d'avant passe, la requête d'APRÈS l'activation est refusée (le drapeau est relu à chaque requête, jamais mis dans le jeton)  326ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session terminée par SQL (fin `LOGOUT` posée à la main) est refusée à la requête suivante, sans attendre  300ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée  607ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)  581ms
+ ✓ test/int/staff-password.int-spec.ts (13 tests) 8093ms
+   ✓ K-18 — le changement nominal > 200 : le membre est rendu ; le hachage est REMPLACÉ (argon2id) ; les dates sont réécrites (changé maintenant, expire dans 90 jours) ; `mustChangePassword` est faux ; UNE ligne d'audit  755ms
+   ✓ K-18 — le changement nominal > le nouveau mot de passe ouvre une session ; l'ancien ne l'ouvre plus  681ms
+   ✓ K-18 — le changement nominal > ⛔ MP-5 / S-105 — les AUTRES sessions du membre prennent `PASSWORD_CHANGED` ; la session courante et l'appareil RESTENT ; la requête de l'autre poste est refusée à l'instant (MP-19)  667ms
+   ✓ K-18 — le changement nominal > les sessions d'un AUTRE membre ou d'une autre salle ne sont pas touchées  781ms
+   ✓ K-18 — les refus > ⛔ un mot de passe ACTUEL faux : 400 `STAFF_CURRENT_PASSWORD_INVALID`, UN échec compté, une ligne d'audit `staff.password_change_failed`, le hachage est INCHANGÉ, les autres sessions aussi  380ms
+   ✓ K-18 — les refus > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le hachage est inchangé, et le compteur est REMIS À ZÉRO (le bon mot de passe actuel n'est pas un échec)  638ms
+   ✓ K-18 — les refus > la validation du corps : nouveau mot de passe trop faible, actuel manquant, clé inconnue → 400  314ms
+   ✓ K-18 — les refus > sans session de personnel (couche activée, pas de cookie) : 401 `STAFF_SESSION_REQUIRED` ; couche éteinte : 401 aussi (le changement est celui d'un MEMBRE, il en faut un)  502ms
+   ✓ S-102 — le compteur est PARTAGÉ avec la connexion > ⛔ trois connexions fausses et deux changements faux = cinq comptés : la pause court ; ensuite le BON mot de passe est refusé des deux côtés (même refus, vrai hachage non vérifié)  994ms
+   ✓ S-102 — le compteur est PARTAGÉ avec la connexion > ⛔ un changement réussi remet la pause et les compteurs à zéro  683ms
+   ✓ la CONCURRENCE du remplacement > ⛔ deux changements simultanés avec le MÊME mot de passe actuel : UN réussit (200), l'autre est refusé (400 `STAFF_CURRENT_PASSWORD_INVALID`) — le hachage lu est la condition du remplacement, jamais deux remplacements  666ms
+   ✓ les comptes d'argon2 d'un changement réussi > ⛔ un seul hachage réel de l'ACTUEL, un second pour la comparaison de RÉUTILISATION (contre le même hachage), un seul `hash` du nouveau — et aucun factice  528ms
+(node:880) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/venue-media.int-spec.ts (19 tests) 7740ms
+   ✓ POST /venues/:id/photos — upload réel > 201 : webp large + thumb servis par GET /media/:key (immutable), dimensions du large persistées, append sortOrder  778ms
+   ✓ POST /venues/:id/photos — upload réel > plafond 30 : le 30ᵉ passe, le 31ᵉ → 400 MEDIA_PHOTO_LIMIT_REACHED  439ms
+   ✓ POST /venues/:id/photos — upload réel > ownership 404 indistinct : la salle d'un autre pro est « introuvable » (jamais un 403)  432ms
+   ✓ PATCH photos/order + PATCH photos/:photoId + DELETE > réordonnancement atomique ; la route statique « order » n'est PAS avalée par :photoId  582ms
+   ✓ PATCH photos/order + PATCH photos/:photoId + DELETE > ensemble incomplet OU photo d'une autre salle → 400 PHOTO_ORDER_MISMATCH, ordre stocké INTACT  600ms
+   ✓ PATCH photos/order + PATCH photos/:photoId + DELETE > PATCH alt (null = effacement) ; doublons Zod refusés sur order (orderDuplicate)  359ms
+   ✓ PATCH photos/order + PATCH photos/:photoId + DELETE > DELETE : 204, la ligne ET les deux objets disparaissent ; re-DELETE → 404 PHOTO_NOT_FOUND  358ms
+   ✓ PATCH /venues/:id/virtual-tour — D45 > unicité EN BASE : le même modèle sur une seconde salle → 409 MATTERPORT_ALREADY_LINKED  359ms
+   ✓ PATCH /venues/:id/virtual-tour — D45 > ownership 404 indistinct : la salle d'un autre pro est « introuvable », jamais un 400 de format  439ms
+   ✓ PATCH /venues/:id/virtual-tour — D45 > D33 : aucune gate sur `status` — un pro règle la visite d'une salle HIDDEN  306ms
+   ✓ PATCH /venues/:id/virtual-tour — D45 > NON-RÉGRESSION après migration : upload, réordonnancement et DELETE de VenuePhoto intacts  465ms
+   ✓ Les trois surfaces de lecture (A4-②) > GET /venues : coverThumbUrl = thumb de la 1ʳᵉ photo par sortOrder + photoCount ; GET /venues/:slug : galerie ordonnée + matterportModelId ; détail pro : mêmes données  705ms
+   ✓ Les trois surfaces de lecture (A4-②) > salle sans média : coverThumbUrl null, photoCount 0, photos [], matterportModelId null  461ms
+(node:24528) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/quote-numbering.int-spec.ts (20 tests) 7228ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ `reference` = année d'Alger, numéro de la salle, numéro du devis, version — chacun relu en base par du SQL brut, jamais recopié  536ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ une révision garde le numéro de la tête, SEULE la version change ; et la liste du pro rend les mêmes références  390ms
+   ✓ K-6 — le devis porte sa référence, bâtie sur la ligne STOCKÉE > ⛔ la remise renvoie le DTO du MÊME devis, avec la même référence  302ms
+   ✓ F-1 — deux créations simultanées dans la même salle > ⛔ 20 créations lancées ENSEMBLE : 20 numéros distincts et consécutifs (1 à 20), tous v1, et le compteur de la salle dit 20  635ms
+   ✓ F-1 — deux créations simultanées dans la même salle > ⛔ deux SALLES ne partagent ni compteur ni suite : chacune repart de 1, et leurs numéros de salle diffèrent  315ms
+   ✓ F-1 — deux créations simultanées dans la même salle > ⛔ deux ANNÉES d'une même salle ont deux compteurs : la création de l'année suivante repart de 1  389ms
+   ✓ F-2 — création, révision et création de blocage simultanées : aucun interblocage > ⛔ 8 créations + 8 révisions d'une chaîne + 3 blocages (verrou de salle) lancés ENSEMBLE : tout se termine en 2xx, aucun `deadlock`, numéros et versions distincts  494ms
+   ✓ F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ 31/12 à 22 h 59 UTC ⇒ 2026 ; à 23 h 00 UTC ⇒ 2027 (il est minuit à Alger) : l'année STOCKÉE et la date de création sont du MÊME instant  371ms
+   ✓ F-3 / F-4 — l'année d'Alger, et la révision de l'année suivante > ⛔ une révision écrite l'année SUIVANTE garde l'année et le numéro de sa tête, et ne crée AUCUNE ligne de compteur pour la nouvelle année  459ms
+   ✓ F-4 / F-9 — la clé composite, l'unicité de la première version et les bornes sont des gardes de BASE > ⛔ une version qui diffère de sa tête par le NUMÉRO, l'ANNÉE ou la SALLE est REFUSÉE (`quotes_chain_head_fkey`)  312ms
+   ✓ F-12 — un compteur désaccordé échoue BRUYAMMENT, il ne duplique pas en silence > ⛔ compteur remis en arrière à la main : la création suivante échoue (le numéro est pris), rien n'est écrit, aucun doublon n'existe  313ms
+(node:24628) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/account.int-spec.ts (19 tests) 6785ms
+   ✓ PATCH /me/profile > CLIENT : patch partiel, et la réponse est un AuthUserDTO complet (D12)  389ms
+   ✓ PATCH /me/profile > PRO : businessName + phone2 (D38) ; le CLIENT ne peut pas s'en fabriquer  415ms
+   ✓ POST /me/change-email — l'ancienne adresse reste active jusqu'à la preuve > cycle complet : demande → l'ancien e-mail connecte TOUJOURS → clic → bascule  540ms
+   ✓ POST /me/change-password (D42) > les AUTRES sessions tombent, celle qui a fait l'appel survit (rotée)  437ms
+   ✓ POST /me/change-password (D42) > ancien mot de passe faux : 400, et l'ancien reste valide  331ms
+   ✓ admin — décision > reject : compte intact, ACTIVE, et l'utilisateur reçoit le motif  387ms
+   ✓ admin — décision > approve : compte anonymisé, salles ARCHIVÉES et disparues de la liste publique  513ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > login → 401 INVALID_CREDENTIALS (aucun oracle, D5)  453ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > /auth/me avec un access token encore valide → 401  392ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > refresh avec le cookie d'avant → 401 (tous les tokens ont été révoqués)  397ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > forgot-password : réponse CONSTANTE, mais aucun e-mail ne part  388ms
+   ✓ §2.0 — après anonymisation, les chemins d'auth refusent RÉELLEMENT > un lien de reset émis AVANT la décision cesse d'être exploitable  398ms
+ ✓ test/int/staff-activation.int-spec.ts (17 tests) 6851ms
+   ✓ K-14 — l'activation nominale > 201 : le Manager est rendu ; le drapeau de la salle est posé ; UN membre MANAGER ACTIF, UN appareil, UNE session ; le mot de passe est haché en argon2id  511ms
+   ✓ K-14 — l'activation nominale > ⛔ MP-40 — Manager, appareil et session sont liés : la session pointe l'appareil créé, qui pointe le Manager ; les trois échéances sont celles du levier (mot de passe 90 jours, appareil 90 jours, session 12 h)  315ms
+   ✓ K-14 — l'activation nominale > ⛔ S-99 / MP-37 — le cookie de SESSION : `HttpOnly`, `SameSite=Strict`, chemin `/api/v1`, AUCUNE échéance côté navigateur ; son hachage SHA-256 est celui de la base  324ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  638ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 2) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  633ms
+   ✓ MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 3) : UNE réussit (201), les neuf autres rendent 409 `STAFF_ALREADY_ACTIVATED` ; un seul Manager, un seul appareil, une seule session, une seule ligne d'audit  653ms
+   ✓ MP-22 — l'activation CONCURRENTE > une seconde activation APRÈS la première : 409 `STAFF_ALREADY_ACTIVATED` (le drapeau ne se repose pas), et rien n'est ajouté  365ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-23 — un CLIENT, un ADMIN : 403 `FORBIDDEN` (le rôle) ; sans Bearer : 401 `UNAUTHENTICATED` ; rien n'est créé  384ms
+   ✓ l'ACTIVATION REFUSÉE > ⛔ MP-34 — les CINQ routes du personnel sont réservées au PRO : un CLIENT et un ADMIN reçoivent 403 `FORBIDDEN` sur chacune (l'état et la déconnexion comprises), un anonyme 401 `UNAUTHENTICATED`  418ms
+   ✓ l'activation d'UN pro n'affecte pas les autres > la couche d'une salle n'allume pas celle d'une autre : l'autre salle reste éteinte  464ms
+ ✓ test/int/pdf-renderer.int-spec.ts (11 tests) 6697ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > rend un PDF d'UNE page — et un document QUELCONQUE passe par le même port (décision 6 : le moteur n'est pas écrit pour le seul acompte)  2005ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 1 — JavaScript est COUPÉ : le script qui change le titre ne le change pas  393ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 2 — le RÉSEAU est muet : ni l'image ni la feuille de style n'atteignent le serveur local  952ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > la police du DÉPÔT est embarquée, et SEULE : aucun caractère arabe ou latin ne retombe sur une police système  1285ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > le TÉMOIN sans la police ne porte pas Readex Pro : le test précédent discrimine donc quelque chose  1381ms
+   ✓ PlaywrightPdfRenderer — le vrai Chromium > garde 3 — le navigateur est FERMÉ après un rendu réussi, et après un rendu qui dépasse son délai  661ms
+(node:18492) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/admin-audit.int-spec.ts (13 tests) 6299ms
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > publier une salle : `venue.publish`, entité `venue`, l'admin, le statut avant → après  676ms
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > approuver une suppression : `account_deletion.approve`, le NOMBRE de salles archivées (vivantes seulement) — et NI l'adresse e-mail, NI la note, NI l'identifiant du compte  482ms
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > rejeter une suppression : `account_deletion.reject`, sans la note  445ms
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > une demande déjà décidée : 400, AUCUNE nouvelle ligne  451ms
+   ✓ chaque action écrit UNE ligne, avec son acteur, son entité et l'avant → après > R-1 — le réglage des taux n'écrit AUCUNE ligne (MD-ADM-17 : il n'est pas journalisé)  442ms
+   ✓ MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > publier : la route répond 500, la salle reste un BROUILLON, aucune ligne ; sans le déclencheur, le même appel réussit  515ms
+   ✓ MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une salle : 500, AUCUN motif écrit, aucune ligne ; sans le déclencheur, le même appel réussit  445ms
+   ✓ MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > approuver une suppression : 500, le compte N'EST PAS anonymisé, les salles ne sont PAS archivées, la demande reste PENDING, aucun e-mail ne part, aucune ligne  492ms
+   ✓ MD-ADM-6 — un journal qui échoue ANNULE l'action (échec forcé dans la transaction) > rejeter une suppression : 500, la demande reste PENDING, l'utilisateur n'est PAS notifié, aucune ligne ; sans le déclencheur, le même appel réussit  437ms
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > publier : un échec au COMMIT annule aussi la ligne  425ms
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une salle : un échec au COMMIT annule aussi la ligne  408ms
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > approuver une suppression : un échec au COMMIT annule aussi la ligne  430ms
+   ✓ MD-ADM-6 — un échec au COMMIT annule AUSSI la ligne du journal (elle est DANS la transaction, pas à côté) > rejeter une suppression : un échec au COMMIT annule aussi la ligne  424ms
+(node:27800) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/slot-templates.int-spec.ts (19 tests) 6065ms
+   ✓ Créneaux — création et prix dérivé > le prix de la SALLE devient le minimum des créneaux actifs, écrit dans la même transaction  506ms
+   ✓ Créneaux — les trois 409 > une salle PUBLIÉE ne peut pas perdre son dernier créneau actif  484ms
+   ✓ Créneaux — publication admin > publier une salle SANS créneau actif est refusé : elle serait invisible au calendrier  404ms
+   ✓ Créneaux — suppression et retrait > suppression dure d'un créneau jamais utilisé ; le prix de la salle suit  303ms
+   ✓ Créneaux — filets SQL sous la validation applicative > CHECK slot_templates_base_price_positive : une écriture Prisma directe à 0 est rejetée par Postgres  315ms
+   ✓ Règles de prix — B2, D46 > une règle MOINS chère abaisse le « à partir de » de la salle : une promotion doit se voir en recherche  308ms
+   ✓ Règles de prix — B2, D46 > supprimer le CRÉNEAU emporte ses règles, et le « à partir de » repart du bon minimum  305ms
+(node:25744) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/venues-pro.int-spec.ts (17 tests) 5780ms
+   ✓ Accès (guards globaux) > CLIENT puis ADMIN sur POST /venues : 403 FORBIDDEN (rôle PRO exigé — l'admin a ses endpoints en A3)  357ms
+   ✓ POST /venues — création > collision de slug (y compris entre pros différents) : suffixes -2 puis -3  480ms
+   ✓ Lectures pro — GET /pro/venues[/:id] > isolation stricte : chaque pro ne voit QUE ses salles, tri updatedAt desc  499ms
+   ✓ Lectures pro — GET /pro/venues[/:id] > 404 INDISTINCTS sur le détail : salle d'un autre pro, id malformé, uuid inconnu — réponse identique  454ms
+   ✓ PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33 > { status } SEUL bascule la visibilité, tout le reste inchangé ; réversible sur les trois états  320ms
+   ✓ PATCH /venues/:id — mise à jour PARTIELLE réelle (A2-③) et D33 > effacement explicite par null (tagline, coordonnées) ; la salle d'un autre pro → 404  450ms
+   ✓ PATCH /venues/:id — amenityIds (A3-① : remplacement d'ensemble) > assigne (avec doublon → dédupliqué), remplace, puis efface — le DTO reflète chaque état, updatedAt bouge  325ms
+   ✓ DELETE /venues/:id — soft delete > supprimer la salle d'un autre pro : 404, et le propriétaire la voit toujours  426ms
+ ✓ test/int/staff-schema.int-spec.ts (21 tests) 5587ms
+   ✓ la tranche : les objets existent, avec les noms que les tests et la sonde de dérive attendent > trois tables, trois énumérations, la colonne du drapeau, la colonne d'audit  417ms
+   ✓ la tranche ratifiée — ses garanties > UNIQUE (salle, clé de nom) : la même clé dans la MÊME salle est refusée par la base ; la même clé dans une AUTRE salle passe  423ms
+   ✓ 1 b — les SIX garanties de base adoptées par la consigne > ⛔ (b) `pin_hash`, `pin_generated_at`, `pin_expires_at` : tous nuls ou tous non nuls — chacun des trois, isolé, est refusé ; les trois ensemble sont acceptés  301ms
+(node:7528) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/availability-blocks.int-spec.ts (17 tests) 5265ms
+   ✓ Blocages pro — écriture et repère de temps > création : 201, et le DTO relu porte le MÊME repère civil local que l'écriture  476ms
+   ✓ Blocages pro — ownership et suppression > la salle d'un autre pro : 404 VENUE_NOT_FOUND indistinct  419ms
+   ✓ Blocages pro — ownership et suppression > DELETE : 204 sans corps, et le créneau redevient AVAILABLE à la relecture publique  548ms
+   ✓ Blocages pro — RBAC > CLIENT authentifié : 403 ; anonyme : 401  389ms
+ ✓ test/int/refresh.int-spec.ts (16 tests) 4265ms
+   ✓ POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12) > cookie forgé (43 chars valides mais inconnus) : 401, AUCUNE ligne touchée  337ms
+   ✓ POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12) > RÉUTILISATION (D10, chaîne complète) : rejouer un token consommé → 401 ET l'autre session du user tombe aussi  324ms
+   ✓ POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12) > D116 — dix rechargements à deux onglets ne laissent AUCUN jeton orphelin  423ms
+   ✓ POST /api/v1/auth/refresh (intégration — rotation D9, réutilisation D10, format D12) > D116 — la déconnexion ferme TOUT ce que la fenêtre de grâce a ouvert, pas seulement le dernier jeton  359ms
+(node:14592) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/venue-styles-filters.int-spec.ts (15 tests) 1907ms
+   ✓ Détail public et écriture pro (D65, D66) > PATCH pro : remplacement d'ensemble des styles + type, et un id inconnu → 400  370ms
+ ✓ test/int/venues-public.int-spec.ts (10 tests) 1412ms
+ ✓ test/int/venue-map.int-spec.ts (9 tests) 1624ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ  643ms
+(node:3644) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/visit-availabilities.int-spec.ts (15 tests) 5171ms
+   ✓ Plages de visite — création > une plage du dimanche matin est créée et relue triée  498ms
+   ✓ Plages de visite — création > un jour hors 0–6 : 400  324ms
+   ✓ Plages de visite — modification > le chevauchement est vérifié sur l'état RÉSULTANT, pas sur le patch seul  311ms
+   ✓ Plages de visite — modification > un patch vide : 400  319ms
+   ✓ Plages de visite — suppression et cloisonnement > DELETE : 204, et un rendez-vous déjà pris SURVIT  456ms
+   ✓ Plages de visite — suppression et cloisonnement > la salle d'un autre pro : 404 VENUE_NOT_FOUND indistinct  497ms
+   ✓ Plages de visite — suppression et cloisonnement > CLIENT authentifié : 403 ; anonyme : 401  400ms
+ ✓ test/int/throttle.int-spec.ts (10 tests) 3948ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  871ms
+ ✓ test/int/referentials.int-spec.ts (9 tests) 3279ms
+   ✓ prisma/seed.ts — référentiels (Lot A1) > base vide → comptes exacts décidés : 58 wilayas / 23 villes (Alger seule) / 23 équipements / 4 styles  502ms
+   ✓ prisma/seed.ts — référentiels (Lot A1) > idempotent : seed ×2 → mêmes comptes ET mêmes ids (upsert, zéro doublon, zéro recréation)  465ms
+   ✓ prisma/seed.ts — référentiels (Lot A1) > convergent : des lignes mutées en base sont RESTAURÉES par re-seed (update de l'upsert)  488ms
+(node:21932) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/venues-admin.int-spec.ts (5 tests) 2691ms
+   ✓ Accès admin (guards) > anonyme → 401 ; CLIENT → 403 ; PRO → 403 (même sur SA salle) — publish et taux  678ms
+   ✓ POST /admin/venues/:id/publish — one-way idempotent > rend la salle visible publiquement ; re-publier = 200 sans changer updatedAt  511ms
+   ✓ POST /admin/venues/:id/publish — one-way idempotent > 404 indistincts : salle supprimée, uuid inconnu, id malformé — réponse identique  472ms
+   ✓ PATCH /admin/venues/:id/commission-rate — les deux taux D35 > pose les deux, puis un seul (fusion avec l'existant) ; validation applicative du dépassement  536ms
+ ✓ test/int/login.int-spec.ts (11 tests) 2603ms
+   ✓ POST /api/v1/auth/login (intégration, base réelle) > CLIENT non vérifié (D1) : 200, emailVerified:false pour le bandeau, access token + cookie refresh  382ms
+   ✓ POST /api/v1/auth/login (intégration, base réelle) > anti-énumération (D5) : email inconnu et mauvais mot de passe → 401 au corps indistinguable  322ms
+ ✓ test/int/first-admin.int-spec.ts (10 tests) 2471ms
+   ✓ un compte vérifié et actif est promu > le rôle devient ADMIN ; une connexion NEUVE ouvre les routes ADMIN ; le hachage du mot de passe est INTACT ; UNE ligne de journal sans e-mail  542ms
+   ✓ atomicité (MD-ADM-6 appliqué au premier admin) > DEUX promotions simultanées : un seul PROMOTED, UNE seule ligne de journal  722ms
+ ✓ test/int/account-deletion-race.int-spec.ts (4 tests) 2417ms
+   ✓ R-2 — approuver pendant que l'utilisateur ANNULE : le compte ne s'anonymise pas > l'annulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail  651ms
+   ✓ R-2 — approuver DEUX fois en même temps : une approbation, une trace, un e-mail > deux approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail  529ms
+   ✓ R-2 — rejeter CONTRE approuver : une décision, une seule, dans l'ordre d'arrivée > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`  503ms
+   ✓ R-2 — rejeter CONTRE approuver : une décision, une seule, dans l'ordre d'arrivée > l'APPROBATION arrive en première, le rejet derrière : l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus  510ms
+ ✓ test/int/reset-password.int-spec.ts (7 tests) 2200ms
+   ✓ POST /api/v1/auth/reset-password (intégration — D15/D16/D17) > flux complet : reset → 200, l'ANCIEN mot de passe est refusé, le NOUVEAU connecte  565ms
+   ✓ POST /api/v1/auth/reset-password (intégration — D15/D16/D17) > D15 : TOUTES les sessions actives tombent au reset — les deux refresh échouent ensuite  393ms
+   ✓ POST /api/v1/auth/reset-password (intégration — D15/D16/D17) > D16 usage unique : rejouer le MÊME token → 400 TOKEN_INVALID_OR_EXPIRED, le mdp ne rechange pas  363ms
+(node:13400) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ test/int/rbac-all-routes.int-spec.ts (9 tests) 1934ms
+ ✓ test/int/google.int-spec.ts (10 tests) 1579ms
+ ✓ test/int/logout.int-spec.ts (6 tests) 1496ms
+   ✓ POST /api/v1/auth/logout (intégration — D11 idempotent) > session valide : 200 {status:'ok'}, ligne révoquée, cookie EFFACÉ aux bons attributs  382ms
+   ✓ POST /api/v1/auth/logout (intégration — D11 idempotent) > portée D11 : ne révoque QUE la session de ce navigateur — l'autre appareil continue de refresh  302ms
+ ✓ test/int/remember-me.int-spec.ts (4 tests) 1440ms
+   ✓ POST /api/v1/auth/login + refresh (intégration — rememberMe / persistent, D27) > rememberMe: false — la ligne créée porte persistent=false EN BASE, cookie SANS Expires/Max-Age  362ms
+   ✓ POST /api/v1/auth/login + refresh (intégration — rememberMe / persistent, D27) > réutilisation détectée (D10) : révocation de TOUTES les sessions, persistent ET session confondues  330ms
+ ✓ test/int/me.int-spec.ts (6 tests) 1533ms
+   ✓ GET /api/v1/auth/me (intégration — JwtAuthGuard réel + lecture fraîche) > token à la signature invalide : 401 — le guard vérifie vraiment HS256  304ms
+ ✓ test/int/rbac.int-spec.ts (5 tests) 1465ms
+   ✓ RolesGuard global (intégration — sonde @Roles) > CLIENT sur une route @Roles('ADMIN') : 403 FORBIDDEN  314ms
+   ✓ RolesGuard global (intégration — sonde @Roles) > un rôle promu APRÈS l'émission du token ne s'applique qu'au prochain login (claims figées 15 min — compromis D4 assumé)  307ms
+ ✓ test/int/throttle-default.int-spec.ts (3 tests) 1240ms
+   ✓ D128 — limiteur global et levier de test > relâché par le levier, 150 lectures consécutives passent toutes  876ms
+ ✓ test/int/register.int-spec.ts (6 tests) 1138ms
+ ✓ test/int/log-set-cookie.int-spec.ts (6 tests) 946ms
+ ✓ test/int/payment-intent-race.int-spec.ts (7 tests) 935ms
+ ✓ test/int/forgot-password.int-spec.ts (4 tests) 928ms
+ ✓ test/int/verify-email.int-spec.ts (5 tests) 894ms
+   ✓ GET /api/v1/auth/verify-email/:token (intégration) > flux complet : le lien reçu vérifie l'email (usage unique)  302ms
+ ✓ test/int/contract-api-client.int-spec.ts (6 tests) 837ms
+ ✓ test/int/media.int-spec.ts (4 tests) 705ms
+   ✓ GET /api/v1/media/:key (Lot A0) > sans Bearer ET au-delà du throttle par défaut : la route reste servie (publique, non throttlée)  435ms
+ ✓ test/int/resend-verification.int-spec.ts (3 tests) 707ms
+ ✓ test/int/password-hashing.int-spec.ts (2 tests) 292ms
+
+ Test Files  51 passed (51)
+      Tests  807 passed (807)
+   Start at  03:22:47
+   Duration  496.48s (transform 2.25s, setup 855ms, collect 125.76s, tests 350.02s, environment 9ms, prepare 8.40s)
+

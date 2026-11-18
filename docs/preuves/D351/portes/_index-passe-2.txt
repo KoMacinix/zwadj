@@ -1,0 +1,9 @@
+D351 — SECONDE PASSE E2E — départ 18/11/2026 03:38:40
+SHA: 80cb89faf86694f8ebdbad27253be140696fe131
+arbre (git status --short): []
+état machine JUSTE AVANT: 03:38:39 | SECTEUR | RAM libre 5,501 Mo | chrome 0 | headless_shell 0 | node 0
+ports d'e2e occupés (3100 3101 5273 5274): []
+test-e2e (passe 2) : code de sortie 0 · durée 383 s
+état machine JUSTE APRÈS: 03:45:04 | SECTEUR | RAM libre 5,313 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après la passe (git status --short): []
+fin 18/11/2026 03:45:05
