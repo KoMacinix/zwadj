@@ -1,0 +1,22 @@
+D351 — tri différentiel de l'audit de secrets « e » (clôture : AVANT le commit des trois `.md` d'autorité, de la passe D277, du contrôle « 0 valeur réelle » et de leurs pièces)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351d.txt docs/preuves/D351/audit-secrets-d351e.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351e.txt (1 034 621 octets, 0 CR, 8 581 lignes ; lancé à 10:08, fini à 10:33 le 18/11/2026), joué dans le dépôt de travail (arbre : les trois `.md` d'autorité modifiés, et cinq pièces neuves non commitées).
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau) : 9777875508a7b657… — identique à celui que la sortie porte. Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri (négatif 0 nouvelle ; positif 2 nouvelles, les deux chemins attendus).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351d) : 5 681 fichiers parcourus, 5 482 audités, 199 exclus, 3 516 alertes.
+  · nouvelle (d351e)   : 5 688 fichiers parcourus, 5 488 audités, 200 exclus, 3 524 alertes = 3 516 + 8. Contrôle de l'outil : audités + exclus = 5 688 (attendu 5 688, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque (compte relevé après l'audit) : 5 688 fichiers sous docs/preuves, dont la sortie scellée elle-même, écrite APRÈS l'audit : 5 687 présents pendant l'audit + `.gitattributes` = 5 688 — l'arithmétique ferme.
+    L'écart avec « d » (+7) se décompose : la sortie scellée « d » et son tri (2) + les cinq pièces neuves de ce commit — `passe-d277.md`, `passe-d277/passe-d277.py`, `passe-d277/sortie-avant.txt`, `passe-d277/sortie-apres.txt`, `aucune-valeur-reelle.txt` — = 7.
+    Les trois `.md` d'autorité ne sont PAS dans le périmètre de l'outil (il ne lit que `docs/preuves/`) : leurs diffs ont été balayés séparément pour le nom d'utilisateur de la machine (0 occurrence dans les trois diffs) et pour les gabarits non remplacés (0).
+  · Exclus : 200 contre 199, soit un de plus — la sortie scellée « d » (sceau vérifié) ; aucune exclusion de « d » n'a disparu.
+
+Résultat du tri différentiel : 8 alertes ABSENTES de la sortie précédente, à trier au contexte (D299). Ventilation par motif : jeton = 3 · valeur-nommee-secrete = 3 · mot-de-passe = 1 · url-avec-identifiants = 1. **Les huit visent le MÊME fichier** :
+  · docs/preuves/D351/tri-audit-d351d.txt (8) : MA PROPRE pièce, versée après l'audit « d ». Elle décrit, en prose, le tri de l'audit « d » : elle CITE les fixtures SYNTHÉTIQUES du balayage de la note juridique (`jean.dupont@example.org`, `https://user:pass@tiles.example.com/{z}/{x}/{y}.png`,
+    `secret = hunter2hunter2`, une fausse clé de motif alphabétique et numérique régulier, une fausse IPv4), les motifs « key=, token=, secret= » et le message d'échec d'une mutation de la campagne `r44`. Les contextes sont ces citations, jamais une valeur propre à une pièce.
+    Les huit lignes « -> » de l'outil lisent le même verdict que pour « b », « c » et « d » (mots ordinaires : « valeur trop courte » ou « déjà présente dans N fichiers suivis hors preuves »). **Fixtures synthétiques et prose : aucune valeur réelle.**
+  · aucune des cinq pièces neuves (le compte rendu de la passe D277 et ses trois fichiers, le contrôle « 0 valeur réelle ») ne porte une alerte : le tri ne rend aucun autre chemin.
+  **Aucune valeur réelle.** Rien n'est caché : les 8 lignes sont dans la sortie scellée.
+
+Contrôle « 0 valeur réelle » (D299), joué UNE fois avant cet audit, sur les 238 fichiers de `docs/preuves/D351` et `docs/preuves/parallele/carte` alors présents, contre les DEUX journaux e2e BRUTS (hors dépôt, 129 valeurs distinctes chacun, 258 cherchées) : **0 porteur** (`docs/preuves/D351/aucune-valeur-reelle.txt`).
