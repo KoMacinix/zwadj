@@ -23,11 +23,17 @@ Codes de sortie : 0 = tout joué, tout a mordu ; 1 = au moins une garde MUETTE ;
 rejouée EN ENTIER.
 ⛔ UNE MORSURE SE LIT, ELLE NE SE DÉDUIT PAS D'UN CODE DE SORTIE (D304, D305, D312, D316) : la ligne « Tests » compte au moins un test en échec ; le titre attendu y est marqué en échec ET la PREMIÈRE ligne de son
 bloc « FAIL … > titre » — en-têtes regroupés sautés — est une `AssertionError`.
-⛔ ÉCART DÉCLARÉ PAR CE HARNAIS (S-192, décision de la session, À RATIFIER) — LA LECTURE DES ÉCRANS : les tests d'écran interrogent le DOM par des REQUÊTES de Testing Library (`getBy…`, `findBy…`), dont l'échec est une
+~~⛔ ÉCART DÉCLARÉ PAR CE HARNAIS (S-192, décision de la session, À RATIFIER) — LA LECTURE DES ÉCRANS : les tests d'écran interrogent le DOM par des REQUÊTES de Testing Library (`getBy…`, `findBy…`), dont l'échec est une
 `TestingLibraryElementError` (« Unable to find an element… ») et non une `AssertionError`. D304 et D316 écartent cette forme sur le CHEMIN DE L'ARGENT ; ce lot n'en est pas (D325 : la méthode se décide par ce que le lot
 touche — ni paiement, ni montant, ni statut de réservation ou de devis). Le harnais lit donc cette forme comme une morsure de PRÉSENCE (`MORD-REQ`), la COMPTE À PART dans son bilan, la distingue d'un plantage
 (`TypeError`, délai, plafond de console : toujours PAS-ASSERTION) et le calibre sur ses deux bras. Les gardes de la file des suppressions et de la correction du motif (API, PostgreSQL réel) se lisent, elles, en
-`AssertionError` seule.
+`AssertionError` seule.~~
+⛔ BARRÉ LE 18/11/2026 (D352, RANG 54, R-2) — S-192 EST REFUSÉE (Ko, par adoption de la consigne du rang 53, R-8 de D351). Le motif de l'écart (« ce lot n'est pas du chemin de l'argent ») ne tient pas contre `AGENTS.md`
+(« sous une lecture fermée, un verdict s'écrit en assertion native », D304, D316 ; précédents D325, neuf gardes, et D345, deux gardes) : une garde qui ne rougit que par une requête de Testing Library qui lève se lit
+« Unable to find an element… », pas comme une assertion. **Le lecteur ne reconnaît donc PLUS `TestingLibraryElementError` comme une morsure** : elle se lit PAS-ASSERTION et la cible est MUETTE — c'est ce qui rend le refus
+mécanique, une règle qui ne vit que dans un texte s'oublie (D269). Les 29 gardes qui n'étaient mordues que de cette façon — G-1, G-4, G-5, G-6, G-7, G-9, Q-1, Q-2, Q-4, Q-5, Q-6, Q-8, Q-10, Q-11, P-2, P-3, P-6, P-9, P-10, P-11, X-1,
+X-2, X-3, X-6, X-8, R-2, R-3, R-6, R-7 (liste dérivée du journal de la passe 3 de D350 : 30 lignes « TestingLibraryElementError » pour 29 cibles, G-4 compte deux mesures) — ont reçu une assertion NATIVE dans leur test
+(`apps/pro/src/test-support/native-presence.ts`) ; la campagne est rejouée EN ENTIER sur ce harnais, chaque verdict lu à la première ligne du bloc d'échec.
 ⛔ VITEST 3.2.7 : la lecture est calibrée sur SA sortie ; toute autre version ⇒ refus de juger.
 ⛔ LA MUTATION SE PROUVE POSÉE (D286) : ancre 1 → 0 ET marqueur n → n + 1 pour une SUBSTITUTION ; ancre 1 → 1 ET marqueur n → n + 1 pour une INSERTION. ⚠ Le remplacement d'une substitution ne doit jamais être une
 SOUS-CHAÎNE de son ancre (D325).
@@ -45,7 +51,8 @@ formulaire, le renvoi de `RedirectIfSession`, le renvoi de `RequireProSession`),
 vrai navigateur, par E-1. Trois MESURES sont retirées pour garde TAUTOLOGIQUE (D223) : « routes » sur G-1, « detail » sur T-1 et sur T-6 — le texte attendu y est DÉRIVÉ de la valeur mutée, le test reste vert par construction.
 
 POURQUOI IL EXISTE : CLAUDE.md, « une garde qui ne mord pas n'est pas une garde ». Lecteur, calibration et boucle : COPIÉS de `neutralize-adm1.py` (lui-même copié de `neutralize-r43.py`, calibré D316 / D325 / D331 /
-D332 / D333) ; changent le jeu de cibles, la lecture des requêtes de présence (S-192) et la référence du contrôle R-1.
+D332 / D333) ; changent le jeu de cibles, la lecture des requêtes de présence (S-192) et la référence du contrôle R-1. ⛔ (D352 : la lecture des requêtes de présence est RETIRÉE, S-192 étant refusée — voir le
+paragraphe barré plus haut.)
 """
 
 import hashlib
@@ -460,7 +467,7 @@ def lancer(mesure: str) -> tuple[int, str]:
 
 
 def lire_vitest(sortie: str, titre: str | None) -> tuple[str, str]:
-    """Rend (verdict, détail). Verdicts : VERT, ROUGE, MORD, MORD-REQ, SANS-TITRE, PAS-ASSERTION, NON-DÉMARRÉE, VERSION.
+    """Rend (verdict, détail). Verdicts : VERT, ROUGE, MORD, SANS-TITRE, PAS-ASSERTION, NON-DÉMARRÉE, VERSION.
     Copie du lecteur de `neutralize-r43.py` (calibré par D316 et D325) — mêmes verdicts, mêmes bras de calibration ci-dessous."""
     if f"RUN  {VITEST_ATTENDU}" not in sortie:
         m = re.search(r"RUN\s+(v\S+)", sortie)
@@ -484,10 +491,8 @@ def lire_vitest(sortie: str, titre: str | None) -> tuple[str, str]:
             break
     if premiere.startswith("AssertionError"):
         return "MORD", f"passés {passes} · en échec {echecs} · {premiere[:140]}"
-    # ⛔ ÉCART DÉCLARÉ (D350, S-192) : une erreur de REQUÊTE de Testing Library (« Unable to find an element… ») est une morsure de PRÉSENCE — l'élément attendu n'est pas là. Elle se COMPTE À PART (`MORD-REQ`),
-    # jamais confondue avec une assertion native, et jamais pour un plantage (`TypeError`, délai dépassé, plafond de console), qui restent PAS-ASSERTION.
-    if premiere.startswith("TestingLibraryElementError"):
-        return "MORD-REQ", f"passés {passes} · en échec {echecs} · {premiere[:140]}"
+    # ⛔ (D352, S-192 REFUSÉE) : une erreur de REQUÊTE de Testing Library (`TestingLibraryElementError`, « Unable to find an element… ») n'est PLUS une morsure — comme un plantage (`TypeError`, délai dépassé,
+    # plafond de console) elle tombe ici en PAS-ASSERTION, et la cible est MUETTE : la garde doit recevoir une assertion NATIVE dans son test (`apps/pro/src/test-support/native-presence.ts`).
     return "PAS-ASSERTION", f"première ligne du bloc : {premiere[:140]}"
 
 
@@ -554,9 +559,9 @@ CALIBRATION = [
     ("plantage (TypeError)", _V
      + "   × d > t 219ms\n FAIL  a.test.ts > d > t\nTypeError: .toMatch() expects to receive a string, but got undefined\n"
        "      Tests  1 failed | 18 passed (19)\n", "t", "PAS-ASSERTION"),
-    ("erreur de REQUÊTE Testing Library (une morsure de PRÉSENCE, comptée à part — S-192)", _V
+    ("erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352)", _V
      + "   × d > t 1105ms\n FAIL  a.test.ts > d > t\nTestingLibraryElementError: Unable to find an element with the text: x\n"
-       "      Tests  1 failed | 13 passed (14)\n", "t", "MORD-REQ"),
+       "      Tests  1 failed | 13 passed (14)\n", "t", "PAS-ASSERTION"),
     ("plantage à l'intérieur du rendu (TypeError), même si le DOM est vide ensuite", _V
      + "   × d > t 40ms\n FAIL  a.test.ts > d > t\nTypeError: Cannot read properties of undefined (reading 'x')\n"
        "      Tests  1 failed | 13 passed (14)\n", "t", "PAS-ASSERTION"),
@@ -731,7 +736,6 @@ def main() -> int:
         print(f"  pré-vol {mesure} : code 0 · {detail}")
 
     mordu, muettes, erreurs = 0, [], []
-    en_requete: list[str] = []
     for cible_ in actives:
         chemin = cible_["fichier"]
         source = io.open(chemin, encoding="utf-8", newline="").read()
@@ -782,10 +786,8 @@ def main() -> int:
                 print(f"✗ {cible_['libelle']}\n   [{mesure}] MESURE NON DÉMARRÉE ({verdict}) : {detail}")
             erreurs.append(cible_["libelle"])
             break
-        if all(v in ("MORD", "MORD-REQ") and code != 0 for _, code, v, _ in verdicts):
+        if all(v == "MORD" and code != 0 for _, code, v, _ in verdicts):
             mordu += 1
-            if any(v == "MORD-REQ" for _, _, v, _ in verdicts):
-                en_requete.append(cible_["libelle"].split(".")[0])
             print(f"✓ {cible_['libelle']}\n   {posee}")
             for mesure, code, verdict, detail in verdicts:
                 print(f"   [{mesure}] code {code} · {detail}")
@@ -799,7 +801,7 @@ def main() -> int:
     if DECOUVERTE:
         print(f"\nDÉCOUVERTE : {len(actives)} cible(s) jouée(s) sur {len(CIBLES)}, aucun verdict écrit.")
     else:
-        print(f"\n{mordu} garde(s) mordue(s) sur {len(actives)} cible(s) jouée(s) · dont {len(en_requete)} lue(s) en ERREUR DE REQUÊTE Testing Library (S-192) · {len(muettes)} muette(s) · {len(erreurs)} non mesurée(s) · {non_jouees} non jouée(s) (sans --int ni --e2e) "
+        print(f"\n{mordu} garde(s) mordue(s) sur {len(actives)} cible(s) jouée(s) · toutes lues en AssertionError (S-192 refusée) · {len(muettes)} muette(s) · {len(erreurs)} non mesurée(s) · {non_jouees} non jouée(s) (sans --int ni --e2e) "
               f"(attendu : {len(actives)} sur {len(actives)}, 0, 0, {0 if AVEC_INT else non_jouees})")
     if conforme:
         print("arbre rendu à son état de départ : vérifié.")
