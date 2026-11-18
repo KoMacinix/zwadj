@@ -1,0 +1,55 @@
+Lecture adverse de la consigne du rang 54 contre le dépôt — D352
+SHA de départ lu : 95b68af01273fd40140089a2c1320ba1ae775016
+── calibration
+  calibration ✓ motif présent (cas vrai connu) : True (attendu True)
+  calibration ✓ motif absent (cas faux connu) : False (attendu False)
+  calibration ✓ ancêtre (cas vrai : le départ est ancêtre de lui-même) : True (attendu True)
+  calibration ✓ ancêtre (cas faux : la pointe de par-carte n'est pas descendante de HEAD) : False (attendu False)
+  calibration ✓ existence d'un chemin (vrai) : True (attendu True)
+  calibration ✓ existence d'un chemin (faux) : False (attendu False)
+  calibration ✓ clés d'un JSON (le bloc `publicationReview` du FR compte plus de zéro clé) : True (attendu True)
+  calibration ✓ clés d'un JSON (un bloc inexistant en compte zéro) : True (attendu True)
+  calibration : 8 cas · 0 manqué(s) (attendu 0)
+── contrôles
+(information) origin/main au moment de la lecture : 95b68af01273fd40140089a2c1320ba1ae775016 ; HEAD : 16ff81dfea028f734013f423ac439fba5c7f9c1d ; parent de HEAD : 95b68af01273fd40140089a2c1320ba1ae775016
+[0.a] ✓  origin/main = 95b68af ; l'arbre de départ est celui de 95b68af
+      le parent du premier commit du lot (la table d'ouverture) est 95b68af ; `git diff 95b68af HEAD --name-only` = ['docs/preuves/D352/table-ouverture.md']
+[0.b] ✓  branches distantes gardées : front-client 43996e2, integration-45 63511ce, par-carte 7fdc679
+      relevé : {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'}
+[0.c] ✓  rang 53 CLOS (D351), compteur POUR MÉMOIRE TRENTE-TROIS, « RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR »
+      texte aplati parcouru : 3422141 caractères ; « TRENTE-TROIS » : 5 occurrence(s) ; « RANG 54 : EN ATTENTE DE CADRAGE DU RELECTEUR » : 5 occurrence(s)
+[0.d] ✓  numéro attendu : D352, pris en LISANT le registre
+      306 lignes de registre parcourues, dernier numéro 351 ; « D352 » : 0 dans la continuité, 0 au backlog, 0 dans AGENTS.md
+[R-1.a] ✓  la liste rend `PublicationBadge` (venue-list-page.tsx, l. 205)
+      248 lignes parcourues ; ligne 205 : « <PublicationBadge status={venue.publicationStatus} /> » ; occurrences de `PublicationBadge` : 2
+[R-1.b] ✓  la liste ne lit AUJOURD'HUI aucun refus (aucun appel à la route de publication)
+      `usePublicationReview` : 0 ; `getPublicationReview` : 0 ; le composant `PublicationHeaderState` existe dans publication-review.tsx : True
+[R-1.c] ✓  « Refusée » existe en FR ET AR ; le bloc `publicationReview` compte 6 clés (R-5 de D351 en annonçait 8 : consigne, 1 c)
+      FR : 6 clés ['loadError', 'noticeDate', 'noticeHelp', 'noticeTitle', 'refusedBadge', 'retry'] ; AR : 6 clés (mêmes noms : True) ; `refusedBadge` FR = « Refusée »
+[R-1.d] ✓  la route `GET pro/venues/:id/publication` existe (D349) : la voie (A) n'exige aucun contrat neuf
+      controleur parcouru : 88 lignes ; décorateur trouvé : True
+[R-1.e] ✓  la garde de `venues.service.spec.ts` (« JAMAIS … rejectionReason ») existe : le motif n'entre pas dans la liste
+      320 lignes parcourues ; occurrences de « JAMAIS commissionRateBps/rejectionReason » : 1
+[R-1.f] ✓  par-carte est intégrée : `venue-form.tsx` n'est plus interdit
+      `7fdc679` est ancêtre de 95b68af : True ; le commentaire de publication-review.tsx dit « `venue-form.tsx` n'est PAS modifié (la branche `par-carte` y écrit, R-9) » : True
+[R-1.g] ≈  (non affirmé par la consigne — risque relevé) la voie (A) ajoute une lecture par carte de salle non publiée ; l'e2e compte `/api/v1/pro/venues` par `includes`
+      e2e/fixtures/harness.ts, `count` : `c.includes(fragment)` présent : True ; `a2-mount-effects.e2e.ts` compte `/api/v1/pro/venues` 3 fois ; une lecture `/api/v1/pro/venues/:id/publication` entre dans ce compte SI le compte e2e porte une salle — À MESURER à l'e2e, pas à supposer
+[R-2.a] ✓  29 gardes d'écran se lisent en erreur de requête de Testing Library
+      304 lignes du journal parcourues ; lignes « TestingLibraryElementError » : 30 ; cibles distinctes : 29 = ['G-1', 'G-4', 'G-5', 'G-6', 'G-7', 'G-9', 'P-2', 'P-3', 'P-6', 'P-9', 'P-10', 'P-11', 'Q-1', 'Q-2', 'Q-4', 'Q-5', 'Q-6', 'Q-8', 'Q-10', 'Q-11', 'R-2', 'R-3', 'R-6', 'R-7', 'X-1', 'X-2', 'X-3', 'X-6', 'X-8'] ; la ligne de bilan du journal dit « dont 29 lue(s) en ERREUR DE REQUÊTE » : True
+[R-2.b] ≈  « liste dans l'en-tête de neutralize-adm2.py et l'entrée de backlog »
+      l'en-tête (812 lignes parcourues) et les deux entrées du backlog décrivent l'écart (« 29 GARDES D'ÉCRAN… ») mais ne DRESSENT pas la liste des 29 identifiants (l'en-tête cite `G-1`, `G-2` et `G-3` 2 fois dans ses 60 premières lignes, à propos de cibles retirées ou de la garde de rôle, pas comme liste) ; la liste se DÉRIVE du journal de la passe 3 de D350 (ci-dessus) ou de `ADM2_DECOUVERTE=1` — écart de pointeur, sans conséquence sur le lot
+[R-2.c] ✓  l'écart déclaré dans l'en-tête du harnais existe (à barrer avec son motif) ; le lecteur accepte aujourd'hui `TestingLibraryElementError` comme morsure (MORD-REQ)
+      en-tête : « ÉCART DÉCLARÉ PAR CE HARNAIS (S-192 » : 1 ; `MORD-REQ` : 7 occurrences ; `TestingLibraryElementError` : 3
+[R-2.d] ✓  précédents : AGENTS.md, D304, D316, D325 (neuf gardes) ; D345 (deux gardes)
+      texte aplati d'AGENTS.md parcouru : 255873 caractères ; phrase de D325 présente : True ; « D345, deux gardes » au backlog : True
+[R-2.e] ✓  correction (1 c) : le précédent du rejeu unique est D339, non D338
+      « D339 » et « rejeu » dans la même section : D339 compte 137 occurrences ; la consigne du rang 53 cite « D338, D342, D348 » (docs/preuves/D351/consigne.md, R-2) : True — la correction de la consigne du rang 54 est conforme
+[R-5] ≈  candidat du rang 55 : le `no-store` de `getVenueMap` non gardé ; « sans créneau actif (avec une date) » non joué sur la carte ; le cache d'une heure des référentiels (message « claude/rang50-message.md »)
+      `revalidate: 3600` dans apps/client/src/lib/api.ts : 3 occurrences ; entrée `[TESTS][CARTE]` du backlog : True ; ⚠ `claude/rang50-message.md` : introuvable dans le dépôt à ce SHA (`git cat-file -e` : False) — non vérifiable contre le dépôt ; hors lot, rien n'en est codé ici
+[F-1] ✓  compteur TRENTE-TROIS → TRENTE-QUATRE : D283 — un lot qui touche un test ou un harnais compte
+      33 + 1 = 34 ; le lot écrit du code Pro (venue-list-page.tsx) et touche des tests et un harnais
+[F-2] ?  R-9 : sur batterie, aucune porte
+      engagement de méthode ; relevé de l'état machine : table d'ouverture (secteur, BatteryStatus = 2) ; se constate à chaque passe (pilote de D340)
+
+TOTAL : 19 contrôles — 15 ✓ · 3 ≈ · 0 ✗ · 1 ?   (attendu : la somme égale le nombre de contrôles listés ci-dessus)
+somme des verdicts = 19 ; contrôles imprimés = 19 ; égalité : True

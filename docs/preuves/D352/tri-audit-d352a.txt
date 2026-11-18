@@ -1,0 +1,16 @@
+D352 — tri différentiel de l'audit de secrets « a » (premier versement : la consigne, la règle des portes, la lecture adverse de la consigne et sa sortie)
+
+Instrument d'audit : python3 neutralisation/audit-secrets.py --sortie docs/preuves/D352/audit-secrets-d352a.txt (1 037 360 octets, 0 CR, 8 597 lignes ; lancé à 17:20, fini à 17:40 le 18/11/2026), joué dans le dépôt de travail, en arrière-plan pendant l'écriture des tests de R-1 (il ne lit que `docs/preuves/`). Sceau : sha256:80c5d3f4631bca8a27bcf9fa289da58e9dba261e34a4b4b2ef269ac96c7f99c2 — « relue identique : True · sceau vérifié à la relecture : True » (console de l'outil). Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri (négatif 0 nouvelle ; positif 2 nouvelles, chemins attendus).
+
+Procédure du tri : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351f.txt docs/preuves/D352/audit-secrets-d352a.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351f) : 5 693 fichiers parcourus, 5 492 audités, 201 exclus, 3 528 alertes.
+  · nouvelle (d352a)   : 5 700 fichiers parcourus, 5 498 audités, 202 exclus, 3 530 alertes = 3 528 + 2. Contrôle de l'outil : audités + exclus = 5 700 (attendu 5 700, les parcourus).
+  · Exclus : 202 contre 201, soit un de plus — la sortie scellée « f » (sceau vérifié) ; aucune exclusion de « f » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 700 fichiers APRÈS l'audit, sortie scellée « a » comprise (écrite après lui) ; l'audit en a parcouru 5 700. ⚠ **Écart de UN fichier NON EXPLIQUÉ** : l'arithmétique du disque donne 5 699 fichiers présents pendant l'audit, l'outil en annonce 5 700. Aucune pièce n'a été retirée de `docs/preuves/` pendant la fenêtre (les seules écritures sont les cinq pièces de ce versement, toutes avant 17:20, et la sortie scellée) ; l'écart n'est PAS investigué plus loin ici — écrit pour ne pas se lire comme un rapprochement qui ferme.
+  · Les pièces neuves de ce versement (`docs/preuves/D352/consigne.md`, `regle-portes.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`, `table-ouverture.md`) : 0 alerte (le texte « D352 » ne figure dans AUCUN contexte d'alerte de la sortie scellée : 0 ligne).
+
+Résultat du tri différentiel : 2 alertes ABSENTES de la sortie précédente. Ventilation par motif : valeur-nommee-secrete = 1 · jeton = 1. **Les deux visent le MÊME fichier** : `docs/preuves/D351/tri-audit-d351f.txt` — la pièce de tri de D351 écrite APRÈS la sortie « f » (elle ne pouvait donc pas être auditée par elle) ; elle recite les citations de fixtures SYNTHÉTIQUES du balayage de la note juridique de D351 (valeurs d'école) et le nom des motifs « key=, token=, secret= » : l'écho d'un écho, déjà DIT dans ce fichier même. **Aucune valeur réelle** (lu au contexte, lignes 8385 et 8387 de la sortie scellée « a »).
+
+Contrôle « 0 valeur réelle » (D299) : NON joué à ce versement — aucun journal à valeurs réelles n'existe dans la session (les journaux d'e2e, qui portent des jetons de développement, ne sont pas encore versés : le contrôle sera joué avant le versement des portes).
