@@ -1,0 +1,23 @@
+D351 — R-5 : le repère de `apps/api/src/common/i18n-parity.spec.ts` (« le TOTAL ne RECULE pas »), relevé après la fusion (18/11/2026, HEAD = 02b2d62, le commit de fusion)
+
+La consigne (R-5) : « Le repère […] relevé après fusion (BILAN § 4 : 29 clés neuves, non relevées par la session cloud, plus les 8 du bloc publicationReview de D350). Le relever est permis ; le baisser, jamais. »
+
+1. Ce qui a été MESURÉ, sur les fichiers `packages/i18n/messages/fr.json` et `ar.json` (feuilles de l'arbre JSON, comptées comme le fait la spec : `flatten`) — script de la session, hors dépôt :
+   · `origin/main` (5951b2c), avant la fusion : fr = 1 267, ar = 1 267 (parité : oui).
+   · `origin/par-carte` : fr = 1 290.
+   · l'arbre PRÉDIT de la fusion (`git merge-tree`, 9c12458) : fr = 1 296, ar = 1 296 (parité : oui).
+   · l'état fusionné, relu sur le disque APRÈS la fusion : fr = 1 296, ar = 1 296 (parité : oui) ; bloc racine `map` : 29 clés ; bloc `publicationReview` : 6 clés (la consigne dit « les 8 » : écart de compte, relevé par la lecture adverse, [R-5]) ;
+     1 267 + 29 = 1 296 : l'arithmétique ferme.
+   · le repère AVANT : `toBeGreaterThanOrEqual(943)` — 324 clés SOUS le total de `main` avant la fusion (1 267 − 943).
+   · les trois clés que la branche dit MORTES (`search.map.title`, `search.map.soon`, `home.map.soon`) sont TOUJOURS dans les deux catalogues (présentes FR et AR) : ce lot ne les retire pas.
+
+2. Ce qui a été JOUÉ (`pnpm --filter @zwadj/api exec vitest run src/common/i18n-parity.spec.ts`, sorties lues, codes ANSI retirés) :
+   (1) repère 943 (l'état d'avant, sur l'arbre fusionné) : `✓ src/common/i18n-parity.spec.ts (5 tests) 7ms` · `Test Files 1 passed (1)` · `Tests 5 passed (5)` — le repère de 943 ne voit rien : il est vert à 1 296 clés.
+   (2) repère relevé à 1 296 : `Test Files 1 passed (1)` · `Tests 5 passed (5)`.
+   (3) NEUTRALISATION (le repère mis à 1 297, le total mesuré + 1) : `FAIL src/common/i18n-parity.spec.ts > Parité i18n FR/AR (invariant produit) > le TOTAL ne RECULE pas — une suppression symétrique laisse la parité verte`
+       · première ligne du bloc d'échec : `AssertionError: expected 1296 to be greater than or equal to 1297` · `Tests 1 failed | 4 passed (5)` — une assertion native, pas un délai ni un plantage (D304, D305) : **la garde mord, et elle mord exactement au total mesuré**.
+   (4) RESTAURATION PROUVÉE : copie du fichier relevé gardée avant la neutralisation, remise après ; sha256 du fichier de travail avant et après : 959c2c938333c3aad768c44cef73ff963eecd0e59b509cbdbcf1c25ede79e2e8 — IDENTIQUES ; `Tests 5 passed (5)`.
+
+3. Ce que le commit de code change (déclaré ligne par ligne, R-6) : UN fichier, `apps/api/src/common/i18n-parity.spec.ts` — 8 lignes ajoutées (sept lignes de commentaire d'historique, la valeur du repère) et 1 retirée (l'ancienne ligne du repère) ; blob git avant `aa3fe9e80e52`, après `cca6cc61d4ab` ; fins de ligne : CRLF conservées (le fichier de travail est en CRLF, 0 LF nu avant et après). Aucune autre ligne.
+   ⚠ Ce changement est une ÉCRITURE DE CODE DE TEST : par D283/D292 il fait COMPTER ce lot en plus des six lots de la branche (voir la décision du compteur à la clôture, [F-2] de la lecture adverse).
+   D334 (point 5, « les rouges avant le code ») : ce lot ne corrige aucun défaut ; l'état d'avant (repère 943) est VERT, il n'y a donc pas de rouge à lire AVANT — la preuve que la garde neuve mord est la neutralisation (3), jouée sur le fichier qui sera commité.
