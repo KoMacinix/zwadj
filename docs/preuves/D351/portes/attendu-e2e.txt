@@ -1,0 +1,11 @@
+D351 — l'ATTENDU de l'e2e, DÉRIVÉ et écrit AVANT la première passe (regle-portes.md § 4.1 ; extension 2 de la table d'ouverture, `645ad01`)
+
+Commande : pnpm --filter @zwadj/e2e exec playwright test --list   (depuis la racine, 18/11/2026, sur l'état fusionné : HEAD = 4a0367b, arbre propre, après `pnpm install --frozen-lockfile` et `prisma:generate`)
+Sortie complète, codes ANSI retirés : docs/preuves/D351/portes/e2e-liste.txt (19 770 octets, 0 CR).
+Ligne de total lue dans la sortie : « Total: 110 tests in 26 files » (code de sortie 0). Dans cette liste : 1 test de préchauffage (`warmup.setup.ts`), 7 tests de `ca6-carte.e2e.ts` (la spec de la branche), 5 de `r52-administration.e2e.ts` (D350).
+
+Comment l'attendu se déduit (jamais de mémoire) : D350 listait 103 tests (102 passés + 1 ignoré, `docs/preuves/D350/portes/`) ; la fusion apporte UNE spec, `ca6-carte.e2e.ts`, de 7 tests (BILAN de la branche, § 1 ; comptés dans la liste ci-dessus : 7) ; 103 + 7 = 110 = le total listé : l'arithmétique ferme.
+Le BILAN de la branche annonçait « 95 passés, 1 ignoré (88 + 1 à l'entrée, + 7) » ; la même arithmétique, avec les 14 tests ajoutés depuis sur `main` (`r50-salle-publiee` : 9, D348 ; `r52-administration` : 5, D350), donne 95 + 14 = 109 passés + 1 ignoré.
+
+ATTENDU DE CHAQUE PASSE COMPLÈTE : 110 listés = **109 passés + 1 ignoré, 0 échec**. UN seul ignoré, comme aux passes précédentes (la spec de la branche n'en déclare aucun, BILAN § 2 ; lequel est ignoré, la sortie le dira — ce n'est pas relevé ici) ; si une passe rend un autre total, la sortie se lit et se dit avant toute conclusion.
+Deux passes complètes consécutives, vertes, à ce total, sur secteur : la porte e2e est verte (R-15 de D343). Une passe rouge se lit (première ligne de chaque bloc d'échec) ; le seul rejeu admis est celui de `regle-portes.md` § 3 cas 2 et § 4.3.

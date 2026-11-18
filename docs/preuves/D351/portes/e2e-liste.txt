@@ -1,0 +1,112 @@
+Listing tests:
+  [warmup] › warmup.setup.ts:57:5 › préchauffe les routes des deux applications
+  [chromium] › a1-session-bootstrap.e2e.ts:27:7 › A1 — bootstrap de session › Pro : rechargement direct d'une route protégée = UN SEUL POST /auth/refresh
+  [chromium] › a1-session-bootstrap.e2e.ts:43:7 › A1 — bootstrap de session › Client : rechargement d'une page publique déclenche aussi UN SEUL refresh
+  [chromium] › a1-session-bootstrap.e2e.ts:60:7 › A1 — bootstrap de session › deux onglets rechargés quasi simultanément : AUCUN ne perd la session
+  [chromium] › a1-session-bootstrap.e2e.ts:96:7 › A1 — bootstrap de session › cookie refresh invalide : redirection propre vers la connexion, SANS boucle
+  [chromium] › a2-mount-effects.e2e.ts:63:7 › A2 — un seul appel par montage › bootstrap d'auth (EFFET DE BORD : rotation du refresh token)
+  [chromium] › a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel wilayas : un seul /api/v1/wilayas
+  [chromium] › a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel équipements : un seul /api/v1/amenities
+  [chromium] › a2-mount-effects.e2e.ts:81:9 › A2 — un seul appel par montage › Pro — référentiel styles : un seul /api/v1/venue-styles
+  [chromium] › a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes demandes : un seul /api/v1/me/bookings
+  [chromium] › a2-mount-effects.e2e.ts:104:9 › A2 — un seul appel par montage › Client — compte — mes visites : un seul /api/v1/me/visit-bookings
+  [chromium] › a2-mount-effects.e2e.ts:119:7 › A2 — un seul appel par montage › un aller-retour SPA remonte l'écran : un appel par MONTAGE, pas un par session
+  [chromium] › a2-mount-effects.e2e.ts:166:7 › A2 — un seul appel par montage › la coquille charge la liste des salles UNE fois par démarrage, quel que soit l'écran d'entrée
+  [chromium] › a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › tableau de bord : même empreinte d'appels par les deux chemins
+  [chromium] › a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mes salles : même empreinte d'appels par les deux chemins
+  [chromium] › a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › mon compte : même empreinte d'appels par les deux chemins
+  [chromium] › a5-cold-reload-vs-spa.e2e.ts:75:9 › A5 — parité navigation interne / rechargement › nouvelle salle : même empreinte d'appels par les deux chemins
+  [chromium] › a5-cold-reload-vs-spa.e2e.ts:175:7 › A5 — parité navigation interne / rechargement › le calendrier d'une salle survit au rechargement (deux effets enchaînés)
+  [chromium] › b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-light : les tokens résolus n'ont pas bougé
+  [chromium] › b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › client-dark : les tokens résolus n'ont pas bougé
+  [chromium] › b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-light : les tokens résolus n'ont pas bougé
+  [chromium] › b7-token-contract.e2e.ts:113:9 › B7 — contrat des tokens résolus (D124) › pro-dark : les tokens résolus n'ont pas bougé
+  [chromium] › b7-token-contract.e2e.ts:250:7 › B7 — contrat des tokens résolus (D124) › un token partagé a la MÊME valeur dans les deux apps, au même thème
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (clair) : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (sombre) : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client accueil (arabe, RTL) : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client recherche de salles : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › client compte : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (clair) : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro connexion (sombre) : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro liste des salles : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro tableau de bord : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro nouvelle salle : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:138:9 › B8 — accessibilité automatisée (D125) › pro compte : aucune NOUVELLE violation
+  [chromium] › b8-accessibility.e2e.ts:204:7 › B8 — accessibilité automatisée (D125) › écrit la référence si demandé, et refuse de la deviner sinon
+  [chromium] › ca6-carte.e2e.ts:111:7 › CA-6 — fr, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle
+  [chromium] › ca6-carte.e2e.ts:111:7 › CA-6 — ar, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle
+  [chromium] › ca6-carte.e2e.ts:183:5 › CA-6 — panne des TUILES : un message, et les salles restent sur la carte
+  [chromium] › ca6-carte.e2e.ts:196:5 › CA-6 — panne de la ROUTE DE POINTS (500) : un message et « Réessayer », pas une page blanche ; puis la carte
+  [chromium] › ca6-carte.e2e.ts:220:5 › CA-6 — accueil : rien ne part au chargement ; la carte se monte quand la section approche, avec les salles de l'API
+  [chromium] › ca6-carte.e2e.ts:248:5 › CA-6 — fiche : la carte au geste, un point au nom de la salle ; une salle sans position n'offre pas de carte
+  [chromium] › ca6-carte.e2e.ts:277:5 › CA-6 — pro : un clic sur la carte écrit la latitude ET la longitude dans les deux champs, à six décimales au plus
+  [chromium] › d265-socket-perimee.e2e.ts:89:5 › D265 — createVerifiedAccount (postJson) : le premier appel après un blocage plus long que la fermeture serveur réussit
+  [chromium] › d265-socket-perimee.e2e.ts:98:5 › D265 — apiCall : le premier appel après un blocage plus long que la fermeture serveur réussit
+  [chromium] › fc10-donnees-structurees.e2e.ts:34:7 › fr — le HTML servi de la fiche porte un EventVenue au nom de la salle, dans la langue de la page
+  [chromium] › fc10-donnees-structurees.e2e.ts:34:7 › ar — le HTML servi de la fiche porte un EventVenue au nom de la salle, dans la langue de la page
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, accueil : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, recherche : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — fr, fiche salle : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, accueil : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, recherche : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc2-debordement-360.e2e.ts:51:9 › FC-2 — ar, fiche salle : à 360 px, la page tient dans la fenêtre
+  [chromium] › fc8-mode-guide.e2e.ts:21:5 › fr — `/salles?guide=guests` ouvre l'assistant par-dessus les résultats ; chaque réponse pousse l'URL ; « Voir les salles » le ferme
+  [chromium] › fc8-mode-guide.e2e.ts:42:5 › fr — une valeur INCONNUE de `guide` n'ouvre rien (D230) : la page de résultats seule
+  [chromium] › fc8-mode-guide.e2e.ts:52:5 › fr — sans JavaScript, le HTML servi de `/salles?guide=city` ne porte AUCUN panneau, et porte le formulaire de recherche
+  [chromium] › fc8-mode-guide.e2e.ts:60:5 › ar — « Li hwas lqa » de l'accueil ouvre l'assistant à la commune, en arabe
+  [chromium] › r25-demande-reservation.e2e.ts:32:5 › un client ouvre une salle, choisit une date, envoie sa demande et voit la confirmation
+  [chromium] › r25-lien-connexion.e2e.ts:30:7 › fr — « Se connecter pour demander » mène à la page de connexion réelle
+  [chromium] › r25-lien-connexion.e2e.ts:30:7 › ar — « سجّل الدخول لإرسال طلب » mène à la page de connexion réelle
+  [chromium] › r25-suppression-compte.e2e.ts:31:7 › client — sans demande : la section propose la demande, sans erreur
+  [chromium] › r25-suppression-compte.e2e.ts:47:7 › client — avec une demande : la section l'affiche en attente
+  [chromium] › r25-suppression-compte.e2e.ts:31:7 › pro — sans demande : la section propose la demande, sans erreur
+  [chromium] › r25-suppression-compte.e2e.ts:47:7 › pro — avec une demande : la section l'affiche en attente
+  [chromium] › r26-parcours-reservation.e2e.ts:108:5 › le pro ACCEPTE : la demande quitte ses demandes pour ses réservations, et le client la voit acceptée
+  [chromium] › r26-parcours-reservation.e2e.ts:129:5 › le pro REFUSE : la demande reste dans ses demandes, refusée, et le client voit le refus
+  [chromium] › r30-lien-calendrier-pro.e2e.ts:21:5 › le lien « Calendrier de la salle » de l'assistant mène au calendrier — pas au tableau de bord
+  [chromium] › r33-remise-devis.e2e.ts:92:7 › « PRINT », page fr, PDF ar : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT
+  [chromium] › r33-remise-devis.e2e.ts:92:7 › « EMAIL », page fr, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT
+  [chromium] › r33-remise-devis.e2e.ts:92:7 › « SMS », page ar, PDF fr : la boîte s'ouvre, le CHOIX lance le téléchargement d'un vrai PDF dans cette langue, le serveur ENREGISTRE le canal, la fenêtre le DIT
+  [chromium] › r33-remise-devis.e2e.ts:153:5 › ⛔ ANNULER la boîte de langue — le bouton, puis Échap — n'enregistre RIEN, ne télécharge RIEN, n'ouvre PAS la fenêtre de remise : aucune requête ne part, le serveur n'a aucun canal
+  [chromium] › r33-remise-devis.e2e.ts:189:5 › le canal « e-mail » est INACTIF sans adresse, ACTIF avec — et rien n'est téléchargé tant qu'il est grisé
+  [chromium] › r33-remise-devis.e2e.ts:209:5 › ⛔ une révision rend le PDF de l'ancienne version REFUSÉ (409) et celui de la nouvelle servi — la décision 1, de bout en bout
+  [chromium] › r33-remise-devis.e2e.ts:230:5 › ⛔ rang 39 — un DEUXIÈME devis de la même salle prend le numéro SUIVANT, avec le même numéro de salle et la version 1 ; la référence de la liste est celle de la création
+  [chromium] › r37-ma-salle.e2e.ts:100:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER : la salle créée est dans la liste quand on revient à « Ma salle » (menu du haut), sans rechargement
+  [chromium] › r37-ma-salle.e2e.ts:113:7 › R37 — « Ma salle » est relue sans rechargement › MODIFIER : le nouveau nom est dans la liste quand on revient par « Retour à mes salles », sans rechargement (et le nom de l'assistant est celui du SERVEUR)
+  [chromium] › r37-ma-salle.e2e.ts:131:7 › R37 — « Ma salle » est relue sans rechargement › CRÉER puis CORRIGER dans la même session (S8 de D327) : la liste porte le nom corrigé, pas celui de la création
+  [chromium] › r37-ma-salle.e2e.ts:148:7 › R37 — « Ma salle » est relue sans rechargement › SUPPRIMER depuis l'assistant : la salle supprimée n'est plus dans la liste, et le libellé du menu repasse au singulier, sans rechargement
+  [chromium] › r37-ma-salle.e2e.ts:168:7 › R37 — « Ma salle » est relue sans rechargement › PUBLIER (par un autre compte, pendant que le pro est dans l'application) : l'entrée dans « Ma salle » montre « Publiée », sans rechargement
+  [chromium] › r41-fiche-client.e2e.ts:65:5 › ⛔ le CONTACT d'abord : sans fiche, elle se CRÉE au « Continuer » de l'étape Client ; le devis porte la fiche et la COPIE du nom ; la conversion PRÉREMPLIE envoie ce que l'écran affiche, et la fiche n'est pas réécrite
+  [chromium] › r41-fiche-client.e2e.ts:113:5 › ⛔ un second passage du même numéro RETROUVE la fiche (aucune seconde fiche) ; la boîte de langue DEMANDE le nom arabe, le complète sur le devis ET sur la fiche (C-C3), PUIS télécharge le PDF en arabe
+  [chromium] › r41-fiche-client.e2e.ts:170:5 › ⛔ MD-4 — le numéro du PRO lui-même est refusé à la création de la fiche : l'erreur est DITE, on reste à l'étape Client, aucun devis
+  [chromium] › r42-reservation-email-seul.e2e.ts:25:5 › un client réserve avec son e-mail SEUL : le bouton s'ouvre, la demande part, et la base garde l'e-mail sans numéro
+  [chromium] › r42-reservation-email-seul.e2e.ts:71:5 › un e-mail SAISI et invalide retient le bouton, même avec un numéro valide — l'e-mail n'est pas une formalité
+  [chromium] › r43-devis-brouillon.e2e.ts:85:7 › ⛔ (fr) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écran sous le même numéro, puis REMIS
+  [chromium] › r43-devis-brouillon.e2e.ts:85:7 › ⛔ (ar) un brouillon créé au comptoir par le bouton de Q1 : sans nom, téléchargé sous son nom BROUILLON-…, REFUSÉ à la remise, PROMU par l'écran sous le même numéro, puis REMIS
+  [chromium] › r43-devis-brouillon.e2e.ts:185:5 › ⛔ le chemin ORDINAIRE ne crée jamais un brouillon : « Continuer » du contact, la fiche, les noms ⇒ un devis OFFICIEL `DEVIS-…`, avec sa fiche
+  [chromium] › r47-brouillon-onglet.e2e.ts:61:5 › ⛔ (fr) une saisie non validée puis une étape validée survivent à un aller-retour par « Demandes » ; « Recommencer » vide ; un rechargement vide
+  [chromium] › r47-brouillon-onglet.e2e.ts:110:5 › ⛔ (ar) le même parcours : l'étape et la saisie survivent à l'aller-retour, et « إعادة البدء » vide
+  [chromium] › r48-assistant-choix.e2e.ts:102:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer »
+  [chromium] › r48-assistant-choix.e2e.ts:102:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer »
+  [chromium] › r49-nouvelle-reservation.e2e.ts:112:5 › ⛔ T1 — les règles de SAISIE : « Continuer » DIT pourquoi, le téléphone refuse un mauvais premier chiffre, l'e-mail et les noms sont jugés, chaque champ porte un exemple
+  [chromium] › r49-nouvelle-reservation.e2e.ts:186:5 › ⛔ T2 — jusqu'à la demande enregistrée : montants du SERVEUR, rail, « Précédent » à gauche, fenêtre APRÈS la réponse, « Nouveau devis », ligne écrite = ligne saisie
+  [chromium] › r49-nouvelle-reservation.e2e.ts:252:5 › ⛔ T3 — « Bloquer la date » : la fenêtre dit « bloquée », et c'est ACCEPTED qui est écrit
+  [chromium] › r49-nouvelle-reservation.e2e.ts:264:5 › ⛔ T4 — un échec du serveur ne confirme RIEN : la fenêtre reste fermée, l'erreur s'affiche, aucune ligne n'est écrite
+  [chromium] › r49-nouvelle-reservation.e2e.ts:286:5 › ⛔ T5 — le calendrier du parcours : un jour BLOQUÉ de week-end garde sa couleur de statut ET un hachurage ; le week-end libre est plus clair
+  [chromium] › r49-nouvelle-reservation.e2e.ts:341:5 › ⛔ T6 — en ARABE, à 360 px : la disposition est REFLÉTÉE, le numéro reste de gauche à droite, chaque libellé pointe son champ, rien ne déborde
+  [chromium] › r50-salle-publiee.e2e.ts:147:7 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › le pro crée sa salle PAR L'ÉCRAN (essentiel, équipement, style, créneau, prix, photo) ; la salle est un brouillon absente du site ; l'ADMIN la publie
+  [chromium] › r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau
+  [chromium] › r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif)
+  [chromium] › r50-salle-publiee.e2e.ts:274:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › FR · la fiche s'ouvre depuis la carte : titre, photo chargée, page de gauche à droite
+  [chromium] › r50-salle-publiee.e2e.ts:229:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › AR · l'accueil montre la salle, et AUCUNE salle fictive ni son bandeau
+  [chromium] › r50-salle-publiee.e2e.ts:238:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › AR · /salles : sans filtre, puis avec CHAQUE filtre qui lui correspond (et son jumeau négatif)
+  [chromium] › r50-salle-publiee.e2e.ts:274:9 › R50 · M-1 — le chemin réel d'une salle, de l'écran du pro au site client › AR · la fiche s'ouvre depuis la carte : titre, photo chargée, page de droite à gauche
+  [chromium] › r50-salle-publiee.e2e.ts:308:7 › R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : chaque condition jouée › témoin, brouillon, masquée, temporairement indisponible, supprimée, sans créneau actif, compte du pro supprimé : la liste, la fiche, et ce que le PRO lit
+  [chromium] › r50-salle-publiee.e2e.ts:432:7 › R50 · M-3 — la fiche dit la vérité sur une salle qui change d'état après avoir été vue › publiée après une visite en 404 ; renommée ; masquée ; supprimée : chaque relecture de la fiche suit l'état réel
+  [chromium] › r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file, ouvre le détail, publie — la salle se voit sur le site client ; `noindex` pendant l'écran
+  [chromium] › r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — le PRO le lit à l'étape « Publication », en français ET en arabe, et son en-tête ne dit plus « en attente »
+  [chromium] › r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pro lit le NOUVEAU motif, plus l'ancien
+  [chromium] › r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejetée (le compte reste actif), puis une autre approuvée APRÈS la confirmation qui dit l'irréversible (le compte ne se connecte plus)
+  [chromium] › r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refus explicite et n'atteint aucune donnée ; puis, dans le MÊME navigateur, un ADMIN qui se connecte ne voit rien du PRO (MD-ADM-10)
+Total: 110 tests in 26 files
