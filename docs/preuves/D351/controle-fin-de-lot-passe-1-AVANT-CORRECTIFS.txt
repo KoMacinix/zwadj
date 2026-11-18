@@ -1,0 +1,39 @@
+D351 — contrôle de fin de lot (D288, D328, D334) : chaque contrôle rend ce qu'il a PARCOURU à côté de son verdict, et l'ATTENDU à côté du mesuré
+HEAD = 98e96687e8a9a1288620e05b6e8acfb1d0e70938 · SHA de départ 5951b2cbee9fad52cdec5ddcbecf52d96a4d5e35 · 37 commits depuis le départ · 18 contrôles : 16 ✓ · 2 ✗ (attendu : 0 ✗)
+
+✗ [1] le PREMIER commit du lot ne contient que `docs/preuves/D351/table-ouverture.md`
+     ↳ 37 commits depuis le départ ; premier = 8a64f57 ; fichiers : ['docs/preuves/parallele/carte/audit-secrets-ouverture.txt', 'docs/preuves/parallele/carte/consigne.md', 'docs/preuves/parallele/carte/lecture-adverse.txt'] ; attendu : ['docs/preuves/D351/table-ouverture.md']
+✓ [2] `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises)
+     ↳ 299 fichiers modifiés depuis le départ ; 325 chemins complets déclarés ; NON déclarés : 0 [] (attendu 0)
+✓ [2c] le SEUL fichier hors de la liste A, hors `docs/preuves/` et hors fichiers d'autorité est le repère de parité
+     ↳ relevé : ['apps/api/src/common/i18n-parity.spec.ts']
+✓ [2d] aucun fichier de `neutralisation/` n'a été modifié par ce lot en dehors des six harnais de la branche et des 11 pièces versées
+     ↳ fichiers sous neutralisation/ : ['neutralisation/neutralize-ca1.py', 'neutralisation/neutralize-ca2.py', 'neutralisation/neutralize-ca3.py', 'neutralisation/neutralize-ca4.py', 'neutralisation/neutralize-ca5.py', 'neutralisation/neutralize-ca6.py']
+✓ [2e] aucune migration, aucun fichier SQL, un seul fichier de dépendance en plus du verrou
+     ↳ migrations/sql : [] ; package.json : ['packages/ui/package.json']
+✓ [3a] la sortie de la lecture adverse est commitée AVANT tout `.md` d'autorité
+     ↳ lecture adverse : c7e8c83 (rang 23) ; premier commit d'un `.md` d'autorité : af347b7 (rang 25) — la PREMIÈRE écriture d'autorité (les arbitrages) précède la fusion, comme à D342
+✓ [3b] la fusion est UN commit à deux parents, et la première écriture d'autorité (les arbitrages de Ko) la PRÉCÈDE
+     ↳ commits de fusion : ['02b2d62'] ; première écriture d'autorité rang 25 < fusion rang 26
+✓ [3c] D334 point 5 : le commit de la pièce du repère (le rouge lu à 1297) PRÉCÈDE le commit du code de test
+     ↳ pièce ff9137a (rang 28) ; code 4a0367b (rang 29) ; ce lot n'écrit qu'UN fichier de code (le repère) en plus de la fusion
+✗ [3d] chaque extension de la table est un commit qui ne touche QUE la table
+     ↳ 5 extensions : ['42d86a9', '0e6f0a0', '645ad01', 'd5c3c3d', 'e57e6ea'] (attendu 4, chacune sur ['docs/preuves/D351/table-ouverture.md'])
+✓ [3e] chaque pièce de `docs/preuves/D351/` est déclarée dans la table AVANT (ou par) le commit qui l'ajoute
+     ↳ 139 pièces parcourues ; déclarées APRÈS leur commit (ou jamais) : 0 [] (attendu 0 ; les pièces déclarées à l'ouverture sont dans le premier commit de la table)
+✓ [4] l'arbre du commit de fusion = celui que `git merge-tree` recalcule seul entre ses deux parents ; le second parent est la pointe de `par-carte`
+     ↳ fusion 02b2d62 ; parents af347b7 et 7fdc679 (attendu 7fdc679) ; arbre 40d655b7bb61 ; rejoué 40d655b7bb61 (code 0)
+✓ [4b] la branche `par-carte` est GARDÉE : `origin/par-carte` n'a pas bougé
+     ↳ origin/par-carte = 7fdc67961727 (attendu 7fdc67961727)
+✓ [5] ZWADJ_CONTINUITE.md : fin de ligne du fichier de travail en octets, gabarits et marqueurs
+     ↳ 3595245 octets · CRLF 27727 · LF nu 0 (attendu 0) · « @@COMPTEUR@@ » : 0 · « @@COMMITS_SUITE@@ » : 0 (attendu 0)
+✓ [5] ZWADJ_BACKLOG.md : fin de ligne du fichier de travail en octets, gabarits et marqueurs
+     ↳ 788674 octets · CRLF 5845 · LF nu 0 (attendu 0) · « @@COMPTEUR@@ » : 0 · « @@COMMITS_SUITE@@ » : 0 (attendu 0)
+✓ [5] AGENTS.md : fin de ligne du fichier de travail en octets, gabarits et marqueurs
+     ↳ 270333 octets · CRLF 1692 · LF nu 0 (attendu 0) · « @@COMPTEUR@@ » : 0 · « @@COMMITS_SUITE@@ » : 0 (attendu 0)
+✓ [5b] le registre se termine par D351, et D351 n'y est qu'UNE fois
+     ↳ 306 lignes de décision lues ; dernière = D351 ; occurrences de D351 en tête de ligne : 1
+✓ [5c] la passe D277 : « avant » et « après » existent, et le compte rendu aussi
+     ↳ présentes dans HEAD : [True, True, True] (attendu [True, True, True])
+✓ [6] local et `origin/main` sur le MÊME SHA (D288) — ⚠ les deux SHA vont dans le rapport
+     ↳ HEAD = 98e96687e8a9a1288620e05b6e8acfb1d0e70938 ; origin/main = 98e96687e8a9a1288620e05b6e8acfb1d0e70938 ; identiques : True ; `git status --short` : [?? docs/preuves/D351/controle-fin-de-lot.py] (attendu [])

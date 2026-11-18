@@ -1,0 +1,17 @@
+D351 — tri différentiel de l'audit de secrets « f » (dernier versement : le contrôle de fin de lot, écrit APRÈS la poussée, sa première passe gardée, la sortie « f » et ce tri)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351e.txt docs/preuves/D351/audit-secrets-d351f.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351f.txt (1 036 357 octets, 0 CR, 8 591 lignes ; lancé à 10:36, fini à 10:53 le 18/11/2026), joué dans le dépôt de travail (arbre : trois pièces neuves non commitées).
+Sceau RECALCULÉ À LA MAIN après l'audit : 73e68d2acd716f0c… — identique à celui que la sortie porte. Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri (négatif 0 nouvelle ; positif 2 nouvelles, les deux chemins attendus).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351e) : 5 688 fichiers parcourus, 5 488 audités, 200 exclus, 3 524 alertes.
+  · nouvelle (d351f)   : 5 693 fichiers parcourus, 5 492 audités, 201 exclus, 3 528 alertes = 3 524 + 4. Contrôle de l'outil : audités + exclus = 5 693 (attendu 5 693, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque : 5 693 fichiers sous docs/preuves, dont la sortie scellée elle-même, écrite APRÈS l'audit : 5 692 présents pendant l'audit + `.gitattributes` = 5 693 — l'arithmétique ferme.
+    L'écart avec « e » (+5) = la sortie scellée « e » et son tri (2) + les trois pièces neuves de ce commit (`controle-fin-de-lot.py`, `controle-fin-de-lot.txt`, `controle-fin-de-lot-passe-1-AVANT-CORRECTIFS.txt`) = 5.
+  · Exclus : 201 contre 200, soit un de plus — la sortie scellée « e » (sceau vérifié) ; aucune exclusion de « e » n'a disparu.
+
+Résultat du tri différentiel : 4 alertes ABSENTES de la sortie précédente. Ventilation par motif : jeton = 1 · valeur-nommee-secrete = 2 · url-avec-identifiants = 1. **Les quatre visent le MÊME fichier** : `docs/preuves/D351/tri-audit-d351e.txt`, MA PROPRE pièce, versée après l'audit « e ». Elle décrit le tri de l'audit
+« d » : elle RECITE donc, comme lui, les citations de fixtures SYNTHÉTIQUES du balayage de la note juridique (domaines `example.org` et `example.com`, valeur d'école) et le nom des motifs « key=, token=, secret= » — l'écho d'un écho. **Prose et fixtures synthétiques : aucune valeur réelle.**
+Aucune des trois pièces neuves de ce commit ne porte une alerte : le tri ne rend aucun autre chemin. Pour ne pas prolonger la chaîne (chaque tri recite l'alerte du précédent), ce tri-ci ne recopie AUCUNE des valeurs d'école (il ne nomme que les domaines réservés `example.org` et `example.com` et le nom des motifs) ; ce fichier est écrit après l'audit « f » et n'est pas audité à son tour — comme chaque dernier tri de lot (D342, D350).
+Contrôle « 0 valeur réelle » (D299) : joué UNE fois, avant l'audit « e » (`aucune-valeur-reelle.txt`) : 0 porteur sur 258 valeurs cherchées ; rien de nouveau depuis n'a touché un journal à valeurs réelles.
