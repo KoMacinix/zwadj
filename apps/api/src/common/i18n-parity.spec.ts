@@ -92,7 +92,14 @@ describe("Parité i18n FR/AR (invariant produit)", () => {
     // ⚠ 943 est le nombre COMPTÉ sur les deux fichiers après écriture, pas
     // 937 - 8 + 15 : `stats` existait déjà, et l'arithmétique de tête aurait
     // annoncé 944.
-    expect(fr.size).toBeGreaterThanOrEqual(943);
+    // D351 (rang 53, intégration de `par-carte`) : 943 -> 1296. RELEVÉ sur les fichiers après la fusion, jamais estimé :
+    // `main` portait 1267 clés (FR = AR) AVANT la fusion — le repère de 943 n'avait pas suivi les lots qui ont ajouté des
+    // clés depuis Q2 (dont D350 : six clés, le bloc `publicationReview`) — et la fusion en ajoute 29 (le bloc `map`) :
+    // 1267 + 29 = 1296. À la valeur MESURÉE : la porte ne laisse plus passer, sans le dire, la perte de 324 clés.
+    // ⚠ Les trois clés que la branche dit MORTES (`search.map.title`, `search.map.soon`, `home.map.soon`) sont
+    //   TOUJOURS dans le catalogue, des deux côtés : ce lot ne les retire pas (les retirer ferait reculer le total, et
+    //   « le baisser, jamais » — consigne de D351, R-5) ; entrée de backlog.
+    expect(fr.size).toBeGreaterThanOrEqual(1296);
   });
 
   it("les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois", () => {
