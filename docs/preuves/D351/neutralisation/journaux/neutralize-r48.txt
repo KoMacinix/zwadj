@@ -1,0 +1,45 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-r48.py » — empreinte sha256 du harnais neutralize-r48.py : 832c13758917ecaf2575e34f02e694773a7a56a2fe0ed4e6f524fc9d050fb0c6 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (3679 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-r48.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3640 octets, sha256 e2509253f41b1e5b1c34a440579283f128ba35d04e15e69af881c2fcef5938f0. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 12 déclarées · 10 jouées (unit) · 2 hors exécution
+  pré-vol composant : code 0 · passés 58 · en échec 0
+✓ R48-1. ⛔ LE DÉFAUT RESTAURÉ : le panneau de filtres n'a plus de clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 48 · en échec 10 · AssertionError: expected '' to be '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' // Object.is equality
+✓ R48-2. La commune n'entre plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '' to be '6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c3d4e5f' // Object.is equality
+✓ R48-3. Les invités n'entrent plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '20' to be '250' // Object.is equality
+✓ R48-4. Le plafond de capacité n'entre plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '500' to be '300' // Object.is equality
+✓ R48-5. Le plancher de budget n'entre plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '0' to be '500000' // Object.is equality
+✓ R48-6. Le plafond de budget n'entre plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '1500000' to be '750000' // Object.is equality
+✓ R48-7. Les styles n'entrent plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R48-8. Les équipements n'entrent plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ R48-9. Le type de cérémonie n'entre plus dans la clé
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected '' to be 'indoor' // Object.is equality
+✓ R48-10. ⛔ LA CLÉ TROP LARGE : la page entre dans la clé, changer de page efface une saisie non soumise
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 57 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+  NON MESURÉE : R48-E1. ⛔ DÉFAUT RESTAURÉ, vu par le navigateur : le panneau ne suit pas l'assistant (FR et AR) — mesure « e2e-assistant », relancer avec --e2e
+  NON MESURÉE : R48-E2. Le budget n'entre plus dans la clé, vu par le navigateur — mesure « e2e-assistant », relancer avec --e2e
+
+10 garde(s) mordue(s) sur 10 cible(s) jouée(s) · 2 non mesurée(s) (attendu : 10 sur 10)
+arbre rendu à son état de départ : vérifié.
+

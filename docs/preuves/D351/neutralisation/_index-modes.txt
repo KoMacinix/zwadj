@@ -1,0 +1,16 @@
+D351 — CAMPAGNES À MODE — départ 18/11/2026 08:31:20 — SHA f3a78566d628859d0dacad8f61dfdad35eff7960 — état: 08:31:20 | SECTEUR | RAM libre 4,999 Mo | chrome 0 | headless_shell 0 | node 0
+=== ca1 --int — départ 08:31:22 — harnais sha256 211309f7ef5833f7d3cf8e1f49c79e6a908f834a86e1ecc27d6a9705de24306c
+    ca1 --int : code de sortie 0 · durée 202 s · harnais identique après : OUI · arbre après : []
+=== ca6 --e2e — départ 08:34:47 — harnais sha256 0671ca8975a1782ee0e0843e0bc0287cdbb5b4b9c1c0ff2cdae3d5e605af7e36
+    ca6 --e2e : code de sortie 0 · durée 1138 s · harnais identique après : OUI · arbre après : []
+=== fc1 --e2e — départ 08:53:48 — harnais sha256 9c72c1d4b432b94693fb4f5bbd44dc0d954c17a09098a804e19741ba0cdca636
+    fc1 --e2e : code de sortie 0 · durée 210 s · harnais identique après : OUI · arbre après : []
+=== fc2 --e2e — départ 08:57:20 — harnais sha256 4cae717ec77966e685c5ffbcf29853b6aebc18dc803b70b4ebf0448c8d3c7a3e
+    fc2 --e2e : code de sortie 0 · durée 178 s · harnais identique après : OUI · arbre après : []
+=== fc8 --e2e — départ 09:00:21 — harnais sha256 a6e4f2a8d84d2e22fc97f65bdff33e304ae8de636bc481d052f7a9e4320199ba
+    fc8 --e2e : code de sortie 0 · durée 316 s · harnais identique après : OUI · arbre après : []
+=== r48 --e2e — départ 09:05:39 — harnais sha256 832c13758917ecaf2575e34f02e694773a7a56a2fe0ed4e6f524fc9d050fb0c6
+    r48 --e2e : code de sortie 0 · durée 397 s · harnais identique après : OUI · arbre après : []
+=== pub1 --e2e — départ 09:12:19 — harnais sha256 e2b5408c31e580b8677ac1a51222233e579c48313f5504948cc9c6a80b21c561
+    pub1 --e2e : code de sortie 0 · durée 1918 s · harnais identique après : OUI · arbre après : []
+état machine JUSTE APRÈS: 09:44:18 | SECTEUR | RAM libre 4,823 Mo | chrome 0 | headless_shell 0 | node 0

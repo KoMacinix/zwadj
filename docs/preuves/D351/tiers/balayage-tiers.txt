@@ -1,0 +1,8 @@
+calibration (deux bras) : le faux texte déclenche 5 motifs sur 5 ; le texte ordinaire 0 — les deux bras tiennent.
+fichier : docs/preuves/parallele/carte/ce-qui-part-vers-le-tiers.md · 5845 caractères · 70 lignes parcourues
+  e-mail : 0 (attendu 0)
+  chaîne longue de forme clé (>= 32 car. base64url/hex, mêlant lettres et chiffres) : 0 (attendu 0)
+  adresse IPv4 : 0 (attendu 0)
+  URL à identifiants ou à paramètre secret : 0 (attendu 0)
+  mot-clé de secret suivi d'une valeur : 0 (attendu 0)
+TOTAL : 0 (attendu 0)

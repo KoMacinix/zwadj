@@ -1,0 +1,28 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-solid-s6.py » — empreinte sha256 du harnais neutralize-solid-s6.py : 944ac852ba4e34438028a6fab52a67706ca9883c8cad049f9ec1de387e83e9ea (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (1661 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-solid-s6.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1639 octets, sha256 6e2e73f03b889b3bf564123549d36c476b0921b02e25f407d15c54c00dc5ffe0. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, les ABONNEMENTS restent NON PROUVÉS : publier dans le vide ne lève pas.
+
+✓ Pré-vol : 1 mesure(s) verte(s) — couture
+
+✓ S6-1. ⚠ LA COUTURE SE MET À LEVER — un gabarit cassé dé-confirmerait un acte écrit (D63)  [couture]
+✓ S6-2. Les handlers cessent d'être ATTENDUS — l'ordre et le déterminisme tombent  [couture]
+⚠ S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu
+   NON MESURÉE — int-reservations hors de cette exécution.
+⚠ S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue
+   NON MESURÉE — int-reservations hors de cette exécution.
+⚠ S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client
+   NON MESURÉE — int-visites hors de cette exécution.
+⚠ S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse
+   NON MESURÉE — int-visites hors de cette exécution.
+
+2 garde(s) mordue(s) sur 2 cible(s) RÉELLEMENT MESURÉE(S).
+  NON MESURÉE : S6-3. ⚠ L'ABONNEMENT « demande reçue » EST COUPÉ — le pro n'est plus prévenu (hors exécution : int-reservations)
+  NON MESURÉE : S6-4. L'abonnement « acceptée » est coupé — le client ne sait pas que sa date est retenue (hors exécution : int-reservations)
+  NON MESURÉE : S6-5. ⚠ LE SECOND ABONNÉ DE `visit.booked` DISPARAÎT — le pro est prévenu, pas le client (hors exécution : int-visites)
+  NON MESURÉE : S6-6. L'ORDRE des deux abonnés de `visit.booked` s'inverse (hors exécution : int-visites)
+

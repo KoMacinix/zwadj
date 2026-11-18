@@ -1,0 +1,5 @@
+mutation posée : ancre 1 -> 0, marqueur `force-cache` 0 -> 1 ; octets 14316 -> 14319 ; sha256 avant 180342cfbbdada2500320cc7cfe96c88d03a43299995eb8a6d81082d15e54f6c
+code de sortie de la suite du client sous la mutation : 0
+  Test Files  47 passed (47)
+  Tests  564 passed (564)
+restauration : sha256 après 180342cfbbdada2500320cc7cfe96c88d03a43299995eb8a6d81082d15e54f6c · identique : True · git status --short : [] (attendu [])

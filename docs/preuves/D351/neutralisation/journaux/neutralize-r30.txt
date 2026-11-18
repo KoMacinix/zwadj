@@ -1,0 +1,38 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-r30.py » — empreinte sha256 du harnais neutralize-r30.py : e1259bb0f74f7873ae7c68642dd130a4b3a3aecc2615aa690e059a2f6061bf25 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (3123 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-r30.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3091 octets, sha256 9513cac0bad9d874c2a3e389da68c9465172da2c397fae11a938ce22bf966276. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 8 déclarées · 8 jouées (unit)
+  pré-vol calendrier-noms : code 0 · passés 11 · en échec 0
+  pré-vol lien-pro : code 0 · passés 3 · en échec 0
+✓ R30-1. N-a : les en-têtes de jours ignorent la langue de la page — toujours en FRANÇAIS (vu en arabe)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ Array(7) ] to deeply equal [ Array(7) ]
+✓ R30-2. N-a : les en-têtes de jours ignorent la langue de la page — toujours en ARABE (vu en français)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ Array(7) ] to deeply equal [ Array(7) ]
+✓ R30-3. N-a : le nom du mois sort toujours en ARABE (vu en français)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 8 · en échec 3 · AssertionError: expected 'أغسطس 2027' to be 'août 2027' // Object.is equality
+✓ R30-4. N-a : la date longue — le nom accessible d'un jour — sort toujours en FRANÇAIS (vu en arabe)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 10 · en échec 1 · AssertionError: expected +0 to be 1 // Object.is equality
+✓ R30-5. ⛔ N-b : une LISTE de jours écrite en dur dans la vue — juste en français, fausse en arabe
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 8 · en échec 3 · AssertionError: expected [ …(7) ] to deeply equal []
+✓ R30-6. W-a, W-b : le week-end mis en avant est écrit dans la vue, samedi-dimanche (la convention CLDR, pas D56)
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 9 · en échec 2 · AssertionError: expected [ 1, 6, 8, 13, 15, 20, 22, 27, 29 ] to deeply equal []
+✓ R30-7. ⛔ K-a : LE DÉFAUT RESTAURÉ — le lien vise `/salles/<id>/calendrier`, route supprimée par D130
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 1 · en échec 2 · AssertionError: expected 'Nouvelle réservation' to be 'Calendrier de la salle' // Object.is equality
+✓ R30-8. K-b : le lien ne sélectionne plus la salle éditée — le calendrier ouvert est celui de la PREMIÈRE salle
+   ancre 1→0 · marqueur 0→1 · code 1 · passés 2 · en échec 1 · AssertionError: expected 'v1' to be 'v2' // Object.is equality
+  empreintes : 4 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+8 garde(s) mordue(s) sur 8 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 8 sur 8)
+arbre rendu à son état de départ : vérifié.
+

@@ -1,0 +1,13 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-r4.py » — empreinte sha256 du harnais neutralize-r4.py : 81286677fafbddbdef08552055276a89ea2b3a7590ee375a032aab63109bf85e (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (331 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-r4.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 324 octets, sha256 0518466fc2c9829c02caaf92d7f503780bb0f607b241fdc2c4e85da2fa173980. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ Pré-vol : 2 mesure(s) verte(s) — migration, devis
+
+✓ R4-1. ⚠ `CANCELLED` RESSORT DU TYPE — le 22P02 d'origine revient  [migration, devis]
+✓ R4-2. La borne redevient celle d'août : un brouillon jamais remis ne se clôt plus  [migration, devis]
+
+2 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

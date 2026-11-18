@@ -1,0 +1,31 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-s10b.py » — empreinte sha256 du harnais neutralize-s10b.py : c6adcaffab5ad812cf389fe53414413657116f1a5fc43d5d1c1e39ab200c9868 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (2085 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-s10b.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2060 octets, sha256 dc860c4d1f471c046b53a2c39a03338802eaecfb628d71903f0bfdfc45a7b277. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ Pré-vol : 3 mesure(s) verte(s) — service, adaptateur, types
+
+✓ S10b1-1. ⛔ LE VERROU DE CHAÎNE DISPARAÎT — deux révisions perdent une version  [adaptateur]
+✓ S10b1-2. ⛔ LE VERROU PASSE APRÈS LA LECTURE DU MAXIMUM — présent mais inutile  [adaptateur]
+✓ S10b1-3. ⛔ LE STATUT ADMIS SORT DU `WHERE` — le check-and-set n'en est plus un  [adaptateur]
+✓ S10b1-4. ⛔ LE STATUT DU REFUS N'EST PLUS RELU — le 409 ne dit plus POURQUOI  [adaptateur]
+✓ S10b1-5. ⛔ L'ÉCRITURE DE LA TÊTE DE CHAÎNE SORT DE LA TRANSACTION  [adaptateur]
+✓ S10b1-6. ⛔ `marquerRemis` SE MET À ÉCRIRE UN STATUT — la remise redevient une transition  [adaptateur]
+✓ S10b1-7. ⛔ L'ENTONNOIR PERD SON DÉNOMINATEUR — il recompte les gestes techniques  [adaptateur]
+✓ S10b1-8. ⛔ LE WHERE DE PROPRIÉTÉ DU DEVIS PERD LA SALLE VIVANTE  [adaptateur]
+✓ S10b1-9. ⛔ LE 409 DE CONFLIT PERD SON CODE MÉTIER — le client reçoit un 500  [service]
+✓ S10b1-10. ⛔ LE STATUT ADMIS N'EST PLUS CELUI DE LA MACHINE À ÉTATS  [service]
+✓ S10b1-11. ⛔ LA GARDE DE PROPRIÉTÉ DE LA SALLE SAUTE  [service]
+✓ S10b1-12. ⛔ LE DOUBLE REDEVIENT UN MENSONGE — `satisfies` retiré  [types]
+✓ S10b1-13. ⛔ LE RÉSULTAT CESSE D'ÊTRE DISCRIMINÉ — le refus redevient un booléen  [types]
+✓ S10b2-C1. ⛔ UN MONTANT DISPARAÎT DE LA CHARGE — la demande ne dit plus le devis  [adaptateur]
+✓ S10b2-C2. ⛔ LES LIGNES SORTENT DE L'ÉCRITURE IMBRIQUÉE — un total sans détail  [adaptateur]
+✓ S10b2-C3. ⛔ LA DEMANDE NAÎT ACCEPTÉE — elle verrouille un créneau que personne n'a accordé  [adaptateur]
+✓ S10b2-C4. ⛔ LE REFUS SE CONCLUT SUR LE CODE DU DRIVER, SANS RELIRE  [adaptateur]
+✓ S10b2-C5. ⛔ TOUTE ERREUR DEVIENT « DÉJÀ CONVERTI » — la panne se déguise  [adaptateur]
+✓ S10b2-C6. ⛔ `source` EST DÉDUIT À L'ENVERS — une affaire au comptoir devient un client connu  [service]
+✓ S10b2-C7. ⛔ LA CONVERSION SE MET À BOUGER LE DEVIS  [service]
+
+20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+

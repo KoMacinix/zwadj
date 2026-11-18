@@ -1,0 +1,33 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-s11b.py » — empreinte sha256 du harnais neutralize-s11b.py : 62b36fde03868df026b68404f48969e49e04074c685624793531514e0b2510bf (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (2174 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-s11b.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2147 octets, sha256 0d288e9c1e5f5450af35c964974e309be7671c3714c58e6a9a510016c29e6172. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+✓ Pré-vol : 2 mesure(s) verte(s) — chiffrage, echeances
+
+✓ S11b-1. ⛔ LE REFUS DU DOUBLON DISPARAÎT — une prestation FIXED est facturée DEUX FOIS  [chiffrage]
+✓ S11b-2. ⛔ L'ORDRE DES REFUS S'INVERSE — l'indisponible passe devant le doublon  [chiffrage]
+✓ S11b-3. ⛔ LA PROPRIÉTÉ CESSE D'ÊTRE VÉRIFIÉE — la prestation d'une AUTRE salle est facturée  [chiffrage]
+✓ S11b-4. ⛔ L'AGRÉGAT PERD LES PRESTATIONS — et la BASE ne dit rien (MD2)  [chiffrage]
+✓ S11b-5. ⛔ L'ACOMPTE SE CALCULE SUR LE PRIX DE SALLE, PAS SUR LE TOTAL  [chiffrage]
+✓ S11b-6. ⛔ LE REFUS D75 REND LES MONTANTS ATTENDUS AU LIEU DES RÉELS  [chiffrage]
+✓ S11b-7. ⛔ LA CONFRONTATION D75 IGNORE L'ACOMPTE — seul le total est comparé  [chiffrage]
+⚠ S11b-8. ⛔⛔ LE MODULE PARTAGÉ MUTÉ DOIT ROUGIR CHEZ LES *DEUX* CONSOMMATEURS
+   NON MESURÉE.
+⚠ S11b-9. ⛔ LE CHECK D'AGRÉGAT DEVIENT TRIVIAL — une ligne incohérente entre en base
+   NON MESURÉE.
+✓ S11b-10. ⛔ L'ÉCRÊTAGE DE L'ÉCHÉANCE DISPARAÎT — elle peut tomber APRÈS la fête  [echeances]
+✓ S11b-11. ⛔ L'ÉCRÊTAGE S'INVERSE — `min` devient `max`  [echeances]
+⚠ S11b-12. ⛔ L'ÉCHÉANCE DE RÉPONSE PRO REÇOIT LA FENÊTRE DE PAIEMENT — 7 jours deviennent 48 h
+   NON MESURÉE.
+⚠ S11b-13. ⛔ L'ÉCHÉANCE D'ACOMPTE REÇOIT LA FENÊTRE DE RÉPONSE PRO — 48 h deviennent 7 jours
+   NON MESURÉE.
+
+9 garde(s) mordue(s) sur 9 cible(s) RÉELLEMENT MESURÉE(S).
+  NON MESURÉE : S11b-8. ⛔⛔ LE MODULE PARTAGÉ MUTÉ DOIT ROUGIR CHEZ LES *DEUX* CONSOMMATEURS (hors exécution : int-reservations, int-devis)
+  NON MESURÉE : S11b-9. ⛔ LE CHECK D'AGRÉGAT DEVIENT TRIVIAL — une ligne incohérente entre en base (hors exécution : int-migration)
+  NON MESURÉE : S11b-12. ⛔ L'ÉCHÉANCE DE RÉPONSE PRO REÇOIT LA FENÊTRE DE PAIEMENT — 7 jours deviennent 48 h (hors exécution : int-reservations)
+  NON MESURÉE : S11b-13. ⛔ L'ÉCHÉANCE D'ACOMPTE REÇOIT LA FENÊTRE DE RÉPONSE PRO — 48 h deviennent 7 jours (hors exécution : int-reservations)
+

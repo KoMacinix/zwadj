@@ -1,0 +1,16 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-solid-s1.py » — empreinte sha256 du harnais neutralize-solid-s1.py : 48f32b9d9721b539506e64257502e66d1b0744409cb2b303a5c486f043dfb938 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (503 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-solid-s1.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 493 octets, sha256 b645c528e0db95c4ce9218f389b79e9532f25db31da7df3ce2c0735d1fa7905a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, `locks()` et le WHERE du calendrier restent NON PROUVÉS.
+
+✓ Pré-vol : 2 mesure(s) verte(s) avant mutation — pro, api
+
+✓ S1-1. ⚠ L'AUTORITÉ PARTAGÉE PERD `CONFIRMED` — les trois sites doivent le sentir  [pro, api]
+✓ S1-2. L'autorité perd `ACCEPTED` — la ligne verrouillée bascule du mauvais côté  [pro, api]
+
+2 garde(s) mordue(s) sur 2 cible(s) RÉELLEMENT MESURÉE(S).
+

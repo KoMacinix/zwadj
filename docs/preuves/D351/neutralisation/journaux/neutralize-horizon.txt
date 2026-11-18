@@ -1,0 +1,16 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-horizon.py » — empreinte sha256 du harnais neutralize-horizon.py : 7fe03886e9ff8c74174eac26e0f4c07be0201e2c0c32cc1872c980bdafa19952 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (608 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-horizon.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 598 octets, sha256 b2b5943d0394d20b500c6cda8c997edc47e6694f734021287d84194079e53769. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ H1. Le refus hors horizon disparaît : une date de 2099 est annotée comme les autres
+✓ H2. ⛔ LA BORNE GLISSE D'UN JOUR : le jour de l'horizon lui-même est refusé
+✓ H3. ⛔ LES DEUX REFUS RETOMBENT SOUS LE MÊME CODE — la décision D227 annulée
+✓ H4. Le client range le nouveau refus avec l'ancien
+✓ H5. L'écran affiche « cette date est déjà passée » pour une date de 2099
+✓ H6. Une PANNE emprunte le message de date : `unreachable` tombe du mauvais côté
+
+6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+arbre rendu à son état de départ : vérifié.
+

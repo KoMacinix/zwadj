@@ -1,0 +1,29 @@
+D351 — tri différentiel de l'audit de secrets « d » (AVANT le commit des campagnes, de la preuve R-4, de la relecture de la note juridique et des gestes de Ko)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351c.txt docs/preuves/D351/audit-secrets-d351d.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351d.txt (1 031 686 octets, 0 CR, 8 563 lignes ; lancé à 09:48, fini à 10:06 le 18/11/2026), joué dans le dépôt de travail (arbre : les 94 pièces neuves non commitées).
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau) : 14efed9edcc4f943… — identique à celui que la sortie porte. Calibration à deux bras tenue : l'audit, cinq bras sur cinq (« cas réel : rejoué »), et le tri (négatif 0 nouvelle ;
+positif 2 nouvelles, les deux chemins attendus).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351c) : 5 585 fichiers parcourus, 5 387 audités, 198 exclus, 3 498 alertes.
+  · nouvelle (d351d)   : 5 681 fichiers parcourus, 5 482 audités, 199 exclus, 3 516 alertes = 3 498 + 18. Contrôle de l'outil : audités + exclus = 5 681 (attendu 5 681, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque (compte relevé après l'audit) : 5 681 fichiers sous docs/preuves, dont la sortie scellée elle-même, écrite APRÈS l'audit : 5 680 présents pendant l'audit + `.gitattributes` = 5 681 — l'arithmétique ferme.
+    L'écart avec « c » (+96) se décompose : la sortie scellée « c » et son tri (2) + les 94 pièces neuves de ce commit — 87 sous `neutralisation/` (les 75 journaux et 12 autres fichiers, dont le rapport), 3 sous `r4/`, 3 sous `tiers/`, `scenarios-ko.md` (1) — = 96.
+    Fichiers non suivis à l'instant de l'audit : 95 (les 94 pièces + la sortie scellée « d » écrite après) + 10 résidus `.pyc` ignorés.
+  · Exclus : 199 contre 198, soit un de plus — la sortie scellée « c » (`docs/preuves/D351/audit-secrets-d351c.txt`, sceau vérifié) ; aucune exclusion de « c » n'a disparu.
+
+Résultat du tri différentiel : 18 alertes ABSENTES de la sortie précédente, à trier au contexte (D299). Ventilation par motif : jeton = 11 · valeur-nommee-secrete = 4 · mot-de-passe = 2 · url-avec-identifiants = 1. Par fichier, avec le contexte lu :
+  · docs/preuves/D351/tri-audit-d351c.txt (11 — jeton 10, mot-de-passe 1) : MA PROPRE pièce, versée après l'audit « c » : elle CITE en prose le motif « token= », les contextes des 258 masques de l'e2e (« [WebServer] …verification-email?token=<jeton masqué #N (43 car.)> ») et le titre d'un test
+    (« forgot-password : <7 car. masques> CONSTANTE… »). Des mots et des masques, pas des valeurs.
+  · docs/preuves/D351/tiers/balayage-tiers.py (3 — url-avec-identifiants 1, valeur-nommee-secrete 2) : le balayage MÉCANIQUE de la note juridique. Il porte, dans sa CALIBRATION, un texte FABRIQUÉ avec un faux de chaque forme —
+    `jean.dupont@example.org`, `https://user:pass@tiles.example.com/{z}/{x}/{y}.png`, `secret = hunter2hunter2`, une fausse clé de motif visible (`AbCdEfGhIjKlMnOpQrStUvWxYz0123456789abcd`), une fausse IPv4 en `192.168.10.x` — qui sert de bras POSITIF et que l'audit lit,
+    à bon droit, comme des formes de secret. **Fixtures SYNTHÉTIQUES** (domaines `example.org` et `example.com`, valeur d'école, motif alphabétique et numérique régulier) : même classe que celle triée par D330. Aucune valeur réelle.
+  · docs/preuves/D351/tiers/balayage-tiers.txt (1 — valeur-nommee-secrete) : la sortie de ce balayage, dont une ligne s'intitule « URL à identifiants ou à paramètre secret : 0 (attendu 0) » — le NOM d'un motif et son compte.
+  · docs/preuves/D351/tiers/relecture.md (2 — jeton 1, valeur-nommee-secrete 1) : la relecture de la note juridique, en prose : elle énumère les motifs cherchés (« `key=`, `token=`, `secret=` », « mot-clé de secret suivi d'une valeur »). Des mots, pas des valeurs.
+  · docs/preuves/D351/neutralisation/journaux/neutralize-r44.txt (1 — mot-de-passe) : une ligne du journal de la campagne `r44` : « [magasin] code 1 · passés 40 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'must_change_passwo… » —
+    le MESSAGE D'ÉCHEC d'une mutation (le test lit le texte d'une requête SQL : des NOMS de colonnes, `password_hash`, `must_change_password`). Aucune valeur : aucun mot de passe n'y figure.
+  Total : 11 (tri « c ») + 3 (`balayage-tiers.py`) + 1 (`balayage-tiers.txt`) + 2 (`relecture.md`) + 1 (`neutralize-r44.txt`) = 18 ✓ . Par motif : jeton 11 (10 du tri « c », 1 de `relecture.md`) ; mot-de-passe 2 (le tri « c », `neutralize-r44.txt`) ; valeur-nommee-secrete 4 (`balayage-tiers.py` 2, `balayage-tiers.txt` 1, `relecture.md` 1) ; url-avec-identifiants 1 (`balayage-tiers.py`) — recoupé par la ventilation de l'outil. Les deux lignes « -> » de l'outil sous chaque alerte donnent le même verdict que pour « b » et « c » (mots ordinaires : « valeur trop courte » ou « déjà présente dans N fichiers suivis hors preuves »).
+  **Aucune valeur réelle.** Rien n'est caché : les 18 lignes sont dans la sortie scellée.
+
+Contrôle « 0 valeur réelle » (D299) : non rejoué à cette étape — il se rejoue UNE fois, à la clôture, sur tous les fichiers versés par le lot (docs/preuves/D351/aucune-valeur-reelle.txt), contre les journaux BRUTS e2e hors dépôt.

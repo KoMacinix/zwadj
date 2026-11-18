@@ -1,0 +1,18 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-solid-s4.py » — empreinte sha256 du harnais neutralize-solid-s4.py : 7344f9f71ccaa1640f12da54e27f13ab6670ddd7bbfdf4089a2d80ed8ddf05c8 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (860 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-solid-s4.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 848 octets, sha256 41bced6c304b742cada3d26534a839ac0e26c6f9ec7b8a33dfa36adbd1347fe1. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ Pré-vol : 3 mesure(s) verte(s) — moteur, services, devis
+
+✓ S4-1. ⚠ HOLIDAY et WEEKDAY sont ÉCHANGÉS — un férié se tarife comme un jour ordinaire  [moteur]
+✓ S4-2. SEASON cesse de refuser les bornes absentes : une saison sans dates couvre l'année  [moteur]
+✓ S4-3. ⚠ LE REPLI DU TYPE INCONNU SAUTE — une famille de règle inconnue s'applique toujours  [moteur]
+✓ S4-4. ⚠ PER_GUEST et PER_UNIT sont ÉCHANGÉS — le menu par tête se facture à la quantité saisie  [services]
+✓ S4-5. Le type inconnu redevient vendable (le retombé PER_UNIT d'origine)  [services]
+✓ S4-6. FIXED cesse de refuser une quantité — un forfait se multiplie  [services]
+✓ S4-7. TIERED accepte un palier INACTIF — un tarif retiré du catalogue se revend  [services]
+
+7 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+

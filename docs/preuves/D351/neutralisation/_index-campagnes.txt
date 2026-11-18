@@ -1,0 +1,11 @@
+D351 — CAMPAGNES (R-3) — lancer-campagnes.py --tout — départ 18/11/2026 04:06:44
+SHA: f3a78566d628859d0dacad8f61dfdad35eff7960
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 04:06:44 | SECTEUR | RAM libre 5,381 Mo | chrome 0 | headless_shell 0 | node 0
+lancer-campagnes.py --tout : code de sortie 1 · durée 15806 s
+harnais avant/après identiques : OUI (68 empreintes)
+état machine JUSTE APRÈS: 08:30:12 | SECTEUR | RAM libre 5,097 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après (git status --short): []
+stash: []
+fin 18/11/2026 08:30:12

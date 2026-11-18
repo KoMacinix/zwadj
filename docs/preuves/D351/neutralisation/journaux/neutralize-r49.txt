@@ -1,0 +1,58 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-r49.py » — empreinte sha256 du harnais neutralize-r49.py : ca5d06e1be22c77aa86f183daa0db7310521b2fff977d04ec8b12d3d34f6162d (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (5930 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-r49.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5878 octets, sha256 c812170fe217f8df88f246e0f944d0869c5aa9538652c25cf844f14fc7b408f3. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 36 déclarées · 0 jouées (unit) · 36 hors exécution
+  NON MESURÉE : R49-1. G1a — « Continuer » du contact n'est plus relié à sa raison (aria-describedby) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-2. G1a — « Continuer » des noms n'est plus relié à sa raison (aria-describedby) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-3. G1d — l'erreur d'e-mail n'est plus affichée sous le champ — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-4. G1d — un e-mail saisi et invalide ne retient plus « Continuer » — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-5. G1b — l'erreur du nom en lettres latines n'est plus affichée — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-6. G1b — un nom latin invalide ne retient plus « Continuer » — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-7. G1e — le champ du nom latin perd son exemple — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-8. G1e — le champ des invités perd son exemple — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-9. G1e — le champ de l'e-mail du contact perd son exemple — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-10. G1e — le champ du téléphone perd son exemple — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-11. G1c — le premier chiffre refusé n'est plus signalé sous le champ — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-12. G1c — le premier chiffre refusé n'est plus GARDÉ SEUL : la saisie suivante passe — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-13. G1c — le champ du téléphone accepte plus de neuf chiffres — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-14. G1c — le champ du téléphone accepte les lettres — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-15. G5a — le libellé ne pointe plus son champ (htmlFor) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-16. G1h — le total affiché n'est plus celui du serveur — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-17. G1h — l'acompte affiché n'est plus celui du serveur — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-18. G1i — le rail ne ramène plus à l'étape cliquée — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-19. G1g — « Précédent » passe du côté de FIN de la ligne (ordre inversé) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-20. G5d — la ligne des boutons ne se reflète plus en arabe (direction physique) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-21. G1j — la fenêtre s'ouvre pendant que le serveur travaille — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-22. G1k — la fenêtre ne nomme plus le client — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-23. G1k — la fenêtre ne porte plus la date — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-24. G1l — « Nouveau devis » redevient « Recommencer » — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-25. G1m — la ligne écrite ne porte plus le prénom saisi — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-26. G2 — « Bloquer la date » n'accepte plus la demande (elle reste en attente) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-27. G2 — « Bloquer la date » annonce « enregistrée » — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-28. G3 — l'erreur du serveur n'est plus dite — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-29. G3 — un échec ouvre quand même la fenêtre de confirmation — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-30. G4 — un vendredi bloqué reprend la teinte du week-end (le statut ne l'emporte plus) — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-31. G4 — le jour bloqué perd son hachurage — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-32. G4 — le week-end libre perd sa teinte propre — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-33. G4 — le week-end perd sa bordure en tirets — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-34. G5a — la page arabe n'est plus déclarée de droite à gauche — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-35. G5b — la boîte du numéro n'est plus de gauche à droite — mesure « e2e-r49 », relancer avec --e2e
+  NON MESURÉE : R49-36. G5c — l'étape Contact déborde à 360 px — mesure « e2e-r49 », relancer avec --e2e
+
+0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 36 non mesurée(s) (attendu : 0 sur 0)
+arbre rendu à son état de départ : vérifié.
+

@@ -1,0 +1,19 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-solid-s2.py » — empreinte sha256 du harnais neutralize-solid-s2.py : 9b06cb4e5f62d090c91c7517d60c95df6dc96641661ba6b1303989e9dd7cb104 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (819 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-solid-s2.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 806 octets, sha256 dd46f9523e3fd624ee586416fbdce12531656469a652081535ef788bbafa0f4f. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+⚠ Mesures d'INTÉGRATION non exécutées (relancer avec --int sur une base réelle).
+  Sans elles, le côté RÉSERVATION reste NON PROUVÉ : il n'a aucune spec unitaire.
+
+✓ Pré-vol : 2 mesure(s) verte(s) — coeur, visites
+
+✓ S2-1. ⚠ LA TRACE S'ÉCRIT APRÈS L'ENVOI — un process tué ne laisse plus rien à rejouer  [coeur]
+✓ S2-2. La résolution SENT saute : la ligne reste QUEUED pour toujours  [coeur, visites]
+✓ S2-3. L'échec d'envoi n'écrit plus FAILED — l'échec devient invisible en base  [coeur, visites]
+✓ S2-4. La TRONCATURE à 500 saute : un motif à rallonge part entier vers la colonne  [coeur]
+✓ S2-5. ⚠ LE SILENCE TOMBE : l'échec d'écriture de la trace REMONTE à l'appelant (D63)  [coeur, visites]
+
+5 garde(s) mordue(s) sur 5 cible(s) RÉELLEMENT MESURÉE(S).
+

@@ -1,0 +1,20 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-budgets.py » — empreinte sha256 du harnais neutralize-budgets.py : 8fc1cfde916948606d046cfb535e4bb0e67910077af575bc77224d636d502184 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (825 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-budgets.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 811 octets, sha256 f74e436b7323b53b3943ea8bb4fd5400a50bc4895a242f83079c409af394b1ab. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+témoin (aucune mutation), sous chacune des quatre configurations
+   packages/api-client  vert · 2004.4 ms
+   apps/api             vert · 2009.8 ms
+   apps/client          vert · 2018.2 ms
+   apps/pro             vert · 2009.4 ms
+pré-vol de la DÉTECTION (budget 1000 ms posé sur le témoin lui-même, aucune configuration mutée)
+✓ packages/api-client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/api : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/client : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+✓ apps/pro : la ligne testTimeout est LUE (5_000 → 1_000 fait expirer un témoin de 2 s)
+
+4 garde(s) mordue(s) sur 4 cible(s).
+arbre rendu à son état de départ : vérifié.
+

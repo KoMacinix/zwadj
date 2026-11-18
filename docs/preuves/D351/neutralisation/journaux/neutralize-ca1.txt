@@ -1,0 +1,81 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-ca1.py » — empreinte sha256 du harnais neutralize-ca1.py : 211309f7ef5833f7d3cf8e1f49c79e6a908f834a86e1ecc27d6a9705de24306c (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (6649 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-ca1.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6574 octets, sha256 ae179bacf09d4d86f541d15a102b092ff8aca95bc4b4d3c32f3f7a40dc0dbdaf. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 24 déclarées · 11 jouées (unit) · 13 hors exécution · 2 mesure(s) distincte(s) · 2 fichier(s) muté(s)
+  pré-vol module : code 0 · passés 12 · en échec 0
+  pré-vol service : code 0 · passés 32 · en échec 0
+✓ M-1. Le plafond PILE est déclaré tronqué (`>=`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ M-2. ⛔ La troncature ne se dit plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ M-3. Le plafond n'est plus réappliqué aux points
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected [ 'a', 'b', 'c' ] to deeply equal [ 'a', 'b' ]
+✓ M-4. Le nombre de salles sans coordonnées peut devenir négatif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected -1 to be +0 // Object.is equality
+✓ M-5. Le nombre de salles sans coordonnées est faux (soustraction inversée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 10 · en échec 2 · AssertionError: expected +0 to be 3 // Object.is equality
+✓ M-11. L'écho de la date est perdu par l'enveloppe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected null to be '2026-06-02' // Object.is equality
+✓ M-8. ⛔ Toute la ligne lue sort dans le point (fuite de champs)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 10 · en échec 2 · AssertionError: expected [ 'address', 'basePriceCents', …(12) ] to deeply equal [ 'basePriceCents', …(8) ]
+✓ M-9. La vignette est la clé d'objet brute, pas son adresse publique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected { …(9) } to deeply equal { …(9) }
+✓ M-10. ⛔ Le SELECT lit un taux
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [module] code 1 · passés 11 · en échec 1 · AssertionError: expected [ 'basePriceCents', …(9) ] to deeply equal [ 'basePriceCents', …(8) ]
+✓ S-4. La requête des points n'a plus de plafond
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 31 · en échec 1 · AssertionError: expected 9007199254740991 to be 500 // Object.is equality
+✓ S-8. L'écho de la date est perdu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 31 · en échec 1 · AssertionError: expected null to be '2026-06-02' // Object.is equality
+  NON MESURÉE : M-6. ⛔ Une latitude SEULE suffit à « avoir des coordonnées » — cible e2e, relancer avec --e2e
+  NON MESURÉE : M-7. ⛔ Une longitude SEULE suffit à « avoir des coordonnées » — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-1. ⛔ LA DIVERGENCE : le total de la carte se compte sans les filtres — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-2. Les points n'exigent plus de coordonnées — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-3. ⛔ LA DIVERGENCE : les points ignorent les filtres — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-5. L'ordre des points n'est plus celui de la liste — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-6. La carte se met à paginer — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-7. ⛔ La carte ne refuse plus une date passée — cible e2e, relancer avec --e2e
+  NON MESURÉE : S-9. Les salles situées se comptent sur le prédicat du total — cible e2e, relancer avec --e2e
+  NON MESURÉE : C-1. ⛔ La route de carte n'est plus publique — cible e2e, relancer avec --e2e
+  NON MESURÉE : C-2. Le contrôleur n'est plus enregistré (leçon R1) — cible e2e, relancer avec --e2e
+  NON MESURÉE : C-3. La requête n'est plus validée par le schéma de la liste — cible e2e, relancer avec --e2e
+  NON MESURÉE : C-4. ⛔ L'ÉCART C-1 DÉFAIT : une route `map` sous `/venues` masque la fiche de slug « map » — cible e2e, relancer avec --e2e
+  empreintes : 5 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+11 garde(s) mordue(s) sur 11 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 13 hors exécution (attendu : 11 sur 11, 0, 0)
+arbre rendu à son état de départ : vérifié.
+

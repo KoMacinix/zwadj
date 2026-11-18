@@ -1,0 +1,24 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-s10a.py » — empreinte sha256 du harnais neutralize-s10a.py : 200ca7d234d350e91a2f55542630337fcd5bcbeb3ec3bf4109c1927dcb70aadc (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (1364 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-s10a.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1346 octets, sha256 73957d103a439a5a54b60bb5a2c8c3ce6285e31da74f05704e566c3f5d644c02. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ Pré-vol : 3 mesure(s) verte(s) — service, adaptateur, types
+
+✓ S10a-1. ⛔ LE WHERE D'APPARTENANCE PERD SON FILTRE DE PROPRIÉTAIRE  [adaptateur]
+✓ S10a-2. ⛔ LE WHERE PERD `deletedAt` — une salle archivée redevient lisible  [adaptateur]
+✓ S10a-3. ⛔ P2002 CESSE D'ÊTRE TRADUIT — le service reverrait un code de driver  [adaptateur]
+✓ S10a-4. ⛔ N'IMPORTE QUELLE ERREUR DEVIENT « SLUG PRIS » — la panne se déguise  [adaptateur]
+✓ S10a-5. ⛔ LE REMPLACEMENT D'ENSEMBLE PERD SON `deleteMany` — les équipements s'ACCUMULENT  [adaptateur]
+✓ S10a-6. ⛔ LA LISTE VIDE INTERROGE LA BASE et rend FAUX — effacer une sélection devient impossible  [adaptateur]
+✓ S10a-7. ⛔ LA COMPARAISON DE COMPTE S'INVERSE — un id inconnu passe  [adaptateur]
+✓ S10a-8. ⛔ LA BOUCLE DE SLUG S'ARRÊTE AU PREMIER REFUS — plus aucune reprise  [service]
+✓ S10a-9. ⛔ LA DÉDUPLICATION SAUTE — les doublons partent en base  [service]
+✓ S10a-10. ⛔ LE `null` DU PORT CESSE D'ÊTRE TRADUIT EN 404  [service]
+✓ S10a-11. ⛔ LA RUPTURE D'INVARIANT D3 EST AVALÉE  [service]
+✓ S10a-12. ⛔ LE DOUBLE REDEVIENT UN MENSONGE — `satisfies` retiré du port  [types]
+✓ S10a-13. ⛔ UNE MÉTHODE DISPARAÎT DU PORT — le double ne le dirait plus  [types]
+
+13 garde(s) mordue(s) sur 13 cible(s) RÉELLEMENT MESURÉE(S).
+

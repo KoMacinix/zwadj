@@ -1,0 +1,42 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-ca6.py » — empreinte sha256 du harnais neutralize-ca6.py : 0671ca8975a1782ee0e0843e0bc0287cdbb5b4b9c1c0ff2cdae3d5e605af7e36 (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (3514 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-ca6.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3478 octets, sha256 609752b42d7eaba05d5ec086b1c23ed5051fec51cceb2f1745e78926248f9408. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 9 déclarées · 0 jouées (unit) · 9 hors exécution · 0 mesure(s) distincte(s) · 0 fichier(s) muté(s)
+  NON MESURÉE : E-1. ⛔ LE DÉFAUT RESTAURÉ : un point de la carte ne répond plus au clavier — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-2. ⛔ R-9 : la carte de la recherche est montée dès l'arrivée sur la page — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-3. Un point n'a plus de nom accessible — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-4. ⛔ Une tuile en échec n'est plus signalée — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-5. ⛔ Une panne de la route de points se présente comme « aucune salle » — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-6. ⛔ LE DÉFAUT RESTAURÉ : la carte de l'accueil se monte à l'ouverture d'une page courte — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-7. ⛔ R-9 : la carte de la fiche est montée dès l'ouverture — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-8. ⛔ Poser le point n'écrit que la latitude — cible e2e, relancer avec --e2e
+  NON MESURÉE : E-9. La position posée n'est plus arrondie à six décimales — cible e2e, relancer avec --e2e
+  empreintes : 7 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 9 hors exécution (attendu : 0 sur 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+

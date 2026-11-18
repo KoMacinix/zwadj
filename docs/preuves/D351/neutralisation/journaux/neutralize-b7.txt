@@ -1,0 +1,14 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-b7.py » — empreinte sha256 du harnais neutralize-b7.py : ab6d9f4da57f2f3008fcfa87dcd111f97abf4b854438adec8a386827467d278c (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (342 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-b7.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 334 octets, sha256 f61462d0a44975c1a432eb03f938b396e985bcc9f378249c5d3cff59c0b0efb8. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+✓ Pré-vol : B7 vert
+
+✓ B7-1. ⛔⛔ LA VALEUR DE `--hm-gutter` TOMBE À ZÉRO — la gouttière disparaît
+✓ B7-2. ⛔ LA TABLE OUBLIE `--hm-gutter` — la garde de COUVERTURE doit mordre
+✓ B7-3. ⛔ LE SÉLECTEUR PORTEUR N'EXISTE PLUS — la garde de PRÉSENCE doit mordre
+
+3 garde(s) mordue(s) sur 3 cible(s) mesurée(s).
+

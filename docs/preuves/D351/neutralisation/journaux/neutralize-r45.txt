@@ -1,0 +1,23 @@
+# D351 — journal de campagne « lancer-campagnes.py --tout / neutralize-r45.py » — empreinte sha256 du harnais neutralize-r45.py : 9a0a7ed08d47375d04922e085740a67c846a4caf15f2489d5c68ccf6edffbd8f (relevée AVANT la campagne, identique APRÈS : harnais non modifié). Cette ligne est AJOUTÉE par l'étape de copie ; le journal brut (1679 octets) reste hors dépôt.
+⛔ PIÈCE MASQUÉE — lancer-campagnes.py --tout / neutralize-r45.py. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1662 octets, sha256 f4ab7a56f02cdccc9d19399db187f9b26c5bfb0e8a094569de494573c72906d0. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ deux titres, deux assertions par ECONNRESET : MORD (attendu MORD)
+  calibration ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ une assertion qui rougit mais PAS par ECONNRESET (serveur absent) : AUTRE-CAUSE (attendu AUTRE-CAUSE)
+  calibration ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration : 7 bras · 0 manqué(s) (attendu 0)
+cibles : 4 déclarées · 0 jouées (unit) · 4 hors exécution
+  NON MESURÉE : R45-1. L'appel commun rouvre le pool : `connection: close` est retiré de SES en-têtes — `postJson` ET `apiCall` reprennent des connexions mortes — mesure « e2e-garde », relancer avec --e2e
+  NON MESURÉE : R45-2. La correction change de VALEUR : `connection: keep-alive` au lieu de `close` — les deux fonctions rouvrent le pool — mesure « e2e-garde », relancer avec --e2e
+  NON MESURÉE : R45-3. `apiCall` CONTOURNE l'appel commun et rappelle le `fetch` global : seule `apiCall` rouvre le pool — mesure « e2e-garde », relancer avec --e2e
+  NON MESURÉE : R45-4. `postJson` CONTOURNE l'appel commun et rappelle le `fetch` global : seule `postJson` rouvre le pool — mesure « e2e-garde », relancer avec --e2e
+
+0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 4 non mesurée(s) (attendu : 0 sur 0)
+arbre rendu à son état de départ : vérifié.
+
