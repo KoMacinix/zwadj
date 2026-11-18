@@ -78,4 +78,28 @@ Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesque
 
 ## Extensions de la table
 
-*(aucune à l'ouverture — chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+*(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement, des rouges de R-1 et de la mesure de la voie (A), et le fichier d'aide des assertions natives
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse avec le premier audit de secrets, et **avant** le commit des rouges. Chemins COMPLETS :
+
+```
+docs/preuves/D352/audit-secrets-d352a.txt
+docs/preuves/D352/tri-audit-d352a.txt
+docs/preuves/D352/audit-secrets-d352b.txt
+docs/preuves/D352/tri-audit-d352b.txt
+docs/preuves/D352/rouges/rouges.md
+docs/preuves/D352/rouges/venue-list-rouge-brut.txt
+docs/preuves/D352/mesures/diagnostic-appels.md
+docs/preuves/D352/mesures/diagnostic-appels-sortie-1.txt
+docs/preuves/D352/mesures/diagnostic-appels-sortie.txt
+docs/preuves/D352/mesures/zz-diag-r54.test.tsx.txt
+apps/pro/src/test-support/native-presence.ts
+```
+
+- **Les audits de secrets (D298)** : `audit-secrets-d352a.txt` couvre le premier versement (consigne, règle, lecture adverse) ; `audit-secrets-d352b.txt` couvre les rouges et la mesure. Chaque sortie est scellée (`--sortie`), chaque tri est celui de `docs/preuves/D299/outils/alertes-nouvelles.py`.
+- **Les rouges de R-1** (`rouges/`) : la sortie brute du fichier de test de la liste joué CONTRE L'ANCIEN CODE (10 échecs sur 24, tous en `AssertionError`), l'empreinte sha256 de `apps/pro/src/venues/venue-list.test.tsx` à cet instant, la lecture de chaque échec. **Elles entrent dans un commit ANTÉRIEUR au premier commit de code** (D334, item 5).
+- **La mesure de la voie (A)** (`mesures/`) : un test JETABLE (copié ici en `.txt`, retiré de `apps/pro`) compte les lectures du refus à la relecture silencieuse d'entrée et à la relecture voulue ; sa sortie est versée, **avec celle du premier essai** (`diagnostic-appels-sortie-1.txt`, NON représentatif — la liste du double répondait à l'instant et les cartes n'ont jamais été démontées : gardé, dit tel quel dans `diagnostic-appels.md`). C'est la mesure du critère 1 de `regle-portes.md`.
+- **`apps/pro/src/test-support/native-presence.ts`** (code de test, NEUF, déclaré conditionnel à l'ouverture — « seulement si… » n'était pas écrit pour lui ; il l'est ici) : deux fonctions, `elementPresent` et `elementAttendu`, qui écrivent le verdict de présence d'un élément en assertion NATIVE (`queryBy…` + `expect(…).not.toBeNull()`). Motif : les 29 gardes de R-2 passent en assertion native dans six fichiers ; la règle s'écrit UNE fois, pas six. Elle ne remplace aucune autorité (D78).
+- **Le fichier de test de la liste** (`venue-list.test.tsx`) et le code de R-1 (`venue-list-page.tsx`, `publication-review.tsx`, `venue-form.tsx`) étaient déjà déclarés à l'ouverture.
