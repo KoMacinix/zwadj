@@ -1,0 +1,21 @@
+CONTRÔLE DE LA FUSION — D351 — AVANT la fusion — HEAD = c7e8c8339291 (premier parent), 7fdc67961727 (second parent)
+calibration (deux bras par vérification, abandon si un cas manque son verdict) : feuilles JSON (ar.json) → vrai accepté:True · main seul refusé:True · branche seule refusée:True ; lignes de api.ts → vrai accepté:True · main seul refusé:True · branche seule refusée:True
+8 contrôles parcourus : 8 ✓ · 0 ✗ (attendu : 0 ✗)
+
+✓ [A.1] `git merge-tree --write-tree HEAD origin/par-carte` rend le code 0 (aucun conflit textuel) et un arbre
+     ↳ code 0, arbre prédit 08500386c3ec, lignes après l'arbre : 0 (aucune ligne de conflit attendue)
+✓ [A.3] les fichiers que la fusion apporte à main (diff entre le premier parent et le résultat) sont EXACTEMENT les 155 de la liste A de la table
+     ↳ liste A de la table : 155 chemins ; diff premier parent → résultat : 155 chemins ; dans le diff et pas dans la liste : [] ; dans la liste et pas dans le diff : []
+✓ [A.4] la fusion n'apporte AUCUN fichier d'autorité, AUCUNE migration, AUCUN fichier SQL, et EXACTEMENT deux fichiers de dépendance (`packages/ui/package.json`, `pnpm-lock.yaml`)
+     ↳ 155 chemins parcourus ; d'autorité : [] ; migration/sql : [] ; dépendances : ['packages/ui/package.json', 'pnpm-lock.yaml'] (attendu ['packages/ui/package.json', 'pnpm-lock.yaml'])
+✓ [A.5] les fichiers modifiés des DEUX côtés (par `main` depuis la base ET par la branche) sont exactement les trois attendus
+     ↳ intersection mesurée (258 fichiers de main depuis la base ∩ 155 de la branche) : ['apps/client/src/lib/api.ts', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json']
+✓ [B.1] `packages/i18n/messages/ar.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1296, 'base': 1261, 'main': 1267, 'branche': 1290, 'résultat': 1296, 'ajoutées par main': 6, 'ajoutées par la branche': 29, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 0} ; problèmes : 0 (attendu 0)
+✓ [B.2] `packages/i18n/messages/fr.json` : le résultat porte TOUT ce que chaque côté a ajouté ou modifié et RIEN de ce qu'un côté a retiré
+     ↳ {'feuilles parcourues (union des quatre états)': 1296, 'base': 1261, 'main': 1267, 'branche': 1290, 'résultat': 1296, 'ajoutées par main': 6, 'ajoutées par la branche': 29, 'retirées par main': 0, 'retirées par la branche': 0, 'modifiées par main': 0, 'modifiées par la branche': 0} ; problèmes : 0 (attendu 0)
+✓ [B.3] `apps/client/src/lib/api.ts` : le résultat porte TOUT ce que chaque côté a ajouté, RIEN de ce qu'un côté a retiré, et aucun doublon
+     ↳ {'lignes non vides parcourues (résultat)': 282, 'base': 248, 'main': 253, 'branche': 277, 'ajoutées par main': 9, 'ajoutées par la branche': 19, 'retirées par main': 4, 'retirées par la branche': 0} ; problèmes : 0 (attendu 0)
+✓ [B.4] parité FR/AR du résultat : les mêmes feuilles de chaque côté, et un total égal à celui de `main` plus les ajouts de la branche
+     ↳ feuilles fr : 1296, ar : 1296 ; attendu = 1267 (main) + 29 (ajoutées par la branche) = 1296 ; dans fr et pas dans ar : [] ; dans ar et pas dans fr : []
+

@@ -1,0 +1,38 @@
+D351 — tri différentiel de l'audit de secrets « b » : l'ARBRE DE LA FUSION D'ESSAI, AVANT la fusion (AVANT le commit de l'essai de fusion, de la liste des fichiers et du contrôle de la fusion)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D351/audit-secrets-d351a.txt docs/preuves/D351/audit-secrets-d351b.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351b.txt (957 975 octets, 0 CR, 7 950 lignes ; lancé à 02:57, fini à 03:14 le 18/11/2026), joué dans une COPIE DE TRAVAIL JETABLE hors dépôt
+(`git worktree add --detach` sur c7e8c83, puis `git merge --no-ff --no-commit origin/par-carte` : 155 fichiers modifiés, MERGE_HEAD = 7fdc679, et les trois pièces de `docs/preuves/D351/fusion/` copiées dedans). Pourquoi cette copie : l'outil lit le DISQUE,
+et les 100 pièces de `docs/preuves/parallele/carte/` n'y étaient pas encore (précédent D342, décision 2) ; la copie est supprimée après le tri, la fusion réelle n'est faite que plus tard, sur `main`.
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau) : 78cb6422290cdef1… — identique à celui que la sortie porte (la console de l'outil dit aussi : « relue identique : True · sceau vérifié à la relecture : True »).
+Calibration à deux bras tenue, pour l'audit (quatre bras sur cinq : motifs, positif, écho, discrimination) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ; positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+⚠ Le cinquième bras de l'audit, « cas réel », est NON REJOUÉ dans la copie jetable : `.neutralisation-journaux/rang15-e2e.log` est un fichier ignoré par git, absent d'un worktree neuf (la sortie le dit : « les bras construits font foi »). Il avait été rejoué à l'audit « a » (24 sur 24).
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d351a) : 5 457 fichiers parcourus, 5 268 audités, 189 exclus, 3 202 alertes.
+  · nouvelle (d351b)   : 5 552 fichiers parcourus, 5 355 audités, 197 exclus, 3 223 alertes. Contrôle de l'outil : audités + exclus = 5 552 (attendu 5 552, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque de la copie jetable (compte relevé après l'audit, avant sa suppression) : 5 551 fichiers sous docs/preuves + `.gitattributes` (que l'outil ajoute) = 5 552 — l'arithmétique ferme.
+    L'écart avec « a » (+95) se décompose, et il ferme aussi : + 100 pièces de `docs/preuves/parallele/carte/` apportées par la fusion + 3 pièces de `docs/preuves/D351/fusion/` + la sortie scellée « a » + son tri = 105, moins les 10 résidus `__pycache__/*.pyc`
+    ignorés par git qui existaient dans le dépôt de travail et n'existent pas dans une copie neuve = 95.
+  · Exclus : 197 contre 189, soit huit de plus, relevés en comparant les deux sections « EXCLUSIONS » : la sortie scellée « a » (`docs/preuves/D351/audit-secrets-d351a.txt`) et SEPT sorties scellées de la branche — `audit-secrets-ouverture.txt` et
+    `audit-secrets-ca1.txt` à `ca6.txt`, sous `docs/preuves/parallele/carte/` —, toutes « sortie scellée de cet instrument, sceau vérifié » (reconnues par l'identité de leurs octets, jamais par leur nom). Aucune exclusion de « a » n'a disparu.
+    (Le détail de chaque exclusion, avec les alertes qu'elle aurait rendues, est dans la section « EXCLUSIONS » de la sortie scellée.)
+
+Résultat du tri différentiel : 21 alertes ABSENTES de la sortie précédente, à trier au contexte (D299). Ventilation par motif : jeton = 13 · mot-de-passe = 8. Par fichier (le numéro est la ligne du CONTEXTE dans la sortie scellée « b ») :
+  · docs/preuves/D351/tri-audit-d351a.txt (1 — jeton, ligne 7740) : MA PROPRE pièce, versée après l'audit « a ». Elle CITE, en prose, le motif « token= » et les alertes de D350 : les mots d'une phrase, pas des valeurs.
+  · docs/preuves/parallele/carte/CA-1/portes/test-int.txt (1 — mot-de-passe, 7910), CA-2 (3 — 7914, 7916, 7918), CA-3 (2 — 7926, 7928), CA-4 (1 — 7930), CA-5 (3 — 7932, 7934, 7936), CA-6 (4 — 7940, 7942, 7944, 7946) : ce sont les TITRES de tests
+    de la suite d'intégration, recopiés dans les sorties de portes des six lots de la branche — « forgot-password : <N car. masques> CONSTANTE, mais aucun e-mail ne part », « GET /api/v1/auth/me … > sans token : <N car. masques> UNAUTHENTICATED »,
+    « … > compte supprimé après émission du token : <N car. masques> (l'identité n'existe plus) », « RolesGuard global … > sans token : <N car. masques> dès JwtAuthGuard ». Le texte entre chevrons est le MASQUE que l'outil pose sur ce qu'il
+    a pris pour la valeur ; ce qui reste lisible est un mot français ou le mot « token » dans un titre de test.
+  · docs/preuves/parallele/carte/CA-1/tri-audit-ca1.txt (1 — 7912) et CA-2/tri-audit-ca2.txt (3 — 7920, 7922, 7924) : les tris de la SESSION CLOUD, qui recitent ces mêmes titres (« 1. [mot-de-passe] CA-1/portes/test-int.txt:374 — le TITRE d'un test existant… »).
+  · docs/preuves/parallele/carte/CA-6/portes/portes.md (1 — 7938) et CA-6/rouges/rouges.md (1 — 7948) : une phrase de prose — « Les sorties versées n'ont PAS leurs lignes `[WebServer]` (jetons de vérification d'e-mail) ; « token= <1 car. masques> restant : 0 et 0 » —
+    qui dit que le nombre de jetons restants est ZÉRO.
+  Les deux lignes « -> » que l'outil écrit sous CHAQUE alerte lisent la même chose : 5 fois « valeur trop courte pour une recherche », et 16 fois « valeur déjà présente dans N fichiers suivis hors preuves » (N = 16, 64 ou 193) — c'est-à-dire un MOT
+  ordinaire (« token », « mot de passe ») que l'on retrouve dans des centaines de fichiers du code, pas une valeur propre à une pièce.
+  **Lues au contexte, les 21 sont des titres de tests et de la prose qui nomment un motif : aucune valeur réelle.** Rien n'est caché : les 21 lignes sont dans la sortie scellée.
+
+Aucune des pièces de l'application (les 55 fichiers non-preuves de la fusion) n'est dans le périmètre de cet audit (il ne lit que `docs/preuves/`) ; celles-là sont couvertes par le balayage de FORME de jeton et par la relecture de
+`ce-qui-part-vers-le-tiers.md` de la clôture (consigne, § 3), et par l'audit de la fusion réelle, plus tard.
+
+Contrôle « 0 valeur réelle » (D299) : non rejoué à cette étape — il se rejoue UNE fois, à la clôture, sur tous les fichiers versés par le lot (docs/preuves/D351/aucune-valeur-reelle.txt), contre les journaux à valeurs réelles de la passe des portes
+(la base jetable de l'e2e), qui n'existent pas encore.
