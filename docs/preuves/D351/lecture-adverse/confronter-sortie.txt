@@ -1,0 +1,98 @@
+D351 — lecture adverse de la consigne du rang 53 et du BILAN de `par-carte`, contre le dépôt
+état de départ 5951b2c · branche 7fdc679 · base commune 26ad5c7 · arbre de fusion attendu 9c12458f5ae5
+calibration (deux bras, D286) : ligne du registre (D350 présente, D999 absente) → (True, False) ; motif dans un fichier d'un SHA (RANG 53 en attente présent, RANG 99 absent) → (True, False) ; ancêtre (le premier commit de la branche l'est, main ne l'est pas) → (True, False) ; existence d'un chemin à un SHA (AGENTS.md oui, un harnais inventé non) → (True, False) ; motif du compteur dans AGENTS (« VINGT-CINQ → VINGT-SIX » présent, « VINGT-SIX → TRENTE-DEUX » pas encore écrit) → (True, False) ; compte d'un diff (la fusion apporte des fichiers, deux SHA identiques n'en apportent aucun) → (True, False) ; comptage de clés d'un JSON (trois feuilles comptées, une quatrième non) → (True, False)
+texte parcouru (caractères, après aplatissement) : ZWADJ_CONTINUITE.md 3349407 ; ZWADJ_BACKLOG.md 724397 ; AGENTS.md 251060 ; docs/preuves/parallele/carte/BILAN.md 12613 ; docs/preuves/parallele/carte/a-reporter-au-backlog.md 11194 ; docs/preuves/D351/consigne.md 7998
+
+[0.1] ✓  origin/main = 5951b2c
+      origin/main = 5951b2cbee9fad52cdec5ddcbecf52d96a4d5e35
+[0.2] ✓  origin/par-carte = 7fdc679
+      origin/par-carte = 7fdc67961727a3280f8e2210594ba507a0fbfb97
+[0.3] ✓  arbre propre, sans stash, sur `main`
+      branche = main ; stash = 0 ligne(s) ; `git status --short` = 3 ligne(s), dont 0 hors `docs/preuves/D351/` (les pièces de CE lot sont attendues)
+[0.4] ✓  rang 52 CLOS (D350)
+      1 occurrence(s) de « RANG 52 : CLOS SUR LE CODE » dans ZWADJ_CONTINUITE.md à 5951b2c
+[0.5] ✓  compteur POUR MÉMOIRE VINGT-SIX
+      1 occurrence(s) de « VINGT-CINQ → VINGT-SIX » dans AGENTS.md ; contexte : …e salle déjà rejetée (sans migration)** — lot de CODE : compteur POUR MÉMOIRE **VINGT-CINQ → VINGT-SIX** (la limite de cinq reste SUSPENDUE par Ko ; **aucune cert…
+[0.6] ✓  « RANG 53 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : l'intégration de par-carte)
+      1 occurrence(s) du pointeur avec son candidat
+[0.7] ✓  numéro attendu D351, pris en lisant le registre
+      305 lignes `| Dnnn |` parcourues, dernière = D350 ; occurrences de D351 : {'ZWADJ_CONTINUITE.md': 0, 'ZWADJ_BACKLOG.md': 0, 'AGENTS.md': 0} ; fichiers de 5951b2c qui le portent (`git grep -l`) : 0
+[0.8] ✓  BILAN.md et a-reporter-au-backlog.md existent SUR LA BRANCHE
+      BILAN 114 lignes ; a-reporter 123 lignes
+[0.9] ✓  la section D342 (précédent d'intégration) porte R-1 à R-5
+      R-5 de D342 : 1 occurrence(s)
+[1a.1] ✓  six lots CA-1 à CA-6, du 13 au 14/11/2026
+      lots lus dans le tableau du BILAN § 1 : ['CA-1', 'CA-2', 'CA-3', 'CA-4', 'CA-5', 'CA-6'] ; « Du 13 au 14/11/2026 » présent : True
+[1a.2] ✓  compteur VINGT-SIX → TRENTE-DEUX = 26 + 6
+      26 + 6 = 32 ; commits de la branche absents de main : 21 (= 6 lots × 3 commits — table, rouges, code — + l'extension de CA-6 + le commit d'ouverture + le commit du contrôle de fin : 18 + 3)
+[1a.3] ✓  « les six lots de code de la branche comptent (R-5 de D342) »
+      1 occurrence(s) de la règle R-5 de D342 dans ZWADJ_CONTINUITE.md
+[1b.1] ✓  BILAN § 6, n° 1 à 22 ; le n° 20 est le titre de l'accueil « Carte des salles · Alger »
+      22 entrées numérotées lues dans § 6 ; n° 20 : **Le titre de l'accueil reste « Carte des salles · Alger »** alors que la carte montre tou
+[1b.2] ✓  le titre de l'accueil vaut « Carte des salles · Alger » (clé `home.map.title`)
+      `home.map.title` à 7fdc679 = 'Carte des salles · Alger' (1290 clés FR parcourues)
+[1c.1] ✓  S-192 à S-204 existent (D350, § 5) : S-193 à S-204 ratifiées, S-192 refusée
+      13 décisions lues dans la section : ['192'] … ['204'] ; S-192 = « Le harnais d'ADM-2 lit une erreur de requête de Testing Library (« Unable to find… ») comme une morsure de pré … »
+[1c.2] ✓  AGENTS.md (D304, D316) : « sous une lecture fermée, un verdict s'écrit en assertion native »
+      1 occurrence(s) dans AGENTS.md
+[1c.3] ✓  précédents D325 (neuf gardes) et D345 (deux gardes) : une garde lue par requête reçoit une assertion native
+      D325 dans AGENTS : 1 occurrence(s) ; D345 dans ZWADJ_CONTINUITE.md : 1 occurrence(s)
+[1c.4] ✓  « les 29 gardes de neutralize-adm2.py concernées »
+      journal de la passe 3 de D350 (304 lignes) : « dont 29 lue(s) en ERREUR DE REQUÊTE Testing Library »
+[1d] ≈  réponse de Ko à la question de D350 : la liste « Mes salles » doit dire « Refusée »
+      la PREMISSE est dans ZWADJ_CONTINUITE.md (1 occurrence(s) : S-193 « la liste garde son badge En attente ») ; **la question posée à Ko et sa réponse ne sont dans aucun fichier du dépôt** (elles vivent dans le chat) — non vérifiables ici, adoptées par adoption de la consigne
+[1e] ✓  en développement la carte prend le défaut OpenStreetMap de `resolveMapTiles`
+      `packages/ui/src/map/map-tiles.ts` à 7fdc679 (109 lignes) : resolveMapTiles=True, DEV_MAP_TILES=True, openstreetmap=True
+[R-1.a] ✓  `git merge-tree --write-tree origin/main origin/par-carte` sort en 0, aucun conflit
+      code de sortie 0, arbre rendu 9c12458f5ae5af484ce0d58c6c47b7e0badcc95d (attendu 9c12458f5ae5af484ce0d58c6c47b7e0badcc95d), 1 ligne(s) de sortie (1 = pas de conflit)
+[R-1.b] ✓  seuls fichiers touchés des deux côtés : api.ts, fr.json, ar.json
+      249 fichier(s) côté main, 155 côté branche depuis 26ad5c7 ; intersection = ['apps/client/src/lib/api.ts', 'packages/i18n/messages/ar.json', 'packages/i18n/messages/fr.json']
+[R-1.c] ✓  api.ts : D348 (getVenueBySlug en no-store) ; la carte : une fonction neuve, autre zone
+      getVenueBySlug à main contient `cache: "no-store"` : True ; le diff de la branche sur ce fichier : 32 ligne(s) changée(s), dont 0 retirée(s)
+[R-2.a] ?  la réserve du BILAN § 2 : `test:int` rouge dans le conteneur cloud (deux fichiers, ECONNRESET, PostgreSQL 16, sans Docker)
+      les DEUX fichiers sont nommés dans le BILAN (1, 1 occurrence(s)) ; le rouge du conteneur n'est pas rejouable ici (il tient à l'environnement du conteneur) — c'est ce que les portes de ce lot mesurent sur le poste de Ko
+[R-2.b] ✓  dépendance neuve : leaflet 1.9.4, @types/leaflet
+      packages/ui/package.json à 7fdc679 : leaflet = '1.9.4' ; @types/leaflet = '1.9.22'
+[R-2.c] ≈  R-2 : « deux passes e2e vertes de suite, règle commitée avant (R-15 de D343) » ET « un rouge sur un fichier que la fusion ne touche pas : rejeu UNIQUE »
+      R-15 de D343 dit : « R-15. LA PREUVE : le rouge isolé avant, le vert isolé après (et la correction neutralisée, le rouge revient) ; puis l'e2e complète DEUX fois de suite, sur secteur, règle commitée avant : deux passes vertes ⇒ la porte e2e est verte ; un seul rouge ⇒ arrêt, pas de poussée. Motif : une fois la cause no … » ; la consigne R-2 ajoute un rejeu unique. **Les deux règles se combinent mais ne se recouvrent pas** : R-15 écrit « un seul rouge ⇒ arrêt », R-2 admet UN rejeu pour un rouge hors de la fusion. Tension résolue par écrit dans `regle-portes.md` § 4.3 (décision dérivée par la session, à ratifier)
+[R-2.d] ≈  précédents du rejeu unique : D338, D342, D348
+      le rejeu unique est dans D339 (R-6 de D339 ; « rejeu » dans la ligne de registre D339 : 3, dans D338 : 3) — **D338 est le CADRAGE du rang 43, sans rejeu ; le précédent est D339** ; D342 (`regle-rejeu.md`, existe : True) et D348 (§ 9 « la porte `test` se rejoue une fois » : 1 occurrence(s)) tiennent
+[R-3.a] ✓  `lancer-campagnes.py --tout` joue tout `neutralize-*.py`, jamais lancé par la session cloud
+      62 harnais `neutralize-*.py` à 5951b2c ; la fusion en apporte 6 (ca1 à ca6) → 68 ; le BILAN § 3 dit « jamais lancé » (1 occurrence)
+[R-3.b] ✓  les quatre harnais antérieurs vus en erreur existent et portent ce que le backlog décrit (fins de ligne en dur ; garde de fuseau M-12 ; ancre H6)
+      neutralize-horizon.py : 1 occurrence(s) de `H6` (236 lignes) ; neutralize-available-on.py : 5 occurrence(s) de `\\r\\n` (232 lignes) ; neutralize-r49.py : 29 occurrence(s) de `\\r\\n` (407 lignes) ; neutralize-r33.py : 1 occurrence(s) de `M-12` (613 lignes) — ⚠ le BILAN dit « douze `\r\n` en dur » pour r49 : le source en porte davantage, le BILAN ne dit pas ce qu'il compte (ancres ou occurrences)
+[R-3.c] ✗  BILAN : l'ancre H6 de `neutralize-horizon.py` était « périmée AVANT la session » (le fichier visé identique à origin/main)
+      **l'ancre H6 est TROUVÉE** : fichier de travail de ce poste (CRLF : 627 fins de ligne) 1 occurrence avec `\r\n` (celle du harnais) ; blob git de 5951b2c (LF) : 0 avec `\r\n`, 1 avec `\n` seul. **Le texte visé est là ; l'ancre échoue seulement dans un clone en LF** — même classe que `available-on` et `r49`, pas une ancre périmée. Le diagnostic du BILAN et de a-reporter-au-backlog.md est FAUX ; il ne se reporte pas tel quel au backlog (R-7)
+[R-3.d] ≈  « par exemple une cible qui ancrait `revalidate: 300` dans api.ts »
+      exemple, pas affirmation : 62 harnais lus ; la chaîne `revalidate: 300` apparaît 2 fois, ici : ['neutralize-pub1.py …re\\" });", "`${API_URL}/api/v1/venues?${query.toString()}`, { next: { revalidate: 300 } });")],', 'neutralize-pub1.py …I_URL}/api/v1/venues/${encodeURIComponent(slug)}`, {\\r\\n      next: { revalidate: 300 }")], "e2'] — **côté remplacement (la mutation qui REMET un cache), pas côté ancre** quand le contexte montre `cache: "no-store"` juste avant (D348 a déjà remplacé `revalidate` par `no-store` dans `getVenueBySlug`) ; aucune ancre périmée de cette forme n'est prévisible — c'est la fusion rejouée qui le dira
+[R-4.a] ✓  la liste et la carte appellent la même fonction `publicFilter`
+      apps/api/src/venues/venues-public.service.ts à 7fdc679 : `publicFilter` appelée 2 fois ; `PUBLIC_BASE_WHERE` 3 occurrences (602 lignes)
+[R-4.b] ?  les specs existantes (r50, ca6) mesurent peut-être que masquée / supprimée / non publiée est absente de la liste ET de la carte
+      les trois fichiers existent (r50 à main : True ; ca6 et `venue-map.int-spec.ts` à la branche : True, True) ; occurrences de `HIDDEN|deletedAt|DRAFT|masqu|supprim` — r50 : 42, ca6 : 0, venue-map.int-spec : 7 — **ce que chacun mesure se LIT après la fusion** (R-4), pas ici
+[R-4.c] ≈  la carte reste en no-store (invariant de D348)
+      `getVenueMap` fait `fetch(…, { cache: "no-store", signal })` : True ; ⚠ nuance : « reste » suppose un état d'avant — la fonction est NEUVE, et elle est appelée **depuis le navigateur** (le commentaire de la branche le dit), donc le cache de DONNÉES de Next, objet de D348, ne la concerne pas ; le `no-store` écarte ici le cache HTTP du navigateur
+[R-5] ≈  repère de `i18n-parity.spec.ts` relevé après fusion : « 29 clés neuves […] plus les 8 du bloc publicationReview de D350 »
+      mesuré sur les fichiers : main 1267 clés (FR = AR : True) ; branche 1290 ; arbre prédit de la fusion 1296 (FR = AR : True) = 1267 + 29 (bloc `map`) ; **le bloc `publicationReview` compte 6 clés, pas 8** (D350 : six clés) ; le repère vaut **943**, soit 324 sous le total de main AVANT la fusion : la porte « le total ne recule pas » ne voit une perte qu'au-delà de ce seuil
+[R-6] ✓  aucun code neuf au-delà de la fusion, sauf ce que la fusion casse
+      décision de méthode, vérifiée par le diff final et la table (`git diff 5951b2c..HEAD --name-only` ⊆ la table) au contrôle de fin de lot
+[R-7.a] ≈  chaque entrée de a-reporter-au-backlog.md entre dans ZWADJ_BACKLOG.md ; dont le glissement du point du pro et « aucun build de production joué »
+      a-reporter-au-backlog.md (11194 caractères parcourus) **ne porte PAS** « glissement », « build de production » (2 des 2 absents) : ces deux limites sont dans le BILAN § 3 (1 et 1 occurrence) — la session les ÉCRIT depuis le BILAN, ce n'est pas une copie
+[R-7.b] ✓  ce-qui-part-vers-le-tiers.md et les 29 clés arabes (arabe-a-relire.md) existent
+      docs/preuves/parallele/carte/ce-qui-part-vers-le-tiers.md : True ; docs/preuves/parallele/carte/arabe-a-relire.md : True ; clés du bloc `map` à la branche : 29
+[R-7.c] ≈  a-reporter : trois clés de catalogue mortes « à retirer à l'intégration, pas ici »
+      1 occurrence(s) ; **tension** avec R-6 (aucun code neuf : retirer des clés change `fr.json` et `ar.json`) ET avec R-5 (« le baisser, jamais » : retirer trois clés fait reculer le total de 1 296 à 1 293) — **ce lot ne les retire pas** ; entrée de backlog, à ordonner par Ko
+[R-8] ✓  S-192 refusée, les 29 gardes passent en assertion native au rang 54 ; ici : une entrée de backlog
+      décision du relecteur ; l'entrée est écrite par la clôture, rien d'autre (consigne, R-8)
+[R-9] ?  la base de développement de Ko : intouchée ; `zwadj_test` et `zwadj_e2e` seules
+      engagement de méthode ; se constate à la clôture : aucune commande du lot ne vise la base de Ko, aucun `.env` n'est lu (rapport, règle de D337)
+[F-1] ✓  les sept scénarios du BILAN § 8 ; ceux de D350 « s'ils ne sont pas faits »
+      7 scénarios numérotés lus dans § 8 ; `docs/preuves/D350/scenarios-ko.md` existe : True
+[F-2] ≈  compteur : VINGT-SIX → TRENTE-DEUX
+      l'arithmétique tient (26 + 6). **Mais D283/D292 : un lot qui touche un TEST ou un HARNAIS compte ; R-5 permet de retoucher `i18n-parity.spec.ts` (un test), R-3 l'ancre d'un harnais.** Si l'un des deux a lieu, ce lot écrit lui-même du code de test : TRENTE-TROIS selon la règle d'AGENTS.md, TRENTE-DEUX selon la lettre de la consigne — **décidé et écrit à la clôture, avec ce que cela change pour Ko**
+[F-3] ✓  la branche est GARDÉE (comme front-client)
+      la référence `origin/front-client` existe encore : 43996e279f49 (la branche gardée au précédent D342) ; `origin/par-carte` = 7fdc67961727 ; aucune commande de ce lot ne supprime de branche
+[F-4] ≈  décision produit n° 2 (« carte reportée post-MVP, placeholder ») devient fausse par la fusion
+      1 occurrence(s) dans ZWADJ_CONTINUITE.md (« Les décisions produit tranchées », n° 2) ; a-reporter-au-backlog.md demande de l'ANNOTER « à l'intégration, par la session qui écrit les fichiers d'autorité » (1 occurrence) — **la consigne ne le liste pas** ; la passe D277 le fait et le dit
+
+TOTAL : 45 contrôles — 31 ✓ · 10 ≈ · 1 ✗ · 3 ?   (attendu : la somme égale le nombre de contrôles listés ci-dessus)
+somme des verdicts = 45 ; contrôles imprimés = 45 ; égalité : True

@@ -1,0 +1,35 @@
+D351 — défauts d'INSTRUMENT relevés dans la première passe de `confronter-consigne.py` (18/11/2026)
+
+La première passe est gardée telle quelle : `confronter-sortie-passe-1-AVANT-CORRECTIFS.txt` (14 259 octets, LF).
+La seconde (`confronter-sortie.txt`) est celle de l'instrument corrigé. Aucun des défauts ci-dessous ne change un verdict :
+les deux passes rendent le même total (45 contrôles — 31 ✓ · 10 ≈ · 1 ✗ · 3 ?), et ce sont les DÉTAILS imprimés à côté du
+verdict qui ont montré les défauts (règle de D295 : le détail, pas le total).
+
+1. [0.7] Le registre était compté sur la seule colonne « A » : « 133 lignes `| Dnnn |` parcourues ». Le registre porte 305
+   décisions numérotées, de statuts A, C, S, F et d'autres (relevé : 133 A, 78 C, 47 S, 45 F = 303, plus deux lignes de
+   statut libre = 305) — plus une ligne d'en-tête (306 lignes en tout). Corrigé : toutes les lignes `^| D<chiffres> | `, 305. Ce défaut a aussi montré une
+   imprécision de la TABLE D'OUVERTURE (« 306 lignes », l'en-tête comprise) : rectifiée par l'extension 1 de la table, avant
+   le commit de ces pièces.
+2. [R-3.c] « CRLF : 0 fins de ligne » imprimé pour un fichier qui en porte 627 : l'échappement `b'\\r\\n'` dans une f-string
+   est la suite littérale de quatre caractères, pas CR LF. Le verdict, lui, ne lisait pas ce compte (il lit `n_disque`, `n_blob_lf`) ;
+   corrigé par une constante `CRLF = b"\r\n"` employée partout.
+3. [F-3] Le contrôle « la branche est GARDÉE (comme front-client) » mesurait l'existence d'un autre fichier
+   (`neutralize-fc10.py`) : il ne mesurait pas ce qu'il énonçait, et rendait ✓ pour une mauvaise raison (D209, façon n° 1 : mesure
+   confondue). Corrigé : `git rev-parse --verify origin/front-client` (la référence existe encore).
+4. [R-3.d] « 1 ancrent `revalidate: 300` » : la chaîne apparaît DEUX fois dans `neutralize-pub1.py`, et les deux fois du côté
+   REMPLACEMENT (la mutation qui remet un cache), pas du côté ancre. Corrigé : le détail imprime le contexte de chaque
+   occurrence, et le texte ne dit plus « ancrent ».
+5. [R-2.d] « D348 (§ 9 …) : 0 occurrence » : le motif cherchait une phrase qui n'est pas dans la section. Corrigé sur la phrase
+   réelle (« la porte `test` se rejoue une fois »), 1 occurrence.
+6. [1a.2] L'explication des 21 commits (« six lots + trois commits ») était fausse ; corrigée : 6 lots × 3 commits (table,
+   rouges, code) + l'extension de CA-6 + le commit d'ouverture + le commit du contrôle de fin = 21.
+7. [R-7.a] Un séparateur de liste mal formé (« glissement», «build de production ») : mis en forme.
+
+Défaut de MÉTHODE, relevé en recomptant (hors instrument, aucun résultat versé n'en dépend) : un recomptage des `\r\n` des
+harnais, lancé en script passé par l'outil de ligne de commande, a rendu « 0 occurrence » là où l'instrument — écrit dans un
+FICHIER — en trouve 5 (`neutralize-available-on.py`) et 29 (`neutralize-r49.py`), et son f-string a imprimé un vrai retour
+à la ligne là où le source écrit les deux caractères `\` `n`. Cause non établie ; inférence : une couche de la commande traite
+les doubles barres obliques inverses. C'est la leçon de D289 : un texte qui contient des barres obliques inverses s'écrit dans un
+fichier (l'outil d'écriture), jamais dans un argument ou un heredoc de commande. De même, `grep -c '\\r\\n'` compte des lignes
+qui contiennent « rn » (« return »…) et non la suite littérale : 17 et 36 lignes, sans rapport avec 5 et 29 occurrences.
+Ce que l'instrument NE fait PAS : il ne rejoue aucun test, aucune porte, aucune campagne — ces mesures se font APRÈS la fusion.

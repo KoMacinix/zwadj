@@ -1,0 +1,31 @@
+D351 — tri différentiel de l'audit de secrets « a » (AVANT le commit de la consigne en pièce, de la règle des portes, de la lecture adverse et de sa sortie)
+
+Procédure : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D350/audit-secrets-d350d.txt docs/preuves/D351/audit-secrets-d351a.txt --voir
+Instrument d'audit : neutralisation/audit-secrets.py --sortie docs/preuves/D351/audit-secrets-d351a.txt (949 619 octets, 0 CR, 7 899 lignes ; lancé à 02:39, fini à 02:55 le 18/11/2026).
+Sceau RECALCULÉ À LA MAIN après l'audit (sha256 de tout ce qui précède la ligne de sceau, procédure : un petit script de la session, HORS dépôt et non versé — il lit les octets, sépare la dernière ligne, hache le reste) :
+4196fe5e5f516f37670167ea1f10a80da9a260bdad60561e6cba9388d037033f — identique à celui que la sortie porte ; même procédure rejouée sur `audit-secrets-d350d.txt` : 901cbb9316b0e28f… identique (bras de calibration de l'étape).
+Calibration à deux bras tenue, pour l'audit (cinq bras sur cinq : motifs, positif, écho, discrimination, cas réel) et pour le tri (négatif : « D298 contre elle-même », 0 nouvelle, attendu 0 ;
+positif : « D298 contre D297 », 2 nouvelles, attendu 2).
+
+Ce que l'audit a parcouru (D290 : le zéro se lit à côté de ce qui a été parcouru) :
+  · précédente (d350d) : 5 448 fichiers parcourus, 5 260 audités, 188 exclus, 3 200 alertes, 3 200 contextes lus par le tri.
+  · nouvelle (d351a)   : 5 457 fichiers parcourus, 5 268 audités, 189 exclus, 3 202 alertes, 3 202 contextes lus par le tri. Contrôle de l'outil : audités + exclus = 5 457 (attendu 5 457, les parcourus).
+  · RAPPROCHEMENT MESURÉ avec le disque (compte relevé après l'audit) : 5 457 fichiers sous docs/preuves, dont la sortie scellée elle-même, écrite APRÈS l'audit : 5 456 présents pendant l'audit + `.gitattributes` (que l'outil
+    ajoute) = 5 457 — l'arithmétique ferme. Parmi les 5 457 : 5 440 suivis par git (dont la table d'ouverture et son extension 1) et 17 non suivis = 10 résidus `__pycache__/*.pyc` IGNORÉS par git (des octets compilés par Python à
+    l'import d'outils archivés ; l'audit les lit, aucun n'est versionné) + 7 fichiers de D351 pas encore commités (la consigne, la règle des portes, quatre pièces de la lecture adverse, la sortie scellée).
+    ⚠ L'écart avec la précédente (+9) n'est PAS attribué fichier par fichier : la sortie précédente ne liste pas ses fichiers. Il est du même ordre que les fichiers de D350 écrits après son audit « d » (le commit de clôture
+    `5951b2c` ajoute `audit-secrets-d350d.txt`, `aucune-valeur-reelle-d.txt`, `controle-fin-de-lot.txt` et `passe-d277.txt`) et que les six fichiers de D351 présents à l'instant de l'audit ; l'attribution exacte n'est pas établie.
+  · Exclus : 189 contre 188, soit un de plus — la sortie scellée d350d, désormais versée et épinglée par son sceau.
+
+Résultat du tri différentiel : 2 alertes ABSENTES de la sortie précédente, à trier au contexte (D299). Ventilation par motif : mot-de-passe = 1 · jeton = 1. Les deux visent le MÊME fichier, ligne 10 :
+  · docs/preuves/D350/aucune-valeur-reelle-d.txt:10 — une pièce de D350 versée par son commit de CLÔTURE (`5951b2c`), donc APRÈS la dernière sortie scellée que ce tri compare (`audit-secrets-d350d.txt`) : elle n'avait jamais été auditée.
+    Le contexte (lignes 7209 et 7211 de la sortie scellée) est une phrase en français qui CITE le tri de l'audit « c » de D350 : « les six sont dans docs/preuves/D350/aucune-valeur-reelle-c.txt (lignes 10, 11 et 12) : le tri de l'audit
+    PRÉCÉDENT (« c »), pièce de CE lot ajoutée après la sortie scellée que ce tri compare. Il CITE les alertes de « c » : le motif « token= » lu sur un remplacement de masque… ». Les deux alertes sont le mot « jeton » et le motif
+    « mot de passe » comme MOTS d'une phrase, et l'outil le dit lui-même : « valeur trop courte pour une recherche » (jeton) et « valeur déjà présente dans 185 fichiers suivis hors preuves » (mot-de-passe) — aucune valeur,
+    seulement le nom d'un motif, dans une phrase qui décrit un tri. **Lues au contexte : écho d'un tri de D350, pas une fuite.** Rien n'est caché : la ligne reste dans la sortie scellée, et le tri de D350 (`aucune-valeur-reelle-c.txt`) qu'elle cite
+    est déjà épinglé par l'identité de ses octets dans les audits antérieurs.
+  · aucune des six pièces de D351 présentes à l'instant de l'audit (la table, la consigne, la règle des portes, l'instrument de la lecture adverse, ses deux sorties, la liste de ses défauts) ne porte une alerte : le tri ne
+    rend aucun chemin sous docs/preuves/D351/.
+
+Contrôle « 0 valeur réelle » (D299) : non rejoué à cette étape — il se rejoue UNE fois, à la clôture, sur tous les fichiers versés par le lot (docs/preuves/D351/aucune-valeur-reelle.txt), contre les journaux à valeurs réelles de la
+passe des portes (la base jetable de l'e2e), qui n'existent pas encore.
