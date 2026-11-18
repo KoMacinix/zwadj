@@ -16,6 +16,7 @@ import { ADMIN_TEXTS } from "./admin-texts";
 import { useNoIndex } from "./use-no-index";
 import { makeAdminServerDouble } from "../test-support/admin-doubles";
 import { makeAuthDouble, makeReferentialsDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+import { elementAttendu } from "../test-support/native-presence";
 
 initI18n();
 afterEach(cleanup);
@@ -108,7 +109,7 @@ describe("la coquille de l'administration appelle la garde — mesuré sous la t
   it("sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration", async () => {
     for (const adresse of [ADMIN_PATH, ADMIN_DELETIONS_PATH]) {
       const { unmount } = renderAt(adresse, ADMIN);
-      await screen.findByRole("heading", { level: 1 });
+      await elementAttendu(() => screen.queryByRole("heading", { level: 1 }));
       await waitFor(() => expect(robots(), adresse).toHaveLength(1));
       expect(robots()[0]?.getAttribute("content"), adresse).toBe("noindex, nofollow");
       unmount();
@@ -119,10 +120,10 @@ describe("la coquille de l'administration appelle la garde — mesuré sous la t
   it("le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais", async () => {
     const PRO: AuthUserDTO = { ...ADMIN, id: "u-pro", role: "PRO", proProfile: { businessName: "S", phone: "+213551234567", phone2: null, notifyByEmail: true, notifyBySms: false } };
     const refus = renderAt(ADMIN_PATH, PRO);
-    await screen.findByRole("heading", { name: ADMIN_TEXTS.forbidden.title });
+    await elementAttendu(() => screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title }));
     refus.unmount();
     const liste = renderAt(VENUES_PATH, PRO);
-    await screen.findByRole("heading", { name: "Aucune salle pour le moment" });
+    await elementAttendu(() => screen.queryByRole("heading", { name: "Aucune salle pour le moment" }));
     expect(robots()).toHaveLength(0);
     liste.unmount();
   });

@@ -16,6 +16,7 @@ import { ADMIN_TEXTS } from "./admin-texts";
 import { formatAdminDate } from "./admin-format";
 import { DeletionRequestsPage } from "./deletion-requests-page";
 import { NetworkError, aDeletion, makeAdminServerDouble, type AdminServerDouble } from "../test-support/admin-doubles";
+import { elementAttendu, elementPresent } from "../test-support/native-presence";
 
 initI18n();
 afterEach(cleanup);
@@ -29,7 +30,7 @@ function renderPage(server: AdminServerDouble) {
     </MemoryRouter>
   );
 }
-const carteDe = (email: string) => screen.getByText(email, { exact: false }).closest("li") as HTMLElement;
+const carteDe = (email: string) => elementPresent(() => screen.queryByText(email, { exact: false })).closest("li") as HTMLElement;
 const appels = (s: AdminServerDouble, nom: string) => s.calls.filter((c) => c[0] === nom);
 
 describe("la liste — ce que l'admin lit avant de décider", () => {
@@ -38,22 +39,22 @@ describe("la liste — ce que l'admin lit avant de décider", () => {
     const client = aDeletion({ userEmail: "client@exemple.dz", userRole: "CLIENT", reason: null, venueCount: 0 });
     renderPage(makeAdminServerDouble({ deletions: [pro, client] }));
 
-    const cartePro = within(await screen.findByText("pro@exemple.dz", { exact: false }).then((n) => n.closest("li") as HTMLElement));
-    expect(cartePro.getByText(ADMIN_TEXTS.deletions.role.PRO)).toBeInTheDocument();
-    expect(cartePro.getByText("Je ferme ma salle.")).toBeInTheDocument();
-    expect(cartePro.getByText(formatAdminDate(pro.requestedAt), { exact: false })).toBeInTheDocument();
-    expect(cartePro.getByText(ADMIN_TEXTS.deletions.venueCount(3), { exact: false })).toBeInTheDocument();
+    const cartePro = within((await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }))).closest("li") as HTMLElement);
+    elementPresent(() => cartePro.queryByText(ADMIN_TEXTS.deletions.role.PRO));
+    elementPresent(() => cartePro.queryByText("Je ferme ma salle."));
+    elementPresent(() => cartePro.queryByText(formatAdminDate(pro.requestedAt), { exact: false }));
+    elementPresent(() => cartePro.queryByText(ADMIN_TEXTS.deletions.venueCount(3), { exact: false }));
 
     const carteClient = within(carteDe("client@exemple.dz"));
-    expect(carteClient.getByText(ADMIN_TEXTS.deletions.role.CLIENT)).toBeInTheDocument();
-    expect(carteClient.getByText(ADMIN_TEXTS.deletions.noReason)).toBeInTheDocument();
+    elementPresent(() => carteClient.queryByText(ADMIN_TEXTS.deletions.role.CLIENT));
+    elementPresent(() => carteClient.queryByText(ADMIN_TEXTS.deletions.noReason));
     expect(carteClient.queryByText(ADMIN_TEXTS.deletions.venueCount(0), { exact: false })).toBeNull();
   });
 
   it("aucune demande : le message vide — et PAS d'alerte ; le titre est un `<h1>`", async () => {
     renderPage(makeAdminServerDouble());
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.deletions.title })).toBeInTheDocument();
-    expect(await screen.findByText(ADMIN_TEXTS.deletions.empty)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.deletions.title }));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.deletions.empty));
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
@@ -61,10 +62,10 @@ describe("la liste — ce que l'admin lit avant de décider", () => {
     const server = makeAdminServerDouble({ deletions: [aDeletion({ userEmail: "pro@exemple.dz" })] });
     server.failNext("listDeletionRequests", new NetworkError());
     renderPage(server);
-    expect(await screen.findByRole("alert")).toHaveTextContent(ADMIN_TEXTS.deletions.loadError);
+    expect(await elementAttendu(() => screen.queryByRole("alert"))).toHaveTextContent(ADMIN_TEXTS.deletions.loadError);
     expect(screen.queryByText(ADMIN_TEXTS.deletions.empty)).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.common.retry }));
-    expect(await screen.findByText("pro@exemple.dz", { exact: false })).toBeInTheDocument();
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.common.retry })));
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
   });
 });
 
@@ -73,42 +74,44 @@ describe("approuver — IRRÉVERSIBLE : la confirmation d'abord", () => {
     const d = aDeletion({ userEmail: "pro@exemple.dz", venueCount: 3 });
     const server = makeAdminServerDouble({ deletions: [d] });
     renderPage(server);
-    await screen.findByText("pro@exemple.dz", { exact: false });
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
-    fireEvent.click(within(carteDe("pro@exemple.dz")).getByRole("button", { name: ADMIN_TEXTS.deletions.approve }));
-    const boite = await screen.findByRole("dialog");
-    expect(within(boite).getByText(ADMIN_TEXTS.deletions.approveDialog.title)).toBeInTheDocument();
-    expect(within(boite).getByText(ADMIN_TEXTS.deletions.approveDialog.description(3))).toBeInTheDocument();
+    fireEvent.click(elementPresent(() => within(carteDe("pro@exemple.dz")).queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })));
+    const boite = await elementAttendu(() => screen.queryByRole("dialog"));
+    elementPresent(() => within(boite).queryByText(ADMIN_TEXTS.deletions.approveDialog.title));
+    elementPresent(() => within(boite).queryByText(ADMIN_TEXTS.deletions.approveDialog.description(3)));
     expect(appels(server, "approveDeletion")).toHaveLength(0);
   });
 
   it("ANNULER ferme la confirmation : aucun appel, la demande est toujours là", async () => {
     const server = makeAdminServerDouble({ deletions: [aDeletion({ userEmail: "pro@exemple.dz" })] });
     renderPage(server);
-    await screen.findByText("pro@exemple.dz", { exact: false });
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
-    fireEvent.click(within(carteDe("pro@exemple.dz")).getByRole("button", { name: ADMIN_TEXTS.deletions.approve }));
-    fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.cancel }));
+    fireEvent.click(elementPresent(() => within(carteDe("pro@exemple.dz")).queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })));
+    const boite = await elementAttendu(() => screen.queryByRole("dialog"));
+    fireEvent.click(elementPresent(() => within(boite).queryByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.cancel })));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(appels(server, "approveDeletion")).toHaveLength(0);
-    expect(screen.getByText("pro@exemple.dz", { exact: false })).toBeInTheDocument();
+    elementPresent(() => screen.queryByText("pro@exemple.dz", { exact: false }));
   });
 
   it("CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file", async () => {
     const d = aDeletion({ userEmail: "pro@exemple.dz", venueCount: 1 });
     const server = makeAdminServerDouble({ deletions: [d] });
     renderPage(server);
-    await screen.findByText("pro@exemple.dz", { exact: false });
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
-    fireEvent.click(within(carteDe("pro@exemple.dz")).getByRole("button", { name: ADMIN_TEXTS.deletions.approve }));
+    fireEvent.click(elementPresent(() => within(carteDe("pro@exemple.dz")).queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })));
     const liberer = server.hold();
-    fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm }));
+    const boite = await elementAttendu(() => screen.queryByRole("dialog"));
+    fireEvent.click(elementPresent(() => within(boite).queryByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm })));
     await waitFor(() => expect(appels(server, "approveDeletion")).toHaveLength(1));
     expect(screen.queryByText(ADMIN_TEXTS.deletions.approved("pro@exemple.dz"))).toBeNull();
-    expect(screen.getByText("pro@exemple.dz", { exact: false })).toBeInTheDocument();
+    elementPresent(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
     await act(async () => liberer());
-    expect(await screen.findByText(ADMIN_TEXTS.deletions.approved("pro@exemple.dz"))).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.deletions.approved("pro@exemple.dz")));
     expect(screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })).toBeNull();
     expect(appels(server, "approveDeletion")).toEqual([["approveDeletion", d.id, undefined]]);
   });
@@ -117,16 +120,17 @@ describe("approuver — IRRÉVERSIBLE : la confirmation d'abord", () => {
     const d = aDeletion({ userEmail: "pro@exemple.dz" });
     const server = makeAdminServerDouble({ deletions: [d] });
     renderPage(server);
-    await screen.findByText("pro@exemple.dz", { exact: false });
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
-    fireEvent.click(within(carteDe("pro@exemple.dz")).getByRole("button", { name: ADMIN_TEXTS.deletions.approve }));
+    fireEvent.click(elementPresent(() => within(carteDe("pro@exemple.dz")).queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })));
     server.actElsewhere((s) => {
       const demande = s.deletions.find((x) => x.id === d.id);
       if (demande) demande.status = "CANCELLED";
     });
-    fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm }));
+    const boite = await elementAttendu(() => screen.queryByRole("dialog"));
+    fireEvent.click(elementPresent(() => within(boite).queryByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm })));
 
-    const a = await screen.findByRole("alert");
+    const a = await elementAttendu(() => screen.queryByRole("alert"));
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.codes.DELETION_REQUEST_NOT_PENDING);
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.refusedPrefix);
     expect(screen.queryByText(ADMIN_TEXTS.deletions.approved("pro@exemple.dz"))).toBeNull();
@@ -137,13 +141,14 @@ describe("approuver — IRRÉVERSIBLE : la confirmation d'abord", () => {
     const d = aDeletion({ userEmail: "pro@exemple.dz" });
     const server = makeAdminServerDouble({ deletions: [d] });
     renderPage(server);
-    await screen.findByText("pro@exemple.dz", { exact: false });
+    await elementAttendu(() => screen.queryByText("pro@exemple.dz", { exact: false }));
 
     server.failNext("approveDeletion", new NetworkError());
-    fireEvent.click(within(carteDe("pro@exemple.dz")).getByRole("button", { name: ADMIN_TEXTS.deletions.approve }));
-    fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm }));
+    fireEvent.click(elementPresent(() => within(carteDe("pro@exemple.dz")).queryByRole("button", { name: ADMIN_TEXTS.deletions.approve })));
+    const boite = await elementAttendu(() => screen.queryByRole("dialog"));
+    fireEvent.click(elementPresent(() => within(boite).queryByRole("button", { name: ADMIN_TEXTS.deletions.approveDialog.confirm })));
 
-    const a = await screen.findByRole("alert");
+    const a = await elementAttendu(() => screen.queryByRole("alert"));
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.unknownOutcome);
     expect(a).not.toHaveTextContent(ADMIN_TEXTS.errors.refusedPrefix);
     expect(screen.queryByText(ADMIN_TEXTS.deletions.approved("pro@exemple.dz"))).toBeNull();
@@ -154,29 +159,29 @@ describe("approuver — IRRÉVERSIBLE : la confirmation d'abord", () => {
 describe("rejeter — un motif, qui part à l'utilisateur", () => {
   const ouvrir = async (server: AdminServerDouble, email: string) => {
     renderPage(server);
-    await screen.findByText(email, { exact: false });
-    fireEvent.click(within(carteDe(email)).getByRole("button", { name: ADMIN_TEXTS.deletions.reject }));
+    await elementAttendu(() => screen.queryByText(email, { exact: false }));
+    fireEvent.click(elementPresent(() => within(carteDe(email)).queryByRole("button", { name: ADMIN_TEXTS.deletions.reject })));
   };
 
   it("sans motif (vide ou blanc) : le message, AUCUN appel ; le champ est obligatoire (D32)", async () => {
     const server = makeAdminServerDouble({ deletions: [aDeletion({ userEmail: "pro@exemple.dz" })] });
     await ouvrir(server, "pro@exemple.dz");
 
-    const champ = screen.getByLabelText(ADMIN_TEXTS.deletions.noteLabel);
-    expect(champ).toBeRequired();
+    const champ = elementPresent(() => screen.queryByLabelText(ADMIN_TEXTS.deletions.noteLabel)) as HTMLTextAreaElement;
+    expect(champ.required).toBe(true);
     fireEvent.change(champ, { target: { value: "   " } });
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject }));
-    expect(await screen.findByText(ADMIN_TEXTS.errors.validation["admin.validation.decisionNoteRequired"])).toBeInTheDocument();
-    expect(champ).toHaveAttribute("aria-invalid", "true");
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject })));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.errors.validation["admin.validation.decisionNoteRequired"]));
+    expect(champ.getAttribute("aria-invalid")).toBe("true");
     expect(appels(server, "rejectDeletion")).toHaveLength(0);
   });
 
   it("un motif trop long : le message de borne (celle de l'API, importée), aucun appel", async () => {
     const server = makeAdminServerDouble({ deletions: [aDeletion({ userEmail: "pro@exemple.dz" })] });
     await ouvrir(server, "pro@exemple.dz");
-    fireEvent.change(screen.getByLabelText(ADMIN_TEXTS.deletions.noteLabel), { target: { value: "x".repeat(1001) } });
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject }));
-    expect(await screen.findByText(ADMIN_TEXTS.errors.validation["account.validation.decisionNoteTooLong"])).toBeInTheDocument();
+    fireEvent.change(elementPresent(() => screen.queryByLabelText(ADMIN_TEXTS.deletions.noteLabel)), { target: { value: "x".repeat(1001) } });
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject })));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.errors.validation["account.validation.decisionNoteTooLong"]));
     expect(appels(server, "rejectDeletion")).toHaveLength(0);
   });
 
@@ -185,14 +190,14 @@ describe("rejeter — un motif, qui part à l'utilisateur", () => {
     const server = makeAdminServerDouble({ deletions: [d] });
     await ouvrir(server, "pro@exemple.dz");
 
-    fireEvent.change(screen.getByLabelText(ADMIN_TEXTS.deletions.noteLabel), { target: { value: "  Commissions en cours de règlement.  " } });
+    fireEvent.change(elementPresent(() => screen.queryByLabelText(ADMIN_TEXTS.deletions.noteLabel)), { target: { value: "  Commissions en cours de règlement.  " } });
     const liberer = server.hold();
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject }));
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject })));
     await waitFor(() => expect(appels(server, "rejectDeletion")).toHaveLength(1));
     expect(screen.queryByText(ADMIN_TEXTS.deletions.rejected("pro@exemple.dz"))).toBeNull();
 
     await act(async () => liberer());
-    expect(await screen.findByText(ADMIN_TEXTS.deletions.rejected("pro@exemple.dz"))).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.deletions.rejected("pro@exemple.dz")));
     expect(screen.queryByText("pro@exemple.dz", { exact: false, selector: "li *" })).toBeNull();
     expect(appels(server, "rejectDeletion")).toEqual([["rejectDeletion", d.id, "Commissions en cours de règlement."]]);
   });
@@ -200,7 +205,7 @@ describe("rejeter — un motif, qui part à l'utilisateur", () => {
   it("« Annuler » referme le formulaire de rejet sans rien envoyer", async () => {
     const server = makeAdminServerDouble({ deletions: [aDeletion({ userEmail: "pro@exemple.dz" })] });
     await ouvrir(server, "pro@exemple.dz");
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.deletions.cancelReject }));
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.cancelReject })));
     expect(screen.queryByLabelText(ADMIN_TEXTS.deletions.noteLabel)).toBeNull();
     expect(appels(server, "rejectDeletion")).toHaveLength(0);
   });
@@ -213,9 +218,9 @@ describe("rejeter — un motif, qui part à l'utilisateur", () => {
       const demande = s.deletions.find((x) => x.id === d.id);
       if (demande) demande.status = "CANCELLED";
     });
-    fireEvent.change(screen.getByLabelText(ADMIN_TEXTS.deletions.noteLabel), { target: { value: "Motif." } });
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject }));
-    const a = await screen.findByRole("alert");
+    fireEvent.change(elementPresent(() => screen.queryByLabelText(ADMIN_TEXTS.deletions.noteLabel)), { target: { value: "Motif." } });
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.deletions.confirmReject })));
+    const a = await elementAttendu(() => screen.queryByRole("alert"));
     expect(a).toHaveTextContent(ADMIN_TEXTS.errors.codes.DELETION_REQUEST_NOT_PENDING);
     expect(screen.queryByText(ADMIN_TEXTS.deletions.rejected("pro@exemple.dz"))).toBeNull();
   });

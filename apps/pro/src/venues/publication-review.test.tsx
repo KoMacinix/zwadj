@@ -17,6 +17,7 @@ import { AppProviders, AppRoutes } from "../App";
 import { initI18n } from "../i18n";
 import { NetworkError } from "../lib/auth-client";
 import { makeAuthDouble, makeBookingsProDouble, makeQuotesDouble, makeReferentialsDouble, makeServicesDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+import { elementAttendu, elementPresent } from "../test-support/native-presence";
 import { formatReviewDate } from "./publication-review";
 
 initI18n();
@@ -92,7 +93,7 @@ async function rendreA(chemin: string, publication: VenuePublicationClient, sall
     </MemoryRouter>
   );
   const titres = messages[langue].venue.ui.wizard;
-  await screen.findByRole("heading", { name: chemin.includes("etape=7") ? titres.step7 : titres.step1 });
+  await elementAttendu(() => screen.queryByRole("heading", { name: chemin.includes("etape=7") ? titres.step7 : titres.step1 }));
 }
 
 const REFUSEE: VenuePublicationReviewDTO = { publicationStatus: VenuePublicationStatus.DRAFT, rejection: { reason: MOTIF, rejectedAt: DATE_ISO } };
@@ -103,24 +104,24 @@ describe("une salle REFUSÉE : le pro lit le refus", () => {
     const pub = publicationDouble(REFUSEE);
     await rendreA("/salles/v1?etape=7", pub);
 
-    expect(await screen.findByText(FR.noticeTitle)).toBeInTheDocument();
-    const motif = screen.getByText(MOTIF);
+    await elementAttendu(() => screen.queryByText(FR.noticeTitle));
+    const motif = elementPresent(() => screen.queryByText(MOTIF));
     expect(motif.getAttribute("dir")).toBe("auto");
-    expect(screen.getByText(FR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "fr")), { exact: false })).toBeInTheDocument();
-    expect(screen.getByText(FR.noticeHelp)).toBeInTheDocument();
+    elementPresent(() => screen.queryByText(FR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "fr")), { exact: false }));
+    elementPresent(() => screen.queryByText(FR.noticeHelp));
     expect(pub.getPublicationReview).toHaveBeenCalledWith("v1");
   });
 
   it("MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée", async () => {
     await rendreA("/salles/v1?etape=7", publicationDouble(REFUSEE));
-    await screen.findByText(FR.noticeTitle);
+    await elementAttendu(() => screen.queryByText(FR.noticeTitle));
     expect(screen.queryByText(BADGE.draft)).toBeNull();
-    expect(screen.getByText(FR.refusedBadge)).toBeInTheDocument();
+    elementPresent(() => screen.queryByText(FR.refusedBadge));
   });
 
   it("l'en-tête dit « refusée » sur CHAQUE étape, mais le motif complet n'est que dans l'étape « Publication »", async () => {
     await rendreA("/salles/v1?etape=1", publicationDouble(REFUSEE));
-    expect(await screen.findByText(FR.refusedBadge)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(FR.refusedBadge));
     expect(screen.queryByText(BADGE.draft)).toBeNull();
     expect(screen.queryByText(MOTIF)).toBeNull();
   });
@@ -128,9 +129,9 @@ describe("une salle REFUSÉE : le pro lit le refus", () => {
   it("la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape)", async () => {
     const pub = publicationDouble(REFUSEE);
     await rendreA("/salles/v1?etape=7", pub);
-    await screen.findByText(FR.noticeTitle);
-    fireEvent.click(screen.getByRole("button", { name: WIZARD.previous }));
-    await screen.findByRole("heading", { name: WIZARD.step6 });
+    await elementAttendu(() => screen.queryByText(FR.noticeTitle));
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: WIZARD.previous })));
+    await elementAttendu(() => screen.queryByRole("heading", { name: WIZARD.step6 }));
     expect(pub.getPublicationReview).toHaveBeenCalledTimes(1);
   });
 });
@@ -138,7 +139,7 @@ describe("une salle REFUSÉE : le pro lit le refus", () => {
 describe("une salle PAS refusée", () => {
   it("brouillon jamais refusé : le badge d'AVANT (« en attente »), aucun avis de refus", async () => {
     await rendreA("/salles/v1?etape=7", publicationDouble(JAMAIS));
-    expect(await screen.findByText(BADGE.draft)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(BADGE.draft));
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
     expect(screen.queryByText(FR.refusedBadge)).toBeNull();
   });
@@ -146,7 +147,7 @@ describe("une salle PAS refusée", () => {
   it("une salle PUBLIÉE : le badge « Publiée », et la route du refus n'est PAS appelée (publier efface le motif)", async () => {
     const pub = publicationDouble(JAMAIS);
     await rendreA("/salles/v1?etape=7", pub, SALLE({ publicationStatus: VenuePublicationStatus.PUBLISHED }));
-    expect(await screen.findByText(BADGE.published)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(BADGE.published));
     expect(pub.getPublicationReview).not.toHaveBeenCalled();
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
   });
@@ -157,12 +158,12 @@ describe("une PANNE de lecture n'est pas « pas refusée » (D133, D142)", () =>
     const lire = vi.fn().mockRejectedValueOnce(new NetworkError()).mockResolvedValueOnce(REFUSEE);
     await rendreA("/salles/v1?etape=7", { getPublicationReview: lire });
 
-    expect(await screen.findByText(FR.loadError)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(FR.loadError));
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
-    expect(screen.getByText(BADGE.draft)).toBeInTheDocument();
+    elementPresent(() => screen.queryByText(BADGE.draft));
 
-    fireEvent.click(screen.getByRole("button", { name: FR.retry }));
-    expect(await screen.findByText(FR.noticeTitle)).toBeInTheDocument();
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: FR.retry })));
+    await elementAttendu(() => screen.queryByText(FR.noticeTitle));
     expect(screen.queryByText(FR.loadError)).toBeNull();
     expect(lire).toHaveBeenCalledTimes(2);
   });
@@ -170,13 +171,13 @@ describe("une PANNE de lecture n'est pas « pas refusée » (D133, D142)", () =>
   it("une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée »", async () => {
     const lire = vi.fn().mockResolvedValue(undefined);
     await rendreA("/salles/v1?etape=7", { getPublicationReview: lire });
-    expect(await screen.findByText(FR.loadError)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(FR.loadError));
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
   });
 
   it("l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape", async () => {
     await rendreA("/salles/v1?etape=7", { getPublicationReview: vi.fn().mockRejectedValue(new NetworkError()) });
-    const avis = await screen.findByText(FR.loadError);
+    const avis = await elementAttendu(() => screen.queryByText(FR.loadError));
     expect(avis.closest("[role='alert'], [role='status']")).toBeNull();
   });
 });
@@ -187,11 +188,11 @@ describe("l'arabe — la parité, et le sens de l'écriture", () => {
       await i18next.changeLanguage("ar");
     });
     await rendreA("/salles/v1?etape=7", publicationDouble(REFUSEE), SALLE(), "ar");
-    expect(await screen.findByText(AR.noticeTitle)).toBeInTheDocument();
-    expect(screen.getByText(AR.refusedBadge)).toBeInTheDocument();
-    expect(screen.getByText(AR.noticeHelp)).toBeInTheDocument();
-    expect(screen.getByText(AR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "ar")), { exact: false })).toBeInTheDocument();
-    expect(screen.getByText(MOTIF).getAttribute("dir")).toBe("auto");
+    await elementAttendu(() => screen.queryByText(AR.noticeTitle));
+    elementPresent(() => screen.queryByText(AR.refusedBadge));
+    elementPresent(() => screen.queryByText(AR.noticeHelp));
+    elementPresent(() => screen.queryByText(AR.noticeDate.replace("{date}", formatReviewDate(DATE_ISO, "ar")), { exact: false }));
+    expect(elementPresent(() => screen.queryByText(MOTIF)).getAttribute("dir")).toBe("auto");
     expect(screen.queryByText(FR.noticeTitle)).toBeNull();
   });
 
@@ -207,8 +208,8 @@ describe("l'arabe — la parité, et le sens de l'écriture", () => {
 describe("le composant reste dans l'étape — il ne déplace rien d'autre", () => {
   it("l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus", async () => {
     await rendreA("/salles/v1?etape=7", publicationDouble(REFUSEE));
-    await screen.findByText(FR.noticeTitle);
-    expect(screen.getByText(WIZARD.publishHint)).toBeInTheDocument();
-    expect(screen.getByLabelText(messages.fr.venue.ui.status.label)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(FR.noticeTitle));
+    elementPresent(() => screen.queryByText(WIZARD.publishHint));
+    elementPresent(() => screen.queryByLabelText(messages.fr.venue.ui.status.label));
   });
 });

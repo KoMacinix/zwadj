@@ -16,6 +16,7 @@ import { ADMIN_TEXTS } from "./admin-texts";
 import { formatAdminDate } from "./admin-format";
 import { VenueQueuePage } from "./venue-queue-page";
 import { NetworkError, aVenue, makeAdminServerDouble, type AdminServerDouble } from "../test-support/admin-doubles";
+import { elementAttendu, elementPresent } from "../test-support/native-presence";
 
 initI18n();
 afterEach(cleanup);
@@ -43,24 +44,24 @@ describe("la file — ce que l'admin lit", () => {
     const v = aVenue();
     renderQueue(makeAdminServerDouble({ venues: [v] }));
 
-    const lien = await screen.findByRole("link", { name: v.nameFr });
-    expect(lien).toHaveAttribute("href", adminVenuePath(v.id));
-    const arabe = screen.getByText(v.nameAr);
+    const lien = await elementAttendu(() => screen.queryByRole("link", { name: v.nameFr }));
+    expect(lien.getAttribute("href")).toBe(adminVenuePath(v.id));
+    const arabe = elementPresent(() => screen.queryByText(v.nameAr));
     expect(arabe.getAttribute("lang")).toBe("ar");
     expect(arabe.getAttribute("dir")).toBe("rtl");
     const ligne = lien.closest("li");
     expect(ligne).not.toBeNull();
     const dedans = within(ligne as HTMLElement);
-    expect(dedans.getByText(v.cityNameFr, { exact: false })).toBeInTheDocument();
-    expect(dedans.getByText(v.ownerBusinessName, { exact: false })).toBeInTheDocument();
-    expect(dedans.getByText(ADMIN_TEXTS.queue.slots(v.activeSlotCount), { exact: false })).toBeInTheDocument();
+    elementPresent(() => dedans.queryByText(v.cityNameFr, { exact: false }));
+    elementPresent(() => dedans.queryByText(v.ownerBusinessName, { exact: false }));
+    elementPresent(() => dedans.queryByText(ADMIN_TEXTS.queue.slots(v.activeSlotCount), { exact: false }));
   });
 
   it("le titre est un `<h1>` et le total est annoncé", async () => {
     const server = makeAdminServerDouble({ venues: [aVenue(), aVenue(), aVenue()] });
     renderQueue(server);
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title })).toBeInTheDocument();
-    expect(await screen.findByText(ADMIN_TEXTS.queue.total(3))).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.total(3)));
   });
 
   it("une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune", async () => {
@@ -68,21 +69,21 @@ describe("la file — ce que l'admin lit", () => {
     const refusee = aVenue({ rejection: { reason: "Les photos sont floues.", rejectedAt: "2026-11-12T10:15:00.000Z" } });
     renderQueue(makeAdminServerDouble({ venues: [neuve, refusee] }));
 
-    const ligneRefusee = (await screen.findByRole("link", { name: refusee.nameFr })).closest("li") as HTMLElement;
+    const ligneRefusee = (await elementAttendu(() => screen.queryByRole("link", { name: refusee.nameFr }))).closest("li") as HTMLElement;
     const r = within(ligneRefusee);
-    expect(r.getByText(ADMIN_TEXTS.queue.rejectedBadge)).toBeInTheDocument();
-    expect(r.getByText("Les photos sont floues.")).toBeInTheDocument();
-    expect(r.getByText(formatAdminDate("2026-11-12T10:15:00.000Z"), { exact: false })).toBeInTheDocument();
+    elementPresent(() => r.queryByText(ADMIN_TEXTS.queue.rejectedBadge));
+    elementPresent(() => r.queryByText("Les photos sont floues."));
+    elementPresent(() => r.queryByText(formatAdminDate("2026-11-12T10:15:00.000Z"), { exact: false }));
 
-    const ligneNeuve = screen.getByRole("link", { name: neuve.nameFr }).closest("li") as HTMLElement;
+    const ligneNeuve = elementPresent(() => screen.queryByRole("link", { name: neuve.nameFr })).closest("li") as HTMLElement;
     expect(within(ligneNeuve).queryByText(ADMIN_TEXTS.queue.rejectedBadge)).toBeNull();
   });
 
   it("une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée", async () => {
     const refusee = aVenue({ rejection: { reason: "Motif sans date.", rejectedAt: null } });
     renderQueue(makeAdminServerDouble({ venues: [refusee] }));
-    const ligne = (await screen.findByRole("link", { name: refusee.nameFr })).closest("li") as HTMLElement;
-    expect(within(ligne).getByText("Motif sans date.")).toBeInTheDocument();
+    const ligne = (await elementAttendu(() => screen.queryByRole("link", { name: refusee.nameFr }))).closest("li") as HTMLElement;
+    elementPresent(() => within(ligne).queryByText("Motif sans date."));
     expect(within(ligne).queryByText(ADMIN_TEXTS.queue.rejectedOnLabel, { exact: false })).toBeNull();
   });
 
@@ -92,8 +93,8 @@ describe("la file — ce que l'admin lit", () => {
     const b = aVenue();
     // Le faux serveur est rangé « rejetée en premier » dans sa mémoire ; il rend sa file dans l'ordre du vrai serveur.
     renderQueue(makeAdminServerDouble({ venues: [refusee, a, b] }));
-    await screen.findByRole("link", { name: a.nameFr });
-    const noms = screen.getAllByRole("link").filter((l) => [a, b, refusee].some((v) => v.nameFr === l.textContent)).map((l) => l.textContent);
+    await elementAttendu(() => screen.queryByRole("link", { name: a.nameFr }));
+    const noms = screen.queryAllByRole("link").filter((l) => [a, b, refusee].some((v) => v.nameFr === l.textContent)).map((l) => l.textContent);
     expect(noms).toEqual([a.nameFr, b.nameFr, refusee.nameFr]);
   });
 });
@@ -101,7 +102,7 @@ describe("la file — ce que l'admin lit", () => {
 describe("la file — vide, panne, rechargement (MD-ADM-15)", () => {
   it("aucune salle : le message « aucune salle en attente » — et PAS d'alerte", async () => {
     renderQueue(makeAdminServerDouble());
-    expect(await screen.findByText(ADMIN_TEXTS.queue.empty)).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.empty));
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
@@ -110,12 +111,12 @@ describe("la file — vide, panne, rechargement (MD-ADM-15)", () => {
     server.failNext("listPendingVenues", new NetworkError());
     renderQueue(server);
 
-    const alerte = await screen.findByRole("alert");
-    expect(alerte).toHaveTextContent(ADMIN_TEXTS.queue.loadError);
+    const alerte = await elementAttendu(() => screen.queryByRole("alert"));
+    expect(alerte.textContent ?? "").toContain(ADMIN_TEXTS.queue.loadError);
     expect(screen.queryByText(ADMIN_TEXTS.queue.empty)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.common.retry }));
-    expect(await screen.findByRole("link", { name: server.venues[0]?.nameFr ?? "" })).toBeInTheDocument();
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.common.retry })));
+    await elementAttendu(() => screen.queryByRole("link", { name: server.venues[0]?.nameFr ?? "" }));
     expect(screen.queryByRole("alert")).toBeNull();
   });
 });
@@ -126,34 +127,34 @@ describe("la file — la pagination suit ce que le serveur a APPLIQUÉ", () => {
   it("deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte", async () => {
     const server = makeAdminServerDouble({ venues: treize() });
     renderQueue(server);
-    expect(await screen.findByText(ADMIN_TEXTS.queue.pagination.page(1, 2))).toBeInTheDocument();
-    expect(screen.getAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(VENUE_PENDING_PAGE_SIZE_DEFAULT);
-    expect((screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.previous }) as HTMLButtonElement).disabled).toBe(true);
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.pagination.page(1, 2)));
+    expect(screen.queryAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(VENUE_PENDING_PAGE_SIZE_DEFAULT);
+    expect((elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.queue.pagination.previous })) as HTMLButtonElement).disabled).toBe(true);
 
-    fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.next }));
-    expect(await screen.findByText(ADMIN_TEXTS.queue.pagination.page(2, 2))).toBeInTheDocument();
-    expect(screen.getAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(2);
-    expect((screen.getByRole("button", { name: ADMIN_TEXTS.queue.pagination.next }) as HTMLButtonElement).disabled).toBe(true);
-    expect(screen.getByTestId("chemin").textContent).toBe(`${ADMIN_PATH}?page=2`);
+    fireEvent.click(elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.queue.pagination.next })));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.pagination.page(2, 2)));
+    expect(screen.queryAllByRole("link").filter((l) => l.getAttribute("href")?.startsWith("/admin/salles/"))).toHaveLength(2);
+    expect((elementPresent(() => screen.queryByRole("button", { name: ADMIN_TEXTS.queue.pagination.next })) as HTMLButtonElement).disabled).toBe(true);
+    expect(elementPresent(() => screen.queryByTestId("chemin")).textContent).toBe(`${ADMIN_PATH}?page=2`);
     expect(server.calls.filter((c) => c[0] === "listPendingVenues").map((c) => (c[1] as { page?: number } | undefined)?.page)).toEqual([1, 2]);
   });
 
   it("une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)", async () => {
     renderQueue(makeAdminServerDouble({ venues: treize() }), `${ADMIN_PATH}?page=2`);
-    expect(await screen.findByText(ADMIN_TEXTS.queue.pagination.page(2, 2))).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.pagination.page(2, 2)));
   });
 
   it("une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1", async () => {
     renderQueue(makeAdminServerDouble({ venues: [aVenue()] }), `${ADMIN_PATH}?page=5`);
     await waitFor(() => expect(screen.queryByText(ADMIN_TEXTS.common.loading)).toBeNull());
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(await screen.findByRole("link", { name: ADMIN_TEXTS.queue.pagination.backToFirst })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("link", { name: ADMIN_TEXTS.queue.pagination.backToFirst }));
   });
 
   it("une seule page : aucune pagination", async () => {
     renderQueue(makeAdminServerDouble({ venues: [aVenue()] }));
-    await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title });
-    await screen.findByText(ADMIN_TEXTS.queue.total(1));
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
+    await elementAttendu(() => screen.queryByText(ADMIN_TEXTS.queue.total(1)));
     expect(screen.queryByRole("navigation", { name: ADMIN_TEXTS.queue.pagination.label })).toBeNull();
   });
 });

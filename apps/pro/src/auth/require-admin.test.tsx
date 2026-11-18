@@ -17,6 +17,7 @@ import { ADMIN_PATH, ADMIN_DELETIONS_PATH, DASHBOARD_PATH, LOGIN_PATH, VENUES_PA
 import { ADMIN_TEXTS } from "../admin/admin-texts";
 import { aVenue, makeAdminServerDouble } from "../test-support/admin-doubles";
 import { makeAuthDouble, makeReferentialsDouble, makeVenueClientDouble } from "../test-support/client-doubles";
+import { elementAttendu, elementPresent } from "../test-support/native-presence";
 
 initI18n();
 
@@ -62,14 +63,14 @@ const chemin = () => screen.getByTestId("chemin").textContent;
 describe("R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs", () => {
   it("un ADMIN sur `/admin` voit l'écran de la file (la garde le laisse entrer)", async () => {
     renderAt(ADMIN_PATH, auth(ADMIN));
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
     expect(chemin()).toBe(ADMIN_PATH);
   });
 
   it("un ADMIN hors de `/admin` y est RENVOYÉ — tableau de bord, liste des salles : jamais la carte « mauvais rôle »", async () => {
     for (const hors of [DASHBOARD_PATH, VENUES_PATH]) {
       const { unmount } = renderAt(hors, auth(ADMIN));
-      expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }), hors).toBeInTheDocument();
+      await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }), hors);
       expect(chemin(), hors).toBe(ADMIN_PATH);
       expect(screen.queryByRole("heading", { name: messages.fr.auth.ui.pro.wrongRoleTitle }), hors).toBeNull();
       unmount();
@@ -78,7 +79,7 @@ describe("R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs", () => {
 
   it("un ADMIN sur la page de CONNEXION (déjà connecté) est renvoyé sous `/admin`, pas sur `/`", async () => {
     renderAt(LOGIN_PATH, auth(ADMIN));
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
     expect(chemin()).toBe(ADMIN_PATH);
   });
 
@@ -90,7 +91,7 @@ describe("R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs", () => {
     fireEvent.change(screen.getByLabelText("Mot de passe"), { target: { value: "Motdepasse1" } });
     fireEvent.click(screen.getByRole("button", { name: "Se connecter" }));
 
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
     expect(client.login).toHaveBeenCalled();
     expect(chemin()).toBe(ADMIN_PATH);
   });
@@ -102,9 +103,10 @@ describe("R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et auc
   it("un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse", async () => {
     for (const adresse of SOUS_ADMIN) {
       const { unmount, server } = renderAt(adresse, auth(PRO));
-      expect(await screen.findByRole("heading", { name: ADMIN_TEXTS.forbidden.title }), adresse).toBeInTheDocument();
-      expect(screen.getByText(ADMIN_TEXTS.forbidden.body), adresse).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: ADMIN_TEXTS.forbidden.backToPro }), adresse).toHaveAttribute("href", DASHBOARD_PATH);
+      await elementAttendu(() => screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title }), adresse);
+      elementPresent(() => screen.queryByText(ADMIN_TEXTS.forbidden.body), adresse);
+      const retour = elementPresent(() => screen.queryByRole("link", { name: ADMIN_TEXTS.forbidden.backToPro }), adresse);
+      expect(retour.getAttribute("href"), adresse).toBe(DASHBOARD_PATH);
       expect(chemin(), `${adresse} : le refus est RENDU, l'adresse ne change pas`).toBe(adresse);
       // Le refus n'a lu aucune donnée de l'administration.
       expect(server.calls, adresse).toEqual([]);
@@ -115,7 +117,7 @@ describe("R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et auc
   it("un CLIENT : le même refus, sans lien vers un espace qui n'est pas le sien ; il peut se déconnecter", async () => {
     const client = auth(CLIENT, { logout: vi.fn().mockResolvedValue(undefined) });
     const { server } = renderAt(ADMIN_PATH, client);
-    expect(await screen.findByRole("heading", { name: ADMIN_TEXTS.forbidden.title })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title }));
     expect(screen.queryByRole("link", { name: ADMIN_TEXTS.forbidden.backToPro })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: ADMIN_TEXTS.forbidden.logout }));
     await waitFor(() => expect(client.logout).toHaveBeenCalled());
@@ -124,7 +126,7 @@ describe("R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et auc
 
   it("le refus n'est PAS la file : aucun titre de l'administration n'est rendu à un PRO", async () => {
     renderAt(ADMIN_PATH, auth(PRO));
-    await screen.findByRole("heading", { name: ADMIN_TEXTS.forbidden.title });
+    await elementAttendu(() => screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title }));
     expect(screen.queryByRole("heading", { name: ADMIN_TEXTS.queue.title })).toBeNull();
   });
 });
@@ -132,7 +134,7 @@ describe("R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et auc
 describe("R-4 — les autres cas", () => {
   it("anonyme sur `/admin` : renvoyé à la connexion", async () => {
     renderAt(ADMIN_PATH, auth(null));
-    expect(await screen.findByRole("heading", { name: "Connexion" })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { name: "Connexion" }));
     expect(chemin()).toBe(LOGIN_PATH);
   });
 
@@ -143,25 +145,25 @@ describe("R-4 — les autres cas", () => {
     expect(screen.queryByRole("heading", { name: ADMIN_TEXTS.queue.title })).toBeNull();
     expect(screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title })).toBeNull();
     finir(ADMIN);
-    expect(await screen.findByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { level: 1, name: ADMIN_TEXTS.queue.title }));
   });
 
   it("un PRO hors de `/admin` n'est pas touché : sa liste de salles s'affiche, à l'adresse demandée", async () => {
     renderAt(VENUES_PATH, auth(PRO));
-    expect(await screen.findByRole("heading", { name: "Aucune salle pour le moment" })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { name: "Aucune salle pour le moment" }));
     expect(chemin()).toBe(VENUES_PATH);
   });
 
   it("un CLIENT hors de `/admin` garde la carte « mauvais rôle » du Pro (D23, inchangée)", async () => {
     renderAt(DASHBOARD_PATH, auth(CLIENT));
-    expect(await screen.findByRole("heading", { name: messages.fr.auth.ui.pro.wrongRoleTitle })).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("heading", { name: messages.fr.auth.ui.pro.wrongRoleTitle }));
   });
 
   it("un refus d'API sur l'écran (ADMIN rétrogradé : 403) ne laisse pas un écran vide — l'API reste l'autorité", async () => {
     const server = makeAdminServerDouble({ venues: [aVenue()] });
     server.failNext("listPendingVenues", new ApiError(403, "FORBIDDEN", undefined));
     renderAt(ADMIN_PATH, auth(ADMIN), server);
-    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    await elementAttendu(() => screen.queryByRole("alert"));
     expect(screen.queryByRole("heading", { name: ADMIN_TEXTS.forbidden.title })).toBeNull();
   });
 });
