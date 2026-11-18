@@ -1,5 +1,6 @@
 // ADM-2 (D350, rang 52, R-6, D-5, MD-ADM-5) — le PRO lit son refus. Ce fichier est un COMPOSANT NEUF : `venue-form.tsx` n'est PAS modifié (la branche `par-carte` y écrit, R-9) ; `PublicationBadge` reste
 // ce qu'il est, c'est la page de la salle qui choisit de ne plus le montrer pour une salle refusée.
+// ⛔ (D352, rang 54, R-1 : `par-carte` est intégrée, `venue-form.tsx` n'est plus interdit — la phrase qui précède est PÉRIMÉE sur « n'est PAS modifié » : `PublicationBadge` accepte désormais `status={null}` (« l'état n'est pas connu » : le libellé « Publication » seul) et `busy` (`aria-busy`), pour la carte de « Mes salles » — `PublicationListBadge`, plus bas. Annoté, pas réécrit.)
 //
 // ⚠ LE DÉFAUT QU'IL CORRIGE. Une salle rejetée affichait « En attente de publication par Zwadj » : le pro croyait attendre alors qu'il avait été refusé, sans rien lire du motif. Le refus (motif, date) est lu
 // par `GET /pro/venues/:id/publication` (ADM-1, D349) et s'affiche à DEUX endroits de la page de la salle : l'en-tête de l'assistant, qui ne dit plus « en attente » pour une salle refusée, et l'étape

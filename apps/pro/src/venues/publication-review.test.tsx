@@ -6,6 +6,7 @@
 //  · une PANNE de lecture n'est pas un « pas refusée » (D133, D142) : l'étape le dit et propose de réessayer ;
 //  · le texte est celui du CATALOGUE, en français ET en arabe (parité) ; le motif, écrit par l'admin, est rendu tel quel avec `dir="auto"`.
 // ⚠ `venue-form.tsx` n'est pas modifié (R-6) : `PublicationBadge` reste ce qu'il est, c'est la page qui choisit de ne plus le montrer pour une salle refusée.
+// ⛔ (D352, rang 54, R-1 : `par-carte` est intégrée, `venue-form.tsx` n'est plus interdit — la phrase qui précède est PÉRIMÉE sur « n'est PAS modifié » : `PublicationBadge` accepte désormais `status={null}` (« l'état n'est pas connu » : le libellé « Publication » seul) et `busy` (`aria-busy`), pour la carte de « Mes salles » — `PublicationListBadge` (`publication-review.tsx`), testé par `venue-list.test.tsx`. Annoté, pas réécrit.)
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import i18next from "i18next";
 import { MemoryRouter } from "react-router";
