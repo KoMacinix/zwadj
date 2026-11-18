@@ -103,3 +103,23 @@ apps/pro/src/test-support/native-presence.ts
 - **La mesure de la voie (A)** (`mesures/`) : un test JETABLE (copié ici en `.txt`, retiré de `apps/pro`) compte les lectures du refus à la relecture silencieuse d'entrée et à la relecture voulue ; sa sortie est versée, **avec celle du premier essai** (`diagnostic-appels-sortie-1.txt`, NON représentatif — la liste du double répondait à l'instant et les cartes n'ont jamais été démontées : gardé, dit tel quel dans `diagnostic-appels.md`). C'est la mesure du critère 1 de `regle-portes.md`.
 - **`apps/pro/src/test-support/native-presence.ts`** (code de test, NEUF, déclaré conditionnel à l'ouverture — « seulement si… » n'était pas écrit pour lui ; il l'est ici) : deux fonctions, `elementPresent` et `elementAttendu`, qui écrivent le verdict de présence d'un élément en assertion NATIVE (`queryBy…` + `expect(…).not.toBeNull()`). Motif : les 29 gardes de R-2 passent en assertion native dans six fichiers ; la règle s'écrit UNE fois, pas six. Elle ne remplace aucune autorité (D78).
 - **Le fichier de test de la liste** (`venue-list.test.tsx`) et le code de R-1 (`venue-list-page.tsx`, `publication-review.tsx`, `venue-form.tsx`) étaient déjà déclarés à l'ouverture.
+
+### Extension 2 — la mesure du critère 4 (l'e2e et la latence), le spec `r50` corrigé, la copie du masqueur et le troisième audit
+
+Écrite **avant** le commit qui verse ces pièces (avec l'audit « c »), et le commit des pièces précède le commit du spec corrigé (les rouges avant le code, D334 item 5). Chemins COMPLETS :
+
+```
+e2e/specs/r50-salle-publiee.e2e.ts
+docs/preuves/D352/mesures/e2e-latence.md
+docs/preuves/D352/mesures/e2e-latence-rouge.txt
+docs/preuves/D352/mesures/e2e-latence-vert.txt
+docs/preuves/D352/mesures/e2e-sous-ensemble-avant-correctif.txt
+docs/preuves/D352/mesures/zz-r50-latence.e2e.ts.txt
+docs/preuves/D352/portes/masquer-jetons.py
+docs/preuves/D352/audit-secrets-d352c.txt
+docs/preuves/D352/tri-audit-d352c.txt
+```
+
+- **`e2e/specs/r50-salle-publiee.e2e.ts`** (déclaré **conditionnel** à l'extension 1 comme « seulement si l'e2e MESURE… » : `a2-mount-effects` est écarté ; c'est `r50` que la mesure a cité) : une ligne d'attente web-first avant la lecture `innerText()` de la carte. **Le rouge** (`e2e-latence-rouge.txt`) a été produit sur une COPIE jetable du spec (`zz-r50-latence.e2e.ts.txt`, retirée de `e2e/specs/` avant tout commit) avec 1,5 s de latence injectée sur la route de lecture du refus ; **le vert** (`e2e-latence-vert.txt`) sur la même copie reprise du spec corrigé.
+- **`portes/masquer-jetons.py`** : copie NON modifiée de `docs/preuves/D351/portes/masquer-jetons.py` ; les trois sorties e2e versées sont MASQUÉES (3, 3 et 26 suites de forme jeton remplacées, 0 restante).
+- **Les audits** : « c » couvre ce versement ; un audit « d » couvrira les pièces des portes, des campagnes et de la clôture (extension 3).
