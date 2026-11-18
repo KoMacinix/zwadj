@@ -1,0 +1,24 @@
+10 fichier(s) modifié(s) depuis HEAD → 2 campagne(s) concernée(s) sur 65.
+  · neutralize-ca3.py  (1 fichier(s) en commun)
+      apps/client/src/components/map/near-viewport-map.tsx
+  · neutralize-ca6.py  (2 fichier(s) en commun)
+      apps/client/src/components/map/near-viewport-map.tsx
+      packages/ui/src/map/leaflet-canvas.tsx
+
+[1/2] neutralisation/neutralize-ca3.py …
+    sortie=0  15 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/2] neutralisation/neutralize-ca6.py …
+    sortie=3  0 mordue(s), 0 muette(s)/erreur(s), 9 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-ca3.py                       0    15    15     0     0    54
+neutralize-ca6.py                       3     0     0     0     9     0
+================================================================================================
+MESURÉ : 15 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 9 non mesurée(s) · 2 campagne(s) · 54s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-ca6.py → sortie 3
+code de sortie : 1

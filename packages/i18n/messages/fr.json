@@ -1517,5 +1517,44 @@
     "body": "Le lien est peut-être erroné, ou la page a été retirée.",
     "venues": "Voir les salles",
     "home": "Retour à l'accueil"
+  },
+  "map": {
+    "region": "Carte des salles",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "loading": "Chargement de la carte…",
+    "loadError": "La carte n'a pas pu être chargée. Vérifiez votre connexion, puis réessayez.",
+    "tilesError": "Le fond de carte ne se charge pas. Les salles restent placées au bon endroit.",
+    "unavailableTitle": "Carte indisponible",
+    "unavailableBody": "La carte n'est pas disponible pour le moment. Toutes les salles restent visibles dans la liste.",
+    "pointsErrorTitle": "Les salles n'ont pas pu être placées sur la carte",
+    "pointsErrorBody": "Réessayez dans un instant. La liste des salles reste disponible.",
+    "retry": "Réessayer",
+    "count": "Salles sur la carte : {count}",
+    "withoutCoordinates": "Salles sans position, visibles dans la liste : {count}",
+    "truncated": "La carte montre les {limit} premières salles. Affinez les filtres pour voir les autres.",
+    "empty": "Aucune salle de cette recherche n'a encore de position sur la carte.",
+    "card": {
+      "label": "Salle choisie sur la carte",
+      "open": "Voir la salle",
+      "close": "Fermer"
+    },
+    "home": {
+      "waiting": "La carte des salles s'affiche ici quand vous arrivez à cette section.",
+      "show": "Afficher la carte",
+      "search": "Rechercher une salle avec des filtres"
+    },
+    "venue": {
+      "show": "Voir sur la carte",
+      "notice": "La carte est fournie par un service externe : elle ne se charge que si vous la demandez.",
+      "region": "Emplacement de {name} sur la carte"
+    },
+    "pin": {
+      "show": "Placer la salle sur la carte",
+      "hide": "Masquer la carte",
+      "hint": "Cliquez sur la carte pour poser le point, ou faites-le glisser. La latitude et la longitude se remplissent seules ; pensez à enregistrer.",
+      "region": "Carte pour placer la salle",
+      "label": "Position de la salle"
+    }
   }
 }

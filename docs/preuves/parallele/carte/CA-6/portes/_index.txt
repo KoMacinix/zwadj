@@ -1,0 +1,8 @@
+typecheck code=0 duree=19s
+lint code=0 duree=10s
+test code=0 duree=80s
+build code=0 duree=31s
+test-int code=1 duree=411s
+test-e2e-passe-1 code=0 duree=211s
+test-e2e-passe-2 code=0 duree=213s
+FIN

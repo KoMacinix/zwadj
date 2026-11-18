@@ -1,0 +1,233 @@
+
+> @zwadj/api@0.0.0 prisma:migrate /home/user/zwadj/apps/api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 8 tests using 1 worker
+
+  ✓  1 [warmup] › specs/warmup.setup.ts:57:5 › préchauffe les routes des deux applications (12.8s)
+  ✘  2 [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — fr, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle (9.8s)
+  ✘  3 [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — ar, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle (9.5s)
+  ✓  4 [chromium] › specs/ca6-carte.e2e.ts:183:5 › CA-6 — panne des TUILES : un message, et les salles restent sur la carte (2.8s)
+  ✓  5 [chromium] › specs/ca6-carte.e2e.ts:196:5 › CA-6 — panne de la ROUTE DE POINTS (500) : un message et « Réessayer », pas une page blanche ; puis la carte (2.5s)
+  ✘  6 [chromium] › specs/ca6-carte.e2e.ts:220:5 › CA-6 — accueil : rien ne part au chargement ; la carte se monte quand la section approche, avec les salles de l'API (2.5s)
+  ✓  7 [chromium] › specs/ca6-carte.e2e.ts:244:5 › CA-6 — fiche : la carte au geste, un point au nom de la salle ; une salle sans position n'offre pas de carte (4.1s)
+  ✓  8 [chromium] › specs/ca6-carte.e2e.ts:273:5 › CA-6 — pro : un clic sur la carte écrit la latitude ET la longitude dans les deux champs, à six décimales au plus (2.4s)
+
+
+  1) [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — fr, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('.map-venue-card').locator('.map-venue-card-name')
+    Expected string: "Salle e2e 12b6f4d1"
+    Received: <element(s) not found>
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('.map-venue-card').locator('.map-venue-card-name')
+
+
+      157 |     await page.keyboard.press("Enter"); // le chemin CLAVIER : un point est un bouton
+      158 |     const fiche = page.locator(".map-venue-card");
+    > 159 |     await expect(fiche.locator(".map-venue-card-name")).toHaveText(nom);
+          |                                                         ^
+      160 |     // ⚠ Le prix affiché porte les chiffres des CENTIMES DU SERVEUR, en dinars (deux zéros de moins) — rien n'est recalculé.
+      161 |     expect(chiffres(await fiche.locator(".map-venue-card-price").textContent())).toBe(String(choisie.basePriceCents).slice(0, -2));
+      162 |     await expect(fiche.getByRole("link", { name: messages.map.card.open })).toHaveAttribute("href", `/${locale}/salles/${choisie.slug}`);
+        at /home/user/zwadj/e2e/specs/ca6-carte.e2e.ts:159:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ca6-carte.e2e.ts-CA-6-—-fr-73c6b--ouvre-la-carte-d-une-salle-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — ar, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle 
+
+    Error: Timed out 7000ms waiting for expect(locator).toHaveText(expected)
+
+    Locator: locator('.map-venue-card').locator('.map-venue-card-name')
+    Expected string: "قاعة"
+    Received: <element(s) not found>
+    Call log:
+      - expect.toHaveText with timeout 7000ms
+      - waiting for locator('.map-venue-card').locator('.map-venue-card-name')
+
+
+      157 |     await page.keyboard.press("Enter"); // le chemin CLAVIER : un point est un bouton
+      158 |     const fiche = page.locator(".map-venue-card");
+    > 159 |     await expect(fiche.locator(".map-venue-card-name")).toHaveText(nom);
+          |                                                         ^
+      160 |     // ⚠ Le prix affiché porte les chiffres des CENTIMES DU SERVEUR, en dinars (deux zéros de moins) — rien n'est recalculé.
+      161 |     expect(chiffres(await fiche.locator(".map-venue-card-price").textContent())).toBe(String(choisie.basePriceCents).slice(0, -2));
+      162 |     await expect(fiche.getByRole("link", { name: messages.map.card.open })).toHaveAttribute("href", `/${locale}/salles/${choisie.slug}`);
+        at /home/user/zwadj/e2e/specs/ca6-carte.e2e.ts:159:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ca6-carte.e2e.ts-CA-6-—-ar-b2905--ouvre-la-carte-d-une-salle-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › specs/ca6-carte.e2e.ts:220:5 › CA-6 — accueil : rien ne part au chargement ; la carte se monte quand la section approche, avec les salles de l'API 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 24
+
+    - Array []
+    + Array [
+    +   "https://tile.openstreetmap.org/11/1041/798.png",
+    +   "https://tile.openstreetmap.org/11/1041/799.png",
+    +   "https://tile.openstreetmap.org/11/1040/798.png",
+    +   "https://tile.openstreetmap.org/11/1042/798.png",
+    +   "https://tile.openstreetmap.org/11/1040/799.png",
+    +   "https://tile.openstreetmap.org/11/1042/799.png",
+    +   "https://tile.openstreetmap.org/11/1039/798.png",
+    +   "https://tile.openstreetmap.org/11/1043/798.png",
+    +   "https://tile.openstreetmap.org/11/1039/799.png",
+    +   "https://tile.openstreetmap.org/11/1043/799.png",
+    +   "https://tile.openstreetmap.org/14/8330/6390.png",
+    +   "https://tile.openstreetmap.org/14/8331/6390.png",
+    +   "https://tile.openstreetmap.org/14/8330/6391.png",
+    +   "https://tile.openstreetmap.org/14/8331/6391.png",
+    +   "https://tile.openstreetmap.org/14/8329/6390.png",
+    +   "https://tile.openstreetmap.org/14/8332/6390.png",
+    +   "https://tile.openstreetmap.org/14/8329/6391.png",
+    +   "https://tile.openstreetmap.org/14/8332/6391.png",
+    +   "https://tile.openstreetmap.org/14/8328/6390.png",
+    +   "https://tile.openstreetmap.org/14/8333/6390.png",
+    +   "https://tile.openstreetmap.org/14/8328/6391.png",
+    +   "https://tile.openstreetmap.org/14/8333/6391.png",
+    + ]
+
+      226 |   await expect(page.locator("#hm-map-h")).toHaveCount(1);
+      227 |   // ⛔ R-9 — au chargement : aucune tuile, aucune carte. La section est loin sous le héros.
+    > 228 |   expect(reseau.tuiles).toEqual([]);
+          |                         ^
+      229 |   await expect(page.locator(".leaflet-container")).toHaveCount(0);
+      230 |   await expect(page.locator(".hm-map .map-panel-body")).toHaveText(fr.map.home.waiting);
+      231 |
+        at /home/user/zwadj/e2e/specs/ca6-carte.e2e.ts:228:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/ca6-carte.e2e.ts-CA-6-—-ac-f3753-he-avec-les-salles-de-l-API-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — fr, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle 
+    [chromium] › specs/ca6-carte.e2e.ts:111:7 › CA-6 — ar, recherche : rien ne part avant le geste ; la carte montre les salles situées de l'API, compte les autres, ouvre la carte d'une salle 
+    [chromium] › specs/ca6-carte.e2e.ts:220:5 › CA-6 — accueil : rien ne part au chargement ; la carte se monte quand la section approche, avec les salles de l'API 
+  5 passed (1.6m)
+undefined
+/home/user/zwadj/e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/ca6-carte.e2e.ts --reporter list --trace off

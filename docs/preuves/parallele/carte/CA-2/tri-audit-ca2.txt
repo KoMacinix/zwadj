@@ -1,0 +1,11 @@
+TRI DE L'AUDIT DE SECRETS — CA-2 (13/11/2026)
+Précédente : ../CA-1/audit-secrets-ca1.txt · nouvelle : audit-secrets-ca2.txt.
+Alertes absentes de la précédente : 4, chacune lue au contexte.
+  1. [mot-de-passe] CA-1/tri-audit-ca1.txt:4 — l'ÉCHO du tri de CA-1 (il cite le titre de test qu'il triait).
+  2. [mot-de-passe] CA-2/portes/test-int.txt:482 — le même TITRE de test (« forgot-password : … CONSTANTE… »), recité par
+     la sortie de `test:int` de ce lot.
+  3. [jeton] CA-2/portes/test-int.txt:680 — TITRE de test (« sans token : <statut> UNAUTHENTICATED ») ; le texte masqué fait
+     3 caractères : un statut HTTP.
+  4. [jeton] CA-2/portes/test-int.txt:685 — TITRE de test (« compte supprimé après émission du token : <statut> … »), idem.
+BILAN : 4 sur 4 = des titres de test (3) et l'écho d'un tri (1) ; AUCUNE valeur réelle. Aucun `.env` n'est commité ;
+`apps/client/.env.example` ne reçoit que des NOMS de variables commentés, sans valeur (D200).

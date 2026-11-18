@@ -1,0 +1,1263 @@
+
+ RUN  v3.2.7 /home/user/zwadj/apps/pro
+
+stdout | src/venues/place-fields-map.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/place-fields-map.test.tsx (7 tests | 7 failed) 119ms
+   × pinOfFields — la position que portent les deux champs > deux nombres plausibles : la position ; la virgule décimale est admise, comme à la saisie 3ms
+     → pinOfFields is not a function
+   × pinOfFields — la position que portent les deux champs > ⛔ UN SEUL champ rempli n'est pas une position (latitude seule, puis longitude seule) 1ms
+     → pinOfFields is not a function
+   × pinOfFields — la position que portent les deux champs > une saisie illisible ou hors des bornes du contrat n'est pas une position 0ms
+     → pinOfFields is not a function
+   × PlaceFields — la carte et les deux champs > les deux champs texte RESTENT (le chemin clavier), et la carte reçoit la position qu'ils portent 35ms
+     → Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_0_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_0_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_1_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_1_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_2_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_2_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_3_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_3_"
+          inputmode="decimal"
+          type="text"
+          value="36.5"
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_4_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_4_"
+          inputmode="decimal"
+          type="text"
+          value="3.1"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+   × PlaceFields — la carte et les deux champs > champs vides : la carte n'a aucun point 7ms
+     → Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_5_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_5_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_6_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_6_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_7_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_7_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_8_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_8_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_9_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_9_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</body>
+   × PlaceFields — la carte et les deux champs > ⛔ poser le point écrit la latitude ET la longitude, ensemble — et la paire passe le contrat partagé 63ms
+     → Unable to find an accessible element with the role "button" and name "(test) poser le point"
+
+Here are the accessible roles:
+
+  textbox:
+
+  Name "Quartier (français)":
+  <input
+    dir="ltr"
+    id="_r_a_"
+    type="text"
+    value=""
+  />
+
+  Name "Quartier (arabe)":
+  <input
+    dir="rtl"
+    id="_r_b_"
+    type="text"
+    value=""
+  />
+
+  Name "Adresse":
+  <input
+    id="_r_c_"
+    type="text"
+    value=""
+  />
+
+  Name "Latitude":
+  <input
+    dir="ltr"
+    id="_r_d_"
+    inputmode="decimal"
+    type="text"
+    value=""
+  />
+
+  Name "Longitude":
+  <input
+    dir="ltr"
+    id="_r_e_"
+    inputmode="decimal"
+    type="text"
+    value=""
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="field-hint"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_a_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_a_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_b_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_b_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_c_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_c_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_d_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_d_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_e_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_e_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</body>
+   × PlaceFields — la carte et les deux champs > saisir une nouvelle latitude au clavier déplace le point de la carte ; en vider un seul le retire 10ms
+     → Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_f_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_f_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_g_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_g_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_h_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_h_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_i_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_i_"
+          inputmode="decimal"
+          type="text"
+          value="36.9"
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_j_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_j_"
+          inputmode="decimal"
+          type="text"
+          value="3.1"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/venue-pin-map.test.tsx [ src/venues/venue-pin-map.test.tsx ]
+Error: Failed to resolve import "./venue-pin-map" from "src/venues/venue-pin-map.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/user/zwadj/apps/pro/src/venues/venue-pin-map.test.tsx:12:28
+  4  |  import { messages } from "@zwadj/i18n";
+  5  |  import { initI18n } from "../i18n";
+  6  |  import { VenuePinMap } from "./venue-pin-map";
+     |                               ^
+  7  |  initI18n();
+  8  |  const TUILES = { url: "https://tuiles.test/{z}/{x}/{y}.png", attribution: "© Fond de test", attributionUrl: null };
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > pinOfFields — la position que portent les deux champs > deux nombres plausibles : la position ; la virgule décimale est admise, comme à la saisie
+TypeError: pinOfFields is not a function
+ ❯ src/venues/place-fields-map.test.tsx:32:12
+     30| describe("pinOfFields — la position que portent les deux champs", () =…
+     31|   it("deux nombres plausibles : la position ; la virgule décimale est …
+     32|     expect(pinOfFields("36.753812", "3.058765")).toEqual({ lat: 36.753…
+       |            ^
+     33|     expect(pinOfFields(" 36,5 ", "3,1")).toEqual({ lat: 36.5, lng: 3.1…
+     34|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > pinOfFields — la position que portent les deux champs > ⛔ UN SEUL champ rempli n'est pas une position (latitude seule, puis longitude seule)
+TypeError: pinOfFields is not a function
+ ❯ src/venues/place-fields-map.test.tsx:37:12
+     35| 
+     36|   it("⛔ UN SEUL champ rempli n'est pas une position (latitude seule, p…
+     37|     expect(pinOfFields("36.7", "")).toBeNull();
+       |            ^
+     38|     expect(pinOfFields("", "3.05")).toBeNull();
+     39|     expect(pinOfFields("", "")).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > pinOfFields — la position que portent les deux champs > une saisie illisible ou hors des bornes du contrat n'est pas une position
+TypeError: pinOfFields is not a function
+ ❯ src/venues/place-fields-map.test.tsx:43:12
+     41| 
+     42|   it("une saisie illisible ou hors des bornes du contrat n'est pas une…
+     43|     expect(pinOfFields("abc", "3.05")).toBeNull();
+       |            ^
+     44|     expect(pinOfFields("91", "3.05")).toBeNull();
+     45|     expect(pinOfFields("36.7", "-181")).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > PlaceFields — la carte et les deux champs > les deux champs texte RESTENT (le chemin clavier), et la carte reçoit la position qu'ils portent
+TestingLibraryElementError: Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_0_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_0_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_1_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_1_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_2_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_2_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_3_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_3_"
+          inputmode="decimal"
+          type="text"
+          value="36.5"
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_4_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_4_"
+          inputmode="decimal"
+          type="text"
+          value="3.1"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/venues/place-fields-map.test.tsx:55:19
+     53|     expect(champ(messages.fr.venue.ui.form.lat).value).toBe("36.5");
+     54|     expect(champ(messages.fr.venue.ui.form.lng).value).toBe("3.1");
+     55|     expect(screen.getByTestId("carte-du-point").getAttribute("data-pin…
+       |                   ^
+     56|   });
+     57| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > PlaceFields — la carte et les deux champs > champs vides : la carte n'a aucun point
+TestingLibraryElementError: Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_5_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_5_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_6_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_6_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_7_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_7_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_8_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_8_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_9_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_9_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/venues/place-fields-map.test.tsx:60:19
+     58|   it("champs vides : la carte n'a aucun point", () => {
+     59|     render(<Banc />);
+     60|     expect(screen.getByTestId("carte-du-point").getAttribute("data-pin…
+       |                   ^
+     61|   });
+     62| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > PlaceFields — la carte et les deux champs > ⛔ poser le point écrit la latitude ET la longitude, ensemble — et la paire passe le contrat partagé
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "(test) poser le point"
+
+Here are the accessible roles:
+
+  textbox:
+
+  Name "Quartier (français)":
+  <input
+    dir="ltr"
+    id="_r_a_"
+    type="text"
+    value=""
+  />
+
+  Name "Quartier (arabe)":
+  <input
+    dir="rtl"
+    id="_r_b_"
+    type="text"
+    value=""
+  />
+
+  Name "Adresse":
+  <input
+    id="_r_c_"
+    type="text"
+    value=""
+  />
+
+  Name "Latitude":
+  <input
+    dir="ltr"
+    id="_r_d_"
+    inputmode="decimal"
+    type="text"
+    value=""
+  />
+
+  Name "Longitude":
+  <input
+    dir="ltr"
+    id="_r_e_"
+    inputmode="decimal"
+    type="text"
+    value=""
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="field-hint"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_a_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_a_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_b_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_b_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_c_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_c_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_d_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_d_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_e_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_e_"
+          inputmode="decimal"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/venues/place-fields-map.test.tsx:65:28
+     63|   it("⛔ poser le point écrit la latitude ET la longitude, ensemble — e…
+     64|     render(<Banc />);
+     65|     fireEvent.click(screen.getByRole("button", { name: "(test) poser l…
+       |                            ^
+     66|     const lat = champ(messages.fr.venue.ui.form.lat).value;
+     67|     const lng = champ(messages.fr.venue.ui.form.lng).value;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/venues/place-fields-map.test.tsx > PlaceFields — la carte et les deux champs > saisir une nouvelle latitude au clavier déplace le point de la carte ; en vider un seul le retire
+TestingLibraryElementError: Unable to find an element by: [data-testid="carte-du-point"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_f_"
+            >
+              Quartier (français)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_f_"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_g_"
+            >
+              Quartier (arabe)
+            </label>
+          </span>
+        </div>
+        <input
+          dir="rtl"
+          id="_r_g_"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="field"
+    >
+      <div
+        class="field-head"
+      >
+        <span>
+          <label
+            for="_r_h_"
+          >
+            Adresse
+          </label>
+        </span>
+      </div>
+      <input
+        id="_r_h_"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="field-row"
+    >
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_i_"
+            >
+              Latitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_i_"
+          inputmode="decimal"
+          type="text"
+          value="36.9"
+        />
+        <p
+          class="field-hint"
+        >
+          Coordonnées optionnelles, à renseigner ensemble.
+        </p>
+      </div>
+      <div
+        class="field"
+      >
+        <div
+          class="field-head"
+        >
+          <span>
+            <label
+              for="_r_j_"
+            >
+              Longitude
+            </label>
+          </span>
+        </div>
+        <input
+          dir="ltr"
+          id="_r_j_"
+          inputmode="decimal"
+          type="text"
+          value="3.1"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/venues/place-fields-map.test.tsx:82:19
+     80|     render(<Banc depart={{ lat: "36.5", lng: "3.1" }} />);
+     81|     fireEvent.change(champ(messages.fr.venue.ui.form.lat), { target: {…
+     82|     expect(screen.getByTestId("carte-du-point").getAttribute("data-pin…
+       |                   ^
+     83|     fireEvent.change(champ(messages.fr.venue.ui.form.lng), { target: {…
+     84|     expect(screen.getByTestId("carte-du-point").getAttribute("data-pin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed (7)
+   Start at  00:12:59
+   Duration  1.34s (transform 374ms, setup 149ms, collect 649ms, tests 119ms, environment 582ms, prepare 115ms)
+

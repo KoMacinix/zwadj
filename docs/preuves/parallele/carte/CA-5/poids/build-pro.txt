@@ -1,0 +1,56 @@
+vite v6.4.3 building for production...
+transforming...
+✓ 1867 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                0.47 kB │ gzip:   0.30 kB
+dist/assets/readex-pro-vietnamese-400-normal-DAQS1QRE.woff2    5.22 kB
+dist/assets/readex-pro-vietnamese-300-normal-BbErzVcM.woff2    5.57 kB
+dist/assets/readex-pro-vietnamese-500-normal-Bo8-wSxK.woff2    5.67 kB
+dist/assets/readex-pro-vietnamese-700-normal-BOdn1JB1.woff2    5.68 kB
+dist/assets/readex-pro-vietnamese-600-normal-CvqEbH36.woff2    5.71 kB
+dist/assets/readex-pro-vietnamese-400-normal-DRTbt2AX.woff     7.05 kB
+dist/assets/readex-pro-vietnamese-300-normal-Co7UWWay.woff     7.38 kB
+dist/assets/readex-pro-vietnamese-500-normal-BcJVvAU6.woff     7.42 kB
+dist/assets/readex-pro-vietnamese-600-normal-BT-w1HBH.woff     7.48 kB
+dist/assets/readex-pro-vietnamese-700-normal-DWiQMDrn.woff     7.49 kB
+dist/assets/readex-pro-arabic-400-normal-BzB5iZVu.woff2        9.78 kB
+dist/assets/readex-pro-arabic-300-normal-BWRKQ0Cq.woff2       10.33 kB
+dist/assets/readex-pro-arabic-700-normal-EXBdNfUG.woff2       10.36 kB
+dist/assets/readex-pro-arabic-600-normal-BHxn1TEo.woff2       10.40 kB
+dist/assets/readex-pro-arabic-500-normal-Bmdbfz0h.woff2       10.45 kB
+dist/assets/readex-pro-arabic-400-normal-CRluTl2A.woff        12.37 kB
+dist/assets/readex-pro-arabic-700-normal-CrhlwrkQ.woff        12.79 kB
+dist/assets/readex-pro-arabic-300-normal-BLNop-yJ.woff        12.94 kB
+dist/assets/readex-pro-arabic-500-normal-DZnHuMwu.woff        12.96 kB
+dist/assets/readex-pro-arabic-600-normal-9mhVJBMn.woff        13.02 kB
+dist/assets/readex-pro-latin-ext-400-normal-CDeDBhe3.woff2    13.19 kB
+dist/assets/readex-pro-latin-ext-300-normal-DNjf7_rG.woff2    13.58 kB
+dist/assets/readex-pro-latin-ext-700-normal-Bpf-iva7.woff2    13.69 kB
+dist/assets/readex-pro-latin-ext-500-normal-WcGKYLel.woff2    13.77 kB
+dist/assets/readex-pro-latin-ext-600-normal-DvstIQFU.woff2    13.87 kB
+dist/assets/readex-pro-latin-400-normal-BZtYQVaG.woff2        14.42 kB
+dist/assets/readex-pro-latin-300-normal-DnMmd_eB.woff2        14.90 kB
+dist/assets/readex-pro-latin-500-normal-fMl4bkAY.woff2        14.98 kB
+dist/assets/readex-pro-latin-700-normal-oqSerPEB.woff2        14.98 kB
+dist/assets/readex-pro-latin-600-normal-C3IhmgOg.woff2        15.08 kB
+dist/assets/readex-pro-latin-ext-400-normal-DzeKRH4q.woff     18.26 kB
+dist/assets/readex-pro-latin-400-normal-SP_jEUAw.woff         18.42 kB
+dist/assets/readex-pro-latin-ext-300-normal-BnD3jC7y.woff     18.70 kB
+dist/assets/readex-pro-latin-ext-700-normal-C1QSodUR.woff     18.76 kB
+dist/assets/readex-pro-latin-ext-500-normal-vT4Zcawv.woff     18.81 kB
+dist/assets/readex-pro-latin-700-normal-L_HvUYJT.woff         18.82 kB
+dist/assets/readex-pro-latin-300-normal-CaFWNMpl.woff         18.83 kB
+dist/assets/readex-pro-latin-ext-600-normal-DRKkFP2q.woff     18.87 kB
+dist/assets/readex-pro-latin-500-normal-CQ-MGytt.woff         18.87 kB
+dist/assets/readex-pro-latin-600-normal-CeYg1m9V.woff         18.91 kB
+dist/assets/leaflet-canvas-CIGW-MKW.css                       15.61 kB │ gzip:   6.46 kB
+dist/assets/index-CMeerXu3.css                                47.63 kB │ gzip:   8.76 kB
+dist/assets/leaflet-canvas-kxSPG0VB.js                       152.94 kB │ gzip:  44.67 kB
+dist/assets/index-ZflbCB9l.js                                712.27 kB │ gzip: 203.47 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.09s

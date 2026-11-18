@@ -1,0 +1,37 @@
+6 fichier(s) modifié(s) depuis HEAD → 4 campagne(s) concernée(s) sur 63.
+  · neutralize-b7.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-ca4.py  (2 fichier(s) en commun)
+      apps/client/src/components/venue/venue-detail-view.tsx
+      apps/client/src/components/venue/venue-location-map.tsx
+  · neutralize-fc1.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+  · neutralize-fc2.py  (1 fichier(s) en commun)
+      apps/client/src/app/theme.css
+
+[1/4] neutralisation/neutralize-b7.py …
+    sortie=0  3 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[2/4] neutralisation/neutralize-ca4.py …
+    sortie=0  12 mordue(s), 0 muette(s)/erreur(s), 0 non mesurée(s)
+
+[3/4] neutralisation/neutralize-fc1.py …
+    sortie=3  4 mordue(s), 0 muette(s)/erreur(s), 2 non mesurée(s)
+
+[4/4] neutralisation/neutralize-fc2.py …
+    sortie=3  0 mordue(s), 0 muette(s)/erreur(s), 1 non mesurée(s)
+
+================================================================================================
+campagne                           sortie  décl  mord  muet  nonm   sec
+================================================================================================
+neutralize-b7.py                        0     3     3     0     0   150
+neutralize-ca4.py                       0    12    12     0     0    40
+neutralize-fc1.py                       3     4     4     0     2     8
+neutralize-fc2.py                       3     0     0     0     1     0
+================================================================================================
+MESURÉ : 19 garde(s) mordue(s) · 0 muette(s)/erreur(s) · 3 non mesurée(s) · 4 campagne(s) · 199s
+journaux : .neutralisation-journaux/ (ignoré par git)
+⚠ TRI PARTIEL — avant une LIVRAISON, relancer avec --tout.
+  ⚠ neutralisation/neutralize-fc1.py → sortie 3
+  ⚠ neutralisation/neutralize-fc2.py → sortie 3
+code de sortie : 1

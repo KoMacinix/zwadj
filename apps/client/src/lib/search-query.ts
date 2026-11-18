@@ -239,6 +239,18 @@ export function toApiQuery(state: SearchState): URLSearchParams {
   return query;
 }
 
+/** Querystring des POINTS DE LA CARTE (`GET /venue-map`, lot CA-2) : celle de la liste, moins la pagination.
+ *
+ *  ⚠ DÉRIVÉE de `toApiQuery`, jamais reconstruite : la carte doit montrer les salles des MÊMES filtres que la grille, et
+ *  une seconde liste de filtres écrite ici divergerait au premier critère ajouté. La route ignore `page` et `pageSize` ;
+ *  on les retire quand même, pour que changer de page ne change pas cette chaîne — donc ne recharge pas la carte. */
+export function toMapQuery(state: SearchState): URLSearchParams {
+  const query = toApiQuery(state);
+  query.delete("page");
+  query.delete("pageSize");
+  return query;
+}
+
 /** Querystring destinée à l'URL PUBLIQUE (dinars, amenities répétées).
  *  Les valeurs par défaut sont OMISES : `?sort=recent&page=1` et l'URL nue
  *  rendraient la même page sous deux adresses — du contenu dupliqué pour un

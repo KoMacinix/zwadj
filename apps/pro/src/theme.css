@@ -1209,3 +1209,16 @@
     min-block-size: 0;
   }
 }
+
+/* ── Formulaire de salle : poser le point sur la carte (lot CA-5, session « carte ») ──
+   Le cadre de la carte (`.zw-map*`) vient de `@zwadj/ui` ; ici, seulement sa place sous les deux champs de coordonnées. */
+.venue-pin-map {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  margin-block-start: 12px;
+}
+
+.venue-pin-map .zw-map {
+  justify-self: stretch;
+}

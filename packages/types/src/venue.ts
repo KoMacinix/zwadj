@@ -892,6 +892,58 @@ export interface VenueListResponse {
   availableOn: string | null;
 }
 
+/* ════════ Carte des salles — lot CA-1 (session « carte ») ══════════════════════
+ * `GET /api/v1/venue-map` : les POINTS des salles publiques qui ont des
+ * coordonnées, pour les MÊMES filtres que la liste (`venueListQuerySchema`,
+ * validé tel quel : `page` et `pageSize` sont acceptés et ignorés, la carte ne
+ * pagine pas ; `sort` ordonne — il décide seulement QUELS points restent quand
+ * le plafond tronque).
+ *
+ * ⚠ ROUTE SŒUR de `/venues`, PAS `/venues/map` : « map » est un slug possible
+ * (`SLUG_PATTERN` l'accepte, `slugify("Map")` le rend) et la fiche de cette
+ * salle aurait été masquée sans erreur. Même patron que `/venue-styles`.
+ *
+ * ⚠ La LISTE ne porte toujours ni latitude ni longitude (`VenueSummaryDTO`) :
+ * la carte a sa route, la liste garde son contrat. */
+
+/** Plafond de points par réponse. Au-delà, `truncated` vaut `true` et l'écran
+ *  DIT qu'il ne montre pas tout — une carte qui s'arrête en silence se lit
+ *  comme « il n'y a rien d'autre ». */
+export const VENUE_MAP_MAX_POINTS = 500;
+
+/** Un point de la carte : de quoi le placer, le nommer et ouvrir sa fiche —
+ *  rien d'autre. Ni taux, ni adresse, ni propriétaire. */
+export interface VenueMapPointDTO {
+  id: string;
+  slug: string;
+  nameFr: string;
+  nameAr: string;
+  lat: number;
+  lng: number;
+  /** Centimes de DZD, tels que stockés : l'écran FORMATE, il ne calcule pas. */
+  basePriceCents: number;
+  capacityMax: number;
+  /** Vignette de couverture (première photo), `null` : salle sans photo. */
+  coverThumbUrl: string | null;
+}
+
+export interface VenueMapResponse {
+  /** Les salles SITUÉES (latitude ET longitude), au plus `limit`. */
+  points: VenueMapPointDTO[];
+  /** Salles qui répondent aux filtres, situées ou non — le `total` de la liste
+   *  pour la même requête. */
+  total: number;
+  /** Parmi elles, celles qui n'ont pas de position. Elles sont dans la liste,
+   *  pas sur la carte : l'écran le dit. */
+  withoutCoordinates: number;
+  /** Il existe plus de salles situées que de points rendus. */
+  truncated: boolean;
+  /** ÉCHO du plafond appliqué (`VENUE_MAP_MAX_POINTS`). */
+  limit: number;
+  /** ÉCHO de la date demandée, `null` si aucune — comme `VenueListResponse`. */
+  availableOn: string | null;
+}
+
 /**
  * Vue ADMIN (Lot A3) = vue pro + les deux taux D35 — la SEULE surface de
  * l'API où ces taux existent. rejectionReason reste exclu (phase 12).

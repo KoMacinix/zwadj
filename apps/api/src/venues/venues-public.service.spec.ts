@@ -10,7 +10,8 @@ import { VenuesPublicService } from "./venues-public.service";
 // ⚠ Les MÊMES fonctions que le service, pas une arithmétique de test
 // parallèle : une seconde implémentation des mois civils dériverait sans que
 // rien ne rougisse.
-import { BOOKING_HORIZON_MONTHS } from "@zwadj/types";
+import { BOOKING_HORIZON_MONTHS, VENUE_MAP_MAX_POINTS } from "@zwadj/types";
+import { HAS_COORDINATES, VENUE_MAP_SELECT } from "./venue-map";
 import {
   addMonthsCivil,
   civilTodayAt,
@@ -513,5 +514,101 @@ describe("VenuesPublicService.list — availableOn : ce qui est annoté", () => 
     expect(res.items).toHaveLength(1);
     expect(res.total).toBe(37);
     expect(res.availableOn).toBe(LE_2_JUIN);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot CA-1 (session « carte ») — `map()` : les points de la carte.
+// LA chose à prouver ici : la carte filtre par la MÊME fonction que la liste.
+// La garde ne recopie donc aucun `where` : elle appelle `list()` puis `map()`
+// avec la même requête et compare ce que chacune a demandé à la base.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("VenuesPublicService.map — les points de la carte (CA-1)", () => {
+  const REQUETE_RICHE: VenueListQueryInput = {
+    ...QUERY_DEFAULTS,
+    cityId: "018f0000-0000-7000-8000-00000000cccc",
+    guests: 120,
+    maxCapacity: 400,
+    minPriceCents: 5_000_000,
+    maxPriceCents: 30_000_000,
+    ceremonyType: "outdoor",
+    styles: "jardin,bord-de-mer",
+    amenities: "parking,wifi",
+    sort: "price_asc",
+    availableOn: LE_2_JUIN
+  };
+
+  /** Ce que `list()` demande à la base pour cette requête — l'AUTORITÉ. */
+  async function demandeDeLaListe(query: VenueListQueryInput) {
+    const { service, prisma } = buildService();
+    await service.list(query);
+    const appel = prisma.venue.findMany.mock.calls[0]?.[0] as { where: unknown; orderBy: unknown };
+    return { where: appel.where, orderBy: appel.orderBy };
+  }
+
+  it("⛔ le total se compte avec le MÊME `where` que la liste, pour une requête qui porte TOUS les filtres", async () => {
+    const liste = await demandeDeLaListe(REQUETE_RICHE);
+    const { service, prisma } = buildService();
+    await service.map(REQUETE_RICHE);
+    expect(prisma.venue.count.mock.calls[0]?.[0]).toEqual({ where: liste.where });
+  });
+
+  it("les points : ce même `where` ET des coordonnées, dans l'ordre de la liste, au plafond, sans pagination", async () => {
+    const liste = await demandeDeLaListe(REQUETE_RICHE);
+    const { service, prisma } = buildService();
+    await service.map({ ...REQUETE_RICHE, page: 3, pageSize: 1 });
+    const appel = prisma.venue.findMany.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(appel.where).toEqual({ AND: [liste.where, HAS_COORDINATES] });
+    expect(appel.orderBy).toEqual(liste.orderBy);
+    expect(appel.take).toBe(VENUE_MAP_MAX_POINTS);
+    expect(appel.select).toBe(VENUE_MAP_SELECT);
+    // ⚠ `page` et `pageSize` sont acceptés et IGNORÉS : la carte ne pagine pas.
+    expect("skip" in appel).toBe(false);
+  });
+
+  it("les salles SITUÉES se comptent sur le prédicat des points, pas sur celui du total", async () => {
+    const liste = await demandeDeLaListe(QUERY_DEFAULTS);
+    const { service, prisma } = buildService();
+    await service.map(QUERY_DEFAULTS);
+    expect(prisma.venue.count.mock.calls[1]?.[0]).toEqual({ where: { AND: [liste.where, HAS_COORDINATES] } });
+  });
+
+  it("l'enveloppe : total, sans coordonnées, tronqué, plafond, écho de la date", async () => {
+    const { service, prisma } = buildService();
+    prisma.venue.findMany.mockResolvedValue([]);
+    prisma.venue.count.mockResolvedValueOnce(VENUE_MAP_MAX_POINTS + 9).mockResolvedValueOnce(VENUE_MAP_MAX_POINTS + 1);
+    const res = await service.map({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(res.total).toBe(VENUE_MAP_MAX_POINTS + 9);
+    expect(res.withoutCoordinates).toBe(8);
+    expect(res.truncated).toBe(true);
+    expect(res.limit).toBe(VENUE_MAP_MAX_POINTS);
+    expect(res.availableOn).toBe(LE_2_JUIN);
+  });
+
+  it("⚠ les TROIS lectures de l'annotation n'ont PAS lieu : un point ne dit rien d'une disponibilité", async () => {
+    const { service, prisma } = buildService();
+    await service.map({ ...QUERY_DEFAULTS, availableOn: LE_2_JUIN });
+    expect(prisma.slotTemplate.findMany).not.toHaveBeenCalled();
+    expect(prisma.booking.findMany).not.toHaveBeenCalled();
+    expect(prisma.availabilityBlock.findMany).not.toHaveBeenCalled();
+  });
+
+  it("une date passée est REFUSÉE comme pour la liste, avant toute requête (un point ne s'écrête pas)", async () => {
+    const { service, prisma } = buildService();
+    await expect(service.map({ ...QUERY_DEFAULTS, availableOn: "2020-01-01" })).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof BadRequestException && (e.getResponse() as { code?: string }).code === "AVAILABLE_ON_PAST"
+    );
+    expect(prisma.venue.findMany).not.toHaveBeenCalled();
+    expect(prisma.venue.count).not.toHaveBeenCalled();
+  });
+
+  it("une date au-delà de l'horizon est refusée avec SON code", async () => {
+    const { service } = buildService();
+    await expect(service.map({ ...QUERY_DEFAULTS, availableOn: AU_DELA_DE_L_HORIZON })).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof BadRequestException &&
+        (e.getResponse() as { code?: string }).code === "AVAILABLE_ON_BEYOND_HORIZON"
+    );
   });
 });

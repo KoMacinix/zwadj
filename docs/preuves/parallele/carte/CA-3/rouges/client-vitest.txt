@@ -1,0 +1,87 @@
+
+ RUN  v3.2.7 /home/user/zwadj/apps/client
+
+ ❯ src/app/[locale]/page.test.tsx (29 tests | 1 failed) 845ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ ne nomme AUCUN lauréat d'award — la section n'existe pas 131ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ n'affiche AUCUN compte de prestataires — un nombre serait vérifiable, et faux 76ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ aucune carte de catégorie n'est cliquable ni focusable 40ms
+   ✓ Accueil — ce que la page ne promet pas > ⚠ ne dit plus l'état de l'API — ce n'est pas l'affaire d'un visiteur 27ms
+   × Accueil — ce que la page ne promet pas > ⛔ CA-3 — la section carte : au chargement la carte n'est PAS montée (R-9), et un lien mène à la recherche 30ms
+     → expected [] to deeply equal [ '' ]
+   ✓ Accueil — la recherche marche sans JavaScript > le héros est un vrai formulaire GET vers /salles 30ms
+   ✓ Accueil — la recherche marche sans JavaScript > les champs portent les noms que `/salles` LIT — aucune traduction d'URL 29ms
+   ✓ Accueil — la recherche marche sans JavaScript > ⛔ chaque palier de budget SURVIT à la lecture de l'URL 29ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > rend les salles RÉELLES quand l'API en renvoie 33ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > ⚠ les salles RÉELLES gagnent sur le jeu de démonstration, même en dev 31ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > ⚠ une salle réelle sort SANS étoile — le DTO ne porte pas de note 18ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > le jeu de démonstration ne s'affiche JAMAIS sans bandeau 43ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > ⚠ sans jeu de démonstration, un catalogue vide le DIT — il ne se remplit pas 17ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > le titre de salle est un h3, sous le h2 de section 20ms
+   ✓ Accueil — salles réelles, jeu de démonstration, catalogue vide > ⚠ n'affiche PAS deux fois la même salle dans les deux grilles 22ms
+   ✓ Accueil — quartiers relevés, jamais inventés > relève les quartiers des salles affichées, sans aucun compte 26ms
+   ✓ Accueil — quartiers relevés, jamais inventés > ⚠ une salle SANS quartier ne produit aucune puce — rien n'est substitué 21ms
+   ✓ Accueil — quartiers relevés, jamais inventés > ⚠ les quartiers ne sont PAS cliquables — aucun filtre par quartier n'existe 21ms
+   ✓ Accueil — quartiers relevés, jamais inventés > catalogue vide ⇒ aucun quartier inventé 14ms
+   ✓ Accueil — espace gestionnaire > ⚠ le bloc DISPARAÎT sans PRO_URL, au lieu de mener nulle part 30ms
+   ✓ Accueil — espace gestionnaire > rend un lien EXTERNE quand l'URL est configurée 21ms
+   ✓ ⚠ Aucune salle de démonstration en production > rend null en production 0ms
+   ✓ ⚠ Aucune salle de démonstration en production > rend le jeu en développement et en test 0ms
+   ✓ ⚠ Aucune salle de démonstration en production > ⚠ une variable ABSENTE n'est pas la production — on montre, on ne cache pas 0ms
+   ✓ Accueil — arabe > se rend en arabe sans clé manquante 22ms
+   ✓ FC-8 — l'accueil : TROIS champs aux noms du contrat (D231) > sans JavaScript, le formulaire soumet la commune, les invités et le budget — et rien d'autre 34ms
+   ✓ FC-8 — l'accueil : TROIS champs aux noms du contrat (D231) > la commune est GROUPÉE par wilaya, « Toute l'Algérie » d'abord 19ms
+   ✓ FC-8 — l'accueil : TROIS champs aux noms du contrat (D231) > ⚠ avec JavaScript, le même formulaire devient l'ÉTAPE 1 : il porte l'étape SUIVANTE de l'assistant (`guide`) 24ms
+   ✓ FC-8 — « Li hwas lqa » : l'entrée de l'assistant mène au mode guidé de `/salles` (D229) > le libellé est celui que D229 décide, et le lien ouvre l'assistant à sa première étape 36ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/map/near-viewport-map.test.tsx [ src/components/map/near-viewport-map.test.tsx ]
+Error: Failed to resolve import "./near-viewport-map" from "src/components/map/near-viewport-map.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/user/zwadj/apps/client/src/components/map/near-viewport-map.test.tsx:4:0
+  9  |  const __vi_import_0__ = await import("react/jsx-dev-runtime");
+  10 |  const __vi_import_1__ = await import("@testing-library/react");
+  11 |  const __vi_import_2__ = await import("./near-viewport-map");
+     |                                       ^
+  12 |  const __vi_import_3__ = await import("./map-test-support");
+  13 |  
+ ❯ TransformPluginContext._formatLog ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42658:41
+ ❯ TransformPluginContext.error ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42655:16
+ ❯ normalizeUrl ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40634:23
+ ❯ ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40753:37
+ ❯ TransformPluginContext.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:40680:7
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42453:18
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.20.0_jiti@2.7.0_terser@5.48.0_tsx@4.23.1/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35845:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/[locale]/page.test.tsx > Accueil — ce que la page ne promet pas > ⛔ CA-3 — la section carte : au chargement la carte n'est PAS montée (R-9), et un lien mène à la recherche
+AssertionError: expected [] to deeply equal [ '' ]
+
+- Expected
++ Received
+
+- [
+-   "",
+- ]
++ []
+
+ ❯ src/app/[locale]/page.test.tsx:103:62
+    101|     // salles publiques) — et rien d'autre ne monte une carte ici.
+    102|     const attente = Array.from(section?.querySelectorAll('[data-testid…
+    103|     expect(attente.map((n) => n.getAttribute("data-query"))).toEqual([…
+       |                                                              ^
+    104|     expect(document.querySelectorAll(".leaflet-container, [data-testid…
+    105|     // Le lien vers la recherche marche sans JavaScript : c'est le che…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  1 failed | 28 passed (29)
+   Start at  23:09:45
+   Duration  2.56s (transform 407ms, setup 191ms, collect 885ms, tests 845ms, environment 1.01s, prepare 137ms)
+

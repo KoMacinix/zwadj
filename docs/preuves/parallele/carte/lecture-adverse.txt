@@ -1,0 +1,98 @@
+LECTURE ADVERSE DE LA CONSIGNE « CARTE » CONTRE LE DÉPÔT — 13/11/2026, AVANT LE PREMIER LOT
+========================================================================================
+Départ : origin/main = 26ad5c77ec03a73d82e92368f7d97c4beac7556f (attendu 26ad5c7 : CONFORME ; le rang 50 n'est pas clos).
+Branche : par-carte, créée de origin/main, poussée vide pour vérifier que le distant l'accepte (accepté).
+Dernier rang lu dans l'ordre des rangs : RANG 49 clos (D347), « RANG 50 : EN ATTENTE DE CADRAGE DU RELECTEUR ».
+Cette session ne prend ni numéro D ni rang (point 0 d).
+
+A. L'ENVIRONNEMENT N'EST PAS CELUI QUE LA CONSIGNE DÉCRIT — MESURÉ, PAS SUPPOSÉ
+------------------------------------------------------------------------------
+A-1  La session tourne dans un CONTENEUR CLOUD (Linux, 4 cœurs, 16 Go, 15,3 Go libres), pas sur le poste de Ko.
+     Il n'y a ni `git worktree` créé par Ko, ni « dossier principal » d'où copier des `.env`.
+     ⇒ les `.env` locaux sont des copies des `.env.example` SUIVIS (valeurs d'exemple, aucune valeur réelle) ; ils sont
+       ignorés par git et ne sont ni affichés ni commités.
+A-2  « Secteur / batterie » : aucun capteur d'alimentation (`/sys/class/power_supply` vide). La règle R-9 de D340 est sans
+     objet ici ; elle n'est ni satisfaite ni enfreinte. Les durées relevées dans ce conteneur ne se comparent à aucune
+     durée du poste de Ko (D290).
+A-3  Docker : ABSENT (« failed to connect to the docker API at unix:///var/run/docker.sock »). PostgreSQL 16.15 est
+     installé localement ; le projet exige 18 (uuidv7 natif). Le montage d'intégration du dépôt prévoit ce cas :
+     `ALLOW_PG_LT18_POLYFILL=1` (apps/api/test/int/setup-global.ts). ⇒ `test:int` se joue ici sur PG 16 + polyfill,
+     « environnement d'exception » au sens de ce fichier. C'est DIT à chaque porte ; ce n'est pas le PG 18 de Ko.
+A-4  Les deux autres sessions (`par-pub`, `par-admin`) ne partagent PAS cette machine (aucun autre processus, aucun
+     dossier voisin). Le verrou `../zwadj-verrou-portes` est quand même pris et rendu autour de `test:int` / `test:e2e` :
+     il ne coûte rien, et la consigne reste appliquée telle quelle.
+A-5  chrome = 0, headless_shell = 0 au relevé. Chromium préinstallé : /opt/pw-browsers/chromium-1243 ; l'e2e épingle
+     @playwright/test 1.50.1 ⇒ compatibilité À MESURER au lot CA-6 (pas présumée).
+A-6  Réseau : registre npm joignable (200). `tile.openstreetmap.org` est REFUSÉ par le proxy de sortie (403 au CONNECT).
+     ⇒ aucune tuile réelle ne peut être chargée d'ici : la carte n'est vue dans un navigateur qu'avec des tuiles
+       interceptées (c'est de toute façon la règle R-12). Ko la voit en vrai sur son poste.
+A-7  Schema-engine Prisma présent dans node_modules ; `prisma generate` exécuté (client réel).
+
+B. LES CONSTATS DU RELECTEUR, CONFRONTÉS (un constat faux arrêterait le lot)
+---------------------------------------------------------------------------
+B-1  VRAI  `VenueSummaryDTO` (packages/types/src/venue.ts:14) ne porte ni lat ni lng ; le SELECT de la liste non plus
+           (« ni taux, ni GPS », venues-public.service.ts) ; un test d'intégration l'exige même
+           (« aucune clé de taux … ni GPS dans les cartes de la liste »). ⇒ la liste NE CHANGE PAS : route séparée.
+B-2  VRAI  `VenuePublicDTO` (:918) porte lat/lng (:930-931), `number | null`.
+B-3  VRAI  accueil : section `hm-map`, `<p className="hm-map-soon">` (home-view.tsx:210-218), clés `home.map.title|soon`.
+B-4  VRAI  recherche : `map-panel` (search-view.tsx), clés `search.map.title|soon`, bascule = `useState`.
+B-5  VRAI  pro : deux champs texte lat/lng dans `PlaceFields` (apps/pro/src/venues/venue-form.tsx:885-970).
+           `venue-form.tsx` n'est PAS dans la liste des fichiers interdits (c'est `venue-wizard.tsx` qui l'est).
+B-6  VRAI  fiche client : adresse + quartier/commune seulement (venue-detail-view.tsx, section `location`).
+B-7  VRAI  aucune bibliothèque de carte : 0 occurrence de leaflet / maplibre / mapbox dans les package.json et le lockfile.
+B-8  Base : `venues.lat` / `venues.lng` = DECIMAL(9,6) NULLABLES, AUCUN `CHECK` qui les apparie (cherché dans
+           prisma/migrations, D186). ⇒ la route exige les DEUX non nuls ; une salle à une seule coordonnée compte
+           « sans coordonnées ». Aucune migration n'est nécessaire.
+B-9  Backlog, relevé par recherche (texte brut, lignes de ZWADJ_BACKLOG.md à 26ad5c7) :
+       13   « Maps: deferred from MVP … Real Leaflet/tile-provider integration is a v1.1 decision »
+       198  « [~] Add index on Venue coords + city » (index géo restant)
+       627  « [x] Map placeholder … » (accueil)      723  « [x] Placeholder carte … (décision produit n°2) »
+       690  « Deferred to post-MVP : … real interactive map (Leaflet + tile provider decision) »
+       1122 « [ ] Map pin-drop + reverse geocoding during venue creation [PRO][P1] »
+       1186 « [ ] Circuit breakers + timeouts on payment/SMS/email/maps calls [BACK][P1] »
+       1189 « [ ] Choose/configure a map tile provider (OSM usage policy / own tiles) [INFRA][P1] »
+       1617, 1631 : rappels d'audit (« geocoding », « map-tile provider/cost »).
+     Aucune autre entrée trouvée (motifs : leaflet, tile, tuile, pin-drop, geocod, maps, carte à venir, près de moi, cluster).
+     ZWADJ_CONTINUITE.md:165 = la décision produit n° 2. Rien n'y est écrit par cette session (point 0 d).
+
+C. ÉCARTS QUE LA SESSION PREND, AVEC LEUR MOTIF (chacun repris au BILAN)
+-----------------------------------------------------------------------
+C-1  [ÉCART R-3] LE CHEMIN DE LA ROUTE : `GET /api/v1/venue-map`, PAS `GET /api/v1/venues/map`.
+     Mesuré : `GET /venues/:slug` existe sur le même contrôleur ; `SLUG_PATTERN` (/^[a-z0-9]+(?:-[a-z0-9]+)*$/) accepte
+     « map » et `slugify("Map")` rend « map ». Une salle nommée « Map » aurait une fiche que la route de carte masquerait
+     (ou l'inverse selon l'ordre de déclaration) — sans erreur. L'éviter sous `/venues/` demanderait de RÉSERVER un slug,
+     donc de toucher la création pro (comportement non demandé). Le dépôt a déjà un précédent de route sœur :
+     `GET /api/v1/venue-styles`. La consigne dit « proposition » : le chemin n'était pas imposé.
+C-2  [ÉCART consigne, section 3] `@zwadj/api-client` N'EST PAS TOUCHÉ. Mesuré : les lectures publiques du client ne
+     passent pas par ce paquet (apps/client/src/lib/api.ts, commentaire « Lot A7 » : mutex de rafraîchissement et
+     cookies n'ont pas de sens pour une route anonyme) ; `countVenues` y est déjà le précédent d'un appel public fait
+     depuis le navigateur. L'app Pro n'a pas besoin des points. ⇒ la fonction d'accès vit dans apps/client/src/lib/api.ts.
+C-3  [ÉCART R-5] LA BASCULE GRILLE/CARTE RESTE UN ÉTAT LOCAL, elle ne passe PAS par `toPublicQuery`.
+     Le commentaire de tête de search-view.tsx dit : « Le jour où la carte existe, elle passera par toPublicQuery ».
+     R-9 dit : la carte de la recherche ne se charge qu'AU GESTE. Les deux se contredisent : un paramètre d'adresse
+     ferait charger les tuiles (donc partir l'adresse IP vers le tiers) à l'ouverture d'un lien partagé, sans geste.
+     R-9 est une décision adoptée par Ko (point 0 f) ; elle l'emporte. Le commentaire de tête est réécrit pour le dire.
+C-4  [ÉCART R-11] LA MAQUETTE N'EST PAS AU DÉPÔT. `App.tsx` de la maquette (« design.zip ») : 0 fichier trouvé (le seul
+     App.tsx est celui de l'app Pro). L'écran de carte ne peut donc être confronté à rien. La carte reprend les
+     jetons du thème (aucune couleur en dur) et la carte de salle existante ; l'écart ne peut pas être mesuré, il est dit.
+C-5  LES MÊMES FILTRES (R-3) : la route valide sa requête par `venueListQuerySchema` LUI-MÊME (pas une copie, pas un
+     dérivé) et bâtit son `where` par la fonction dont la liste tire le sien. `page` et `pageSize` sont acceptés et
+     ignorés (la carte ne pagine pas) ; `sort` ordonne — il ne décide que QUELS points restent quand le plafond tronque.
+     `availableOn` se comporte comme pour la liste (refus du passé et du hors-horizon, exclusion des salles sans
+     créneau actif) et son écho est rendu (D212). Motif de ne pas dériver un second schéma : `venue.ts` est un fichier
+     partagé où cette session n'écrit qu'un bloc neuf, et un schéma dérivé serait une seconde autorité.
+C-6  Le REGROUPEMENT de points (R-10) n'est pas fait : aucune mesure ne le rend nécessaire à ce jour (le plafond borne
+     le nombre de points). Reporté.
+
+D. CE QUE LA CONSIGNE NE DIT PAS, ET QUE LA SESSION DEVRA TRANCHER SEULE (repris au BILAN, « décisions prises seule »)
+---------------------------------------------------------------------------------------------------------------------
+D-1  le plafond de points ; D-2 le nom des variables d'environnement (client Next et pro Vite) ;
+D-3  ce que « production sans variable » veut dire pour l'app Pro (même règle que le client) ;
+D-4  le centre et le zoom quand il n'y a aucun point ; D-5 `@types/leaflet` (dépendance de développement, pour TS strict).
+
+E. FRONTIÈRES
+-------------
+Fichiers interdits : aucun n'est dans les tables prévues. `apps/api/test/int/rbac-all-routes.int-spec.ts` porte la liste
+des routes publiques (lignes 159-162) : la route neuve doit y entrer (fichier de test, non interdit ; `par-admin` peut y
+toucher aussi ⇒ signalé au BILAN pour la fusion).
+Date : la consigne est datée du 10/11/2026 ; la session s'ouvre le 13/11/2026.

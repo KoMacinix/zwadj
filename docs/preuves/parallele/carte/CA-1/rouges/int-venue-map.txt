@@ -1,0 +1,187 @@
+
+ RUN  v3.2.7 /home/user/zwadj/apps/api
+
+ ❯ test/int/venue-map.int-spec.ts (9 tests | 8 failed) 2124ms
+   × GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ 344ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — la carte et la liste parlent des mêmes salles > l'ordre des points est celui de la liste (le tri décide quels points restent si le plafond tronque) 211ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ un point ne porte QUE les champs du contrat : ni taux, ni adresse, ni propriétaire 197ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — la carte et la liste parlent des mêmes salles > `page` et `pageSize` ne découpent pas la carte : tous les points, quelle que soit la page demandée 255ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT 202ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > route PUBLIQUE : aucune session n'est demandée 170ms
+     → expected 404 to be 200 // Object.is equality
+   × GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > une date passée est refusée avec le code de la liste (400 AVAILABLE_ON_PAST), pas rendue vide 172ms
+     → expected 404 to be 400 // Object.is equality
+   × GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > un filtre mal formé est un 400, comme pour la liste (même schéma) 155ms
+     → expected 404 to be 400 // Object.is equality
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > ⛔ la route de carte ne MASQUE aucune fiche : une salle dont le slug est « map » reste lisible 166ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ carte test/int/venue-map.int-spec.ts:97:22
+     95| async function carte(query: string): Promise<VenueMapResponse> {
+     96|   const res = await api().get(`/api/v1/venue-map${query ? `?${query}` …
+     97|   expect(res.status).toBe(200);
+       |                      ^
+     98|   return res.body as VenueMapResponse;
+     99| }
+ ❯ test/int/venue-map.int-spec.ts:147:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — la carte et la liste parlent des mêmes salles > l'ordre des points est celui de la liste (le tri décide quels points restent si le plafond tronque)
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ carte test/int/venue-map.int-spec.ts:97:22
+     95| async function carte(query: string): Promise<VenueMapResponse> {
+     96|   const res = await api().get(`/api/v1/venue-map${query ? `?${query}` …
+     97|   expect(res.status).toBe(200);
+       |                      ^
+     98|   return res.body as VenueMapResponse;
+     99| }
+ ❯ test/int/venue-map.int-spec.ts:168:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ un point ne porte QUE les champs du contrat : ni taux, ni adresse, ni propriétaire
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ carte test/int/venue-map.int-spec.ts:97:22
+     95| async function carte(query: string): Promise<VenueMapResponse> {
+     96|   const res = await api().get(`/api/v1/venue-map${query ? `?${query}` …
+     97|   expect(res.status).toBe(200);
+       |                      ^
+     98|   return res.body as VenueMapResponse;
+     99| }
+ ❯ test/int/venue-map.int-spec.ts:174:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — la carte et la liste parlent des mêmes salles > `page` et `pageSize` ne découpent pas la carte : tous les points, quelle que soit la page demandée
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ carte test/int/venue-map.int-spec.ts:97:22
+     95| async function carte(query: string): Promise<VenueMapResponse> {
+     96|   const res = await api().get(`/api/v1/venue-map${query ? `?${query}` …
+     97|   expect(res.status).toBe(200);
+       |                      ^
+     98|   return res.body as VenueMapResponse;
+     99| }
+ ❯ test/int/venue-map.int-spec.ts:200:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ carte test/int/venue-map.int-spec.ts:97:22
+     95| async function carte(query: string): Promise<VenueMapResponse> {
+     96|   const res = await api().get(`/api/v1/venue-map${query ? `?${query}` …
+     97|   expect(res.status).toBe(200);
+       |                      ^
+     98|   return res.body as VenueMapResponse;
+     99| }
+ ❯ test/int/venue-map.int-spec.ts:220:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > route PUBLIQUE : aucune session n'est demandée
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/venue-map.int-spec.ts:231:24
+    229|   it("route PUBLIQUE : aucune session n'est demandée", async () => {
+    230|     const res = await api().get("/api/v1/venue-map");
+    231|     expect(res.status).toBe(200);
+       |                        ^
+    232|     expect(res.body.points).toEqual([]);
+    233|     expect(res.body.total).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > une date passée est refusée avec le code de la liste (400 AVAILABLE_ON_PAST), pas rendue vide
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/venue-map.int-spec.ts:238:24
+    236|   it("une date passée est refusée avec le code de la liste (400 AVAILA…
+    237|     const res = await api().get("/api/v1/venue-map?availableOn=2020-01…
+    238|     expect(res.status).toBe(400);
+       |                        ^
+    239|     expect((res.body as { message?: { code?: string } }).message?.code…
+    240|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > un filtre mal formé est un 400, comme pour la liste (même schéma)
+AssertionError: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/venue-map.int-spec.ts:245:66
+    243|     const mal = "guests=abc";
+    244|     expect((await api().get(`/api/v1/venues?${mal}`)).status).toBe(400…
+    245|     expect((await api().get(`/api/v1/venue-map?${mal}`)).status).toBe(…
+       |                                                                  ^
+    246|   });
+    247| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 1 passed (9)
+   Start at  05:35:22
+   Duration  4.65s (transform 821ms, setup 23ms, collect 1.84s, tests 2.12s, environment 0ms, prepare 72ms)
+

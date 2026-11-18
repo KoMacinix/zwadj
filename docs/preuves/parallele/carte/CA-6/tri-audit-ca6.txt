@@ -1,0 +1,10 @@
+TRI DE L'AUDIT DE SECRETS — CA-6 (14/11/2026)
+Précédente : ../CA-5/audit-secrets-ca5.txt · nouvelle : audit-secrets-ca6.txt.
+Alertes absentes de la précédente : 6, chacune lue au contexte (lignes 6170 à 6181 de la sortie scellée).
+  · 4 dans portes/test-int.txt : des TITRES de tests existants de l'API recités par la sortie de la porte (texte masqué de
+    3 caractères pour trois d'entre eux : un statut HTTP).
+  · 1 dans portes/portes.md et 1 dans rouges/rouges.md : deux phrases de la session qui NOMMENT le motif cherché pour dire
+    qu'il en reste zéro dans les sorties e2e versées. Un mot, pas une valeur.
+BILAN : 6 sur 6 = des titres de test (4) et deux phrases qui nomment le motif (2) ; AUCUNE valeur réelle.
+Les sorties de la suite e2e (portes/test-e2e-passe-*.txt, rouges/e2e-ca6.txt) ne rendent AUCUNE alerte : leurs lignes de
+serveur, qui portent les jetons de vérification d'e-mail, ont été retirées avant le versement (compté : 0 restant).

@@ -45,6 +45,9 @@ import type { VenueCardData } from "../lib/preview-venues";
 import { BUDGET_TIERS, centsFromDinars, guidedSearchQuery, nextGuideStep, parseSearchParams } from "../lib/search-query";
 import { VENDOR_CATEGORIES } from "../lib/vendor-categories";
 import { VenueCard } from "./venue-card";
+// ⚠ Import statique sans danger : ce composant ne tire pas la bibliothèque de carte (elle arrive par `import()` quand la
+// carte se monte). Gardé par `lib/leaflet-import-guard.test.ts`.
+import { NearViewportMap } from "./map/near-viewport-map";
 import { SEARCH_PATH } from "../lib/routes";
 
 export interface HomeViewProps {
@@ -69,6 +72,7 @@ const AFFORDABLE_COUNT = 3;
 
 export function HomeView({ recent, affordable, proUrl, previewVenues = null, wilayas = [] }: HomeViewProps) {
   const t = useTranslations("home");
+  const tMap = useTranslations("map");
   const ar = useLocale() === "ar";
   // FC-8 (D231) — « Avec JS : le même formulaire devient l'étape 1. » Le champ `guide` n'existe qu'une fois JavaScript là :
   // le HTML du serveur n'en porte aucun, donc sans JavaScript le formulaire soumet ses trois champs, et rien d'autre. À la
@@ -206,15 +210,21 @@ export function HomeView({ recent, affordable, proUrl, previewVenues = null, wil
         </p>
       </section>
 
-      {/* ── CARTE — cartouche, comme côté recherche ───────────────────────── */}
+      {/* ── CARTE — la vraie (lot CA-3, session « carte ») ───────────────────
+          ⚠ Elle ne se monte PAS au chargement de la page : `NearViewportMap` attend que cette section approche de l'écran
+          (décision R-9). Requête VIDE : toutes les salles publiques qui ont une position.
+          ⚠ Le LIEN vers la recherche est rendu par le serveur et marche sans JavaScript — c'est le chemin de qui n'aura
+          jamais la carte (script coupé, fond de carte indisponible). */}
       <section className="hm-section hm-map" aria-labelledby="hm-map-h">
-        <h2 id="hm-map-h" className="hm-h2">
-          {t("map.title")}
-        </h2>
-        {/* Aucune carte n'existe au dépôt. Le cartouche le dit, exactement comme
-            la vue de recherche — pas une image de carte figée qui laisserait
-            croire à une carte cassée. */}
-        <p className="hm-map-soon">{t("map.soon")}</p>
+        <div className="hm-section-head">
+          <h2 id="hm-map-h" className="hm-h2">
+            {t("map.title")}
+          </h2>
+          <Link href={SEARCH_PATH} className="hm-btn">
+            {tMap("home.search")}
+          </Link>
+        </div>
+        <NearViewportMap query="" ar={ar} headingLevel={3} />
       </section>
 
       {/* ── RÉCEMMENT AJOUTÉES ────────────────────────────────────────────── */}

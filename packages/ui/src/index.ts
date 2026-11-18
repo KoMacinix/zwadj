@@ -39,3 +39,21 @@ export {
   type ExplicitTheme
 } from "../theme-storage";
 export { useDismissLayer, type DismissLayerOptions } from "./use-dismiss-layer";
+// Carte (session « carte », lot CA-2). ⚠ `leaflet-canvas` n'est PAS exporté d'ici en VALEUR : il importe Leaflet, et un
+// export statique le ferait entrer dans le paquet initial de toute page qui importe `@zwadj/ui`. Seuls ses TYPES sortent.
+export { VenueMap, type VenueMapLabels, type VenueMapProps } from "./map/venue-map";
+export type { LeafletCanvasProps, MapMarker } from "./map/leaflet-canvas";
+export {
+  COORDINATE_DECIMALS,
+  DEFAULT_MAP_CENTER,
+  DEFAULT_MAP_ZOOM,
+  DEV_MAP_TILES,
+  SINGLE_POINT_ZOOM,
+  boundsOf,
+  isMapPosition,
+  resolveMapTiles,
+  roundCoordinate,
+  type MapPosition,
+  type MapTiles,
+  type MapTilesEnv
+} from "./map/map-tiles";

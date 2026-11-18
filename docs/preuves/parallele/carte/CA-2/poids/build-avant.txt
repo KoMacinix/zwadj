@@ -1,0 +1,64 @@
+   ▲ Next.js 15.5.20
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.7s
+   Linting and checking validity of types ...
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+   Collecting page data ...
+   Generating static pages (0/24) ...
+   Generating static pages (6/24) 
+   Generating static pages (12/24) 
+   Generating static pages (18/24) 
+ ✓ Generating static pages (24/24)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /_not-found                            127 B         102 kB
+├ ● /[locale]                            1.97 kB         152 kB
+├   ├ /fr
+├   └ /ar
+├ ƒ /[locale]/[...rest]                    127 B         102 kB
+├ ● /[locale]/auth/connexion             1.15 kB         153 kB
+├   ├ /fr/auth/connexion
+├   └ /ar/auth/connexion
+├ ● /[locale]/auth/inscription           1.65 kB         154 kB
+├   ├ /fr/auth/inscription
+├   └ /ar/auth/inscription
+├ ● /[locale]/auth/mot-de-passe-oublie     190 B         153 kB
+├   ├ /fr/auth/mot-de-passe-oublie
+├   └ /ar/auth/mot-de-passe-oublie
+├ ● /[locale]/auth/reinitialisation        190 B         153 kB
+├   ├ /fr/auth/reinitialisation
+├   └ /ar/auth/reinitialisation
+├ ● /[locale]/auth/verification-email    1.95 kB         152 kB
+├   ├ /fr/auth/verification-email
+├   └ /ar/auth/verification-email
+├ ● /[locale]/cgu                          273 B         114 kB
+├   ├ /fr/cgu
+├   └ /ar/cgu
+├ ● /[locale]/compte                     4.51 kB         155 kB
+├   ├ /fr/compte
+├   └ /ar/compte
+├ ● /[locale]/confidentialite              273 B         114 kB
+├   ├ /fr/confidentialite
+├   └ /ar/confidentialite
+├ ● /[locale]/salles                     4.48 kB         155 kB
+├   ├ /fr/salles
+├   └ /ar/salles
+├ ƒ /[locale]/salles/[slug]              10.2 kB         161 kB
+└ ○ /icon.svg                                0 B            0 B
++ First Load JS shared by all             102 kB
+  ├ chunks/709-c131a283960b99b1.js       45.9 kB
+  ├ chunks/ddba84c5-1705a45398c606a1.js  54.2 kB
+  └ other shared chunks (total)          1.93 kB
+
+
+ƒ Middleware                             64.7 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,6 @@
+TRI DE L'AUDIT DE SECRETS — CA-5 (14/11/2026)
+Précédente : ../CA-4/audit-secrets-ca4.txt · nouvelle : audit-secrets-ca5.txt.
+Alertes absentes de la précédente : 3, lues au contexte (lignes 6160 à 6165 de la sortie scellée), toutes dans
+portes/test-int.txt : trois TITRES de tests existants de l'API recités par la sortie de la porte (les mêmes qu'aux lots
+précédents, à d'autres lignes ; le texte masqué des deux derniers fait 3 caractères).
+BILAN : 3 sur 3 = des titres de test ; AUCUNE valeur réelle. `apps/pro/.env.example` ne reçoit que des NOMS commentés.

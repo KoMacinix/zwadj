@@ -1,0 +1,160 @@
+  calibration vitest ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration vitest ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ autre version : VERSION (attendu VERSION)
+  calibration vitest ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration vitest ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration vitest ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration vitest ✓ socle — aucun échec sous mutation : VERT (attendu VERT)
+  calibration vitest ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration playwright ✓ deux titres, deux assertions : MORD (attendu MORD)
+  calibration playwright ✓ deux titres attendus, un seul en « x » : SANS-TITRE (attendu SANS-TITRE)
+  calibration playwright ✓ le SECOND bloc est un plantage, le premier une assertion (découpage des blocs) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration playwright ✓ aucun échec sous mutation : VERT (attendu VERT)
+  calibration playwright ✓ socle — délai de TEST (pas une morsure, D323) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration playwright ✓ socle — Linux : assertion lue sous « ✘ » : MORD (attendu MORD)
+  calibration playwright ✓ socle — Linux : rien en échec sous « ✓ » : VERT (attendu VERT)
+  calibration : 20 bras · 0 manqué(s) (attendu 0)
+cibles : 42 déclarées · 42 jouées (unit) · 0 hors exécution · 7 mesure(s) distincte(s) · 7 fichier(s) muté(s)
+  pré-vol api : code 0 · passés 13 · en échec 0
+  pré-vol chargeur : code 0 · passés 5 · en échec 0
+  pré-vol garde : code 0 · passés 4 · en échec 0
+  pré-vol points : code 0 · passés 16 · en échec 0
+  pré-vol requete : code 0 · passés 42 · en échec 0
+  pré-vol tuiles : code 0 · passés 12 · en échec 0
+  pré-vol vue : code 0 · passés 58 · en échec 0
+✓ T-1. ⛔ PRODUCTION sans variable : le défaut de développement est servi
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(3) } to be null
+✓ T-2. Une adresse de tuiles sans mention d'attribution est acceptée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected { …(3) } to be null
+✓ T-3. Une mention sans adresse retombe sur le défaut de développement
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 10 · en échec 2 · AssertionError: expected { …(3) } to be null
+✓ T-4. N'importe quelle adresse passe pour un gabarit de tuiles
+   ancre 1→0 · genre suppression (marqueur sans objet)
+   [tuiles] code 1 · passés 10 · en échec 2 · AssertionError: https://tuiles.exemple.dz/carte.png: expected { …(3) } to be null
+✓ T-5. `http://` est admis en production
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected { …(3) } to be null
+✓ T-6. Le lien de la mention accepte n'importe quel schéma
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected 'javascript:alert(1)' to be null
+✓ T-7. Une coordonnée n'est plus arrondie à la précision de la colonne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected 36.75381234567 to be 36.753812 // Object.is equality
+✓ T-8. La borne de latitude n'est plus incluse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ T-9. La boîte des points prend le mauvais extrême
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [tuiles] code 1 · passés 11 · en échec 1 · AssertionError: expected { south: -Infinity, west: 3.05, …(2) } to deeply equal { south: 36.7, west: 3.05, …(2) }
+✓ P-1. Le compte affiché est le total des filtres, pas le nombre de points
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected 'Salles sur la carte : 9' to be 'Salles sur la carte : 3' // Object.is equality
+✓ P-2. La phrase « sans position » s'affiche même à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected <p class="map-view-note"></p> to have a length of +0 but got 1
+✓ P-3. ⛔ Les salles sans position ne sont plus dites
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 14 · en échec 2 · AssertionError: expected 'Salles sur la carte : 1Salle 1(test) …' to contain 'Salles sans position, visibles dans l…'
+✓ P-4. ⛔ La troncature ne se dit plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected 'Salles sur la carte : 1Salle 1(test) …' to contain 'La carte montre les 500 premières sal…'
+✓ P-5. Une carte non tronquée annonce une troncature
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 14 · en échec 2 · AssertionError: expected 'Salles sur la carte : 1La carte montr…' not to contain 'La carte montre les 500 premières sal…'
+✓ P-6. Sans aucun point, la carte (et son fond) est chargée quand même
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 14 · en échec 2 · AssertionError: expected undefined to be 'Aucune salle de cette recherche n\'a …' // Object.is equality
+✓ P-7. ⛔ R-4 : le prix est RECALCULÉ dans le navigateur (arrondi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 13 · en échec 3 · AssertionError: expected 'À partir de150 000 DA' to be 'À partir de145 678 DA' // Object.is equality
+✓ P-8. Le lien de la carte de salle mène à une autre adresse
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 14 · en échec 2 · AssertionError: expected '/salles/id-2' to be '/salles/salle-2' // Object.is equality
+✓ P-9. Le point choisi n'est pas marqué sur la carte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected [] to deeply equal [ 'Salle 2' ]
+✓ P-10. Les points portent le nom français dans une page arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 14 · en échec 2 · AssertionError: expected [ 'Salle 1', 'Salle 2' ] to deeply equal [ 'قاعة 1', 'قاعة 2' ]
+✓ P-11. La carte ne sait pas que la page se lit de droite à gauche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected 'false' to be 'true' // Object.is equality
+✓ P-12. Latitude et longitude sont interverties
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected [ 3.0599999999999996, 3.07, …(1) ] to deeply equal [ 36.71, 36.720000000000006, …(1) ]
+✓ P-13. « Fermer » ne ferme rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected <article …(2)>…(2)</article> to have a length of +0 but got 1
+✓ U-1. ⛔ Une tuile en échec ne se dit plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected undefined to be 'Le fond de carte ne se charge pas. Le…' // Object.is equality
+✓ U-2. ⛔ La bibliothèque qui ne se charge pas laisse un écran d'attente sans fin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected undefined to be 'La carte n\'a pas pu être chargée. Vé…' // Object.is equality
+✓ U-3. La mention d'attribution perd son lien de licence
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [points] code 1 · passés 15 · en échec 1 · AssertionError: expected '#' to be 'https://tuiles.test/licence' // Object.is equality
+✓ L-1. ⛔ Sans fond de carte, les points sont demandés quand même
+   ancre 1→0 · genre suppression (marqueur sans objet)
+   [chargeur] code 1 · passés 4 · en échec 1 · AssertionError: expected [ [ URLSearchParams{ …(1) }, …(1) ] ] to have a length of +0 but got 1
+✓ L-2. ⛔ Une PANNE de la route de points se présente comme « aucune salle »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [chargeur] code 1 · passés 4 · en échec 1 · AssertionError: expected undefined to be 'Les salles n\'ont pas pu être placées…' // Object.is equality
+✓ L-3. ⛔ Une réponse ancienne écrase la nouvelle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [chargeur] code 1 · passés 4 · en échec 1 · AssertionError: expected [ 'Salle 1', 'Salle 2' ] to deeply equal [ 'Salle 7' ]
+✓ L-4. Les points sont demandés sans les filtres
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [chargeur] code 1 · passés 3 · en échec 2 · AssertionError: expected '' to be 'cityId=abc&guests=120' // Object.is equality
+✓ L-5. Un changement de filtres ne recharge pas les points
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [chargeur] code 1 · passés 3 · en échec 2 · AssertionError: expected [ [ URLSearchParams{ …(1) }, …(1) ] ] to have a length of 2 but got 1
+✓ L-6. « Réessayer » ne relance rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [chargeur] code 1 · passés 4 · en échec 1 · AssertionError: expected [ [ URLSearchParams{ …(1) }, …(1) ] ] to have a length of 2 but got 1
+✓ V-1. ⛔ R-9 : la carte est montée dès l'arrivée sur la page, sans geste
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [vue] code 1 · passés 36 · en échec 22 · AssertionError: expected [ <div …(3)></div> ] to have a length of +0 but got 1
+✓ V-2. La carte reçoit l'adresse publique (dinars, page) au lieu de la requête des points
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [vue] code 1 · passés 57 · en échec 1 · AssertionError: expected '?cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2…' to be 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' // Object.is equality
+✓ V-3. ⛔ Le refus de date ne passe plus avant la carte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [vue] code 1 · passés 57 · en échec 1 · AssertionError: expected [ <div …(3)></div> ] to have a length of +0 but got 1
+✓ V-4. La carte ne reçoit pas le sens d'écriture de la page
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [vue] code 1 · passés 57 · en échec 1 · AssertionError: expected [ 'false' ] to deeply equal [ 'true' ]
+✓ Q-1. La page reste dans la requête de la carte
+   ancre 1→0 · genre suppression (marqueur sans objet)
+   [requete] code 1 · passés 40 · en échec 2 · AssertionError: expected 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' to be 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' // Object.is equality
+✓ Q-2. ⛔ LA DIVERGENCE : un filtre de la liste manque à la carte
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [requete] code 1 · passés 41 · en échec 1 · AssertionError: expected 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' to be 'cityId=6f1c0d2e-2b3a-4c5d-8e9f-0a1b2c…' // Object.is equality
+✓ A-1. Les points sont demandés à la route de la liste
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api] code 1 · passés 11 · en échec 2 · AssertionError: expected '/api/v1/venues' to be '/api/v1/venue-map' // Object.is equality
+✓ A-2. ⛔ Une réponse abîmée devient une carte vide
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api] code 1 · passés 12 · en échec 1 · AssertionError: expected { kind: 'ok', …(1) } to deeply equal { kind: 'unreachable' }
+✓ A-3. Sans filtre, l'adresse porte un « ? » orphelin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api] code 1 · passés 12 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ G-1. ⛔ Le cadre importe le canevas STATIQUEMENT (Leaflet retombe dans le paquet initial)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 3 · en échec 1 · AssertionError: expected [ …(2) ] to deeply equal [ Array(1) ]
+✓ G-2. ⛔ Un second fichier importe Leaflet
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [garde] code 1 · passés 3 · en échec 1 · AssertionError: expected [ …(2) ] to deeply equal [ Array(1) ]
+  empreintes : 7 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+42 garde(s) mordue(s) sur 42 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 42 sur 42, 0, 0)
+arbre rendu à son état de départ : vérifié.
+code de sortie : 0
