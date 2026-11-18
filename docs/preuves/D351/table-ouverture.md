@@ -386,3 +386,11 @@ docs/preuves/D351/neutralisation/journaux/neutralize-solid-s7.txt
 docs/preuves/D351/neutralisation/journaux/pub1--e2e.txt
 docs/preuves/D351/neutralisation/journaux/r48--e2e.txt
 ```
+
+**Extension 5** (18/11/2026, commitée SEULE, AVANT la pièce qu'elle déclare — relevé après la poussée, en jouant le contrôle de fin de lot, dont la PREMIÈRE passe rendait deux ✗ qui étaient des défauts de l'instrument et non du lot : il comptait comme siens les 21 commits de la branche importés par la fusion). Un fichier neuf, sous `docs/preuves/D351/` :
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D351/controle-fin-de-lot-passe-1-AVANT-CORRECTIFS.txt` | la première passe du contrôle de fin de lot, gardée TELLE QUELLE : 16 ✓ · 2 ✗ — « premier commit » lu comme `8a64f57` (un commit de la branche) et « 5 extensions » dont `42d86a9` (un commit de la branche) ; corrigé par `--first-parent` dans `controle-fin-de-lot.py` (18 ✓ · 0 ✗) |
+
+⚠ Les pièces `audit-secrets-d351f.txt` et `tri-audit-d351f.txt` (déclarées conditionnelles à l'ouverture) existent : un versement a lieu après l'audit « e » (cette extension, le contrôle de fin de lot et sa première passe).
