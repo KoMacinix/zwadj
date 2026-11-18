@@ -287,3 +287,102 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | `docs/preuves/D351/portes/_index-passe-2.txt` | l'index de la seconde passe : SHA, arbre, état machine avant et après, ports, code de sortie, durée |
 | `docs/preuves/D351/portes/FIN-2` | le marqueur de fin de la seconde passe |
 | `docs/preuves/D351/portes/rapport-masquage.txt` | le rapport du masquage des deux sorties e2e : tailles, empreintes des bruts, comptes (129 suites masquées par passe, 0 restante), balayage indépendant de la forme d'un jeton |
+
+**Extension 4** (18/11/2026, commitée SEULE, AVANT les pièces qu'elle déclare — relevé en comparant les sorties des campagnes, de la preuve R-4 et de la relecture de la note juridique aux chemins COMPLETS de cette table : les journaux de campagne, dont le nombre dépendait de ce que le lanceur rendait, et les instruments et sorties de la preuve R-4 et de la relecture). Tous sous `docs/preuves/D351/` :
+
+| chemin | rôle |
+|---|---|
+| `docs/preuves/D351/neutralisation/campagnes-tout.sh` | le wrapper de `lancer-campagnes.py --tout` : état machine toutes les 30 s, empreinte sha256 de chacun des 68 harnais AVANT et APRÈS, arbre propre exigé au départ |
+| `docs/preuves/D351/neutralisation/campagnes-modes.sh` | le wrapper des campagnes à mode (`--int`, `--e2e`) que la fusion touche : en série, arbre propre et ports libres exigés avant CHAQUE campagne, empreinte du harnais avant et après |
+| `docs/preuves/D351/neutralisation/_index-campagnes.txt` | l'index de `--tout` : SHA, arbre, état machine avant et après, durée, harnais identiques (68 empreintes) |
+| `docs/preuves/D351/neutralisation/etat-machine-campagnes.txt` | l'état machine relevé toutes les 30 s pendant `--tout` |
+| `docs/preuves/D351/neutralisation/harnais-avant.txt` | le sha256 de chacun des 68 harnais, relevé AVANT `--tout` |
+| `docs/preuves/D351/neutralisation/harnais-apres.txt` | le sha256 de chacun des 68 harnais, relevé APRÈS `--tout` |
+| `docs/preuves/D351/neutralisation/_index-modes.txt` | l'index des sept campagnes à mode : durée, code de sortie, harnais identique, arbre après chacune |
+| `docs/preuves/D351/neutralisation/etat-machine-modes.txt` | l'état machine relevé toutes les 30 s pendant les campagnes à mode |
+| `docs/preuves/D351/neutralisation/verser-campagnes.py` | la procédure qui prépare le versement des journaux (retire les codes ANSI, MASQUE par `portes/masquer-jetons.py`, ajoute l'empreinte du harnais en tête) — archivée comme PREUVE, jamais promue en instrument (D291) |
+| `docs/preuves/D351/neutralisation/versement-campagnes.txt` | son compte rendu : pour chaque journal, la taille brute, les suites masquées, les restantes (attendu 0), l'empreinte du brut |
+| `docs/preuves/D351/r4/mutation-no-store.py` | la neutralisation de MESURE du `no-store` de `getVenueMap` (ancre unique, preuve de pose, restauration à l'octet prouvée) |
+| `docs/preuves/D351/r4/mutation-no-store.txt` | sa sortie : la suite du client sous la mutation, la restauration prouvée |
+| `docs/preuves/D351/tiers/balayage-tiers.py` | le balayage MÉCANIQUE de `ce-qui-part-vers-le-tiers.md` pour une valeur réelle (cinq motifs, calibré sur deux bras) — s'ajoute à la lecture humaine |
+| `docs/preuves/D351/tiers/balayage-tiers.txt` | sa sortie |
+
+Les 75 journaux de campagne (68 de `--tout`, sept des campagnes à mode : `ca1 --int`, `ca6`, `fc1`, `fc2`, `fc8`, `r48` et `pub1` en `--e2e`), chemins COMPLETS, un par ligne ; chacun commence par l'empreinte sha256 de son harnais (ligne ajoutée par l'étape de copie, dite telle) :
+
+```
+docs/preuves/D351/neutralisation/journaux/ca1--int.txt
+docs/preuves/D351/neutralisation/journaux/ca6--e2e.txt
+docs/preuves/D351/neutralisation/journaux/fc1--e2e.txt
+docs/preuves/D351/neutralisation/journaux/fc2--e2e.txt
+docs/preuves/D351/neutralisation/journaux/fc8--e2e.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-404.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-act-plafonds.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-adm1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-adm2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-argon2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-available-on-api.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-available-on.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-b7.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-booking-status.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-budgets.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca3.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca4.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca5.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-ca6.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-e3d1-s8.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc10.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc12.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc3.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc4.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc5.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc6.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc7.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc8.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fc9.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fp1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fp2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-fp3.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-horizon.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-horloge.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-journey.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-maxprice.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-pub1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r25.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r26.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r29.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r30.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r32.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r33.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r37.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r38.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r39.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r4.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r41.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r42.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r43.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r44.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r45.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r47.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r48.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-r49.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-rang23.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-s10a.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-s10b.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-s11a.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-s11b.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-s9.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s1.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s2.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s3.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s4.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s5a.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s5b.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s6.txt
+docs/preuves/D351/neutralisation/journaux/neutralize-solid-s7.txt
+docs/preuves/D351/neutralisation/journaux/pub1--e2e.txt
+docs/preuves/D351/neutralisation/journaux/r48--e2e.txt
+```
