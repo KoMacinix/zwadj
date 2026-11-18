@@ -396,6 +396,10 @@ test.describe("R50 · M-2 — pourquoi une salle publiée ne s'affiche pas : cha
     for (const [nom, v] of [["témoin", temoin], ["brouillon", brouillon], ["masquée", masquee], ["indisponible", indispo], ["sans créneau", sansCreneau]] as const) {
       const c = cartePro(v);
       await expect(c, `la liste du pro ne montre pas sa salle « ${nom} »`).toBeVisible();
+      // ⛔ RANG 54 (D352, R-1) — L'ÉTAT DE PUBLICATION D'UNE CARTE SE LIT À LA RÉPONSE DE LA ROUTE DU REFUS, pas au rendu : tant qu'elle n'a pas répondu, la carte ne porte que « Publication », sans état (elle ne le sait pas).
+      // Cette lecture (`innerText`) n'ATTENDAIT PAS la réponse : elle passait parce que l'API locale répond en quelques millisecondes — MESURÉ rouge avec 1,5 s de latence sur la route (docs/preuves/D352/mesures/e2e-latence.md).
+      // On attend d'abord que la carte ait UNE réponse (l'un ou l'autre état) ; QUEL état est dit par les `toContain` plus bas, inchangés.
+      await expect(c, `la carte « ${nom} » n'a jamais reçu d'état de publication`).toContainText(new RegExp(`${V.publication.draft}|${V.publication.published}`));
       const visibilite = await c.locator("select").inputValue();
       lecturePro[nom] = `${(await c.innerText()).replace(/\s+/g, " ").trim()} || visibilité=${visibilite}`;
     }
