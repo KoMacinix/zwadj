@@ -1,0 +1,19 @@
+D352 — tri différentiel de l'audit de secrets « c » (troisième versement : la mesure du critère 4 — l'e2e sous latence —, les trois sorties e2e MASQUÉES, la copie du masqueur)
+
+Instrument d'audit : python3 neutralisation/audit-secrets.py --sortie docs/preuves/D352/audit-secrets-d352c.txt (1 051 072 octets, 0 CR ; lancé à 18:10, fini à 18:28 le 18/11/2026), joué dans le dépôt de travail, en arrière-plan. Sceau : lu dans la dernière ligne de la sortie scellée — « relue identique : True · sceau vérifié à la relecture : True » (console de l'outil). Calibration à deux bras tenue (l'audit : cinq bras sur cinq, « cas réel : rejoué » ; le tri : négatif 0 nouvelle, positif 2 nouvelles).
+
+Procédure du tri : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D352/audit-secrets-d352b.txt docs/preuves/D352/audit-secrets-d352c.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d352b) : 5 708 fichiers parcourus, 5 505 audités, 203 exclus, 3 536 alertes.
+  · nouvelle (d352c)   : 5 716 fichiers parcourus, 5 512 audités, 204 exclus, 3 576 alertes = 3 536 + 40. Contrôle de l'outil : audités + exclus = 5 716 (attendu 5 716, les parcourus).
+  · Exclus : 204 contre 203, soit un de plus — la sortie scellée « b » (sceau vérifié) ; aucune exclusion de « b » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 716 fichiers APRÈS l'audit, sortie scellée « c » comprise (que l'audit parcourt, voir la rectification du tri « b ») ; l'audit en a parcouru 5 716. Entre « b » et « c » il est entré 8 fichiers : `tri-audit-d352b.txt` (1), `mesures/` (5 : `e2e-latence.md`, `e2e-latence-rouge.txt`, `e2e-latence-vert.txt`, `e2e-sous-ensemble-avant-correctif.txt`, `zz-r50-latence.e2e.ts.txt`), `portes/masquer-jetons.py` (1) et la sortie scellée « c » (1) = 8. L'arithmétique ferme.
+
+Résultat du tri différentiel : 40 alertes ABSENTES de la sortie précédente, **toutes du motif « jeton »** (ventilation de l'outil : jeton = 40). Triées AU CONTEXTE (lignes 8400 et suivantes de la sortie scellée « c », valeurs masquées par l'outil), par fichier :
+  · **3 + 3 + 26 = 32** dans les trois sorties e2e MASQUÉES (`mesures/e2e-latence-rouge.txt` 3, `mesures/e2e-latence-vert.txt` 3, `mesures/e2e-sous-ensemble-avant-correctif.txt` 26) : chaque contexte est le paramètre de lien d'un e-mail de vérification de développement, dont la valeur est REMPLACÉE par le marqueur « jeton masqué #N (43 car.) » — **32 marqueurs pour 32 suites masquées**, le compte exact des rapports du masqueur (3, 3 et 26 ; « restantes après masquage : 0 »). Aucune valeur : un nom de paramètre suivi d'un marqueur.
+  · **8** dans `portes/masquer-jetons.py` : la copie, **NON modifiée** (`cmp` identique) de `docs/preuves/D351/portes/masquer-jetons.py` ; l'outil NOMME la forme qu'il masque dans son propre code (c'est son objet) — les mêmes contextes que ceux de la copie de D351 (alertes déjà jugées sans valeur à son versement). Aucune valeur.
+  **Aucune des 40 n'est une valeur réelle.**
+Pour ne pas prolonger la chaîne, ce tri-ci ne recopie AUCUN contexte brut (il ne cite que des noms de fichiers et des comptes).
+
+Contrôle « 0 valeur réelle » (D299, `docs/preuves/D299/outils/aucune-valeur-reelle.py`) — **joué AVANT le versement** : les trois journaux e2e BRUTS (restés hors dépôt, `.neutralisation-journaux/d352-brut/`) portent **26, 3 et 3** valeurs de forme jeton (stricte = large sur chacun) ; calibration à deux bras par journal (positif 1 attendu 1, négatif 0 attendu 0) ; **valeurs cherchées : 32 · parcourus : 22 fichiers, 4 571 341 octets · porteurs : 0 (attendu 0)**. Le contrôle est rejoué au dernier versement (portes, campagnes), avec TOUS les journaux bruts de la session.
