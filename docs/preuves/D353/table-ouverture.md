@@ -187,3 +187,53 @@ docs/preuves/D353/controle-fin-de-lot.py
 ```
 
 `controle-fin-de-lot.py` (le script, adapté de `docs/preuves/D352/controle-fin-de-lot.py`) n'existe pas encore : il est écrit à la fin du lot, avec sa sortie `controle-fin-de-lot.txt` (déjà déclarée en B). Il est déclaré ICI, avant son commit.
+
+### Extension 6 — les pièces des campagnes, des portes et des gestes de Ko, et le script du contrôle de fin de lot
+
+Écrite **avant** le commit qui verse ces pièces (le quatrième versement) et avant l'audit de secrets « d » qui les couvre. Elle déclare, en chemins COMPLETS relevés sur le disque (`git ls-files --others --exclude-standard docs/preuves/D353`, 42 fichiers non suivis dont 41 pas encore déclarés), **tout ce que ce versement ajoute**, sauf les trois pièces de l'audit « d » (sortie scellée, tri, contrôle « 0 valeur réelle »), déclarées par l'extension suivante, avant leur commit. `controle-fin-de-lot.py` et `scenarios-ko.md` (conditionnel de la table : R-3 corrige quelque chose de VISIBLE) existent maintenant.
+
+```
+docs/preuves/D353/mesures/pieces/fin-suppression-base-jetable.txt
+docs/preuves/D353/neutralisation/campagne-ca1-int.txt
+docs/preuves/D353/neutralisation/campagne-pub1-e2e.txt
+docs/preuves/D353/neutralisation/campagne-r48-e2e.txt
+docs/preuves/D353/neutralisation/campagne-r55-complete.txt
+docs/preuves/D353/neutralisation/empreintes-harnais-apres.txt
+docs/preuves/D353/neutralisation/empreintes-harnais-avant.txt
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-available-on.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-ca2.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-horizon.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-sortie.txt
+docs/preuves/D353/neutralisation/r55-journaux/R55-1-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-10-e2e-r48.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-2-int-carte.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-3-int-carte.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-4-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-5-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-6-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-7-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-8-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-9-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-e2e-r48.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-int-carte.log
+docs/preuves/D353/neutralisation/rapport-masquage.txt
+docs/preuves/D353/portes/FIN
+docs/preuves/D353/portes/_index.txt
+docs/preuves/D353/portes/attendu-e2e.txt
+docs/preuves/D353/portes/build.txt
+docs/preuves/D353/portes/e2e-liste.txt
+docs/preuves/D353/portes/etat-avant-passe-2.txt
+docs/preuves/D353/portes/etat-machine-pendant.txt
+docs/preuves/D353/portes/lint.txt
+docs/preuves/D353/portes/portes.md
+docs/preuves/D353/portes/rapport-masquage.txt
+docs/preuves/D353/portes/test-e2e-passe-2.txt
+docs/preuves/D353/portes/test-e2e.txt
+docs/preuves/D353/portes/test-int.txt
+docs/preuves/D353/portes/test.txt
+docs/preuves/D353/portes/typecheck.txt
+docs/preuves/D353/scenarios-ko.md
+```
+
+**Ce que ces pièces portent** : `neutralisation/` — la campagne complète de `neutralize-r55.py` (**10 gardes mordues sur 10**, empreinte `94bea8a2…be75c` en première ligne de chaque journal), les trois campagnes du lanceur, `r48 --e2e`, `ca1 --int`, `pub1 --e2e`, les empreintes de TOUS les harnais avant et après (70 contre 70, 0 différent) ; `portes/` — les six portes du pilote, la passe 2 de l'e2e, l'attendu dérivé, le relevé de l'état machine ; `scenarios-ko.md` — le geste de Ko ; `mesures/pieces/fin-suppression-base-jetable.txt` — la suppression de la base jetable de mesure.
