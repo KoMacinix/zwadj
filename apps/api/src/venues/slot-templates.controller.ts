@@ -4,6 +4,7 @@
 // les lectures pro portent le préfixe /pro. Il n'y a d'ailleurs AUCUNE lecture
 // ici : les créneaux voyagent dans VenueProDTO.slotTemplates, comme les photos
 // (Lot A4) — un seul aller-retour pour peupler l'écran d'édition.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -21,6 +22,7 @@ import { SlotTemplatesService } from "./slot-templates.service";
 
 @ApiTags("venues-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("salle")
 @Controller()
 export class SlotTemplatesController {
   constructor(private readonly slots: SlotTemplatesService) {}

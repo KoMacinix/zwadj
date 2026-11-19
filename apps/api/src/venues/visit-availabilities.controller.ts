@@ -8,6 +8,7 @@
 // les embarquer dans le DTO de la salle coupleraient l'écran d'édition des
 // fêtes à celui des visites, et feraient porter à chaque lecture de salle des
 // données qu'elle n'utilise pas.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
@@ -34,6 +35,7 @@ import { VisitAvailabilitiesService } from "./visit-availabilities.service";
 
 @ApiTags("venues-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("salle")
 @Controller()
 export class VisitAvailabilitiesController {
   constructor(private readonly visits: VisitAvailabilitiesService) {}

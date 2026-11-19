@@ -1,4 +1,5 @@
-// Le client du PERSONNEL — rang 44, L36-3a-1 (D341) : K-14 (activer), K-15 (se connecter), K-16 (se déconnecter), K-17 (l'état), K-18 (changer son mot de passe).
+// Le client du PERSONNEL — rang 44, L36-3a-1 (D341) : K-14 (activer), K-15 (se connecter), K-16 (se déconnecter), K-17 (l'état), K-18 (changer son mot de passe) ;
+// rang 56, L36-3a-2 (D354) : K-19 (lister les membres), K-20 (créer un membre), K-21 (réinitialiser un mot de passe), K-22 (désactiver un membre).
 //
 // ⚠ Le double est un `AuthedRequest` qui ENREGISTRE ses appels : c'est la frontière du client (il ne fait que choisir la méthode, l'adresse et le corps). Les chemins sont aussi relevés dans les
 // SOURCES par `contract-api-client.int-spec.ts` (D182) : chaque littéral vit DANS l'appel à `request(...)`, sans intermédiaire.
@@ -59,8 +60,33 @@ describe("le client du personnel — méthode, adresse et corps de chaque contra
     expect(await createStaffClient(request).activate({ accountName: "Amine", password: "Motdepasse1" })).toBe(corps);
   });
 
-  it("le client n'expose que les cinq contrats du lot (rien de la gestion du personnel ni du PIN : lots suivants)", () => {
+  it("K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps)", async () => {
+    const { request, appels } = double({ members: [] });
+    const liste = await createStaffClient(request).listMembers();
+    expect(appels).toEqual([{ path: "/pro/staff/members", init: undefined }]);
+    expect(liste).toEqual({ members: [] });
+  });
+
+  it("K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur)", async () => {
+    const { request, appels } = double({ member: { id: "m2" }, temporaryPassword: "x" });
+    await createStaffClient(request).createMember({ accountName: "Karim", role: "EMPLOYEE" });
+    expect(appels).toEqual([{ path: "/pro/staff/members", init: { method: "POST", body: { accountName: "Karim", role: "EMPLOYEE" } } }]);
+  });
+
+  it("K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password`", async () => {
+    const { request, appels } = double({ member: { id: "m2" }, temporaryPassword: "x" });
+    await createStaffClient(request).resetMemberPassword("m2");
+    expect(appels).toEqual([{ path: "/pro/staff/members/m2/reset-password", init: { method: "POST" } }]);
+  });
+
+  it("K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable`", async () => {
+    const { request, appels } = double({ member: { id: "m2" } });
+    await createStaffClient(request).disableMember("m2");
+    expect(appels).toEqual([{ path: "/pro/staff/members/m2/disable", init: { method: "POST" } }]);
+  });
+
+  it("le client n'expose que les NEUF contrats (K-14 à K-22) : rien du PIN ni de la connexion par PIN (lot 3b)", () => {
     const { request } = double();
-    expect(Object.keys(createStaffClient(request)).sort()).toEqual(["activate", "changePassword", "login", "logout", "session"]);
+    expect(Object.keys(createStaffClient(request)).sort()).toEqual(["activate", "changePassword", "createMember", "disableMember", "listMembers", "login", "logout", "resetMemberPassword", "session"]);
   });
 });

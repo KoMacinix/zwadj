@@ -31,7 +31,16 @@ const TERMINE_LA_SESSION = new Set(["POST /api/v1/pro/staff/logout"]);
  * « couche éteinte » ci-dessous contredisait ces deux specs sur la MÊME requête (un POST sans corps vers `/logout`) : aucun code ne pouvait satisfaire les deux. La preuve que le garde lui-même laisse passer est celle de son
  * spec unitaire (« drapeau nul : passe, et LA SEULE lecture est celle du drapeau »).
  */
-const ROUTES_DE_MEMBRE = new Set(["POST /api/v1/pro/staff/logout", "POST /api/v1/pro/staff/password"]);
+// D354 (rang 56) : les QUATRE routes de gestion du personnel (K-19 à K-22) sont aussi des routes d'un MEMBRE — elles agissent comme le Manager qui les appelle (l'audit, `created_by`, la salle) : couche
+// éteinte, le garde les laisse passer et c'est leur handler qui répond le même 401 `STAFF_SESSION_REQUIRED` (il n'y a personne qui agit). Elles rejoignent donc la liste des deux routes de D341.
+const ROUTES_DE_MEMBRE = new Set([
+  "POST /api/v1/pro/staff/logout",
+  "POST /api/v1/pro/staff/password",
+  "GET /api/v1/pro/staff/members",
+  "POST /api/v1/pro/staff/members",
+  "POST /api/v1/pro/staff/members/:id/reset-password",
+  "POST /api/v1/pro/staff/members/:id/disable"
+]);
 
 beforeAll(async () => {
   ctx = await createTestApp();

@@ -4,6 +4,7 @@
 //   GET /venues/:id : même motif que le futur GET /venues/:slug public (A3).
 // @Roles(PRO) au niveau classe : CLIENT et ADMIN → 403 (l'admin a ses propres
 // endpoints en A3). Ownership + 404 indistincts : dans le service.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import {
   ApiCreatedResponse,
@@ -29,6 +30,7 @@ import { VenuesService } from "./venues.service";
 
 @ApiTags("venues-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("salle")
 @Controller()
 export class VenuesController {
   constructor(private readonly venues: VenuesService) {}

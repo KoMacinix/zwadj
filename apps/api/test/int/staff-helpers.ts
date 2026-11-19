@@ -135,9 +135,9 @@ export async function connecter(ctx: TestContext, pro: ProFixture, jar: Jar, acc
 }
 
 /** Un PRO activé, avec son pot de cookies (session du Manager et appareil). */
-export async function proActive(ctx: TestContext): Promise<{ pro: ProFixture; jar: Jar; membreId: string }> {
+export async function proActive(ctx: TestContext, accountName = "Amine"): Promise<{ pro: ProFixture; jar: Jar; membreId: string }> {
   const pro = await creerPro(ctx);
-  const { res, jar } = await activer(ctx, pro);
+  const { res, jar } = await activer(ctx, pro, new Jar(), accountName);
   if (res.status !== 201) throw new Error(`activation de test échouée (${res.status}) : ${JSON.stringify(res.body)}`);
   return { pro, jar, membreId: (res.body as { member: { id: string } }).member.id };
 }
@@ -183,6 +183,122 @@ export async function lignesAudit(prisma: PrismaService, action?: string): Promi
     `SELECT action, actor_id::text AS actor_id, actor_role, actor_member_id::text AS actor_member_id, entity_type, entity_id, after, before FROM audit_logs ${action === undefined ? "" : "WHERE action = $1"} ORDER BY created_at, id`,
     ...(action === undefined ? [] : [action])
   );
+}
+
+// ── RANG 56, L36-3a-2 (D354) : créer un membre, le connecter, changer son mot de passe, vieillir un mot de passe par SQL ─────────────────────────────────────────────────────────────────────────
+/** Le mot de passe que les membres de test se donnent après leur temporaire : ne figure pas dans la liste des mots de passe courants (vérifié par `staff-password-policy.spec.ts`). */
+export const MOT_DE_PASSE_MEMBRE = "Wp8!hrt5-Qz3";
+export const MOT_DE_PASSE_MEMBRE_2 = "Fm6!cvb2-Ty9";
+
+export type RoleDeMembre = "MANAGER" | "EMPLOYEE";
+
+/** K-20 par la VRAIE route, avec le pot du Manager qui crée. Rend la réponse, et — si 201 — l'identifiant et le temporaire (rendu UNE fois). */
+export async function creerMembre(
+  ctx: TestContext,
+  pro: ProFixture,
+  jarManager: Jar,
+  accountName: string,
+  role: RoleDeMembre = "EMPLOYEE"
+): Promise<{ res: Response; id: string; temporaryPassword: string }> {
+  const res = await appeler(ctx, pro.token, jarManager, "post", "/api/v1/pro/staff/members", { accountName, role });
+  const corps = res.body as { member?: { id: string }; temporaryPassword?: string };
+  return { res, id: corps.member?.id ?? "", temporaryPassword: corps.temporaryPassword ?? "" };
+}
+
+/** K-18 par la vraie route. */
+export async function changerMotDePasse(ctx: TestContext, pro: ProFixture, jar: Jar, actuel: string, nouveau: string): Promise<Response> {
+  return appeler(ctx, pro.token, jar, "post", "/api/v1/pro/staff/password", { currentPassword: actuel, newPassword: nouveau });
+}
+
+/**
+ * Un membre ACTIF de bout en bout, par les vraies routes : le Manager le crée (K-20), il se connecte avec son temporaire sur SON poste (K-15, un pot neuf), puis change son mot de passe (K-18) — la session
+ * reste, l'état passe de « à changer » à « actif ». Rend son pot, son identifiant et son mot de passe.
+ */
+export async function membreActif(
+  ctx: TestContext,
+  pro: ProFixture,
+  jarManager: Jar,
+  accountName: string,
+  role: RoleDeMembre = "EMPLOYEE",
+  motDePasse: string = MOT_DE_PASSE_MEMBRE
+): Promise<{ id: string; jar: Jar; password: string }> {
+  const cree = await creerMembre(ctx, pro, jarManager, accountName, role);
+  if (cree.res.status !== 201) throw new Error(`création du membre de test échouée (${cree.res.status}) : ${JSON.stringify(cree.res.body)}`);
+  const jar = new Jar();
+  const connexion = await connecter(ctx, pro, jar, accountName, cree.temporaryPassword);
+  if (connexion.status !== 200) throw new Error(`connexion du membre de test échouée (${connexion.status}) : ${JSON.stringify(connexion.body)}`);
+  const changement = await changerMotDePasse(ctx, pro, jar, cree.temporaryPassword, motDePasse);
+  if (changement.status !== 200) throw new Error(`changement de mot de passe du membre de test échoué (${changement.status}) : ${JSON.stringify(changement.body)}`);
+  return { id: cree.id, jar, password: motDePasse };
+}
+
+export interface LigneMembre {
+  id: string;
+  account_name: string;
+  role: string;
+  status: string;
+  disabled_at: Date | null;
+  must_change_password: boolean;
+  password_hash: string;
+  password_changed_at: Date;
+  password_expires_at: Date;
+  password_failed_count: number;
+  password_locked_until: Date | null;
+  created_by_member_id: string | null;
+  last_login_at: Date | null;
+}
+
+export async function membreParId(prisma: PrismaService, id: string): Promise<LigneMembre> {
+  const lignes = await prisma.$queryRaw<LigneMembre[]>`
+    SELECT id::text AS id, account_name, role::text AS role, status::text AS status, disabled_at, must_change_password, password_hash, password_changed_at, password_expires_at,
+           password_failed_count, password_locked_until, created_by_member_id::text AS created_by_member_id, last_login_at
+      FROM pro_staff_members WHERE id = ${id}::uuid`;
+  if (lignes.length !== 1) throw new Error(`membre introuvable (${lignes.length} ligne(s))`);
+  return lignes[0]!;
+}
+
+/** Fixe l'échéance du mot de passe À `secondes` secondes d'AUJOURD'HUI SELON LA BASE (négatif = dans le passé) : `vi.setSystemTime` n'agit pas sur l'horloge qui décide (S-101, MP-41). */
+export async function echeanceDuMotDePasse(prisma: PrismaService, memberId: string, secondes: number): Promise<void> {
+  await prisma.$executeRaw`UPDATE pro_staff_members SET password_expires_at = now() + make_interval(secs => ${secondes}::int) WHERE id = ${memberId}::uuid`;
+}
+
+/** Pose ou retire le marqueur « temporaire » (`must_change_password`) : le SEUL qui distingue un temporaire d'un mot de passe de 90 jours (S-241). */
+export async function marquerTemporaire(prisma: PrismaService, memberId: string, temporaire: boolean): Promise<void> {
+  await prisma.$executeRaw`UPDATE pro_staff_members SET must_change_password = ${temporaire} WHERE id = ${memberId}::uuid`;
+}
+
+export async function compterManagersActifs(prisma: PrismaService, proProfileId: string): Promise<number> {
+  const r = await prisma.$queryRaw<Array<{ n: number }>>`SELECT count(*)::int AS n FROM pro_staff_members WHERE pro_profile_id = ${proProfileId}::uuid AND role = 'MANAGER' AND status = 'ACTIVE'`;
+  return r[0]!.n;
+}
+
+export interface SessionDuMembre {
+  id: string;
+  ended_at: Date | null;
+  end_reason: string | null;
+}
+export async function sessionsDuMembre(prisma: PrismaService, memberId: string): Promise<SessionDuMembre[]> {
+  return prisma.$queryRaw<SessionDuMembre[]>`SELECT id::text AS id, ended_at, end_reason::text AS end_reason FROM pro_staff_sessions WHERE member_id = ${memberId}::uuid ORDER BY created_at, id`;
+}
+
+export interface AppareilDuMembre {
+  id: string;
+  revoked_at: Date | null;
+}
+export async function appareilsDuMembre(prisma: PrismaService, memberId: string): Promise<AppareilDuMembre[]> {
+  return prisma.$queryRaw<AppareilDuMembre[]>`SELECT id::text AS id, revoked_at FROM pro_staff_devices WHERE member_id = ${memberId}::uuid ORDER BY created_at, id`;
+}
+
+/** Remet un membre désactivé et ses sessions dans l'état « actif » (ARMEMENT d'une répétition : la désactivation de la manche précédente est annulée par SQL, comme `rendreInactive` vieillit). */
+export async function rearmerMembre(prisma: PrismaService, memberId: string): Promise<void> {
+  await prisma.$executeRaw`UPDATE pro_staff_members SET status = 'ACTIVE', disabled_at = NULL WHERE id = ${memberId}::uuid`;
+  await prisma.$executeRaw`UPDATE pro_staff_sessions SET ended_at = NULL, end_reason = NULL, last_activity_at = now(), expires_at = now() + interval '12 hours' WHERE member_id = ${memberId}::uuid`;
+}
+
+/** Le texte de TOUTES les lignes d'audit (colonnes JSON comprises) : ce que « nulle part dans l'audit » doit chercher. */
+export async function texteDeTousLesAudits(prisma: PrismaService): Promise<string> {
+  const lignes = await prisma.$queryRawUnsafe<Array<{ t: string }>>(`SELECT row_to_json(a)::text AS t FROM audit_logs a ORDER BY created_at, id`);
+  return lignes.map((l) => l.t).join("\n");
 }
 
 export { createTestApp };

@@ -679,7 +679,11 @@
       "accountNameTaken": "Ce nom de compte est déjà utilisé dans votre salle.",
       "passwordCommon": "Ce mot de passe est trop courant : choisissez-en un autre.",
       "passwordReused": "Le nouveau mot de passe doit être différent de l'actuel.",
-      "currentPasswordInvalid": "Le mot de passe actuel est incorrect."
+      "currentPasswordInvalid": "Le mot de passe actuel est incorrect.",
+      "capabilityDenied": "Cette action n'est pas permise à ce compte dans son état actuel.",
+      "memberNotFound": "Ce membre n'existe pas dans votre salle.",
+      "memberDisabled": "Ce membre est désactivé.",
+      "lastManager": "Votre salle doit garder au moins un Manager actif : désignez-en un autre avant de désactiver celui-ci."
     },
     "validation": {
       "accountNameRequired": "Le nom de compte est obligatoire.",
@@ -688,7 +692,9 @@
       "accountNameInvalid": "Lettres, chiffres, espaces, points, tirets, tirets bas et apostrophes uniquement.",
       "passwordRequired": "Le mot de passe est obligatoire.",
       "currentPasswordRequired": "Le mot de passe actuel est obligatoire.",
-      "unknownKey": "Champ inconnu."
+      "unknownKey": "Champ inconnu.",
+      "roleRequired": "Le rôle est obligatoire.",
+      "roleInvalid": "Le rôle doit être Manager ou employé."
     }
   },
   "venue": {

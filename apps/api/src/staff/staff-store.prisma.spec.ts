@@ -489,3 +489,292 @@ describe("l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33,
     }
   });
 });
+
+// ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// RANG 56, L36-3a-2 (D354) — K-19 à K-22 et l'état du compte (S-104, S-241). Même méthode : un faux client qui enregistre l'ORDRE des instructions, car l'ordre des verrous (L1 le profil < L2 les membres
+// < L3 les appareils < L4 les sessions, cadrage § 3.1) est ce qui rend l'interblocage IMPOSSIBLE, et qu'un spec d'intégration qui n'en a pas trouvé n'en dit rien.
+// ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+const MAINTENANT_BASE = new Date("2026-11-19T10:00:00.000Z");
+const MANAGER_ACTEUR = "018f0000-0000-7000-8000-0000000000d1";
+const CIBLE = "018f0000-0000-7000-8000-0000000000e1";
+const LIGNE_LISTE = {
+  id: CIBLE,
+  accountName: "Karim",
+  role: "EMPLOYEE",
+  status: "ACTIVE",
+  mustChangePassword: true,
+  passwordExpiresAt: new Date("2026-11-26T10:00:00.000Z"),
+  lastLoginAt: null,
+  createdAt: MAINTENANT_BASE,
+  now: MAINTENANT_BASE
+};
+/** Un secret qui ne doit apparaître dans AUCUNE colonne lue par la liste ni dans aucune charge d'audit. */
+const SECRETS_EN_BASE = /password_hash|pin_hash|pin_|password_failed_count|password_locked_until|token_hash/;
+
+describe("findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241)", () => {
+  it("⛔ UNE requête brute (plus de lecture par l'ORM : l'heure ne se lit que par `now()`) qui filtre par la salle ET la clé du nom, sans aucune écriture", async () => {
+    const f = faux([[{ id: MEMBRE, accountName: "Amine", role: "MANAGER", status: "ACTIVE", mustChangePassword: false, passwordExpiresAt: MAINTENANT_BASE, now: MAINTENANT_BASE }]]);
+    const m = await f.store.findMember(SALLE, "amine");
+    expect(f.appels).toHaveLength(1);
+    const { sql, valeurs } = f.appels[0]!;
+    expect(f.appels[0]!.type).toBe("query");
+    expect(sql).toMatch(/^SELECT/);
+    expect(sql).toContain("pro_profile_id =");
+    expect(sql).toContain("account_name_key =");
+    expect(sql).toContain('password_expires_at AS "passwordExpiresAt"');
+    expect(sql).toContain('now() AS "now"');
+    expect(valeurs).toEqual(expect.arrayContaining([SALLE, "amine"]));
+    expect(m?.id).toBe(MEMBRE);
+    expect(f.client.proStaffMember.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("aucun membre : null ; et AUCUN hachage de mot de passe n'est lu (il n'est rendu que par la réservation)", async () => {
+    const f = faux([[]]);
+    expect(await f.store.findMember(SALLE, "inconnu")).toBeNull();
+    expect(f.appels[0]!.sql).not.toMatch(/password_hash/);
+  });
+});
+
+describe("touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241)", () => {
+  const vivante = { sessionId: "s1", memberId: MEMBRE, role: "MANAGER", accountName: "Amine", mustChangePassword: false, status: "ACTIVE", passwordExpiresAt: MAINTENANT_BASE, now: MAINTENANT_BASE };
+
+  it("⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre", async () => {
+    const f = faux([[vivante]]);
+    expect(await f.store.touchSession({ tokenHash: "h", proProfileId: SALLE })).toEqual({ ok: true, session: vivante });
+    const { sql, valeurs } = f.appels[0]!;
+    expect(sql).toContain('m.status::text AS status');
+    expect(sql).toContain('m.password_expires_at AS "passwordExpiresAt"');
+    expect(sql).toContain('now() AS "now"');
+    expect(valeurs.some((v) => v instanceof Date)).toBe(false);
+  });
+
+  it("⛔ peekSession : les MÊMES colonnes, en lecture seule — le garde et l'état jugent le compte de la même façon", async () => {
+    const f = faux([[vivante]]);
+    expect(await f.store.peekSession({ tokenHash: "h", proProfileId: SALLE })).toEqual({ ok: true, session: vivante });
+    const { sql } = f.appels[0]!;
+    expect(sql).toMatch(/^SELECT/);
+    expect(sql).toContain('m.status::text AS status');
+    expect(sql).toContain('m.password_expires_at AS "passwordExpiresAt"');
+    expect(sql).toContain('now() AS "now"');
+  });
+});
+
+describe("listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret", () => {
+  it("⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audit), filtrée par la salle, ordonnée de façon stable", async () => {
+    const f = faux([[LIGNE_LISTE]]);
+    expect(await f.store.listMembers(SALLE)).toEqual([LIGNE_LISTE]);
+    expect(f.appels).toHaveLength(1);
+    expect(f.appels[0]!.type).toBe("query");
+    expect(f.appels[0]!.sql).toMatch(/^SELECT/);
+    expect(f.appels[0]!.sql).toContain("pro_profile_id =");
+    expect(f.appels[0]!.sql).toMatch(/ORDER BY created_at, id/);
+    expect(f.appels[0]!.valeurs).toEqual([SALLE]);
+    expect(f.client.$transaction).not.toHaveBeenCalled();
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni compteur, ni verrou, ni jeton (un SELECT qui ne les lit pas ne peut pas les rendre)", async () => {
+    const f = faux([[LIGNE_LISTE]]);
+    await f.store.listMembers(SALLE);
+    expect(f.appels[0]!.sql).not.toMatch(SECRETS_EN_BASE);
+    expect(f.appels[0]!.sql).toContain('now() AS "now"');
+  });
+});
+
+describe("createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours", () => {
+  const entree = { actor: acteur, actorMemberId: MANAGER_ACTEUR, proProfileId: SALLE, accountName: "Karim", accountNameKey: "karim", role: "EMPLOYEE" as const, passwordHash: "SECRET-HASH" };
+
+  it("⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer »), pose `must_change_password` et l'échéance TEMPORAIRE par PARAMÈTRE du levier, et rattache le créateur", async () => {
+    const f = faux([[LIGNE_LISTE]]);
+    const r = await f.store.createMember(entree);
+    expect(r).toEqual({ ok: true, member: LIGNE_LISTE });
+    expect(f.client.$transaction).toHaveBeenCalledTimes(1);
+    expect(f.appels).toHaveLength(1);
+    const { sql, valeurs } = f.appels[0]!;
+    expect(sql).toMatch(/^INSERT INTO pro_staff_members/);
+    expect(sql).toContain("ON CONFLICT (pro_profile_id, account_name_key) DO NOTHING");
+    expect(sql).toContain("must_change_password");
+    expect(sql).toContain("password_changed_at");
+    expect(sql).toMatch(/\btrue\b/);
+    expect(sql).toContain("created_by_member_id");
+    expect(sql).toMatch(/now\(\) \+ make_interval\(days => \?/);
+    expect(sql).not.toMatch(/interval\s*'/i);
+    expect(sql).toContain('now() AS "now"');
+    expect(valeurs).toContain(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS);
+    expect(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS).toBe(7);
+    expect(valeurs).toEqual(expect.arrayContaining([SALLE, "Karim", "karim", "EMPLOYEE", "SECRET-HASH", MANAGER_ACTEUR]));
+  });
+
+  it("⛔ R-6 — la ligne d'audit s'écrit DANS la transaction, avec le MANAGER pour acteur (et le compte commun), et ne porte que le rôle ; la transaction est validée", async () => {
+    const f = faux([[LIGNE_LISTE]]);
+    await f.store.createMember(entree);
+    expect(f.audits).toHaveLength(1);
+    expect(f.audits[0]!.data).toEqual({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MANAGER_ACTEUR, action: "staff.member_create", entityType: "staff_member", entityId: CIBLE, after: { role: "EMPLOYEE" } });
+    expect(JSON.stringify(f.audits)).not.toMatch(/SECRET|Karim|karim/);
+    expect(f.issues).toEqual(["validée"]);
+  });
+
+  it("⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `accountNameTaken`, AUCUNE ligne d'audit — une action sans effet n'a pas de trace", async () => {
+    const f = faux([[]]);
+    expect(await f.store.createMember(entree)).toEqual({ ok: false, reason: "accountNameTaken" });
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ R-6 — l'audit est écrit APRÈS l'insertion et par le même client de transaction : un échec de l'audit ANNULE la création (une action sans trace n'existe pas)", async () => {
+    const f = faux([[LIGNE_LISTE]]);
+    f.client.auditLog.create.mockRejectedValueOnce(new Error("audit refusé"));
+    await expect(f.store.createMember(entree)).rejects.toThrow("audit refusé");
+    expect(f.issues).toEqual(["annulée"]);
+  });
+});
+
+describe("resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction", () => {
+  const entree = { actor: acteur, actorMemberId: MANAGER_ACTEUR, proProfileId: SALLE, memberId: CIBLE, passwordHash: "SECRET-HASH" };
+
+  it("⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa salle), le remplacement du mot de passe, la révocation des appareils, la fin de TOUTES les sessions, l'audit — jamais l'inverse (L2 < L3 < L4)", async () => {
+    const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], 2, 3]);
+    const r = await f.store.resetMemberPassword(entree);
+    expect(r).toEqual({ ok: true, member: LIGNE_LISTE, sessionsEnded: 3, devicesRevoked: 2 });
+    expect(f.appels.map((a) => a.type)).toEqual(["query", "query", "execute", "execute"]);
+    const [verrou, remplace, appareils, sessions] = f.appels.map((a) => a.sql);
+    expect(verrou).toMatch(/^SELECT/);
+    expect(verrou).toContain("FROM pro_staff_members");
+    expect(verrou).toContain("pro_profile_id =");
+    expect(verrou).toContain("FOR UPDATE");
+    expect(remplace).toMatch(/^UPDATE pro_staff_members/);
+    expect(appareils).toMatch(/^UPDATE pro_staff_devices/);
+    expect(sessions).toMatch(/^UPDATE pro_staff_sessions/);
+    expect(f.issues).toEqual(["validée"]);
+  });
+
+  it("⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b)", async () => {
+    const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], 0, 0]);
+    await f.store.resetMemberPassword(entree);
+    const { sql, valeurs } = f.appels[1]!;
+    expect(sql).toContain("password_hash =");
+    expect(sql).toContain("password_changed_at = now()");
+    expect(sql).toContain("must_change_password = true");
+    expect(sql).toMatch(/password_expires_at = now\(\) \+ make_interval\(days => \?/);
+    expect(sql).toContain("password_failed_count = 0");
+    expect(sql).toContain("password_locked_until = NULL");
+    expect(sql).not.toMatch(/pin_/);
+    expect(sql).not.toMatch(/interval\s*'/i);
+    expect(valeurs).toEqual(expect.arrayContaining(["SECRET-HASH", STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS, CIBLE]));
+  });
+
+  it("⛔ S-105 — TOUTES les sessions du membre prennent fin `PASSWORD_CHANGED` (aucune n'est épargnée : pas de `id <>`), TOUS ses appareils sont révoqués, chacun sous sa propre condition (`… IS NULL`)", async () => {
+    const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], 1, 1]);
+    await f.store.resetMemberPassword(entree);
+    expect(f.appels[2]!.sql).toContain("revoked_at = now()");
+    expect(f.appels[2]!.sql).toContain("revoked_at IS NULL");
+    expect(f.appels[3]!.sql).toContain("ended_at = now()");
+    expect(f.appels[3]!.sql).toContain("end_reason = 'PASSWORD_CHANGED'");
+    expect(f.appels[3]!.sql).toContain("ended_at IS NULL");
+    expect(f.appels[3]!.sql).not.toMatch(/id <>/);
+  });
+
+  it("⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, les COMPTES de sessions et d'appareils pour charge utile — jamais le temporaire, jamais un hachage", async () => {
+    const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], 2, 3]);
+    await f.store.resetMemberPassword(entree);
+    expect(f.audits).toHaveLength(1);
+    expect(f.audits[0]!.data).toEqual({
+      actorId: UTILISATEUR,
+      actorRole: "PRO",
+      actorMemberId: MANAGER_ACTEUR,
+      action: "staff.member_reset_password",
+      entityType: "staff_member",
+      entityId: CIBLE,
+      after: { sessionsEnded: 3, devicesRevoked: 2 }
+    });
+    expect(JSON.stringify(f.audits)).not.toMatch(/SECRET/);
+  });
+
+  it("⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE écriture ; un membre désactivé : `disabled`, AUCUNE écriture ni audit", async () => {
+    const f1 = faux([[]]);
+    expect(await f1.store.resetMemberPassword(entree)).toEqual({ ok: false, reason: "notFound" });
+    expect(f1.appels).toHaveLength(1);
+    expect(f1.audits).toHaveLength(0);
+    const f2 = faux([[{ id: CIBLE, status: "DISABLED" }]]);
+    expect(await f2.store.resetMemberPassword(entree)).toEqual({ ok: false, reason: "disabled" });
+    expect(f2.appels).toHaveLength(1);
+    expect(f2.audits).toHaveLength(0);
+  });
+});
+
+describe("disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4)", () => {
+  const entree = { actor: acteur, actorMemberId: MANAGER_ACTEUR, proProfileId: SALLE, memberId: CIBLE };
+  const MANAGER_CIBLE = { ...LIGNE_LISTE, role: "MANAGER", mustChangePassword: false };
+  const DESACTIVE = { ...LIGNE_LISTE, status: "DISABLED" };
+
+  it("⛔ MP-6 — l'ORDRE : verrou du PROFIL (`FOR UPDATE`) AVANT le verrou du membre, le COMPTAGE des Managers actifs APRÈS les deux verrous et AVANT toute écriture, puis le CAS du statut, puis les sessions", async () => {
+    const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 2 }], [DESACTIVE], 1]);
+    const r = await f.store.disableMember(entree);
+    expect(r).toEqual({ ok: true, member: DESACTIVE, sessionsEnded: 1, alreadyDisabled: false });
+    expect(f.appels.map((a) => a.type)).toEqual(["query", "query", "query", "query", "execute"]);
+    const [profil, membre, compte, cas, sessions] = f.appels.map((a) => a.sql);
+    expect(profil).toContain("FROM pro_profiles");
+    expect(profil).toContain("FOR UPDATE");
+    expect(membre).toContain("FROM pro_staff_members");
+    expect(membre).toContain("FOR UPDATE");
+    expect(compte).toMatch(/count\(/i);
+    expect(compte).toContain("role = 'MANAGER'");
+    expect(compte).toContain("status = 'ACTIVE'");
+    expect(cas).toMatch(/^UPDATE pro_staff_members/);
+    expect(sessions).toMatch(/^UPDATE pro_staff_sessions/);
+    expect(f.issues).toEqual(["validée"]);
+  });
+
+  it("⛔ MP-30 — le CAS de la transition : `status = 'DISABLED'` posé SOUS `status = 'ACTIVE'` (D305), avec `disabled_at = now()` ; les sessions finissent `DISABLED`, sous `ended_at IS NULL`", async () => {
+    const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 2 }], [DESACTIVE], 2]);
+    await f.store.disableMember(entree);
+    const cas = f.appels[3]!.sql;
+    expect(cas).toContain("status = 'DISABLED'");
+    expect(cas).toContain("disabled_at = now()");
+    expect(cas).toMatch(/WHERE id = \?::uuid AND status = 'ACTIVE'/);
+    expect(f.appels[4]!.sql).toContain("end_reason = 'DISABLED'");
+    expect(f.appels[4]!.sql).toContain("ended_at IS NULL");
+  });
+
+  it("⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AUCUNE écriture ni audit ; la transaction se referme sans effet", async () => {
+    const f = faux([[{ id: SALLE }], [MANAGER_CIBLE], [{ n: 1 }]]);
+    expect(await f.store.disableMember(entree)).toEqual({ ok: false, reason: "lastManager" });
+    expect(f.appels).toHaveLength(3);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la règle ne vise que les Managers)", async () => {
+    const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 1 }], [DESACTIVE], 0]);
+    expect((await f.store.disableMember(entree)).ok).toBe(true);
+  });
+
+  it("⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écriture et SANS ligne d'audit (une répétition ne fait pas une seconde trace)", async () => {
+    const f = faux([[{ id: SALLE }], [DESACTIVE], [{ n: 2 }]]);
+    expect(await f.store.disableMember(entree)).toEqual({ ok: true, member: DESACTIVE, sessionsEnded: 0, alreadyDisabled: true });
+    expect(f.appels).toHaveLength(3);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("un membre introuvable DANS CETTE SALLE : `notFound` après les deux verrous, AUCUNE écriture", async () => {
+    const f = faux([[{ id: SALLE }], []]);
+    expect(await f.store.disableMember(entree)).toEqual({ ok: false, reason: "notFound" });
+    expect(f.appels).toHaveLength(2);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ compte = 1 EXIGÉ : si le CAS ne rend aucune ligne (le statut a bougé sous nos pieds — impossible sous verrou, mais l'écrire est une garde), la transaction est ANNULÉE bruyamment, jamais un succès", async () => {
+    const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 2 }], []]);
+    await expect(f.store.disableMember(entree)).rejects.toThrow();
+    expect(f.issues).toEqual(["annulée"]);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ R-6 — l'audit dans la transaction, MANAGER pour acteur, rôle du membre et nombre de sessions pour charge utile ; un échec de l'audit ANNULE la désactivation", async () => {
+    const f = faux([[{ id: SALLE }], [MANAGER_CIBLE], [{ n: 2 }], [{ ...DESACTIVE, role: "MANAGER" }], 4]);
+    await f.store.disableMember(entree);
+    expect(f.audits[0]!.data).toEqual({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MANAGER_ACTEUR, action: "staff.member_disable", entityType: "staff_member", entityId: CIBLE, after: { role: "MANAGER", sessionsEnded: 4 } });
+    const g = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 2 }], [DESACTIVE], 0]);
+    g.client.auditLog.create.mockRejectedValueOnce(new Error("audit refusé"));
+    await expect(g.store.disableMember(entree)).rejects.toThrow("audit refusé");
+    expect(g.issues).toEqual(["annulée"]);
+  });
+});

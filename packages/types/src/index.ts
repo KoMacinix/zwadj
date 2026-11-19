@@ -13,6 +13,7 @@ export * from "./contact";
 export * from "./client-record";
 export * from "./staff-account-name";
 export * from "./staff";
+export * from "./staff-capabilities";
 export * from "./account";
 export * from "./media";
 export * from "./referentials";

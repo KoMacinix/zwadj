@@ -13,6 +13,7 @@
 // PATCH venues/:id/photos/:photoId — Express matche dans l'ordre de
 // déclaration, sinon « order » serait capturé comme un :photoId (→ 404
 // PHOTO_NOT_FOUND systématique). Un test d'intégration le verrouille.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import {
   ArgumentsHost,
   BadRequestException,
@@ -90,6 +91,7 @@ export class UploadTooLargeFilter implements ExceptionFilter {
 
 @ApiTags("venues-media")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("salle")
 @Controller()
 export class VenueMediaController {
   constructor(private readonly media: VenueMediaService) {}

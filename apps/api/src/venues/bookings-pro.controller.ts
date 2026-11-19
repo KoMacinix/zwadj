@@ -3,6 +3,7 @@
 // C'est ici que le créneau se verrouille : l'acceptation est la seule écriture
 // du lot que la BASE peut refuser (EXCLUDE `bookings_no_overlap_accepted_confirmed`,
 // traduite en 409 BOOKING_SLOT_TAKEN — et jamais devinée par un SELECT préalable).
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import {
   ApiConflictResponse,
@@ -27,6 +28,7 @@ import { BookingsService } from "./bookings.service";
 
 @ApiTags("bookings-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("demandes")
 @Controller("pro")
 export class BookingsProController {
   constructor(private readonly bookings: BookingsService) {}

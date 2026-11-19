@@ -2,6 +2,7 @@
 // A2). Aucune lecture : les règles voyagent dans
 // VenueProDTO.slotTemplates[].pricingRules — un créneau sans ses règles est un
 // prix sans son contexte.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -19,6 +20,7 @@ import { PricingRulesService } from "./pricing-rules.service";
 
 @ApiTags("venues-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("prix")
 @Controller()
 export class PricingRulesController {
   constructor(private readonly rules: PricingRulesService) {}

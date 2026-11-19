@@ -1,4 +1,5 @@
-// La COUCHE DU PERSONNEL — rang 44, L36-3a-1 (D341) : les durées (UN levier), les codes d'erreur, les schémas des corps de K-14, K-15 et K-18, et la forme de leurs réponses.
+// La COUCHE DU PERSONNEL — rang 44, L36-3a-1 (D341) : les durées (UN levier), les codes d'erreur, les schémas des corps de K-14, K-15 et K-18, et la forme de leurs réponses ; rang 56, L36-3a-2 (D354) : le mot de passe
+// temporaire (7 jours, le même levier), l'ÉTAT d'un compte, K-19 à K-22 (lister, créer, réinitialiser, désactiver), les quatre codes d'erreur neufs. La TABLE DES CAPACITÉS vit dans `staff-capabilities.ts`.
 // DR5 de D336 pour les règles ; `docs/preuves/D340/cadrage.md` pour la conception ; la tranche [L36-3] de `ZWADJ_CONTINUITE.md` pour le schéma.
 //
 // ⛔ UN LEVIER POUR TOUTES LES DURÉES (MP-43) : `STAFF_LIMITS` est la SEULE écriture des 10 minutes, des 12 heures, des 15 minutes et des 90 jours. Le serveur les passe en PARAMÈTRES à SQL
@@ -26,6 +27,19 @@ export const StaffSessionEndReason = {
 } as const;
 export type StaffSessionEndReason = (typeof StaffSessionEndReason)[keyof typeof StaffSessionEndReason];
 
+/**
+ * L'ÉTAT d'un compte de membre (rang 56, D354, R-3, S-104) — ce que `etatDuCompte` (`apps/api/src/staff/staff-account-state.ts`) rend, et ce que la liste des membres (K-19) montre :
+ * `ACTIVE`, `MUST_CHANGE_PASSWORD` (un temporaire valable, ou un mot de passe de 90 jours expiré : la connexion n'ouvre que le changement), `TEMPORARY_EXPIRED` (la connexion est refusée : un Manager doit
+ * en refaire un), `DISABLED`. Ce n'est PAS une énumération de la base : c'est le JUGEMENT de la règle, à l'heure de la base.
+ */
+export const StaffAccountState = {
+  ACTIVE: "ACTIVE",
+  MUST_CHANGE_PASSWORD: "MUST_CHANGE_PASSWORD",
+  TEMPORARY_EXPIRED: "TEMPORARY_EXPIRED",
+  DISABLED: "DISABLED"
+} as const;
+export type StaffAccountState = (typeof StaffAccountState)[keyof typeof StaffAccountState];
+
 // ── Le levier des durées ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 export const STAFF_LIMITS = Object.freeze({
   /** Inactivité d'une session, CÔTÉ SERVEUR (`last_activity_at`) — DR5. */
@@ -39,6 +53,8 @@ export const STAFF_LIMITS = Object.freeze({
   PASSWORD_VALIDITY_DAYS: 90,
   /** Validité d'un PIN — DR5 ; aussi l'échéance d'un APPAREIL tant qu'aucun PIN n'existe (R-6 (D341), « même paramètre »). */
   PIN_VALIDITY_DAYS: 90,
+  /** Validité d'un mot de passe TEMPORAIRE (création ou réinitialisation par un Manager, DR5) : SEPT jours, changement obligatoire. Rang 56 (D354) — UN paramètre, jamais un littéral ailleurs (MP-43). */
+  TEMPORARY_PASSWORD_DAYS: 7,
   /** Borne dure du nombre de cookies d'appareil lus par requête (cadrage D340, § 2.2). */
   DEVICE_COOKIES_MAX: 8
 } as const);
@@ -63,7 +79,15 @@ export const StaffErrorCode = {
   /** 400 — le nouveau mot de passe est identique à l'actuel. */
   STAFF_PASSWORD_REUSED: "STAFF_PASSWORD_REUSED",
   /** 400 — le mot de passe actuel est faux (ou en pause : même réponse). */
-  STAFF_CURRENT_PASSWORD_INVALID: "STAFF_CURRENT_PASSWORD_INVALID"
+  STAFF_CURRENT_PASSWORD_INVALID: "STAFF_CURRENT_PASSWORD_INVALID",
+  /** 403 — rang 56 (D354, S-100, S-242) : le rôle du membre n'a pas la capacité, OU son mot de passe est à changer et la route n'est pas celle du changement. UN code, UN message : aucun refus ne dit pourquoi. */
+  STAFF_CAPABILITY_DENIED: "STAFF_CAPABILITY_DENIED",
+  /** 404 — le membre n'existe pas DANS CETTE SALLE : un identifiant inventé et celui d'un membre d'une autre salle donnent la MÊME réponse. */
+  STAFF_MEMBER_NOT_FOUND: "STAFF_MEMBER_NOT_FOUND",
+  /** 409 — le membre est désactivé : on ne réinitialise pas son mot de passe. */
+  STAFF_MEMBER_DISABLED: "STAFF_MEMBER_DISABLED",
+  /** 409 — « jamais zéro Manager » : cette désactivation laisserait la salle sans Manager actif. */
+  STAFF_LAST_MANAGER: "STAFF_LAST_MANAGER"
 } as const;
 export type StaffErrorCode = (typeof StaffErrorCode)[keyof typeof StaffErrorCode];
 
@@ -75,7 +99,11 @@ export const STAFF_ERROR_MESSAGE_KEYS: Readonly<Record<StaffErrorCode, string>> 
   STAFF_ACCOUNT_NAME_TAKEN: "staff.errors.accountNameTaken",
   STAFF_PASSWORD_COMMON: "staff.errors.passwordCommon",
   STAFF_PASSWORD_REUSED: "staff.errors.passwordReused",
-  STAFF_CURRENT_PASSWORD_INVALID: "staff.errors.currentPasswordInvalid"
+  STAFF_CURRENT_PASSWORD_INVALID: "staff.errors.currentPasswordInvalid",
+  STAFF_CAPABILITY_DENIED: "staff.errors.capabilityDenied",
+  STAFF_MEMBER_NOT_FOUND: "staff.errors.memberNotFound",
+  STAFF_MEMBER_DISABLED: "staff.errors.memberDisabled",
+  STAFF_LAST_MANAGER: "staff.errors.lastManager"
 });
 
 // ── Les schémas ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -129,6 +157,20 @@ export const staffPasswordChangeSchema = z
   .strict("staff.validation.unknownKey");
 export type StaffPasswordChangeInput = z.infer<typeof staffPasswordChangeSchema>;
 
+/**
+ * K-20 (rang 56, D354) — `POST /pro/staff/members` : le nom de compte et le RÔLE, rien d'autre. ⛔ Le mot de passe est GÉNÉRÉ par le serveur (DR5 : « généré par défaut ») : une clé `password` est refusée, pas
+ * ignorée. Le rôle se CHOISIT à la création — aucune route ne le change (R-8) — et DR5 attend « un second Manager » : les deux valeurs sont admises. Le nom suit LA MÊME règle qu'à l'activation (D147).
+ */
+export const staffMemberCreateSchema = z
+  .object({
+    accountName: staffAccountNameSchema,
+    role: z.enum([StaffRole.MANAGER, StaffRole.EMPLOYEE], {
+      errorMap: (issue, ctx) => ({ message: issue.code === "invalid_type" && ctx.data === undefined ? "staff.validation.roleRequired" : "staff.validation.roleInvalid" })
+    })
+  })
+  .strict("staff.validation.unknownKey");
+export type StaffMemberCreateInput = z.infer<typeof staffMemberCreateSchema>;
+
 // ── Les réponses ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 /** Un membre, tel que les routes le rendent. ⛔ Jamais un hachage, un compteur, une date de connexion : l'écran n'en a pas besoin. */
 export interface StaffMemberDTO {
@@ -163,4 +205,38 @@ export interface StaffLogoutDTO {
 }
 export interface StaffPasswordChangeDTO {
   member: StaffMemberDTO;
+}
+
+// ── K-19 à K-22 (rang 56, D354) ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/**
+ * Un membre, tel que la liste (K-19) et les réponses de K-20 à K-22 le rendent. ⛔ SIX champs, jamais un hachage, un compteur d'échecs, un verrou, un jeton, une échéance de mot de passe ni un mot de passe : l'écran
+ * du Manager n'en a pas besoin, et « jamais relisible » est une propriété de la FORME. Les dates sont des chaînes ISO (UTC). `state` est le JUGEMENT de `etatDuCompte` à l'heure de la base.
+ */
+export interface StaffMemberListItemDTO {
+  id: string;
+  accountName: string;
+  role: StaffRole;
+  state: StaffAccountState;
+  lastLoginAt: string | null;
+  createdAt: string;
+}
+
+/** K-19 — les membres de la salle (actifs et désactivés), dans l'ordre de leur création. */
+export interface StaffMembersListDTO {
+  members: StaffMemberListItemDTO[];
+}
+
+/**
+ * K-20 et K-21 — le membre et son mot de passe TEMPORAIRE, rendu UNE fois (`Cache-Control: no-store`) : il n'est stocké qu'haché, jamais journalisé, jamais relisible. `temporaryPasswordExpiresAt` est l'échéance posée
+ * par la base (sept jours, le levier), en ISO.
+ */
+export interface StaffTemporaryPasswordDTO {
+  member: StaffMemberListItemDTO;
+  temporaryPassword: string;
+  temporaryPasswordExpiresAt: string;
+}
+
+/** K-22 — le membre désactivé (une désactivation répétée rend le même membre, sans écriture). */
+export interface StaffMemberDisabledDTO {
+  member: StaffMemberListItemDTO;
 }

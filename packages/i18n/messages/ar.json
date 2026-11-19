@@ -679,7 +679,11 @@
       "accountNameTaken": "اسم الحساب هذا مستخدم بالفعل في قاعتك.",
       "passwordCommon": "كلمة المرور هذه شائعة جدًا: اختر كلمة أخرى.",
       "passwordReused": "يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية.",
-      "currentPasswordInvalid": "كلمة المرور الحالية غير صحيحة."
+      "currentPasswordInvalid": "كلمة المرور الحالية غير صحيحة.",
+      "capabilityDenied": "هذا الإجراء غير مسموح لهذا الحساب في وضعه الحالي.",
+      "memberNotFound": "هذا العضو غير موجود في قاعتك.",
+      "memberDisabled": "هذا العضو معطّل.",
+      "lastManager": "يجب أن تحتفظ قاعتك بمدير واحد نشط على الأقل: عيّن مديراً آخر قبل تعطيل هذا الحساب."
     },
     "validation": {
       "accountNameRequired": "اسم الحساب إلزامي.",
@@ -688,7 +692,9 @@
       "accountNameInvalid": "حروف وأرقام ومسافات ونقاط وشرطات وشرطات سفلية وفواصل عليا فقط.",
       "passwordRequired": "كلمة المرور إلزامية.",
       "currentPasswordRequired": "كلمة المرور الحالية إلزامية.",
-      "unknownKey": "حقل غير معروف."
+      "unknownKey": "حقل غير معروف.",
+      "roleRequired": "الدور مطلوب.",
+      "roleInvalid": "يجب أن يكون الدور مديراً أو موظفاً."
     }
   },
   "venue": {

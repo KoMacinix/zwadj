@@ -15,7 +15,10 @@ const SALLE = "018f0000-0000-7000-8000-0000000000b1";
 const UTILISATEUR = "018f0000-0000-7000-8000-0000000000c1";
 const user = { userId: UTILISATEUR, role: "PRO" } as const;
 const MEMBRE = { id: "m1", accountName: "Amine", role: "MANAGER", mustChangePassword: false } as const;
-const ACTIF = { ...MEMBRE, status: "ACTIVE" } as const;
+// Le membre TEL QUE LE MAGASIN LE RETROUVE : son état, l'échéance de son mot de passe et l'HEURE DE LA BASE (S-101, S-241) — `etatDuCompte` n'a pas d'autre horloge.
+const HEURE_BASE = new Date("2026-11-19T10:00:00.000Z");
+const ACTIF = { ...MEMBRE, status: "ACTIVE", passwordExpiresAt: new Date("2027-01-01T00:00:00.000Z"), now: HEURE_BASE } as const;
+const ms = (n: number): Date => new Date(HEURE_BASE.getTime() + n);
 const staff = { sessionId: "s1", memberId: "m1", role: "MANAGER", accountName: "Amine", mustChangePassword: false, proProfileId: SALLE } as const;
 
 function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: string, clair: string) => boolean } = {}) {
@@ -33,7 +36,12 @@ function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: s
     peekSession: vi.fn(async () => ({ ok: false as const })),
     closeSession: vi.fn(async () => undefined),
     changePassword: vi.fn<StaffStore["changePassword"]>(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 2 })),
-    listKnownMembers: vi.fn(async () => [])
+    listKnownMembers: vi.fn(async () => []),
+    // Rang 56 (D354) : les quatre méthodes de gestion du personnel — le service de SESSION n'en appelle aucune ; le double doit seulement satisfaire le port.
+    listMembers: vi.fn(async () => []),
+    createMember: vi.fn<StaffStore["createMember"]>(async () => ({ ok: false as const, reason: "accountNameTaken" as const })),
+    resetMemberPassword: vi.fn<StaffStore["resetMemberPassword"]>(async () => ({ ok: false as const, reason: "notFound" as const })),
+    disableMember: vi.fn<StaffStore["disableMember"]>(async () => ({ ok: false as const, reason: "notFound" as const }))
   };
   // `satisfies` vérifie le double fusionné contre le port ; l'objet rendu garde les TYPES des espions par défaut (`.mock.calls` typé) — une union avec `Partial<StaffStore>` les aurait perdus.
   const magasin = { ...defauts, ...surcharge } satisfies StaffStore;
@@ -172,6 +180,54 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
     );
     await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
     expect(ordre).toEqual(["findMember", "reserve", "verify", "openSession"]);
+  });
+
+  // ── S-104 (R-3, D354) : le mot de passe À CHANGER et le TEMPORAIRE EXPIRÉ ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  it("⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true`", async () => {
+    const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, passwordExpiresAt: ms(-1) })) }, { verify: () => true });
+    const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    expect(m.mots.verify).toHaveBeenCalledTimes(1);
+    expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    expect(r.body.member.mustChangePassword).toBe(true);
+  });
+
+  it("⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true`", async () => {
+    const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(7 * 24 * 60 * 60_000) })) }, { verify: () => true });
+    const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    expect(r.body.member.mustChangePassword).toBe(true);
+  });
+
+  it("⛔ S-104 — un mot de passe valable : `mustChangePassword: false` (l'état est jugé, il n'est pas copié de la colonne)", async () => {
+    const m = monde({}, { verify: () => true });
+    expect((await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE)).body.member.mustChangePassword).toBe(false);
+  });
+
+  it("⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps", async () => {
+    const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(0) })) }, { verify: () => true });
+    const { status, corps } = await corpsDuRefus(m.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
+    expect(status).toBe(401);
+    expect(corps).toEqual({ code: StaffErrorCode.STAFF_INVALID_CREDENTIALS, message: "staff.errors.invalidCredentials" });
+    expect(m.mots.verifyAgainstDummy).toHaveBeenCalledTimes(1);
+    expect(m.mots.verify).not.toHaveBeenCalled();
+    expect(m.magasin.reservePasswordAttempt).not.toHaveBeenCalled();
+    expect(m.magasin.recordPasswordFailure).not.toHaveBeenCalled();
+    expect(m.magasin.openSession).not.toHaveBeenCalled();
+  });
+
+  it("⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi)", async () => {
+    const refus = async (surcharge: Partial<StaffStore>, verify: boolean) => JSON.stringify(await corpsDuRefus(monde(surcharge, { verify: () => verify }).service.login(user, CORPS_CONNEXION, SANS_COOKIE)));
+    const inconnu = await refus({ findMember: vi.fn(async () => null) }, true);
+    const desactive = await refus({ findMember: vi.fn(async () => ({ ...ACTIF, status: "DISABLED" as const })) }, true);
+    const faux = await refus({}, false);
+    const expire = await refus({ findMember: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(-1) })) }, true);
+    expect(new Set([inconnu, desactive, faux, expire]).size).toBe(1);
+  });
+
+  it("⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée", async () => {
+    const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: new Date("2099-01-01T00:00:00.000Z"), now: new Date("2099-06-01T00:00:00.000Z") })) }, { verify: () => true });
+    await corpsDuRefus(m.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
+    expect(m.magasin.openSession).not.toHaveBeenCalled();
   });
 
   it("l'appareil : sans cookie d'appareil, un jeton neuf est offert (le magasin le crée) et le cookie d'appareil est posé", async () => {
@@ -364,11 +420,26 @@ describe("state — K-17 : exemptée, jamais un refus", () => {
   });
 
   it("⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais par `touchSession`", async () => {
-    const m = monde({ peekSession: vi.fn(async () => ({ ok: true as const, session: { sessionId: "s1", memberId: "m1", role: "MANAGER" as const, accountName: "Amine", mustChangePassword: false } })) });
+    const m = monde({ peekSession: vi.fn(async () => ({ ok: true as const, session: { sessionId: "s1", memberId: "m1", role: "MANAGER" as const, accountName: "Amine", mustChangePassword: false, status: "ACTIVE" as const, passwordExpiresAt: ACTIF.passwordExpiresAt, now: HEURE_BASE } })) });
     const r = await m.service.state(user, { session: "y".repeat(43), devices: [] });
     expect(m.magasin.peekSession).toHaveBeenCalledWith({ tokenHash: `sha(${"y".repeat(43)})`, proProfileId: SALLE });
     expect(m.magasin.touchSession).not.toHaveBeenCalled();
     expect(r.member).toEqual({ id: "m1", accountName: "Amine", role: "MANAGER", mustChangePassword: false });
+  });
+
+  it("⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne", async () => {
+    const session = (surcharge: Record<string, unknown>) => ({ sessionId: "s1", memberId: "m1", role: "MANAGER" as const, accountName: "Amine", mustChangePassword: false, status: "ACTIVE" as const, passwordExpiresAt: ACTIF.passwordExpiresAt, now: HEURE_BASE, ...surcharge });
+    const temporaire = monde({ peekSession: vi.fn(async () => ({ ok: true as const, session: session({ mustChangePassword: true, passwordExpiresAt: ms(1) }) })) });
+    expect((await temporaire.service.state(user, { session: "y".repeat(43), devices: [] })).member?.mustChangePassword).toBe(true);
+    const ordinaireExpire = monde({ peekSession: vi.fn(async () => ({ ok: true as const, session: session({ passwordExpiresAt: ms(0) }) })) });
+    expect((await ordinaireExpire.service.state(user, { session: "y".repeat(43), devices: [] })).member?.mustChangePassword).toBe(true);
+  });
+
+  it("⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera", async () => {
+    const m = monde({ peekSession: vi.fn(async () => ({ ok: true as const, session: { sessionId: "s1", memberId: "m1", role: "MANAGER" as const, accountName: "Amine", mustChangePassword: true, status: "ACTIVE" as const, passwordExpiresAt: ms(0), now: HEURE_BASE } })) });
+    const r = await m.service.state(user, { session: "y".repeat(43), devices: [] });
+    expect(r.enabled).toBe(true);
+    expect(r.member).toBeNull();
   });
 
   it("sans profil : couche éteinte, sans erreur", async () => {

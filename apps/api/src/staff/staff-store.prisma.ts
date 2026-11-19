@@ -1,4 +1,5 @@
-// ⛔ L'ADAPTATEUR PRISMA DE LA COUCHE DU PERSONNEL — rang 44, L36-3a-1 (D341). Voir `staff-store.types.ts` pour le contrat du port. CHEMIN D'IDENTITÉ : méthode RENFORCÉE, revue humaine requise.
+// ⛔ L'ADAPTATEUR PRISMA DE LA COUCHE DU PERSONNEL — rang 44, L36-3a-1 (D341) ; rang 56, L36-3a-2 (D354) : K-19 à K-22 et l'état du compte. Voir `staff-store.types.ts` pour le contrat du port. CHEMIN D'IDENTITÉ :
+// méthode RENFORCÉE, revue humaine requise.
 //
 // ⛔ RÈGLES QUE CE FICHIER TIENT, chacune avec sa garde :
 //   · LE TEMPS EST CELUI DE LA BASE (S-101, MP-41) : toute échéance et toute comparaison de date est `now()` dans le SQL ; aucune date n'est lue ni fabriquée côté API (garde de source : aucun `new Date` ici).
@@ -10,8 +11,9 @@
 //   · L'AUDIT N'A QU'UN SITE D'ÉCRITURE (`ecrireAudit`), à charge utile FERMÉE (`StaffAuditEntry`) : ni nom de compte, ni hachage, ni jeton, ni mot de passe, ni PIN, jamais (MP-33, MP-11).
 //   · LA RÉSERVATION D'UNE TENTATIVE EST UNE INSTRUCTION (S-102, MP-16) : lire puis écrire laisserait N requêtes parallèles faire N vérifications d'un mot de passe (64 Mio chacune).
 import { Injectable } from "@nestjs/common";
-import { STAFF_LIMITS, StaffSessionEndReason, type StaffRole } from "@zwadj/types";
+import { STAFF_LIMITS, StaffSessionEndReason, type StaffRole, type StaffStatus } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
+import { disableVerdict } from "./staff-members-policy";
 import { SessionNotRefusedError, classifySessionRefusal, pickReusableDevice, type DeviceRow, type SessionProbe } from "./staff-session-policy";
 import type {
   ActivateInput,
@@ -19,12 +21,19 @@ import type {
   ChangePasswordInput,
   ChangePasswordResult,
   CloseSessionInput,
+  CreateMemberInput,
+  CreateMemberResult,
+  DisableMemberInput,
+  DisableMemberResult,
   KnownMember,
   ListKnownMembersInput,
+  MemberListRow,
   OpenSessionInput,
   OpenSessionResult,
   PasswordReservation,
   RecordFailureInput,
+  ResetMemberInput,
+  ResetMemberResult,
   SessionTouchResult,
   StaffActor,
   StaffAuditEntry,
@@ -50,6 +59,9 @@ interface LigneSession {
   role: StaffRole;
   accountName: string;
   mustChangePassword: boolean;
+  status: StaffStatus;
+  passwordExpiresAt: Date;
+  now: Date;
 }
 
 interface LigneSonde {
@@ -142,11 +154,15 @@ export class PrismaStaffStore implements StaffStore {
     }
   }
 
+  // S-241 : le membre ET l'échéance de son mot de passe ET `now()` de la BASE dans UNE instruction — `etatDuCompte` juge « peut-il se connecter » avec ces deux dates, jamais avec une horloge de l'API. Le hachage
+  // n'est PAS lu ici : il n'est rendu que par la réservation.
   async findMember(proProfileId: string, accountNameKey: string): Promise<StaffMemberRow | null> {
-    return this.prisma.proStaffMember.findFirst({
-      where: { proProfileId, accountNameKey },
-      select: { id: true, accountName: true, role: true, status: true, mustChangePassword: true }
-    });
+    const lignes = await this.prisma.$queryRaw<StaffMemberRow[]>`
+      SELECT id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+             password_expires_at AS "passwordExpiresAt", now() AS "now"
+        FROM pro_staff_members
+       WHERE pro_profile_id = ${proProfileId}::uuid AND account_name_key = ${accountNameKey}`;
+    return lignes[0] ?? null;
   }
 
   // ⛔ S-102, MP-1, MP-16, MP-17 — LA RÉSERVATION, UNE INSTRUCTION. Le `FOR UPDATE` du CTE verrouille la ligne du membre (L2) : une requête concurrente ATTEND, puis réévalue les conditions sur la ligne à jour. Les
@@ -256,7 +272,8 @@ export class PrismaStaffStore implements StaffStore {
          AND s.ended_at IS NULL
          AND s.expires_at > now()
          AND s.last_activity_at > now() - make_interval(mins => ${STAFF_LIMITS.IDLE_TIMEOUT_MINUTES}::int)
-      RETURNING s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword"`;
+      RETURNING s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword",
+                m.status::text AS status, m.password_expires_at AS "passwordExpiresAt", now() AS "now"`;
     const vivante = lignes[0];
     if (vivante !== undefined) return { ok: true, session: vivante satisfies StaffSessionView };
 
@@ -288,7 +305,8 @@ export class PrismaStaffStore implements StaffStore {
   // K-17 — la LECTURE SEULE de l'état : les MÊMES prédicats que le garde, en `SELECT`. Elle ne prolonge rien et n'écrit rien (une lecture d'état toutes les secondes garderait sinon une session éternellement ouverte).
   async peekSession(input: TouchInput): Promise<SessionTouchResult> {
     const lignes = await this.prisma.$queryRaw<LigneSession[]>`
-      SELECT s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword"
+      SELECT s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword",
+             m.status::text AS status, m.password_expires_at AS "passwordExpiresAt", now() AS "now"
         FROM pro_staff_sessions s JOIN pro_staff_members m ON m.id = s.member_id
        WHERE s.token_hash = ${input.tokenHash}
          AND m.pro_profile_id = ${input.proProfileId}::uuid
@@ -347,5 +365,111 @@ export class PrismaStaffStore implements StaffStore {
          AND m.pro_profile_id = ${input.proProfileId}::uuid
          AND m.status = 'ACTIVE'
        ORDER BY m.account_name`;
+  }
+
+  // ══ RANG 56, L36-3a-2 (D354) — K-19 à K-22 ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+  // ⛔ UNE transaction par action de gestion : l'action ET sa ligne d'audit s'écrivent ensemble ou pas du tout (R-6, patron de D349) — l'audit passe par `ecrireAudit`, le seul site d'écriture, et un échec de
+  // l'audit ANNULE l'action. L'ordre des verrous est celui du cadrage § 3.1 : L1 (le profil) < L2 (les membres) < L3 (les appareils) < L4 (les sessions) ; aucune de ces méthodes ne prend un verrou d'un rang
+  // inférieur à celui qu'elle tient — c'est l'argument de l'absence d'interblocage. Aucun hachage, compteur, verrou ni PIN n'est lu par la liste ; aucun `new Date` : l'heure est celle de la base.
+
+  // K-19 — les membres de la salle : UNE lecture, filtrée par la salle du Bearer, dans l'ordre de leur création. Aucun secret n'est sélectionné : un `SELECT` qui ne les lit pas ne peut pas les rendre.
+  async listMembers(proProfileId: string): Promise<MemberListRow[]> {
+    return this.prisma.$queryRaw<MemberListRow[]>`
+      SELECT id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+             password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"
+        FROM pro_staff_members
+       WHERE pro_profile_id = ${proProfileId}::uuid
+       ORDER BY created_at, id`;
+  }
+
+  // K-20 — l'insertion est ATOMIQUE (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer » : deux créations simultanées du même nom ne passent pas toutes deux) ; le temporaire de SEPT jours est un PARAMÈTRE du
+  // levier, `must_change_password` vaut « temporaire » (S-241), le créateur est le Manager. Aucune ligne rendue ⇒ le nom est pris : ni membre ni audit.
+  async createMember(input: CreateMemberInput): Promise<CreateMemberResult> {
+    return this.prisma.$transaction(async (tx): Promise<CreateMemberResult> => {
+      const lignes = await tx.$queryRaw<MemberListRow[]>`
+        INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash, password_changed_at, password_expires_at, must_change_password, created_by_member_id)
+        VALUES (${input.proProfileId}::uuid, ${input.accountName}, ${input.accountNameKey}, ${input.role}::"StaffRole", ${input.passwordHash}, now(),
+                now() + make_interval(days => ${STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS}::int), true, ${input.actorMemberId}::uuid)
+        ON CONFLICT (pro_profile_id, account_name_key) DO NOTHING
+        RETURNING id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+                  password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"`;
+      const membre = lignes[0];
+      if (membre === undefined) return { ok: false, reason: "accountNameTaken" };
+      await ecrireAudit(tx, input.actor, input.actorMemberId, { action: "staff.member_create", entityType: "staff_member", entityId: membre.id, after: { role: input.role } });
+      return { ok: true, member: membre };
+    });
+  }
+
+  // K-21 — le membre d'abord (L2, `FOR UPDATE`, dans SA salle : celui d'une autre salle est introuvable), puis son mot de passe remplacé (un temporaire de sept jours, les compteurs et la pause remis à zéro), puis TOUS
+  // ses appareils révoqués (L3) et TOUTES ses sessions terminées `PASSWORD_CHANGED` (L4 — l'énumération ratifiée n'a pas de valeur « RESET », DR8), puis l'audit. ⛔ Aucune colonne de PIN n'est touchée : il
+  // n'existe pas encore (lot 3b), qui devra l'ajouter ici. Compte = 1 exigé : le membre est verrouillé et actif, l'UPDATE ne peut pas ne rien trouver — s'il ne trouve rien, on ANNULE bruyamment.
+  async resetMemberPassword(input: ResetMemberInput): Promise<ResetMemberResult> {
+    return this.prisma.$transaction(async (tx): Promise<ResetMemberResult> => {
+      const verrou = await tx.$queryRaw<Array<{ id: string; status: StaffStatus }>>`
+        SELECT id::text AS id, status::text AS status FROM pro_staff_members
+         WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid
+         FOR UPDATE`;
+      const cible = verrou[0];
+      if (cible === undefined) return { ok: false, reason: "notFound" };
+      if (cible.status !== "ACTIVE") return { ok: false, reason: "disabled" };
+
+      const membres = await tx.$queryRaw<MemberListRow[]>`
+        UPDATE pro_staff_members
+           SET password_hash = ${input.passwordHash}, password_changed_at = now(), password_expires_at = now() + make_interval(days => ${STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS}::int),
+               must_change_password = true, password_failed_count = 0, password_locked_until = NULL, updated_at = now()
+         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'
+        RETURNING id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+                  password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"`;
+      const membre = membres[0];
+      if (membre === undefined) throw new Error("réinitialisation : le membre verrouillé et actif n'a pas pu être mis à jour (compte = 1 exigé)");
+
+      const appareils = await tx.$executeRaw`UPDATE pro_staff_devices SET revoked_at = now() WHERE member_id = ${input.memberId}::uuid AND revoked_at IS NULL`;
+      const sessions = await tx.$executeRaw`UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'PASSWORD_CHANGED' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL`;
+
+      await ecrireAudit(tx, input.actor, input.actorMemberId, {
+        action: "staff.member_reset_password",
+        entityType: "staff_member",
+        entityId: membre.id,
+        after: { sessionsEnded: sessions, devicesRevoked: appareils }
+      });
+      return { ok: true, member: membre, sessionsEnded: sessions, devicesRevoked: appareils };
+    });
+  }
+
+  // K-22 — « JAMAIS ZÉRO MANAGER » (R-4, MP-6, MP-31). Le profil d'abord (L1, `FOR UPDATE`) : c'est là que deux désactivations simultanées se SÉRIALISENT — la seconde attend, puis voit un seul Manager actif et refuse.
+  // Le membre ensuite (L2, `FOR UPDATE`, dans SA salle), puis le COMPTAGE des Managers actifs — SOUS le verrou de L1, APRÈS lui, jamais avant (un comptage fait avant laisserait deux requêtes voir deux Managers et
+  // les désactiver tous deux) —, puis la DÉCISION (module pur), puis le CAS du statut (`status = 'ACTIVE'`, compte = 1 exigé : D305) et la fin des sessions (L4, `DISABLED`), puis l'audit. Une répétition (déjà
+  // désactivé) n'écrit rien : ni UPDATE, ni audit.
+  async disableMember(input: DisableMemberInput): Promise<DisableMemberResult> {
+    return this.prisma.$transaction(async (tx): Promise<DisableMemberResult> => {
+      await tx.$queryRaw`SELECT id::text AS id FROM pro_profiles WHERE id = ${input.proProfileId}::uuid FOR UPDATE`;
+      const cibles = await tx.$queryRaw<MemberListRow[]>`
+        SELECT id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+               password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"
+          FROM pro_staff_members
+         WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid
+         FOR UPDATE`;
+      const cible = cibles[0];
+      if (cible === undefined) return { ok: false, reason: "notFound" };
+
+      const compte = await tx.$queryRaw<Array<{ n: number }>>`
+        SELECT count(*)::int AS n FROM pro_staff_members WHERE pro_profile_id = ${input.proProfileId}::uuid AND role = 'MANAGER' AND status = 'ACTIVE'`;
+      const verdict = disableVerdict({ targetRole: cible.role, targetStatus: cible.status, activeManagers: compte[0]?.n ?? 0 });
+      if (verdict === "lastManager") return { ok: false, reason: "lastManager" };
+      if (verdict === "alreadyDisabled") return { ok: true, member: cible, sessionsEnded: 0, alreadyDisabled: true };
+
+      const membres = await tx.$queryRaw<MemberListRow[]>`
+        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now()
+         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'
+        RETURNING id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+                  password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"`;
+      const membre = membres[0];
+      if (membre === undefined) throw new Error("désactivation : le membre verrouillé et actif n'a pas pu être désactivé (compte = 1 exigé)");
+
+      const sessions = await tx.$executeRaw`UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'DISABLED' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL`;
+
+      await ecrireAudit(tx, input.actor, input.actorMemberId, { action: "staff.member_disable", entityType: "staff_member", entityId: membre.id, after: { role: membre.role, sessionsEnded: sessions } });
+      return { ok: true, member: membre, sessionsEnded: sessions, alreadyDisabled: false };
+    });
   }
 }

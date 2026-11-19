@@ -5,13 +5,13 @@
 // ⛔ CE QUE LE SPEC DOIT FAIRE ROUGIR : un garde qui lit le drapeau UNE fois et le garde ; qui lit autre chose que le drapeau quand la couche est éteinte ; qui fait confiance au cookie pour dire
 // la salle ; qui répond par une raison (un oracle) ; qui laisse passer un ADMIN ou un CLIENT.
 import { createHash } from "node:crypto";
-import { UnauthorizedException, type ExecutionContext } from "@nestjs/common";
+import { ForbiddenException, UnauthorizedException, type ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { describe, expect, it, vi } from "vitest";
 import { Public } from "../auth/auth.decorators";
-import { StaffExempt } from "./staff-decorators";
+import { RequiresStaffCapability, StaffAnyMember, StaffExempt } from "./staff-decorators";
 import { StaffSessionGuard } from "./staff-session.guard";
-import type { StaffStore } from "./staff-store.types";
+import type { StaffSessionView, StaffStore } from "./staff-store.types";
 
 const jeton = "a".repeat(43);
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -23,6 +23,10 @@ class Cible {
   ordinaire(): void {}
   @StaffExempt() exemptee(): void {}
   @Public() publique(): void {}
+  // R-2 (D354) : une capacité DÉCLARÉE sur la route, et la route du MEMBRE sur sa propre session (se déconnecter, changer son mot de passe)
+  @RequiresStaffCapability("salle") declareeSalle(): void {}
+  @RequiresStaffCapability("agenda") declareeAgenda(): void {}
+  @StaffAnyMember() duMembre(): void {}
 }
 const cible = new Cible();
 
@@ -35,12 +39,23 @@ function contexte(methode: keyof Cible, requete: Record<string, unknown>): Execu
 }
 
 type MagasinDuGarde = Pick<StaffStore, "readLayer" | "touchSession">;
+
+/** Une session vivante telle que le MAGASIN la rend : le membre, et ce dont `etatDuCompte` a besoin — l'échéance du mot de passe et l'HEURE DE LA BASE (S-101, S-241). */
+const HEURE_BASE = new Date("2026-11-19T10:00:00.000Z");
+const vue = (surcharge: Partial<StaffSessionView> = {}): StaffSessionView => ({
+  sessionId: "s1",
+  memberId: "m1",
+  role: "MANAGER",
+  accountName: "Amine",
+  mustChangePassword: false,
+  status: "ACTIVE",
+  passwordExpiresAt: new Date("2027-01-01T00:00:00.000Z"),
+  now: HEURE_BASE,
+  ...surcharge
+});
 function magasin(surcharge: Partial<MagasinDuGarde> = {}) {
   const readLayer = vi.fn<MagasinDuGarde["readLayer"]>(async () => ({ proProfileId: SALLE, enabledAt: new Date("2026-11-01T10:00:00Z") }));
-  const touchSession = vi.fn<MagasinDuGarde["touchSession"]>(async () => ({
-    ok: true,
-    session: { sessionId: "s1", memberId: "m1", role: "MANAGER", accountName: "Amine", mustChangePassword: false }
-  }));
+  const touchSession = vi.fn<MagasinDuGarde["touchSession"]>(async () => ({ ok: true, session: vue() }));
   const double = { readLayer, touchSession, ...surcharge } satisfies MagasinDuGarde;
   return { double, readLayer: double.readLayer as typeof readLayer, touchSession: double.touchSession as typeof touchSession };
 }
@@ -198,11 +213,122 @@ describe("StaffSessionGuard — la couche ACTIVÉE : une session est exigée à 
   });
 });
 
+// ── LES CAPACITÉS (R-2, D354) ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+const CAPACITE_REFUSEE = { code: "STAFF_CAPABILITY_DENIED", message: "staff.errors.capabilityDenied" };
+
+async function refusCapacite(g: StaffSessionGuard, ctx: ExecutionContext): Promise<unknown> {
+  try {
+    await g.canActivate(ctx);
+  } catch (e) {
+    expect(e instanceof ForbiddenException, "le refus de capacité est un 403 (ForbiddenException)").toBe(true);
+    return (e as ForbiddenException).getResponse();
+  }
+  return expect.fail("le garde devait refuser (403)");
+}
+const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok: true as const, session: vue({ role: "EMPLOYEE" }) })) });
+const methode = (m: string) => pro({ method: m });
+
+describe("StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c)", () => {
+  it("⛔ une route déclarée `salle` : l'employé LIT (GET) et le contexte est posé ; il ÉCRIT (POST, PATCH, DELETE) → 403 `STAFF_CAPABILITY_DENIED`", async () => {
+    await expect(garde(employe().double).canActivate(contexte("declareeSalle", methode("GET")))).resolves.toBe(true);
+    for (const m of ["POST", "PATCH", "DELETE"]) {
+      expect(await refusCapacite(garde(employe().double), contexte("declareeSalle", methode(m))), m).toEqual(CAPACITE_REFUSEE);
+    }
+  });
+
+  it("une route déclarée `agenda` : l'employé écrit (POST, DELETE) comme il lit", async () => {
+    for (const m of ["GET", "POST", "DELETE"]) await expect(garde(employe().double).canActivate(contexte("declareeAgenda", methode(m))), m).resolves.toBe(true);
+  });
+
+  it("⛔ S-107 — une route SANS déclaration : l'employé LIT (GET) et n'ÉCRIT pas (POST → 403) ; le MANAGER écrit", async () => {
+    await expect(garde(employe().double).canActivate(contexte("ordinaire", methode("GET")))).resolves.toBe(true);
+    expect(await refusCapacite(garde(employe().double), contexte("ordinaire", methode("POST")))).toEqual(CAPACITE_REFUSEE);
+    await expect(garde(magasin().double).canActivate(contexte("ordinaire", methode("POST")))).resolves.toBe(true);
+  });
+
+  it("⛔ le rôle est celui de la SESSION du membre (le magasin), jamais un champ de la requête : un `role: MANAGER` glissé dans la requête ne change rien pour un employé", async () => {
+    const requete = pro({ method: "POST", role: "MANAGER", staff: { role: "MANAGER" }, body: { role: "MANAGER" } });
+    expect(await refusCapacite(garde(employe().double), contexte("declareeSalle", requete))).toEqual(CAPACITE_REFUSEE);
+  });
+
+  it("la route du MEMBRE sur sa propre session (`@StaffAnyMember()`) passe pour un employé, en POST : se déconnecter, changer son mot de passe", async () => {
+    await expect(garde(employe().double).canActivate(contexte("duMembre", methode("POST")))).resolves.toBe(true);
+  });
+
+  it("le garde ne lit RIEN de plus pour décider : une lecture du drapeau, une prolongation de session — pas une seconde requête pour le rôle ou la capacité", async () => {
+    const m = employe();
+    await garde(m.double).canActivate(contexte("declareeSalle", methode("GET")));
+    expect(m.readLayer).toHaveBeenCalledTimes(1);
+    expect(m.touchSession).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE", () => {
+  const SESSION_A_CHANGER = vue({ mustChangePassword: true, passwordExpiresAt: new Date("2026-11-26T10:00:00.000Z") }); // un temporaire de 7 jours, intact
+  const aChanger = (surcharge: Partial<StaffSessionView> = {}) => magasin({ touchSession: vi.fn(async () => ({ ok: true as const, session: { ...SESSION_A_CHANGER, ...surcharge } })) });
+
+  it("⛔ un temporaire (must_change_password) : TOUTE route autre que celle du membre est refusée 403 — une lecture, une écriture, même au MANAGER, même sur une capacité déclarée", async () => {
+    for (const nom of ["ordinaire", "declareeAgenda", "declareeSalle"] as const) {
+      for (const m of ["GET", "POST"]) {
+        expect(await refusCapacite(garde(aChanger().double), contexte(nom, methode(m))), `${nom} ${m}`).toEqual(CAPACITE_REFUSEE);
+      }
+    }
+  });
+
+  it("⛔ …et la route du membre (changer son mot de passe, se déconnecter) PASSE, avec un contexte qui dit `mustChangePassword: true`", async () => {
+    const requete = methode("POST");
+    await expect(garde(aChanger().double).canActivate(contexte("duMembre", requete))).resolves.toBe(true);
+    expect((requete as { staff?: { mustChangePassword?: boolean } }).staff?.mustChangePassword).toBe(true);
+  });
+
+  it("⛔ un mot de passe ORDINAIRE de 90 jours EXPIRÉ (must_change_password FAUX) est dans le même état : la connexion est admise, mais TOUTE autre route est refusée", async () => {
+    const expire = aChanger({ mustChangePassword: false, passwordExpiresAt: new Date("2026-11-19T09:59:59.999Z") });
+    expect(await refusCapacite(garde(expire.double), contexte("ordinaire", methode("GET")))).toEqual(CAPACITE_REFUSEE);
+    const requete = methode("POST");
+    await expect(garde(expire.double).canActivate(contexte("duMembre", requete))).resolves.toBe(true);
+    expect((requete as { staff?: { mustChangePassword?: boolean } }).staff?.mustChangePassword).toBe(true);
+  });
+
+  it("⛔ l'échéance INCLUSE : un mot de passe qui expire à l'instant exact de la base est déjà à changer ; une milliseconde de plus, il est actif", async () => {
+    const alInstant = aChanger({ mustChangePassword: false, passwordExpiresAt: new Date(HEURE_BASE.getTime()) });
+    expect(await refusCapacite(garde(alInstant.double), contexte("ordinaire", methode("GET")))).toEqual(CAPACITE_REFUSEE);
+    const apres = aChanger({ mustChangePassword: false, passwordExpiresAt: new Date(HEURE_BASE.getTime() + 1) });
+    await expect(garde(apres.double).canActivate(contexte("ordinaire", methode("GET")))).resolves.toBe(true);
+  });
+
+  it("⛔ MP-41 — l'heure est celle de la BASE, jamais celle de l'API : une échéance dans le futur de l'horloge réelle mais dans le passé de l'heure de la base est EXPIRÉE ; l'inverse est valable", async () => {
+    const futurReel = new Date("2099-01-01T00:00:00.000Z");
+    const baseApres = aChanger({ mustChangePassword: false, passwordExpiresAt: futurReel, now: new Date("2099-06-01T00:00:00.000Z") });
+    expect(await refusCapacite(garde(baseApres.double), contexte("ordinaire", methode("GET")))).toEqual(CAPACITE_REFUSEE);
+    const passeReel = new Date("2020-01-01T00:00:00.000Z");
+    const baseAvant = aChanger({ mustChangePassword: false, passwordExpiresAt: passeReel, now: new Date("2019-06-01T00:00:00.000Z") });
+    await expect(garde(baseAvant.double).canActivate(contexte("ordinaire", methode("GET")))).resolves.toBe(true);
+  });
+
+  it("⛔ un TEMPORAIRE EXPIRÉ n'a pas de session : 401 `STAFF_SESSION_REQUIRED` — le MÊME corps que tout autre refus de session, même sur la route du membre (« le Manager doit en refaire un »)", async () => {
+    const mort = aChanger({ mustChangePassword: true, passwordExpiresAt: new Date(HEURE_BASE.getTime()) });
+    const corps = await refus(garde(mort.double), contexte("duMembre", methode("POST")));
+    expect(corps).toEqual({ code: "STAFF_SESSION_REQUIRED", message: "staff.errors.sessionRequired" });
+    const sansCookie = await refus(garde(magasin().double), contexte("ordinaire", pro({ cookies: {} })));
+    expect(JSON.stringify(corps)).toBe(JSON.stringify(sansCookie));
+  });
+
+  it("⛔ AUCUN refus ne dit pourquoi : le refus de capacité d'un EMPLOYÉ et celui du mot de passe à changer ont le MÊME corps à l'octet", async () => {
+    const parRole = JSON.stringify(await refusCapacite(garde(employe().double), contexte("declareeSalle", methode("POST"))));
+    const parEtat = JSON.stringify(await refusCapacite(garde(aChanger().double), contexte("ordinaire", methode("GET"))));
+    expect(parRole).toBe(parEtat);
+  });
+});
+
 describe("la cible du spec est sans effet de bord", () => {
   it("les décorateurs réels posent bien leurs métadonnées (sinon les cas ci-dessus mesureraient une cible muette)", () => {
     expect(new Reflector().get<boolean>("zwadj:isPublic", Cible.prototype.publique)).toBe(true);
     expect(new Reflector().get<boolean>("zwadj:staffExempt", Cible.prototype.exemptee)).toBe(true);
     expect(new Reflector().get<boolean>("zwadj:staffExempt", Cible.prototype.ordinaire)).toBeUndefined();
+    expect(new Reflector().get<string>("zwadj:staffCapability", Cible.prototype.declareeSalle)).toBe("salle");
+    expect(new Reflector().get<string>("zwadj:staffCapability", Cible.prototype.declareeAgenda)).toBe("agenda");
+    expect(new Reflector().get<boolean>("zwadj:staffAnyMember", Cible.prototype.duMembre)).toBe(true);
+    expect(new Reflector().get<string>("zwadj:staffCapability", Cible.prototype.ordinaire)).toBeUndefined();
     expect(cible).toBeInstanceOf(Cible);
   });
 });

@@ -4,6 +4,7 @@
 //
 // ⛔ LECTURE SEULE : aucun statut écrit, aucun montant calculé, aucun fichier stocké (Ko : « je ne veux stocker que les données structurées du devis
 // en base » — le PDF se génère à la demande, il ne se garde pas). La réponse n'est donc PAS mise en cache : un PDF porte le nom d'un client.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Controller, Get, Param, Query, Res, StreamableFile } from "@nestjs/common";
 import { ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiServiceUnavailableResponse, ApiTags } from "@nestjs/swagger";
 import { quoteDocumentQuerySchema, UserRole, type QuoteDocumentQuery } from "@zwadj/types";
@@ -15,6 +16,7 @@ import { QuoteDocumentService } from "./quote-document.service";
 
 @ApiTags("quotes")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("devis")
 @Controller()
 export class QuoteDocumentController {
   constructor(private readonly documents: QuoteDocumentService) {}

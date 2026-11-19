@@ -4,6 +4,7 @@
 // connecté (D149) — une fiche d'un autre pro rend le MÊME 404 qu'une fiche absente (D47).
 // ⚠ `POST lookup` et `POST` (créer ou rendre) répondent 200 : la recherche est une LECTURE (son corps porte l'identifiant, qu'une adresse de requête n'a pas à
 // recopier dans les journaux), et la création est IDEMPOTENTE — `created` dit si la fiche vient de naître.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import { ApiBadRequestResponse, ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -27,6 +28,7 @@ import { ProClientsService } from "./pro-clients.service";
 
 @ApiTags("clients")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("clients")
 @Controller("pro/clients")
 export class ProClientsController {
   constructor(private readonly clients: ProClientsService) {}

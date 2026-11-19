@@ -37,7 +37,7 @@ import {
   staffDeviceCookieOptions,
   staffSessionCookieOptions
 } from "./staff-cookies";
-import { CurrentStaff, StaffExempt, type StaffContext } from "./staff-decorators";
+import { CurrentStaff, StaffAnyMember, StaffExempt, type StaffContext } from "./staff-decorators";
 import { StaffSessionService, type StaffCookiesIn, type StaffCookiesOut } from "./staff-session.service";
 import type { StaffActor } from "./staff-store.types";
 
@@ -96,7 +96,8 @@ export class StaffSessionController {
     return this.service.state(acteur(user), this.cookiesDe(req));
   }
 
-  // K-16 — 200 : termine la session COURANTE et efface son cookie. L'appareil reste.
+  // K-16 — 200 : termine la session COURANTE et efface son cookie. L'appareil reste. ⛔ Rang 56 (D354) : la route du MEMBRE sur sa propre session — tout rôle l'atteint, et elle passe même quand le mot de passe est à changer.
+  @StaffAnyMember()
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Termine la session de personnel courante et efface son cookie" })
@@ -110,7 +111,8 @@ export class StaffSessionController {
     return reply.body;
   }
 
-  // K-18 — 200 : le membre change SON mot de passe ; ses AUTRES sessions prennent fin, la courante et l'appareil restent.
+  // K-18 — 200 : le membre change SON mot de passe ; ses AUTRES sessions prennent fin, la courante et l'appareil restent. ⛔ Rang 56 (D354) : la route du MEMBRE sur sa propre session — la SEULE que laisse passer l'état « mot de passe à changer » (S-104).
+  @StaffAnyMember()
   @Post("password")
   @HttpCode(HttpStatus.OK)
   @Throttle({ default: AUTH_THROTTLE.changePassword })

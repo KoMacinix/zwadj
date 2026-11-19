@@ -3,6 +3,7 @@
 // Topologie du dépôt, volontairement asymétrique — NE PAS « harmoniser » :
 // ÉCRITURES sur `/venues/:id/services` et `/services/:id`, LECTURE pro sur
 // `/pro/venues/:id/services`.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
@@ -29,6 +30,7 @@ import { ServicesService } from "./services.service";
 
 @ApiTags("services")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("prestations")
 @Controller()
 export class ServicesController {
   constructor(private readonly services: ServicesService) {}

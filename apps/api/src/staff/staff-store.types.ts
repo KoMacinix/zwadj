@@ -1,4 +1,5 @@
-// Le PORT du magasin de la couche du personnel — rang 44, L36-3a-1 (D341). Le service, le garde et les tests parlent à ce contrat ; seul `staff-store.prisma.ts` connaît Prisma et SQL (Repository, DIP).
+// Le PORT du magasin de la couche du personnel — rang 44, L36-3a-1 (D341) ; rang 56, L36-3a-2 (D354) : K-19 à K-22 et l'état du compte. Le service, le garde et les tests parlent à ce contrat ; seul
+// `staff-store.prisma.ts` connaît Prisma et SQL (Repository, DIP).
 //
 // ⛔ CE QUE LE PORT PROMET, et que l'adaptateur tient en SQL : toute décision qui dépend du TEMPS se prend avec l'horloge de la BASE (`now()`, S-101, MP-41) ; la RÉSERVATION d'une tentative de mot de passe est UNE
 // instruction (S-102) ; une transition ne s'écrit que SOUS la condition de son statut source, compte exigé (D305) ; l'ordre des verrous est L1 (le profil) < L2 (les membres) < L3 (les appareils) < L4 (les sessions)
@@ -29,9 +30,14 @@ export interface StaffMemberView {
   mustChangePassword: boolean;
 }
 
-/** Un membre trouvé par sa clé : ce qui suffit à décider s'il faut réserver une tentative. Jamais le hachage — il n'est rendu que par la RÉSERVATION. */
+/**
+ * Un membre trouvé par sa clé : ce qui suffit à décider s'il faut réserver une tentative. Jamais le hachage — il n'est rendu que par la RÉSERVATION. Rang 56 (D354, S-104, S-241) : l'échéance de son mot de passe et
+ * l'HEURE DE LA BASE (`now()`, lue dans la MÊME instruction) — `etatDuCompte` juge « peut-il se connecter » avec ces deux valeurs, jamais avec une horloge de l'API.
+ */
 export interface StaffMemberRow extends StaffMemberView {
   status: StaffStatus;
+  passwordExpiresAt: Date;
+  now: Date;
 }
 
 export interface KnownMember {
@@ -101,7 +107,12 @@ export interface StaffSessionView {
   memberId: string;
   role: StaffRole;
   accountName: string;
+  /** La colonne BRUTE (`must_change_password`) : le marqueur « temporaire ». L'ÉTAT JUGÉ est `etatDuCompte(session, session.now)`, jamais ce champ seul. */
   mustChangePassword: boolean;
+  status: StaffStatus;
+  passwordExpiresAt: Date;
+  /** `now()` de la BASE, lu dans l'instruction qui a rendu la session (S-101, MP-41, S-241). */
+  now: Date;
 }
 export type SessionTouchResult = { ok: true; session: StaffSessionView } | { ok: false };
 
@@ -128,6 +139,54 @@ export interface ListKnownMembersInput {
   deviceTokenHashes: readonly string[];
 }
 
+// ── K-19 à K-22 (rang 56, D354) ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/**
+ * Un membre tel que la gestion du personnel le lit : de quoi juger son ÉTAT (`etatDuCompte`) et de quoi remplir la liste — jamais un hachage, un compteur, un verrou, un PIN ni un jeton. `now` est l'heure de la BASE
+ * lue dans la même instruction : chaque ligne porte la sienne (la même pour toutes celles d'une instruction).
+ */
+export interface MemberListRow {
+  id: string;
+  accountName: string;
+  role: StaffRole;
+  status: StaffStatus;
+  mustChangePassword: boolean;
+  passwordExpiresAt: Date;
+  lastLoginAt: Date | null;
+  createdAt: Date;
+  now: Date;
+}
+
+/** Qui agit : le MANAGER dont la session a passé le garde (`actorMemberId`, pour l'audit et `created_by`), son compte commun (`actor`), la salle du PROFIL du Bearer (`proProfileId`) — jamais un identifiant venu du corps. */
+export interface ManagementActor {
+  actor: StaffActor;
+  actorMemberId: string;
+  proProfileId: string;
+}
+
+export interface CreateMemberInput extends ManagementActor {
+  accountName: string;
+  accountNameKey: string;
+  role: StaffRole;
+  /** Le HACHAGE du mot de passe temporaire : le magasin ne voit JAMAIS le clair (R-5). */
+  passwordHash: string;
+}
+export type CreateMemberResult = { ok: true; member: MemberListRow } | { ok: false; reason: "accountNameTaken" };
+
+export interface ResetMemberInput extends ManagementActor {
+  memberId: string;
+  passwordHash: string;
+}
+export type ResetMemberResult =
+  | { ok: true; member: MemberListRow; sessionsEnded: number; devicesRevoked: number }
+  | { ok: false; reason: "notFound" | "disabled" };
+
+export interface DisableMemberInput extends ManagementActor {
+  memberId: string;
+}
+export type DisableMemberResult =
+  | { ok: true; member: MemberListRow; sessionsEnded: number; alreadyDisabled: boolean }
+  | { ok: false; reason: "notFound" | "lastManager" };
+
 export interface StaffStore {
   /** UNE lecture du profil du compte commun : sa salle et le drapeau. Relue à CHAQUE requête Pro (limite 6 du cadrage). `null` = pas de profil. */
   readLayer(userId: string): Promise<StaffLayer | null>;
@@ -144,6 +203,14 @@ export interface StaffStore {
   closeSession(input: CloseSessionInput): Promise<void>;
   changePassword(input: ChangePasswordInput): Promise<ChangePasswordResult>;
   listKnownMembers(input: ListKnownMembersInput): Promise<KnownMember[]>;
+  /** K-19 — les membres de la salle, actifs et désactivés, dans l'ordre de leur création : UNE lecture, aucun secret. */
+  listMembers(proProfileId: string): Promise<MemberListRow[]>;
+  /** K-20 — le membre ET son audit dans UNE transaction ; un nom déjà pris (à la normalisation près) est refusé par la base. */
+  createMember(input: CreateMemberInput): Promise<CreateMemberResult>;
+  /** K-21 — le membre (L2), ses appareils (L3), TOUTES ses sessions (L4), l'audit : une transaction. Le PIN n'existe pas encore (3b) : aucune colonne `pin_*` n'est touchée. */
+  resetMemberPassword(input: ResetMemberInput): Promise<ResetMemberResult>;
+  /** K-22 — « jamais zéro Manager » : le profil (L1), puis le comptage SOUS ce verrou, puis le membre (L2) et ses sessions (L4) : une transaction. */
+  disableMember(input: DisableMemberInput): Promise<DisableMemberResult>;
 }
 
 /**
@@ -162,4 +229,8 @@ export type StaffAuditEntry =
   | { action: "staff.login_failed" | "staff.password_change_failed"; entityType: "staff_member"; entityId: string; after: { failedCount: number } }
   | { action: "staff.password_pause"; entityType: "staff_member"; entityId: string; after: { pausedMinutes: number } }
   | { action: "staff.logout"; entityType: "staff_session"; entityId: string; after: { memberId: string } }
-  | { action: "staff.password_change"; entityType: "staff_member"; entityId: string; after: { otherSessionsEnded: number } };
+  | { action: "staff.password_change"; entityType: "staff_member"; entityId: string; after: { otherSessionsEnded: number } }
+  // Rang 56 (D354, R-6) : les trois actions de GESTION — le MANAGER est l'acteur, l'entité est le membre visé, la charge utile ne porte ni nom, ni hachage, ni temporaire.
+  | { action: "staff.member_create"; entityType: "staff_member"; entityId: string; after: { role: StaffRole } }
+  | { action: "staff.member_reset_password"; entityType: "staff_member"; entityId: string; after: { sessionsEnded: number; devicesRevoked: number } }
+  | { action: "staff.member_disable"; entityType: "staff_member"; entityId: string; after: { role: StaffRole; sessionsEnded: number } };

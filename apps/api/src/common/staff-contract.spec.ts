@@ -16,6 +16,7 @@ import {
   StaffStatus,
   staffActivateSchema,
   staffLoginSchema,
+  staffMemberCreateSchema,
   staffPasswordChangeSchema
 } from "@zwadj/types";
 
@@ -43,9 +44,13 @@ describe("STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5)", () =
     expect(STAFF_LIMITS.PIN_VALIDITY_DAYS).toBe(90);
   });
 
+  it("DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : UN paramètre du levier, jamais un littéral ailleurs", () => {
+    expect(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS).toBe(7);
+  });
+
   it("R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver)", () => {
     expect(Object.keys(STAFF_LIMITS).sort()).toEqual(
-      ["DEVICE_COOKIES_MAX", "IDLE_TIMEOUT_MINUTES", "PASSWORD_MAX_FAILURES", "PASSWORD_PAUSE_MINUTES", "PASSWORD_VALIDITY_DAYS", "PIN_VALIDITY_DAYS", "SESSION_MAX_HOURS"].sort()
+      ["DEVICE_COOKIES_MAX", "IDLE_TIMEOUT_MINUTES", "PASSWORD_MAX_FAILURES", "PASSWORD_PAUSE_MINUTES", "PASSWORD_VALIDITY_DAYS", "PIN_VALIDITY_DAYS", "SESSION_MAX_HOURS", "TEMPORARY_PASSWORD_DAYS"].sort()
     );
   });
 
@@ -73,9 +78,13 @@ describe("les codes d'erreur du personnel — messages FR = AR (MP-39)", () => {
       [
         "STAFF_ACCOUNT_NAME_TAKEN",
         "STAFF_ALREADY_ACTIVATED",
+        "STAFF_CAPABILITY_DENIED",
         "STAFF_CURRENT_PASSWORD_INVALID",
         "STAFF_EMAIL_NOT_VERIFIED",
         "STAFF_INVALID_CREDENTIALS",
+        "STAFF_LAST_MANAGER",
+        "STAFF_MEMBER_DISABLED",
+        "STAFF_MEMBER_NOT_FOUND",
         "STAFF_PASSWORD_COMMON",
         "STAFF_PASSWORD_REUSED",
         "STAFF_SESSION_REQUIRED"
@@ -117,6 +126,30 @@ describe("les codes d'erreur du personnel — messages FR = AR (MP-39)", () => {
   });
 });
 
+describe("les messages de K-19 à K-22 — FR = AR (MP-39, D354)", () => {
+  const cle = (code: StaffErrorCode) => STAFF_ERROR_MESSAGE_KEYS[code];
+
+  it("⛔ S-242 — le refus de CAPACITÉ ne dit pas POURQUOI : ni le rôle, ni « mot de passe à changer », ni une expiration (le même message sert l'employé refusé et le membre dont le mot de passe est à changer : aucun refus n'est un oracle)", () => {
+    const fr = lire(FR, cle(StaffErrorCode.STAFF_CAPABILITY_DENIED));
+    expect(fr?.trim()).toBeTruthy();
+    expect(fr).not.toMatch(/mot de passe|rôle|employ|manager|expir|désactiv/i);
+  });
+
+  it("chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux", () => {
+    const codes = [StaffErrorCode.STAFF_CAPABILITY_DENIED, StaffErrorCode.STAFF_MEMBER_NOT_FOUND, StaffErrorCode.STAFF_MEMBER_DISABLED, StaffErrorCode.STAFF_LAST_MANAGER];
+    for (const code of codes) {
+      expect(lire(FR, cle(code))?.trim(), `${code} (fr)`).toBeTruthy();
+      expect(lire(AR, cle(code))?.trim(), `${code} (ar)`).toBeTruthy();
+    }
+    expect(new Set(codes.map((c) => lire(FR, cle(c)))).size).toBe(codes.length);
+    expect(new Set(codes.map((c) => lire(AR, cle(c)))).size).toBe(codes.length);
+  });
+
+  it("le message du dernier Manager dit CE QUI Y MET FIN : désigner un autre responsable avant de désactiver (un refus qui ne dit pas quoi faire renvoie l'utilisateur au support)", () => {
+    expect(lire(FR, cle(StaffErrorCode.STAFF_LAST_MANAGER))).toMatch(/au moins un/i);
+  });
+});
+
 describe("les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées)", () => {
   const entreesFautives: ReadonlyArray<readonly [string, { safeParse: (v: unknown) => { success: boolean; error?: { issues: { message: string }[] } } }, unknown]> = [
     ["activation, corps vide", staffActivateSchema, {}],
@@ -129,7 +162,13 @@ describe("les clés `staff.validation.*` employées par les schémas existent da
     ["connexion, clé inconnue", staffLoginSchema, { accountName: "Amine", password: "x", rememberMe: true }],
     ["changement, corps vide", staffPasswordChangeSchema, {}],
     ["changement, mot de passe actuel vide", staffPasswordChangeSchema, { currentPassword: "", newPassword: "Motdepasse1" }],
-    ["changement, clé inconnue", staffPasswordChangeSchema, { currentPassword: "x", newPassword: "Motdepasse1", extra: 1 }]
+    ["changement, clé inconnue", staffPasswordChangeSchema, { currentPassword: "x", newPassword: "Motdepasse1", extra: 1 }],
+    ["création de membre, corps vide", staffMemberCreateSchema, {}],
+    ["création de membre, nom trop court", staffMemberCreateSchema, { accountName: "a", role: "EMPLOYEE" }],
+    ["création de membre, nom invalide", staffMemberCreateSchema, { accountName: "<b>", role: "EMPLOYEE" }],
+    ["création de membre, rôle absent", staffMemberCreateSchema, { accountName: "Karim" }],
+    ["création de membre, rôle inconnu", staffMemberCreateSchema, { accountName: "Karim", role: "ADMIN" }],
+    ["création de membre, mot de passe choisi", staffMemberCreateSchema, { accountName: "Karim", role: "EMPLOYEE", password: "Motdepasse1" }]
   ];
 
   it("chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR", () => {
@@ -139,7 +178,7 @@ describe("les clés `staff.validation.*` employées par les schémas existent da
       expect(r.success, nom).toBe(false);
       for (const issue of r.error?.issues ?? []) cles.add(issue.message);
     }
-    expect(cles.size, "les entrées fautives doivent produire des clés (sinon ce test ne mesure rien)").toBeGreaterThanOrEqual(6);
+    expect(cles.size, "les entrées fautives doivent produire des clés (sinon ce test ne mesure rien)").toBeGreaterThanOrEqual(9);
     for (const cle of cles) {
       expect(lire(FR, cle)?.trim(), `${cle} (fr)`).toBeTruthy();
       expect(lire(AR, cle)?.trim(), `${cle} (ar)`).toBeTruthy();
@@ -219,5 +258,35 @@ describe("staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui sui
   it("le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle)", () => {
     expect(staffPasswordChangeSchema.safeParse({ currentPassword: "x", newPassword: "court1" }).success).toBe(false);
     expect(staffPasswordChangeSchema.safeParse({ currentPassword: "x", newPassword: "Nouveau1motdepasse" }).success).toBe(true);
+  });
+});
+
+describe("staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ)", () => {
+  it("accepte un corps valide pour chacun des deux rôles et rend le nom rogné", () => {
+    for (const role of ["MANAGER", "EMPLOYEE"]) {
+      const r = staffMemberCreateSchema.safeParse({ accountName: "  Karim  ", role });
+      expect(r.success, role).toBe(true);
+      if (r.success) expect(r.data).toEqual({ accountName: "Karim", role });
+    }
+  });
+
+  it("⛔ le rôle se choisit à la CRÉATION (aucune route ne le change, R-8) et il est EXACT : absent, vide, en minuscules ou inconnu sont refusés", () => {
+    for (const role of [undefined, "", "manager", "employee", "ADMIN", 1, null]) {
+      expect(staffMemberCreateSchema.safeParse({ accountName: "Karim", role }).success, String(role)).toBe(false);
+    }
+  });
+
+  it("⛔ une clé de plus est REFUSÉE, pas ignorée : le Manager ne choisit PAS le mot de passe du membre (le temporaire est généré par le serveur, DR5), ni son statut, ni ses dates", () => {
+    for (const extra of [{ password: "Motdepasse1" }, { temporaryPassword: "x" }, { status: "ACTIVE" }, { mustChangePassword: false }]) {
+      expect(staffMemberCreateSchema.safeParse({ accountName: "Karim", role: "EMPLOYEE", ...extra }).success, Object.keys(extra)[0]).toBe(false);
+    }
+  });
+
+  it("le nom de compte suit la MÊME règle qu'à l'activation (une seule fonction, D147) : trop court, trop long, caractères interdits", () => {
+    expect(staffMemberCreateSchema.safeParse({ accountName: "a", role: "EMPLOYEE" }).success).toBe(false);
+    expect(staffMemberCreateSchema.safeParse({ accountName: "a".repeat(41), role: "EMPLOYEE" }).success).toBe(false);
+    expect(staffMemberCreateSchema.safeParse({ accountName: "<b>", role: "EMPLOYEE" }).success).toBe(false);
+    expect(staffMemberCreateSchema.safeParse({ accountName: "caisse 2", role: "EMPLOYEE" }).success).toBe(true);
+    expect(staffMemberCreateSchema.safeParse({ accountName: "أمين", role: "EMPLOYEE" }).success).toBe(true);
   });
 });

@@ -9,6 +9,7 @@
 // vient de `/venues/:slug/visit-slots`), la lecture de MES rendez-vous vit sous
 // `/me` comme le reste du compte, et l'annulation porte l'id du rendez-vous —
 // elle n'a pas besoin de la salle pour se désigner.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
@@ -36,6 +37,7 @@ import { VisitBookingsService } from "./visit-bookings.service";
 
 @ApiTags("visits")
 @Roles(UserRole.CLIENT)
+@RequiresStaffCapability("demandes")
 @Controller()
 export class VisitBookingsController {
   constructor(private readonly bookings: VisitBookingsService) {}

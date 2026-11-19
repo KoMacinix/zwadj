@@ -10,6 +10,7 @@
 // un acte que le système ne faisait pas et que le pro ne faisait pas non plus —
 // il cliquait pour débloquer l'étape suivante. Le nouveau verbe ne débloque
 // rien, il ENREGISTRE ce qui a eu lieu.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -36,6 +37,7 @@ import { QuotesService } from "./quotes.service";
 
 @ApiTags("quotes")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("devis")
 @Controller()
 export class QuotesController {
   constructor(private readonly quotes: QuotesService) {}

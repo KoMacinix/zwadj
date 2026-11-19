@@ -7,7 +7,7 @@ import type { INestApplication } from "@nestjs/common";
 import { MetadataScanner, Reflector } from "@nestjs/core";
 import { ModulesContainer } from "@nestjs/core/injector/modules-container";
 import { IS_PUBLIC_KEY, ROLES_KEY } from "../../src/auth/auth.decorators";
-import { STAFF_EXEMPT_KEY } from "../../src/staff/staff-decorators";
+import { STAFF_ANY_MEMBER_KEY, STAFF_CAPABILITY_KEY, STAFF_EXEMPT_KEY } from "../../src/staff/staff-decorators";
 
 export interface RouteEntry {
   method: "get" | "post" | "patch" | "put" | "delete";
@@ -18,6 +18,10 @@ export interface RouteEntry {
   isPublic: boolean;
   /** `@StaffExempt()` — la liste blanche du garde du personnel. */
   staffExempt: boolean;
+  /** `@RequiresStaffCapability(...)` — la capacité DÉCLARÉE par la route ou sa classe (rang 56, D354, R-2), ou `undefined` : la règle par défaut S-107 s'applique. Lue là où le garde la lit. */
+  staffCapability: string | undefined;
+  /** `@StaffAnyMember()` — la route du membre sur sa propre session (se déconnecter, changer son mot de passe). */
+  staffAnyMember: boolean;
 }
 
 /** Parcourt les contrôleurs enregistrés et rend, pour chaque handler, le chemin complet, les rôles exigés, la publicité et l'exemption du garde du personnel. */
@@ -46,6 +50,8 @@ export function collectRoutes(app: INestApplication): RouteEntry[] {
         const roles = reflector.getAllAndOverride<string[] | undefined>(ROLES_KEY, [handler, metatype]) ?? [];
         const isPublic = reflector.getAllAndOverride<boolean | undefined>(IS_PUBLIC_KEY, [handler, metatype]) === true;
         const staffExempt = reflector.getAllAndOverride<boolean | undefined>(STAFF_EXEMPT_KEY, [handler, metatype]) === true;
+        const staffCapability = reflector.getAllAndOverride<string | undefined>(STAFF_CAPABILITY_KEY, [handler, metatype]);
+        const staffAnyMember = reflector.getAllAndOverride<boolean | undefined>(STAFF_ANY_MEMBER_KEY, [handler, metatype]) === true;
         const verbs = ["get", "post", "put", "delete", "patch"] as const;
         const method = verbs[methodIndex];
         if (!method) continue;
@@ -54,7 +60,7 @@ export function collectRoutes(app: INestApplication): RouteEntry[] {
           .map((s) => s.replace(/^\/+|\/+$/g, ""))
           .filter(Boolean)
           .join("/");
-        out.push({ method, path: `/${path}`, roles, isPublic, staffExempt });
+        out.push({ method, path: `/${path}`, roles, isPublic, staffExempt, staffCapability, staffAnyMember });
       }
     }
   }

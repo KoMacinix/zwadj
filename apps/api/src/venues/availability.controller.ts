@@ -2,6 +2,7 @@
 //
 // Throttle global CONSERVÉ (pas de @SkipThrottle) : ce n'est pas un asset
 // immuable comme /media/:key, c'est une lecture calculée sur 92 jours.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -51,6 +52,7 @@ export class AvailabilityController {
  *  authentifiée dessous l'aurait rendue publique en silence — un décorateur de
  *  classe ne se voit pas depuis la méthode qu'on écrit. */
 @ApiTags("venues-pro")
+@RequiresStaffCapability("agenda")
 @Controller("pro/venues")
 export class AvailabilityProController {
   constructor(private readonly availability: AvailabilityService) {}

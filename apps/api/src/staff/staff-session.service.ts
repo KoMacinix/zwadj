@@ -1,4 +1,4 @@
-// Le SERVICE de la couche du personnel — rang 44, L36-3a-1 (D341). CHEMIN D'IDENTITÉ : méthode RENFORCÉE, revue humaine requise. Il ORCHESTRE : il lit, il appelle le magasin, il hache, il traduit les refus en erreurs
+// Le SERVICE de la couche du personnel — rang 44, L36-3a-1 (D341) ; rang 56 (D354) : S-104, l'état du compte. CHEMIN D'IDENTITÉ : méthode RENFORCÉE, revue humaine requise. Il ORCHESTRE : il lit, il appelle le magasin, il hache, il traduit les refus en erreurs
 // métier. Ce qu'il DÉCIDE vit dans des modules purs (`staff-session-policy.ts`, `staff-password-policy.ts`) et dans SQL (`staff-store.prisma.ts`) — jamais ici.
 //
 // ⛔ CE QUE CE FICHIER TIENT :
@@ -12,6 +12,7 @@ import {
   AuthErrorCode,
   STAFF_DEVICE_DEFAULT_LABEL,
   STAFF_ERROR_MESSAGE_KEYS,
+  StaffAccountState,
   StaffErrorCode,
   normalizeStaffAccountName,
   type StaffActivateInput,
@@ -27,6 +28,7 @@ import { PasswordService } from "../auth/password.service";
 import { TokenService } from "../auth/token.service";
 import type { CookieAppareil } from "./staff-cookies";
 import type { StaffContext } from "./staff-decorators";
+import { etatDuCompte } from "./staff-account-state";
 import { isCommonPassword, passwordViolation, type PasswordViolation } from "./staff-password-policy";
 import { loginVerification } from "./staff-session-policy";
 import { STAFF_STORE, type ActivateResult, type StaffActor, type StaffStore } from "./staff-store.types";
@@ -106,7 +108,11 @@ export class StaffSessionService {
   async login(user: StaffActor, input: StaffLoginInput, cookies: StaffCookiesIn): Promise<StaffReply<StaffLoginDTO>> {
     const layer = await this.store.readLayer(user.userId);
     const member = layer === null ? null : await this.store.findMember(layer.proProfileId, normalizeStaffAccountName(input.accountName));
-    const memberActive = member !== null && member.status === "ACTIVE";
+    // ⛔ S-104 (R-3, D354) : « ce membre peut-il se connecter ? » est UNE règle (`etatDuCompte`), jugée à l'HEURE DE LA BASE rendue avec le membre (S-241) — la MÊME que celle du garde. Désactivé et TEMPORAIRE EXPIRÉ
+    // ne se connectent pas : ils se traitent comme un compte inconnu (aucune réservation, le hachage factice, le même refus). Un mot de passe à changer — un temporaire valable, ou un mot de passe de 90 jours
+    // expiré — SE CONNECTE : la session n'ouvrira que le changement de mot de passe.
+    const etat = member === null ? null : etatDuCompte(member, member.now);
+    const memberActive = etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD;
 
     // Un compte inconnu ou éteint n'a pas de compteur à faire monter : aucune réservation. Un compte actif en réserve une, qui peut être REFUSÉE (pause) — le service ne distingue pas.
     const reservation = member !== null && memberActive ? await this.store.reservePasswordAttempt(member.id) : ({ reserved: false } as const);
@@ -137,7 +143,10 @@ export class StaffSessionService {
     });
     // Désactivé entre la réservation et l'ouverture : le même refus, aucune session (la base a refusé le CAS).
     if (!opened.ok) throw identifiantsRefuses();
-    return { body: { member: opened.member }, cookies: { session: sessionToken, device: opened.deviceReused ? undefined : { suffix, token: deviceToken } } };
+    return {
+      body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD } },
+      cookies: { session: sessionToken, device: opened.deviceReused ? undefined : { suffix, token: deviceToken } }
+    };
   }
 
   // K-16 — termine la session COURANTE (celle que le garde a posée sur la requête). L'appareil reste : c'est le poste qui est reconnu, pas la session.
@@ -155,7 +164,11 @@ export class StaffSessionService {
     if (cookies.session !== undefined) {
       const peek = await this.store.peekSession({ tokenHash: this.tokens.hash(cookies.session), proProfileId: layer.proProfileId });
       if (peek.ok) {
-        member = { id: peek.session.memberId, accountName: peek.session.accountName, role: peek.session.role, mustChangePassword: peek.session.mustChangePassword };
+        // S-104 : l'état est JUGÉ (`etatDuCompte`), pas copié de la colonne ; un temporaire expiré n'a plus de session (le garde la refuse) : l'état ne rend alors aucun membre.
+        const etat = etatDuCompte(peek.session, peek.session.now);
+        if (etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD) {
+          member = { id: peek.session.memberId, accountName: peek.session.accountName, role: peek.session.role, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD };
+        }
       }
     }
     const knownMembers = await this.store.listKnownMembers({ proProfileId: layer.proProfileId, deviceTokenHashes: cookies.devices.map((d) => this.tokens.hash(d.value)) });

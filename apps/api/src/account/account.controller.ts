@@ -1,3 +1,4 @@
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, Req, Res } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
@@ -48,6 +49,7 @@ import { AccountService } from "./account.service";
  */
 @ApiTags("account")
 @ApiBearerAuth()
+@RequiresStaffCapability("compte")
 @Controller("me")
 export class AccountController {
   constructor(

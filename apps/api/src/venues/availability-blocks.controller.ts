@@ -4,6 +4,7 @@
 // ÉCRITURES pro restent nues sur /venues, les LECTURES pro portent le préfixe
 // /pro. Le backlog écrivait `POST /venues/:id/availability/block` — périmé : la
 // ressource est plurielle, elle se liste et se supprime.
+import { RequiresStaffCapability } from "../staff/staff-decorators";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
@@ -30,6 +31,7 @@ import { AvailabilityBlocksService } from "./availability-blocks.service";
 
 @ApiTags("venues-pro")
 @Roles(UserRole.PRO)
+@RequiresStaffCapability("agenda")
 @Controller()
 export class AvailabilityBlocksController {
   constructor(private readonly blocks: AvailabilityBlocksService) {}
