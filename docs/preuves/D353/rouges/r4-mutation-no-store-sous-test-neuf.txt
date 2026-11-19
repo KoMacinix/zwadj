@@ -1,0 +1,10 @@
+fichier de test joué : apps/client/src/lib/api.test.ts · sha256 3242f5aa4ac94146c219717daa6dd8dbab7725153020f9d5fde8eaa5874535a6
+mutation posée : ancre 1 -> 0, marqueur `force-cache` 0 -> 1 ; octets 14316 -> 14319 ; sha256 de api.ts avant 180342cfbbdada2500320cc7cfe96c88d03a43299995eb8a6d81082d15e54f6c
+code de sortie de la suite du client sous la mutation : 1
+  × getVenueMap — les points de la carte > ⛔ la carte est lue SANS CACHE : le second argument de `fetch` porte `cache: "no-store"` (D353, R-4) 9ms
+  Test Files  1 failed | 46 passed (47)
+  Tests  1 failed | 564 passed (565)
+  FAIL  src/lib/api.test.ts > getVenueMap — les points de la carte > ⛔ la carte est lue SANS CACHE : le second argument de `fetch` porte `cache: "no-store"` (D353, R-4)
+  ↳ PREMIÈRE ligne du bloc d'échec : AssertionError: expected 'force-cache' to be 'no-store' // Object.is equality
+  AssertionError: expected 'force-cache' to be 'no-store' // Object.is equality
+restauration : sha256 après 180342cfbbdada2500320cc7cfe96c88d03a43299995eb8a6d81082d15e54f6c · identique : True · git status --short -- apps/client/src/lib/api.ts : [] (attendu [])

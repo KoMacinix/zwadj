@@ -1,0 +1,8 @@
+dossier : apps/client/.next/cache/fetch-cache.avant-D353 (ignoré par git) ; relevé par lire-cache.py (lecture seule)
+14/11 21:06  114cbab9  200  rev=3600  n=4  /venue-styles
+14/11 21:06  18327f1b  200  rev=3600  n=23  /amenities
+18/11 20:25  6d7fe5bb  200  rev=3600  n=4  /venue-styles
+18/11 20:26  94ffb11e  200  rev=3600  n=58  /wilayas
+14/11 21:05  c341be9b  200  rev=3600  n=58  /wilayas
+18/11 20:25  cecfb805  200  rev=3600  n=23  /amenities
+-- 78 entrées examinées, 74 retenues (référentiels et fiches)

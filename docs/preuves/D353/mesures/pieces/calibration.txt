@@ -1,0 +1,15 @@
++   0.0s  scénario « calibration » — fenêtre de la copie : 20 s ; sonde toutes les 2 s ; Node v22.14.0
++   0.0s  CALIBRATION — l'instrument doit lire des états DONT LA RÉPONSE EST CONNUE (D275)
++   0.0s  état 1 : base SEMÉE, cache neuf ⇒ la page doit montrer les listes PLEINES (celles de l'API)
++  32.0s  API prête (health 200)
++  36.9s  client prêt (`next start`, cache de données de la copie purgé, `/icon.svg` 200)
++   0.7s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.73s]  api[styles=4 amenities=23 communes=23]
++   2.7s  calibration état 1 : ✓ (page = API, listes non vides)
++   2.9s  API arrêtée (processus terminé)
++   2.9s  état 2 : base MIGRÉE NON SEMÉE, cache neuf ⇒ la page doit montrer ZÉRO partout, comme l'API
++  22.9s  API prête (health 200)
++  27.5s  client prêt (`next start`, cache de données de la copie purgé, `/icon.svg` 200)
++   0.5s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.47s]  api[styles=0 amenities=0 communes=0]
++   2.5s  calibration état 2 : ✓ (page = API = zéros)
++   2.5s  CALIBRATION : RÉUSSIE (2 bras sur 2)
++   2.6s  API arrêtée (processus terminé)

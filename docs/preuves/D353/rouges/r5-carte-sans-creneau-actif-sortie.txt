@@ -1,0 +1,15 @@
+fichier de test joué : apps/api/test/int/venue-map.int-spec.ts · sha256 1cdfdbffd7b17a2edec286945f3530b83de0cfdb5ec423b6139f967c3e225c66
+état du code d'application : cd8e079 (aucune ligne d'apps/api/src modifiée) ; commande : pnpm --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/venue-map.int-spec.ts
+---
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/venue-map.int-spec.ts (10 tests) 2014ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ  722ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT  395ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  01:28:02
+   Duration  7.72s (transform 1.41s, setup 34ms, collect 4.63s, tests 2.01s, environment 0ms, prepare 174ms)
+

@@ -1,0 +1,24 @@
+== cas-i : 48 lignes parcourues, 41 sondes lues
+   API pleine pour la 1re fois : 15.0 s ; page pleine pour la 1re fois : 23.3 s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 4 sur 41 (de +15.0 s à +21.2 s)
+   sondes où la page est vide (toutes causes) : 11 (de +0.5 s à +21.2 s)
+== cas-ii-500 : 66 lignes parcourues, 57 sondes lues
+   API pleine pour la 1re fois : 0.8 s ; page pleine pour la 1re fois : 0.8 s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 0 sur 57
+   sondes où la page est vide (toutes causes) : 0
+== cas-ii-arret : 69 lignes parcourues, 58 sondes lues
+   API pleine pour la 1re fois : 0.4 s ; page pleine pour la 1re fois : 0.4 s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 0 sur 58
+   sondes où la page est vide (toutes causes) : 0
+== cas-iii : 40 lignes parcourues, 33 sondes lues
+   API pleine pour la 1re fois : 15.5 s ; page pleine pour la 1re fois : 15.5 s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 0 sur 33
+   sondes où la page est vide (toutes causes) : 4 (de +0.3 s à +6.5 s)
+== cas-iii-bis : 40 lignes parcourues, 33 sondes lues
+   API pleine pour la 1re fois : 8.9 s ; page pleine pour la 1re fois : 8.9 s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 0 sur 33
+   sondes où la page est vide (toutes causes) : 4 (de +0.3 s à +6.8 s)
+== cas-i-dev : 45 lignes parcourues, 37 sondes lues
+   API pleine pour la 1re fois : 11.9 s ; page pleine pour la 1re fois : - s
+   sondes où la page est VIDE (ou en erreur) PENDANT que l'API rend une liste PLEINE : 34 sur 37 (de +11.9 s à +86.9 s)
+   sondes où la page est vide (toutes causes) : 37 (de +5.0 s à +86.9 s)

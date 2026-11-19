@@ -1,0 +1,5 @@
+dossier : apps/client/.next/cache/fetch-cache.E-poisonne-apres-r48 (ignoré par git) ; relevé par lire-cache.py (lecture seule)
+19/11 01:36  6d7fe5bb  200  rev=3600  n=0  /venue-styles
+19/11 01:36  94ffb11e  200  rev=3600  n=0  /wilayas
+19/11 01:36  cecfb805  200  rev=3600  n=0  /amenities
+-- 3 entrées examinées, 3 retenues (référentiels et fiches)

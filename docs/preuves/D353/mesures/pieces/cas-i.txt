@@ -1,0 +1,48 @@
++   0.0s  scénario « cas-i » — fenêtre de la copie : 20 s ; sonde toutes les 2 s ; Node v22.14.0
++   0.0s  CAS (i) — l'API rend 200 avec des listes VIDES (base migrée, non semée), PUIS la base est semée
++  17.7s  API prête (health 200)
++  21.8s  client prêt (`next start`, cache de données de la copie purgé, `/icon.svg` 200)
++   0.5s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.48s]  api[styles=0 amenities=0 communes=0]  (avant le semis)
++   2.6s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.08s]  api[styles=0 amenities=0 communes=0]  (avant le semis)
++   4.6s  >>> ACTE : `db:seed` LANCÉ (asynchrone : les sondes continuent) — l'API rendra les listes pleines quand il aura fini
++   4.7s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.07s]  api[styles=0 amenities=0 communes=0]
++   6.7s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.06s]  api[styles=0 amenities=0 communes=0]
++   8.8s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.06s]  api[styles=0 amenities=0 communes=0]
++  10.9s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.06s]  api[styles=0 amenities=0 communes=0]
++  12.9s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.07s]  api[styles=0 amenities=0 communes=0]
++  15.0s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.08s]  api[styles=4 amenities=23 communes=23]
++  17.1s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  19.2s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  21.2s  page[HTTP 200 styles=0 amenities=0 communes=0 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  23.3s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  25.4s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  27.4s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  29.5s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  31.6s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  33.6s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  35.7s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.04s]  api[styles=4 amenities=23 communes=23]
++  37.8s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  39.8s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  41.9s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  44.0s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.04s]  api[styles=4 amenities=23 communes=23]
++  46.1s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.11s]  api[styles=4 amenities=23 communes=23]
++  48.1s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  50.2s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  52.2s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  54.3s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  56.4s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  58.4s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  60.5s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  62.6s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.07s]  api[styles=4 amenities=23 communes=23]
++  64.7s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  66.7s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  68.8s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  70.9s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  72.9s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  75.0s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  77.0s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.06s]  api[styles=4 amenities=23 communes=23]
++  79.1s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.05s]  api[styles=4 amenities=23 communes=23]
++  81.3s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.17s]  api[styles=4 amenities=23 communes=23]
++  83.4s  page[HTTP 200 styles=4 amenities=23 communes=23 · 0.15s]  api[styles=4 amenities=23 communes=23]
++  85.4s  RÉSULTAT (i) : première visite à +4.7 s ; l'API rend les listes PLEINES depuis +15.0 s ; la page les montre pour la PREMIÈRE fois à +23.3 s — soit 8.3 s APRÈS que l'API les rend (fenêtre de la copie : 20 s, comptée depuis la première visite : expire à ≈ +24.7 s)
++  85.5s  API arrêtée (processus terminé)

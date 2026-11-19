@@ -1,0 +1,5 @@
+dossier : apps/client/.next/cache/fetch-cache (ignoré par git) ; relevé par lire-cache.py (lecture seule)
+19/11 01:47  6d7fe5bb  200  rev=3600  n=4  /venue-styles
+19/11 01:47  94ffb11e  200  rev=3600  n=58  /wilayas
+19/11 01:47  cecfb805  200  rev=3600  n=23  /amenities
+-- 3 entrées examinées, 3 retenues (référentiels et fiches)
