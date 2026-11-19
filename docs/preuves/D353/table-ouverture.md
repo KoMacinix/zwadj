@@ -125,3 +125,15 @@ docs/preuves/D353/rouges/rouges.md
 **Ce que cette extension écrit de ce que le rouge a trouvé** (détail : `docs/preuves/D353/rouges/rouges.md`) : la prédiction P1 de `regle-portes.md` (« la suite COMPLÈTE depuis F est rouge ») est **CONTREDITE par la mesure** — 109 passés, 1 ignoré ; le rouge du lot est celui de `r48` **jouée seule**, depuis F et depuis E. La décision de la session (S-231) est écrite dans `rouges.md`, § 1. **Les fichiers de code que la mesure du choix désignera** (`e2e/global-setup.ts`, éventuellement `e2e/playwright.config.ts`) restent déclarés CONDITIONNELS par la table ci-dessus ; leur extension, avec le motif, précède leur commit.
 
 **Pièces de la table qui N'ENTRENT PAS dans ce commit** : `neutralisation/neutralize-r55.py`, les trois fichiers de test, `docs/preuves/D353/controle-fin-de-lot.txt` — ils viennent après.
+
+### Extension 3 — les pièces de l'audit de secrets « b » et de son tri
+
+Écrite **avant** le commit qui verse les pièces de l'extension 2 (le deuxième versement). Ces trois fichiers n'étaient pas dans l'extension 2 : ils sont nés de l'audit « b » lui-même (la sortie scellée, son tri différentiel, le contrôle « 0 valeur réelle » de D299). Chemins COMPLETS :
+
+```
+docs/preuves/D353/audit-secrets-d353b.txt
+docs/preuves/D353/tri-audit-d353b.txt
+docs/preuves/D353/aucune-valeur-reelle-d353b.txt
+```
+
+**Ce que cette extension écrit de ce que les mesures ont changé du plan** (détail : `rouges/rouges.md`, `mesures/choix-e2e.md`, versés à l'extension suivante) : la correction e2e candidate (`e2e/global-setup.ts`, `e2e/playwright.config.ts`) a été écrite, mesurée et **NE SERA PAS LIVRÉE** — la relecture des listes vides côté application (`apps/client/src/lib/api.ts`, R-3) rend `r48` verte depuis les deux états sans elle ; ces deux fichiers restent donc déclarés CONDITIONNELS et **n'existent pas au diff** (le rapport de fin de lot le dit).
