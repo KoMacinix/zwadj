@@ -1,0 +1,50 @@
+⛔ PIÈCE MASQUÉE — V-4-acces.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3927 octets, sha256 93db1acca796b1178afa8c849fcf1cd3dc1a3cd79f6556be25b033b4e834cc6f. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-access-policy.spec.ts (10 tests | 1 failed) 17ms
+   ✓ l'ÉTAT du compte passe avant tout (R-3) > DÉSACTIVÉ ou TEMPORAIRE EXPIRÉ : refus de SESSION, pour tout rôle, toute méthode, toute capacité — même la route du membre lui-même 2ms
+   ✓ l'ÉTAT du compte passe avant tout (R-3) > ⛔ « MOT DE PASSE À CHANGER » : SEULE la route du membre sur sa propre session passe (changer son mot de passe, se déconnecter) ; TOUTE autre route est refusée — même une lecture, même au MANAGER, même sur une capacité déclarée 0ms
+   × un compte ACTIF : la route du membre sur sa propre session passe pour TOUT rôle (se déconnecter, changer son mot de passe) > un employé ET un manager, en POST 9ms
+     → expected 'refuseCapability' to be 'allow' // Object.is equality
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > agenda, demandes, devis, clients, réservations : l'employé LIT et ÉCRIT 1ms
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEAD, OPTIONS) et n'ÉCRIT pas (POST, PATCH, PUT, DELETE → refus de capacité) 1ms
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ personnel, compte : l'employé ne LIT même pas — un GET est refusé comme un POST 0ms
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > le MANAGER passe partout, en lecture comme en écriture 1ms
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est une lecture) ; une méthode INCONNUE ou vide est une ÉCRITURE (fermé par défaut) 0ms
+   ✓ la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ une capacité INCONNUE (faute de frappe d'une déclaration) est refusée même au MANAGER : fermé par défaut 0ms
+   ✓ S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'employé lit (GET, HEAD, OPTIONS) et n'écrit pas ; le manager lit et écrit 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  10:38:34
+   Duration  966ms (transform 243ms, setup 0ms, collect 369ms, tests 17ms, environment 0ms, prepare 213ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-access-policy.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-access-policy.spec.ts > un compte ACTIF : la route du membre sur sa propre session passe pour TOUT rôle (se déconnecter, changer son mot de passe) > un employé ET un manager, en POST
+AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+
+Expected: "allow"
+Received: "refuseCapability"
+
+ ❯ src/staff/staff-access-policy.spec.ts:40:79
+     38| describe("un compte ACTIF : la route du membre sur sa propre session p…
+     39|   it("un employé ET un manager, en POST", () => {
+     40|     expect(v({ role: StaffRole.EMPLOYEE, method: "POST", ownSession: t…
+       |                                                                               ^
+     41|     expect(v({ role: StaffRole.MANAGER, method: "POST", ownSession: tr…
+     42|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

@@ -1,0 +1,765 @@
+⛔ PIÈCE MASQUÉE — decouverte-unit.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 91258 octets, sha256 2e717debd21f29beee81516aae0ff5f08e1db559b491c42d41388b333667b0b5. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 8e10f71ae83b1802fa76650ca2708cc1f7c56e50fdd8c2f841f9fe554b952086  (neutralize-r56.py)
+empreinte du harnais (sha256) : 8e10f71ae83b1802fa76650ca2708cc1f7c56e50fdd8c2f841f9fe554b952086  (neutralize-r56.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 117 déclarées · 112 jouées · 0 non jouée(s) (sans --int) · 12 mesure(s) distincte(s) · 15 fichier(s) muté(s)
+  pré-vol acces : code 0 · passés 10 · en échec 0
+  pré-vol capacites : code 0 · passés 8 · en échec 0
+  pré-vol client-api : code 0 · passés 11 · en échec 0
+  pré-vol contrat : code 0 · passés 30 · en échec 0
+  pré-vol etat : code 0 · passés 9 · en échec 0
+  pré-vol garde : code 0 · passés 32 · en échec 0
+  pré-vol magasin : code 0 · passés 64 · en échec 0
+  pré-vol membres-politique : code 0 · passés 5 · en échec 0
+  pré-vol service : code 0 · passés 38 · en échec 0
+  pré-vol service-membres : code 0 · passés 16 · en échec 0
+  pré-vol sources : code 0 · passés 28 · en échec 0
+  pré-vol temporaire : code 0 · passés 11 · en échec 0
+■ E-1. ⛔ D55 — l'échéance n'est plus INCLUSE dans l'expiré (`<=` devient `<`) : un mot de passe qui expire à l'instant exact reste valable
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 6 · en échec 3
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > ⛔ le cas RÉEL : il expire à l'instant exact où l'on se connecte — l'échéance est IN
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE
+         ↳ AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > la même échéance se 
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+   [service] code 1 · ROUGE — passés 35 · en échec 3
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le F
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustCh
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), ja
+         ↳ AssertionError: expected { Object (id, accountName, ...) } to be null
+   [garde] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ 
+         ↳ AssertionError: le garde devait refuser
+■ E-2. ⛔ un membre DÉSACTIVÉ n'est plus désactivé pour la règle (son mot de passe décide seul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un membre DÉSACTIVÉ l'est quoi qu'il en soit du mot de passe > désactivé : DISABLED, que le mot de passe soit valable, expiré, ordinaire ou
+         ↳ AssertionError: must=false échéance=2027-02-17T10:00:00.000Z: expected 'ACTIVE' to be 'DISABLED' // Object.is equality
+■ E-3. ⛔ S-104 — un TEMPORAIRE expiré n'est plus refusé (il redevient « à changer » : la connexion l'admet)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 7 · en échec 2
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE
+         ↳ AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > expiré depuis une milliseconde, 
+         ↳ AssertionError: expiré depuis 1 ms: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+   [service] code 1 · ROUGE — passés 34 · en échec 4
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le F
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désact
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance futu
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), ja
+         ↳ AssertionError: expected { Object (id, accountName, ...) } to be null
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ 
+         ↳ AssertionError: le garde devait refuser
+■ E-4. ⛔ S-104 — un mot de passe ORDINAIRE expiré redevient ACTIF (le défaut que D341 avait écrit : « un mot de passe expiré ouvre une session »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 6 · en échec 3
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > ⛔ le cas RÉEL : il expire à l'instant exact où l'on se connecte — l'échéance est IN
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > expiré depuis une milliseconde, un jour, un an → MUST_CHANGE_PASSWORD : la connexio
+         ↳ AssertionError: expiré depuis 1 ms: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > la même échéance se 
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+   [service] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai h
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustCh
+         ↳ AssertionError: expected false to be true // Object.is equality
+   [garde] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: le garde devait refuser (403)
+■ E-5. ⛔ le marqueur « temporaire » (`must_change_password`) n'est plus lu : un temporaire valable passe pour un mot de passe ordinaire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 6 · en échec 3
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > non expiré → MUST_CHANGE_PASSWOR
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > expiré depuis une milliseconde, 
+         ↳ AssertionError: expiré depuis 1 ms: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+   [service] code 1 · ROUGE — passés 32 · en échec 6
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et 
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le F
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désact
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance futu
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustCh
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), ja
+         ↳ AssertionError: expected { Object (id, accountName, ...) } to be null
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_c
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membr
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ 
+         ↳ AssertionError: le garde devait refuser
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ E-6. ⛔ MP-41 — l'heure vient de l'horloge de l'API (`Date.now()`) et non du paramètre : le temps n'est plus celui de la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 6 · en échec 3
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > encore valable → ACTIVE
+         ↳ AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'ACTIVE' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE
+         ↳ AssertionError: expected 'TEMPORARY_EXPIRED' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > la même échéance se 
+         ↳ AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'ACTIVE' // Object.is equality
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`
+         ↳ AssertionError: fichiers qui lisent l'horloge de l'API : staff-account-state.ts: expected [ 'staff-account-state.ts' ] to deeply equal []
+■ V-1. ⛔ un compte DÉSACTIVÉ ou au TEMPORAIRE EXPIRÉ n'est plus un refus de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > l'ÉTAT du compte passe avant tout (R-3) > DÉSACTIVÉ ou TEMPORAIRE EXPIRÉ : refus de SESSION, pour tout rôle, toute méthode, toute capacité — même la route
+         ↳ AssertionError: DISABLED MANAGER GET own=false: expected 'allow' to be 'refuseSession' // Object.is equality
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ 
+         ↳ AssertionError: le garde devait refuser
+■ V-2. ⛔ MOT DE PASSE À CHANGER : toute route passe (le changement n'est plus la SEULE route admise)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > l'ÉTAT du compte passe avant tout (R-3) > ⛔ « MOT DE PASSE À CHANGER » : SEULE la route du membre sur sa propre session passe (changer son mot de passe, s
+         ↳ AssertionError: MANAGER GET agenda: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · ROUGE — passés 27 · en échec 5
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_c
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ V-3. ⛔ MOT DE PASSE À CHANGER : même la route du membre est refusée (impossible de changer son mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > l'ÉTAT du compte passe avant tout (R-3) > ⛔ « MOT DE PASSE À CHANGER » : SEULE la route du membre sur sa propre session passe (changer son mot de passe, s
+         ↳ AssertionError: MANAGER sur sa propre session: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membr
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+■ V-4. ⛔ la route du membre sur sa propre session n'est plus admise pour un compte actif (un employé ne peut plus se déconnecter)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > un compte ACTIF : la route du membre sur sa propre session passe pour TOUT rôle (se déconnecter, changer son mot de passe) > un employé ET un manager, en 
+         ↳ AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > la route du MEMBRE sur sa propre session (`@St
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+■ V-5. ⛔ toute méthode est une ÉCRITURE (un employé ne LIT plus ce qu'il a le droit de lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 7 · en échec 3
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEA
+         ↳ AssertionError: GET salle: expected 'refuseCapability' to be 'allow' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est
+         ↳ AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'emplo
+         ↳ AssertionError: employé GET: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > le garde ne lit RIEN de plus pour décider : un
+         ↳ ForbiddenException: staff.errors.capabilityDenied
+■ V-6. ⛔ toute méthode est une LECTURE (un employé écrit où il ne le peut pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 7 · en échec 3
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEA
+         ↳ AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est
+         ↳ AssertionError: expected 'allow' to be 'refuseCapability' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'emplo
+         ↳ AssertionError: employé POST: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ V-7. ⛔ S-107 — une route SANS déclaration est ouverte à tous en écriture (une route oubliée devient plus ouverte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'emplo
+         ↳ AssertionError: employé POST: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: le garde devait refuser (403)
+■ V-8. ⛔ S-107 — le MANAGER n'écrit plus sur une route sans déclaration
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'emplo
+         ↳ AssertionError: manager POST: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant)
+         ↳ ForbiddenException: staff.errors.capabilityDenied
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > le jeton n'est JAMAIS transmis en clair au magasin (seul son 
+         ↳ ForbiddenException: staff.errors.capabilityDenied
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du p
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+■ V-9. ⛔ la capacité déclarée est jugée en LECTURE quelle que soit la méthode (une écriture sur `salle` passe pour un employé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 8 · en échec 2
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEA
+         ↳ AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est
+         ↳ AssertionError: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ V-10. ⛔ la méthode se lit AVEC la casse (« get » n'est plus une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 9 · en échec 1
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est
+         ↳ AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+■ V-11. ⛔ HEAD et OPTIONS ne sont plus des lectures
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 8 · en échec 2
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEA
+         ↳ AssertionError: HEAD salle: expected 'refuseCapability' to be 'allow' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > S-107 — SANS déclaration : les écritures sont au MANAGER seul, les lectures sont à tous (une route oubliée est plus fermée, jamais plus ouverte) > l'emplo
+         ↳ AssertionError: employé HEAD: expected 'refuseCapability' to be 'allow' // Object.is equality
+■ C-1. ⛔ l'employé ÉCRIT sur la salle (la table n'est plus « lecture seule » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 4 · en échec 4
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPEND
+         ↳ AssertionError: salle: expected [ 'salle', true, true ] to deeply equal [ 'salle', true, false ]
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette ca
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-2. ⛔ l'employé LIT le personnel (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 6 · en échec 2
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: EMPLOYEE sur personnel: expected { lire: true, ecrire: false } to deeply equal { lire: false, ecrire: false }
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPEND
+         ↳ AssertionError: personnel: expected [ 'personnel', true, false ] to deeply equal [ 'personnel', false, false ]
+■ C-3. ⛔ l'employé ÉCRIT sur le compte commun (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 6 · en échec 2
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: EMPLOYEE sur compte: expected { lire: true, ecrire: true } to deeply equal { lire: false, ecrire: false }
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPEND
+         ↳ AssertionError: compte: expected [ 'compte', true, true ] to deeply equal [ 'compte', false, false ]
+■ C-4. ⛔ l'employé n'écrit plus sur l'agenda (la table le met en « lecture seule »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 5 · en échec 3
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: EMPLOYEE sur agenda: expected { lire: true, ecrire: false } to deeply equal { lire: true, ecrire: true }
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPEND
+         ↳ AssertionError: agenda: expected [ 'agenda', false ] to deeply equal [ 'agenda', true ]
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette ca
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-5. ⛔ le MANAGER n'écrit plus sur les prix
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: MANAGER sur prix: expected { lire: true, ecrire: false } to deeply equal { lire: true, ecrire: true }
+■ C-6. ⛔ FERMÉ PAR DÉFAUT — une capacité INCONNUE est acceptée (une faute de frappe d'une déclaration ouvre la route)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : une capacité INCONNUE (une faute de
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-7. ⛔ S-239 — `peut(role, capacité)` sans acte répond « lire » au lieu d'« écrire »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette ca
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-8. ⛔ les lignes de la table ne sont plus figées (un appelant pourrait la modifier à l'exécution)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > la table est une DONNÉE figée : ni elle ni ses lignes ne
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ C-9. ⛔ « lecture seule » et « — » ne se distinguent plus : tout niveau non nul permet d'ÉCRIRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · ROUGE — passés 8 · en échec 2
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > ⛔ salle, prix, prestations : l'employé LIT (GET, HEA
+         ↳ AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+      FAIL  src/staff/staff-access-policy.spec.ts > la capacité DÉCLARÉE par la route décide, selon la méthode (table du cadrage § 5.4, consigne § 1 c) > la méthode se lit sans égard à la casse (« get » est
+         ↳ AssertionError: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [capacites] code 1 · ROUGE — passés 4 · en échec 4
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, «
+         ↳ AssertionError: EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPEND
+         ↳ AssertionError: salle: expected [ 'salle', true, true ] to deeply equal [ 'salle', true, false ]
+      FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette ca
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-10. ⛔ FERMÉ PAR DÉFAUT — un rôle INCONNU est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : un rôle INCONNU est refusé partout
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ M-1. ⛔ une désactivation RÉPÉTÉE n'est plus reconnue (patron de D349 : elle devrait être un succès sans écriture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/staff/staff-members-policy.spec.ts > disableVerdict — désactiver un EMPLOYÉ ou ce qui l'est déjà > un membre DÉJÀ désactivé : « alreadyDisabled » — une répétition n'est ni une erreur ni une 
+         ↳ AssertionError: MANAGER 0: expected 'lastManager' to be 'alreadyDisabled' // Object.is equality
+■ M-2. ⛔ le DERNIER Manager actif peut être désactivé (le seuil passe de 1 à 0)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/staff/staff-members-policy.spec.ts > disableVerdict — désactiver un MANAGER > ⛔ le DERNIER Manager actif (un seul) ne se désactive pas — que ce soit par un autre ou par lui-même : « lastMana
+         ↳ AssertionError: expected 'disable' to be 'lastManager' // Object.is equality
+■ M-3. ⛔ un EMPLOYÉ est bloqué par la règle quand il n'y a qu'un Manager (le rôle de la cible n'est plus lu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/staff/staff-members-policy.spec.ts > disableVerdict — désactiver un EMPLOYÉ ou ce qui l'est déjà > un EMPLOYÉ n'est JAMAIS bloqué par la règle (il ne compte pas dans les Managers), quel que 
+         ↳ AssertionError: 0 Manager(s) actif(s): expected 'lastManager' to be 'disable' // Object.is equality
+■ M-4. ⛔ un Manager est bloqué alors qu'il en reste UN AUTRE (le seuil passe de 1 à 2)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/staff/staff-members-policy.spec.ts > disableVerdict — désactiver un MANAGER > deux Managers actifs ou plus : la désactivation de l'un d'eux est permise
+         ↳ AssertionError: expected 'lastManager' to be 'disable' // Object.is equality
+■ T-1. ⛔ le REJET des octets ≥ 248 est retiré (le biais modulo favorise les huit premiers symboles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 8 · en échec 3
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés 
+         ↳ AssertionError: expected null to be 'RHFHH3A4XMFN' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJ
+         ↳ AssertionError: expected 'A' to be '2' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premie
+         ↳ AssertionError: symbole A : 1625 contre 1502: expected 0.08165850725757971 to be less than 0.04
+■ T-2. ⛔ le seuil de rejet passe à 256 (plus aucun octet n'est rejeté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 8 · en échec 3
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés 
+         ↳ AssertionError: expected null to be 'RHFHH3A4XMFN' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJ
+         ↳ AssertionError: expected 'A' to be '2' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premie
+         ↳ AssertionError: symbole A : 1625 contre 1502: expected 0.08165850725757971 to be less than 0.04
+■ T-3. ⛔ un mot de passe PLUS COURT que douze caractères est rendu au lieu d'un re-tirage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 0 · VERT — passés 11 · en échec 0
+   [service-membres] code 0 · VERT — passés 16 · en échec 0
+■ T-4. ⛔ un mot de passe SANS chiffre ou SANS lettre est rendu (le contrat `passwordSchema` le refuserait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ une chaîne SANS chiffre ou SANS lettre est refusée (null) : le contrat `pa
+         ↳ AssertionError: expected 'AAAAAAAAAAAA' to be null
+      FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ CHAQUE mot de passe rendu : 12 caractères, alphabet seul, accepté par `passwordSchema` (le contrat), abse
+         ↳ AssertionError: un mot de passe généré est refusé par le contrat: expected false to be true // Object.is equality
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un tirage qui ne ferait pas un mot de passe VALABLE (pas assez
+         ↳ AssertionError: expected "spy" to be called 3 times, but got 2 times
+■ T-5. ⛔ l'alphabet gagne un caractère AMBIGU (le « I » qui se confond avec « 1 » et « l »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 8 · en échec 3
+      FAIL  src/staff/staff-temporary-password.spec.ts > l'alphabet > 31 symboles DISTINCTS, sans les caractères qui se confondent à l'œil (0, O, 1, I, l) — un Manager dicte ce mot de passe à voix haute ou 
+         ↳ AssertionError: expected 32 to be 31 // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés 
+         ↳ AssertionError: expected null to be 'HHDF9W4ZRK7E' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJ
+         ↳ AssertionError: expected 256 to be 248 // Object.is equality
+■ T-6. ⛔ la distribution n'est plus uniforme (le dernier symbole n'est jamais tiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 8 · en échec 3
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJ
+         ↳ AssertionError: expected 'H' to be '9' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > il consomme les octets DANS L'ORDRE : deux suites d'octets différentes donne
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premie
+         ↳ AssertionError: symbole A : 1624 contre 1475: expected 0.10084842123677074 to be less than 0.04
+■ T-7. ⛔ S-109 — l'aléa vient de `Math.random` (prévisible) au lieu des octets passés en paramètre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · ROUGE — passés 7 · en échec 4
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés 
+         ↳ AssertionError: expected 'EJTBP9QFCP6Q' to be 'U8V4DMW4Y4JE' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJ
+         ↳ AssertionError: expected 'Y' to be '9' // Object.is equality
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ une chaîne SANS chiffre ou SANS lettre est refusée (null) : le contrat `pa
+         ↳ AssertionError: expected 'GT7NZNGNDB2H' to be null
+      FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premie
+         ↳ AssertionError: symbole A : 1430 contre 1503: expected 0.04838571183238883 to be less than 0.04
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ S-109 (D354) — AUCUN `Math.random` dans les sources du personnel : le mot de passe temporaire se tire d'un jeton cryptographi
+         ↳ AssertionError: fichiers qui tirent un hasard prévisible : staff-temporary-password.ts: expected [ 'staff-temporary-password.ts' ] to deeply equal []
+■ G-1. ⛔ MP-41 — le garde juge l'état avec `new Date()` (l'horloge de l'API) et non l'heure de la base rendue avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: le garde devait refuser (403)
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`
+         ↳ AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.guard.ts: expected [ 'staff-session.guard.ts' ] to deeply equal []
+■ G-2. ⛔ un refus de SESSION (désactivé, temporaire expiré) n'est plus levé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ 
+         ↳ AssertionError: le garde devait refuser
+■ G-3. ⛔ un refus de CAPACITÉ n'est plus levé (l'employé écrit partout, le mot de passe à changer n'ouvre plus rien de moins)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 24 · en échec 8
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_c
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ G-4. ⛔ la MÉTHODE de la requête n'est plus lue (toute requête est une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ G-5. ⛔ la capacité DÉCLARÉE par la route n'est plus lue (S-107 s'applique à toutes les routes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 31 · en échec 1
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > une route déclarée `agenda` : l'employé écrit 
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+■ G-6. ⛔ la route du MEMBRE sur sa propre session n'est plus reconnue (se déconnecter et changer son mot de passe tombent sous la règle commune)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 29 · en échec 3
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > la route du MEMBRE sur sa propre session (`@St
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membr
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+■ G-7. ⛔ MP-21 — le rôle jugé est « MANAGER » quel que soit le membre (le rôle de la SESSION n'est plus lu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: le garde devait refuser (403)
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit po
+         ↳ AssertionError: le garde devait refuser (403)
+■ G-8. ⛔ le contexte posé ne dit plus « mot de passe à changer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membr
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ G-9. ⛔ le refus de capacité porte le code d'une SESSION requise (le client le rejouerait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 25 · en échec 7
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: POST: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_c
+         ↳ AssertionError: ordinaire GET: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: expected { Object (code, message) } to deeply equal { …(2) }
+■ S-1. ⛔ S-104 — la connexion juge « actif » (le statut seul) : un TEMPORAIRE EXPIRÉ se connecte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 35 · en échec 3
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le F
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désact
+         ↳ AssertionError: un refus était attendu
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance futu
+         ↳ AssertionError: un refus était attendu
+■ S-2. ⛔ S-104 — la connexion refuse un mot de passe À CHANGER (un temporaire valable ne se connecte plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai h
+         ↳ UnauthorizedException: staff.errors.invalidCredentials
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et 
+         ↳ UnauthorizedException: staff.errors.invalidCredentials
+■ S-3. ⛔ S-104 — la connexion rend la colonne brute `mustChangePassword` (un mot de passe de 90 jours expiré ne le dit pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai h
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et 
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ S-4. ⛔ S-104 — l'état rend un membre même au TEMPORAIRE EXPIRÉ (un membre « connecté » qu'aucune route n'accepte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), ja
+         ↳ AssertionError: expected { Object (id, accountName, ...) } to be null
+■ S-5. ⛔ S-104 — l'état copie la colonne brute au lieu de juger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustCh
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ S-6. ⛔ MP-41 — la connexion juge l'état avec `new Date()` et non l'heure de la base rendue avec le membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 37 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance futu
+         ↳ AssertionError: un refus était attendu
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`
+         ↳ AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal []
+■ B-1. ⛔ R-5 — K-20 transmet le mot de passe en CLAIR au magasin (il ne doit recevoir que le hachage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 0 · VERT — passés 28 · en échec 0
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ le magasin ne reçoit QUE le hachage ; le clair n'apparaît dans
+         ↳ AssertionError: le clair a atteint le magasin: expected true to be false // Object.is equality
+■ B-2. ⛔ R-5 — K-21 transmet le mot de passe en CLAIR au magasin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 0 · VERT — passés 28 · en échec 0
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > ⛔ génère un temporaire, le hache, ne transmet que le hachage, le rend UNE fois ; le 
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ B-3. ⛔ R-6 — l'acteur de l'audit est l'identifiant de SESSION et non celui du Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 13 · en échec 3
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ l'ACTEUR vient du contexte du garde : le membre qui crée (audi
+         ↳ AssertionError: expected '22222222-2222-4222-8222-222222222222' to be '33333333-3333-4333-8333-333333333333' // Object.is equality
+      FAIL  src/staff/staff-members.service.spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > ⛔ génère un temporaire, le hache, ne transmet que le hachage, le rend UNE fois ; le 
+         ↳ AssertionError: expected '22222222-2222-4222-8222-222222222222' to be '33333333-3333-4333-8333-333333333333' // Object.is equality
+      FAIL  src/staff/staff-members.service.spec.ts > K-22 — désactiver : « jamais zéro Manager » > rend le membre DÉSACTIVÉ (état DISABLED) ; le magasin reçoit l'acteur, la salle du garde, le membre visé
+         ↳ AssertionError: expected { actor: { …(2) }, …(3) } to match object { …(4) }
+■ B-4. ⛔ la salle de l'action est l'identifiant du compte commun, non celle du PROFIL du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 13 · en échec 3
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ l'ACTEUR vient du contexte du garde : le membre qui crée (audi
+         ↳ AssertionError: expected '11111111-1111-4111-8111-111111111111' to be '44444444-4444-4444-8444-444444444444' // Object.is equality
+      FAIL  src/staff/staff-members.service.spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > ⛔ génère un temporaire, le hache, ne transmet que le hachage, le rend UNE fois ; le 
+         ↳ AssertionError: expected '11111111-1111-4111-8111-111111111111' to be '44444444-4444-4444-8444-444444444444' // Object.is equality
+      FAIL  src/staff/staff-members.service.spec.ts > K-22 — désactiver : « jamais zéro Manager » > rend le membre DÉSACTIVÉ (état DISABLED) ; le magasin reçoit l'acteur, la salle du garde, le membre visé
+         ↳ AssertionError: expected { actor: { …(2) }, …(3) } to match object { …(4) }
+■ B-5. ⛔ la liste est demandée pour l'identifiant du MEMBRE et non pour la salle du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-19 — la liste > demande les membres de la salle du GARDE (jamais une salle venue du corps), et chaque membre est rendu avec son ÉTAT jugé à l'heure de
+         ↳ AssertionError: expected "spy" to be called with arguments: [ Array(1) ]
+■ B-6. ⛔ l'état d'un membre n'est plus JUGÉ (la liste copie le statut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 14 · en échec 2
+      FAIL  src/staff/staff-members.service.spec.ts > K-19 — la liste > demande les membres de la salle du GARDE (jamais une salle venue du corps), et chaque membre est rendu avec son ÉTAT jugé à l'heure de
+         ↳ AssertionError: expected [ [ 'Actif', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Actif', 'ACTIVE' ], …(4) ]
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le membre rendu porte son état : un temporaire neuf est « MUST_C
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+■ B-7. ⛔ MP-11 — la liste rend l'échéance du mot de passe (un champ de plus que les six permis)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-19 — la liste > ⛔ chaque membre n'a QUE les champs listés : jamais un hachage, un compteur, un verrou, une date d'échéance de mot de passe ; les dates
+         ↳ AssertionError: expected [ 'accountName', 'createdAt', …(5) ] to deeply equal [ 'accountName', 'createdAt', …(4) ]
+■ B-8. ⛔ un membre DÉSACTIVÉ est traité comme introuvable à la réinitialisation (404 au lieu de 409)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > membre introuvable DANS CETTE SALLE : 404 `STAFF_MEMBER_NOT_FOUND` ; membre désactiv
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ B-9. ⛔ le DERNIER Manager est traité comme introuvable (404 au lieu de 409 `STAFF_LAST_MANAGER`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-22 — désactiver : « jamais zéro Manager » > ⛔ le dernier Manager : 409 `STAFF_LAST_MANAGER`, une erreur MÉTIER distincte d'un membre inconnu (404)
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ B-10. ⛔ un nom déjà pris rend le code d'une activation déjà faite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris (à la normalisation près) : 409 `STAFF_ACCOUN
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ B-11. ⛔ un tirage qui ne fait pas un mot de passe valable n'est plus REFAIT : un mot de passe fixe est rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un tirage qui ne ferait pas un mot de passe VALABLE (pas assez
+         ↳ AssertionError: expected "spy" to be called 3 times, but got 1 times
+■ B-12. ⛔ l'échéance rendue avec le temporaire est la date de création du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ le magasin ne reçoit QUE le hachage ; le clair n'apparaît dans
+         ↳ AssertionError: expected '2026-11-01T08:00:00.000Z' to be '2026-11-26T10:00:00.000Z' // Object.is equality
+■ B-13. ⛔ le hachage stocké n'est pas celui du temporaire rendu (un autre mot de passe est haché)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ le magasin ne reçoit QUE le hachage ; le clair n'apparaît dans
+         ↳ AssertionError: expected "spy" to be called with arguments: [ 'DMU3AHRY7ENV' ]
+■ B-14. ⛔ la clé d'unicité du nom n'est plus normalisée (« KARIM » et « karim » sont deux comptes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · ROUGE — passés 15 · en échec 1
+      FAIL  src/staff/staff-members.service.spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ l'ACTEUR vient du contexte du garde : le membre qui crée (audi
+         ↳ AssertionError: expected '  Amine  Éric ' to be 'amine eric' // Object.is equality
+■ A-1. ⛔ `findMember` ne lit plus l'heure de la base sous son nom (la connexion ne peut plus juger l'état)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > ⛔ UNE requête brute (plus de lecture par l'ORM
+         ↳ AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'now() AS "now"'
+■ A-2. ⛔ le garde ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte 
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'now() AS "now"'
+■ A-3. ⛔ l'état de session ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ peekSession : les MÊMES colonnes, en lecture 
+         ↳ AssertionError: expected 'SELECT s.id::text AS "sessionId", m.i…' to contain 'now() AS "now"'
+■ A-4. ⛔ la liste n'est plus dans l'ordre de CRÉATION (elle suit l'ordre alphabétique)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audi
+         ↳ AssertionError: expected 'SELECT id::text AS id, account_name A…' to match /ORDER BY created_at, id/
+■ A-5. ⛔ MP-11 — la liste SÉLECTIONNE le hachage du mot de passe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni
+         ↳ AssertionError: expected 'SELECT id::text AS id, account_name A…' not to match /password_hash|pin_hash|pin_|password_…/
+■ A-6. ⛔ la liste n'est plus filtrée par la salle (les membres de TOUTES les salles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audi
+         ↳ AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'pro_profile_id ='
+■ A-7. ⛔ le temporaire créé vaut 90 jours (le levier des mots de passe ordinaires) et non sept
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHI
+         ↳ AssertionError: expected [ …(7) ] to include 7
+■ A-8. ⛔ le temporaire créé n'est plus « à changer » (`must_change_password` faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHI
+         ↳ AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to match /\btrue\b/
+■ A-9. ⛔ le créateur du membre n'est plus enregistré (`created_by_member_id` nul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHI
+         ↳ AssertionError: expected [ …(6) ] to deeply equal ArrayContaining{…}
+■ A-11. ⛔ R-6 — la création n'écrit AUCUNE ligne d'audit (une action sans trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 62 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transactio
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — l'audit est écrit APRÈS l'insertion et par 
+         ↳ AssertionError: promise resolved "{ ok: true, member: { …(9) } }" instead of rejecting
+■ A-12. ⛔ la réinitialisation ne VERROUILLE plus le membre (`FOR UPDATE` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa s
+         ↳ AssertionError: expected 'SELECT id::text AS id, status::text A…' to contain 'FOR UPDATE'
+■ A-13. ⛔ la réinitialisation ne filtre plus par la salle (un membre d'une AUTRE salle est réinitialisé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa s
+         ↳ AssertionError: expected 'SELECT id::text AS id, status::text A…' to contain 'pro_profile_id ='
+■ A-14. ⛔ S-105 — les sessions réinitialisées prennent la fin LOGOUT et non PASSWORD_CHANGED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fi
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'end_reason = \'PASSWORD_CHANGED\''
+■ A-15. ⛔ S-105 — les APPAREILS du membre ne sont plus révoqués par la réinitialisation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fi
+         ↳ AssertionError: expected 'UPDATE pro_staff_devices SET revoked_…' to contain 'revoked_at = now()'
+■ A-16. ⛔ MP-29 — la réinitialisation ne remet plus « mot de passe à changer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_pas
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'must_change_password = true'
+■ A-17. ⛔ la réinitialisation ne remet plus les compteurs d'échecs ni la pause à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_pas
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'password_failed_count = 0'
+■ A-18. ⛔ R-6 — la charge utile de l'audit de réinitialisation intervertit sessions et appareils
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ R-6 — l'audit dans la transaction : le MANAGER po
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+■ A-19. ⛔ un membre désactivé n'est plus refusé à la réinitialisation (l'UPDATE conditionné échoue ensuite : une 500)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ un membre introuvable DANS CETTE SALLE : `notFoun
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET password_hash = ?, password_changed_at = now(), password_expires_at = now() + m
+■ A-20. ⛔ R-4 — la désactivation ne prend plus le verrou du PROFIL (L1) : deux désactivations ne se sérialisent plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 57 · en échec 7
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'OR
+         ↳ AssertionError: expected { ok: true, member: { n: 2 }, …(2) } to deeply equal { ok: true, member: { …(9) }, …(2) }
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le 
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'status = \'DISABLED\''
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER 
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'DISABLED' WHERE member_id = ?::uuid AND ended_
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'DISABLED' WHERE member_id = ?::uuid AND ended_
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un membre int
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now() WHERE id = ?::uuid
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ compte = 1 
+         ↳ AssertionError: promise resolved "{ ok: true, member: { n: 2 }, …(2) }" instead of rejecting
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'aud
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+■ A-21. ⛔ R-4 — le comptage des Managers compte aussi les DÉSACTIVÉS (un Manager éteint empêche la règle de jouer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'OR
+         ↳ AssertionError: expected 'SELECT count(*)::int AS n FROM pro_st…' to contain 'status = \'ACTIVE\''
+■ A-22. ⛔ R-4 — le nombre de Managers actifs rendu à la décision est fixe (99) : le dernier Manager n'est plus reconnu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER 
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now() WHERE id = ?::uuid
+✗ A-23. ⛔ D305 — le CAS du statut est retiré à la désactivation (l'UPDATE n'est plus conditionné à `status = 'ACTIVE'`)
+   MUTATION NON POSÉE : ancre 1→0, marqueur 1→1 (attendu 1→0 et 1→2, genre substitution)
+  empreintes : 17 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 112 cible(s) jouée(s) sur 117, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

@@ -1,0 +1,202 @@
+⛔ PIÈCE MASQUÉE — decouverte-unit-reste.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 21859 octets, sha256 347874d822de4caa00c025c002258634a9ffdeb7b95575b242886deada2eee64. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 303fe7f0ec6eab0a6b4fe54f5105d0ba76f5240fcea1d5860a1d0ef869fad4e1  (neutralize-r56.py)
+empreinte du harnais (sha256) : 303fe7f0ec6eab0a6b4fe54f5105d0ba76f5240fcea1d5860a1d0ef869fad4e1  (neutralize-r56.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 117 déclarées · 26 jouées · 0 non jouée(s) (sans --int) · 8 mesure(s) distincte(s) · 9 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 11 · en échec 0
+  pré-vol contrat : code 0 · passés 30 · en échec 0
+  pré-vol garde : code 0 · passés 32 · en échec 0
+  pré-vol magasin : code 0 · passés 64 · en échec 0
+  pré-vol service : code 0 · passés 38 · en échec 0
+  pré-vol service-membres : code 0 · passés 16 · en échec 0
+  pré-vol sources : code 0 · passés 28 · en échec 0
+  pré-vol temporaire : code 0 · passés 11 · en échec 0
+■ T-3. ⛔ un mot de passe PLUS COURT que douze caractères est rendu au lieu d'un re-tirage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 0 · VERT — passés 16 · en échec 0
+   [temporaire] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > pas assez d'octets ACCEPTÉS pour faire douze caractères → null (l'appelant t
+         ↳ AssertionError: onze caractères valables mais PLUS COURTS que douze : null: expected 'A2A2A2A2A2A' to be null
+■ S-2. ⛔ S-104 — la connexion refuse un mot de passe À CHANGER (un temporaire valable ne se connecte plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 36 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai h
+         ↳ AssertionError: la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Obje
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et 
+         ↳ AssertionError: la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Obje
+■ A-23. ⛔ D305 — le CAS du statut est retiré à la désactivation (l'UPDATE n'est plus conditionné à `status = 'ACTIVE'`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le 
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET status =…' to match /WHERE id = \?::uuid AND status = 'ACT…/
+■ A-24. ⛔ MP-30 — les sessions d'un membre désactivé prennent la fin LOGOUT et non DISABLED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le 
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'end_reason = \'DISABLED\''
+■ A-25. ⛔ MP-30 — les sessions d'un membre désactivé ne sont plus terminées (le filtre est inversé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le 
+         ↳ AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'ended_at IS NULL'
+■ A-26. ⛔ R-4 — le verdict « dernier Manager » n'est plus appliqué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER 
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now() WHERE id = ?::uuid
+■ A-27. ⛔ patron de D349 — une désactivation répétée n'est plus un succès sans écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D
+         ↳ AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now() WHERE id = ?::uuid
+■ A-28. ⛔ la désactivation ne filtre plus par la salle (un membre d'une AUTRE salle est désactivé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 0 · VERT — passés 64 · en échec 0
+■ A-29. ⛔ R-6 — la désactivation n'écrit AUCUNE ligne d'audit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'aud
+         ↳ TypeError: Cannot read properties of undefined (reading 'data')
+■ A-30. ⛔ la désactivation ne VERROUILLE plus le membre visé (`FOR UPDATE` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'OR
+         ↳ AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'FOR UPDATE'
+■ A-31. ⛔ R-6 — l'acteur de l'audit de création est le membre CRÉÉ et non le Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 63 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transactio
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+■ D-1. ⛔ R-2 — le contrôleur du personnel déclare `salle` à la place de `personnel` (l'employé LIT la liste du personnel)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT
+         ↳ AssertionError: staff/staff-members.controller.ts déclare: expected [ 'salle' ] to deeply equal [ 'personnel' ]
+■ D-2. ⛔ R-2 — le contrôleur des salles déclare `agenda` au lieu de `salle` (l'employé écrit sur la salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT
+         ↳ AssertionError: venues/venues.controller.ts déclare: expected [ 'agenda' ] to deeply equal [ 'salle' ]
+■ D-3. ⛔ R-5 — K-20 ne pose plus `Cache-Control: no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` e
+         ↳ AssertionError: expected 1 to be 2 // Object.is equality
+■ D-4. ⛔ S-104 — le changement de mot de passe n'est plus la route du membre (un membre « à changer » ne peut plus le faire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 26 · en échec 2
+      FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/sr
+         ↳ AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+      FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une
+         ↳ AssertionError: expected { …(1) } to deeply equal { …(1) }
+■ D-5. ⛔ l'identifiant de K-22 n'est plus validé comme UUID (un texte libre part au SQL)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 27 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > les deux routes à `:id` du contrôleur du personnel
+         ↳ AssertionError: expected 1 to be 2 // Object.is equality
+■ D-7. ⛔ `@RequiresStaffCapability` ne pose plus la capacité (toutes les routes tombent sous la règle par défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 30 · en échec 2
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > une route déclarée `agenda` : l'employé écrit 
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > la cible du spec est sans effet de bord > les décorateurs réels posent bien leurs métadonnées (sinon les cas ci-dessus mesureraient une cible muette)
+         ↳ AssertionError: expected undefined to be 'salle' // Object.is equality
+■ D-9. ⛔ `@StaffAnyMember()` ne pose plus la marque (la route du membre n'est plus reconnue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 28 · en échec 4
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > la route du MEMBRE sur sa propre session (`@St
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membr
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+      FAIL  src/staff/staff-session.guard.spec.ts > la cible du spec est sans effet de bord > les décorateurs réels posent bien leurs métadonnées (sinon les cas ci-dessus mesureraient une cible muette)
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ K-1. ⛔ MP-43 — le temporaire vaut 90 jours au levier (et non sept)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 29 · en échec 1
+      FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : U
+         ↳ AssertionError: expected 90 to be 7 // Object.is equality
+■ K-2. ⛔ K-20 accepte une clé de plus (le Manager pourrait CHOISIR le mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 28 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: création de membre, mot de passe choisi: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ une clé de plus est REFUSÉE, pas ignorée : le Mana
+         ↳ AssertionError: password: expected true to be false // Object.is equality
+■ K-3. ⛔ K-20 n'admet plus le rôle EMPLOYEE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 28 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > accepte un corps valide pour chacun des deux rôles e
+         ↳ AssertionError: EMPLOYEE: expected false to be true // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > le nom de compte suit la MÊME règle qu'à l'activatio
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ K-4. ⛔ le message du dernier Manager est celui d'un membre désactivé (deux codes, un message)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 27 · en échec 3
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus)
+         ↳ AssertionError: expected 11 to be 12 // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux
+         ↳ AssertionError: expected 3 to be 4 // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > le message du dernier Manager dit CE QUI Y MET FIN : désigner un autre responsable avant de désactiver (
+         ↳ AssertionError: expected 'Ce membre est désactivé.' to match /au moins un/i
+■ K-5. ⛔ le code du refus de capacité change de valeur (le client ne le reconnaît plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 26 · en échec 4
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` 
+         ↳ AssertionError: expected [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ] to deeply equal [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ]
+      FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET da
+         ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+      FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > ⛔ S-242 — le refus de CAPACITÉ ne dit pas POURQUOI : ni le rôle, ni « mot de passe à changer », ni une e
+         ↳ TypeError: Cannot read properties of undefined (reading 'split')
+      FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux
+         ↳ TypeError: Cannot read properties of undefined (reading 'split')
+   [garde] code 1 · ROUGE — passés 25 · en échec 7
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (
+         ↳ AssertionError: POST: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'emplo
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (l
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_c
+         ↳ AssertionError: ordinaire GET: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDIN
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : 
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+      FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est c
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+■ I-1. ⛔ K-21 : le chemin du client perd `-password` (il ne vise plus la route)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password`
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+■ I-2. ⛔ K-22 : le client désactive en GET et non en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable`
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+■ I-3. ⛔ K-19 : le client LIT la liste en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps)
+         ↳ AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+  empreintes : 17 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 26 cible(s) jouée(s) sur 117, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit=0

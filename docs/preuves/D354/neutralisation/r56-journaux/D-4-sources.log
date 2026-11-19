@@ -1,0 +1,96 @@
+⛔ PIÈCE MASQUÉE — D-4-sources.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 9622 octets, sha256 9c444b9520abc23387f7b9845ac0750b514faf94eb9a73f8969a6e134f98f90b. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-source-guards.spec.ts (28 tests | 2 failed) 49ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'horloge : `new Date()`, `Date.now()` et leurs voisins sont VUS ; `Date` comme type et `date.toISOString()` ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > les durées en dur : un littéral dans un intervalle SQL, un produit « 15 * 60_000 », une valeur dérivée (900) sont VUS ; un paramètre, une constante et un facteur de conversion ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > le journal : un appel à `logger.`, `console.` ou `new Logger(` est VU ; un identifiant qui contient seulement le mot ne l'est pas 0ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'aléa : `Math.random()` (et ses variantes d'espacement) est VU ; `randomBytes`, `generate()` et `random` comme simple mot ne le sont pas 0ms
+   ✓ calibration des détecteurs (deux bras chacun) > le retrait des commentaires ne mange pas du code : une URL dans une chaîne reste, un commentaire de fin de ligne part 0ms
+   ✓ les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée 2ms
+   ✓ les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`) 1ms
+   ✓ les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit) 1ms
+   ✓ les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN) 1ms
+   ✓ les sources du personnel > ⛔ S-109 (D354) — AUCUN `Math.random` dans les sources du personnel : le mot de passe temporaire se tire d'un jeton cryptographique (`TokenService`) et l'aléa se PASSE en paramètre aux modules purs 0ms
+   ✓ les sources du personnel > ⛔ R-5 (D354) — le MAGASIN ne voit JAMAIS le mot de passe temporaire en clair : ni `staff-store.types.ts` ni `staff-store.prisma.ts` ne nomment `temporaryPassword` (il ne reçoit que le hachage) 0ms
+   ✓ les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs` 0ms
+   ✓ les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage 1ms
+   ✓ le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6) 0ms
+   ✓ le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même) 0ms
+   ✓ le câblage > ⛔ MP-37 — `Secure` des cookies du personnel suit le levier EXISTANT `AUTH_COOKIE_SECURE`, lu par le contrôleur : ni littéral `secure = true|false`, ni second levier (aucun test d'intégration ne démarre l'application avec ce levier allumé) 1ms
+   ✓ le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`) 0ms
+   × le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b) 30ms
+     → expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+   ✓ les DÉCLARATIONS DE CAPACITÉ — calibration (deux bras) > un contrôleur `@Roles(UserRole.PRO)` est VU, un `@Roles(UserRole.CLIENT)` ou un commentaire ne l'est pas ; une déclaration est lue, une déclaration COMMENTÉE ne l'est pas 1ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le détecteur a parcouru les contrôleurs de l'application (un zéro sur zéro fichier ne prouve rien, D290) : au moins 25, dont les seize de la table 1ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ TOUT contrôleur `@Roles(UserRole.PRO)` de l'application figure dans la table : un contrôleur Pro NEUF ne passe pas sans qu'on décide ce qu'il déclare 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT ce que la table écrit, UNE fois, et la valeur est une capacité de la TABLE DES CAPACITÉS (jamais une faute de frappe que le garde refuserait pour tout le monde) 1ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ aucun contrôleur HORS de la table ne déclare une capacité (une déclaration orpheline serait une décision que personne n'a écrite ici) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > `availability.controller.ts` porte DEUX classes : la déclaration `agenda` est sur celle de `pro/venues` (la publique, `@Public()`, n'a rien à déclarer) — elle précède immédiatement son `@Controller` 0ms
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE : `@StaffAnyMember()` n'apparaît que dans `staff-session.controller.ts`, sur exactement DEUX handlers (se déconnecter, changer son mot de passe) 1ms
+     → expected { …(1) } to deeply equal { …(1) }
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` est posé sur EXACTEMENT deux handlers du contrôleur du personnel : ceux qui rendent le mot de passe temporaire 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > les deux routes à `:id` du contrôleur du personnel valident l'identifiant (`ParseUUIDPipe`) : un identifiant qui n'est pas un UUID est refusé en 400, jamais transmis au SQL (`::uuid` lèverait une 500) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le contrôleur du personnel est sous `@Roles(UserRole.PRO)` ET sous `@Controller("pro/staff/members")` : le chemin des quatre routes est celui du contrat (K-19 à K-22) 0ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 26 passed (28)
+   Start at  11:00:14
+   Duration  1.06s (transform 251ms, setup 0ms, collect 387ms, tests 49ms, environment 0ms, prepare 225ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-source-guards.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b)
+AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+
+- Expected
++ Received
+
+  {
+    "auth/auth.controller.ts": 1,
+-   "staff/staff-session.controller.ts": 3,
++   "staff/staff-session.controller.ts": 4,
+  }
+
+ ❯ src/staff/staff-source-guards.spec.ts:177:21
+    175|     };
+    176|     parcourir(SRC);
+    177|     expect(comptes).toEqual({ "auth/auth.controller.ts": 1, "staff/sta…
+       |                     ^
+    178|   });
+    179| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE : `@StaffAnyMember()` n'apparaît que dans `staff-session.controller.ts`, sur exactement DEUX handlers (se déconnecter, changer son mot de passe)
+AssertionError: expected { …(1) } to deeply equal { …(1) }
+
+- Expected
++ Received
+
+  {
+-   "staff/staff-session.controller.ts": 2,
++   "staff/staff-session.controller.ts": 1,
+  }
+
+ ❯ src/staff/staff-source-guards.spec.ts:291:21
+    289|       if (n > 0) comptes[c.chemin] = n;
+    290|     }
+    291|     expect(comptes).toEqual({ "staff/staff-session.controller.ts": 2 }…
+       |                     ^
+    292|   });
+    293| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

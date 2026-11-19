@@ -1,0 +1,118 @@
+⛔ PIÈCE MASQUÉE — C-9-capacites.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7534 octets, sha256 739717f2cbc72b57b4ce1ccbe7a60080fcf0bdb624a5d340eb13b5fc24974659. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/staff-capabilities.spec.ts (8 tests | 4 failed) 22ms
+   ✓ la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > le cadrage a bien ONZE lignes de capacités, et la table en a autant (aucune capacité en trop, aucune en moins) 3ms
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, « lecture seule » = lire sans écrire, « — » = ni l'un ni l'autre ; le MANAGER est « ✓ » partout 11ms
+     → EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPENDANT du cadrage : l'employé écrit sur l'agenda, les demandes, les devis, les clients, les réservations ; lit la salle, les prix, les prestations ; ne touche ni au personnel ni au compte 3ms
+     → salle: expected [ 'salle', true, true ] to deeply equal [ 'salle', true, false ]
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté « salle » : la ligne `salle` du cadrage les porte, et l'employé n'y écrit pas (défaut fermé, consigne § 1 c) 2ms
+     → expected true to be false // Object.is equality
+   × `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette capacité » = écrire : la forme à deux arguments de la consigne vaut l'acte « write » 1ms
+     → expected true to be false // Object.is equality
+   ✓ `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : une capacité INCONNUE (une faute de frappe dans une déclaration) est refusée en lecture comme en écriture, même au MANAGER — elle ne lève pas 0ms
+   ✓ `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : un rôle INCONNU est refusé partout 0ms
+   ✓ `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > la table est une DONNÉE figée : ni elle ni ses lignes ne se modifient à l'exécution (changer d'avis = changer le FICHIER, une ligne) 0ms
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 4 passed (8)
+   Start at  10:40:54
+   Duration  1.01s (transform 235ms, setup 0ms, collect 361ms, tests 22ms, environment 0ms, prepare 234ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/staff-capabilities.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, « lecture seule » = lire sans écrire, « — » = ni l'un ni l'autre ; le MANAGER est « ✓ » partout
+AssertionError: EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+
+- Expected
++ Received
+
+  {
+-   "ecrire": false,
++   "ecrire": true,
+    "lire": true,
+  }
+
+ ❯ src/common/staff-capabilities.spec.ts:49:139
+     47|       const attendu = cellule === "✓" ? { lire: true, ecrire: true } :…
+     48|       expect(attendu, `cellule inconnue du cadrage pour ${capacite} : …
+     49|       expect({ lire: peut(StaffRole.EMPLOYEE, cap, "read"), ecrire: pe…
+       |                                                                                                                                           ^
+     50|       expect(cadrage.manager[capacite], `MANAGER sur ${capacite} (cadr…
+     51|       expect({ lire: peut(StaffRole.MANAGER, cap, "read"), ecrire: peu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPENDANT du cadrage : l'employé écrit sur l'agenda, les demandes, les devis, les clients, les réservations ; lit la salle, les prix, les prestations ; ne touche ni au personnel ni au compte
+AssertionError: salle: expected [ 'salle', true, true ] to deeply equal [ 'salle', true, false ]
+
+- Expected
++ Received
+
+  [
+    "salle",
+    true,
+-   false,
++   true,
+  ]
+
+ ❯ src/common/staff-capabilities.spec.ts:60:116
+     58|     const rien = ["personnel", "compte"] as const;
+     59|     for (const c of ecrit) expect([c, peut(StaffRole.EMPLOYEE, c, "wri…
+     60|     for (const c of lit) expect([c, peut(StaffRole.EMPLOYEE, c, "read"…
+       |                                                                                                                    ^
+     61|     for (const c of rien) expect([c, peut(StaffRole.EMPLOYEE, c, "read…
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté « salle » : la ligne `salle` du cadrage les porte, et l'employé n'y écrit pas (défaut fermé, consigne § 1 c)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/common/staff-capabilities.spec.ts:68:70
+     66|     expect(lignesBrutes.length).toBe(1);
+     67|     expect(lignesBrutes[0]).toContain("visit-availabilities");
+     68|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.SALLE, "write")).t…
+       |                                                                      ^
+     69|   });
+     70| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette capacité » = écrire : la forme à deux arguments de la consigne vaut l'acte « write »
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/common/staff-capabilities.spec.ts:75:61
+     73|   it("sans `acte`, `peut` répond à « peut-il UTILISER cette capacité »…
+     74|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.AGENDA)).toBe(true…
+     75|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.SALLE)).toBe(false…
+       |                                                             ^
+     76|     expect(peut(StaffRole.MANAGER, StaffCapability.PERSONNEL)).toBe(tr…
+     77|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.PERSONNEL)).toBe(f…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+

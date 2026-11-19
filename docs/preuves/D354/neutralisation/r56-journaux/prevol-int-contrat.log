@@ -1,0 +1,18 @@
+⛔ PIÈCE MASQUÉE — prevol-int-contrat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 571 octets, sha256 79d0c4aef34d39952c452a90df3ceb89895df0bd532b6e44b0549d5177c0ff50. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/contract-api-client.int-spec.ts (6 tests) 1071ms
+   ✓ B6 — contrat de FORME sur le fil (D122) > la réponse d'authentification n'expose jamais le hash du mot de passe  301ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  10:35:21
+   Duration  6.63s (transform 1.47s, setup 38ms, collect 4.70s, tests 1.07s, environment 0ms, prepare 169ms)
+
+

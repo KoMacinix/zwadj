@@ -1,0 +1,101 @@
+⛔ PIÈCE MASQUÉE — S-2-service.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 11790 octets, sha256 516d0737c43bda81a4e7f39f7a71daa6cd3afff0386ddc0737e96dbdb7dcba6e. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-session.service.spec.ts (38 tests | 2 failed) 55ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, AUCUN factice ; le membre est rendu, une session s'ouvre, le jeton de session est posé 5ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la recherche du membre se fait par la CLÉ normalisée du nom, dans la salle du Bearer (jamais par le nom tel que tapé) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucune ligne d'échec — et le refus est `STAFF_INVALID_CREDENTIALS` (401) 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > un PRO sans profil (aucune salle) est traité comme un compte inconnu : factice, même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservation (on ne compte pas d'échec sur un compte éteint), même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la réservation), l'échec est consigné avec son compte, le refus est le même 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-16 — l'échec qui FRANCHIT le seuil est consigné tel que la réservation le rend : le compte d'échecs ET `pausedNow: true` (c'est ce booléen qui fait écrire la ligne de pause) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUN échec consigné — et le MÊME corps que le mauvais mot de passe 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 / R-3 — inconnu, désactivé, en pause et mauvais mot de passe : QUATRE refus au corps IDENTIQUE à l'octet et au statut identique 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouverture (désactivation concurrente) : le MÊME refus, aucune session 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la clé de la tentative est réservée AVANT toute vérification : l'ordre des appels est findMember, reservePasswordAttempt, verify, openSession 1ms
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true` 13ms
+     → la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Object.is equality
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true` 1ms
+     → la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Object.is equality
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe valable : `mustChangePassword: false` (l'état est jugé, il n'est pas copié de la colonne) 0ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > l'appareil : sans cookie d'appareil, un jeton neuf est offert (le magasin le crée) et le cookie d'appareil est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et quand le magasin RÉUTILISE un appareil reconnu, aucun cookie d'appareil neuf n'est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > les jetons de session et d'appareil sont transmis HACHÉS, et le jeton de session posé en cookie est le jeton en clair dont le hachage a été donné 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, session ET appareil dans la même demande au magasin, libellé d'appareil constant 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tout appel au magasin — la valeur est DÉRIVÉE de la liste (une entrée qui passe déjà le schéma), jamais écrite de mémoire 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérifié, 403 `FORBIDDEN` sans profil, 409 nom déjà pris 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit rien d'autre 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel pour la réutilisation, hache le nouveau, remplace SOUS la condition du hachage lu, et rend le membre 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'échec est consigné et compté, rien n'est remplacé 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucun échec consigné 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le compteur est remis à zéro (le bon mot de passe actuel n'est pas un échec), rien n'est remplacé 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation : un refus qui ne dit rien de l'actuel ne consomme pas d'essai 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant) : le même refus que le mot de passe actuel faux 1ms
+   ✓ logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche éteinte : `enabled: false`, aucun membre, et AUCUNE autre lecture 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche activée, sans cookie de session : `member: null` (jamais un 401), les membres reconnus sur ce poste sont listés par le hachage de leurs cookies d'appareil 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais par `touchSession` 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > sans profil : couche éteinte, sans erreur 0ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 36 passed (38)
+   Start at  10:44:15
+   Duration  1.70s (transform 399ms, setup 0ms, collect 1.02s, tests 55ms, environment 0ms, prepare 174ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-session.service.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true`
+AssertionError: la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-session.service.spec.ts:189:129
+    187|     const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, passw…
+    188|     const issue = await m.service.login(user, CORPS_CONNEXION, SANS_CO…
+    189|     expect(issue.admise, "la connexion est ADMISE (un 401 ne doit pas …
+       |                                                                                                                                 ^
+    190|     const r = issue.corps!;
+    191|     expect(m.mots.verify).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true`
+AssertionError: la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-session.service.spec.ts:199:129
+    197|     const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, mustC…
+    198|     const issue = await m.service.login(user, CORPS_CONNEXION, SANS_CO…
+    199|     expect(issue.admise, "la connexion est ADMISE (un 401 ne doit pas …
+       |                                                                                                                                 ^
+    200|     const r = issue.corps!;
+    201|     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

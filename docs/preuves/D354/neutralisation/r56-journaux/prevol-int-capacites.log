@@ -1,0 +1,22 @@
+⛔ PIÈCE MASQUÉE — prevol-int-capacites.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1840 octets, sha256 234cee477e5b6eda904edd0a12aaa11289e07fb9e8105a109337ebdd8f508a6f. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-capabilities.int-spec.ts (47 tests) 5019ms
+   ✓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la table, la déclaration et la méthode le disent — une écriture non permise, un `GET` sur `personnel` ou `compte`  648ms
+   ✓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'employé ont le MÊME corps (même code, même clé de message), quelle que soit la route  652ms
+   ✓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ le MANAGER n'est refusé par capacité sur AUCUNE route (la déconnexion, qui termine sa session, est jouée à part)  695ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > le MANAGER, lui, passe partout où l'employé est refusé (la capacité est une affaire de RÔLE, pas de route)  315ms
+   ✓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le temporaire d'un membre neuf) : TOUTE route atteignable par un PRO est refusée 403 `STAFF_CAPABILITY_DENIED`, SAUF les routes exemptées et celles du membre (se déconnecter, changer son mot de passe) — dérivé du routeur  594ms
+
+ Test Files  1 passed (1)
+      Tests  47 passed (47)
+   Start at  10:35:09
+   Duration  10.65s (transform 1.50s, setup 41ms, collect 4.72s, tests 5.02s, environment 0ms, prepare 165ms)
+
+

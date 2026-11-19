@@ -1,0 +1,84 @@
+⛔ PIÈCE MASQUÉE — T-1-temporaire.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5700 octets, sha256 f99cf61646b58386967e36d8cbfac47490923dd1d2bcb8a6b07e77d5a9eb4f36. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-temporary-password.spec.ts (11 tests | 3 failed) 201ms
+   ✓ l'alphabet > 31 symboles DISTINCTS, sans les caractères qui se confondent à l'œil (0, O, 1, I, l) — un Manager dicte ce mot de passe à voix haute ou le lit sur un écran 1ms
+   ✓ l'alphabet > il contient des lettres ET des chiffres (le contrat `passwordSchema` en exige un de chaque) 0ms
+   × temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés suivis des mêmes octets acceptés rendent EXACTEMENT ce que rendent les acceptés seuls 7ms
+     → expected null to be 'RHFHH3A4XMFN' // Object.is equality
+   × temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJETÉ 2ms
+     → expected 'A' to be '2' // Object.is equality
+   ✓ temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > pas assez d'octets ACCEPTÉS pour faire douze caractères → null (l'appelant tire d'autres octets : jamais un mot de passe plus court) 0ms
+   ✓ temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ une chaîne SANS chiffre ou SANS lettre est refusée (null) : le contrat `passwordSchema` en exige un de chaque, et un mot de passe que le contrat refuserait ne serait pas utilisable comme actuel 0ms
+   ✓ temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > il consomme les octets DANS L'ORDRE : deux suites d'octets différentes donnent des mots de passe différents (le tirage dépend bien de l'entrée) 0ms
+   ✓ sur beaucoup de tirages (déterministes) > la quasi-totalité des tirages de 32 octets aboutit (un échec se relance : le service tire à nouveau) — mesuré, pas supposé 0ms
+   ✓ sur beaucoup de tirages (déterministes) > ⛔ CHAQUE mot de passe rendu : 12 caractères, alphabet seul, accepté par `passwordSchema` (le contrat), absent de la liste des mots de passe courants (le dépôt) 181ms
+   × sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premiers de +12 % — c'est ce que ce seuil voit 6ms
+     → symbole A : 1625 contre 1502: expected 0.08165850725757971 to be less than 0.04
+   ✓ sur beaucoup de tirages (déterministes) > deux tirages différents ne donnent presque jamais le même mot de passe : aucun doublon sur 4000 (59 bits d'entropie) 0ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 8 passed (11)
+   Start at  10:41:12
+   Duration  1.28s (transform 311ms, setup 0ms, collect 474ms, tests 201ms, environment 0ms, prepare 219ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-temporary-password.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ un octet ≥ le seuil de rejet n'est JAMAIS consommé : douze octets rejetés suivis des mêmes octets acceptés rendent EXACTEMENT ce que rendent les acceptés seuls
+AssertionError: expected null to be 'RHFHH3A4XMFN' // Object.is equality
+
+- Expected: 
+"RHFHH3A4XMFN"
+
++ Received: 
+null
+
+ ❯ src/staff/staff-temporary-password.spec.ts:49:47
+     47|     avecRejets.set(rejetes, 0);
+     48|     avecRejets.set(acceptes, rejetes.length);
+     49|     expect(temporaryPasswordFrom(avecRejets)).toBe(seuls);
+       |                                               ^
+     50|   });
+     51| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/staff/staff-temporary-password.spec.ts > temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modulo) > ⛔ le seuil lui-même : l'octet (seuil − 1) est ACCEPTÉ, l'octet seuil est REJETÉ
+AssertionError: expected 'A' to be '2' // Object.is equality
+
+Expected: "2"
+Received: "A"
+
+ ❯ src/staff/staff-temporary-password.spec.ts:67:24
+     65|     expect(rejete, "l'octet seuil, sauté, laisse assez d'octets : un m…
+     66|     expect(accepte![0]).toBe(TEMPORARY_PASSWORD_ALPHABET[(seuilRejet -…
+     67|     expect(rejete![0]).toBe(TEMPORARY_PASSWORD_ALPHABET[premierChiffre…
+       |                        ^
+     68|     expect(accepte![0]).not.toBe(rejete![0]);
+     69|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/staff/staff-temporary-password.spec.ts > sur beaucoup de tirages (déterministes) > ⛔ la distribution est UNIFORME à 4 % près sur les 31 symboles : un tirage sans rejet gonfle les huit premiers de +12 % — c'est ce que ce seuil voit
+AssertionError: symbole A : 1625 contre 1502: expected 0.08165850725757971 to be less than 0.04
+ ❯ src/staff/staff-temporary-password.spec.ts:127:127
+    125|     expect(total).toBe(valides.length * TEMPORARY_PASSWORD_LENGTH);
+    126|     const attendu = total / n;
+    127|     for (const [c, k] of comptes) expect(Math.abs(k - attendu) / atten…
+       |                                                                                                                               ^
+    128|   });
+    129| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

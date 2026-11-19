@@ -1,0 +1,10 @@
+calibration (positif 1 · trois négatifs 0) : ✓
+fichiers examinés : 353 · caractères : 8489720 · valeurs DISTINCTES de douze symboles (lettres et chiffres) : 8
+  sha256 2f88d9827964 · dossiers : ['docs/preuves/D354/neutralisation'] · dans une source suivie : non
+  sha256 3f3aca55590a · dossiers : ['docs/preuves/D354/neutralisation', 'docs/preuves/D354/neutralisation/r56-journaux'] · dans une source suivie : non
+  sha256 9585a314513c · dossiers : ['docs/preuves/D354/neutralisation', 'docs/preuves/D354/neutralisation/r56-journaux'] · dans une source suivie : non
+  sha256 b9d64fbea909 · dossiers : ['docs/preuves/D354/neutralisation', 'docs/preuves/D354/neutralisation/r56-journaux'] · dans une source suivie : non
+  sha256 ca8fa853daae · dossiers : ['docs/preuves/D354/neutralisation'] · dans une source suivie : non
+  sha256 f063fc781092 · dossiers : ['docs/preuves/D354/neutralisation', 'docs/preuves/D354/neutralisation/r56-journaux'] · dans une source suivie : non
+  sha256 f30f6a9ca506 · dossiers : ['docs/preuves/D354/neutralisation'] · dans une source suivie : non
+  sha256 f8a3638c750d · dossiers : ['docs/preuves/D354/neutralisation/r56-journaux'] · dans une source suivie : non

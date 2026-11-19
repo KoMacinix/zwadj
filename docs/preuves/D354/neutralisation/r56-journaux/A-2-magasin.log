@@ -1,0 +1,104 @@
+⛔ PIÈCE MASQUÉE — A-2-magasin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 18273 octets, sha256 a0891a8b39db6f246185dbcf4ac470ff1f93e8dddebb5f6439a143cd78c5dcc1. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-store.prisma.spec.ts (64 tests | 1 failed) 60ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > lit le profil du compte (id et drapeau) et ne fait aucune requête brute 6ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > un compte sans profil ⇒ null 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ UNE seule instruction SQL, aucune transaction : lire puis écrire laisserait N requêtes parallèles faire N vérifications 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDATE`), n'admet qu'un membre ACTIF hors pause, incrémente et RENVOIE — le tout dans la même instruction 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-43 — le seuil et la durée de pause sont des PARAMÈTRES issus du levier unique, jamais des littéraux du SQL 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-41 — le temps vient de la BASE (`now()`), jamais d'un paramètre horodaté par l'API 0ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > aucune ligne rendue ⇒ `reserved: false` (membre éteint, inconnu, ou EN PAUSE : le service ne distingue pas, il paie le factice) 0ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > une ligne rendue ⇒ le hachage à vérifier, le compte après incrément, et si CETTE réservation a déclenché la pause 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊME salle que le Bearer, membre ACTIF, session non terminée, plafond non atteint, inactivité non dépassée 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-43 — la durée d'inactivité est le PARAMÈTRE du levier unique ; aucune durée en dur dans le texte 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > une session vivante est rendue (identité du contexte posé par le garde) ; AUCUNE autre instruction 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — inactive : la fin IDLE s'écrit, conditionnée à `ended_at IS NULL` (jamais deux fins) 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-4 — membre désactivé, session ouverte : la fin DISABLED s'écrit 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-18 — session d'une AUTRE salle : RIEN ne s'écrit (on ne termine pas la session d'autrui) 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — PLAFOND atteint : rien ne s'écrit (l'énumération des fins n'a pas de valeur « plafond ») 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-19 — session déjà terminée, ou jeton inconnu : rien ne s'écrit 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > la sonde calcule les drapeaux AVEC L'HEURE DE LA BASE et la durée en paramètre 0ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ n'émet AUCUN `UPDATE` ni `INSERT` : une lecture, avec les MÊMES prédicats que le garde 1ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ MP-43 — même durée d'inactivité (paramètre), même séparation : le garde et l'état jugent la session de la MÊME façon 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-22 — l'ordre : lecture du profil, CAS du drapeau (`staff_layer_enabled_at IS NULL`, compte 1), insertion du membre, de l'appareil, de la session, audit 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTRES du levier : mot de passe 90 jours, appareil = durée du PIN, session = plafond ; aucune durée en dur 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ le drapeau déjà posé (compte 0) : AUCUNE écriture ne suit — ni membre, ni appareil, ni session, ni audit 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > un compte sans profil : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-23 — un e-mail non vérifié : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ un nom de compte déjà pris (insertion sans ligne) : la transaction est ANNULÉE — le drapeau posé une instruction plus tôt ne reste pas posé sans Manager 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-33 — la ligne d'audit est écrite DANS la transaction, avec le membre pour acteur, et ne porte que le rôle 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberInactive` SANS autre écriture (connexion ‖ désactivation, D305) 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ un appareil reconnu (lui-même, sa salle, ni révoqué ni expiré) est RÉUTILISÉ : on le marque utilisé, on n'en crée pas 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-3 — l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est pas réutilisé : un appareil neuf est créé 0ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > sans cookie d'appareil présenté : AUCUNE lecture d'appareils, un appareil neuf directement 0ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est la durée du PIN, la session le plafond : des paramètres du levier 0ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, sans secret : le membre et si l'appareil était déjà reconnu 0ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est écrit que si la session s'est VRAIMENT terminée (compte 1) 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hachage lu, puis fin des AUTRES sessions (`id <> courante`), audit : MP-5 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > changePassword : le hachage lu n'est plus le courant ⇒ `changedConcurrently`, RIEN n'est écrit de plus (ni sessions terminées, ni audit) 0ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword : le membre introuvable ou éteint (le verrou ne rend AUCUNE ligne) ⇒ `changedConcurrently`, aucun remplacement ne part 0ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif de CETTE salle, appareil ni révoqué ni expiré 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > resetPasswordAttempts : remet le compteur et la pause à zéro, sous condition du membre 0ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_pause` SEULEMENT quand cet échec a déclenché la pause 1ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > l'échec d'un changement de mot de passe porte son propre nom d'action 0ms
+   ✓ l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33, MP-11) > ⛔ toute ligne d'audit porte les clés autorisées, et aucune valeur secrète ne peut s'y glisser (hachage, jeton, mot de passe, PIN, nom de compte) 1ms
+   ✓ findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > ⛔ UNE requête brute (plus de lecture par l'ORM : l'heure ne se lit que par `now()`) qui filtre par la salle ET la clé du nom, sans aucune écriture 1ms
+   ✓ findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > aucun membre : null ; et AUCUN hachage de mot de passe n'est lu (il n'est rendu que par la réservation) 0ms
+   × touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre 12ms
+     → expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'now() AS "now"'
+   ✓ touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ peekSession : les MÊMES colonnes, en lecture seule — le garde et l'état jugent le compte de la même façon 0ms
+   ✓ listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audit), filtrée par la salle, ordonnée de façon stable 1ms
+   ✓ listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni compteur, ni verrou, ni jeton (un SELECT qui ne les lit pas ne peut pas les rendre) 0ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer »), pose `must_change_password` et l'échéance TEMPORAIRE par PARAMÈTRE du levier, et rattache le créateur 1ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transaction, avec le MANAGER pour acteur (et le compte commun), et ne porte que le rôle ; la transaction est validée 0ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `accountNameTaken`, AUCUNE ligne d'audit — une action sans effet n'a pas de trace 0ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — l'audit est écrit APRÈS l'insertion et par le même client de transaction : un échec de l'audit ANNULE la création (une action sans trace n'existe pas) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa salle), le remplacement du mot de passe, la révocation des appareils, la fin de TOUTES les sessions, l'audit — jamais l'inverse (L2 < L3 < L4) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fin `PASSWORD_CHANGED` (aucune n'est épargnée : pas de `id <>`), TOUS ses appareils sont révoqués, chacun sous sa propre condition (`… IS NULL`) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, les COMPTES de sessions et d'appareils pour charge utile — jamais le temporaire, jamais un hachage 0ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE écriture ; un membre désactivé : `disabled`, AUCUNE écriture ni audit 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'ORDRE : verrou du PROFIL (`FOR UPDATE`) AVANT le verrou du membre, le COMPTAGE des Managers actifs APRÈS les deux verrous et AVANT toute écriture, puis le CAS du statut, puis les sessions 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le CAS de la transition : `status = 'DISABLED'` posé SOUS `status = 'ACTIVE'` (D305), avec `disabled_at = now()` ; les sessions finissent `DISABLED`, sous `ended_at IS NULL` 0ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AUCUNE écriture ni audit ; la transaction se referme sans effet 0ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la règle ne vise que les Managers) 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écriture et SANS ligne d'audit (une répétition ne fait pas une seconde trace) 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un membre introuvable DANS CETTE SALLE : `notFound` après les deux verrous, AUCUNE écriture 3ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ compte = 1 EXIGÉ : si le CAS ne rend aucune ligne (le statut a bougé sous nos pieds — impossible sous verrou, mais l'écrire est une garde), la transaction est ANNULÉE bruyamment, jamais un succès 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'audit dans la transaction, MANAGER pour acteur, rôle du membre et nombre de sessions pour charge utile ; un échec de l'audit ANNULE la désactivation 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 63 passed (64)
+   Start at  10:49:19
+   Duration  2.03s (transform 434ms, setup 0ms, collect 1.32s, tests 60ms, environment 0ms, prepare 227ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-store.prisma.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre
+AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'now() AS "now"'
+
+Expected: "now() AS "now""
+Received: "UPDATE pro_staff_sessions s SET last_activity_at = now() FROM pro_staff_members m WHERE s.token_hash = ? AND m.id = s.member_id AND m.pro_profile_id = ?::uuid AND m.status = 'ACTIVE' AND s.ended_at IS NULL AND s.expires_at > now() AND s.last_activity_at > now() - make_interval(mins => ?::int) RETURNING s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword", m.status::text AS status, m.password_expires_at AS "passwordExpiresAt", now() AS "maintenant""
+
+ ❯ src/staff/staff-store.prisma.spec.ts:547:17
+    545|     expect(sql).toContain('m.status::text AS status');
+    546|     expect(sql).toContain('m.password_expires_at AS "passwordExpiresAt…
+    547|     expect(sql).toContain('now() AS "now"');
+       |                 ^
+    548|     expect(valeurs.some((v) => v instanceof Date)).toBe(false);
+    549|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

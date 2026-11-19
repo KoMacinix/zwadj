@@ -1,0 +1,78 @@
+⛔ PIÈCE MASQUÉE — B-5-service-membres.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5392 octets, sha256 9b9bafb596f7b92274f6042deb9e1e19dcd0c19bebc503e468fb8332655d5350. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-members.service.spec.ts (16 tests | 1 failed) 31ms
+   × K-19 — la liste > demande les membres de la salle du GARDE (jamais une salle venue du corps), et chaque membre est rendu avec son ÉTAT jugé à l'heure de la base 16ms
+     → expected "spy" to be called with arguments: [ Array(1) ]
+
+Received: 
+
+  1st spy call:
+
+  [
+-   "44444444-4444-4444-8444-444444444444",
++   "33333333-3333-4333-8333-333333333333",
+  ]
+
+
+Number of calls: 1
+
+   ✓ K-19 — la liste > ⛔ chaque membre n'a QUE les champs listés : jamais un hachage, un compteur, un verrou, une date d'échéance de mot de passe ; les dates sont des chaînes ISO 1ms
+   ✓ K-19 — la liste > une connexion jamais faite : `lastLoginAt` est null, pas une date inventée 0ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ le magasin ne reçoit QUE le hachage ; le clair n'apparaît dans AUCUN argument du magasin ; il est rendu dans la réponse, une fois, avec son échéance 2ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ l'ACTEUR vient du contexte du garde : le membre qui crée (audit, `created_by`), la salle, le compte commun — jamais du corps ; la clé du nom est celle de la fonction PARTAGÉE (S-110) 2ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un tirage qui ne ferait pas un mot de passe VALABLE (pas assez d'octets acceptés, ou pas de chiffre) est REFAIT — jamais un mot de passe plus court ni refusé par le contrat 1ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > deux créations donnent deux mots de passe différents (deux tirages différents) 1ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris (à la normalisation près) : 409 `STAFF_ACCOUNT_NAME_TAKEN`, une erreur MÉTIER — la base a refusé, jamais un 500 1ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le membre rendu porte son état : un temporaire neuf est « MUST_CHANGE_PASSWORD » 1ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > ⛔ génère un temporaire, le hache, ne transmet que le hachage, le rend UNE fois ; le magasin reçoit l'acteur, la salle du garde et le membre visé 1ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > ⛔ le compte de sessions et d'appareils révoqués N'EST PAS rendu (un écran n'en a pas besoin, et c'est une information sur les postes d'autrui) : la réponse n'a que le membre et le temporaire 0ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, jamais le précédent > membre introuvable DANS CETTE SALLE : 404 `STAFF_MEMBER_NOT_FOUND` ; membre désactivé : 409 `STAFF_MEMBER_DISABLED` — des erreurs métier distinctes 1ms
+   ✓ K-22 — désactiver : « jamais zéro Manager » > rend le membre DÉSACTIVÉ (état DISABLED) ; le magasin reçoit l'acteur, la salle du garde, le membre visé 1ms
+   ✓ K-22 — désactiver : « jamais zéro Manager » > ⛔ le dernier Manager : 409 `STAFF_LAST_MANAGER`, une erreur MÉTIER distincte d'un membre inconnu (404) 1ms
+   ✓ K-22 — désactiver : « jamais zéro Manager » > ⛔ une désactivation RÉPÉTÉE est un succès sans écriture (patron de D349) : le service rend le membre désactivé, il ne lève pas 0ms
+   ✓ K-22 — désactiver : « jamais zéro Manager » > aucune erreur n'est un `ForbiddenException` : le refus de CAPACITÉ est celui du garde (une seule autorité sur la question, D78) — le service ne le redit pas 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  10:45:51
+   Duration  1.54s (transform 282ms, setup 0ms, collect 884ms, tests 31ms, environment 0ms, prepare 218ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-members.service.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-members.service.spec.ts > K-19 — la liste > demande les membres de la salle du GARDE (jamais une salle venue du corps), et chaque membre est rendu avec son ÉTAT jugé à l'heure de la base
+AssertionError: expected "spy" to be called with arguments: [ Array(1) ]
+
+Received: 
+
+  1st spy call:
+
+  [
+-   "44444444-4444-4444-8444-444444444444",
++   "33333333-3333-4333-8333-333333333333",
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/staff/staff-members.service.spec.ts:76:31
+     74|     const out = await service.list(staff);
+     75|     expect(store.listMembers).toHaveBeenCalledTimes(1);
+     76|     expect(store.listMembers).toHaveBeenCalledWith(staff.proProfileId);
+       |                               ^
+     77|     expect(out.members.map((m) => [m.accountName, m.state])).toEqual([
+     78|       ["Actif", StaffAccountState.ACTIVE],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

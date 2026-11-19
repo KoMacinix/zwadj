@@ -1,0 +1,121 @@
+⛔ PIÈCE MASQUÉE — D-4-int-expiration.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 8797 octets, sha256 94df48322d39d4b6254d5a8011cd18225f7897e665f4c8cada73d681f3c47ec7. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-password-expiry.int-spec.ts (9 tests | 5 failed) 2778ms
+   ✓ un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) et dit `mustChangePassword: true` ; TOUTE autre route est refusée 403 `STAFF_CAPABILITY_DENIED` ; l'état de session le dit aussi 136ms
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-18) ROUVRE tout : l'échéance repart à 90 jours (le levier), `must_change_password` reste faux, et la même requête qui était refusée passe 115ms
+     → expected 401 to be 200 // Object.is equality
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE dont le mot de passe expire pendant qu'elle vit : la requête SUIVANTE est refusée (le garde relit l'état à chaque requête, jamais dans le jeton) — puis le changement la rouvre 86ms
+     → expected 401 to be 200 // Object.is equality
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est encore valable — aucune route n'est refusée ; une échéance à `now()` ou dépassée l'est 100ms
+     → expected 401 to be 200 // Object.is equality
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChangePassword: true`), toute autre route est refusée, et le changement rouvre la salle 194ms
+     → expected 401 to be 200 // Object.is equality
+   ✓ un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de passe est REFUSÉE — le même 401 `STAFF_INVALID_CREDENTIALS`, le même corps à l'octet qu'un mauvais mot de passe, un compte inconnu et un désactivé ; AUCUNE session, AUCUN échec compté, AUCUNE ligne d'audit d'échec  393ms
+   ✓ un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a plus de droits dès qu'il expire : 401 `STAFF_SESSION_REQUIRED` — même sur la route du changement de mot de passe — et l'état de session ne rend plus de membre 189ms
+   ✓ un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation rend un NOUVEAU temporaire valable, avec lequel le membre se connecte  340ms
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : le MÊME membre, échéance dépassée — marqué temporaire il est REFUSÉ, démarqué (mot de passe ordinaire de 90 jours) il est ADMIS vers le changement 182ms
+     → changement de mot de passe du membre de test échoué (401) : {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/password","timestamp":"2026-11-19T16:00:12.301Z"}
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 4 passed (9)
+   Start at  11:00:04
+   Duration  8.25s (transform 1.46s, setup 32ms, collect 4.60s, tests 2.78s, environment 0ms, prepare 171ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-password-expiry.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-18) ROUVRE tout : l'échéance repart à 90 jours (le levier), `must_change_password` reste faux, et la même requête qui était refusée passe
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:53:27
+     51|     expect((await connecter(ctx, m.pro, jar)).status).toBe(200);
+     52|     const change = await changerMotDePasse(ctx, m.pro, jar, MOT_DE_PAS…
+     53|     expect(change.status).toBe(200);
+       |                           ^
+     54|     expect(mustChange(change)).toBe(false);
+     55|     expect((await venues(m.pro.token, jar)).status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE dont le mot de passe expire pendant qu'elle vit : la requête SUIVANTE est refusée (le garde relit l'état à chaque requête, jamais dans le jeton) — puis le changement la rouvre
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:64:85
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est encore valable — aucune route n'est refusée ; une échéance à `now()` ou dépassée l'est
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:75:87
+     73|   it("⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est…
+     74|     const jar = new Jar();
+     75|     expect((await connecter(ctx, m.pro, jar, "Amine", MOT_DE_PASSE_MEM…
+       |                                                                                       ^
+     76|     await echeanceDuMotDePasse(ctx.prisma, m.membreId, 3600);
+     77|     expect((await venues(m.pro.token, jar)).status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChangePassword: true`), toute autre route est refusée, et le changement rouvre la salle
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:99:105
+     97|     const refus = await venues(m.pro.token, jar);
+     98|     expect([refus.status, codeDe(refus)]).toEqual([403, StaffErrorCode…
+     99|     expect((await changerMotDePasse(ctx, m.pro, jar, e.temporaryPasswo…
+       |                                                                                                         ^
+    100|     expect((await venues(m.pro.token, jar)).status).toBe(200);
+    101|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : le MÊME membre, échéance dépassée — marqué temporaire il est REFUSÉ, démarqué (mot de passe ordinaire de 90 jours) il est ADMIS vers le changement
+Error: changement de mot de passe du membre de test échoué (401) : {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/password","timestamp":"2026-11-19T16:00:12.301Z"}
+ ❯ membreActif test/int/staff-helpers.ts:231:40
+    229|   if (connexion.status !== 200) throw new Error(`connexion du membre d…
+    230|   const changement = await changerMotDePasse(ctx, pro, jar, cree.tempo…
+    231|   if (changement.status !== 200) throw new Error(`changement de mot de…
+       |                                        ^
+    232|   return { id: cree.id, jar, password: motDePasse };
+    233| }
+ ❯ test/int/staff-password-expiry.int-spec.ts:144:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+

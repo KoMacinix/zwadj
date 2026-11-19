@@ -1,0 +1,66 @@
+⛔ PIÈCE MASQUÉE — E-3-etat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5082 octets, sha256 b06d1b1deb4b919b0899b826824844865ef4e67c0bbc64f3d4c1ab73bbc3c875. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-account-state.spec.ts (9 tests | 2 failed) 18ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > encore valable → ACTIVE 1ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > ⛔ le cas RÉEL : il expire à l'instant exact où l'on se connecte — l'échéance est INCLUSE dans l'expiré (`<=`, comme `expires_at <= now()` du garde) → MUST_CHANGE_PASSWORD 0ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > expiré depuis une milliseconde, un jour, un an → MUST_CHANGE_PASSWORD : la connexion est ADMISE, vers le seul changement (S-104) 0ms
+   ✓ etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > non expiré → MUST_CHANGE_PASSWORD (changement obligatoire, la connexion est admise) 0ms
+   × etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE milliseconde → encore MUST_CHANGE_PASSWORD ; à l'instant exact de l'échéance → TEMPORARY_EXPIRED (refusé) 10ms
+     → expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+   × etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > expiré depuis une milliseconde, sept jours, un an → TEMPORARY_EXPIRED : « le Manager doit en refaire un » 2ms
+     → expiré depuis 1 ms: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+   ✓ etatDuCompte — un membre DÉSACTIVÉ l'est quoi qu'il en soit du mot de passe > désactivé : DISABLED, que le mot de passe soit valable, expiré, ordinaire ou temporaire 2ms
+   ✓ etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > la même échéance se juge AVANT, À et APRÈS `maintenant` : la fonction ne lit aucune horloge (une horloge cachée donnerait la même réponse trois fois) 0ms
+   ✓ etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > une entrée GELÉE passe (la fonction ne l'écrit pas) et la valeur rendue est l'une des QUATRE constantes exportées 1ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 passed (9)
+   Start at  10:37:15
+   Duration  1.03s (transform 246ms, setup 0ms, collect 357ms, tests 18ms, environment 0ms, prepare 259ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-account-state.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE milliseconde → encore MUST_CHANGE_PASSWORD ; à l'instant exact de l'échéance → TEMPORARY_EXPIRED (refusé)
+AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+
+Expected: "TEMPORARY_EXPIRED"
+Received: "MUST_CHANGE_PASSWORD"
+
+ ❯ src/staff/staff-account-state.spec.ts:45:102
+     43|   it("⛔ le cas RÉEL : il lui reste UNE milliseconde → encore MUST_CHAN…
+     44|     expect(etatDuCompte(membre({ mustChangePassword: true, passwordExp…
+     45|     expect(etatDuCompte(membre({ mustChangePassword: true, passwordExp…
+       |                                                                                                      ^
+     46|   });
+     47| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/staff/staff-account-state.spec.ts > etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > expiré depuis une milliseconde, sept jours, un an → TEMPORARY_EXPIRED : « le Manager doit en refaire un »
+AssertionError: expiré depuis 1 ms: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+
+Expected: "TEMPORARY_EXPIRED"
+Received: "MUST_CHANGE_PASSWORD"
+
+ ❯ src/staff/staff-account-state.spec.ts:50:140
+     48|   it("expiré depuis une milliseconde, sept jours, un an → TEMPORARY_EX…
+     49|     for (const depuis of [1, 7 * JOUR, 365 * JOUR]) {
+     50|       expect(etatDuCompte(membre({ mustChangePassword: true, passwordE…
+       |                                                                                                                                            ^
+     51|     }
+     52|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

@@ -1,0 +1,45 @@
+⛔ PIÈCE MASQUÉE — M-2-membres-politique.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2606 octets, sha256 fb407b0816762300366750a6556938de91fe6b03f047cb94093fa3cafd30b3a8. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-members-policy.spec.ts (5 tests | 1 failed) 11ms
+   × disableVerdict — désactiver un MANAGER > ⛔ le DERNIER Manager actif (un seul) ne se désactive pas — que ce soit par un autre ou par lui-même : « lastManager » 9ms
+     → expected 'disable' to be 'lastManager' // Object.is equality
+   ✓ disableVerdict — désactiver un MANAGER > deux Managers actifs ou plus : la désactivation de l'un d'eux est permise 0ms
+   ✓ disableVerdict — désactiver un MANAGER > ⛔ fermé par défaut : un compte de Managers actifs incohérent (zéro alors que la cible est un Manager actif) refuse aussi — on ne désactive pas sur une donnée qu'on ne comprend pas 0ms
+   ✓ disableVerdict — désactiver un EMPLOYÉ ou ce qui l'est déjà > un EMPLOYÉ n'est JAMAIS bloqué par la règle (il ne compte pas dans les Managers), quel que soit le nombre de Managers 0ms
+   ✓ disableVerdict — désactiver un EMPLOYÉ ou ce qui l'est déjà > un membre DÉJÀ désactivé : « alreadyDisabled » — une répétition n'est ni une erreur ni une écriture (patron de D349) — même pour un Manager, même seul 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  10:41:03
+   Duration  981ms (transform 238ms, setup 0ms, collect 362ms, tests 11ms, environment 0ms, prepare 184ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-members-policy.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-members-policy.spec.ts > disableVerdict — désactiver un MANAGER > ⛔ le DERNIER Manager actif (un seul) ne se désactive pas — que ce soit par un autre ou par lui-même : « lastManager »
+AssertionError: expected 'disable' to be 'lastManager' // Object.is equality
+
+Expected: "lastManager"
+Received: "disable"
+
+ ❯ src/staff/staff-members-policy.spec.ts:12:57
+     10| describe("disableVerdict — désactiver un MANAGER", () => {
+     11|   it("⛔ le DERNIER Manager actif (un seul) ne se désactive pas — que c…
+     12|     expect(v(StaffRole.MANAGER, StaffStatus.ACTIVE, 1)).toBe("lastMana…
+       |                                                         ^
+     13|   });
+     14| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

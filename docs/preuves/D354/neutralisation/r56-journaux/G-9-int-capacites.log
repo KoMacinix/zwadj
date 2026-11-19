@@ -1,0 +1,472 @@
+⛔ PIÈCE MASQUÉE — G-9-int-capacites.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 44939 octets, sha256 a6493be43ee364138e3c8b60a453ef569259e15a49159e03a233c3319cd923f4. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-capabilities.int-spec.ts (47 tests | 20 failed) 4978ms
+   ✓ le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 60 routes atteignables par un PRO, dont les QUATRE routes du personnel de ce lot ; au moins 14 portent une capacité déclarée ; sans cela tout ce qui suit passerait sur une liste vide 3ms
+   ✓ le collecteur — garde-fou du garde-fou > toute capacité DÉCLARÉE par une route existe dans la table des capacités (une faute de frappe refuserait la route à tout le monde, y compris au MANAGER) 1ms
+   ✓ le collecteur — garde-fou du garde-fou > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE dérivée du routeur : se déconnecter et changer son mot de passe — rien d'autre 0ms
+   × une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la table, la déclaration et la méthode le disent — une écriture non permise, un `GET` sur `personnel` ou `compte` 746ms
+     → routes mal gardées :
+PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel): expected [ …(30) ] to deeply equal []
+   × une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'employé ont le MÊME corps (même code, même clé de message), quelle que soit la route 608ms
+     → expected [] to deeply equal [ Array(1) ]
+   ✓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ le MANAGER n'est refusé par capacité sur AUCUNE route (la déconnexion, qui termine sa session, est jouée à part)  748ms
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 403 `STAFF_CAPABILITY_DENIED` 11ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côté « salle », consigne § 1 c) : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier : 403 `STAFF_CAPABILITY_DENIED` 9ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un membre : 403 `STAFF_CAPABILITY_DENIED` 12ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser : 403 `STAFF_CAPABILITY_DENIED` 9ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 403 `STAFF_CAPABILITY_DENIED` 9ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil : 403 `STAFF_CAPABILITY_DENIED` 9ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse e-mail : 403 `STAFF_CAPABILITY_DENIED` 9ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander la suppression du compte : 403 `STAFF_CAPABILITY_DENIED` 11ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la liste (« ni l'un ni l'autre ») : 403 `STAFF_CAPABILITY_DENIED` 8ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   × les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE la demande de suppression : 403 `STAFF_CAPABILITY_DENIED` 10ms
+     → expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE ses salles : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 13ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE une salle : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 14ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE l'état de publication (D349, une lecture) : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les prestations : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les plages de visite : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 9ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 9ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : bloquer une date : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 8ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : débloquer une date : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 12ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 12ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : accepter : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 14ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : refuser : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 9ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : annuler : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 12ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 11ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : créer : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : convertir en réservation : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 9ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : le document PDF : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : chercher une fiche : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 11ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : créer une fiche : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`) 10ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > le MANAGER, lui, passe partout où l'employé est refusé (la capacité est une affaire de RÔLE, pas de route) 260ms
+   ✓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > une lecture RÉELLE aboutit pour l'employé : `GET /pro/venues` rend 200 et une liste (la salle d'un PRO neuf est vide), comme pour le Manager 15ms
+   × S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le temporaire d'un membre neuf) : TOUTE route atteignable par un PRO est refusée 403 `STAFF_CAPABILITY_DENIED`, SAUF les routes exemptées et celles du membre (se déconnecter, changer son mot de passe) — dérivé du routeur 600ms
+     → routes mal gardées en état « à changer » :
+PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/publication → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/availability → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/availability-blocks/:blockId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/visit-bookings → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/pro/venues/:id/visit-bookings/:bookingId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/bookings → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/accept → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/decline → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/cancel → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/services → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/quotes/conversion → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/deliver → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/revise → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/convert → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/cancel → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/promote → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/client-name → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/quotes/:id/document → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/clients/lookup → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/clients → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/pro/clients/:id/names → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/pro/clients/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED: expected [ …(59) ] to deeply equal []
+   ✓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > l'état de session dit `mustChangePassword: true` (c'est ce que l'écran lira pour afficher le seul changement de mot de passe) ; le compte commun reste lisible (`GET /auth/me` est exemptée) 16ms
+   ✓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le refus de capacité d'un employé (aucun refus ne dit pourquoi) ; et changer son mot de passe suffit à rouvrir les routes permises 259ms
+
+ Test Files  1 failed (1)
+      Tests  20 failed | 27 passed (47)
+   Start at  10:43:32
+   Duration  10.54s (transform 1.47s, setup 32ms, collect 4.69s, tests 4.98s, environment 0ms, prepare 169ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-capabilities.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la table, la déclaration et la méthode le disent — une écriture non permise, un `GET` sur `personnel` ou `compte`
+AssertionError: routes mal gardées :
+PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)
+POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)
+POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)
+POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)
+GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)
+POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel): expected [ …(30) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : compte)",
++   "POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)",
++   "PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)",
++   "DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prix)",
++   "POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : salle)",
++   "POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)",
++   "PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)",
++   "DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : prestations)",
++   "GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)",
++   "POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)",
++   "POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)",
++   "POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED (permise : false, déclarée : personnel)",
++ ]
+
+ ❯ test/int/staff-capabilities.int-spec.ts:91:60
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'employé ont le MÊME corps (même code, même clé de message), quelle que soit la route
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "{\"s\":403,\"m\":{\"code\":\"STAFF_CAPABILITY_DENIED\",\"message\":\"staff.errors.capabilityDenied\"}}",
+- ]
++ []
+
+ ❯ test/int/staff-capabilities.int-spec.ts:100:24
+     98|     const reponses = await toutesLesRoutes(employe.jar, (r) => !TERMIN…
+     99|     const corps = new Set(reponses.filter((r) => refuseParCapacite(r.r…
+    100|     expect([...corps]).toEqual([JSON.stringify({ s: 403, m: { code: St…
+       |                        ^
+    101|   });
+    102| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côté « salle », consigne § 1 c) : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un membre : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse e-mail : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander la suppression du compte : 403 `STAFF_CAPABILITY_DENIED`
+AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+
+- Expected
++ Received
+
+  [
+    403,
+-   "STAFF_CAPABILITY_DENIED",
++   "STAFF_SESSION_REQUIRED",
+  ]
+
+ ❯ test/int/staff-capabilities.int-spec.ts:157:39
+    155|   it.each(ECRITURES_REFUSEES)("⛔ l'employé ne peut PAS — %s : 403 `STA…
+    156|     const res = await appeler(ctx, salle.pro.token, employe.jar, metho…
+    157|     expect([res.status, codeDe(res)]).toEqual([403, StaffErrorCode.STA…
+       |                                       ^
+    158|   });
+    159| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la liste (« ni l'un ni l'autre ») : 403 `STAFF_CAPABILITY_DENIED`
+ FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE la demande de suppression : 403 `STAFF_CAPABILITY_DENIED`
+AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+
+- Expected
++ Received
+
+  [
+    403,
+-   "STAFF_CAPABILITY_DENIED",
++   "STAFF_SESSION_REQUIRED",
+  ]
+
+ ❯ test/int/staff-capabilities.int-spec.ts:162:39
+    160|   it.each(LECTURES_REFUSEES)("⛔ l'employé ne LIT même pas — %s : 403 `…
+    161|     const res = await appeler(ctx, salle.pro.token, employe.jar, "get"…
+    162|     expect([res.status, codeDe(res)]).toEqual([403, StaffErrorCode.STA…
+       |                                       ^
+    163|   });
+    164| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le temporaire d'un membre neuf) : TOUTE route atteignable par un PRO est refusée 403 `STAFF_CAPABILITY_DENIED`, SAUF les routes exemptées et celles du membre (se déconnecter, changer son mot de passe) — dérivé du routeur
+AssertionError: routes mal gardées en état « à changer » :
+PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/publication → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/availability → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/availability-blocks/:blockId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/visit-bookings → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/pro/venues/:id/visit-bookings/:bookingId → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/bookings → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/accept → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/decline → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/bookings/:id/cancel → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/services → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED
+DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/venues/:id/quotes/conversion → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/deliver → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/revise → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/convert → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/cancel → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/promote → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/quotes/:id/client-name → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/quotes/:id/document → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/clients/lookup → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/clients → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/pro/clients/:id/names → 403 STAFF_SESSION_REQUIRED
+PATCH /api/v1/pro/clients/:id → 403 STAFF_SESSION_REQUIRED
+GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED
+POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED: expected [ …(59) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "PATCH /api/v1/me/profile → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/me/change-email → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/me/change-password → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/me/deletion-request → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/me/deletion-request/cancel → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/publication → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/photos → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/photos/order → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id/photos/:photoId → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/virtual-tour → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/slot-templates → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id/slot-templates/:slotId → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/slot-templates/:slotId/pricing-rules → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/availability → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/availability-blocks → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id/availability-blocks/:blockId → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/visit-availabilities → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/venues/:id/visit-availabilities/:availabilityId → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/visit-bookings → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/pro/venues/:id/visit-bookings/:bookingId → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/bookings → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/bookings/:id/accept → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/bookings/:id/decline → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/bookings/:id/cancel → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/services → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/services → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED",
++   "DELETE /api/v1/services/:id → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/venues/:id/quotes/conversion → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/venues/:id/quotes → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/deliver → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/revise → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/convert → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/cancel → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/promote → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/quotes/:id/client-name → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/quotes/:id/document → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/clients/lookup → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/clients → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/pro/clients/:id/names → 403 STAFF_SESSION_REQUIRED",
++   "PATCH /api/v1/pro/clients/:id → 403 STAFF_SESSION_REQUIRED",
++   "GET /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/staff/members → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/staff/members/:id/reset-password → 403 STAFF_SESSION_REQUIRED",
++   "POST /api/v1/pro/staff/members/:id/disable → 403 STAFF_SESSION_REQUIRED",
++ ]
+
+ ❯ test/int/staff-capabilities.int-spec.ts:191:82
+    189|       .filter((r) => refuseParCapacite(r.res) === (r.route.staffExempt…
+    190|       .map((r) => `${signature(r.route)} → ${r.res.status} ${codeDe(r.…
+    191|     expect(mal, `routes mal gardées en état « à changer » :\n${mal.joi…
+       |                                                                                  ^
+    192|     expect(reponses.filter((r) => refuseParCapacite(r.res)).length, "l…
+    193|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+

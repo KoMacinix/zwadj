@@ -1,0 +1,80 @@
+⛔ PIÈCE MASQUÉE — A-27-int-membres.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 10932 octets, sha256 8f156e2b863db0841b601ae0e0d02b3fa1b120205c68b8b90e2ee146217d38a9. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-members.int-spec.ts (33 tests | 1 failed) 10007ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le temporaire (12 caractères de l'alphabet), son échéance ; l'état est « mot de passe à changer » 106ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFIE ; `must_change_password` est vrai ; l'échéance est de SEPT jours exactement (le levier) ; le créateur est le Manager ; l'échéance rendue est celle de la base 161ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acteur, le rôle pour seule charge utile ; ni le temporaire ni le nom de compte n'entrent dans AUCUNE ligne d'audit 90ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le rôle MANAGER se choisit à la création (DR5 : « un second Manager le réinitialise ») : 201, rôle MANAGER, état « à changer » 85ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `STAFF_ACCOUNT_NAME_TAKEN`, aucune ligne de plus, aucun audit de plus, aucun temporaire dans la réponse 253ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un corps invalide est un 400, sans écriture : rôle absent, rôle inconnu, mot de passe CHOISI (le temporaire est généré), créateur forcé — une clé inconnue est refusée, pas ignorée 43ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > couche ÉTEINTE (aucune activation) ou SANS session : 401 `STAFF_SESSION_REQUIRED` — une route de MEMBRE n'a pas de sens sans membre 187ms
+   ✓ K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle : actif, à changer, actif, temporaire expiré, désactivé 0ms
+   ✓ K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ jamais un membre d'une AUTRE salle : B a son propre « Karim » et son propre Manager, et rien n'en fuit dans la liste de A 10ms
+   ✓ K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ chaque membre n'a QUE six champs ; la dernière connexion est une date ISO pour qui s'est connecté et null pour les autres ; AUCUN hachage, compteur, verrou, jeton, échéance, ni mot de passe dans le texte de la réponse 1ms
+   ✓ K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ MP-11 — le temporaire d'un membre n'est JAMAIS relisible : ni dans la liste, ni après une seconde lecture (il n'a été rendu qu'à la création) 99ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ 200, `Cache-Control: no-store`, le membre et un temporaire NEUF (12 caractères de l'alphabet, jamais l'ancien mot de passe), l'état « à changer » 1ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ en BASE : le hachage a CHANGÉ et vérifie le temporaire ; `must_change_password` vrai ; SEPT jours ; compteur d'échecs et pause remis à zéro ; le clair n'est nulle part 139ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ S-105 — TOUTES les sessions du membre (deux postes) ont pris fin, `PASSWORD_CHANGED`, et TOUS ses appareils sont révoqués 4ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ MP-19 — le JETON REJOUÉ : l'ancien cookie de session de CHACUN des deux postes est refusé, 401 `STAFF_SESSION_REQUIRED` 18ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ l'ANCIEN mot de passe ne connecte plus (le même 401 qu'un mauvais mot de passe) ; le TEMPORAIRE connecte, avec « mot de passe à changer » 171ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ R-6 — UNE ligne d'audit `staff.member_reset_password`, le MANAGER pour acteur, les COMPTES pour charge utile ; le temporaire n'est dans aucune ligne 3ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > une SECONDE réinitialisation rend un AUTRE temporaire (rien n'est mémorisé) ; la liste ne le contient pas 96ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre DÉSACTIVÉ : 409 `STAFF_MEMBER_DISABLED`, le hachage ne change pas, aucune ligne d'audit de plus 173ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre d'une AUTRE salle et un identifiant inventé donnent le MÊME 404 `STAFF_MEMBER_NOT_FOUND` (octet pour octet, hors horodatage) ; le membre étranger n'est pas touché ; un identifiant qui n'est pas un UUID est un 400  523ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ 200, le membre rendu est DÉSACTIVÉ ; en base `status = DISABLED` et `disabled_at` posé 1ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ MP-30 — TOUTES ses sessions ont pris fin `DISABLED` (deux postes) ; le jeton rejoué est refusé 401 `STAFF_SESSION_REQUIRED` 18ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ le membre désactivé ne se connecte plus : le MÊME 401 `STAFF_INVALID_CREDENTIALS` qu'un mauvais mot de passe, à l'octet près 220ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ R-6 — UNE ligne d'audit `staff.member_disable`, le MANAGER pour acteur, le rôle et le nombre de sessions pour charge utile 3ms
+   × K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 SANS écriture : la date de désactivation ne bouge pas, aucune ligne d'audit de plus 28ms
+     → expected [ 500, undefined ] to deeply equal [ 200, 'DISABLED' ]
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > un membre d'une AUTRE salle ou inventé : 404 `STAFF_MEMBER_NOT_FOUND`, le membre étranger reste ACTIF  369ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ MP-31 — un Manager se désactive LUI-MÊME quand un autre Manager reste : 200 ; sa propre session prend fin ; la salle garde son Manager  728ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUSE sa ligne : 500, AUCUN membre créé ; le déclencheur retiré, le MÊME appel réussit (c'était bien le journal) 206ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le COMMIT est refusé : 500, ni membre NI ligne d'audit (une trace écrite hors transaction y survivrait) ; le même appel réussit ensuite 184ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refuse : 500, le mot de passe, les sessions et les appareils sont EXACTEMENT ceux d'avant ; puis le même appel réussit  660ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est refusé : 500, rien n'a changé, aucune ligne d'audit  499ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refuse : 500, le membre reste ACTIF, ses sessions vivantes ; puis le même appel réussit  439ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est refusé : 500, le membre reste ACTIF, aucune ligne d'audit  424ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  10:57:51
+   Duration  15.66s (transform 1.49s, setup 32ms, collect 4.66s, tests 10.01s, environment 0ms, prepare 173ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-members.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 SANS écriture : la date de désactivation ne bouge pas, aucune ligne d'audit de plus
+AssertionError: expected [ 500, undefined ] to deeply equal [ 200, 'DISABLED' ]
+
+- Expected
++ Received
+
+  [
+-   200,
+-   "DISABLED",
++   500,
++   undefined,
+  ]
+
+ ❯ test/int/staff-members.int-spec.ts:346:87
+    344|   it("⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 SANS écr…
+    345|     const res = await appeler(ctx, m.pro.token, m.jar, "post", url(`/$…
+    346|     expect([res.status, (res.body as { member?: { state?: string } }).…
+       |                                                                                       ^
+    347|     expect((await membreParId(ctx.prisma, e.id)).disabled_at).toEqual(…
+    348|     expect((await lignesAudit(ctx.prisma, "staff.member_disable")).fil…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

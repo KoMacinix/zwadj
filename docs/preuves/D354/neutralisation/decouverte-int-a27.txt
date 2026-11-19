@@ -1,0 +1,30 @@
+⛔ PIÈCE MASQUÉE — decouverte-int-a27.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2144 octets, sha256 fef799e28e22d70d223917003779c0447c72599258921f4fd685de2a233368f0. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 303fe7f0ec6eab0a6b4fe54f5105d0ba76f5240fcea1d5860a1d0ef869fad4e1  (neutralize-r56.py)
+empreinte du harnais (sha256) : 303fe7f0ec6eab0a6b4fe54f5105d0ba76f5240fcea1d5860a1d0ef869fad4e1  (neutralize-r56.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 117 déclarées · 1 jouées · 0 non jouée(s) (sans --int) · 1 mesure(s) distincte(s) · 1 fichier(s) muté(s)
+  pré-vol int-membres : code 0 · passés 33 · en échec 0
+■ A-27. ⛔ patron de D349 — une désactivation répétée n'est plus un succès sans écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 
+         ↳ AssertionError: expected [ 500, undefined ] to deeply equal [ 200, 'DISABLED' ]
+  empreintes : 17 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 1 cible(s) jouée(s) sur 117, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit=0

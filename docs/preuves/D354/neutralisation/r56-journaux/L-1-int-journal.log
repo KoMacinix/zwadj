@@ -1,0 +1,46 @@
+⛔ PIÈCE MASQUÉE — L-1-int-journal.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2710 octets, sha256 80d3e605cfff92f2fa93a5e11255a54acfa45e6d7bbc4acaee47d42e1ffbfe36. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/log-temporary-password.int-spec.ts (3 tests | 1 failed) 1207ms
+   ✓ le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la sortie du journal — ni la valeur du cookie de session du Manager, ni son mot de passe 93ms
+   ✓ le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-21 : le temporaire rendu par la réinitialisation n'est pas dans le journal non plus 188ms
+   × le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe saisi (corps de la requête) et les valeurs des cookies posés (session, appareil) ne sont pas dans le journal ; le champ `set-cookie` est masqué 185ms
+     → le cookie de session est dans le journal: expected true to be false // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  11:02:42
+   Duration  6.69s (transform 1.44s, setup 39ms, collect 4.64s, tests 1.21s, environment 0ms, prepare 166ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/log-temporary-password.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe saisi (corps de la requête) et les valeurs des cookies posés (session, appareil) ne sont pas dans le journal ; le champ `set-cookie` est masqué
+AssertionError: le cookie de session est dans le journal: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/int/log-temporary-password.int-spec.ts:72:82
+     70|     const sortie = ctx.sortie();
+     71|     expect(sortie.includes(e.temporaryPassword), "le mot de passe de l…
+     72|     expect(sortie.includes(session), "le cookie de session est dans le…
+       |                                                                                  ^
+     73|     for (const v of appareils) expect(sortie.includes(v), "le cookie d…
+     74|     expect(((ligne.res as { headers?: Record<string, unknown> }).heade…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

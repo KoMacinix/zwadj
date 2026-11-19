@@ -1,0 +1,25 @@
+⛔ PIÈCE MASQUÉE — prevol-int-membres.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2624 octets, sha256 4d0fd90908b3a07c8ce9a45915a22edf7a848f8a1964f352229b6001c83e611e. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-members.int-spec.ts (33 tests) 10492ms
+   ✓ K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `STAFF_ACCOUNT_NAME_TAKEN`, aucune ligne de plus, aucun audit de plus, aucun temporaire dans la réponse  306ms
+   ✓ K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre d'une AUTRE salle et un identifiant inventé donnent le MÊME 404 `STAFF_MEMBER_NOT_FOUND` (octet pour octet, hors horodatage) ; le membre étranger n'est pas touché ; un identifiant qui n'est pas un UUID est un 400  535ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > un membre d'une AUTRE salle ou inventé : 404 `STAFF_MEMBER_NOT_FOUND`, le membre étranger reste ACTIF  381ms
+   ✓ K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ MP-31 — un Manager se désactive LUI-MÊME quand un autre Manager reste : 200 ; sa propre session prend fin ; la salle garde son Manager  727ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refuse : 500, le mot de passe, les sessions et les appareils sont EXACTEMENT ceux d'avant ; puis le même appel réussit  651ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est refusé : 500, rien n'a changé, aucune ligne d'audit  498ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refuse : 500, le membre reste ACTIF, ses sessions vivantes ; puis le même appel réussit  439ms
+   ✓ R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est refusé : 500, le membre reste ACTIF, aucune ligne d'audit  426ms
+
+ Test Files  1 passed (1)
+      Tests  33 passed (33)
+   Start at  10:36:07
+   Duration  15.80s (transform 1.38s, setup 35ms, collect 4.40s, tests 10.49s, environment 0ms, prepare 166ms)
+
+

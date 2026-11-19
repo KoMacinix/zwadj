@@ -1,0 +1,24 @@
+⛔ PIÈCE MASQUÉE — prevol-int-dernier-manager.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2402 octets, sha256 a615032daa9ee2aaae33bcf5e64d14f3e0130b3603c84a8e6e5930860cb74179. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-last-manager.int-spec.ts (7 tests) 8622ms
+   ✓ le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il reste ACTIF, sa session est VIVANTE, aucune ligne d'audit de désactivation  609ms
+   ✓ le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, ne peut pas se désactiver (409)  869ms
+   ✓ le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > un EMPLOYÉ se désactive quel que soit le nombre de Managers (la règle ne vise que les Managers) : le Manager seul désactive son employé, 200  446ms
+   ✓ deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deux requêtes partent et se BLOQUENT dessus ; relâché, EXACTEMENT une réussit (200) et l'autre refuse (409 `STAFF_LAST_MANAGER`) : il reste UN Manager actif  777ms
+   ✓ deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désactivations réussissent, la TROISIÈME refuse — il reste UN Manager actif, jamais zéro  1208ms
+   ✓ deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à CHAQUE manche, exactement une réussit et il reste UN Manager actif (l'autre : 409, ou 401 si sa session a déjà pris fin)  1714ms
+   ✓ l'ordre des verrous L1 < L2 < L3 < L4 : AUCUN interblocage sous un mélange d'opérations simultanées (S-101) > ⛔ créer, réinitialiser, désactiver, lister et se désactiver mutuellement, TOUT EN MÊME TEMPS, cinq manches : aucune réponse 5xx (un interblocage détecté par PostgreSQL ferait une 500), et la salle garde un Manager actif  2761ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  10:35:30
+   Duration  14.03s (transform 1.38s, setup 33ms, collect 4.40s, tests 8.62s, environment 0ms, prepare 183ms)
+
+

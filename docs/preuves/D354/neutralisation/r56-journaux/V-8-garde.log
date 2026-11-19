@@ -1,0 +1,125 @@
+⛔ PIÈCE MASQUÉE — V-8-garde.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 13762 octets, sha256 7fab31439d0c1dfcfa39958e791bd4ced6abe2ae084440860c08ca665ec8ff7c. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-session.guard.spec.ts (32 tests | 4 failed) 40ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@Public()` passe, sans aucune lecture 4ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ une route `@Public()` atteinte avec une identité PRO déjà posée passe aussi, SANS lecture : le garde ne doit pas dépendre du fait que `JwtAuthGuard` n'attache rien aux routes publiques AUJOURD'HUI (le jour où il le fera, la connexion d'un Pro muni d'un Bearer ne doit pas exiger une session) 1ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une requête sans identité (`request.user` absent) passe : ce garde ne juge pas l'identité, `JwtAuthGuard` l'a déjà fait 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un CLIENT passe SANS lecture, même avec un cookie de session : le garde ne concerne que le PRO 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un ADMIN passe SANS lecture 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@StaffExempt()` passe pour un PRO, SANS lecture (activer, se connecter et lire l'état de session ne dépendent pas d'une session) 0ms
+   ✓ StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > ⛔ drapeau nul : passe, et LA SEULE lecture est celle du drapeau (aucune lecture de session) 2ms
+   ✓ StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > un PRO sans profil (donnée incohérente) passe comme couche éteinte : le garde n'invente pas un refus que le reste de l'API n'a jamais rendu 0ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lecture de session 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans requête SQL pour un déchet 1ms
+   × StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant), jamais du cookie : le magasin reçoit le hachage du cookie ET l'identifiant de la salle du JWT 8ms
+     → staff.errors.capabilityDenied
+   × StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > le jeton n'est JAMAIS transmis en clair au magasin (seul son SHA-256 voyage : « seul le SHA-256 est en base ») 1ms
+     → staff.errors.capabilityDenied
+   × StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du personnel sur la requête (le contrôleur et l'audit le lisent) 4ms
+     → promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre salle, désactivée, terminée) : 401 `STAFF_SESSION_REQUIRED` — la MÊME réponse, aucune raison 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > les trois refus (pas de cookie, cookie mal formé, session refusée) ont des corps IDENTIQUES à l'octet 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-7 — le drapeau est RELU à chaque requête, jamais gardé : deux requêtes, deux lectures (la couche activée pendant qu'un Pro est connecté prend effet à la requête suivante) 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un refus du magasin n'est jamais avalé : une EXCEPTION du magasin remonte (une panne de base n'est pas « couche éteinte ») 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une panne de LECTURE du drapeau remonte aussi : le garde ne tombe pas « ouvert » sur une erreur 0ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (GET) et le contexte est posé ; il ÉCRIT (POST, PATCH, DELETE) → 403 `STAFF_CAPABILITY_DENIED` 2ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > une route déclarée `agenda` : l'employé écrit (POST, DELETE) comme il lit 1ms
+   × StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'employé LIT (GET) et n'ÉCRIT pas (POST → 403) ; le MANAGER écrit 1ms
+     → promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (le magasin), jamais un champ de la requête : un `role: MANAGER` glissé dans la requête ne change rien pour un employé 0ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > la route du MEMBRE sur sa propre session (`@StaffAnyMember()`) passe pour un employé, en POST : se déconnecter, changer son mot de passe 0ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > le garde ne lit RIEN de plus pour décider : une lecture du drapeau, une prolongation de session — pas une seconde requête pour le rôle ou la capacité 0ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_change_password) : TOUTE route autre que celle du membre est refusée 403 — une lecture, une écriture, même au MANAGER, même sur une capacité déclarée 1ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membre (changer son mot de passe, se déconnecter) PASSE, avec un contexte qui dit `mustChangePassword: true` 0ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDINAIRE de 90 jours EXPIRÉ (must_change_password FAUX) est dans le même état : la connexion est admise, mais TOUTE autre route est refusée 0ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : un mot de passe qui expire à l'instant exact de la base est déjà à changer ; une milliseconde de plus, il est actif 0ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est celle de la BASE, jamais celle de l'API : une échéance dans le futur de l'horloge réelle mais dans le passé de l'heure de la base est EXPIRÉE ; l'inverse est valable 0ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ n'a pas de session : 401 `STAFF_SESSION_REQUIRED` — le MÊME corps que tout autre refus de session, même sur la route du membre (« le Manager doit en refaire un ») 3ms
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit pourquoi : le refus de capacité d'un EMPLOYÉ et celui du mot de passe à changer ont le MÊME corps à l'octet 1ms
+   ✓ la cible du spec est sans effet de bord > les décorateurs réels posent bien leurs métadonnées (sinon les cas ci-dessus mesureraient une cible muette) 0ms
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 28 passed (32)
+   Start at  10:39:06
+   Duration  1.83s (transform 303ms, setup 0ms, collect 1.18s, tests 40ms, environment 0ms, prepare 217ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-session.guard.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant), jamais du cookie : le magasin reçoit le hachage du cookie ET l'identifiant de la salle du JWT
+ForbiddenException: staff.errors.capabilityDenied
+ ❯ capaciteRefusee src/staff/staff-session.guard.ts:41:3
+     39| /** UN seul refus de capacité (S-242), pour toutes les causes : le rôl…
+     40| const capaciteRefusee = (): ForbiddenException =>
+     41|   new ForbiddenException({ code: StaffErrorCode.STAFF_CAPABILITY_DENIE…
+       |   ^
+     42| 
+     43| @Injectable()
+ ❯ StaffSessionGuard.canActivate src/staff/staff-session.guard.ts:90:47
+ ❯ src/staff/staff-session.guard.spec.ts:153:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > le jeton n'est JAMAIS transmis en clair au magasin (seul son SHA-256 voyage : « seul le SHA-256 est en base »)
+ForbiddenException: staff.errors.capabilityDenied
+ ❯ capaciteRefusee src/staff/staff-session.guard.ts:41:3
+     39| /** UN seul refus de capacité (S-242), pour toutes les causes : le rôl…
+     40| const capaciteRefusee = (): ForbiddenException =>
+     41|   new ForbiddenException({ code: StaffErrorCode.STAFF_CAPABILITY_DENIE…
+       |   ^
+     42| 
+     43| @Injectable()
+ ❯ StaffSessionGuard.canActivate src/staff/staff-session.guard.ts:90:47
+ ❯ src/staff/staff-session.guard.spec.ts:160:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du personnel sur la requête (le contrôleur et l'audit le lisent)
+AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+ ❯ src/staff/staff-session.guard.spec.ts:168:68
+    166|     const m = magasin();
+    167|     const requete = pro();
+    168|     await expect(garde(m.double).canActivate(contexte("ordinaire", req…
+       |                                                                    ^
+    169|     expect((requete as { staff?: unknown }).staff).toEqual({
+    170|       sessionId: "s1",
+
+Caused by: ForbiddenException: staff.errors.capabilityDenied
+ ❯ capaciteRefusee src/staff/staff-session.guard.ts:41:3
+ ❯ StaffSessionGuard.canActivate src/staff/staff-session.guard.ts:90:47
+ ❯ src/staff/staff-session.guard.spec.ts:168:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { response: { code: 'STAFF_CAPABILITY_DENIED', message: 'staff.errors.capabilityDenied' }, status: 403, options: {}, initCause: 'Function<initCause>', initMessage: 'Function<initMessage>', initName: 'Function<initName>', getResponse: 'Function<getResponse>', getStatus: 'Function<getStatus>' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'employé LIT (GET) et n'ÉCRIT pas (POST → 403) ; le MANAGER écrit
+AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+ ❯ src/staff/staff-session.guard.spec.ts:246:84
+    244|     await expect(garde(employe().double).canActivate(contexte("ordinai…
+    245|     expect(await refusCapacite(garde(employe().double), contexte("ordi…
+    246|     await expect(garde(magasin().double).canActivate(contexte("ordinai…
+       |                                                                                    ^
+    247|   });
+    248| 
+
+Caused by: ForbiddenException: staff.errors.capabilityDenied
+ ❯ capaciteRefusee src/staff/staff-session.guard.ts:41:3
+ ❯ StaffSessionGuard.canActivate src/staff/staff-session.guard.ts:90:47
+ ❯ src/staff/staff-session.guard.spec.ts:246:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { response: { code: 'STAFF_CAPABILITY_DENIED', message: 'staff.errors.capabilityDenied' }, status: 403, options: {}, initCause: 'Function<initCause>', initMessage: 'Function<initMessage>', initName: 'Function<initName>', getResponse: 'Function<getResponse>', getStatus: 'Function<getStatus>' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+

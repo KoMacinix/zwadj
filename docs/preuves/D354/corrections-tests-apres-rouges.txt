@@ -1,0 +1,29 @@
+D354 — corrections de TESTS faites APRÈS les rouges, avec l'empreinte sha256 de chaque fichier avant et après.
+
+═══ PREMIÈRE PARTIE : avant le premier commit de code (la chaîne d'empreintes relevée pendant l'écriture des verts ; les rouges de docs/preuves/D354/rouges/ ont joué l'état « AVANT » de la première ligne de chaque fichier) ═══
+14e6973422da8bfa45dc82ee170562602638fa0023749bf9d287a316ac497c11  AVANT  apps/api/src/staff/staff-members.service.spec.ts
+9cbe3ff48981ce9398f655f42774e0440b878033dc8f2f2c64b46b2c600d2bda  APRÈS  apps/api/src/staff/staff-members.service.spec.ts
+de6236e37d52d2f5cafff10ec8e8f568b212db0e2b64c4a68dfbc177e48d6ee4  AVANT  apps/api/src/staff/staff-session.service.spec.ts
+397e594ca232798bc6b6b38966139033e978c9d8a122238a733d98ea7e34f004  APRÈS  apps/api/src/staff/staff-session.service.spec.ts
+9cbe3ff48981ce9398f655f42774e0440b878033dc8f2f2c64b46b2c600d2bda  AVANT  apps/api/src/staff/staff-members.service.spec.ts
+9162ebe89470cd0a1effea655db172b572af7257d08ebcac49f2647e2f76b140  APRÈS  apps/api/src/staff/staff-members.service.spec.ts
+44593719260e67671c429b32a5f9fcd9892d7fe91e8605bdabb35fb054f7b1fc  AVANT  apps/api/src/staff/staff-store.prisma.spec.ts
+84099fd3cdbfb4ba7cb8bd6d0b7f5e6cd2a435afb0e65e4129e8acc068c4e3d0  APRÈS  apps/api/src/staff/staff-store.prisma.spec.ts
+e8d2469865c32f979715e4351f96730c5c7c544124fb74ee0f9719d2cbed774b  AVANT  apps/api/test/int/staff-members.int-spec.ts
+ede3b76bfe8f179687fcb9cff1801ae7e5f4945a86ffc60c789f238f2e9754e7  APRÈS  apps/api/test/int/staff-members.int-spec.ts
+
+═══ SECONDE PARTIE : APRÈS le premier commit de code (92c8a3e) — trois TROUS DE GARDE trouvés par la découverte du harnais `neutralize-r56.py` (D354), corrigés dans les TESTS, jamais dans le code produit ═══
+AVANT = le fichier à `HEAD` (92c8a3e) ; APRÈS = le fichier sur le disque au moment de la campagne ENTIÈRE (empreinte du harnais b4dd015b…53344).
+
+397e594ca232798bc6b6b38966139033e978c9d8a122238a733d98ea7e34f004  AVANT  apps/api/src/staff/staff-session.service.spec.ts
+026eb8b307fb6ab90b45be4629a61c583e66d08e9e7eb6dbd36980dd202f1fc8  APRÈS  apps/api/src/staff/staff-session.service.spec.ts
+0389ec53465fefd46fa849375be71bc3f20f43085ceda067ed7c4e9ee62cfac9  AVANT  apps/api/src/staff/staff-temporary-password.spec.ts
+2ce50e053bdfd1e76f77498701adddaa1fe5ae8e52d24f35391af5246549a692  APRÈS  apps/api/src/staff/staff-temporary-password.spec.ts
+ede3b76bfe8f179687fcb9cff1801ae7e5f4945a86ffc60c789f238f2e9754e7  AVANT  apps/api/test/int/staff-members.int-spec.ts
+5cdc639ed78e495939e12793c74589d7ad6a51944f24068b151b6c5fb80252ff  APRÈS  apps/api/test/int/staff-members.int-spec.ts
+
+— T-3 (`staff-temporary-password.spec.ts`) : retirer la règle « douze caractères » (`if (out.length < TEMPORARY_PASSWORD_LENGTH) return null`) ne faisait rougir AUCUN test : le contrôle lettre/chiffre qui suit la masquait sur les fixtures existantes (onze `A` ou onze chiffres). Cas ajouté : ONZE octets acceptés qui MÊLENT lettre et chiffre — seule la règle « douze » les refuse. Mesuré : la découverte relève 1 test en échec par `AssertionError` (« onze caractères valables mais PLUS COURTS que douze : null: expected 'A2A2A2A2A2A' to be null »).
+— S-2 (`staff-session.service.spec.ts`, deux tests S-104) : sous la mutation « un mot de passe À CHANGER ne se connecte plus », les deux tests rougissaient par `UnauthorizedException`, que la lecture R1 classe PAS-ASSERTION (D304) — aucune morsure lue. La connexion est maintenant capturée (`.then(admise, refusée)`) et son issue assertée (`expect(issue.admise).toBe(true)`).
+— A-27 (`staff-members.int-spec.ts`, « une désactivation RÉPÉTÉE est un 200 SANS écriture ») : sous la mutation « une répétition n'est plus un succès sans écriture », le test lisait `body.member.state` sans garde et plantait en `TypeError` (PAS-ASSERTION). Lecture par `member?.state` : l'assertion rend `expected [ 500, undefined ] to deeply equal [ 200, 'DISABLED' ]`.
+
+Les trois sont des corrections de la MESURE (la garde existait, sa preuve ne mordait pas) : aucun fichier de code produit n'est touché. Les verts ont été rejoués sur le code non muté (staff-temporary-password.spec.ts + staff-session.service.spec.ts : 49 passés, 2 fichiers) ; la campagne ENTIÈRE a ensuite été jouée sur ces fichiers (117 mordues sur 117).

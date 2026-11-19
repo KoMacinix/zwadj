@@ -1,0 +1,61 @@
+⛔ PIÈCE MASQUÉE — I-1-client-api.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3591 octets, sha256 3d243a5b439cdf20ce38dcb5b4bec4f55df1bb0659ea1bb8e76e17adffbefc24. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/staff-client.test.ts (11 tests | 1 failed) 15ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-14 : `activate` POSTE le nom de compte et le mot de passe sur `/pro/staff/activate` 2ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-18 : `changePassword` POSTE l'actuel et le nouveau sur `/pro/staff/password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > le client rend EXACTEMENT ce que la requête rend (aucune transformation, aucune règle) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur) 0ms
+   × le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password` 9ms
+     → expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > le client n'expose que les NEUF contrats (K-14 à K-22) : rien du PIN ni de la connexion par PIN (lot 3b) 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  11:02:51
+   Duration  712ms (transform 50ms, setup 0ms, collect 57ms, tests 15ms, environment 0ms, prepare 215ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff-client.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password`
+AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "init": {
+        "method": "POST",
+      },
+-     "path": "/pro/staff/members/m2/reset-password",
++     "path": "/pro/staff/members/m2/reset",
+    },
+  ]
+
+ ❯ src/staff-client.test.ts:79:20
+     77|     const { request, appels } = double({ member: { id: "m2" }, tempora…
+     78|     await createStaffClient(request).resetMemberPassword("m2");
+     79|     expect(appels).toEqual([{ path: "/pro/staff/members/m2/reset-passw…
+       |                    ^
+     80|   });
+     81| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — prevol-sources.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 437 octets, sha256 fb575567cff0696188b1542abdf6b7c9768c7923f0f9e422314baba49a7e8220. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-source-guards.spec.ts (28 tests) 37ms
+
+ Test Files  1 passed (1)
+      Tests  28 passed (28)
+   Start at  10:36:39
+   Duration  1.10s (transform 273ms, setup 0ms, collect 428ms, tests 37ms, environment 0ms, prepare 215ms)
+
+

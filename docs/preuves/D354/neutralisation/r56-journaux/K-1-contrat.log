@@ -1,0 +1,73 @@
+⛔ PIÈCE MASQUÉE — K-1-contrat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 8273 octets, sha256 1d2a2e22dfee92633b6e2b9b3fbdc6195da2bd18cdf2bf8a6bab3f46bc7f416c. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/staff-contract.spec.ts (30 tests | 1 failed) 29ms
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot de passe 90 jours, PIN 90 jours 1ms
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : UN paramètre du levier, jamais un littéral ailleurs 10ms
+     → expected 90 to be 7 // Object.is equality
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver) 0ms
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun appelant ne le modifie) 0ms
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais reflété 0ms
+   ✓ les énumérations du personnel suivent le schéma ratifié (tranche [L36-3], D186) > StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ; fins de session = IDLE, LOGOUT, DISABLED, PASSWORD_CHANGED, PIN_LOCKED 0ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE) 1ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET dans le catalogue ARABE 1ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus) 0ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en français, et porte la DURÉE DU LEVIER dans les deux langues 0ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > aucune clé de pause n'existe dans les catalogues (S-103 refusée : la pause répond comme un mauvais mot de passe) 0ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raison (un 401 par cause serait un oracle) 0ms
+   ✓ les messages de K-19 à K-22 — FR = AR (MP-39, D354) > ⛔ S-242 — le refus de CAPACITÉ ne dit pas POURQUOI : ni le rôle, ni « mot de passe à changer », ni une expiration (le même message sert l'employé refusé et le membre dont le mot de passe est à changer : aucun refus n'est un oracle) 0ms
+   ✓ les messages de K-19 à K-22 — FR = AR (MP-39, D354) > chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux 0ms
+   ✓ les messages de K-19 à K-22 — FR = AR (MP-39, D354) > le message du dernier Manager dit CE QUI Y MET FIN : désigner un autre responsable avant de désactiver (un refus qui ne dit pas quoi faire renvoie l'utilisateur au support) 0ms
+   ✓ les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR 5ms
+   ✓ les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale) 0ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné 0ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > applique la politique de mot de passe EXISTANTE (`passwordSchema`) : 8 à 128 caractères, une lettre, un chiffre — avec les clés `auth.validation.*` 1ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée) 0ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > ⛔ un nom fait UNIQUEMENT de marques (accents, voyelles brèves) passe la forme mais se normalise en chaîne VIDE : il est refusé (`accountNameInvalid`), sinon la clé de nom serait vide 2ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractères (un mot de passe trop court se refuse à la vérification, pas à la validation) 0ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe) 0ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > ⛔ le nom de compte de la connexion a UNE borne haute (100 caractères) : une chaîne démesurée ne part pas jusqu'à la normalisation et à la base 0ms
+   ✓ staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > accepte un corps valide 0ms
+   ✓ staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle) 0ms
+   ✓ staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > accepte un corps valide pour chacun des deux rôles et rend le nom rogné 0ms
+   ✓ staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ le rôle se choisit à la CRÉATION (aucune route ne le change, R-8) et il est EXACT : absent, vide, en minuscules ou inconnu sont refusés 0ms
+   ✓ staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ une clé de plus est REFUSÉE, pas ignorée : le Manager ne choisit PAS le mot de passe du membre (le temporaire est généré par le serveur, DR5), ni son statut, ni ses dates 0ms
+   ✓ staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > le nom de compte suit la MÊME règle qu'à l'activation (une seule fonction, D147) : trop court, trop long, caractères interdits 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  11:01:54
+   Duration  1.06s (transform 255ms, setup 0ms, collect 386ms, tests 29ms, environment 0ms, prepare 200ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/staff-contract.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : UN paramètre du levier, jamais un littéral ailleurs
+AssertionError: expected 90 to be 7 // Object.is equality
+
+- Expected
++ Received
+
+- 7
++ 90
+
+ ❯ src/common/staff-contract.spec.ts:48:50
+     46| 
+     47|   it("DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinit…
+     48|     expect(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS).toBe(7);
+       |                                                  ^
+     49|   });
+     50| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

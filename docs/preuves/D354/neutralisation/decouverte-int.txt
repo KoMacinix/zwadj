@@ -1,0 +1,923 @@
+⛔ PIÈCE MASQUÉE — decouverte-int.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 126362 octets, sha256 8c95577cf934e9a61b9f97cda2df71b59262264610f33545c1d9b336598a3d1e. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 8e10f71ae83b1802fa76650ca2708cc1f7c56e50fdd8c2f841f9fe554b952086  (neutralize-r56.py)
+empreinte du harnais (sha256) : 8e10f71ae83b1802fa76650ca2708cc1f7c56e50fdd8c2f841f9fe554b952086  (neutralize-r56.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 117 déclarées · 75 jouées · 0 non jouée(s) (sans --int) · 6 mesure(s) distincte(s) · 15 fichier(s) muté(s)
+  pré-vol int-capacites : code 0 · passés 47 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+  pré-vol int-dernier-manager : code 0 · passés 7 · en échec 0
+  pré-vol int-expiration : code 0 · passés 9 · en échec 0
+  pré-vol int-journal : code 0 · passés 3 · en échec 0
+  pré-vol int-membres : code 0 · passés 33 · en échec 0
+■ E-3. ⛔ S-104 — un TEMPORAIRE expiré n'est plus refusé (il redevient « à changer » : la connexion l'admet)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 5 · en échec 4
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de pass
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+■ E-4. ⛔ S-104 — un mot de passe ORDINAIRE expiré redevient ACTIF (le défaut que D341 avait écrit : « un mot de passe expiré ouvre une session »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 5 · en échec 4
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ E-5. ⛔ le marqueur « temporaire » (`must_change_password`) n'est plus lu : un temporaire valable passe pour un mot de passe ordinaire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 4 · en échec 5
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de pass
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+■ V-9. ⛔ la capacité déclarée est jugée en LECTURE quelle que soit la méthode (une écriture sur `salle` passe pour un employé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 36 · en échec 11
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ AssertionError: routes mal gardées :
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABI
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 40
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier :
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 400, 'MEDIA_FILE_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected '{"code":"STAFF_CAPABILITY_DENIED","me…' to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ C-1. ⛔ l'employé ÉCRIT sur la salle (la table n'est plus « lecture seule » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 40 · en échec 7
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 400, 'MEDIA_FILE_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected '{"code":"STAFF_CAPABILITY_DENIED","me…' to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ C-2. ⛔ l'employé LIT le personnel (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 46 · en échec 1
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+■ C-3. ⛔ l'employé ÉCRIT sur le compte commun (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 43 · en échec 4
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander 
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+■ C-4. ⛔ l'employé n'écrit plus sur l'agenda (la table le met en « lecture seule »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 45 · en échec 2
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : bloquer une date : le gard
+         ↳ AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks → 403 STAFF_CAPABILITY_DENIED: expected true to be false 
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : débloquer une date : le ga
+         ↳ AssertionError: DELETE /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks/00000000-0000-7000-8000-00000000000a → 403 STAFF_CAPABI
+■ G-2. ⛔ un refus de SESSION (désactivé, temporaire expiré) n'est plus levé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+■ G-3. ⛔ un refus de CAPACITÉ n'est plus levé (l'employé écrit partout, le mot de passe à changer n'ouvre plus rien de moins)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 26 · en échec 21
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'emp
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABI
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 40
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier :
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un memb
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander 
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 400, 'MEDIA_FILE_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le tem
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected undefined to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ G-4. ⛔ la MÉTHODE de la requête n'est plus lue (toute requête est une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 36 · en échec 11
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ AssertionError: routes mal gardées :
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABI
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 40
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier :
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 400, 'MEDIA_FILE_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected '{"code":"STAFF_CAPABILITY_DENIED","me…' to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ G-5. ⛔ la capacité DÉCLARÉE par la route n'est plus lue (S-107 s'applique à toutes les routes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 35 · en échec 12
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : bloquer une date : le gard
+         ↳ AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks → 403 STAFF_CAPABILITY_DENIED: expected true to be false 
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : débloquer une date : le ga
+         ↳ AssertionError: DELETE /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks/00000000-0000-7000-8000-00000000000a → 403 STAFF_CAPABI
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : accepter : le garde la
+         ↳ AssertionError: POST /api/v1/pro/bookings/00000000-0000-7000-8000-00000000000a/accept → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Obje
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : refuser : le garde lai
+         ↳ AssertionError: POST /api/v1/pro/bookings/00000000-0000-7000-8000-00000000000a/decline → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Obj
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : annuler :
+         ↳ AssertionError: DELETE /api/v1/pro/venues/00000000-0000-7000-8000-00000000000a/visit-bookings/00000000-0000-7000-8000-00000000000a → 403 STAFF_CAPABIL
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : créer : le garde laisse p
+         ↳ AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/quotes → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is 
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : convertir en réservation 
+         ↳ AssertionError: POST /api/v1/quotes/00000000-0000-7000-8000-00000000000a/convert → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : chercher une fiche : le
+         ↳ AssertionError: POST /api/v1/pro/clients/lookup → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is equality
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : créer une fiche : le ga
+         ↳ AssertionError: POST /api/v1/pro/clients → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is equality
+■ G-6. ⛔ la route du MEMBRE sur sa propre session n'est plus reconnue (se déconnecter et changer son mot de passe tombent sous la règle commune)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · NON-DÉMARRÉE — exécutés 0 (Tests  47 skipped (47))
+   [int-expiration] code 1 · ROUGE — passés 4 · en échec 5
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-
+         ↳ AssertionError: expected 403 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected 403 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ Error: changement de mot de passe du membre de test échoué (403) : {"statusCode":403,"message":{"code":"STAFF_CAPABILITY_DENIED","message":"staff.erro
+■ G-7. ⛔ MP-21 — le rôle jugé est « MANAGER » quel que soit le membre (le rôle de la SESSION n'est plus lu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 27 · en échec 20
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'emp
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABI
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 40
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier :
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un memb
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander 
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 400, 'MEDIA_FILE_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected '{"code":"STAFF_CAPABILITY_DENIED","me…' to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ G-9. ⛔ le refus de capacité porte le code d'une SESSION requise (le client le rejouerait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 27 · en échec 20
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ AssertionError: routes mal gardées :
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'emp
+         ↳ AssertionError: expected [] to deeply equal [ Array(1) ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 4
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côt
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABI
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 40
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier :
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un memb
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander 
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ AssertionError: expected [ 403, 'STAFF_SESSION_REQUIRED' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le tem
+         ↳ AssertionError: routes mal gardées en état « à changer » :
+■ S-1. ⛔ S-104 — la connexion juge « actif » (le statut seul) : un TEMPORAIRE EXPIRÉ se connecte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 6 · en échec 3
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de pass
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ AssertionError: expected 200 to be 401 // Object.is equality
+■ S-2. ⛔ S-104 — la connexion refuse un mot de passe À CHANGER (un temporaire valable ne se connecte plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 1 · en échec 8
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+■ S-3. ⛔ S-104 — la connexion rend la colonne brute `mustChangePassword` (un mot de passe de 90 jours expiré ne le dit pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 7 · en échec 2
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ S-4. ⛔ S-104 — l'état rend un membre même au TEMPORAIRE EXPIRÉ (un membre « connecté » qu'aucune route n'accepte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected { …(4) } to be null
+■ S-5. ⛔ S-104 — l'état copie la colonne brute au lieu de juger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 8 · en échec 1
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ B-3. ⛔ R-6 — l'acteur de l'audit est l'identifiant de SESSION et non celui du Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 2 · en échec 11
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le rôle MANAGER se choisit à la création (DR5 : « un second Manager l
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 500 to be 409 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUS
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le COMMIT est re
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+■ B-4. ⛔ la salle de l'action est l'identifiant du compte commun, non celle du PROFIL du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 2 · en échec 11
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le rôle MANAGER se choisit à la création (DR5 : « un second Manager l
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 500 to be 409 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUS
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le COMMIT est re
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+■ B-5. ⛔ la liste est demandée pour l'identifiant du MEMBRE et non pour la salle du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 30 · en échec 3
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle 
+         ↳ AssertionError: expected [] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ jamais un membre d'une AUTRE salle : B a son propre « Karim » et son propre Manager
+         ↳ AssertionError: expected [] to have a length of 2 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ chaque membre n'a QUE six champs ; la dernière connexion est une date ISO pour qui 
+         ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+■ B-6. ⛔ l'état d'un membre n'est plus JUGÉ (la liste copie le statut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 30 · en échec 3
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected { …(6) } to match object { …(5) }
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle 
+         ↳ AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ 200, `Cache-Control: no-sto
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+■ B-7. ⛔ MP-11 — la liste rend l'échéance du mot de passe (un champ de plus que les six permis)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected [ 'accountName', 'createdAt', …(5) ] to deeply equal [ 'accountName', 'createdAt', …(4) ]
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ chaque membre n'a QUE six champs ; la dernière connexion est une date ISO pour qui 
+         ↳ AssertionError: expected [ 'accountName', 'createdAt', …(5) ] to deeply equal [ 'accountName', 'createdAt', …(4) ]
+■ B-8. ⛔ un membre DÉSACTIVÉ est traité comme introuvable à la réinitialisation (404 au lieu de 409)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre DÉSACTIVÉ : 409 `
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 409, 'STAFF_MEMBER_DISABLED' ]
+■ B-9. ⛔ le DERNIER Manager est traité comme introuvable (404 au lieu de 409 `STAFF_LAST_MANAGER`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-dernier-manager] code 1 · ROUGE — passés 2 · en échec 5
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il res
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, n
+         ↳ AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deu
+         ↳ AssertionError: expected [ 200, 404 ] to deeply equal [ 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désacti
+         ↳ AssertionError: expected [ 200, 200, 404 ] to deeply equal [ 200, 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à 
+         ↳ AssertionError: manche 1 : 200 / 404: expected false to be true // Object.is equality
+■ B-10. ⛔ un nom déjà pris rend le code d'une activation déjà faite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 'STAFF_ALREADY_ACTIVATED' to be 'STAFF_ACCOUNT_NAME_TAKEN' // Object.is equality
+■ B-12. ⛔ l'échéance rendue avec le temporaire est la date de création du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected '2026-11-19T15:14:15.220Z' to be '2026-11-26T15:14:15.220Z' // Object.is equality
+■ B-13. ⛔ le hachage stocké n'est pas celui du temporaire rendu (un autre mot de passe est haché)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+■ B-14. ⛔ la clé d'unicité du nom n'est plus normalisée (« KARIM » et « karim » sont deux comptes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 201 to be 409 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+■ A-1. ⛔ `findMember` ne lit plus l'heure de la base sous son nom (la connexion ne peut plus juger l'état)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 0 · en échec 9
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de pass
+         ↳ AssertionError: expected [ 500, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ AssertionError: expected 500 to be 401 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ Error: connexion du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/login","timestamp":"2
+■ A-2. ⛔ le garde ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 0 · en échec 9
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ AssertionError: expected [ 500, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected 400 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de pass
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected 400 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation re
+         ↳ PrismaClientKnownRequestError:
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ Error: création du membre de test échouée (500) : {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/members","timestamp":"
+■ A-3. ⛔ l'état de session ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-expiration] code 1 · ROUGE — passés 7 · en échec 2
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) e
+         ↳ TypeError: Cannot read properties of undefined (reading 'mustChangePassword')
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a pl
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+■ A-4. ⛔ la liste n'est plus dans l'ordre de CRÉATION (elle suit l'ordre alphabétique)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle 
+         ↳ AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+■ A-6. ⛔ la liste n'est plus filtrée par la salle (les membres de TOUTES les salles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle 
+         ↳ AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(6) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ jamais un membre d'une AUTRE salle : B a son propre « Karim » et son propre Manager
+         ↳ AssertionError: expected [ …(7) ] to have a length of 2 but got 7
+■ A-7. ⛔ le temporaire créé vaut 90 jours (le levier des mots de passe ordinaires) et non sept
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ A-8. ⛔ le temporaire créé n'est plus « à changer » (`must_change_password` faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 30 · en échec 3
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected { …(6) } to match object { …(5) }
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret > ⛔ les membres de la salle A, DANS L'ORDRE DE CRÉATION, avec l'état jugé par la règle 
+         ↳ AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+■ A-9. ⛔ le créateur du membre n'est plus enregistré (`created_by_member_id` nul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected null to be '01a1f461-9e19-7260-b837-707fff3cd17a' // Object.is equality
+■ A-10. ⛔ un nom déjà pris n'est plus refusé par la base (le conflit met à jour la ligne existante au lieu de ne rien insérer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 201 to be 409 // Object.is equality
+■ A-11. ⛔ R-6 — la création n'écrit AUCUNE ligne d'audit (une action sans trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUS
+         ↳ AssertionError: expected 201 to be 500 // Object.is equality
+■ A-13. ⛔ la réinitialisation ne filtre plus par la salle (un membre d'une AUTRE salle est réinitialisé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre d'une AUTRE salle
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 404, 'STAFF_MEMBER_NOT_FOUND' ]
+■ A-14. ⛔ S-105 — les sessions réinitialisées prennent la fin LOGOUT et non PASSWORD_CHANGED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ S-105 — TOUTES les sessions
+         ↳ AssertionError: expected [ true, 'LOGOUT' ] to deeply equal [ true, 'PASSWORD_CHANGED' ]
+■ A-15. ⛔ S-105 — les APPAREILS du membre ne sont plus révoqués par la réinitialisation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ S-105 — TOUTES les sessions
+         ↳ AssertionError: expected null not to be null
+■ A-16. ⛔ MP-29 — la réinitialisation ne remet plus « mot de passe à changer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 30 · en échec 3
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ 200, `Cache-Control: no-sto
+         ↳ AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ en BASE : le hachage a CHAN
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ l'ANCIEN mot de passe ne co
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ A-17. ⛔ la réinitialisation ne remet plus les compteurs d'échecs ni la pause à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ en BASE : le hachage a CHAN
+         ↳ AssertionError: expected 3 to be +0 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ l'ANCIEN mot de passe ne co
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+■ A-19. ⛔ un membre désactivé n'est plus refusé à la réinitialisation (l'UPDATE conditionné échoue ensuite : une 500)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29) > ⛔ un membre DÉSACTIVÉ : 409 `
+         ↳ AssertionError: expected [ 500, undefined ] to deeply equal [ 409, 'STAFF_MEMBER_DISABLED' ]
+■ A-20. ⛔ R-4 — la désactivation ne prend plus le verrou du PROFIL (L1) : deux désactivations ne se sérialisent plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-dernier-manager] code 1 · ROUGE — passés 3 · en échec 4
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deu
+         ↳ AssertionError: expected [ 200, 500 ] to deeply equal [ 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désacti
+         ↳ AssertionError: requêtes bloquées sur le verrou de la ligne (attendu au moins 3): expected 0 to be greater than or equal to 3
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à 
+         ↳ Error: Test timed out in 30000ms.
+      FAIL  test/int/staff-last-manager.int-spec.ts > l'ordre des verrous L1 < L2 < L3 < L4 : AUCUN interblocage sous un mélange d'opérations simultanées (S-101) > ⛔ créer, réinitialiser, désactiver, lister
+         ↳ AssertionError: réponses 5xx : [{"manche":1,"nom":"M1 désactive M2","status":500},{"manche":2,"nom":"M1 désactive M2","status":500},{"manche":3,"nom":
+■ A-21. ⛔ R-4 — le comptage des Managers compte aussi les DÉSACTIVÉS (un Manager éteint empêche la règle de jouer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-dernier-manager] code 1 · ROUGE — passés 3 · en échec 4
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, n
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deu
+         ↳ AssertionError: expected [ 200, 200 ] to deeply equal [ 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désacti
+         ↳ AssertionError: expected [ 200, 200, 200 ] to deeply equal [ 200, 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à 
+         ↳ AssertionError: manche 1 : 200 / 200: expected [ 200, 200 ] to have a length of 1 but got 2
+■ A-22. ⛔ R-4 — le nombre de Managers actifs rendu à la décision est fixe (99) : le dernier Manager n'est plus reconnu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-dernier-manager] code 1 · ROUGE — passés 2 · en échec 5
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il res
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, n
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deu
+         ↳ AssertionError: expected [ 200, 200 ] to deeply equal [ 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désacti
+         ↳ AssertionError: expected [ 200, 200, 200 ] to deeply equal [ 200, 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à 
+         ↳ AssertionError: manche 1 : 200 / 200: expected [ 200, 200 ] to have a length of 1 but got 2
+■ A-24. ⛔ MP-30 — les sessions d'un membre désactivé prennent la fin LOGOUT et non DISABLED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ MP-30 — TOUTES ses sessions ont pris fin `DISABLED` (d
+         ↳ AssertionError: expected [ true, 'LOGOUT' ] to deeply equal [ true, 'DISABLED' ]
+■ A-25. ⛔ MP-30 — les sessions d'un membre désactivé ne sont plus terminées (le filtre est inversé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 31 · en échec 2
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ MP-30 — TOUTES ses sessions ont pris fin `DISABLED` (d
+         ↳ AssertionError: expected [ false, null ] to deeply equal [ true, 'DISABLED' ]
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ R-6 — UNE ligne d'audit `staff.member_disable`, le MAN
+         ↳ AssertionError: expected { Object (action, actor_id, ...) } to match object { …(4) }
+■ A-26. ⛔ R-4 — le verdict « dernier Manager » n'est plus appliqué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-dernier-manager] code 1 · ROUGE — passés 2 · en échec 5
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il res
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, n
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deu
+         ↳ AssertionError: expected [ 200, 200 ] to deeply equal [ 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désacti
+         ↳ AssertionError: expected [ 200, 200, 200 ] to deeply equal [ 200, 200, 409 ]
+      FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à 
+         ↳ AssertionError: manche 1 : 200 / 200: expected [ 200, 200 ] to have a length of 1 but got 2
+■ A-27. ⛔ patron de D349 — une désactivation répétée n'est plus un succès sans écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 
+         ↳ TypeError: Cannot read properties of undefined (reading 'state')
+■ A-28. ⛔ la désactivation ne filtre plus par la salle (un membre d'une AUTRE salle est désactivé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > un membre d'une AUTRE salle ou inventé : 404 `STAFF_MEMB
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 404, 'STAFF_MEMBER_NOT_FOUND' ]
+■ A-29. ⛔ R-6 — la désactivation n'écrit AUCUNE ligne d'audit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 30 · en échec 3
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ R-6 — UNE ligne d'audit `staff.member_disable`, le MAN
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31) > ⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ AssertionError: expected 200 to be 500 // Object.is equality
+■ A-31. ⛔ R-6 — l'acteur de l'audit de création est le membre CRÉÉ et non le Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected { action: 'staff.member_create', …(7) } to match object { …(6) }
+■ D-1. ⛔ R-2 — le contrôleur du personnel déclare `salle` à la place de `personnel` (l'employé LIT la liste du personnel)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 46 · en échec 1
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+■ D-2. ⛔ R-2 — le contrôleur des salles déclare `agenda` au lieu de `salle` (l'employé écrit sur la salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 43 · en échec 4
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `S
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAF
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `
+         ↳ AssertionError: expected [ 404, 'VENUE_NOT_FOUND' ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le ref
+         ↳ AssertionError: expected '{"code":"STAFF_CAPABILITY_DENIED","me…' to be '{"message":"Validation échouée","issu…' // Object.is equality
+■ D-3. ⛔ R-5 — K-20 ne pose plus `Cache-Control: no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected undefined to be 'no-store' // Object.is equality
+■ D-4. ⛔ S-104 — le changement de mot de passe n'est plus la route du membre (un membre « à changer » ne peut plus le faire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · NON-DÉMARRÉE — exécutés 0 (Tests  47 skipped (47))
+   [int-expiration] code 1 · ROUGE — passés 4 · en échec 5
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE don
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChang
+         ↳ AssertionError: expected 401 to be 200 // Object.is equality
+      FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : l
+         ↳ Error: changement de mot de passe du membre de test échoué (401) : {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.error
+■ D-5. ⛔ l'identifiant de K-22 n'est plus validé comme UUID (un texte libre part au SQL)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 0 · VERT — passés 33 · en échec 0
+■ D-6. ⛔ K-20 n'exige plus le contexte du garde (couche éteinte : une 500 au lieu du 401 `STAFF_SESSION_REQUIRED`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > couche ÉTEINTE (aucune activation) ou SANS session : 401 `STAFF_SESSI
+         ↳ AssertionError: expected [ 500, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+■ D-7. ⛔ `@RequiresStaffCapability` ne pose plus la capacité (toutes les routes tombent sous la règle par défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · ROUGE — passés 34 · en échec 13
+      FAIL  test/int/staff-capabilities.int-spec.ts > le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 60 routes atteignables par un PRO, dont les QUATRE routes du
+         ↳ AssertionError: expected 0 to be greater than or equal to 14
+      FAIL  test/int/staff-capabilities.int-spec.ts > une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la ta
+         ↳ AssertionError: le garde a réellement LAISSÉ PASSER des routes: expected 19 to be greater than or equal to 20
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la l
+         ↳ AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE 
+         ↳ TypeError: Cannot read properties of null (reading 'message')
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : bloquer une date : le gard
+         ↳ AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks → 403 STAFF_CAPABILITY_DENIED: expected true to be false 
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : débloquer une date : le ga
+         ↳ AssertionError: DELETE /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks/00000000-0000-7000-8000-00000000000a → 403 STAFF_CAPABI
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : accepter : le garde la
+         ↳ AssertionError: POST /api/v1/pro/bookings/00000000-0000-7000-8000-00000000000a/accept → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Obje
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : refuser : le garde lai
+         ↳ AssertionError: POST /api/v1/pro/bookings/00000000-0000-7000-8000-00000000000a/decline → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Obj
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : annuler :
+         ↳ AssertionError: DELETE /api/v1/pro/venues/00000000-0000-7000-8000-00000000000a/visit-bookings/00000000-0000-7000-8000-00000000000a → 403 STAFF_CAPABIL
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : créer : le garde laisse p
+         ↳ AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/quotes → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is 
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : convertir en réservation 
+         ↳ AssertionError: POST /api/v1/quotes/00000000-0000-7000-8000-00000000000a/convert → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : chercher une fiche : le
+         ↳ AssertionError: POST /api/v1/pro/clients/lookup → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is equality
+      FAIL  test/int/staff-capabilities.int-spec.ts > les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : créer une fiche : le ga
+         ↳ AssertionError: POST /api/v1/pro/clients → 403 STAFF_CAPABILITY_DENIED: expected true to be false // Object.is equality
+■ D-8. ⛔ le contrôleur du personnel n'est plus enregistré (les quatre routes n'existent plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · NON-DÉMARRÉE — exécutés 0 (Tests  47 skipped (47))
+   [int-membres] code 1 · ROUGE — passés 0 · en échec 13
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected 404 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected 404 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > le rôle MANAGER se choisit à la création (DR5 : « un second Manager l
+         ↳ AssertionError: expected 404 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 404 to be 409 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un corps invalide est un 400, sans écriture : rôle absent, rôle inc
+         ↳ AssertionError: {"accountName":"Zed"}: expected 404 to be 400 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > couche ÉTEINTE (aucune activation) ou SANS session : 401 `STAFF_SESSI
+         ↳ AssertionError: expected [ 404, 'ROUTE_NOT_FOUND' ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUS
+         ↳ AssertionError: expected 404 to be 500 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le COMMIT est re
+         ↳ AssertionError: expected 404 to be 500 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path
+■ D-9. ⛔ `@StaffAnyMember()` ne pose plus la marque (la route du membre n'est plus reconnue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 1 · NON-DÉMARRÉE — exécutés 0 (Tests  47 skipped (47))
+■ D-10. ⛔ R-5 — K-20 pose `no-cache` à la place de `no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · ROUGE — passés 2 · en échec 1
+      FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la
+         ↳ AssertionError: BRAS DE CONTRÔLE 1 — les en-têtes de RÉPONSE sont journalisés : `no-store` y figure: expected 'no-cache' to be 'no-store' // Object.is
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected 'no-cache' to be 'no-store' // Object.is equality
+■ K-1. ⛔ MP-43 — le temporaire vaut 90 jours au levier (et non sept)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected 90 to be 7 // Object.is equality
+■ K-2. ⛔ K-20 accepte une clé de plus (le Manager pourrait CHOISIR le mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 32 · en échec 1
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un corps invalide est un 400, sans écriture : rôle absent, rôle inc
+         ↳ AssertionError: {"accountName":"Zed","role":"EMPLOYEE","password":"Motdepasse1"}: expected 201 to be 400 // Object.is equality
+■ K-3. ⛔ K-20 n'admet plus le rôle EMPLOYEE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · ROUGE — passés 2 · en échec 11
+      FAIL  test/int/staff-members.int-spec.ts > K-19 — lister les membres : ceux de MA salle, leur ÉTAT, aucun secret
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > K-21 — réinitialiser : un NOUVEAU temporaire, et la fin de TOUTES les sessions et de TOUS les appareils (S-105, MP-19, MP-29)
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > K-22 — désactiver : les sessions finissent `DISABLED`, jamais un second effet (MP-4, MP-30, MP-31)
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ 201, `Cache-Control: no-store`, une forme EXACTE : le membre, le te
+         ↳ AssertionError: expected 400 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ en BASE : le hachage argon2 ne contient pas le clair mais le VÉRIFI
+         ↳ AssertionError: expected 400 to be 201 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ R-6 — UNE ligne d'audit `staff.member_create`, le MANAGER pour acte
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > ⛔ un nom déjà pris À LA NORMALISATION PRÈS (casse, accents) : 409 `ST
+         ↳ AssertionError: KARIM: expected 400 to be 409 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > K-20 — créer un membre : le mot de passe temporaire est GÉNÉRÉ, haché, rendu UNE fois > couche ÉTEINTE (aucune activation) ou SANS session : 401 `STAFF_SESSI
+         ↳ AssertionError: expected [ 400, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le journal REFUS
+         ↳ AssertionError: expected 400 to be 500 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-20 — le COMMIT est re
+         ↳ AssertionError: expected 400 to be 500 // Object.is equality
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le journal refus
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-21 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le journal refus
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+      FAIL  test/int/staff-members.int-spec.ts > R-6 — une action sans trace, ou une trace sans action : un échec FORCÉ dans la transaction laisse l'état EXACTEMENT celui d'avant > ⛔ K-22 — le COMMIT est re
+         ↳ Error: création du membre de test échouée (400) : {"statusCode":400,"message":{"message":"Validation échouée","issues":[{"path":"role","message":"staf
+■ K-5. ⛔ le code du refus de capacité change de valeur (le client ne le reconnaît plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-capacites] code 0 · VERT — passés 47 · en échec 0
+■ L-1. ⛔ R-5 — le champ `set-cookie` de réponse n'est plus masqué au journal (les cookies du personnel y entreraient)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · ROUGE — passés 2 · en échec 1
+      FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe sais
+         ↳ AssertionError: le cookie de session est dans le journal: expected true to be false // Object.is equality
+■ I-1. ⛔ K-21 : le chemin du client perd `-password` (il ne vise plus la route)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-contrat] code 1 · ROUGE — passés 5 · en échec 1
+      FAIL  test/int/contract-api-client.int-spec.ts > B6 — contrat de CHEMINS entre le client et l'API (D122) > CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest
+         ↳ AssertionError: Le client appelle des routes que l'API n'expose pas :
+■ I-2. ⛔ K-22 : le client désactive en GET et non en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-contrat] code 1 · ROUGE — passés 5 · en échec 1
+      FAIL  test/int/contract-api-client.int-spec.ts > B6 — contrat de CHEMINS entre le client et l'API (D122) > CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest
+         ↳ AssertionError: Le client appelle des routes que l'API n'expose pas :
+■ I-3. ⛔ K-19 : le client LIT la liste en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-contrat] code 0 · VERT — passés 6 · en échec 0
+  empreintes : 17 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 75 cible(s) jouée(s) sur 117, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+decouverte int exit=0

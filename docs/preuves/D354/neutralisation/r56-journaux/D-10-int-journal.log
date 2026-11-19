@@ -1,0 +1,43 @@
+⛔ PIÈCE MASQUÉE — D-10-int-journal.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2803 octets, sha256 912ae4b10d6be0671953afe6a08834eee2c671083e610ffbee2a87f46fcdf990. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/log-temporary-password.int-spec.ts (3 tests | 1 failed) 1301ms
+   × le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la sortie du journal — ni la valeur du cookie de session du Manager, ni son mot de passe 122ms
+     → BRAS DE CONTRÔLE 1 — les en-têtes de RÉPONSE sont journalisés : `no-store` y figure: expected 'no-cache' to be 'no-store' // Object.is equality
+   ✓ le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-21 : le temporaire rendu par la réinitialisation n'est pas dans le journal non plus 178ms
+   ✓ le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe saisi (corps de la requête) et les valeurs des cookies posés (session, appareil) ne sont pas dans le journal ; le champ `set-cookie` est masqué 176ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  11:01:09
+   Duration  6.92s (transform 1.50s, setup 37ms, collect 4.67s, tests 1.30s, environment 0ms, prepare 237ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/log-temporary-password.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la sortie du journal — ni la valeur du cookie de session du Manager, ni son mot de passe
+AssertionError: BRAS DE CONTRÔLE 1 — les en-têtes de RÉPONSE sont journalisés : `no-store` y figure: expected 'no-cache' to be 'no-store' // Object.is equality
+
+Expected: "no-store"
+Received: "no-cache"
+
+ ❯ test/int/log-temporary-password.int-spec.ts:41:125
+     39|     expect(sortie.includes(MOT_DE_PASSE_STAFF), "le mot de passe du Ma…
+     40|     const entetes = (ligne.res as { headers?: Record<string, unknown> …
+     41|     expect(entetes["cache-control"], "BRAS DE CONTRÔLE 1 — les en-tête…
+       |                                                                                                                             ^
+     42|     expect(ctx.lignes().length, "BRAS DE CONTRÔLE 2 — l'instrument a p…
+     43|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

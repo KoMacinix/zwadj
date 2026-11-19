@@ -1,0 +1,57 @@
+⛔ PIÈCE MASQUÉE — I-2-int-contrat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2756 octets, sha256 d80baa3dece65d79ee105cb37d79cc9e886aa581eb90f1c0b213db3fb42576c9. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/contract-api-client.int-spec.ts (6 tests | 1 failed) 902ms
+   ✓ B6 — contrat de CHEMINS entre le client et l'API (D122) > l'extraction trouve bien des appels des deux côtés (garde-fou du garde-fou) 6ms
+   × B6 — contrat de CHEMINS entre le client et l'API (D122) > CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest 14ms
+     → Le client appelle des routes que l'API n'expose pas :
+GET /pro/staff/members/*/disable   (staff-client.ts)
+
+Soit la route a été renommée côté serveur, soit le client s'est trompé de chemin.: expected [ Array(1) ] to deeply equal []
+   ✓ B6 — contrat de CHEMINS entre le client et l'API (D122) > la VERBE compte autant que le chemin : un GET sur une route POST est un contrat rompu 1ms
+   ✓ B6 — contrat de FORME sur le fil (D122) > les référentiels publics n'exposent QUE les champs déclarés 104ms
+   ✓ B6 — contrat de FORME sur le fil (D122) > la réponse d'authentification n'expose jamais le hash du mot de passe 255ms
+   ✓ B6 — contrat de FORME sur le fil (D122) > un PRO fraîchement inscrit ne reçoit aucun champ interne dans sa session 194ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  11:03:05
+   Duration  6.48s (transform 1.44s, setup 44ms, collect 4.66s, tests 902ms, environment 0ms, prepare 194ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/contract-api-client.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/contract-api-client.int-spec.ts > B6 — contrat de CHEMINS entre le client et l'API (D122) > CHAQUE chemin appelé par @zwadj/api-client existe sur le routeur Nest
+AssertionError: Le client appelle des routes que l'API n'expose pas :
+GET /pro/staff/members/*/disable   (staff-client.ts)
+
+Soit la route a été renommée côté serveur, soit le client s'est trompé de chemin.: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "GET /pro/staff/members/*/disable   (staff-client.ts)",
++ ]
+
+ ❯ test/int/contract-api-client.int-spec.ts:213:7
+    211|       `Le client appelle des routes que l'API n'expose pas :\n${orphel…
+    212|         `Soit la route a été renommée côté serveur, soit le client s'e…
+    213|     ).toEqual([]);
+       |       ^
+    214|   });
+    215| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

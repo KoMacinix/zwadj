@@ -1,0 +1,125 @@
+⛔ PIÈCE MASQUÉE — V-2-garde.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 13146 octets, sha256 c31075174f889090aeebfcf7afd5c9bf22de8dd09e5bb91f60b1579901e2504b. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-session.guard.spec.ts (32 tests | 5 failed) 66ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@Public()` passe, sans aucune lecture 4ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ une route `@Public()` atteinte avec une identité PRO déjà posée passe aussi, SANS lecture : le garde ne doit pas dépendre du fait que `JwtAuthGuard` n'attache rien aux routes publiques AUJOURD'HUI (le jour où il le fera, la connexion d'un Pro muni d'un Bearer ne doit pas exiger une session) 1ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une requête sans identité (`request.user` absent) passe : ce garde ne juge pas l'identité, `JwtAuthGuard` l'a déjà fait 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un CLIENT passe SANS lecture, même avec un cookie de session : le garde ne concerne que le PRO 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > ⛔ MP-34 — un ADMIN passe SANS lecture 0ms
+   ✓ StaffSessionGuard — ce qui PASSE sans toucher à la base > une route `@StaffExempt()` passe pour un PRO, SANS lecture (activer, se connecter et lire l'état de session ne dépendent pas d'une session) 0ms
+   ✓ StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > ⛔ drapeau nul : passe, et LA SEULE lecture est celle du drapeau (aucune lecture de session) 2ms
+   ✓ StaffSessionGuard — la couche ÉTEINTE : l'app Pro marche comme aujourd'hui (MP-35) > un PRO sans profil (donnée incohérente) passe comme couche éteinte : le garde n'invente pas un refus que le reste de l'API n'a jamais rendu 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ sans cookie : 401 `STAFF_SESSION_REQUIRED`, et aucune lecture de session 2ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un cookie qui n'a pas la forme d'un jeton : le MÊME 401, sans requête SQL pour un déchet 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-18 — la salle vient du PROFIL du Bearer (lu à l'instant), jamais du cookie : le magasin reçoit le hachage du cookie ET l'identifiant de la salle du JWT 4ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > le jeton n'est JAMAIS transmis en clair au magasin (seul son SHA-256 voyage : « seul le SHA-256 est en base ») 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une session vivante : le garde passe et POSE le contexte du personnel sur la requête (le contrôleur et l'audit le lisent) 2ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ session refusée par le magasin (inactive, plafond, autre salle, désactivée, terminée) : 401 `STAFF_SESSION_REQUIRED` — la MÊME réponse, aucune raison 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > les trois refus (pas de cookie, cookie mal formé, session refusée) ont des corps IDENTIQUES à l'octet 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > ⛔ MP-7 — le drapeau est RELU à chaque requête, jamais gardé : deux requêtes, deux lectures (la couche activée pendant qu'un Pro est connecté prend effet à la requête suivante) 1ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > un refus du magasin n'est jamais avalé : une EXCEPTION du magasin remonte (une panne de base n'est pas « couche éteinte ») 2ms
+   ✓ StaffSessionGuard — la couche ACTIVÉE : une session est exigée à CHAQUE requête Pro (MP-7) > une panne de LECTURE du drapeau remonte aussi : le garde ne tombe pas « ouvert » sur une erreur 1ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ une route déclarée `salle` : l'employé LIT (GET) et le contexte est posé ; il ÉCRIT (POST, PATCH, DELETE) → 403 `STAFF_CAPABILITY_DENIED` 3ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > une route déclarée `agenda` : l'employé écrit (POST, DELETE) comme il lit 1ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ S-107 — une route SANS déclaration : l'employé LIT (GET) et n'ÉCRIT pas (POST → 403) ; le MANAGER écrit 3ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > ⛔ le rôle est celui de la SESSION du membre (le magasin), jamais un champ de la requête : un `role: MANAGER` glissé dans la requête ne change rien pour un employé 3ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > la route du MEMBRE sur sa propre session (`@StaffAnyMember()`) passe pour un employé, en POST : se déconnecter, changer son mot de passe 2ms
+   ✓ StaffSessionGuard — la CAPACITÉ de l'employé, lue sur la route et la méthode (R-2, S-107, consigne § 1 c) > le garde ne lit RIEN de plus pour décider : une lecture du drapeau, une prolongation de session — pas une seconde requête pour le rôle ou la capacité 1ms
+   × StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_change_password) : TOUTE route autre que celle du membre est refusée 403 — une lecture, une écriture, même au MANAGER, même sur une capacité déclarée 15ms
+     → le garde devait refuser (403)
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ …et la route du membre (changer son mot de passe, se déconnecter) PASSE, avec un contexte qui dit `mustChangePassword: true` 1ms
+   × StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDINAIRE de 90 jours EXPIRÉ (must_change_password FAUX) est dans le même état : la connexion est admise, mais TOUTE autre route est refusée 1ms
+     → le garde devait refuser (403)
+   × StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : un mot de passe qui expire à l'instant exact de la base est déjà à changer ; une milliseconde de plus, il est actif 2ms
+     → le garde devait refuser (403)
+   × StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est celle de la BASE, jamais celle de l'API : une échéance dans le futur de l'horloge réelle mais dans le passé de l'heure de la base est EXPIRÉE ; l'inverse est valable 1ms
+     → le garde devait refuser (403)
+   ✓ StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un TEMPORAIRE EXPIRÉ n'a pas de session : 401 `STAFF_SESSION_REQUIRED` — le MÊME corps que tout autre refus de session, même sur la route du membre (« le Manager doit en refaire un ») 1ms
+   × StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit pourquoi : le refus de capacité d'un EMPLOYÉ et celui du mot de passe à changer ont le MÊME corps à l'octet 1ms
+     → le garde devait refuser (403)
+   ✓ la cible du spec est sans effet de bord > les décorateurs réels posent bien leurs métadonnées (sinon les cas ci-dessus mesureraient une cible muette) 0ms
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 27 passed (32)
+   Start at  10:38:23
+   Duration  1.86s (transform 310ms, setup 0ms, collect 1.19s, tests 66ms, environment 0ms, prepare 245ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-session.guard.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un temporaire (must_change_password) : TOUTE route autre que celle du membre est refusée 403 — une lecture, une écriture, même au MANAGER, même sur une capacité déclarée
+AssertionError: le garde devait refuser (403)
+ ❯ refusCapacite src/staff/staff-session.guard.spec.ts:226:17
+    224|     return (e as ForbiddenException).getResponse();
+    225|   }
+    226|   return expect.fail("le garde devait refuser (403)");
+       |                 ^
+    227| }
+    228| const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok:…
+ ❯ src/staff/staff-session.guard.spec.ts:273:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ un mot de passe ORDINAIRE de 90 jours EXPIRÉ (must_change_password FAUX) est dans le même état : la connexion est admise, mais TOUTE autre route est refusée
+AssertionError: le garde devait refuser (403)
+ ❯ refusCapacite src/staff/staff-session.guard.spec.ts:226:17
+    224|     return (e as ForbiddenException).getResponse();
+    225|   }
+    226|   return expect.fail("le garde devait refuser (403)");
+       |                 ^
+    227| }
+    228| const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok:…
+ ❯ src/staff/staff-session.guard.spec.ts:286:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ l'échéance INCLUSE : un mot de passe qui expire à l'instant exact de la base est déjà à changer ; une milliseconde de plus, il est actif
+AssertionError: le garde devait refuser (403)
+ ❯ refusCapacite src/staff/staff-session.guard.spec.ts:226:17
+    224|     return (e as ForbiddenException).getResponse();
+    225|   }
+    226|   return expect.fail("le garde devait refuser (403)");
+       |                 ^
+    227| }
+    228| const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok:…
+ ❯ src/staff/staff-session.guard.spec.ts:294:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ MP-41 — l'heure est celle de la BASE, jamais celle de l'API : une échéance dans le futur de l'horloge réelle mais dans le passé de l'heure de la base est EXPIRÉE ; l'inverse est valable
+AssertionError: le garde devait refuser (403)
+ ❯ refusCapacite src/staff/staff-session.guard.spec.ts:226:17
+    224|     return (e as ForbiddenException).getResponse();
+    225|   }
+    226|   return expect.fail("le garde devait refuser (403)");
+       |                 ^
+    227| }
+    228| const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok:…
+ ❯ src/staff/staff-session.guard.spec.ts:302:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts > StaffSessionGuard — S-104 : le mot de passe À CHANGER n'ouvre que le changement de mot de passe (R-3), jugé à l'HEURE DE LA BASE > ⛔ AUCUN refus ne dit pourquoi : le refus de capacité d'un EMPLOYÉ et celui du mot de passe à changer ont le MÊME corps à l'octet
+AssertionError: le garde devait refuser (403)
+ ❯ refusCapacite src/staff/staff-session.guard.spec.ts:226:17
+    224|     return (e as ForbiddenException).getResponse();
+    225|   }
+    226|   return expect.fail("le garde devait refuser (403)");
+       |                 ^
+    227| }
+    228| const employe = () => magasin({ touchSession: vi.fn(async () => ({ ok:…
+ ❯ src/staff/staff-session.guard.spec.ts:318:36
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+

@@ -1,0 +1,145 @@
+⛔ PIÈCE MASQUÉE — A-22-int-dernier-manager.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 8062 octets, sha256 28c07c6e9bd147e95e0c38181651cb108f2692f326329526bdec31b18500b865. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : b4dd015bc5bd259b6ddf176afbec007aa95e848eb79aac925360fedb89853344  (neutralize-r56.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-last-manager.int-spec.ts (7 tests | 5 failed) 7376ms
+   × le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il reste ACTIF, sa session est VIVANTE, aucune ligne d'audit de désactivation 554ms
+     → expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+   × le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, ne peut pas se désactiver (409) 763ms
+     → expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+   ✓ le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > un EMPLOYÉ se désactive quel que soit le nombre de Managers (la règle ne vise que les Managers) : le Manager seul désactive son employé, 200  416ms
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deux requêtes partent et se BLOQUENT dessus ; relâché, EXACTEMENT une réussit (200) et l'autre refuse (409 `STAFF_LAST_MANAGER`) : il reste UN Manager actif 794ms
+     → expected [ 200, 200 ] to deeply equal [ 200, 409 ]
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désactivations réussissent, la TROISIÈME refuse — il reste UN Manager actif, jamais zéro 1163ms
+     → expected [ 200, 200, 200 ] to deeply equal [ 200, 200, 409 ]
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à CHAQUE manche, exactement une réussit et il reste UN Manager actif (l'autre : 409, ou 401 si sa session a déjà pris fin) 741ms
+     → manche 1 : 200 / 200: expected [ 200, 200 ] to have a length of 1 but got 2
+   ✓ l'ordre des verrous L1 < L2 < L3 < L4 : AUCUN interblocage sous un mélange d'opérations simultanées (S-101) > ⛔ créer, réinitialiser, désactiver, lister et se désactiver mutuellement, TOUT EN MÊME TEMPS, cinq manches : aucune réponse 5xx (un interblocage détecté par PostgreSQL ferait une 500), et la salle garde un Manager actif  2680ms
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 2 passed (7)
+   Start at  10:56:25
+   Duration  12.95s (transform 1.47s, setup 33ms, collect 4.62s, tests 7.38s, environment 0ms, prepare 173ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-last-manager.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il reste ACTIF, sa session est VIVANTE, aucune ligne d'audit de désactivation
+AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+
+- Expected
++ Received
+
+  [
+-   409,
+-   "STAFF_LAST_MANAGER",
++   200,
++   undefined,
+  ]
+
+ ❯ test/int/staff-last-manager.int-spec.ts:42:39
+     40|     const salle = await proActive(ctx);
+     41|     const res = await appeler(ctx, salle.pro.token, salle.jar, "post",…
+     42|     expect([res.status, codeDe(res)]).toEqual([409, StaffErrorCode.STA…
+       |                                       ^
+     43|     expect((await membreParId(ctx.prisma, salle.membreId)).status).toB…
+     44|     for (const s of await sessionsDuMembre(ctx.prisma, salle.membreId)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, ne peut pas se désactiver (409)
+AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+
+- Expected
++ Received
+
+  [
+-   409,
+-   "STAFF_LAST_MANAGER",
++   200,
++   undefined,
+  ]
+
+ ❯ test/int/staff-last-manager.int-spec.ts:54:39
+     52|     expect((await appeler(ctx, salle.pro.token, salle.jar, "post", dis…
+     53|     const res = await appeler(ctx, salle.pro.token, salle.jar, "post",…
+     54|     expect([res.status, codeDe(res)]).toEqual([409, StaffErrorCode.STA…
+       |                                       ^
+     55|     expect(await compterManagersActifs(ctx.prisma, salle.pro.proProfil…
+     56|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deux requêtes partent et se BLOQUENT dessus ; relâché, EXACTEMENT une réussit (200) et l'autre refuse (409 `STAFF_LAST_MANAGER`) : il reste UN Manager actif
+AssertionError: expected [ 200, 200 ] to deeply equal [ 200, 409 ]
+
+- Expected
++ Received
+
+  [
+    200,
+-   409,
++   200,
+  ]
+
+ ❯ test/int/staff-last-manager.int-spec.ts:80:43
+     78|     await verrou.done;
+     79|     const [ra, rb] = await Promise.all([a, b]);
+     80|     expect([ra.status, rb.status].sort()).toEqual([200, 409]);
+       |                                           ^
+     81|     const refus = ra.status === 409 ? ra : rb;
+     82|     expect(codeDe(refus)).toBe(StaffErrorCode.STAFF_LAST_MANAGER);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désactivations réussissent, la TROISIÈME refuse — il reste UN Manager actif, jamais zéro
+AssertionError: expected [ 200, 200, 200 ] to deeply equal [ 200, 200, 409 ]
+
+- Expected
++ Received
+
+  [
+    200,
+    200,
+-   409,
++   200,
+  ]
+
+ ❯ test/int/staff-last-manager.int-spec.ts:100:21
+     98|     await verrou.done;
+     99|     const statuts = (await Promise.all([a, b, c])).map((r) => r.status…
+    100|     expect(statuts).toEqual([200, 200, 409]);
+       |                     ^
+    101|     expect(await compterManagersActifs(ctx.prisma, salle.pro.proProfil…
+    102|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à CHAQUE manche, exactement une réussit et il reste UN Manager actif (l'autre : 409, ou 401 si sa session a déjà pris fin)
+AssertionError: manche 1 : 200 / 200: expected [ 200, 200 ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/int/staff-last-manager.int-spec.ts:114:113
+    112|       ]);
+    113|       issues.push([ra.status, rb.status]);
+    114|       expect([ra.status, rb.status].filter((s) => s === 200), `manche …
+       |                                                                                                                 ^
+    115|       expect([ra.status, rb.status].every((s) => s === 200 || s === 40…
+    116|       expect(await compterManagersActifs(ctx.prisma, salle.pro.proProf…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
