@@ -1,0 +1,104 @@
+CALIBRATION (deux bras, D286)
+  motif dans un fichier d'un SHA : vrai connu → True (attendu True) ; faux connu → False (attendu False)
+  comptage : lignes MP-nn du cadrage → 44 (attendu 44) ; motif impossible → 0 (attendu 0)
+  extraction de table : capacités → 11 ligne(s) (attendu 11) ; en-tête inexistant → 0 (attendu 0)
+  calibration : tous les cas ont rendu leur verdict attendu.
+
+1. LA REPRISE (consigne § 0)
+[1.a] ✓  origin/main = 0423963, le départ du lot : le SHA de base est ANCÊTRE de HEAD et le premier commit du lot l'a pour parent
+      ancêtre : True ; HEAD a 1 parent(s), le premier est 0423963 (la table d'ouverture a été commitée seule avant ce script)
+[1.b] ✓  rang 55 CLOS (D353) ; compteur POUR MÉMOIRE TRENTE-CINQ ; « RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »
+      3,544,754 caractères aplatis parcourus ; les trois phrases : True
+[1.c] ✓  le dernier numéro du registre est 353 ; D354 est libre
+      308 lignes de registre ; dernier = 353 ; occurrences de D354 (continuité, backlog, AGENTS) = [0, 0, 0] (attendu [0, 0, 0])
+
+2. CE QUE KO ADOPTE (consigne § 1)
+[2.a] ✓  K-19 à K-22 : les quatre routes de la consigne sont celles du cadrage § 5.1, lot « 2 », « Manager »
+      10 lignes K-nn lues dans le cadrage ; [('K-19', 'GET', '/pro/staff/members', 'Manager', '2'), ('K-20', 'POST', '/pro/staff/members', 'Manager', '2'), ('K-21', 'POST', '/pro/staff/members/:id/reset-password', 'Manager', '2'), ('K-22', 'POST', '/pro/staff/members/:id/disable', 'Manager', '2')]
+[2.b] ✓  D182 : le client des K-14 à K-18 écrit chaque chemin en toutes lettres DANS l'appel `request(...)` — le patron que K-19 à K-22 suivront
+      `staff-client.ts` : 5 appel(s) à littéral : ['/pro/staff/activate', '/pro/staff/login', '/pro/staff/logout', '/pro/staff/session', '/pro/staff/password'] ; le test de contrat relève les chemins dans les SOURCES du client (`contract-api-client.int-spec.ts` : True)
+[2.c] ✓  la table des capacités (consigne § 1 c) est celle du cadrage § 5.4 : l'employé ✓ sur cinq (+ annuaire), « lecture seule » sur trois, « — » sur deux ; le Manager ✓ partout
+      11 capacités lues ; colonne EMPLOYEE : [('agenda', '✓'), ('demandes', '✓'), ('devis', '✓'), ('clients', '✓'), ('reservations', '✓'), ('annuaire', '✓'), ('salle', 'lecture seule'), ('prix', 'lecture seule'), ('prestations', 'lecture seule'), ('personnel', '—'), ('compte', '—')]
+[2.d] ✓  « les plages de VISITE (`visit-availabilities`) sont du côté « salle » » : la ligne `salle` du cadrage les porte
+      routes de la ligne `salle` : « `venues`, `venue-media`, `visit-availabilities`, `slot-templates` » ; `visit-availabilities` dedans : True
+[2.e] ✓  S-231 à S-238 (D353) existent, au statut « à ratifier » — la consigne § 1 d les ratifie par adoption
+      section D353 : 18,194 caractères parcourus ; S-nnn définies : [231, 232, 233, 234, 235, 236, 237, 238] ; consigne § 1 d : ratification par adoption (aucune écriture à faire d'ici que le .md d'autorité le consigne)
+[2.f] ✓  l'entrée [CLIENT][PERF] à ANNOTER (consigne § 1 e) existe, une fois, ouverte, et sa dernière phrase est « à ordonner par Ko »
+      5,868 lignes de backlog parcourues ; occurrences : 1 ; ouverte « - [ ] » : True ; « À ORDONNER PAR KO » : True
+
+3. LES CONSTATS DU RELECTEUR (consigne § 2) — à RE-MESURER
+[3.a] ✓  R-1 : `ProStaffMember` porte déjà les colonnes nécessaires — dans le SCHÉMA ET dans la MIGRATION (D186 : l'autorité sur les garanties de la base est la migration) ; aucune migration n'est nécessaire
+      schéma : 8 colonnes cherchées, manquantes [] ; migration `20261104170000_staff_layer` (131 lignes) : 8 colonnes cherchées, manquantes [] ; ⚠ colonne « temporaire » : AUCUNE (le seul marqueur d'un mot de passe temporaire est `must_change_password`)
+[3.b] ✓  `apps/api/src/staff/` n'a qu'UN contrôleur : `staff-session.controller.ts` (activate, login, session, logout, password)
+      18 fichiers parcourus ; contrôleurs : ['apps/api/src/staff/staff-session.controller.ts'] ; routes : [('Post', 'activate'), ('Post', 'login'), ('Get', 'session'), ('Post', 'logout'), ('Post', 'password')]
+[3.c] ✓  AUCUNE table de capacités n'existe (ni dans packages/types, ni dans apps/api)
+      250 fichiers .ts parcourus ; motifs `STAFF_CAPABILIT`, `StaffCapabilit`, `peut(` : 0 fichier(s) []
+[3.d] ≈  les sept contrôleurs nommés par le cadrage existent sous ces noms — MAIS deux ne sont pas des classes `@Roles(PRO)` pures : `availability.controller.ts` porte DEUX classes (la publique, `@Public()`, et `pro/venues` dont le seul handler PRO l'est au niveau de la MÉTHODE) ; `visit-bookings.controller.ts` est `@Roles(CLIENT)` avec deux handlers `@Roles(PRO)`
+      fichiers absents : [] ; (classe PRO ?, handlers PRO au niveau méthode, classes) : {'availability-blocks': (True, True, 0, 1), 'availability': (True, False, 1, 2), 'bookings-pro': (True, True, 0, 1), 'visit-bookings': (True, False, 2, 1), 'quotes': (True, True, 0, 1), 'quote-document': (True, True, 0, 1), 'pro-clients': (True, True, 0, 1)} ⇒ une déclaration posée au niveau de la CLASSE s'applique aussi aux handlers CLIENT et publics de ces fichiers : INOFFENSIF (le garde sort pour tout rôle ≠ PRO et pour toute route `@Public()`), et c'est ce que le test dérivé du routeur doit mesurer
+[3.e] ✓  `venues.controller.ts` porte `GET pro/venues/:id/publication` (D349), une LECTURE
+      88 lignes parcourues ; route trouvée : True
+
+4. R-2 — LES CAPACITÉS ET LE GARDE (consigne § 2, cadrage § 5.4)
+[4.a] ✓  le garde de D341 ne lit AUJOURD'HUI ni la méthode HTTP ni l'expiration d'un mot de passe (la seule mention de `mustChangePassword` recopie le champ dans le contexte)
+      78 lignes parcourues ; LIGNES hors commentaires qui portent `mustChangePassword`, `passwordExpires` ou `.method` : 1 ['mustChangePassword: touched.session.mustChangePassword,']
+[4.b] ≈  R-2 : « une fonction pure `peut(role, capacité)` » — DEUX arguments ne disent pas « lecture seule » : la table du cadrage a trois états par rôle (✓, lecture seule, —)
+      colonne EMPLOYEE du cadrage : ['lecture seule', '—', '✓'] ⇒ une fonction à deux arguments ne distingue pas lire de écrire. LECTURE DE LA SESSION (S-239, à ratifier) : `peut(role, capacité, acte)` où `acte` ∈ {lire, écrire} ; la table reste UNE donnée dans `packages/types`
+[4.c] ✓  « le compte commun (`/me/*`) : MANAGER seul » exige une DÉCLARATION — `account.controller.ts` n'a aucun `@Roles` et porte six routes, dont une LECTURE (`GET deletion-request`) que la règle par défaut S-107 (« lectures à tous ») laisserait à l'employé
+      164 lignes parcourues ; routes : [('Patch', 'profile'), ('Post', 'change-email'), ('Post', 'change-password'), ('Get', 'deletion-request'), ('Post', 'deletion-request'), ('Post', 'deletion-request/cancel')] ; `@Roles` : 0 ⇒ la déclaration `compte` sur cette classe n'est PAS un ajout de la session : R-2 l'exige
+[4.d] ≈  R-2 : « les déclarations d'EMPLOYÉ posées AU NIVEAU DE LA CLASSE sur les sept contrôleurs » — six AUTRES contrôleurs `@Roles(PRO)` existent ; sans déclaration, la ligne `salle`, `prix` ou `prestations` de la table serait une donnée INERTE
+      14 contrôleurs `@Roles(PRO)` parcourus : ['availability', 'availability-blocks', 'bookings-pro', 'pricing-rules', 'pro-clients', 'quote-document', 'quotes', 'services', 'slot-templates', 'staff-session', 'venue-media', 'venues', 'visit-availabilities', 'visit-bookings'] ; hors les sept et hors la session du personnel : ['pricing-rules', 'services', 'slot-templates', 'venue-media', 'venues', 'visit-availabilities'] ⇒ LECTURE DE LA SESSION (S-239, à ratifier) : ils DÉCLARENT aussi leur capacité (`salle`, `prix`, `prestations`) — aucun comportement ne change (l'employé lit, n'écrit pas : c'est déjà la règle par défaut) ; ce qui change, c'est que « changer d'avis = changer UNE ligne » devient VRAI de ces trois lignes
+[4.e] ≈  cadrage § 5.4 : deux capacités (`demandes`, `reservations`) pour UN contrôleur (`bookings-pro`) et une (`annuaire`) sans route — une déclaration de CLASSE n'en porte qu'une
+      routes de la table : demandes = « `bookings-pro`, `visit-bookings` (Pro) », reservations = « `bookings-pro` », annuaire = « *(L36-5, aucune route aujourd'hui)* » ⇒ LECTURE (S-239) : `bookings-pro` déclare `demandes` ; `reservations` et `annuaire` restent des LIGNES DE DONNÉES sans déclarant (même décision de table pour les deux, ✓ pour les deux rôles) ; la garde de source le dit au lieu de l'ignorer
+
+5. R-3 — S-104 : LE MOT DE PASSE EXPIRÉ (consigne § 2, cadrage MP-14 et MP-25)
+[5.a] ✓  S-104 N'EST PAS CODÉE : rien n'écrit `must_change_password = true` et aucun refus ne lit `password_expires_at` (AGENTS.md, D341)
+      145 sources parcourues ; écritures `must_change_password = true` : [] ; fichiers qui mentionnent `password_expires_at` : {'apps/api/src/staff/staff-store.prisma.ts': 2} ; comparaisons : []
+[5.b] ✓  `etatDuCompte(membre, maintenant)` est nommée par la rubrique « Patrons » de D340 et N'EXISTE PAS dans le code
+      rubrique trouvée dans la continuité : True ; fichiers de `apps/api/src` qui la définissent : []
+[5.c] ≈  `etatDuCompte(membre, MAINTENANT)` face à S-101 et MP-41 : « aucun `new Date()` dans les services du personnel, l'heure est celle de la BASE » — d'où vient `maintenant` ?
+      le module pur reçoit `maintenant` en PARAMÈTRE (S-109 : « l'heure vient de la base ou d'un paramètre ») ; LECTURE (S-241, à ratifier) : le MAGASIN le rend, lu par `now()` dans l'instruction même qui lit le membre — la règle a UNE copie, le temps reste celui de la base ; la garde de source (aucun `new Date`) reste vraie
+[5.d] ≈  R-3 : « un mot de passe TEMPORAIRE de 7 jours expiré : la connexion est REFUSÉE » — quel refus ? et « aucune autre route ne passe » (état « à changer ») — quel code ?
+      ni la consigne ni le cadrage ne nomment de code. LECTURES (S-242, à ratifier) : (i) un temporaire expiré = le MÊME 401 `STAFF_INVALID_CREDENTIALS`, sans réservation d'essai, un argon2 factice — l'invariant « aucun refus ne dit pourquoi » (D341) ne se perce pas ; (ii) une route hors changement de mot de passe et déconnexion, dans l'état « à changer » = 403 `STAFF_CAPABILITY_DENIED` (le code ratifié par S-100, que D341 R-2 a laissé à ce lot) — AUCUN code neuf ; coût : le message est générique
+[5.e] ≈  « temporaire » n'est pas une colonne : la distinction entre un mot de passe de 90 jours et un TEMPORAIRE de 7 jours repose sur `must_change_password`
+      DR5 : « création ou réinitialisation : généré par défaut, 7 jours, changement obligatoire » ⇒ `must_change_password = true` ET `password_expires_at = now() + 7 jours` ; un mot de passe ordinaire : `false` et 90 jours. LECTURE (S-241) : `must_change_password` vaut « temporaire » ; la migration ne change pas (R-1, DR8)
+
+6. R-4 — « JAMAIS ZÉRO MANAGER » (consigne § 2, cadrage § 3 et MP-6, MP-31)
+[6.a] ✓  l'ordre des verrous S-101 : L1 (le profil) < L2 (les membres) < L3 (les appareils) < L4 (les sessions) ; le magasin de D341 ne prend L1 que par l'`UPDATE` de l'activation
+      351 lignes parcourues ; `FOR UPDATE` : [(152, '// ⛔ S-102, MP-1, MP-16, MP-17 — LA RÉSERVATION, UNE INSTRUCTION. Le `FOR UPDATE'), (164, 'FOR UPDATE'), (317, 'const verrou = await tx.$queryRaw<Array<{ id: string }>>`SELECT id::text AS id F')] (deux sur les membres, un CTE) ; `UPDATE pro_profiles` : 2 (l'activation) ⇒ la désactivation prend le verrou de L1 par un `SELECT … FOR UPDATE` NEUF
+[6.b] ✓  « aucun déclencheur en base » (cadrage § 3.2) : la migration de la tranche n'en porte aucun
+      131 lignes parcourues ; `CREATE TRIGGER` : 0
+[6.c] ✓  R-4 « comme les courses de D350 » : l'aide qui FORCE un entrelacement par un verrou de ligne tenu hors du service existe
+      `row-lock.ts` : 61 lignes ; exports : ['holdRow', 'waitBlocked']
+[6.d] ?  cadrage MP-6 : « 2 requêtes simultanées répétées 30 fois ; invariant : TOUJOURS 1 Manager actif » — la répétition n'est pas un entrelacement forcé
+      une répétition aléatoire peut ne JAMAIS entrelacer. LECTURE (S-243, à ratifier) : en plus des 30 répétitions, un entrelacement FORCÉ par `row-lock.ts` (la seconde désactivation attend le verrou de L1 tenu hors du service), et l'ordre inverse — rouge d'abord, comme D350. Non vérifiable ici : se mesure sur PostgreSQL réel
+
+7. R-5 — K-21, LE TEMPORAIRE, LE JOURNAL (consigne § 2, S-105, S-112)
+[7.a] ✗  le journal des requêtes masque DÉJÀ `set-cookie` (S-112, SIG-1, D341) — la consigne le rappelle « comme `password` »
+      `app.module.ts` : 88 lignes ; `redact` = "req.headers.authorization", "req.headers.cookie", 'res.headers["set-cookie"
+[7.b] ≈  R-5 : « `set-cookie` comme `password` masqués au journal » — `password` n'est dans AUCUN chemin de `redact`, et aucun corps de requête ou de réponse n'est journalisé par `pino-http`
+      le temporaire voyage dans le CORPS de la réponse : ce qui le garde hors du journal n'est pas un masque mais l'ABSENCE de journalisation des corps. LECTURE (S-244, à ratifier) : une garde qui lit la SORTIE RÉELLE du journal (patron `log-set-cookie.int-spec.ts`) pendant K-20 et K-21 ; `app.module.ts` n'est modifié QUE si cette lecture trouve le temporaire (déclaré conditionnel dans la table)
+[7.c] ✓  S-105 : la réinitialisation met fin à TOUTES les sessions — la fin à écrire existe dans l'énumération ratifiée (aucune valeur « RESET » : DR8 interdit d'en ajouter)
+      valeurs : ['IDLE', 'LOGOUT', 'DISABLED', 'PASSWORD_CHANGED', 'PIN_LOCKED'] ⇒ LECTURE (S-245) : la fin d'une session révoquée par une réinitialisation est `PASSWORD_CHANGED`, celle d'une désactivation `DISABLED` (cadrage MP-30)
+[7.d] ✓  R-5 : « le PIN n'existe pas encore (3b) : rien à révoquer de ce côté » — aucune source n'écrit une colonne `pin_*`
+      145 sources parcourues ; sources qui écrivent `pin_hash`, `pin_failed_count` ou `pin_locked_at` : [] ⇒ la réinitialisation ne touche aucune colonne de PIN ; **le lot 3b devra l'ajouter** (report de backlog)
+
+8. R-6 — L'AUDIT (consigne § 2, DR5, S-108, patron de D349)
+[8.a] ✓  l'audit du personnel n'a QU'UN site d'écriture (`ecrireAudit`), à charge utile fermée : les trois actions de gestion se déclarent dans la même union
+      `staff-store.types.ts` : `StaffAuditEntry` déclare 7 forme(s) d'action ['staff.login_failed" | "staff.password_change_failed', 'staff.activate', 'staff.login', 'staff.login_failed" | "staff.password_change_failed', 'staff.password_pause', 'staff.logout', 'staff.password_change'] ; `auditLog.create` dans l'adaptateur : 1 occurrence
+[8.b] ≈  R-6 : « L'AUDIT DES FICHES (DR5, S-108) » — puis des actions du PERSONNEL (« chaque création, réinitialisation et désactivation, acteur = le membre Manager ») : deux sens de « fiche »
+      DR5 : « Journal : audit_logs.actor_member_id sur toute action de personnel (connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation, recherche d'annuaire, création et modificati… » ; D341 R-8 : « l'audit « création et modification de fiche » (DR5) … appartient à L36-3a-2 » (trouvé : True) ; cadrage § 5.5 : ligne « lot 2 » sur `pro-clients.service.ts` « à ratifier comme périmètre » (trouvée : True) ⇒ LECTURE (S-240, à ratifier — OBJET DE LA QUESTION UNIQUE) : l'audit livré est celui des trois actions de gestion du personnel (le corps de R-6 ne parle que de celles-là, et « acteur = le membre Manager » ne vaut pas d'une fiche modifiée par un employé) ; l'audit des FICHES CLIENT n'est pas écrit — le faire modifierait du code du rang 41 sans demande explicite (`CLAUDE.md`)
+[8.c] ✓  R-6 : « se mesure par un échec forcé dans la transaction (patron de D349) » — le patron existe : un déclencheur d'insertion refuse l'action, puis un déclencheur DIFFÉRÉ refuse le commit
+      `admin-audit.int-spec.ts` : 328 lignes ; `CREATE TRIGGER` : 2 ; `DEFERRABLE` : 1
+
+9. R-7, R-8, § 3 ET LE CADRAGE LUI-MÊME
+[9.a] ✓  les outils de la forme existent (lancer-touchees.py, masquer-jetons.py, le pilote des portes, `neutralize-r44.py`, l'audit de secrets)
+      5 chemins cherchés ; manquants : [] ; ⚠ `lancer-touchees.py` et `masquer-jetons.py` sont des PIÈCES VERSÉES (D352), pas des fichiers de `neutralisation/` : copiés tels quels dans D354
+[9.b] ≈  cadrage § 1 : « gardes globaux : exactement TROIS » ; § 4 MP-20 ; § 5.1 « exemptée : cinq routes »
+      PÉRIMÉ depuis D341 : le garde du personnel est le QUATRIÈME garde global (['ThrottlerGuard', 'JwtAuthGuard', 'RolesGuard', 'StaffSessionGuard']) ; quatre routes exemptées (la cinquième, `pin-login`, est de 3b) ; le cadrage est d'avant D341 — sa photo de départ n'est plus l'état du code, ses modes de défaillance § 4 restent la liste de ce lot
+[9.c] ≈  cadrage § 1 : « routes : un compte PRO en atteint 55 » — d'avant D341 (cinq routes du personnel) et D349 (`GET …/publication`)
+      le plancher « au moins 55 » de `staff-session-guard.int-spec.ts` reste vrai ; K-19 à K-22 portent le nombre de routes d'un PRO de quatre de plus ; aucune liste n'est recopiée : le test dérive du routeur (D119)
+[9.d] ?  R-7 : « AUCUN écran : rien dans apps/pro ni apps/client » ; consigne § 4 « Gestes de Ko : aucun »
+      se constate sur le DIFF DE FIN DE LOT (aucun fichier de `apps/pro` ni de `apps/client`) ; la table d'ouverture n'en déclare aucun
+
+TOTAL : 39 contrôles — 25 ✓ · 11 ≈ · 1 ✗ · 2 ?   (attendu : la somme égale le nombre de contrôles listés ci-dessus)
+somme des verdicts = 39 ; contrôles imprimés = 39 ; égalité : True
