@@ -69,3 +69,16 @@ Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesque
 ## Extensions de la table
 
 *(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement : la note de la lecture adverse, la première passe de son instrument, l'audit de secrets « a » et son tri
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse (et avant le commit des rouges). Les fichiers déjà listés en B (`consigne.md`, `regle-portes.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`) entrent dans ce même commit. **Chemins COMPLETS des pièces qui s'y ajoutent** :
+
+```
+docs/preuves/D353/lecture-adverse/lecture-adverse.md
+docs/preuves/D353/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D353/audit-secrets-d353a.txt
+docs/preuves/D353/tri-audit-d353a.txt
+```
+
+**Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu deux ✗ qui étaient des défauts DE L'INSTRUMENT (contrôles 1.c et 2.h), confrontés à la source avant d'être crus (D275). Cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument corrigé, rejoué en entier, calibration comprise (règle de D298). La note `lecture-adverse.md` écrit les deux défauts et les six « ≈ ».
