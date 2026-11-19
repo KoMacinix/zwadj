@@ -1,0 +1,655 @@
+# D352 — extraits des journaux de la campagne ENTIÈRE de `neutralisation/neutralize-adm2.py --int --e2e` : par journal, les tests EN ÉCHEC et la première ligne de leur bloc d'erreur, et la ligne « Tests ».
+# journaux parcourus : 99 (hors pré-vol) ; CETTE pièce ne recopie aucune ligne brute d'un journal e2e au-delà de la première ligne d'erreur ; les journaux bruts restent hors dépôt (sauf les 29 gardes visées par R-2, versées MASQUÉES).
+=== A-1-api-journal.log
+  Tests  2 failed | 9 passed (11)
+  FAIL  e l'ANCIEN ET le NOUVEAU motif : « avant » est le motif en vigueur, « après » le nouveau ; l'action reste `venue.reject` (la date du refus est celle de la dernière ligne)
+     ↳ AssertionError: expected { rejectionReason: null } to deeply equal { rejectionReason: 'Photos floues.' }
+  FAIL  c/common/admin-audit.spec.ts > venueRejectEntry > R-3 — le motif précédent est celui qu'on passe, jamais déduit : deux motifs différents donnent deux « avant » différents
+     ↳ AssertionError: expected { rejectionReason: null } to not deeply equal { rejectionReason: null }
+=== C-1-compte.log
+  Tests  3 failed (3)
+  FAIL   un même navigateur : rien ne reste de l'autre compte > le PRO A lit ses salles et garde un brouillon ; il se déconnecte : ni la liste ni le brouillon ne restent lisibles
+     ↳ AssertionError: la liste de A ne survit pas à sa déconnexion: expected 'Salle de A' not to contain 'Salle de A'
+  FAIL  O → ADMIN → PRO dans un même navigateur : rien ne reste de l'autre compte > un ADMIN qui se connecte après un PRO ne voit pas la liste des salles du PRO, ni son brouillon
+     ↳ AssertionError: la liste du PRO est encore tenue sous un ADMIN: expected 'Salle de A' not to contain 'Salle de A'
+  FAIL  → ADMIN → PRO B : à l'INSTANT où B arrive (sa lecture n'est pas revenue), la liste de A n'est pas rendue ; B lit ensuite les siennes ; le brouillon de A n'est pas le sien
+     ↳ AssertionError: un rendu de B a montré la liste de A: expected [ 'pro-b|Salle de A' ] to deeply equal []
+=== D-1-api-suppression.log
+  Tests  2 failed | 28 passed (30)
+  FAIL   approve : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant toute salle archivée, toute anonymisation, toute révocation
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+  FAIL   en check-and-set > reject : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant la décision écrite et la ligne de journal
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+=== D-1-int-courses.log
+  Tests  4 failed (4)
+  FAIL  ulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: {"id":"01a1f119-b8d7-7bc4-b0c2-52e33e4999a3","status":"APPROVED","reason":null,"requestedAt":"2026-11-18T23:59:17.206Z","decidedAt":"2
+  FAIL  x approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail
+     ↳ AssertionError: {"id":"01a1f119-babf-7d79-a891-aea9db39baaa","status":"APPROVED","reason":null,"requestedAt":"2026-11-18T23:59:17.694Z","decidedAt":"2
+  FAIL  > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+     ↳ AssertionError: {"id":"01a1f119-bccf-78ae-827e-7ae21409be07","status":"REJECTED","reason":null,"requestedAt":"2026-11-18T23:59:18.221Z","decidedAt":"2
+  FAIL  l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+     ↳ AssertionError: {"id":"01a1f119-becf-7cd4-87d3-e9e0eb15b636","status":"APPROVED","reason":null,"requestedAt":"2026-11-18T23:59:18.733Z","decidedAt":"2
+=== D-2-api-suppression.log
+  Tests  6 failed | 24 passed (30)
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > demande déjà décidée : 400 DELETION_REQUEST_NOT_PENDING, aucune écriture
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > id inconnu : 404 DELETION_REQUEST_NOT_FOUND
+     ↳ AssertionError: expected Error: décision de suppression : la deman… to be an instance of NotFoundException
+  FAIL  count/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  e 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of BadRequestException
+  FAIL  en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  pec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject
+     ↳ AssertionError: expected Error: décision de suppression : la deman… to be an instance of NotFoundException
+=== D-2-int-courses.log
+  Tests  4 failed (4)
+  FAIL  ulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: {"id":"01a1f119-edef-7a89-9183-2447c6f8166b","status":"CANCELLED","reason":null,"requestedAt":"2026-11-18T23:59:30.799Z","decidedAt":"
+  FAIL  x approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail
+     ↳ AssertionError: {"id":"01a1f119-efd1-797c-a083-525a3d929565","status":"APPROVED","reason":null,"requestedAt":"2026-11-18T23:59:31.281Z","decidedAt":"2
+  FAIL  > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+     ↳ AssertionError: {"id":"01a1f119-f1cc-7472-80d0-38e749609ba0","status":"REJECTED","reason":null,"requestedAt":"2026-11-18T23:59:31.787Z","decidedAt":"2
+  FAIL  l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+     ↳ AssertionError: {"id":"01a1f119-f3cb-748d-ad43-5d04d3cff10d","status":"APPROVED","reason":null,"requestedAt":"2026-11-18T23:59:32.298Z","decidedAt":"2
+=== D-3-api-suppression.log
+  Tests  7 failed | 23 passed (30)
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > demande déjà décidée : 400 DELETION_REQUEST_NOT_PENDING, aucune écriture
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > id inconnu : 404 DELETION_REQUEST_NOT_FOUND
+     ↳ AssertionError: expected Error: décision de suppression : la deman… to be an instance of NotFoundException
+  FAIL  count/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL   approve : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant toute salle archivée, toute anonymisation, toute révocation
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+  FAIL  e 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: expected TypeError: Cannot read properties of unde… to be an instance of BadRequestException
+  FAIL  en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  pec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject
+     ↳ AssertionError: expected Error: décision de suppression : la deman… to be an instance of NotFoundException
+=== D-3-int-courses.log
+  Tests  4 failed (4)
+  FAIL  ulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: {"id":"01a1f11a-23d6-7e69-9025-cc2dd583e0bf","status":"CANCELLED","reason":null,"requestedAt":"2026-11-18T23:59:44.597Z","decidedAt":"
+  FAIL  x approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail
+     ↳ AssertionError: {"id":"01a1f11a-259f-7838-9a3c-4b206ce6a9a7","status":"PENDING","reason":null,"requestedAt":"2026-11-18T23:59:45.054Z","decidedAt":"20
+  FAIL  > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+     ↳ AssertionError: {"id":"01a1f11a-278f-76db-a19c-f7afcf64660a","status":"REJECTED","reason":null,"requestedAt":"2026-11-18T23:59:45.550Z","decidedAt":"2
+  FAIL  l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+     ↳ AssertionError: {"id":"01a1f11a-2d6d-75e8-9782-a2c4324222c7","status":"PENDING","reason":null,"requestedAt":"2026-11-18T23:59:47.052Z","decidedAt":"20
+=== D-4-api-suppression.log
+  Tests  4 failed | 26 passed (30)
+  FAIL  count/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL   en check-and-set > reject : le PREMIER geste de la transaction est le check-and-set — `updateMany` conditionné à PENDING, avant la décision écrite et la ligne de journal
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+  FAIL  en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié
+     ↳ AssertionError: promise resolved "{ …(6) }" instead of rejecting
+  FAIL  pec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject
+     ↳ AssertionError: expected Error: décision de suppression : la deman… to be an instance of NotFoundException
+=== D-4-int-courses.log
+  Tests  2 failed | 2 passed (4)
+  FAIL  > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+     ↳ AssertionError: {"id":"01a1f11a-62b5-7b90-8294-7ec9d51bb0ad","status":"PENDING","reason":null,"requestedAt":"2026-11-19T00:00:00.693Z","decidedAt":"20
+  FAIL  l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+     ↳ AssertionError: {"id":"01a1f11a-64b7-7494-bc57-f25b638c3ba2","status":"APPROVED","reason":null,"requestedAt":"2026-11-19T00:00:01.206Z","decidedAt":"2
+=== D-5-api-suppression.log
+  Tests  5 failed | 25 passed (30)
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > demande déjà décidée : 400 DELETION_REQUEST_NOT_PENDING, aucune écriture
+     ↳ AssertionError: expected Error: décision de suppression : compte 0… to be an instance of BadRequestException
+  FAIL  count/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)
+     ↳ AssertionError: expected Error: décision de suppression : compte 0… to be an instance of BadRequestException
+  FAIL  e 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: expected Error: décision de suppression : compte 0… to be an instance of BadRequestException
+  FAIL  en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié
+     ↳ AssertionError: expected Error: décision de suppression : compte 0… to be an instance of BadRequestException
+  FAIL  décide DANS la transaction, en check-and-set > compte 0 sur une demande que la relecture dit ENCORE en attente : une erreur d'ÉTAT IMPOSSIBLE, jamais un succès silencieux
+     ↳ AssertionError: expected BadRequestException: account.errors.delet… { …(3) } to not be an instance of BadRequestException
+=== D-5-int-courses.log
+  Tests  4 failed (4)
+  FAIL  ulation (validée) précède l'écriture de l'approbation : 400 DELETION_REQUEST_NOT_PENDING, la demande reste ANNULÉE, le compte ACTIF, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/admin/deletion-requests/01a1f11a-9450-793d-a2ee-676832a3c1ee/appro
+  FAIL  x approbations bloquées sur la même demande : l'une gagne (200), l'autre est refusée (400 DELETION_REQUEST_NOT_PENDING) ; UNE ligne `account_deletion.approve` ; UN e-mail
+     ↳ AssertionError: {"id":"01a1f11a-962f-7336-b0bc-43cb1b41f4f1","status":"APPROVED","reason":null,"requestedAt":"2026-11-19T00:00:13.870Z","decidedAt":"2
+  FAIL  > le REJET arrive en premier, l'approbation derrière : le rejet gagne (200), l'approbation est refusée (400) ; le compte reste ACTIF ; UNE ligne `account_deletion.reject`
+     ↳ AssertionError: {"id":"01a1f11a-982b-7733-a83d-117c7ca21574","status":"REJECTED","reason":null,"requestedAt":"2026-11-19T00:00:14.378Z","decidedAt":"2
+  FAIL  l'approbation gagne (200), le rejet est refusé (400) ; le compte est ANONYMISÉ ; UNE ligne `account_deletion.approve` ; le compte supprimé ne reçoit PAS d'e-mail de refus
+     ↳ AssertionError: {"id":"01a1f11a-9a1d-7777-9e3d-ac9e2e817196","status":"APPROVED","reason":null,"requestedAt":"2026-11-19T00:00:14.876Z","decidedAt":"2
+=== D-6-api-suppression.log
+  Tests  7 failed | 23 passed (30)
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > demande déjà décidée : 400 DELETION_REQUEST_NOT_PENDING, aucune écriture
+     ↳ AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to be an instance of BadRequestException
+  FAIL  FAIL  src/account/account-deletion.service.spec.ts > transitions > id inconnu : 404 DELETION_REQUEST_NOT_FOUND
+     ↳ AssertionError: expected TypeError: Cannot read properties of null… to be an instance of NotFoundException
+  FAIL  count/account-deletion.service.spec.ts > journal des décisions admin (R-5, MD-ADM-6) > une demande déjà décidée n'écrit AUCUNE ligne de journal (400 avant toute écriture)
+     ↳ AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to be an instance of BadRequestException
+  FAIL  e 0 parce que l'utilisateur a ANNULÉ entre-temps : 400 DELETION_REQUEST_NOT_PENDING — aucune salle archivée, aucun compte anonymisé, aucune ligne de journal, aucun e-mail
+     ↳ AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to be an instance of BadRequestException
+  FAIL  en check-and-set > compte 0 parce qu'une AUTRE décision est passée avant (rejet, approbation) : 400 pour approve ET pour reject — rien n'est écrit, personne n'est notifié
+     ↳ AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to be an instance of BadRequestException
+  FAIL  pec.ts > R-2 (D350) — le statut se décide DANS la transaction, en check-and-set > compte 0 sur un id inconnu : 404 DELETION_REQUEST_NOT_FOUND, pour approve et pour reject
+     ↳ AssertionError: expected TypeError: Cannot read properties of null… to be an instance of NotFoundException
+  FAIL  décide DANS la transaction, en check-and-set > compte 0 sur une demande que la relecture dit ENCORE en attente : une erreur d'ÉTAT IMPOSSIBLE, jamais un succès silencieux
+     ↳ AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to not be an instance of NotFoundException
+=== E-1-e2e-r52.log
+  x  2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  x  3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  x  4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  x  5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  x  6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== E-2-e2e-r52.log
+  x  2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  ok 3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  ok 4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  ok 5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  ok 6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== E-3-e2e-r52.log
+  ok 2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  x  3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  ok 4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  ok 5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  ok 6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== E-4-e2e-r52.log
+  ok 2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  ok 3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  ok 4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  x  5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  ok 6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== E-5-e2e-r52.log
+  ok 2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  ok 3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  ok 4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  ok 5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  x  6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== E-6-e2e-r52.log
+  ok 2 [chromium] › specs\r52-administration.e2e.ts:116:7 › ADM-2 — les écrans d'administration, le chemin réel › E-1 : l'ADMIN se connecte, lit la file
+  ok 3 [chromium] › specs\r52-administration.e2e.ts:154:7 › ADM-2 — les écrans d'administration, le chemin réel › E-2 : l'ADMIN rejette avec un motif — 
+  x  4 [chromium] › specs\r52-administration.e2e.ts:192:7 › ADM-2 — les écrans d'administration, le chemin réel › E-3 : l'ADMIN corrige le motif — le pr
+  ok 5 [chromium] › specs\r52-administration.e2e.ts:225:7 › ADM-2 — les écrans d'administration, le chemin réel › E-4 : une suppression de compte rejeté
+  ok 6 [chromium] › specs\r52-administration.e2e.ts:268:7 › ADM-2 — les écrans d'administration, le chemin réel › E-5 : un PRO sous `/admin` lit un refu
+=== G-1-garde.log
+  Tests  1 failed | 11 passed (12)
+  FAIL   > R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN hors de `/admin` y est RENVOYÉ — tableau de bord, liste des salles : jamais la carte « mauvais rôle »
+     ↳ AssertionError: /: expected null not to be null
+=== G-1-routes.log
+  Tests  23 passed (23)
+=== G-10-routes.log
+  Tests  2 failed | 21 passed (23)
+  FAIL   adresse de la table du Pro est une route DÉCLARÉE (patron de D322) > ADMIN_DELETIONS_PATH (« /admin/suppressions ») : la page s'y rend, et l'adresse RESTE celle demandée
+     ↳ AssertionError: expected 'adresse=/' to be 'adresse=/admin/suppressions' // Object.is equality
+  FAIL  `/admin` de la table est une route DÉCLARÉE (patron de D322) > ADMIN_DELETIONS_PATH (« /admin/suppressions ») : un ADMIN y voit sa page, et l'adresse RESTE celle demandée
+     ↳ AssertionError: expected 'adresse=/admin' to be 'adresse=/admin/suppressions' // Object.is equality
+=== G-2-garde.log
+  Tests  12 passed (12)
+=== G-3-garde.log
+  Tests  12 passed (12)
+=== G-4-garde.log
+  Tests  2 failed | 10 passed (12)
+  FAIL   explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse
+     ↳ AssertionError: /admin: expected null not to be null
+  FAIL  — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est rendu à un PRO
+     ↳ AssertionError: expected null not to be null
+=== G-4-noindex.log
+  Tests  1 failed | 6 passed (7)
+  FAIL  es RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais
+     ↳ AssertionError: expected null not to be null
+=== G-5-garde.log
+  Tests  2 failed | 10 passed (12)
+  FAIL   explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse
+     ↳ AssertionError: /admin: expected null not to be null
+  FAIL  IENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas le sien ; il peut se déconnecter
+     ↳ AssertionError: expected <a class="btn btn-ghost" …(2)></a> to be null
+=== G-6-garde.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  FAIL  src/auth/require-admin.test.tsx > R-4 — les autres cas > anonyme sur `/admin` : renvoyé à la connexion
+     ↳ AssertionError: expected null not to be null
+=== G-7-garde.log
+  Tests  3 failed | 9 passed (12)
+  FAIL   explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse
+     ↳ AssertionError: /admin: expected null not to be null
+  FAIL  IENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas le sien ; il peut se déconnecter
+     ↳ AssertionError: expected null not to be null
+  FAIL  — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est rendu à un PRO
+     ↳ AssertionError: expected null not to be null
+=== G-8-garde.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  IENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas le sien ; il peut se déconnecter
+     ↳ AssertionError: expected "spy" to be called at least once
+=== G-9-garde.log
+  Tests  1 failed | 11 passed (12)
+  FAIL   explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse
+     ↳ AssertionError: /admin/suppressions: expected null not to be null
+=== J-1-parite.log
+  Tests  1 failed | 4 passed (5)
+  FAIL  FAIL  src/common/i18n-parity.spec.ts > Parité i18n FR/AR (invariant produit) > les DEUX ensembles de clés sont identiques — toute clé orpheline est nommée dans l'échec
+     ↳ AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+=== J-1-refus.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  l'écriture > les deux catalogues portent EXACTEMENT les mêmes clés du bloc `publicationReview`, et aucune n'est vide ni identique au français (« à relire par un humain »)
+     ↳ AssertionError: expected [ 'loadError', 'noticeDate', …(4) ] to deeply equal [ 'loadError', 'noticeDate', …(4) ]
+=== N-1-noindex.log
+  Tests  4 failed | 3 passed (7)
+  FAIL  IL  src/admin/use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > deux écrans montés ensemble : une seule balise, et elle reste tant qu'il en reste un
+     ↳ AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+  FAIL  se-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > ne touche pas une balise `robots` posée par ailleurs (il retire la SIENNE, jamais celle d'un autre)
+     ↳ AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+  FAIL   appelle la garde — mesuré sous la table de routes RÉELLE > sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration
+     ↳ AssertionError: /admin: expected [ …(3) ] to have a length of 1 but got 3
+  FAIL  es RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais
+     ↳ AssertionError: expected [ …(2) ] to have a length of +0 but got 2
+=== N-2-noindex.log
+  Tests  6 failed | 1 passed (7)
+  FAIL  FAIL  src/admin/use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > retirée au démontage : elle ne survit pas à l'écran qui l'a posée
+     ↳ AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+  FAIL  use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > StrictMode (double montage en développement) : une seule balise, et plus aucune après le démontage
+     ↳ AssertionError: expected [ …(4) ] to have a length of 1 but got 4
+  FAIL  IL  src/admin/use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > deux écrans montés ensemble : une seule balise, et elle reste tant qu'il en reste un
+     ↳ AssertionError: expected [ …(5) ] to have a length of 1 but got 5
+  FAIL  se-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > ne touche pas une balise `robots` posée par ailleurs (il retire la SIENNE, jamais celle d'un autre)
+     ↳ AssertionError: expected [ …(7) ] to have a length of 1 but got 7
+  FAIL   appelle la garde — mesuré sous la table de routes RÉELLE > sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration
+     ↳ AssertionError: /admin: expected [ …(8) ] to have a length of 1 but got 8
+  FAIL  es RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais
+     ↳ AssertionError: expected [ …(8) ] to have a length of +0 but got 8
+=== N-3-noindex.log
+  Tests  1 failed | 6 passed (7)
+  FAIL  IL  src/admin/use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > deux écrans montés ensemble : une seule balise, et elle reste tant qu'il en reste un
+     ↳ AssertionError: expected [] to have a length of 1 but got +0
+=== N-4-noindex.log
+  Tests  2 failed | 5 passed (7)
+  FAIL  FAIL  src/admin/use-no-index.test.tsx > useNoIndex — la balise suit la vie de l'écran > posée au montage : `noindex, nofollow`, UNE seule
+     ↳ AssertionError: expected 'index, follow' to be 'noindex, nofollow' // Object.is equality
+  FAIL   appelle la garde — mesuré sous la table de routes RÉELLE > sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration
+     ↳ AssertionError: /admin: expected 'index, follow' to be 'noindex, nofollow' // Object.is equality
+=== P-1-detail.log
+  Tests  1 failed | 17 passed (18)
+  FAIL  M-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent
+     ↳ AssertionError: expected false to be true // Object.is equality
+=== P-10-detail.log
+  Tests  2 failed | 16 passed (18)
+  FAIL   refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif »
+     ↳ AssertionError: expected null not to be null
+  FAIL   > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (plus l'ancien)
+     ↳ AssertionError: expected null not to be null
+=== P-11-detail.log
+  Tests  1 failed | 17 passed (18)
+  FAIL  FAIL  src/admin/venue-review-page.test.tsx > le détail — ce que l'admin lit > une salle inconnue (404 indistinct) : « introuvable » et le retour à la file — pas une panne
+     ↳ AssertionError: expected null not to be null
+=== P-2-detail.log
+  Tests  4 failed | 14 passed (18)
+  FAIL  M-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent
+     ↳ AssertionError: expected null not to be null
+  FAIL   avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — la salle reste un brouillon, aucun avis de réussite
+     ↳ AssertionError: expected null not to be null
+  FAIL  avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « publiée »), et la salle est RELUE pour dire la vérité
+     ↳ AssertionError: expected null not to be null
+  FAIL  /venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > un double clic ne part qu'UNE fois (le bouton est inactif dès le premier)
+     ↳ AssertionError: expected null not to be null
+=== P-3-detail.log
+  Tests  3 failed | 15 passed (18)
+  FAIL  .tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif VIDE ou fait d'espaces : le message du schéma partagé, en français, et AUCUN appel
+     ↳ AssertionError: expected null not to be null
+  FAIL  r — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif trop long : le message de borne, AUCUN appel ; un motif de la longueur EXACTE de la borne passe
+     ↳ AssertionError: expected null not to be null
+  FAIL   refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif »
+     ↳ AssertionError: expected [ 'rejectVenue', …(2) ] to deeply equal [ 'rejectVenue', …(2) ]
+=== P-4-detail.log
+  Tests  3 failed | 15 passed (18)
+  FAIL  avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « publiée »), et la salle est RELUE pour dire la vérité
+     ↳ AssertionError: expected [ [ 'getVenue', …(1) ] ] to have a length of 2 but got 1
+  FAIL  ADM-4 — la salle a été PUBLIÉE ailleurs entre-temps : « n'est plus un brouillon » en REFUS, la salle est relue (état « publiée », actions disparues) — aucun avis de rejet
+     ↳ AssertionError: expected null not to be null
+  FAIL   comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED) : un REFUS lisible, la salle est relue et montre le motif de l'autre
+     ↳ AssertionError: expected null not to be null
+=== P-5-detail.log
+  Tests  3 failed | 15 passed (18)
+  FAIL   avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — la salle reste un brouillon, aucun avis de réussite
+     ↳ AssertionError: expected 'Cette salle n\'a aucun créneau actif …' to contain 'Refusé :'
+  FAIL  ADM-4 — la salle a été PUBLIÉE ailleurs entre-temps : « n'est plus un brouillon » en REFUS, la salle est relue (état « publiée », actions disparues) — aucun avis de rejet
+     ↳ AssertionError: expected 'Cette salle n\'est plus un brouillon …' to contain 'Refusé :'
+  FAIL   comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED) : un REFUS lisible, la salle est relue et montre le motif de l'autre
+     ↳ AssertionError: expected 'Le motif de cette salle vient d\'être…' to contain 'Refusé :'
+=== P-6-detail.log
+  Tests  4 failed | 14 passed (18)
+  FAIL  age.test.tsx > le détail — ce que l'admin lit > R-3 — une salle DÉJÀ rejetée : son motif et sa date, le bouton « Corriger le motif », et le champ part du motif EN VIGUEUR
+     ↳ AssertionError: expected null not to be null
+  FAIL   refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif »
+     ↳ AssertionError: expected null not to be null
+  FAIL   > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (plus l'ancien)
+     ↳ AssertionError: expected null not to be null
+  FAIL   comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED) : un REFUS lisible, la salle est relue et montre le motif de l'autre
+     ↳ AssertionError: expected null not to be null
+=== P-7-detail.log
+  Tests  1 failed | 17 passed (18)
+  FAIL  age.test.tsx > le détail — ce que l'admin lit > R-3 — une salle DÉJÀ rejetée : son motif et sa date, le bouton « Corriger le motif », et le champ part du motif EN VIGUEUR
+     ↳ AssertionError: expected '' to be 'Les photos sont floues.' // Object.is equality
+=== P-8-detail.log
+  Tests  3 failed | 15 passed (18)
+  FAIL  FAIL  src/admin/venue-review-page.test.tsx > le détail — ce que l'admin lit > une salle PUBLIÉE : ni « Publier » ni « Rejeter » (le sens unique, A3-④) ; son état se lit
+     ↳ AssertionError: expected <button type="button" …(1)></button> to be null
+  FAIL  M-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent
+     ↳ AssertionError: expected <button type="button" …(1)></button> to be null
+  FAIL  ADM-4 — la salle a été PUBLIÉE ailleurs entre-temps : « n'est plus un brouillon » en REFUS, la salle est relue (état « publiée », actions disparues) — aucun avis de rejet
+     ↳ AssertionError: expected <button type="submit" …(1)></button> to be null
+=== P-9-detail.log
+  Tests  1 failed | 17 passed (18)
+  FAIL  DM-7 — les DEUX taux sont affichés (valeurs du serveur, formateur partagé) et NE SONT PAS modifiables : aucun champ de saisie de nombre, un seul champ de texte (le motif)
+     ↳ AssertionError: expected null not to be null
+=== Q-1-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  FAIL  src/admin/venue-queue-page.test.tsx > la file — vide, panne, rechargement (MD-ADM-15) > aucune salle : le message « aucune salle en attente » — et PAS d'alerte
+     ↳ AssertionError: expected null not to be null
+=== Q-10-file.log
+  Tests  3 failed | 8 passed (11)
+  FAIL  > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte
+     ↳ AssertionError: expected null not to be null
+  FAIL  eue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)
+     ↳ AssertionError: expected null not to be null
+  FAIL  gination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1
+     ↳ AssertionError: expected null not to be null
+=== Q-11-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  gination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1
+     ↳ AssertionError: expected null not to be null
+=== Q-2-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  ue-page.test.tsx > la file — vide, panne, rechargement (MD-ADM-15) > une PANNE n'est pas le vide : l'alerte, un bouton de relecture, et jamais « aucune salle en attente »
+     ↳ AssertionError: expected null not to be null
+=== Q-3-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > l'ordre du SERVEUR est celui de l'écran : les jamais rejetées d'abord, les rejetées ensuite
+     ↳ AssertionError: expected [ 'Salle des Jasmins 8', …(2) ] to deeply equal [ 'Salle des Jasmins 9', …(2) ]
+=== Q-4-file.log
+  Tests  2 failed | 9 passed (11)
+  FAIL  admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune
+     ↳ AssertionError: expected null not to be null
+  FAIL  FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée
+     ↳ AssertionError: expected null not to be null
+=== Q-5-file.log
+  Tests  2 failed | 9 passed (11)
+  FAIL  admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune
+     ↳ AssertionError: expected null not to be null
+  FAIL  FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée
+     ↳ AssertionError: expected null not to be null
+=== Q-6-file.log
+  Tests  2 failed | 9 passed (11)
+  FAIL  > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte
+     ↳ AssertionError: expected null not to be null
+  FAIL  eue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)
+     ↳ AssertionError: expected null not to be null
+=== Q-7-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte
+     ↳ AssertionError: expected false to be true // Object.is equality
+=== Q-8-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte
+     ↳ AssertionError: expected null not to be null
+=== Q-9-file.log
+  Tests  1 failed | 10 passed (11)
+  FAIL  la file — ce que l'admin lit > une salle : son nom français, son nom arabe en `lang="ar" dir="rtl"`, sa ville, son professionnel, ses créneaux, et un lien vers SON détail
+     ↳ AssertionError: expected null to be 'ar' // Object.is equality
+=== R-1-refus.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  rc/venues/publication-review.test.tsx > une salle PAS refusée > une salle PUBLIÉE : le badge « Publiée », et la route du refus n'est PAS appelée (publier efface le motif)
+     ↳ AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+=== R-2-refus.log
+  Tests  1 failed | 11 passed (12)
+  FAIL  .test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée »
+     ↳ AssertionError: expected null not to be null
+=== R-3-refus.log
+  Tests  2 failed | 10 passed (12)
+  FAIL   n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (on ne SAIT pas) ; « réessayer » relit
+     ↳ AssertionError: expected null not to be null
+  FAIL  NNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape
+     ↳ AssertionError: expected null not to be null
+=== R-4-refus.log
+  Tests  3 failed | 9 passed (12)
+  FAIL  EFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée
+     ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+  FAIL  ation-review.test.tsx > une salle REFUSÉE : le pro lit le refus > l'en-tête dit « refusée » sur CHAQUE étape, mais le motif complet n'est que dans l'étape « Publication »
+     ↳ AssertionError: expected null not to be null
+  FAIL  iew.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+     ↳ AssertionError: expected null not to be null
+=== R-5-refus.log
+  Tests  2 failed | 10 passed (12)
+  FAIL  st.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire
+     ↳ AssertionError: expected null to be 'auto' // Object.is equality
+  FAIL  iew.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+     ↳ AssertionError: expected null to be 'auto' // Object.is equality
+=== R-6-refus.log
+  Tests  2 failed | 10 passed (12)
+  FAIL  st.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire
+     ↳ AssertionError: expected null not to be null
+  FAIL  iew.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+     ↳ AssertionError: expected null not to be null
+=== R-7-refus.log
+  Tests  8 failed | 4 passed (12)
+  FAIL  st.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire
+     ↳ AssertionError: expected null not to be null
+  FAIL  EFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée
+     ↳ AssertionError: expected null not to be null
+  FAIL  nues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape)
+     ↳ AssertionError: expected null not to be null
+  FAIL   n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (on ne SAIT pas) ; « réessayer » relit
+     ↳ AssertionError: expected null not to be null
+  FAIL  .test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée »
+     ↳ AssertionError: expected null not to be null
+  FAIL  NNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape
+     ↳ AssertionError: expected null not to be null
+  FAIL  tion-review.test.tsx > le composant reste dans l'étape — il ne déplace rien d'autre > l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus
+     ↳ AssertionError: expected null not to be null
+  FAIL  iew.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+     ↳ AssertionError: expected null not to be null
+=== R-8-refus.log
+  Tests  3 failed | 9 passed (12)
+  FAIL  EFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée
+     ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+  FAIL  ation-review.test.tsx > une salle REFUSÉE : le pro lit le refus > l'en-tête dit « refusée » sur CHAQUE étape, mais le motif complet n'est que dans l'étape « Publication »
+     ↳ AssertionError: expected null not to be null
+  FAIL  iew.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+     ↳ AssertionError: expected null not to be null
+=== S-1-noindex.log
+  Tests  1 failed | 6 passed (7)
+  FAIL   appelle la garde — mesuré sous la table de routes RÉELLE > sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration
+     ↳ AssertionError: /admin: expected [] to have a length of 1 but got +0
+=== S-2-coquille.log
+  Tests  1 failed | 3 passed (4)
+  FAIL  FAIL  src/admin/admin-shell.test.tsx > la coquille `/admin` > l'écran courant porte `aria-current="page"`, et lui seul ; chaque entrée mène à SON adresse
+     ↳ AssertionError: expected true to be false // Object.is equality
+=== S-3-coquille.log
+  Tests  1 failed | 3 passed (4)
+  FAIL  in-shell.test.tsx > la coquille `/admin` > D-2 — les écrans de l'administration sont en FRANÇAIS, ltr, quelle que soit la langue du Pro (`lang="fr"` posé sur la coquille)
+     ↳ AssertionError: expected 'ar' to be 'fr' // Object.is equality
+=== S-4-coquille.log
+  Tests  1 failed | 3 passed (4)
+  FAIL  FAIL  src/admin/admin-shell.test.tsx > la coquille `/admin` > « Se déconnecter » appelle `logout`
+     ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+=== T-1-detail.log
+  Tests  18 passed (18)
+=== T-1-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL  183 — chaque code et chaque clé que l'écran peut recevoir a un texte FRANÇAIS > le code SLOT_TEMPLATE_REQUIRED a un texte, non vide, qui n'est pas l'identifiant technique
+     ↳ AssertionError: expected 1 to be greater than 10
+=== T-2-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL  > MD-ADM-15 — un REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > 401 et 403 : la SESSION ou les DROITS (l'API reste l'autorité), ni refus métier ni panne
+     ↳ AssertionError: 403: expected 'refused' to be 'rights' // Object.is equality
+=== T-3-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL   — un REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > réseau coupé, 5xx, valeur levée qui n'est pas une erreur : l'issue est INCONNUE — jamais « refusé »
+     ↳ AssertionError: ApiError: INTERNAL: expected 'refused' to be 'unknown' // Object.is equality
+=== T-4-textes.log
+  Tests  3 failed | 13 passed (16)
+  FAIL  IL  src/admin/admin-texts.test.ts > MD-ADM-15 — un REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > un code connu en 4xx : un REFUS, avec le texte du code
+     ↳ AssertionError: SLOT_TEMPLATE_REQUIRED: expected 'unknown' to be 'refused' // Object.is equality
+  FAIL  n REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > un code INCONNU en 4xx : un refus au texte générique (jamais l'identifiant technique, jamais « panne »)
+     ↳ AssertionError: expected 'unknown' to be 'refused' // Object.is equality
+  FAIL  > MD-ADM-15 — un REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > 401 et 403 : la SESSION ou les DROITS (l'API reste l'autorité), ni refus métier ni panne
+     ↳ AssertionError: 401: expected 'unknown' to be 'rights' // Object.is equality
+=== T-5-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL  n/admin-texts.test.ts > les formateurs partagés (une seule formule, D48) > une date s'écrit à l'heure d'ALGER (UTC+1, sans heure d'été) : 23 h 30 UTC du 12 est déjà le 13
+     ↳ AssertionError: expected '12 novembre 2026' to contain '13'
+=== T-6-detail.log
+  Tests  18 passed (18)
+=== T-6-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL  urs partagés (une seule formule, D48) > un taux en points de base s'écrit en pour cent, avec ses décimales significatives, et deux taux différents s'écrivent différemment
+     ↳ AssertionError: expected '3 %' to match /2[.,]5/
+=== T-7-textes.log
+  Tests  1 failed | 15 passed (16)
+  FAIL  n REFUS métier n'est pas une PANNE, et l'inverse non plus (D217) > un code INCONNU en 4xx : un refus au texte générique (jamais l'identifiant technique, jamais « panne »)
+     ↳ AssertionError: expected 'CODE_QUI_N_EXISTE_PAS' to be 'L\'action a été refusée par le serveu…' // Object.is equality
+=== V-1-api-admin.log
+  Tests  1 failed | 38 passed (39)
+  FAIL  un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+=== V-1-int-moderation.log
+  Tests  7 failed | 28 passed (35)
+  FAIL  n AUTRE motif sur une salle déjà rejetée la CORRIGE : 200, le nouveau motif REMPLACE l'ancien sur la salle, la réponse porte le nouveau motif, la salle reste un brouillon
+     ↳ AssertionError: expected 500 to be 200 // Object.is equality
+  FAIL  correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus)
+     ↳ AssertionError: expected [ { …(10) } ] to have a length of 2 but got 1
+  FAIL  .int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > MD-ADM-4 — corriger avec le MÊME motif que celui en vigueur (rejeu) : 200, la même réponse, AUCUNE ligne de plus
+     ↳ AssertionError: expected 500 to be 200 // Object.is equality
+  FAIL  venues/:id/reject — D-4, R-2 > corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif
+     ↳ AssertionError: expected 500 to be 200 // Object.is equality
+  FAIL  FAIL  test/int/admin-moderation.int-spec.ts > POST /admin/venues/:id/reject — D-4, R-2 > la file ET le détail montrent le NOUVEAU motif et la date de la CORRECTION
+     ↳ AssertionError: expected 'Les photos sont floues. Merci de les …' to be 'Un autre motif' // Object.is equality
+  FAIL  e ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue
+     ↳ AssertionError: requêtes bloquées sur le verrou de la ligne (attendu au moins 1): expected 0 to be greater than or equal to 1
+  FAIL  ne PUBLICATION bloquées sur la même ligne, la publication d'abord : la publication gagne, la correction est refusée (409 VENUE_NOT_DRAFT), la salle est publiée sans motif
+     ↳ AssertionError: requêtes bloquées sur le verrou de la ligne (attendu au moins 2): expected 1 to be greater than or equal to 2
+=== V-2-api-admin.log
+  Tests  9 failed | 30 passed (39)
+  FAIL  t se CORRIGE > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, motif PRÉCÉDENT = jamais rejetée) qui n'écrit QUE le motif — le statut ne bouge pas
+     ↳ AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+  FAIL  , journalisé, et se CORRIGE > R-5 — UNE ligne de journal dans la transaction, qui porte le MOTIF (« jamais rejetée » → le motif) ; la date rendue est celle de CETTE ligne
+     ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+  FAIL   en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-1 — le rejet n'écrit ni ne lit AUCUN taux : la charge utile de l'écriture et la réponse n'en portent pas
+     ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+  FAIL   > MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE écriture, AUCUNE nouvelle ligne de journal
+     ↳ AssertionError: expected TypeError: Cannot destructure property 'c… to deeply equal { …(3) }
+  FAIL  un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau
+     ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+  FAIL  e.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-3 — la correction ne lit ni n'écrit aucun taux non plus
+     ↳ TypeError: .toMatch() expects to receive a string, but got undefined
+  FAIL  ompte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal
+     ↳ AssertionError: expected null to be an instance of ConflictException
+  FAIL   et se CORRIGE > MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal
+     ↳ AssertionError: expected null to be an instance of ConflictException
+  FAIL  R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-6 — un journal qui échoue fait ÉCHOUER le rejet, et la correction
+     ↳ AssertionError: promise resolved "{ …(3) }" instead of rejecting
+=== V-3-api-admin.log
+  Tests  1 failed | 38 passed (39)
+  FAIL  un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau
+     ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+=== V-3-int-moderation.log
+  Tests  3 failed | 32 passed (35)
+  FAIL  correction garde l'ANCIEN et le NOUVEAU motif (avant / après) ; la première ligne garde « jamais rejetée » ; la correction est la ligne la PLUS RÉCENTE (la date du refus)
+     ↳ AssertionError: expected { rejectionReason: null } to deeply equal { Object (rejectionReason) }
+  FAIL  venues/:id/reject — D-4, R-2 > corriger TROIS fois de suite : la chaîne du journal est continue (chaque ligne part du motif en vigueur) et la salle porte le dernier motif
+     ↳ AssertionError: expected [ [ …(2) ], [ …(2) ], …(1) ] to deeply equal [ [ …(2) ], [ …(2) ], …(1) ]
+  FAIL  e ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue
+     ↳ AssertionError: expected [ [ …(2) ], [ …(2) ] ] to deeply equal [ [ …(2) ], [ …(2) ] ]
+=== V-4-api-admin.log
+  Tests  2 failed | 37 passed (39)
+  FAIL  ompte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal
+     ↳ AssertionError: expected null to be an instance of ConflictException
+  FAIL  illon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et l'autre admin a posé le MÊME motif : 200 (même état, même réponse), AUCUNE ligne de journal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueAlre… { …(3) } to deeply equal { …(3) }
+=== V-5-api-admin.log
+  Tests  1 failed | 38 passed (39)
+  FAIL  ompte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal
+     ↳ AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+=== V-5-int-moderation.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  e ligne : l'une passe (200), l'autre est refusée (409 VENUE_ALREADY_REJECTED, jamais écrasée) ; la salle porte le motif de la gagnante ; la chaîne du journal est continue
+     ↳ AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+=== V-6-api-admin.log
+  Tests  11 failed | 28 passed (39)
+  FAIL  t se CORRIGE > un brouillon jamais rejeté : UN updateMany conditionné (DRAFT, vivante, motif PRÉCÉDENT = jamais rejetée) qui n'écrit QUE le motif — le statut ne bouge pas
+     ↳ ConflictException: admin.errors.venueNotDraft
+  FAIL  , journalisé, et se CORRIGE > R-5 — UNE ligne de journal dans la transaction, qui porte le MOTIF (« jamais rejetée » → le motif) ; la date rendue est celle de CETTE ligne
+     ↳ ConflictException: admin.errors.venueNotDraft
+  FAIL   en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-1 — le rejet n'écrit ni ne lit AUCUN taux : la charge utile de l'écriture et la réponse n'en portent pas
+     ↳ ConflictException: admin.errors.venueNotDraft
+  FAIL  un AUTRE motif sur une salle déjà rejetée la CORRIGE : check-and-set sur le motif PRÉCÉDENT, le statut ne bouge pas, UNE ligne de journal qui porte l'ancien ET le nouveau
+     ↳ ConflictException: admin.errors.venueNotDraft
+  FAIL  e.reject (D-4, R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > R-3 — la correction ne lit ni n'écrit aucun taux non plus
+     ↳ ConflictException: admin.errors.venueNotDraft
+  FAIL  brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — une salle PUBLIÉE : 409 VENUE_NOT_DRAFT (le sens unique), rien n'est écrit, AUCUNE ligne de journal
+     ↳ AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+  FAIL   > MD-ADM-4 « même état, même requête, même réponse » — le MÊME motif sur une salle déjà rejetée : 200, la même réponse, AUCUNE écriture, AUCUNE nouvelle ligne de journal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueNotD… { …(3) } to deeply equal { …(3) }
+  FAIL  ompte 0 (un autre geste est passé entre la lecture et l'écriture) et le motif est devenu un TROISIÈME : 409 VENUE_ALREADY_REJECTED, jamais écrasé, AUCUNE ligne de journal
+     ↳ AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+  FAIL  illon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-4 — compte 0 et l'autre admin a posé le MÊME motif : 200 (même état, même réponse), AUCUNE ligne de journal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueNotD… { …(3) } to deeply equal { …(3) }
+  FAIL   et se CORRIGE > MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal
+     ↳ AssertionError: expected ConflictException: admin.errors.venueNotD… { …(3) } to be an instance of NotFoundException
+  FAIL  R-2, R-3 de D350) — la salle RESTE en brouillon, le motif est stocké, journalisé, et se CORRIGE > MD-ADM-6 — un journal qui échoue fait ÉCHOUER le rejet, et la correction
+     ↳ AssertionError: expected [Function] to throw error including 'journal indisponible' but got 'admin.errors.venueNotDraft'
+=== V-7-int-moderation.log
+  Tests  1 failed | 34 passed (35)
+  FAIL  écide DANS la transaction > publier et rejeter en MÊME TEMPS, vingt fois : jamais une salle publiée qui garde un motif de rejet ; la trace correspond à ce qui s'est passé
+     ↳ AssertionError: tour 2 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+=== V-8-api-admin.log
+  Tests  1 failed | 38 passed (39)
+  FAIL   et se CORRIGE > MD-ADM-4 — compte 0 et la salle a été PUBLIÉE entre-temps : 409 VENUE_NOT_DRAFT ; supprimée entre-temps : 404 — dans les deux cas AUCUNE ligne de journal
+     ↳ AssertionError: expected Error: salle supprimée entre-temps to be an instance of NotFoundException
+=== X-1-suppressions.log
+  Tests  5 failed | 8 passed (13)
+  FAIL   — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti
+     ↳ AssertionError: expected null not to be null
+  FAIL    src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > ANNULER ferme la confirmation : aucun appel, la demande est toujours là
+     ↳ AssertionError: expected null not to be null
+  FAIL  ation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file
+     ↳ AssertionError: expected null not to be null
+  FAIL  DM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée »
+     ↳ AssertionError: expected null not to be null
+  FAIL   IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité
+     ↳ AssertionError: expected null not to be null
+=== X-2-suppressions.log
+  Tests  1 failed | 12 passed (13)
+  FAIL   — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti
+     ↳ AssertionError: expected null not to be null
+=== X-3-suppressions.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  min/deletion-requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > sans motif (vide ou blanc) : le message, AUCUN appel ; le champ est obligatoire (D32)
+     ↳ AssertionError: expected null not to be null
+=== X-4-suppressions.log
+  Tests  3 failed | 10 passed (13)
+  FAIL  ation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file
+     ↳ AssertionError: expected <p class="alert alert-success" …(1)></p> to be null
+  FAIL  DM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée »
+     ↳ AssertionError: expected null not to be null
+  FAIL   IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité
+     ↳ AssertionError: expected null not to be null
+=== X-5-suppressions.log
+  Tests  2 failed | 11 passed (13)
+  FAIL  DM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée »
+     ↳ AssertionError: expected <h2></h2> to be null
+  FAIL   IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité
+     ↳ AssertionError: expected [ [ 'listDeletionRequests', …(1) ] ] to have a length of 2 but got 1
+=== X-6-suppressions.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  c/admin/deletion-requests-page.test.tsx > la liste — ce que l'admin lit avant de décider > une PANNE n'est pas le vide : l'alerte, la relecture, jamais « aucune demande »
+     ↳ AssertionError: expected null not to be null
+=== X-7-suppressions.log
+  Tests  1 failed | 12 passed (13)
+  FAIL  nt de décider > une demande : l'adresse du compte, son rôle, la date de la demande, le motif de l'utilisateur (ou son absence), le nombre de salles qui seraient archivées
+     ↳ AssertionError: expected <span></span> to be null
+=== X-8-suppressions.log
+  Tests  2 failed | 11 passed (13)
+  FAIL  rc/admin/deletion-requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > un motif trop long : le message de borne (celle de l'API, importée), aucun appel
+     ↳ AssertionError: expected null not to be null
+  FAIL  requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » ; la demande quitte la file
+     ↳ AssertionError: expected [ [ 'rejectDeletion', …(2) ] ] to deeply equal [ [ 'rejectDeletion', …(2) ] ]
+
+répartition des premières lignes d'erreur (tests en échec, tous journaux) : {'AssertionError': 207, 'autre': 7} · total 214
+première ligne de CHAQUE journal (R-9) : {'empreinte du harnais': 99}

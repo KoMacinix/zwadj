@@ -1,0 +1,53 @@
+empreinte du harnais (sha256) : 7a64b058753266767e2e01dff4eb23ab9737140c3d1f94ca324b5b252d97eedb  (neutralize-r54.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plantage à l'intérieur du rendu (TypeError), même si le DOM est vide ensuite : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 11 bras · 0 manqué(s) (attendu 0)
+cibles : 11 déclarées · 1 mesure(s) distincte(s) · 3 fichier(s) muté(s)
+  pré-vol liste : code 0 · passés 24 · en échec 0
+✓ L-1. ⛔ R-1 — avant la réponse, la carte affirme l'état de la liste (« en attente ») : l'affichage SAUTE de « en attente » à « refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 23 · en échec 1 · AssertionError: avant la réponse, la carte ne dit pas « en attente » : elle ne le sait pas: expected <span aria-busy="true" …(1)>…(1)</span>
+✓ L-2. ⛔ R-1 — la carte ne rend plus la réponse de la lecture : « Refusée » n'apparaît jamais
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 17 · en échec 7 · AssertionError: expected null not to be null
+✓ L-3. ⛔ R-1 / D133 — une PANNE de lecture rend le badge d'avant (« en attente ») : une panne se lit « pas refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 20 · en échec 4 · AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+✓ L-4. ⛔ R-1 / D133 — une panne de lecture ne le DIT plus (la phrase de l'étape « Publication » disparaît de la carte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 20 · en échec 4 · AssertionError: expected null not to be null
+✓ L-5. ⛔ R-1 — la carte qui attend ne porte plus `aria-busy`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 23 · en échec 1 · AssertionError: la carte annonce qu'elle attend: expected null not to be null
+✓ L-6. ⛔ R-1 — le MOTIF du refus entre dans la liste (la carte rend `rejection.reason`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 23 · en échec 1 · AssertionError: le motif écrit par l'admin n'est pas dans la liste: expected true to be false // Object.is equality
+✓ L-7. ⛔ R-1 — une salle PUBLIÉE appelle la route du refus (la lecture ne s'arrête plus au statut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 22 · en échec 2 · AssertionError: expected "spy" to be called +0 times, but got 1 times
+✓ L-8. ⛔ R-1 — le badge « pas connu » dit « en attente » (le libellé de repli est celui du brouillon)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 18 · en échec 6 · AssertionError: avant la réponse, la carte ne dit pas « en attente » : elle ne le sait pas: expected <span aria-busy="true" …(1)>…(1)</span>
+✓ L-9. ⛔ R-1 — la liste ne rend plus la carte (le badge de publication disparaît)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 12 · en échec 12 · AssertionError: expected null not to be null
+✓ L-10. ⛔ R-1 — le badge « pas connu » ne porte plus `aria-busy`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · passés 23 · en échec 1 · AssertionError: la carte annonce qu'elle attend: expected null not to be null
+✓ L-11. ⛔ R-1 — la liste rend DEUX cartes par salle (deux lectures du refus par salle non publiée)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [liste] code 1 · passés 12 · en échec 12 · AssertionError: expected 6 to be 3 // Object.is equality
+  empreintes : 3 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+11 garde(s) mordue(s) sur 11 cible(s) jouée(s) · toutes lues en AssertionError · 0 muette(s) · 0 non mesurée(s) (attendu : 11 sur 11, 0, 0)
+arbre rendu à son état de départ : vérifié.
+exit=0

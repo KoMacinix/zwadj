@@ -1,0 +1,43 @@
+38 fichier(s) modifié(s) depuis 95b68af → 7 campagne(s) concernée(s) sur 69 ; campagnes sans fichier détecté : 0 []
+  · neutralize-adm2.py  (1 fichier(s) en commun)  (à part, mode complet)
+      apps/pro/src/venues/publication-review.tsx
+  · neutralize-ca5.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-form.tsx
+  · neutralize-ca6.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-form.tsx
+  · neutralize-pub1.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-list-page.tsx
+  · neutralize-r37.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-list-page.tsx
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      apps/pro/src/venues/venue-list-page.tsx
+  · neutralize-r54.py  (3 fichier(s) en commun)  (à part, mode complet)
+      apps/pro/src/venues/publication-review.tsx
+      apps/pro/src/venues/venue-form.tsx
+      apps/pro/src/venues/venue-list-page.tsx
+
+5 campagne(s) jouée(s) ici, en série (jamais en parallèle : chacune MUTE des fichiers sources) ; 2 jouée(s) à part.
+
+[1/5] neutralisation\neutralize-ca5.py …
+    code 0 · 78 s · 14 garde(s) mordue(s) sur 14 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 14 sur 14, 0, 0)
+
+[2/5] neutralisation\neutralize-ca6.py …
+    code 3 · 0 s · 0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 9 hors exécution (attendu : 0 sur 0, 0, 0)
+
+[3/5] neutralisation\neutralize-pub1.py …
+    code 2 · 0 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[4/5] neutralisation\neutralize-r37.py …
+    code 0 · 228 s · 20 garde(s) mordue(s) sur 20 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 20 sur 20, 0, 0)
+
+[5/5] neutralisation\neutralize-r38.py …
+    code 0 · 740 s · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+
+== BILAN : 5 campagne(s) examinée(s), durée 1048 s ==
+  neutralize-ca5.py                        code 0 · 14 garde(s) mordue(s) sur 14 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 14 sur 14, 0, 0)
+  neutralize-ca6.py                        code 3 · 0 garde(s) mordue(s) sur 0 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 9 hors exécution (attendu : 0 sur 0, 0, 0)
+  neutralize-pub1.py                       code 2 · AUCUNE LIGNE DE RÉSUMÉ
+  neutralize-r37.py                        code 0 · 20 garde(s) mordue(s) sur 20 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 20 sur 20, 0, 0)
+  neutralize-r38.py                        code 0 · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+codes : 0 = 3 · 1 (muette) = 0 · 2 (pré-vol / erreur de script) = 1 · 3 (incomplète, cibles hors exécution) = 1 · autre = 0
+exit=0

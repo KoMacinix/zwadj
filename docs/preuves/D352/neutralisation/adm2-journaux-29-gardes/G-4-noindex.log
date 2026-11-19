@@ -1,0 +1,201 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : G-4-noindex. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6905 octets, sha256 598bc14b947702604c8b986005e2ddfc26843af1afd3412f6d4d9bcbc33c813e. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/use-no-index.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/use-no-index.test.tsx (7 tests | 1 failed) 1188ms
+   ✓ useNoIndex — la balise suit la vie de l'écran > posée au montage : `noindex, nofollow`, UNE seule 26ms
+   ✓ useNoIndex — la balise suit la vie de l'écran > retirée au démontage : elle ne survit pas à l'écran qui l'a posée 3ms
+   ✓ useNoIndex — la balise suit la vie de l'écran > StrictMode (double montage en développement) : une seule balise, et plus aucune après le démontage 5ms
+   ✓ useNoIndex — la balise suit la vie de l'écran > deux écrans montés ensemble : une seule balise, et elle reste tant qu'il en reste un 5ms
+   ✓ useNoIndex — la balise suit la vie de l'écran > ne touche pas une balise `robots` posée par ailleurs (il retire la SIENNE, jamais celle d'un autre) 2ms
+   ✓ la coquille de l'administration appelle la garde — mesuré sous la table de routes RÉELLE > sur `/admin` et sur `/admin/suppressions` : la balise est là ; elle disparaît quand on quitte l'administration 103ms
+   × la coquille de l'administration appelle la garde — mesuré sous la table de routes RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais 1042ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  19:03:49
+   Duration  4.75s (transform 980ms, setup 217ms, collect 1.84s, tests 1.19s, environment 1.05s, prepare 185ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/use-no-index.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/use-no-index.test.tsx > la coquille de l'administration appelle la garde — mesuré sous la table de routes RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administration : pas de balise (il ne contient aucune donnée admin) — et une page du PRO n'en a jamais
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

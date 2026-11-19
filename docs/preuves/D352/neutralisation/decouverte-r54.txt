@@ -1,0 +1,154 @@
+empreinte du harnais (sha256) : a3174593a27d03b1bbc704bf2562f53303d90f928d2051038f42cb92ad9cca33  (neutralize-r54.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plantage à l'intérieur du rendu (TypeError), même si le DOM est vide ensuite : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 11 bras · 0 manqué(s) (attendu 0)
+cibles : 11 déclarées · 1 mesure(s) distincte(s) · 3 fichier(s) muté(s)
+  pré-vol liste : code 0 · passés 24 · en échec 0
+■ L-1. ⛔ R-1 — avant la réponse, la carte affirme l'état de la liste (« en attente ») : l'affichage SAUTE de « en attente » à « refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 22 · en échec 2
+      FAIL  src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES
+         ↳ Error: expect(element).toBeInTheDocument()
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: avant la réponse, la carte ne dit pas « en attente » : elle ne le sait pas: expected <span aria-busy="true" …(1)>…(1)</span> to be nul
+■ L-2. ⛔ R-1 — la carte ne rend plus la réponse de la lecture : « Refusée » n'apparaît jamais
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 17 · en échec 7
+      FAIL  src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES
+         ↳ TestingLibraryElementError: Unable to find an element with the text: En attente de publication par Zwadj. This could be because the text is broken up 
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle REFUSÉE : la carte dit « Refusée » et ne dit PLUS « En attente de publication par Zw
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > en ARABE : la carte dit le mot du catalogue arabe, et plus l'attente (la parité des clés est m
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle JAMAIS refusée garde « En attente de publication par Zwadj », après la lecture de SO
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et p
+         ↳ AssertionError: expected +0 to be 3 // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien
+         ↳ AssertionError: expected null not to be null
+■ L-3. ⛔ R-1 / D133 — une PANNE de lecture rend le badge d'avant (« en attente ») : une panne se lit « pas refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 20 · en échec 4
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En atten
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « 
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+■ L-4. ⛔ R-1 / D133 — une panne de lecture ne le DIT plus (la phrase de l'étape « Publication » disparaît de la carte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 20 · en échec 4
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En atten
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « 
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected null not to be null
+■ L-5. ⛔ R-1 — la carte qui attend ne porte plus `aria-busy`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: la carte annonce qu'elle attend: expected null not to be null
+■ L-6. ⛔ R-1 — le MOTIF du refus entre dans la liste (la carte rend `rejection.reason`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien
+         ↳ AssertionError: le motif écrit par l'admin n'est pas dans la liste: expected true to be false // Object.is equality
+■ L-7. ⛔ R-1 — une salle PUBLIÉE appelle la route du refus (la lecture ne s'arrête plus au statut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 22 · en échec 2
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle PUBLIÉE : « Publiée », et AUCUNE lecture du refus (publier efface le motif : il n'y 
+         ↳ AssertionError: expected "spy" to be called +0 times, but got 1 times
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et p
+         ↳ AssertionError: expected [ 'a', 'b', 'c', 'd' ] to deeply equal [ 'a', 'b', 'c' ]
+■ L-8. ⛔ R-1 — le badge « pas connu » dit « en attente » (le libellé de repli est celui du brouillon)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 19 · en échec 5
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: avant la réponse, la carte ne dit pas « en attente » : elle ne le sait pas: expected <span aria-busy="true" …(1)>…(1)</span> to be nul
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En atten
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « 
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+■ L-9. ⛔ R-1 — la liste ne rend plus la carte (le badge de publication disparaît)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 12 · en échec 12
+      FAIL  src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES
+         ↳ TestingLibraryElementError: Unable to find an element with the text: En attente de publication par Zwadj. This could be because the text is broken up 
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle REFUSÉE : la carte dit « Refusée » et ne dit PLUS « En attente de publication par Zw
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > en ARABE : la carte dit le mot du catalogue arabe, et plus l'attente (la parité des clés est m
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle JAMAIS refusée garde « En attente de publication par Zwadj », après la lecture de SO
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle PUBLIÉE : « Publiée », et AUCUNE lecture du refus (publier efface le motif : il n'y 
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En atten
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « 
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée »
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et p
+         ↳ AssertionError: expected +0 to be 3 // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien
+         ↳ AssertionError: expected null not to be null
+■ L-10. ⛔ R-1 — le badge « pas connu » ne porte plus `aria-busy`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [liste] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: la carte annonce qu'elle attend: expected null not to be null
+■ L-11. ⛔ R-1 — la liste rend DEUX cartes par salle (deux lectures du refus par salle non publiée)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [liste] code 1 · ROUGE — passés 12 · en échec 12
+      FAIL  src/venues/venue-list.test.tsx > Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES
+         ↳ TestingLibraryElementError: Found multiple elements with the text: En attente de publication par Zwadj
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle REFUSÉE : la carte dit « Refusée » et ne dit PLUS « En attente de publication par Zw
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Refusée
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > en ARABE : la carte dit le mot du catalogue arabe, et plus l'attente (la parité des clés est m
+         ↳ TestingLibraryElementError: Found multiple elements with the text: مرفوضة
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle JAMAIS refusée garde « En attente de publication par Zwadj », après la lecture de SO
+         ↳ TestingLibraryElementError: Found multiple elements with the text: En attente de publication par Zwadj
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle PUBLIÉE : « Publiée », et AUCUNE lecture du refus (publier efface le motif : il n'y 
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Publiée
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En a
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 2 times
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En atten
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Impossible de vérifier si votre salle a été refusée.
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée »
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Impossible de vérifier si votre salle a été refusée.
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « 
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Impossible de vérifier si votre salle a été refusée.
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée »
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Impossible de vérifier si votre salle a été refusée.
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et p
+         ↳ AssertionError: expected 6 to be 3 // Object.is equality
+      FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien
+         ↳ TestingLibraryElementError: Found multiple elements with the text: Refusée
+  empreintes : 3 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 11 cible(s) jouée(s), aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

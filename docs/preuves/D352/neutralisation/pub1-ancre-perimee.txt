@@ -1,0 +1,13 @@
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+✗ ARBRE NON CONFORME AU DÉPART : PUB1-21 : ancre ×0 dans apps/pro/src/venues/venue-list-page.tsx
+

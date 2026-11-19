@@ -1,0 +1,430 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : P-2-detail. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 15196 octets, sha256 886e9d6c2432753f136ffaeb289a670faaae6d1b8c1b7e76932652e4343d6d54. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/venue-review-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/venue-review-page.test.tsx (18 tests | 4 failed) 2806ms
+   ✓ le détail — ce que l'admin lit > le nom français en `<h1>`, le nom arabe en `lang="ar" dir="rtl"`, le numéro, la ville, le professionnel, les créneaux actifs, l'état « brouillon » 115ms
+   ✓ le détail — ce que l'admin lit > MD-ADM-7 — les DEUX taux sont affichés (valeurs du serveur, formateur partagé) et NE SONT PAS modifiables : aucun champ de saisie de nombre, un seul champ de texte (le motif) 35ms
+   ✓ le détail — ce que l'admin lit > un brouillon jamais rejeté : pas de bloc « déjà rejetée » ; le bouton est « Rejeter », le champ est vide 26ms
+   ✓ le détail — ce que l'admin lit > R-3 — une salle DÉJÀ rejetée : son motif et sa date, le bouton « Corriger le motif », et le champ part du motif EN VIGUEUR 28ms
+   ✓ le détail — ce que l'admin lit > une salle PUBLIÉE : ni « Publier » ni « Rejeter » (le sens unique, A3-④) ; son état se lit 25ms
+   ✓ le détail — ce que l'admin lit > une salle inconnue (404 indistinct) : « introuvable » et le retour à la file — pas une panne 18ms
+   ✓ le détail — ce que l'admin lit > une PANNE de lecture : l'alerte et un bouton de relecture ; jamais « introuvable » 28ms
+   × Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent 37ms
+     → expected null not to be null
+   × Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — la salle reste un brouillon, aucun avis de réussite 1053ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <p>
+          <a
+            data-discover="true"
+            href="/admin"
+          >
+            Retour à la liste des salles en attente
+          </a>
+        </p>
+        <h1>
+          Salle des Jasmins 8
+        </h1>
+        <p
+          dir="rtl"
+          lang="ar"
+        >
+          قاعة الياسمين 8
+        </p>
+        <p
+          class="admin-meta"
+        >
+          <span>
+            Salle n° 8
+          </span>
+          <span>
+            Hydra
+          </span>
+          <span>
+            Événements Sidi 8
+          </span>
+          <span>
+            0 créneaux actifs
+          </span>
+        </p>
+        <p>
+          État de publication
+           : 
+          <strong>
+            Publiée
+          </strong>
+        </p>
+        <dl
+          class="admin-rates"
+        >
+          <dt>
+            Commission
+          </dt>
+          <dd>
+            2,5 %
+          </dd>
+          <dt>
+            Remise (cashback)
+          </dt>
+          <dd>
+            1,25 %
+          </dd>
+        </dl>
+        <p
+          class="admin-hint"
+        >
+          Ces deux taux sont affichés à titre d'information : ils ne se modifient pas depuis cet écran.
+        </p>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La salle est publiée.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+   × Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « publiée »), et la salle est RELUE pour dire la vérité 1052ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <p>
+          <a
+            data-discover="true"
+            href="/admin"
+          >
+            Retour à la liste des salles en attente
+          </a>
+        </p>
+        <h1>
+          Salle des Jasmins 9
+        </h1>
+        <p
+          dir="rtl"
+          lang="ar"
+        >
+          قاعة الياسمين 9
+        </p>
+        <p
+          class="admin-meta"
+        >
+          <span>
+            Salle n° 9
+          </span>
+          <span>
+            Hydra
+          </span>
+          <span>
+            Événements Sidi 9
+          </span>
+          <span>
+            2 créneaux actifs
+          </span>
+        </p>
+        <p>
+          État de publication
+           : 
+          <strong>
+            Publiée
+          </strong>
+        </p>
+        <dl
+          class="admin-rates"
+        >
+          <dt>
+            Commission
+          </dt>
+          <dd>
+            2,5 %
+          </dd>
+          <dt>
+            Remise (cashback)
+          </dt>
+          <dd>
+            1,25 %
+          </dd>
+        </dl>
+        <p
+          class="admin-hint"
+        >
+          Ces deux taux sont affichés à titre d'information : ils ne se modifient pas depuis cet écran.
+        </p>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La salle est publiée.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+   × Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > un double clic ne part qu'UNE fois (le bouton est inactif dès le premier) 36ms
+     → expected null not to be null
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif VIDE ou fait d'espaces : le message du schéma partagé, en français, et AUCUN appel 46ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif trop long : le message de borne, AUCUN appel ; un motif de la longueur EXACTE de la borne passe 49ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif » 90ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > la salle reste un brouillon après un rejet : « Publier » reste proposé 25ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (plus l'ancien) 34ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > MD-ADM-4 — la salle a été PUBLIÉE ailleurs entre-temps : « n'est plus un brouillon » en REFUS, la salle est relue (état « publiée », actions disparues) — aucun avis de rejet 59ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED) : un REFUS lisible, la salle est relue et montre le motif de l'autre 47ms
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 14 passed (18)
+   Start at  19:07:17
+   Duration  5.50s (transform 451ms, setup 280ms, collect 929ms, tests 2.81s, environment 1.01s, prepare 165ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/venue-review-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ publish src/admin/venue-review-page.test.tsx:37:23
+ ❯ src/admin/venue-review-page.test.tsx:136:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — la salle reste un brouillon, aucun avis de réussite
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <p>
+          <a
+            data-discover="true"
+            href="/admin"
+          >
+            Retour à la liste des salles en attente
+          </a>
+        </p>
+        <h1>
+          Salle des Jasmins 8
+        </h1>
+        <p
+          dir="rtl"
+          lang="ar"
+        >
+          قاعة الياسمين 8
+        </p>
+        <p
+          class="admin-meta"
+        >
+          <span>
+            Salle n° 8
+          </span>
+          <span>
+            Hydra
+          </span>
+          <span>
+            Événements Sidi 8
+          </span>
+          <span>
+            0 créneaux actifs
+          </span>
+        </p>
+        <p>
+          État de publication
+           : 
+          <strong>
+            Publiée
+          </strong>
+        </p>
+        <dl
+          class="admin-rates"
+        >
+          <dt>
+            Commission
+          </dt>
+          <dd>
+            2,5 %
+          </dd>
+          <dt>
+            Remise (cashback)
+          </dt>
+          <dd>
+            1,25 %
+          </dd>
+        </dl>
+        <p
+          class="admin-hint"
+        >
+          Ces deux taux sont affichés à titre d'information : ils ne se modifient pas depuis cet écran.
+        </p>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La salle est publiée.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « publiée »), et la salle est RELUE pour dire la vérité
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <p>
+          <a
+            data-discover="true"
+            href="/admin"
+          >
+            Retour à la liste des salles en attente
+          </a>
+        </p>
+        <h1>
+          Salle des Jasmins 9
+        </h1>
+        <p
+          dir="rtl"
+          lang="ar"
+        >
+          قاعة الياسمين 9
+        </p>
+        <p
+          class="admin-meta"
+        >
+          <span>
+            Salle n° 9
+          </span>
+          <span>
+            Hydra
+          </span>
+          <span>
+            Événements Sidi 9
+          </span>
+          <span>
+            2 créneaux actifs
+          </span>
+        </p>
+        <p>
+          État de publication
+           : 
+          <strong>
+            Publiée
+          </strong>
+        </p>
+        <dl
+          class="admin-rates"
+        >
+          <dt>
+            Commission
+          </dt>
+          <dd>
+            2,5 %
+          </dd>
+          <dt>
+            Remise (cashback)
+          </dt>
+          <dd>
+            1,25 %
+          </dd>
+        </dl>
+        <p
+          class="admin-hint"
+        >
+          Ces deux taux sont affichés à titre d'information : ils ne se modifient pas depuis cet écran.
+        </p>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La salle est publiée.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > un double clic ne part qu'UNE fois (le bouton est inactif dès le premier)
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ publish src/admin/venue-review-page.test.tsx:37:23
+ ❯ src/admin/venue-review-page.test.tsx:184:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+

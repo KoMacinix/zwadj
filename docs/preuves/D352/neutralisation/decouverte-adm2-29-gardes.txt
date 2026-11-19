@@ -1,0 +1,243 @@
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plantage à l'intérieur du rendu (TypeError), même si le DOM est vide ensuite : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 15 bras · 0 manqué(s) (attendu 0)
+contrôle R-1 (`setRates` et `VENUE_ADMIN_SELECT` identiques à `b8e5511`) :
+  contrôle R-1 ✓ le bloc `VENUE_ADMIN_SELECT` : 5 ligne(s) comparée(s) à `b8e5511` · identique (attendu identique)
+  contrôle R-1 ✓ la méthode `setRates` : 19 ligne(s) comparée(s) à `b8e5511` · identique (attendu identique)
+cibles : 84 déclarées · 29 jouées · 15 non jouée(s) (sans --int) · 6 mesure(s) distincte(s) · 8 fichier(s) muté(s)
+  pré-vol detail : code 0 · passés 18 · en échec 0
+  pré-vol file : code 0 · passés 11 · en échec 0
+  pré-vol garde : code 0 · passés 12 · en échec 0
+  pré-vol noindex : code 0 · passés 7 · en échec 0
+  pré-vol refus : code 0 · passés 12 · en échec 0
+  pré-vol suppressions : code 0 · passés 13 · en échec 0
+■ G-1. ⛔ R-4 — un ADMIN hors de `/admin` n'est plus renvoyé sous `/admin` (la carte « mauvais rôle » du Pro le reçoit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN hors de `/admin` y est RENVOYÉ — tableau de bord, liste des salles : jamais la carte « mauvais
+         ↳ AssertionError: /: expected null not to be null
+■ G-4. ⛔ R-4 — un PRO franchit la garde ADMIN (seul le CLIENT est refusé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [noindex] code 1 · ROUGE — passés 6 · en échec 1
+      FAIL  src/admin/use-no-index.test.tsx > la coquille de l'administration appelle la garde — mesuré sous la table de routes RÉELLE > le refus d'un PRO sous `/admin` n'est pas une page de l'administratio
+         ↳ AssertionError: expected null not to be null
+   [garde] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace
+         ↳ AssertionError: /admin: expected null not to be null
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est 
+         ↳ AssertionError: expected null not to be null
+■ G-5. ⛔ R-4 — le lien de retour est offert au CLIENT et retiré au PRO (inversé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace
+         ↳ AssertionError: /admin: expected null not to be null
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas l
+         ↳ AssertionError: expected <a class="btn btn-ghost" …(2)></a> to be null
+■ G-6. ⛔ R-4 — un anonyme sous `/admin` voit les écrans au lieu d'être renvoyé à la connexion
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [garde] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/auth/require-admin.test.tsx > R-4 — les autres cas > anonyme sur `/admin` : renvoyé à la connexion
+         ↳ AssertionError: expected null not to be null
+■ G-7. ⛔ R-4 — pendant le démarrage de la session, la garde décide déjà (l'anonyme transitoire est renvoyé à la connexion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 9 · en échec 3
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace
+         ↳ AssertionError: /admin: expected null not to be null
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas l
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est 
+         ↳ AssertionError: expected null not to be null
+■ G-9. ⛔ R-4 — la route des suppressions n'est plus derrière la garde ADMIN (un PRO y lit la page)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace
+         ↳ AssertionError: /admin/suppressions: expected null not to be null
+■ Q-1. ⛔ MD-ADM-15 — une file de zéro salle n'est plus reconnue (« 0 salle en attente » à la place du message vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — vide, panne, rechargement (MD-ADM-15) > aucune salle : le message « aucune salle en attente » — et PAS d'alerte
+         ↳ AssertionError: expected null not to be null
+■ Q-2. ⛔ MD-ADM-15 / D217 — une PANNE de lecture se lit « aucune salle en attente »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — vide, panne, rechargement (MD-ADM-15) > une PANNE n'est pas le vide : l'alerte, un bouton de relecture, et jamais « aucune salle en attente »
+         ↳ AssertionError: expected null not to be null
+■ Q-4. ⛔ R-5 — une salle déjà rejetée n'est plus marquée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée
+         ↳ AssertionError: expected null not to be null
+■ Q-5. ⛔ R-5 — le MOTIF d'une salle rejetée n'est plus montré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée
+         ↳ AssertionError: expected null not to be null
+■ Q-6. ⛔ D212 — le nombre de pages est arrondi vers le bas (13 salles = 1 page)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 9 · en échec 2
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adre
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)
+         ↳ AssertionError: expected null not to be null
+■ Q-8. ⛔ « Page suivante » saute une page
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adre
+         ↳ AssertionError: expected null not to be null
+■ Q-10. ⛔ la page n'est plus lue dans l'adresse (`?page=2` ouvre la page 1)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 8 · en échec 3
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adre
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune sal
+         ↳ AssertionError: expected null not to be null
+■ Q-11. ⛔ D212 — une page au-delà de la fin n'est plus signalée (liste vide silencieuse)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · ROUGE — passés 10 · en échec 1
+      FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune sal
+         ↳ AssertionError: expected null not to be null
+■ P-2. ⛔ MD-ADM-15 — « La salle est publiée » s'affiche AVANT la réponse (la requête part sans être attendue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · ROUGE — passés 14 · en échec 4
+      FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la rép
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — l
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « pu
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > un double clic ne part qu'UNE fois (le bouton est inactif dès le premier)
+         ↳ AssertionError: expected null not to be null
+■ P-3. ⛔ D-4 — le motif n'est plus vérifié par le schéma partagé (un motif vide part au serveur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · ROUGE — passés 15 · en échec 3
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif VIDE ou fait d'espaces : le message du schéma partagé, en français, et AUC
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif trop long : le message de borne, AUCUN appel ; un motif de la longueur EXA
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, av
+         ↳ AssertionError: expected [ 'rejectVenue', …(2) ] to deeply equal [ 'rejectVenue', …(2) ]
+■ P-6. ⛔ R-3 — le bouton d'une salle déjà rejetée ne dit plus « Corriger le motif »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · ROUGE — passés 14 · en échec 4
+      FAIL  src/admin/venue-review-page.test.tsx > le détail — ce que l'admin lit > R-3 — une salle DÉJÀ rejetée : son motif et sa date, le bouton « Corriger le motif », et le champ part du motif EN VIGUEUR
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, av
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (pl
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED)
+         ↳ AssertionError: expected null not to be null
+■ P-9. ⛔ MD-ADM-7 — la commission affiche le taux du cashback
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [detail] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/admin/venue-review-page.test.tsx > le détail — ce que l'admin lit > MD-ADM-7 — les DEUX taux sont affichés (valeurs du serveur, formateur partagé) et NE SONT PAS modifiables : aucun champ de
+         ↳ AssertionError: expected null not to be null
+■ P-10. ⛔ MD-ADM-15 — le rejet n'est plus affiché à la RÉPONSE (le bloc « déjà rejetée » n'apparaît pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · ROUGE — passés 16 · en échec 2
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, av
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (pl
+         ↳ AssertionError: expected null not to be null
+■ P-11. ⛔ MD-ADM-15 — une salle inconnue (404 indistinct) est lue comme une panne (le message « introuvable » n'apparaît plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/admin/venue-review-page.test.tsx > le détail — ce que l'admin lit > une salle inconnue (404 indistinct) : « introuvable » et le retour à la file — pas une panne
+         ↳ AssertionError: expected null not to be null
+■ X-1. ⛔ R-5 — « Approuver » appelle l'API SANS la confirmation d'une action irréversible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archiv
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > ANNULER ferme la confirmation : aucun appel, la demande est toujours là
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvé
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > MD-ADM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la list
+         ↳ AssertionError: expected null not to be null
+■ X-2. ⛔ R-5 — la confirmation ne dit plus ce que l'approbation fait (la description est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archiv
+         ↳ AssertionError: expected null not to be null
+■ X-3. ⛔ R-5 — rejeter n'exige plus de motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/admin/deletion-requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > sans motif (vide ou blanc) : le message, AUCUN appel ; le champ est obligatoire (D32)
+         ↳ AssertionError: expected null not to be null
+■ X-6. ⛔ MD-ADM-15 / D217 — une PANNE de lecture se lit « aucune demande »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/admin/deletion-requests-page.test.tsx > la liste — ce que l'admin lit avant de décider > une PANNE n'est pas le vide : l'alerte, la relecture, jamais « aucune demande »
+         ↳ AssertionError: expected null not to be null
+■ X-8. ⛔ D55 — la borne haute du motif n'est plus celle du schéma partagé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/admin/deletion-requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > un motif trop long : le message de borne (celle de l'API, importée), aucun appel
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/admin/deletion-requests-page.test.tsx > rejeter — un motif, qui part à l'utilisateur > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » ; la demande quitte la file
+         ↳ AssertionError: expected [ [ 'rejectDeletion', …(2) ] ] to deeply equal [ [ 'rejectDeletion', …(2) ] ]
+■ R-2. ⛔ D120 — une réponse MALFORMÉE se lit « pas refusée » (aucune panne n'est dite)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refu
+         ↳ AssertionError: expected null not to be null
+■ R-3. ⛔ D133 / D142 — une PANNE de lecture se lit « pas refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'en
+         ↳ AssertionError: expected null not to be null
+■ R-6. ⛔ la date du refus n'est plus montrée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro pe
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel qu
+         ↳ AssertionError: expected null not to be null
+■ R-7. ⛔ D-5 — l'étape « Publication » ne montre plus l'avis de refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · ROUGE — passés 4 · en échec 8
+      FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro pe
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée 
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape)
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refu
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'en
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > le composant reste dans l'étape — il ne déplace rien d'autre > l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus
+         ↳ AssertionError: expected null not to be null
+      FAIL  src/venues/publication-review.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel qu
+         ↳ AssertionError: expected null not to be null
+  empreintes : 18 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 29 cible(s) jouée(s) sur 84, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.

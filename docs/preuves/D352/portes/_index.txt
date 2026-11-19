@@ -1,0 +1,24 @@
+D340 — PASSE SUR SECTEUR (R-8) — départ 18/11/2026 18:30:17
+SHA: da3ac4d5aa437fa59cccbf6bcdd2891df53a77d8
+origin/main: 95b68af01273fd40140089a2c1320ba1ae775016
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 18:30:17 | SECTEUR | RAM libre 4,565 Mo | chrome 0 | headless_shell 0 | node 0
+docker: zwadj-db Up 2 days
+ports d'e2e occupés (3100 3101 5273 5274): []
+=== typecheck — départ 18:30:21 — 18:30:21 | SECTEUR | RAM libre 4,549 Mo | chrome 0 | headless_shell 0 | node 0
+    typecheck : code de sortie 0 · durée 19 s · fin 18:30:41 — 18:30:42 | SECTEUR | RAM libre 4,532 Mo | chrome 0 | headless_shell 0 | node 0
+=== lint — départ 18:30:42 — 18:30:42 | SECTEUR | RAM libre 4,544 Mo | chrome 0 | headless_shell 0 | node 0
+    lint : code de sortie 0 · durée 15 s · fin 18:30:57 — 18:30:58 | SECTEUR | RAM libre 4,466 Mo | chrome 0 | headless_shell 0 | node 0
+=== test — départ 18:30:58 — 18:30:59 | SECTEUR | RAM libre 4,450 Mo | chrome 0 | headless_shell 0 | node 0
+    test : code de sortie 0 · durée 131 s · fin 18:33:10 — 18:33:11 | SECTEUR | RAM libre 4,623 Mo | chrome 0 | headless_shell 0 | node 0
+=== build — départ 18:33:11 — 18:33:12 | SECTEUR | RAM libre 4,615 Mo | chrome 0 | headless_shell 0 | node 0
+    build : code de sortie 0 · durée 33 s · fin 18:33:45 — 18:33:46 | SECTEUR | RAM libre 4,633 Mo | chrome 0 | headless_shell 0 | node 0
+=== test-int — départ 18:33:46 — 18:33:47 | SECTEUR | RAM libre 4,641 Mo | chrome 0 | headless_shell 0 | node 0
+    test-int : code de sortie 0 · durée 490 s · fin 18:41:57 — 18:41:58 | SECTEUR | RAM libre 4,289 Mo | chrome 0 | headless_shell 0 | node 0
+=== test-e2e — départ 18:41:58 — 18:41:58 | SECTEUR | RAM libre 4,290 Mo | chrome 0 | headless_shell 0 | node 0
+    test-e2e : code de sortie 0 · durée 414 s · fin 18:48:52 — 18:48:53 | SECTEUR | RAM libre 4,425 Mo | chrome 0 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 18:48:53 | SECTEUR | RAM libre 4,410 Mo | chrome 0 | headless_shell 0 | node 0
+arbre après la passe (git status --short): []
+fin 18/11/2026 18:48:54
+PASSE TERMINEE — échantillons sur BATTERIE pendant la passe : 0 sur 37

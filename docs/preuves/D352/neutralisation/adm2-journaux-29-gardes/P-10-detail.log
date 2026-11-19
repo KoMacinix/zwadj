@@ -1,0 +1,72 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : P-10-detail. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6106 octets, sha256 75bc9609ffa517a65ad5af1720c106af7201fc08fd5798fdae11dc1ffaac86d8. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/venue-review-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/venue-review-page.test.tsx (18 tests | 2 failed) 825ms
+   ✓ le détail — ce que l'admin lit > le nom français en `<h1>`, le nom arabe en `lang="ar" dir="rtl"`, le numéro, la ville, le professionnel, les créneaux actifs, l'état « brouillon » 118ms
+   ✓ le détail — ce que l'admin lit > MD-ADM-7 — les DEUX taux sont affichés (valeurs du serveur, formateur partagé) et NE SONT PAS modifiables : aucun champ de saisie de nombre, un seul champ de texte (le motif) 43ms
+   ✓ le détail — ce que l'admin lit > un brouillon jamais rejeté : pas de bloc « déjà rejetée » ; le bouton est « Rejeter », le champ est vide 27ms
+   ✓ le détail — ce que l'admin lit > R-3 — une salle DÉJÀ rejetée : son motif et sa date, le bouton « Corriger le motif », et le champ part du motif EN VIGUEUR 28ms
+   ✓ le détail — ce que l'admin lit > une salle PUBLIÉE : ni « Publier » ni « Rejeter » (le sens unique, A3-④) ; son état se lit 27ms
+   ✓ le détail — ce que l'admin lit > une salle inconnue (404 indistinct) : « introuvable » et le retour à la file — pas une panne 16ms
+   ✓ le détail — ce que l'admin lit > une PANNE de lecture : l'alerte et un bouton de relecture ; jamais « introuvable » 29ms
+   ✓ Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > pendant que la réponse est RETENUE : le bouton est inactif, aucun « publiée » ; à la réponse : l'avis de réussite et l'état « publiée », les actions disparaissent 45ms
+   ✓ Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > « pas de créneau actif » (409 SLOT_TEMPLATE_REQUIRED) : un REFUS, son texte français — la salle reste un brouillon, aucun avis de réussite 29ms
+   ✓ Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > une PANNE pendant l'action : « le résultat est inconnu » (jamais « refusé », jamais « publiée »), et la salle est RELUE pour dire la vérité 35ms
+   ✓ Publier — jamais affiché comme fait avant la réponse (MD-ADM-15) > un double clic ne part qu'UNE fois (le bouton est inactif dès le premier) 49ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif VIDE ou fait d'espaces : le message du schéma partagé, en français, et AUCUN appel 59ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif trop long : le message de borne, AUCUN appel ; un motif de la longueur EXACTE de la borne passe 51ms
+   × Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif » 63ms
+     → expected null not to be null
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > la salle reste un brouillon après un rejet : « Publier » reste proposé 52ms
+   × Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (plus l'ancien) 41ms
+     → expected null not to be null
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > MD-ADM-4 — la salle a été PUBLIÉE ailleurs entre-temps : « n'est plus un brouillon » en REFUS, la salle est relue (état « publiée », actions disparues) — aucun avis de rejet 60ms
+   ✓ Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > MD-ADM-4 — une AUTRE correction est passée entre-temps (409 VENUE_ALREADY_REJECTED) : un REFUS lisible, la salle est relue et montre le motif de l'autre 48ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  19:08:08
+   Duration  3.43s (transform 402ms, setup 204ms, collect 896ms, tests 825ms, environment 1.05s, prepare 176ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/venue-review-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » apparaît, avec le motif et la date de la RÉPONSE ; le bouton devient « Corriger le motif »
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/admin/venue-review-page.test.tsx:240:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/admin/venue-review-page.test.tsx > Rejeter — le motif est OBLIGATOIRE, et le refus se lit comme un refus > R-3 — CORRIGER le motif : le nouveau motif part, l'avis montre le NOUVEAU motif (plus l'ancien)
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/admin/venue-review-page.test.tsx:268:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

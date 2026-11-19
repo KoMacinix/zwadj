@@ -1,0 +1,66 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : R-6-refus. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4588 octets, sha256 40bf2fedc1995e6a0a58808e2aab3aa40564a356ae30f7aeb6f0967500803673. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/publication-review.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/publication-review.test.tsx (12 tests | 2 failed) 782ms
+   × une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire 192ms
+     → expected null not to be null
+   ✓ une salle REFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée 54ms
+   ✓ une salle REFUSÉE : le pro lit le refus > l'en-tête dit « refusée » sur CHAQUE étape, mais le motif complet n'est que dans l'étape « Publication » 62ms
+   ✓ une salle REFUSÉE : le pro lit le refus > la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape) 92ms
+   ✓ une salle PAS refusée > brouillon jamais refusé : le badge d'AVANT (« en attente »), aucun avis de refus 46ms
+   ✓ une salle PAS refusée > une salle PUBLIÉE : le badge « Publiée », et la route du refus n'est PAS appelée (publier efface le motif) 38ms
+   ✓ une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (on ne SAIT pas) ; « réessayer » relit 89ms
+   ✓ une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée » 46ms
+   ✓ une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape 49ms
+   × l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel 64ms
+     → expected null not to be null
+   ✓ l'arabe — la parité, et le sens de l'écriture > les deux catalogues portent EXACTEMENT les mêmes clés du bloc `publicationReview`, et aucune n'est vide ni identique au français (« à relire par un humain ») 1ms
+   ✓ le composant reste dans l'étape — il ne déplace rien d'autre > l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus 46ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  19:09:53
+   Duration  4.44s (transform 997ms, setup 224ms, collect 1.88s, tests 782ms, environment 1.10s, prepare 161ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/publication-review.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/venues/publication-review.test.tsx:111:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/venues/publication-review.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/venues/publication-review.test.tsx:195:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

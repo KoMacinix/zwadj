@@ -1,0 +1,1157 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : Q-6-file. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 31593 octets, sha256 7f36a23f93082c79b3e1a07394651e7beb5184d5bfb513f4e139930e12777ffd. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/venue-queue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/venue-queue-page.test.tsx (11 tests | 2 failed) 2400ms
+   ✓ la file — ce que l'admin lit > une salle : son nom français, son nom arabe en `lang="ar" dir="rtl"`, sa ville, son professionnel, ses créneaux, et un lien vers SON détail 98ms
+   ✓ la file — ce que l'admin lit > le titre est un `<h1>` et le total est annoncé 27ms
+   ✓ la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune 40ms
+   ✓ la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée 11ms
+   ✓ la file — ce que l'admin lit > l'ordre du SERVEUR est celui de l'écran : les jamais rejetées d'abord, les rejetées ensuite 32ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > aucune salle : le message « aucune salle en attente » — et PAS d'alerte 8ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > une PANNE n'est pas le vide : l'alerte, un bouton de relecture, et jamais « aucune salle en attente » 47ms
+   × la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte 1036ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          14 salles en attente
+        </p>
+        <ol
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000012"
+              >
+                Salle des Jasmins 12
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 12
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 12
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 12
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000013"
+              >
+                Salle des Jasmins 13
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 13
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 13
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 13
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000014"
+              >
+                Salle des Jasmins 14
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 14
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 14
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 14
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000015"
+              >
+                Salle des Jasmins 15
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 15
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 15
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 15
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000016"
+              >
+                Salle des Jasmins 16
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 16
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 16
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 16
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000017"
+              >
+                Salle des Jasmins 17
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 17
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 17
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 17
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000018"
+              >
+                Salle des Jasmins 18
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 18
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 18
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 18
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000019"
+              >
+                Salle des Jasmins 19
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 19
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 19
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 19
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000020"
+              >
+                Salle des Jasmins 20
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 20
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 20
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 20
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000021"
+              >
+                Salle des Jasmins 21
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 21
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 21
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 21
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000022"
+              >
+                Salle des Jasmins 22
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 22
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 22
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 22
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000023"
+              >
+                Salle des Jasmins 23
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 23
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 23
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 23
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </body>
+</html>
+   × la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché) 1019ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin?page=2
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          14 salles en attente
+        </p>
+        <ol
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000038"
+              >
+                Salle des Jasmins 38
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 38
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 38
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 38
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000039"
+              >
+                Salle des Jasmins 39
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 39
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 39
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 39
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </body>
+</html>
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1 43ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une seule page : aucune pagination 34ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  19:06:34
+   Duration  5.06s (transform 400ms, setup 218ms, collect 892ms, tests 2.40s, environment 1.06s, prepare 199ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/venue-queue-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          14 salles en attente
+        </p>
+        <ol
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000012"
+              >
+                Salle des Jasmins 12
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 12
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 12
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 12
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000013"
+              >
+                Salle des Jasmins 13
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 13
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 13
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 13
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000014"
+              >
+                Salle des Jasmins 14
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 14
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 14
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 14
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000015"
+              >
+                Salle des Jasmins 15
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 15
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 15
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 15
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000016"
+              >
+                Salle des Jasmins 16
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 16
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 16
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 16
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000017"
+              >
+                Salle des Jasmins 17
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 17
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 17
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 17
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000018"
+              >
+                Salle des Jasmins 18
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 18
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 18
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 18
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000019"
+              >
+                Salle des Jasmins 19
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 19
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 19
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 19
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000020"
+              >
+                Salle des Jasmins 20
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 20
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 20
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 20
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000021"
+              >
+                Salle des Jasmins 21
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 21
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 21
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 21
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000022"
+              >
+                Salle des Jasmins 22
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 22
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 22
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 22
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000023"
+              >
+                Salle des Jasmins 23
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 23
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 23
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 23
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché)
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin?page=2
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          14 salles en attente
+        </p>
+        <ol
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000038"
+              >
+                Salle des Jasmins 38
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 38
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 38
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 38
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+          <li
+            class="admin-card"
+          >
+            <h2>
+              <a
+                data-discover="true"
+                href="/admin/salles/00000000-0000-4000-8000-000000000039"
+              >
+                Salle des Jasmins 39
+              </a>
+            </h2>
+            <p
+              dir="rtl"
+              lang="ar"
+            >
+              قاعة الياسمين 39
+            </p>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Salle n° 39
+              </span>
+              <span>
+                Hydra
+              </span>
+              <span>
+                Événements Sidi 39
+              </span>
+              <span>
+                2 créneaux actifs
+              </span>
+            </p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

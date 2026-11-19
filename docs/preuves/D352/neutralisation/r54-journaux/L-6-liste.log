@@ -1,0 +1,70 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne de neutralize-r54.py : L-6-liste. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6486 octets, sha256 a524ca4ee1c74cb1a594a1837a177339104d5de08611aa69683a8bf0f14e7e80. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 7a64b058753266767e2e01dff4eb23ab9737140c3d1f94ca324b5b252d97eedb  (neutralize-r54.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/venue-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/venue-list.test.tsx (24 tests | 1 failed) 1239ms
+   ✓ Liste des salles — rendu des cartes > affiche nom, commune (data), capacité et prix formaté depuis les CENTIMES 190ms
+   ✓ Liste des salles — rendu des cartes > état VIDE : titre, explication et appel à l'action 33ms
+   ✓ Liste des salles — rendu des cartes > état ERREUR : message + « Réessayer » qui relance réellement l'appel 53ms
+   ✓ Liste — statut D33 (3 entrées, sans confirmation) > rend les TROIS états et envoie PATCH { status } sans ouvrir de dialogue 35ms
+   ✓ Liste — statut D33 (3 entrées, sans confirmation) > échec du PATCH : REVERT de la valeur + message d'erreur 67ms
+   ✓ Liste — suppression (soft delete) > « Supprimer » ouvre le ConfirmDialog ; confirmer appelle softDelete puis recharge 75ms
+   ✓ Liste — suppression (soft delete) > annuler ferme le dialogue SANS rien supprimer 62ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > UNE salle : « Ma salle », le mot du menu — et non « Mes salles » 30ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > DEUX salles : « Mes salles » ; le menu du haut dit le même mot 39ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > AUCUNE salle (état vide) : « Ma salle » comme le menu — un compte de zéro est un singulier 26ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > en ARABE : « قاعتي » pour une salle, « قاعاتي » pour deux 56ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : supprimer la SECONDE salle ramène le titre à « Ma salle » SANS recharger la page (le compte vient du fournisseur, comme le menu) 103ms
+   ✓ Liste — rang 38 (S-11) : le titre de la page suit le menu « Ma salle / Mes salles » > ⛔ P-16 : la règle vit UNE fois — la page ET le menu importent `venuesLabelKey` et ne portent plus les clés du libellé ni l'ancien titre 2ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle REFUSÉE : la carte dit « Refusée » et ne dit PLUS « En attente de publication par Zwadj » 28ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > en ARABE : la carte dit le mot du catalogue arabe, et plus l'attente (la parité des clés est mesurée ailleurs : `i18n-parity.spec.ts`) 28ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle JAMAIS refusée garde « En attente de publication par Zwadj », après la lecture de SON état 35ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > une salle PUBLIÉE : « Publiée », et AUCUNE lecture du refus (publier efface le motif : il n'y a rien à lire) 24ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ l'affichage ne SAUTE pas : tant que la lecture n'a pas répondu, la carte n'affirme NI « En attente… » NI « Refusée » (elle ne connaît pas l'état) ; elle le porte `aria-busy` ; la réponse rend l'état vrai 71ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D133, D142 — une PANNE de lecture n'est PAS « pas refusée » : la carte ne dit pas « En attente… », elle dit qu'elle n'a pas pu vérifier ; la salle reste listée 55ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (null) est une PANNE, jamais un « pas refusée » 40ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un objet sans état de publication) est une PANNE, jamais un « pas refusée » 31ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ D120 — une réponse MALFORMÉE (un refus sans motif) est une PANNE, jamais un « pas refusée » 48ms
+   ✓ Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > le nombre d'appels est borné : UNE lecture par salle non publiée, aucune pour la publiée, et pas une de plus une fois les états rendus 47ms
+   × Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien de plus (ils se lisent en OUVRANT la salle, D350) 59ms
+     → le motif écrit par l'admin n'est pas dans la liste: expected true to be false // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 23 passed (24)
+   Start at  19:21:34
+   Duration  4.83s (transform 992ms, setup 208ms, collect 1.89s, tests 1.24s, environment 1.02s, prepare 160ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/venue-list.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/venue-list.test.tsx > Liste — rang 54 (D352, R-1) : « Refusée » pour une salle refusée > ⛔ le MOTIF et la DATE du refus n'entrent JAMAIS dans la liste : la carte dit « Refusée », rien de plus (ils se lisent en OUVRANT la salle, D350)
+AssertionError: le motif écrit par l'admin n'est pas dans la liste: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/venues/venue-list.test.tsx:422:89
+    420|     await waitFor(() => expect(screen.queryByText(REFUSEE_FR)).not.toB…
+    421|     const texte = document.body.textContent ?? "";
+    422|     expect(texte.includes(MOTIF), "le motif écrit par l'admin n'est pa…
+       |                                                                                         ^
+    423|     expect(texte.includes(formatReviewDate(DATE_ISO, "fr")), "la date …
+    424|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

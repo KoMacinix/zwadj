@@ -1,0 +1,62 @@
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+G-1   [garde] AssertionError: /: expected null not to be null
+        ↳ —
+G-4   [garde] AssertionError: /admin: expected null not to be null
+        ↳ —
+G-4   [noindex] AssertionError: expected null not to be null
+        ↳ —
+G-5   [garde] AssertionError: /admin: expected null not to be null
+        ↳ ❯ src/auth/require-admin.test.tsx:108:22
+G-6   [garde] AssertionError: expected null not to be null
+        ↳ —
+G-7   [garde] AssertionError: /admin: expected null not to be null
+        ↳ —
+G-9   [garde] AssertionError: /admin/suppressions: expected null not to be null
+        ↳ —
+Q-1   [file] AssertionError: expected null not to be null
+        ↳ —
+Q-2   [file] AssertionError: expected null not to be null
+        ↳ —
+Q-4   [file] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-queue-page.test.tsx:74:5
+Q-5   [file] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-queue-page.test.tsx:75:5
+Q-6   [file] AssertionError: expected null not to be null
+        ↳ —
+Q-8   [file] AssertionError: expected null not to be null
+        ↳ —
+Q-10  [file] AssertionError: expected null not to be null
+        ↳ —
+Q-11  [file] AssertionError: expected null not to be null
+        ↳ —
+P-2   [detail] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-review-page.test.tsx:136:12
+P-3   [detail] AssertionError: expected null not to be null
+        ↳ —
+P-6   [detail] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-review-page.test.tsx:91:5
+P-9   [detail] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-review-page.test.tsx:65:5
+P-10  [detail] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/venue-review-page.test.tsx:240:18
+P-11  [detail] AssertionError: expected null not to be null
+        ↳ —
+X-1   [suppressions] AssertionError: expected null not to be null
+        ↳ —
+X-2   [suppressions] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/deletion-requests-page.test.tsx:82:5
+X-3   [suppressions] AssertionError: expected null not to be null
+        ↳ —
+X-6   [suppressions] AssertionError: expected null not to be null
+        ↳ —
+X-8   [suppressions] AssertionError: expected null not to be null
+        ↳ ❯ src/admin/deletion-requests-page.test.tsx:202:46
+R-2   [refus] AssertionError: expected null not to be null
+        ↳ —
+R-3   [refus] AssertionError: expected null not to be null
+        ↳ —
+R-6   [refus] AssertionError: expected null not to be null
+        ↳ ❯ src/venues/publication-review.test.tsx:111:5
+R-7   [refus] AssertionError: expected null not to be null
+        ↳ —
+cibles examinées : 29

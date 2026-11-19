@@ -1,0 +1,394 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : G-4-garde. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 12643 octets, sha256 016420430cbd1f96f1b39861953d77eba34d28cb0305974b7318ce68882177fd. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/auth/require-admin.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/auth/require-admin.test.tsx (12 tests | 2 failed) 2441ms
+   ✓ R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN sur `/admin` voit l'écran de la file (la garde le laisse entrer) 105ms
+   ✓ R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN hors de `/admin` y est RENVOYÉ — tableau de bord, liste des salles : jamais la carte « mauvais rôle » 45ms
+   ✓ R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN sur la page de CONNEXION (déjà connecté) est renvoyé sous `/admin`, pas sur `/` 14ms
+   ✓ R-4 — un ADMIN : sous `/admin`, et nulle part ailleurs > un ADMIN qui SE CONNECTE arrive sous `/admin` — la destination suit le rôle 70ms
+   × R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse 1031ms
+     → /admin: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+   ✓ R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un CLIENT : le même refus, sans lien vers un espace qui n'est pas le sien ; il peut se déconnecter 29ms
+   × R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est rendu à un PRO 1021ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+   ✓ R-4 — les autres cas > anonyme sur `/admin` : renvoyé à la connexion 49ms
+   ✓ R-4 — les autres cas > pendant le démarrage de la session, rien de l'administration n'est montré (ni la file ni le refus) 20ms
+   ✓ R-4 — les autres cas > un PRO hors de `/admin` n'est pas touché : sa liste de salles s'affiche, à l'adresse demandée 28ms
+   ✓ R-4 — les autres cas > un CLIENT hors de `/admin` garde la carte « mauvais rôle » du Pro (D23, inchangée) 10ms
+   ✓ R-4 — les autres cas > un refus d'API sur l'écran (ADMIN rétrogradé : 403) ne laisse pas un écran vide — l'API reste l'autorité 15ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  19:03:56
+   Duration  5.98s (transform 997ms, setup 215ms, collect 1.89s, tests 2.44s, environment 1.00s, prepare 169ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/auth/require-admin.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > un PRO : la carte de refus (titre, explication, retour à son espace), sur CHAQUE adresse `/admin`, sans redirection silencieuse
+AssertionError: /admin: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/auth/require-admin.test.tsx > R-4 — un PRO ou un CLIENT sous `/admin` : un REFUS explicite, et aucun appel à l'API admin > le refus n'est PAS la file : aucun titre de l'administration n'est rendu à un PRO
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head>
+    <meta
+      content="noindex, nofollow"
+      data-zwadj-noindex=""
+      name="robots"
+    />
+  </head>
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin
+      </output>
+      <div
+        class="admin-shell"
+        dir="ltr"
+        lang="fr"
+      >
+        <header
+          class="admin-header"
+        >
+          <p
+            class="admin-brand"
+          >
+            Zwadj — Administration
+          </p>
+          <nav
+            aria-label="Navigation de l'administration"
+            class="admin-nav"
+          >
+            <a
+              aria-current="page"
+              class="active"
+              data-discover="true"
+              href="/admin"
+            >
+              Salles en attente
+            </a>
+            <a
+              class=""
+              data-discover="true"
+              href="/admin/suppressions"
+            >
+              Suppressions de compte
+            </a>
+          </nav>
+          <button
+            class="btn btn-ghost"
+            type="button"
+          >
+            Se déconnecter
+          </button>
+        </header>
+        <main
+          class="admin-main"
+        >
+          <section>
+            <h1>
+              Salles en attente de validation
+            </h1>
+            <p
+              class="admin-hint"
+            >
+              Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+            </p>
+            <p>
+              Aucune salle en attente de validation.
+            </p>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

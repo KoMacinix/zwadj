@@ -1,0 +1,119 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : Q-11-file. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5169 octets, sha256 6d8581b523f674359e377e2d1c4e0ee3bb4df609fc5117cffe94dcc35865d935. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/venue-queue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/venue-queue-page.test.tsx (11 tests | 1 failed) 1489ms
+   ✓ la file — ce que l'admin lit > une salle : son nom français, son nom arabe en `lang="ar" dir="rtl"`, sa ville, son professionnel, ses créneaux, et un lien vers SON détail 120ms
+   ✓ la file — ce que l'admin lit > le titre est un `<h1>` et le total est annoncé 28ms
+   ✓ la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune 49ms
+   ✓ la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée 26ms
+   ✓ la file — ce que l'admin lit > l'ordre du SERVEUR est celui de l'écran : les jamais rejetées d'abord, les rejetées ensuite 35ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > aucune salle : le message « aucune salle en attente » — et PAS d'alerte 22ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > une PANNE n'est pas le vide : l'alerte, un bouton de relecture, et jamais « aucune salle en attente » 48ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte 82ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché) 12ms
+   × la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1 1048ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin?page=5
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          1 salle en attente
+        </p>
+        <ol
+          class="admin-list"
+        />
+      </section>
+    </div>
+  </body>
+</html>
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une seule page : aucune pagination 15ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  19:07:05
+   Duration  4.10s (transform 377ms, setup 208ms, collect 870ms, tests 1.49s, environment 1.09s, prepare 172ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/venue-queue-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx > la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <output
+        data-testid="chemin"
+      >
+        /admin?page=5
+      </output>
+      <section>
+        <h1>
+          Salles en attente de validation
+        </h1>
+        <p
+          class="admin-hint"
+        >
+          Les brouillons qui ont au moins un créneau actif. Les salles déjà rejetées sont rangées après les autres.
+        </p>
+        <p>
+          1 salle en attente
+        </p>
+        <ol
+          class="admin-list"
+        />
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

@@ -1,0 +1,65 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : Q-5-file. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4044 octets, sha256 7d9cf9a1a396bca25db9eaa733ab366122c239e9fa3d2b0983ec08c9f3dd1b3a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/venue-queue-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/venue-queue-page.test.tsx (11 tests | 2 failed) 434ms
+   ✓ la file — ce que l'admin lit > une salle : son nom français, son nom arabe en `lang="ar" dir="rtl"`, sa ville, son professionnel, ses créneaux, et un lien vers SON détail 102ms
+   ✓ la file — ce que l'admin lit > le titre est un `<h1>` et le total est annoncé 35ms
+   × la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune 54ms
+     → expected null not to be null
+   × la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée 15ms
+     → expected null not to be null
+   ✓ la file — ce que l'admin lit > l'ordre du SERVEUR est celui de l'écran : les jamais rejetées d'abord, les rejetées ensuite 31ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > aucune salle : le message « aucune salle en attente » — et PAS d'alerte 7ms
+   ✓ la file — vide, panne, rechargement (MD-ADM-15) > une PANNE n'est pas le vide : l'alerte, un bouton de relecture, et jamais « aucune salle en attente » 50ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > deux pages : « page 1 sur 2 », « précédente » inactive, « suivante » demande la page 2 et l'adresse la porte 62ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une adresse `?page=2` ouvre la page 2 (la page est dans l'adresse, pas dans un état caché) 29ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une page qui n'existe plus (la file a rétréci) n'est pas un écran vide : le message « aucune salle » et un retour à la page 1 31ms
+   ✓ la file — la pagination suit ce que le serveur a APPLIQUÉ > une seule page : aucune pagination 15ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  19:06:29
+   Duration  3.06s (transform 382ms, setup 208ms, collect 884ms, tests 434ms, environment 1.07s, prepare 162ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/venue-queue-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une salle DÉJÀ REJETÉE porte la marque, son motif et sa date ; une salle jamais rejetée n'en porte aucune
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/admin/venue-queue-page.test.tsx:75:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/admin/venue-queue-page.test.tsx > la file — ce que l'admin lit > une rejetée dont le journal n'a pas de date n'affiche PAS de date inventée
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/admin/venue-queue-page.test.tsx:86:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

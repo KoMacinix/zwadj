@@ -1,0 +1,53 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : X-2-suppressions. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4003 octets, sha256 f2f4570181d2107da01bd33df61fcba4a4decf563f5bebcd112ee4eb6529fa08. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/deletion-requests-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/deletion-requests-page.test.tsx (13 tests | 1 failed) 684ms
+   ✓ la liste — ce que l'admin lit avant de décider > une demande : l'adresse du compte, son rôle, la date de la demande, le motif de l'utilisateur (ou son absence), le nombre de salles qui seraient archivées 75ms
+   ✓ la liste — ce que l'admin lit avant de décider > aucune demande : le message vide — et PAS d'alerte ; le titre est un `<h1>` 61ms
+   ✓ la liste — ce que l'admin lit avant de décider > une PANNE n'est pas le vide : l'alerte, la relecture, jamais « aucune demande » 44ms
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti 39ms
+     → expected null not to be null
+   ✓ approuver — IRRÉVERSIBLE : la confirmation d'abord > ANNULER ferme la confirmation : aucun appel, la demande est toujours là 69ms
+   ✓ approuver — IRRÉVERSIBLE : la confirmation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file 80ms
+   ✓ approuver — IRRÉVERSIBLE : la confirmation d'abord > MD-ADM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée » 61ms
+   ✓ approuver — IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité 46ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > sans motif (vide ou blanc) : le message, AUCUN appel ; le champ est obligatoire (D32) 48ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > un motif trop long : le message de borne (celle de l'API, importée), aucun appel 26ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » ; la demande quitte la file 52ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > « Annuler » referme le formulaire de rejet sans rien envoyer 33ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > demande déjà traitée (annulée entre-temps) : un REFUS lisible, la liste relue 47ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  19:08:30
+   Duration  3.54s (transform 482ms, setup 214ms, collect 1.10s, tests 684ms, environment 1.07s, prepare 165ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/deletion-requests-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti
+AssertionError: expected null not to be null
+ ❯ elementPresent src/test-support/native-presence.ts:15:31
+     13| export function elementPresent<T extends Element>(requete: () => T | n…
+     14|   const trouve = requete();
+     15|   expect(trouve, message).not.toBeNull();
+       |                               ^
+     16|   return trouve as T;
+     17| }
+ ❯ src/admin/deletion-requests-page.test.tsx:82:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

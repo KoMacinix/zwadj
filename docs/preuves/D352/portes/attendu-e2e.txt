@@ -1,0 +1,3 @@
+D352 - attendu e2e, derive de `playwright test --list` AVANT la premiere passe (18/11/2026)
+Total: 110 tests in 26 files (lignes [chromium] : 109 ; 1 test ignore par la suite, comme D351 : 109 passes + 1 ignore)
+Deux passes completes vertes de suite exigees (R-15 de D343).

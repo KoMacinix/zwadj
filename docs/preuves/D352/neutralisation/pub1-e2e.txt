@@ -1,0 +1,80 @@
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, matcher jest-dom (Error, pas AssertionError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+  pose ✓ PUB1-1 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-2 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-3 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-4 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-5 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-6 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-7 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-8 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 1→2
+  pose ✓ PUB1-9 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-10 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-11 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-12 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-13 : ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-14 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-15 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-16 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-18 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-19 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-20 : ancre 1→0 · marqueur 0→1
+  pose ✓ PUB1-21 : ancre 1→0 · marqueur 0→1
+  pose : 20 cible(s) · 0 non posable(s) (attendu 0)
+cibles : 20 déclarées · 20 jouées (e2e, unit) · 0 hors exécution
+  pré-vol e2e-m1 : code 0 · ok 7 · x 0
+  pré-vol e2e-m2 : code 0 · ok 1 · x 0
+  pré-vol e2e-m3 : code 0 · ok 1 · x 0
+✓ PUB1-1. la liste et la fiche n'exigent plus la PUBLICATION (un brouillon s'affiche)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: brouillon : jamais publiée
+✓ PUB1-2. la liste montre aussi les salles masquées et temporairement indisponibles
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: masquée par le pro (HIDDEN)
+✓ PUB1-3. la fiche d'une salle MASQUÉE s'ouvre
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: masquée par le pro (HIDDEN)
+✓ PUB1-4. une salle SUPPRIMÉE (ou archivée avec le compte du pro) reste dans la liste et sur la fiche
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: supprimée par le pro
+✓ PUB1-5. une salle sans créneau actif reste dans une recherche DATÉE
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: publiée, aucun créneau actif
+✓ PUB1-6. le filtre « invités » ne filtre plus (300 places pour 450 invités)
+   ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: 300 places pour 450 invités : la salle ne doit PAS être là
+✓ PUB1-7. le filtre « ville » ne filtre plus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: jumeau négatif « ville » : la salle ne doit PAS y être
+✓ PUB1-8. le filtre « budget » ne filtre plus
+   ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 1→2 · code 1 · ok 2 · x 1 · Error: jumeau négatif « budget » : la salle ne doit PAS y être
+✓ PUB1-9. le filtre « équipement » ne filtre plus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: jumeau négatif « équipement » : la salle ne doit PAS y être
+✓ PUB1-10. le filtre « style » ne filtre plus
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: jumeau négatif « style » : la salle ne doit PAS y être
+✓ PUB1-11. l'accueil garde les salles FICTIVES et leur bandeau à côté d'une vraie salle
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 1 · x 1 · Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+✓ PUB1-12. la recherche garde les salles FICTIVES et leur bandeau à côté d'une vraie salle
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ PUB1-13. l'accueil ne rend plus aucune salle réelle (ni « récentes » ni « moins chères »)
+   ancre 1→0 · marqueur 0→1 ; ancre 1→0 · marqueur 0→1 · code 1 · ok 1 · x 1 · Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+✓ PUB1-14. le budget de l'URL est converti en centimes avec un facteur faux (× 10)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: filtre « invités » : la salle qui lui correspond doit être là
+✓ PUB1-15. la ville de l'URL n'est plus transmise à l'API
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 2 · x 1 · Error: jumeau négatif « ville » : la salle ne doit PAS y être
+✓ PUB1-16. la liste de recherche est gardée 300 s (la salle qui vient d'être publiée n'y est pas)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 1 · x 1 · Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+✓ PUB1-18. la carte d'une salle qui a une photo annonce « aucune photo »
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 3 · x 1 · Error: la carte annonce « aucune photo » alors que le pro en a envoyé une
+✓ PUB1-19. en arabe, la carte affiche le nom français
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 4 · x 1 · Error: ni « récentes » ni « moins chères » ne porte la salle publiée
+✓ PUB1-20. la fiche est gardée 300 s : une salle renommée, masquée ou supprimée y reste vue (le défaut mesuré par M-3)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · —
+✓ PUB1-21. le pro ne lit plus l'état de publication de sa salle (le badge disparaît)
+   ancre 1→0 · marqueur 0→1 · code 1 · ok 0 · x 1 · Error: la carte « témoin » n'a jamais reçu d'état de publication
+
+20 garde(s) mordue(s) sur 20 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 20 sur 20)
+arbre rendu à son état de départ : vérifié.
+exit=0

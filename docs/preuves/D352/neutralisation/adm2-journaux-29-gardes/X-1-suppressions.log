@@ -1,0 +1,491 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : X-1-suppressions. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 17014 octets, sha256 e3de02b0c61edb075e0f5abf63c8251c537bddc312b9ea331f9154cc7dd4da24. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/admin/deletion-requests-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/admin/deletion-requests-page.test.tsx (13 tests | 5 failed) 5630ms
+   ✓ la liste — ce que l'admin lit avant de décider > une demande : l'adresse du compte, son rôle, la date de la demande, le motif de l'utilisateur (ou son absence), le nombre de salles qui seraient archivées 71ms
+   ✓ la liste — ce que l'admin lit avant de décider > aucune demande : le message vide — et PAS d'alerte ; le titre est un `<h1>` 62ms
+   ✓ la liste — ce que l'admin lit avant de décider > une PANNE n'est pas le vide : l'alerte, la relecture, jamais « aucune demande » 47ms
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti 1063ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La suppression du compte pro@exemple.dz est approuvée.
+        </p>
+        <p>
+          Aucune demande de suppression en attente.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > ANNULER ferme la confirmation : aucun appel, la demande est toujours là 1044ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La suppression du compte pro@exemple.dz est approuvée.
+        </p>
+        <p>
+          Aucune demande de suppression en attente.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file 1029ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <ul
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              pro@exemple.dz
+            </h2>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Professionnel
+              </span>
+              <span>
+                Demandée le 10 novembre 2026
+              </span>
+              <span>
+                1 salle serait archivée
+              </span>
+            </p>
+            <p>
+              Aucun motif indiqué par l'utilisateur.
+            </p>
+            <div
+              class="admin-actions"
+            >
+              <button
+                class="btn btn-danger"
+                disabled=""
+                type="button"
+              >
+                Approuver
+              </button>
+              <button
+                class="btn btn-ghost"
+                disabled=""
+                type="button"
+              >
+                Rejeter
+              </button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > MD-ADM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée » 1044ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-error"
+          role="alert"
+        >
+          Refusé : Cette demande n'est plus en attente : elle a déjà été décidée ou l'utilisateur l'a annulée.
+        </p>
+        <p>
+          Aucune demande de suppression en attente.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+   × approuver — IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité 1030ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-error"
+          role="alert"
+        >
+          Le résultat de l'action est inconnu : le serveur n'a pas répondu. La page est rechargée pour afficher l'état réel — vérifiez avant de recommencer.
+        </p>
+        <ul
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              pro@exemple.dz
+            </h2>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Professionnel
+              </span>
+              <span>
+                Demandée le 10 novembre 2026
+              </span>
+              <span>
+                2 salles seraient archivées
+              </span>
+            </p>
+            <p>
+              Aucun motif indiqué par l'utilisateur.
+            </p>
+            <div
+              class="admin-actions"
+            >
+              <button
+                class="btn btn-danger"
+                type="button"
+              >
+                Approuver
+              </button>
+              <button
+                class="btn btn-ghost"
+                type="button"
+              >
+                Rejeter
+              </button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+   ✓ rejeter — un motif, qui part à l'utilisateur > sans motif (vide ou blanc) : le message, AUCUN appel ; le champ est obligatoire (D32) 58ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > un motif trop long : le message de borne (celle de l'API, importée), aucun appel 46ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > un motif valide part ROGNÉ ; à la réponse seulement l'avis « rejetée » ; la demande quitte la file 65ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > « Annuler » referme le formulaire de rejet sans rien envoyer 27ms
+   ✓ rejeter — un motif, qui part à l'utilisateur > demande déjà traitée (annulée entre-temps) : un REFUS lisible, la liste relue 41ms
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 8 passed (13)
+   Start at  19:08:20
+   Duration  8.42s (transform 499ms, setup 213ms, collect 1.12s, tests 5.63s, environment 1.02s, prepare 171ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/admin/deletion-requests-page.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > cliquer « Approuver » ouvre la confirmation, qui DIT l'irréversible et le nombre de salles archivées ; AUCUN appel n'est parti
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > ANNULER ferme la confirmation : aucun appel, la demande est toujours là
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-success"
+          role="status"
+        >
+          La suppression du compte pro@exemple.dz est approuvée.
+        </p>
+        <p>
+          Aucune demande de suppression en attente.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > CONFIRMER : un seul appel ; tant que la réponse est RETENUE la demande est là et aucun « approuvée » ; à la réponse : l'avis, et la demande quitte la file
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <ul
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              pro@exemple.dz
+            </h2>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Professionnel
+              </span>
+              <span>
+                Demandée le 10 novembre 2026
+              </span>
+              <span>
+                1 salle serait archivée
+              </span>
+            </p>
+            <p>
+              Aucun motif indiqué par l'utilisateur.
+            </p>
+            <div
+              class="admin-actions"
+            >
+              <button
+                class="btn btn-danger"
+                disabled=""
+                type="button"
+              >
+                Approuver
+              </button>
+              <button
+                class="btn btn-ghost"
+                disabled=""
+                type="button"
+              >
+                Rejeter
+              </button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > MD-ADM-15 — l'utilisateur a ANNULÉ sa demande entre-temps (400 DELETION_REQUEST_NOT_PENDING) : un REFUS lisible, la liste est relue, la demande disparaît, AUCUN « approuvée »
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-error"
+          role="alert"
+        >
+          Refusé : Cette demande n'est plus en attente : elle a déjà été décidée ou l'utilisateur l'a annulée.
+        </p>
+        <p>
+          Aucune demande de suppression en attente.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/admin/deletion-requests-page.test.tsx > approuver — IRRÉVERSIBLE : la confirmation d'abord > une PANNE pendant l'approbation : « le résultat est inconnu » (ni refusé ni approuvé), et la liste est RELUE pour dire la vérité
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <section>
+        <h1>
+          Demandes de suppression de compte
+        </h1>
+        <p
+          class="alert alert-error"
+          role="alert"
+        >
+          Le résultat de l'action est inconnu : le serveur n'a pas répondu. La page est rechargée pour afficher l'état réel — vérifiez avant de recommencer.
+        </p>
+        <ul
+          class="admin-list"
+        >
+          <li
+            class="admin-card"
+          >
+            <h2>
+              pro@exemple.dz
+            </h2>
+            <p
+              class="admin-meta"
+            >
+              <span>
+                Professionnel
+              </span>
+              <span>
+                Demandée le 10 novembre 2026
+              </span>
+              <span>
+                2 salles seraient archivées
+              </span>
+            </p>
+            <p>
+              Aucun motif indiqué par l'utilisateur.
+            </p>
+            <div
+              class="admin-actions"
+            >
+              <button
+                class="btn btn-danger"
+                type="button"
+              >
+                Approuver
+              </button>
+              <button
+                class="btn btn-ghost"
+                type="button"
+              >
+                Rejeter
+              </button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+

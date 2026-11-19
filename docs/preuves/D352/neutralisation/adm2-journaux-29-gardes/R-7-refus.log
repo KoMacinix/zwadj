@@ -1,0 +1,1894 @@
+⛔ PIÈCE MASQUÉE — journal de la campagne ENTIÈRE de neutralize-adm2.py (garde de S-192) : R-7-refus. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 53329 octets, sha256 fb325eafa5e18a2f4d8854ffba1dcb51df326dd5f4b1d26a70e1ae295699242a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/pro
+
+stdout | src/venues/publication-review.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/venues/publication-review.test.tsx (12 tests | 8 failed) 8730ms
+   × une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire 1181ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   × une salle REFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée 1063ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   ✓ une salle REFUSÉE : le pro lit le refus > l'en-tête dit « refusée » sur CHAQUE étape, mais le motif complet n'est que dans l'étape « Publication » 82ms
+   × une salle REFUSÉE : le pro lit le refus > la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape) 1044ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   ✓ une salle PAS refusée > brouillon jamais refusé : le badge d'AVANT (« en attente »), aucun avis de refus 53ms
+   ✓ une salle PAS refusée > une salle PUBLIÉE : le badge « Publiée », et la route du refus n'est PAS appelée (publier efface le motif) 37ms
+   × une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (on ne SAIT pas) ; « réessayer » relit 1045ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   × une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée » 1060ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   × une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape 1061ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+   × l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel 1048ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="rtl"
+  lang="ar"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="تغيير المظهر"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="اللغة"
+            class="btn btn-ghost"
+            type="button"
+          >
+            Français
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="حسابي"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="التنقل في مساحة المحترف"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              لوحة القيادة
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              قاعتي
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              الطلبات
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              التقويم
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/reservations"
+         ...
+   ✓ l'arabe — la parité, et le sens de l'écriture > les deux catalogues portent EXACTEMENT les mêmes clés du bloc `publicationReview`, et aucune n'est vide ni identique au français (« à relire par un humain ») 3ms
+   × le composant reste dans l'étape — il ne déplace rien d'autre > l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus 1050ms
+     → expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 4 passed (12)
+   Start at  19:09:59
+   Duration  12.33s (transform 984ms, setup 209ms, collect 1.88s, tests 8.73s, environment 1.04s, prepare 161ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\pro:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/publication-review.test.tsx
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > à l'étape « Publication » : le titre, le motif de l'admin tel quel (`dir="auto"`), la date, et ce que le pro peut faire
+ FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > MD-ADM-5 — l'en-tête de l'assistant NE DIT PLUS « En attente de publication par Zwadj » pour une salle refusée : il dit qu'elle est refusée
+ FAIL  src/venues/publication-review.test.tsx > une salle REFUSÉE : le pro lit le refus > la lecture du refus part UNE fois par ouverture de la salle (pas à chaque changement d'étape)
+ FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'étape « Publication » le dit et propose de réessayer ; l'en-tête garde le badge d'avant (on ne SAIT pas) ; « réessayer » relit
+ FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > une réponse MALFORMÉE (ni objet ni état de publication) est une panne, jamais un « pas refusée »
+ FAIL  src/venues/publication-review.test.tsx > une PANNE de lecture n'est pas « pas refusée » (D133, D142) > l'avis d'erreur n'est ni une alerte ni un statut : il ne prend pas la place du message d'enregistrement de l'étape
+ FAIL  src/venues/publication-review.test.tsx > le composant reste dans l'étape — il ne déplace rien d'autre > l'étape « Publication » garde son sélecteur de visibilité et son aide, avec un refus
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="ltr"
+  lang="fr"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="Changer de thème"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Langue"
+            class="btn btn-ghost"
+            type="button"
+          >
+            العربية
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Mon compte"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="Navigation de l'espace professionnel"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              Ma salle
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              Demandes
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              Calendrier
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href=[3...
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/venues/publication-review.test.tsx > l'arabe — la parité, et le sens de l'écriture > en arabe : le titre, la marque de l'en-tête et l'aide viennent du catalogue ARABE ; le motif reste tel quel
+AssertionError: expected null not to be null
+
+Ignored nodes: comments, script, style
+<html
+  dir="rtl"
+  lang="ar"
+>
+  <head />
+  <body>
+    <div>
+      <header
+        class="site-header"
+      >
+        <span
+          class="brand-lockup"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="22"
+            viewBox="0 0 32 32"
+            width="22"
+          >
+            <circle
+              cx="12"
+              cy="16"
+              fill="none"
+              r="7"
+              stroke="var(--accent)"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 20 9 A 7 7 0 0 0 14.5 21.4"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+            <path
+              d="M 14.5 10.6 A 7 7 0 1 1 20 23"
+              fill="none"
+              stroke="var(--accent)"
+              stroke-linecap="round"
+              stroke-width="1.6"
+            />
+          </svg>
+          <span>
+            <span
+              class="brand-word"
+            >
+              ZWADJ
+              <span
+                class="brand-suffix"
+              >
+                 · 
+                PRO
+              </span>
+            </span>
+          </span>
+        </span>
+        <div
+          class="header-auth"
+        >
+          <button
+            aria-label="تغيير المظهر"
+            class="theme-toggle"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="icon-moon"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              />
+            </svg>
+            <svg
+              aria-hidden="true"
+              class="icon-sun"
+              fill="none"
+              height="15"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              width="15"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="اللغة"
+            class="btn btn-ghost"
+            type="button"
+          >
+            Français
+          </button>
+          <div
+            class="account-menu"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="حسابي"
+              class="account-menu-trigger"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="account-menu-initials"
+              >
+                SP
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        aria-label="التنقل في مساحة المحترف"
+        class="pro-nav"
+      >
+        <ul
+          class="pro-nav-list"
+        >
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/"
+            >
+              لوحة القيادة
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current="page"
+              class="pro-nav-link is-active"
+              data-discover="true"
+              href="/salles"
+            >
+              قاعتي
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/demandes"
+            >
+              الطلبات
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/calendrier"
+            >
+              التقويم
+            </a>
+          </li>
+          <li>
+            <a
+              class="pro-nav-link"
+              data-discover="true"
+              href="/reservations"
+         ...
+ ❯ src/test-support/native-presence.ts:21:54
+     19| /** L'élément ARRIVE (la page lit, la réponse revient) : `waitFor` sur…
+     20| export async function elementAttendu<T extends Element>(requete: () =>…
+     21|   await waitFor(() => expect(requete(), message).not.toBeNull());
+       |                                                      ^
+     22|   return requete() as T;
+     23| }
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
