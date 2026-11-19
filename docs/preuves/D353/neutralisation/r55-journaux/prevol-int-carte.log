@@ -1,0 +1,19 @@
+⛔ PIÈCE MASQUÉE — D353 prevol-int-carte.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 822 octets, sha256 ee9d03832cb88965c0bb526cc0b61ae7579a4e64608724710810c0cc0650b306. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/venue-map.int-spec.ts (10 tests) 3148ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ  1185ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT  570ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  02:23:39
+   Duration  20.01s (transform 3.84s, setup 64ms, collect 14.70s, tests 3.15s, environment 0ms, prepare 557ms)
+
+

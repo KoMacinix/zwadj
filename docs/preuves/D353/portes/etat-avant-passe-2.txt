@@ -1,0 +1,5 @@
+batterie(2=secteur)=2
+port 3100 occup‚=False
+port 3101 occup‚=False
+port 5273 occup‚=False
+port 5274 occup‚=False

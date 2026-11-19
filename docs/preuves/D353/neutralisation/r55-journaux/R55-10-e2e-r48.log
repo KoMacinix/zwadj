@@ -1,0 +1,388 @@
+⛔ PIÈCE MASQUÉE — D353 R55-10-e2e-r48.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 57464 octets, sha256 463bf9a50a35bbe2c831998ced76af6eb7af7b23430f83d2f99e4b21046dbf86. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+[WebServer] [02:26:31.893] INFO (31072): Starting Nest application... {"context":"NestFactory"}
+[WebServer] [02:26:31.894] INFO (31072): ConfigModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.894] INFO (31072): ConfigHostModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.894] INFO (31072): ThrottlerModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.894] INFO (31072): ConfigModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.894] INFO (31072): LoggerModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.895] INFO (31072): PrismaModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.895] INFO (31072): EmailModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.895] INFO (31072): WhatsAppModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): HealthModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): JwtModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): MediaModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): PaymentsModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): AppModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): ReferentialsModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): DocumentsModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): ProClientsModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): StaffModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.896] INFO (31072): AuthModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.897] INFO (31072): AccountModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.897] INFO (31072): VenuesModule dependencies initialized {"context":"InstanceLoader"}
+[WebServer] [02:26:31.897] WARN (31072): Unsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert... {"context":"LegacyRouteConverter"}
+[WebServer] [02:26:31.897] WARN (31072): Unsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert... {"context":"LegacyRouteConverter"}
+[WebServer] [02:26:31.897] INFO (31072): AuthController {/api/v1/auth}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/register, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/verify-email/:token, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/resend-verification, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/login, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/google, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/me, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/forgot-password, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/reset-password, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/refresh, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/logout, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): AccountController {/api/v1/me}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/profile, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/change-email, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/change-password, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/deletion-request, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/deletion-request, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/me/deletion-request/cancel, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): AccountPublicController {/api/v1/auth}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/auth/confirm-email-change/:token, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): AccountAdminController {/api/v1/admin/deletion-requests}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/admin/deletion-requests, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.897] INFO (31072): Mapped {/api/v1/admin/deletion-requests/:id/approve, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/deletion-requests/:id/reject, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): HealthController {/api/v1/health}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/health, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): MediaController {/api/v1/media}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/media/:key, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): ReferentialsController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/wilayas, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/amenities, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venue-styles, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VenuesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/publication, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VenueMediaController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/photos, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/photos/order, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/photos/:photoId, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/photos/:photoId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/virtual-tour, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): SlotTemplatesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates/:slotId, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates/:slotId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): PricingRulesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VenuesAdminController {/api/v1/admin/venues}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/venues/pending-publication, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/venues/:id, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/venues/:id/publish, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/venues/:id/reject, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/admin/venues/:id/commission-rate, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VenuesPublicController {/api/v1/venues}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:slug, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VenueMapController {/api/v1/venue-map}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venue-map, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): AvailabilityController {/api/v1/venues}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:slug/availability, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): AvailabilityProController {/api/v1/pro/venues}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/availability, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): AvailabilityBlocksController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/availability-blocks, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/availability-blocks, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/availability-blocks/:blockId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VisitAvailabilitiesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/visit-availabilities, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/visit-availabilities, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/visit-availabilities/:availabilityId, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:id/visit-availabilities/:availabilityId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VisitSlotsController {/api/v1/venues}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:slug/visit-slots, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): VisitBookingsController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:slug/visit-bookings, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/me/visit-bookings, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/visit-bookings/:id, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/visit-bookings, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/pro/venues/:id/visit-bookings/:bookingId, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): BookingsController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/venues/:slug/bookings, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/me/bookings, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.898] INFO (31072): Mapped {/api/v1/bookings/:id, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): BookingsProController {/api/v1/pro}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/venues/:id/bookings, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/bookings/:id/accept, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/bookings/:id/decline, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/bookings/:id/cancel, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): ServicesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/venues/:id/services, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/venues/:id/services, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/services/:id, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/services/:id, DELETE} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): QuotesController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/venues/:id/quotes, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/venues/:id/quotes/conversion, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/venues/:id/quotes, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/deliver, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/revise, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/convert, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/cancel, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/promote, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/client-name, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): QuoteDocumentController {/api/v1}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/quotes/:id/document, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): ProClientsController {/api/v1/pro/clients}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/clients/lookup, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/clients, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/clients/:id/names, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/clients/:id, PATCH} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): StaffSessionController {/api/v1/pro/staff}: {"context":"RoutesResolver"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/staff/activate, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/staff/login, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/staff/session, GET} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/staff/logout, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Mapped {/api/v1/pro/staff/password, POST} route {"context":"RouterExplorer"}
+[WebServer] [02:26:31.899] INFO (31072): Nest application successfully started {"context":"NestApplication"}
+[WebServer] [02:26:32.757] INFO (31072): request completed {"req":{"id":1,"method":"GET","url":"/api/v1/health","query":{},"params":{"path":["health"]},"headers":{"accept":"*/*","host":"localhost:3101","connection":"keep-alive"},"remoteAddress":"::1","remotePort":59035},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-2dvC21VrQy+EU0FoKTlU8BwtPhE\""}},"responseTime":72}
+[WebServer] [02:26:55.097] INFO (31072): request completed {"req":{"id":3,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59055},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999998","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":65}
+[WebServer] [02:26:55.100] INFO (31072): request completed {"req":{"id":2,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59054},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":214}
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 3 tests using 1 worker
+
+[WebServer] [02:27:12.338] INFO (31072): request completed {"req":{"id":5,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59074},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999996","x-ratelimit-reset":"43","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":42}
+[WebServer] [02:27:12.346] INFO (31072): request completed {"req":{"id":4,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59073},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999997","x-ratelimit-reset":"43","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":56}
+[WebServer] [02:27:14.298] INFO (31072): request completed {"req":{"id":6,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd"},"remoteAddress":"::1","remotePort":59088},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9999","x-ratelimit-reset":"900","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-3OXO/aVxnhs7iQ4y8FuzlfZovzU\""}},"responseTime":3}
+[WebServer] [02:27:14.420] INFO (31072): request completed {"req":{"id":7,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59073},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999995","x-ratelimit-reset":"41","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":19}
+[WebServer] [02:27:14.437] INFO (31072): request completed {"req":{"id":8,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59074},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"41","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":15}
+[WebServer] [02:27:16.389] INFO (31072): request completed {"req":{"id":9,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59088},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9998","x-ratelimit-reset":"898","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-gkNQeByeeP2t+aMymogpYCCnkB8\""}},"responseTime":4}
+[WebServer] [02:27:21.520] INFO (31072): request completed {"req":{"id":10,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59092},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999993","x-ratelimit-reset":"34","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":15}
+[WebServer] [02:27:23.363] INFO (31072): request completed {"req":{"id":11,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59097},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9997","x-ratelimit-reset":"891","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-rlOCXFKVxplJMEEOj2gUAWFfnvk\""}},"responseTime":2}
+[WebServer] [02:27:29.641] INFO (31072): request completed {"req":{"id":12,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59099},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9996","x-ratelimit-reset":"885","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-wbWZ0Rw2++cHBfSM8Y7/zurA4Qk\""}},"responseTime":2}
+[WebServer] [02:27:35.816] INFO (31072): request completed {"req":{"id":13,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59109},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9995","x-ratelimit-reset":"879","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-cnx9RdXQ1eYWTzYfTgMAfyncWeg\""}},"responseTime":3}
+[WebServer] [02:27:36.348] INFO (31072): request completed {"req":{"id":14,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59109},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9994","x-ratelimit-reset":"878","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-rLyzIkI2/RClAsdkR6BJmOkux60\""}},"responseTime":2}
+[WebServer] [02:27:36.783] INFO (31072): request completed {"req":{"id":15,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59109},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9993","x-ratelimit-reset":"878","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-mPPZu91l5F0Gnrjlxrqjd0PeIRg\""}},"responseTime":1}
+[WebServer] [02:27:37.179] INFO (31072): request completed {"req":{"id":16,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59109},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9992","x-ratelimit-reset":"878","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-zTfp24dD08CtQZUsFN3qB+p/iyU\""}},"responseTime":2}
+[WebServer] [02:27:37.557] INFO (31072): request completed {"req":{"id":17,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59109},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9991","x-ratelimit-reset":"877","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-B6+aDC9uIpb/OrSO/RcF7++Bl48\""}},"responseTime":2}
+[WebServer] [02:27:42.022] INFO (31072): request completed {"req":{"id":18,"method":"GET","url":"/api/v1/venues/prechauffage-route-dynamique","query":{},"params":{"path":["venues","prechauffage-route-dynamique"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59116},"res":{"statusCode":404,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"181","etag":"W/\"b5-Xo/MpsOhPtJMOP9mcaoUC7ZUi/Y\""}},"responseTime":170}
+  ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (34.7s)
+[WebServer] [02:27:43.883] INFO (31072): request completed {"req":{"id":19,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59127},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9990","x-ratelimit-reset":"871","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-pgLdEYXakdTvJVSigxhIkE7E0eo\""}},"responseTime":1}
+[WebServer] [02:27:59.507] INFO (31072): request completed {"req":{"id":20,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59132},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":40}
+[WebServer] [02:27:59.514] INFO (31072): request completed {"req":{"id":21,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59133},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999993","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":42}
+[WebServer] [02:28:01.680] INFO (31072): request completed {"req":{"id":22,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd"},"remoteAddress":"::1","remotePort":59147},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9989","x-ratelimit-reset":"853","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-Ijn7jHxxq4nRQpIGkETKEIkOQ8I\""}},"responseTime":2}
+[WebServer] [02:28:02.092] INFO (31072): request completed {"req":{"id":23,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59132},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999992","x-ratelimit-reset":"58","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":25}
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/fr/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  2 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (6.6s)
+[WebServer] [02:28:16.796] INFO (31072): request completed {"req":{"id":24,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59152},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999995","x-ratelimit-reset":"43","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":43}
+[WebServer] [02:28:16.804] INFO (31072): request completed {"req":{"id":25,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59153},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"43","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":48}
+[WebServer] [02:28:18.946] INFO (31072): request completed {"req":{"id":26,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":59167},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9988","x-ratelimit-reset":"836","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-0H3hcEg3xUekK42JTp0jTmEldoI\""}},"responseTime":2}
+[WebServer] [02:28:19.264] INFO (31072): request completed {"req":{"id":27,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":59152},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999993","x-ratelimit-reset":"41","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":16}
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/ar/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  3 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (6.4s)
+
+
+  1) [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not ""
+
+      125 |     // 1. la commune : la première commune réelle de la liste.
+      126 |     const valeurCommune = await boite.locator("#wz-city option").evaluateAll((os) => (os as HTMLOptionElement[]).map((o) => o.value).filter((v) => v !== "")[0] ?? "");
+    > 127 |     expect(valeurCommune).not.toBe("");
+          |                               ^
+      128 |     await boite.locator("#wz-city").selectOption(valeurCommune);
+      129 |     await boite.getByRole("button", { name: cat.wizard.continue }).click();
+      130 |     await expect(page).toHaveURL(/guide=guests/);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:127:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not ""
+
+      125 |     // 1. la commune : la première commune réelle de la liste.
+      126 |     const valeurCommune = await boite.locator("#wz-city option").evaluateAll((os) => (os as HTMLOptionElement[]).map((o) => o.value).filter((v) => v !== "")[0] ?? "");
+    > 127 |     expect(valeurCommune).not.toBe("");
+          |                               ^
+      128 |     await boite.locator("#wz-city").selectOption(valeurCommune);
+      129 |     await boite.getByRole("button", { name: cat.wizard.continue }).click();
+      130 |     await expect(page).toHaveURL(/guide=guests/);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:127:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs\warmup.setup.ts (34.7s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  2 failed
+    [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+    [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+  1 passed (2.4m)
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r48-assistant-choix.e2e.ts
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+(node:27912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,33 @@
+⛔ PIÈCE MASQUÉE — D353 lancer-touchees-sortie.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1826 octets, sha256 f6dfabaf635049b556e88253b65e265e14f1ee47db3d26be1bd87e6e1ee13672. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+71 fichier(s) modifié(s) depuis cd8e079 → 5 campagne(s) concernée(s) sur 70 ; campagnes sans fichier détecté : 0 []
+  · neutralize-available-on.py  (1 fichier(s) en commun)
+      apps/client/src/lib/api.ts
+  · neutralize-ca2.py  (1 fichier(s) en commun)
+      apps/client/src/lib/api.ts
+  · neutralize-horizon.py  (1 fichier(s) en commun)
+      apps/client/src/lib/api.ts
+  · neutralize-pub1.py  (1 fichier(s) en commun)  (à part, mode complet)
+      apps/client/src/lib/api.ts
+  · neutralize-r55.py  (1 fichier(s) en commun)  (à part, mode complet)
+      apps/client/src/lib/api.ts
+
+3 campagne(s) jouée(s) ici, en série (jamais en parallèle : chacune MUTE des fichiers sources) ; 2 jouée(s) à part.
+
+[1/3] neutralisation\neutralize-available-on.py …
+    code 0 · 353 s · 10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+
+[2/3] neutralisation\neutralize-ca2.py …
+    code 0 · 253 s · 42 garde(s) mordue(s) sur 42 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 42 sur 42, 0, 0)
+
+[3/3] neutralisation\neutralize-horizon.py …
+    code 0 · 160 s · 6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+
+== BILAN : 3 campagne(s) examinée(s), durée 767 s ==
+  neutralize-available-on.py               code 0 · 10 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+  neutralize-ca2.py                        code 0 · 42 garde(s) mordue(s) sur 42 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 hors exécution (attendu : 42 sur 42, 0, 0)
+  neutralize-horizon.py                    code 0 · 6 garde(s) neutralisée(s) et ROUGE(s) sur la plage demandée.
+codes : 0 = 3 · 1 (muette) = 0 · 2 (pré-vol / erreur de script) = 0 · 3 (incomplète, cibles hors exécution) = 0 · autre = 0

@@ -1,0 +1,81 @@
+⛔ PIÈCE MASQUÉE — D353 R55-9-client-api.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7138 octets, sha256 1116ddb2d4300ef0878cd0983282dc469cf4338964c561661a533e108256413a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/client
+
+ ❯ src/lib/api.test.ts (32 tests | 3 failed) 51ms
+   ✓ searchVenues — les trois issues > 200 : `ok`, avec le corps tel quel — l'écho `availableOn` compris 5ms
+   ✓ searchVenues — les trois issues > ⚠ 400 + `AVAILABLE_ON_PAST` ⇒ `past-date`, JAMAIS `unreachable` 1ms
+   ✓ searchVenues — les trois issues > ⚠ 400 + `AVAILABLE_ON_BEYOND_HORIZON` ⇒ `beyond-horizon`, PAS `past-date` 1ms
+   ✓ searchVenues — les trois issues > 400 d'un AUTRE code ⇒ `unreachable` : on lit le CODE, pas le statut seul 0ms
+   ✓ searchVenues — les trois issues > ⚠ le code à la RACINE n'est PAS reconnu : c'est la forme imaginée, pas celle du filtre 0ms
+   ✓ searchVenues — les trois issues > 400 au corps ILLISIBLE ⇒ `unreachable`, sans exception qui remonte 0ms
+   ✓ searchVenues — les trois issues > 500 ⇒ `unreachable`, et le corps n'est même pas lu 0ms
+   ✓ searchVenues — les trois issues > réseau coupé ⇒ `unreachable`, jamais une exception qui casserait la page 0ms
+   ✓ getVenueMap — les points de la carte > 200 : `ok`, avec le corps tel quel, demandé à la route de carte avec LA requête reçue 2ms
+   ✓ getVenueMap — les points de la carte > ⛔ la carte est lue SANS CACHE : le second argument de `fetch` porte `cache: "no-store"` (D353, R-4) 0ms
+   ✓ getVenueMap — les points de la carte > sans filtre : aucun « ? » orphelin 0ms
+   ✓ getVenueMap — les points de la carte > ⛔ 500 ⇒ `unreachable` : une panne ne se dit pas « zéro salle » 0ms
+   ✓ getVenueMap — les points de la carte > ⛔ 200 dont `points` n'est pas un tableau ⇒ `unreachable`, pas une carte vide 0ms
+   ✓ getVenueMap — les points de la carte > corps illisible ou réseau coupé ⇒ `unreachable`, jamais une exception 1ms
+   ✓ getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ liste PLEINE : UNE seule lecture, gardée une heure (`revalidate: 3600`), rendue telle quelle 1ms
+   ✓ getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue 1ms
+   ✓ getWilayas — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé) 0ms
+   ✓ getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse non ok : `[]` et UNE seule lecture — un échec n'est pas relu, il n'est pas non plus gardé par Next (mesuré) 0ms
+   ✓ getWilayas — la mémoire d'un référentiel (D353, R-3) > exception à la première lecture : `[]`, jamais une exception qui remonte 0ms
+   × getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception 16ms
+     → expected { message: 'boom' } to deeply equal []
+   ✓ getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ liste PLEINE : UNE seule lecture, gardée une heure (`revalidate: 3600`), rendue telle quelle 2ms
+   ✓ getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue 3ms
+   ✓ getAmenities — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé) 0ms
+   ✓ getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse non ok : `[]` et UNE seule lecture — un échec n'est pas relu, il n'est pas non plus gardé par Next (mesuré) 0ms
+   ✓ getAmenities — la mémoire d'un référentiel (D353, R-3) > exception à la première lecture : `[]`, jamais une exception qui remonte 0ms
+   × getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception 1ms
+     → expected { message: 'boom' } to deeply equal []
+   ✓ getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ liste PLEINE : UNE seule lecture, gardée une heure (`revalidate: 3600`), rendue telle quelle 1ms
+   ✓ getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue 2ms
+   ✓ getVenueStyles — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé) 0ms
+   ✓ getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse non ok : `[]` et UNE seule lecture — un échec n'est pas relu, il n'est pas non plus gardé par Next (mesuré) 0ms
+   ✓ getVenueStyles — la mémoire d'un référentiel (D353, R-3) > exception à la première lecture : `[]`, jamais une exception qui remonte 0ms
+   × getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception 6ms
+     → expected { message: 'boom' } to deeply equal []
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 29 passed (32)
+   Start at  02:25:47
+   Duration  5.36s (transform 481ms, setup 471ms, collect 622ms, tests 51ms, environment 2.97s, prepare 517ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/lib/api.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/api.test.ts > getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception
+ FAIL  src/lib/api.test.ts > getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception
+ FAIL  src/lib/api.test.ts > getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais la liste vide gardée prise pour une réponse, jamais une exception
+AssertionError: expected { message: 'boom' } to deeply equal []
+
+- Expected: 
+[]
+
++ Received: 
+{
+  "message": "boom",
+}
+
+ ❯ src/lib/api.test.ts:238:26
+    236|   it("⛔ la RELECTURE qui échoue (500, puis exception) : `[]`, jamais l…
+    237|     stubFetchSuite(reponse(200, []), reponse(500, { message: "boom" })…
+    238|     expect(await lire()).toEqual([]);
+       |                          ^
+    239|     stubFetchSuite(reponse(200, []), new TypeError("fetch failed"));
+    240|     expect(await lire()).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+

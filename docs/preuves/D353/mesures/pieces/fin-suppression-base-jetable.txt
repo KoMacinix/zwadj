@@ -1,0 +1,2 @@
++   0.0s  scénario « fin » — fenêtre de la copie : 20 s ; sonde toutes les 2 s ; Node v22.14.0
++   0.2s  base jetable zwadj_r55mesure SUPPRIMÉE

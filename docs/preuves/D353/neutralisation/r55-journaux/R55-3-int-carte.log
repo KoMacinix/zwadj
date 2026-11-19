@@ -1,0 +1,56 @@
+⛔ PIÈCE MASQUÉE — D353 R55-3-int-carte.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3715 octets, sha256 99f3697128878c766a7af87961b1aedbeeff2da592dd171f94a09d8ed9db0f98. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/venue-map.int-spec.ts (10 tests | 1 failed) 3061ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ  1247ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > l'ordre des points est celui de la liste (le tri décide quels points restent si le plafond tronque) 140ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ un point ne porte QUE les champs du contrat : ni taux, ni adresse, ni propriétaire 109ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > `page` et `pageSize` ne découpent pas la carte : tous les points, quelle que soit la page demandée 112ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT  459ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > route PUBLIQUE : aucune session n'est demandée 51ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > une date passée est refusée avec le code de la liste (400 AVAILABLE_ON_PAST), pas rendue vide 41ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > un filtre mal formé est un 400, comme pour la liste (même schéma) 63ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > ⛔ la route de carte ne MASQUE aucune fiche : une salle dont le slug est « map » reste lisible 136ms
+   × GET /venue-map — « sans créneau actif », AVEC une date : la carte fait EXACTEMENT ce que fait la liste (D353, R-5) > ⛔ sans date : les trois salles sont des deux côtés ; AVEC une date : seule la salle à créneau ACTIF reste, des deux côtés 262ms
+     → expected [ …(3) ] to deeply equal [ Array(1) ]
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  02:24:34
+   Duration  18.35s (transform 3.38s, setup 75ms, collect 13.41s, tests 3.06s, environment 0ms, prepare 628ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/venue-map.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — « sans créneau actif », AVEC une date : la carte fait EXACTEMENT ce que fait la liste (D353, R-5) > ⛔ sans date : les trois salles sont des deux côtés ; AVEC une date : seule la salle à créneau ACTIF reste, des deux côtés
+AssertionError: expected [ …(3) ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
++   "01a1f2b1-ac69-745b-ad11-2f5fa0d42800",
++   "01a1f2b1-ac64-7a09-b58f-683d5906a9fb",
+    "01a1f2b1-ac5d-7bac-ac17-346ea7e299f1",
+  ]
+
+ ❯ test/int/venue-map.int-spec.ts:305:27
+    303|     // La règle du produit elle-même (une carte et une liste qui diver…
+    304|     // créneau ACTIF reste. Les identifiants viennent des salles créée…
+    305|     expect(listeAvec.ids).toEqual([idAvec]);
+       |                           ^
+    306|     expect(carteAvec.points.map((p) => p.id)).toEqual([idAvec]);
+    307|     // Un compteur dit ce qu'il a parcouru : trois salles créées, troi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

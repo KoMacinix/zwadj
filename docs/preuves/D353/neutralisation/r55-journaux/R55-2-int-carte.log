@@ -1,0 +1,76 @@
+⛔ PIÈCE MASQUÉE — D353 R55-2-int-carte.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4693 octets, sha256 58357476fafd0014732fab4539ef14291f47ad8dbeb4de61a6faf01deaef7606. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/venue-map.int-spec.ts (10 tests | 2 failed) 3211ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ pour CHAQUE requête : les points sont les salles de la liste qui ont des coordonnées, et le reste est COMPTÉ  1288ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > l'ordre des points est celui de la liste (le tri décide quels points restent si le plafond tronque) 140ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ un point ne porte QUE les champs du contrat : ni taux, ni adresse, ni propriétaire 88ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > `page` et `pageSize` ne découpent pas la carte : tous les points, quelle que soit la page demandée 93ms
+   ✓ GET /venue-map — la carte et la liste parlent des mêmes salles > ⛔ une salle située de plus que le plafond : les points s'arrêtent au plafond et la réponse le DIT  490ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > route PUBLIQUE : aucune session n'est demandée 61ms
+   × GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > une date passée est refusée avec le code de la liste (400 AVAILABLE_ON_PAST), pas rendue vide 82ms
+     → expected 200 to be 400 // Object.is equality
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > un filtre mal formé est un 400, comme pour la liste (même schéma) 60ms
+   ✓ GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > ⛔ la route de carte ne MASQUE aucune fiche : une salle dont le slug est « map » reste lisible 136ms
+   × GET /venue-map — « sans créneau actif », AVEC une date : la carte fait EXACTEMENT ce que fait la liste (D353, R-5) > ⛔ sans date : les trois salles sont des deux côtés ; AVEC une date : seule la salle à créneau ACTIF reste, des deux côtés 246ms
+     → les points de la carte = les salles de la liste: expected [ …(3) ] to deeply equal [ Array(1) ]
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  02:24:13
+   Duration  17.46s (transform 3.83s, setup 71ms, collect 12.70s, tests 3.21s, environment 0ms, prepare 500ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/venue-map.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas > une date passée est refusée avec le code de la liste (400 AVAILABLE_ON_PAST), pas rendue vide
+AssertionError: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ test/int/venue-map.int-spec.ts:250:24
+    248|   it("une date passée est refusée avec le code de la liste (400 AVAILA…
+    249|     const res = await api().get("/api/v1/venue-map?availableOn=2020-01…
+    250|     expect(res.status).toBe(400);
+       |                        ^
+    251|     expect((res.body as { message?: { code?: string } }).message?.code…
+    252|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/int/venue-map.int-spec.ts > GET /venue-map — « sans créneau actif », AVEC une date : la carte fait EXACTEMENT ce que fait la liste (D353, R-5) > ⛔ sans date : les trois salles sont des deux côtés ; AVEC une date : seule la salle à créneau ACTIF reste, des deux côtés
+AssertionError: les points de la carte = les salles de la liste: expected [ …(3) ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+    "01a1f2b1-565f-79cc-9aa9-1a042d708a01",
++   "01a1f2b1-5665-7b66-9c88-0b077d3ac6cc",
++   "01a1f2b1-566a-707b-af0e-d8d397515ded",
+  ]
+
+ ❯ test/int/venue-map.int-spec.ts:299:105
+    297|     const listeAvec = await idsDeLaListe(requete);
+    298|     const carteAvec = await carte(requete);
+    299|     expect(carteAvec.points.map((p) => p.id).sort(), "les points de la…
+       |                                                                                                         ^
+    300|     expect(carteAvec.total, "le total de la carte = celui de la liste"…
+    301|     expect(carteAvec.withoutCoordinates).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

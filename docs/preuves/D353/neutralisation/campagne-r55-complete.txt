@@ -1,0 +1,59 @@
+⛔ PIÈCE MASQUÉE — D353 campagne-r55-complete.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5559 octets, sha256 b7c28cc72be6cf80946cc9bd2b682f89c103c3d45de3c64c92018070ae615e64. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c  (neutralize-r55.py)
+  calibration ✓ vitest, en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ vitest, plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, supertest `.expect(<statut>)` lève une Error, pas une AssertionError (D305) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ vitest, rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, autre version : VERSION (attendu VERSION)
+  calibration ✓ vitest, crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ vitest, le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ vitest, délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, assertion (web-first qui expire) : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms, did not run) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 14 bras · 0 manqué(s) (attendu 0)
+cibles : 10 déclarées · 10 jouée(s) dans les modes ['e2e', 'int', 'unit'] · 0 NON JOUÉE(S) (mode non demandé) · 3 mesure(s) distincte(s) · 2 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 32 · en échec 0
+  pré-vol e2e-r48 : code 0 · ok 2 · x 0
+  pré-vol int-carte : code 0 · passés 10 · en échec 0
+✓ R55-1. ⛔ R-4 — `getVenueMap` lit l'API avec `cache: "force-cache"` : une carte gardée annonce des salles retirées (la mutation de D351 laissait 564 tests verts)
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 31 · en échec 1 · AssertionError: expected 'force-cache' to be 'no-store' // Object.is equality
+✓ R55-2. ⛔ R-5 — la carte ignore la date demandée : elle garde les salles sans créneau actif que la liste exclut
+   venues-public.service.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-carte] code 1 · passés 8 · en échec 2 · AssertionError: les points de la carte = les salles de la liste: expected [ …(3) ] to deeply equal [ Array(1) ]
+✓ R55-3. ⛔ R-5 — le filtre public perd sa clause « sans créneau actif » (la liste ET la carte la perdent ENSEMBLE : l'égalité tient, la règle du produit non)
+   venues-public.service.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-carte] code 1 · passés 9 · en échec 1 · AssertionError: expected [ …(3) ] to deeply equal [ Array(1) ]
+✓ R55-4. ⛔ R-3 — une réponse VIDE n'est plus relue : la liste vide gardée est rendue (les filtres restent vides une heure alors que l'API est pleine)
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 26 · en échec 6 · AssertionError: expected [] to deeply equal [ { id: 'a1' }, { id: 'b2' } ]
+✓ R55-5. ⛔ R-3 — la relecture d'une réponse vide se fait AVEC le cache (elle rendrait encore l'entrée vide gardée)
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 29 · en échec 3 · AssertionError: expected undefined to be 'no-store' // Object.is equality
+✓ R55-6. ⛔ R-3 — la relecture est faite, mais c'est la liste vide gardée qui est rendue
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 29 · en échec 3 · AssertionError: expected [] to deeply equal [ { id: 'a1' }, { id: 'b2' } ]
+✓ R55-7. ⛔ R-3 — une liste PLEINE n'est plus gardée une heure (lue sans cache : trois lectures de plus à CHAQUE vue)
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 29 · en échec 3 · AssertionError: expected undefined to be 3600 // Object.is equality
+✓ R55-8. ⛔ R-3 — un échec (réponse non ok) est relu au lieu de rendre `[]` tout de suite
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 29 · en échec 3 · AssertionError: expected "spy" to be called 1 times, but got 2 times
+✓ R55-9. ⛔ R-3 — la relecture qui échoue (500) rend le corps de l'erreur comme une liste
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 29 · en échec 3 · AssertionError: expected { message: 'boom' } to deeply equal []
+✓ R55-10. ⛔ R-1 — la relecture d'une réponse vide est retirée : `r48` jouée SEULE depuis un cache EMPOISONNÉ rougit (la liste des communes est vide) — l'assertion durcie de `r48` mord
+   api.ts : ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r48] code 1 · ok 0 · x 2 · Error: expect(received).not.toBe(expected) // Object.is equality
+  empreintes : 2 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+10 garde(s) mordue(s) sur 10 cible(s) · toutes lues en AssertionError / expect( · 0 muette(s) · 0 non mesurée(s) · 0 NON JOUÉE(S) (attendu : 10 sur 10, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.

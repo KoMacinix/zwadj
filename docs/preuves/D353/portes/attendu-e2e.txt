@@ -1,0 +1,6 @@
+D353 — l'attendu de la porte e2e, DÉRIVÉ avant la première passe (R-15 de D343) et jamais écrit de mémoire.
+
+Commande : pnpm --filter @zwadj/e2e exec playwright test --list   (lancée à 03:49:41, avant le pilote ; sortie : portes/e2e-liste.txt)
+Dernière ligne de la liste : « Total: 110 tests in 26 files »
+⇒ attendu d'une passe verte : 109 passés + 1 ignoré = 110 (le total listé est le MÊME qu'à D352 — 110 : ce lot ne crée aucun test e2e, `r48` garde ses deux tests ; le test ignoré n'est pas identifié ici).
+Écrit AVANT la passe 1 (le pilote, 04:03:35) ; la règle est dans docs/preuves/D353/regle-portes.md, § 6, commitée avant.
