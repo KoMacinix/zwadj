@@ -227,3 +227,16 @@ Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesque
 ## Extensions de la table
 
 *(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement : la note de la lecture adverse, la première passe de son instrument, l'audit de secrets « a » et son tri
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse (et avant le commit des rouges). Les fichiers déjà listés en B (`consigne.md`, `regle-portes.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`) entrent dans ce même commit. **Chemins COMPLETS des quatre fichiers que B ne listait pas** :
+
+```
+docs/preuves/D354/lecture-adverse/lecture-adverse.md
+docs/preuves/D354/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D354/audit-secrets-d354a.txt
+docs/preuves/D354/tri-audit-d354a.txt
+```
+
+**Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu un ✗ (contrôle 7.a) et deux comptes trop larges (6.a, 8.a) qui étaient des défauts DE L'INSTRUMENT, confrontés à la source avant d'être crus (D275) ; cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument réparé. **`lecture-adverse.md`** est la note qui les lit. **`audit-secrets-d354a.txt` et `tri-audit-d354a.txt`** : le premier audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
