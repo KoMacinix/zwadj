@@ -1,0 +1,15 @@
+D352 — tri différentiel de l'audit de secrets « e » (cinquième et dernier versement : le contrôle de fin de lot, écrit APRÈS la poussée, et le tri « d »)
+
+Instrument d'audit : python3 neutralisation/audit-secrets.py --sortie docs/preuves/D352/audit-secrets-d352e.txt (1 119 451 octets, 0 CR ; lancé à 20:57, fini à 21:18 le 18/11/2026), joué dans le dépôt de travail, en arrière-plan. Sceau lu dans la dernière ligne de la sortie scellée — « relue identique : True · sceau vérifié à la relecture : True » (console de l'outil). Calibration à deux bras tenue (l'audit : cinq bras sur cinq, « cas réel : rejoué » ; le tri : négatif 0 nouvelle, positif 2 nouvelles).
+
+Procédure du tri : python3 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D352/audit-secrets-d352d.txt docs/preuves/D352/audit-secrets-d352e.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d352d) : 5 799 fichiers parcourus, 5 594 audités, 205 exclus, 3 835 alertes.
+  · nouvelle (d352e)   : 5 803 fichiers parcourus, 5 597 audités, 206 exclus, 3 835 alertes = 3 835 + 0. Contrôle de l'outil : audités + exclus = 5 803 (attendu 5 803, les parcourus).
+  · Exclus : 206 contre 205, soit un de plus — la sortie scellée « d » (sceau vérifié) ; aucune exclusion de « d » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 803 fichiers APRÈS l'audit, sortie scellée « e » comprise ; l'audit en a parcouru 5 803. Entre « d » et « e » il est entré 4 fichiers : `tri-audit-d352d.txt` (1), `controle-fin-de-lot.py` (1), `controle-fin-de-lot.txt` (1) et la sortie scellée « e » (1) = 4. L'arithmétique ferme.
+
+Résultat du tri différentiel : **0 alerte ABSENTE de la sortie précédente** (« alertes ABSENTES de la précédente : 0 · ventilation par motif : aucune »). Les quatre pièces neuves — dont le tri « d », qui NOMME des motifs et des noms de fichiers sans recopier de contexte (c'est la règle que ce lot s'est donnée depuis le tri « b ») — ne rendent aucune alerte : la chaîne d'échos s'arrête ici.
+
+Contrôle « 0 valeur réelle » (D299) : aucun journal à valeurs réelles n'a été produit depuis le contrôle joué avant l'audit « d » (47 journaux, 522 valeurs, 0 porteur sur 103 fichiers) ; les pièces de cet audit sont le contrôle de fin de lot (des SHA et des chemins) et deux fichiers de texte d'audit.

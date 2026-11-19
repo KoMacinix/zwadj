@@ -1,0 +1,26 @@
+calibration : la table (16ff81d) précède la consigne (68d4b2d) : True (attendu vrai) ; la consigne précède la table : False (attendu faux)
+✓ [1] le PREMIER commit du lot ne contient que `docs/preuves/D352/table-ouverture.md`
+     ↳ 16 commits du lot (--first-parent) ; 0 commit(s) importé(s) ; premier = 16ff81d ; fichiers : ['docs/preuves/D352/table-ouverture.md']
+calibration : `venue-list-page.tsx` déclaré : True (attendu vrai) ; `apps/api/src/main.ts` déclaré : False (attendu faux) ; chemins déclarés lus : 145
+✓ [2] `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises)
+     ↳ 124 fichiers modifiés depuis le départ ; 145 chemins déclarés ; NON déclarés : 0 [] (attendu 0)
+✓ [3] la sortie de la lecture adverse entre dans un commit ANTÉRIEUR au premier commit qui touche un `.md` d'autorité
+     ↳ lecture adverse : 68d4b2d (#2) ; premier commit d'autorité : da3ac4d (#11)
+✓ [4] la première écriture d'autorité porte l'arbitrage de Ko (bloc « ARBITRÉ LE 18/11/2026 PAR KO — LE RANG 54 ») et la table recopiée
+     ↳ commit da3ac4d ; bloc d'arbitrage dans le diff : True ; table recopiée : True
+✓ [5] chaque fichier du lot est déclaré dans la table AVANT (ou dans) le commit qui l'ajoute — l'extension précède le fichier qu'elle couvre
+     ↳ 107 fichiers ajoutés examinés, 3 extensions ; en retard : 0 [] (attendu 0)
+✓ [6] les pièces des rouges de R-1 entrent dans un commit ANTÉRIEUR au premier commit de code (D334, point 5)
+     ↳ rouges : d5f5195 (#3) ; premier commit de code (`venue-list-page.tsx`) : fca8da9 (#4)
+✓ [6b] le rouge de l'e2e sous latence entre AVANT le correctif du spec `r50`
+     ↳ rouge e2e : 191989f (#8) ; correctif : 4e3f719 (#9)
+✓ [7] le fichier de test de la liste, livré, a l'empreinte sha256 qu'ont jouée les rouges
+     ↳ rouges : 0750d7419aee71529c7dfda5ea9fc1ac497974d14ab0717edfb7ddab36cf30b7 ; disque : 0750d7419aee71529c7dfda5ea9fc1ac497974d14ab0717edfb7ddab36cf30b7
+✓ [8] l'arbre est propre (`git status --short` : 0 ligne), aucun stash
+     ↳ lignes : 0 [] ; stash : 0
+✓ [9] les trois branches distantes gardées n'ont pas bougé
+     ↳ relevé {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'} ; attendu {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'}
+✓ [10] local et `origin/main` sur le MÊME SHA (D288) — après push puis fetch
+     ↳ HEAD = 6636ca7b1a02e2daab4694ef23476a181f3a9f2d ; origin/main = 6636ca7b1a02e2daab4694ef23476a181f3a9f2d
+
+TOTAL : 11 contrôles — 11 ✓ · 0 ✗  (attendu : tous ✓)
