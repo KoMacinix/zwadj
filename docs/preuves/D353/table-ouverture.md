@@ -174,3 +174,16 @@ docs/preuves/D353/rouges/r3-tests-referentiels-contre-code-d-avant.txt
 | `neutralisation/neutralize-r48.py`, `neutralize-pub1.py`, `neutralize-ca1.py`, `neutralize-ca6.py` | **à relever** | conditionnels : seulement si `lancer-touchees.py` trouve une ancre périmée ; leur éventuelle révision sera déclarée par une extension, avant son commit |
 
 **Pièces encore À VENIR** (déclarées par des extensions ultérieures, avant leurs commits) : les journaux de `neutralize-r55.py` et des campagnes touchées, les portes, les deux passes e2e, les audits « c » et suivants, le contrôle de fin de lot.
+
+### Extension 5 — les pièces de l'audit de secrets « c » et de son tri, et le script du contrôle de fin de lot
+
+Écrite **avant** le commit qui verse les pièces de l'extension 4 (le troisième versement). Chemins COMPLETS :
+
+```
+docs/preuves/D353/audit-secrets-d353c.txt
+docs/preuves/D353/tri-audit-d353c.txt
+docs/preuves/D353/aucune-valeur-reelle-d353c.txt
+docs/preuves/D353/controle-fin-de-lot.py
+```
+
+`controle-fin-de-lot.py` (le script, adapté de `docs/preuves/D352/controle-fin-de-lot.py`) n'existe pas encore : il est écrit à la fin du lot, avec sa sortie `controle-fin-de-lot.txt` (déjà déclarée en B). Il est déclaré ICI, avant son commit.
