@@ -240,3 +240,20 @@ docs/preuves/D354/tri-audit-d354a.txt
 ```
 
 **Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu un ✗ (contrôle 7.a) et deux comptes trop larges (6.a, 8.a) qui étaient des défauts DE L'INSTRUMENT, confrontés à la source avant d'être crus (D275) ; cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument réparé. **`lecture-adverse.md`** est la note qui les lit. **`audit-secrets-d354a.txt` et `tri-audit-d354a.txt`** : le premier audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
+
+### Extension 2 — les pièces des ROUGES, le second audit de secrets, et un fichier d'aide que la table B ne listait pas
+
+Écrite **avant** le commit qui verse les rouges, et donc **avant le premier commit de code** (D334, point 5). **Chemins COMPLETS** :
+
+```
+apps/api/test/int/row-lock.ts
+docs/preuves/D354/rouges/jouer-rouges.py
+docs/preuves/D354/rouges/rouge-unit.txt
+docs/preuves/D354/rouges/rouge-client.txt
+docs/preuves/D354/rouges/rouge-int.txt
+docs/preuves/D354/rouges/lecture-des-rouges.md
+docs/preuves/D354/audit-secrets-d354b.txt
+docs/preuves/D354/tri-audit-d354b.txt
+```
+
+**`apps/api/test/int/row-lock.ts`** — un fichier de CODE DE TEST que la section B ne listait pas : l'aide qui FORCE un entrelacement par un verrou de ligne tenu hors du service (D350) ne connaissait que deux tables (`account_deletion_requests`, `venues`) ; R-4 exige de tenir le verrou du PROFIL (`pro_profiles`, L1) hors du service pour y faire attendre deux désactivations. Une ligne d'union, un commentaire ; modifié AVANT les rouges (l'empreinte du fichier est celle de l'arbre au moment du jeu), commité avec le code. **Les pièces des rouges** : la commande, l'empreinte sha256 de CHAQUE fichier de test joué, le code de sortie et la sortie BRUTE de chaque famille (unitaire, client d'API, intégration), la note qui les LIT (`lecture-des-rouges.md` : assertion ou erreur ? combien de fichiers tombés à la collecte ?), et le lanceur (`jouer-rouges.py`, archivé comme preuve, jamais promu en instrument, D291). **`audit-secrets-d354b.txt` et `tri-audit-d354b.txt`** : le second audit de secrets (D298) et son tri différentiel (D299) contre la sortie « a », joués sur ces pièces avant leur versement.
