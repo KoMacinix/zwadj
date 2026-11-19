@@ -237,3 +237,21 @@ docs/preuves/D353/scenarios-ko.md
 ```
 
 **Ce que ces pièces portent** : `neutralisation/` — la campagne complète de `neutralize-r55.py` (**10 gardes mordues sur 10**, empreinte `94bea8a2…be75c` en première ligne de chaque journal), les trois campagnes du lanceur, `r48 --e2e`, `ca1 --int`, `pub1 --e2e`, les empreintes de TOUS les harnais avant et après (70 contre 70, 0 différent) ; `portes/` — les six portes du pilote, la passe 2 de l'e2e, l'attendu dérivé, le relevé de l'état machine ; `scenarios-ko.md` — le geste de Ko ; `mesures/pieces/fin-suppression-base-jetable.txt` — la suppression de la base jetable de mesure.
+
+### Extension 7 — les pièces de l'audit « d », de la passe D277 et de l'audit final « e » (déclarées AVANT d'exister, pour que la table soit définitive quand elle est recopiée)
+
+Écrite **avant** le commit qui verse les pièces de l'extension 6 (le quatrième versement) et avant la recopie de cette table dans `ZWADJ_CONTINUITE.md`. Chemins COMPLETS. **L'audit « d »** couvre le quatrième versement (en cours à l'écriture de cette ligne) ; **la passe D277** (la recherche mécanique, dans les deux sens, des affirmations d'autorité que ce lot invalide ou rend permises — D277, D287) et **l'audit « e »** couvrent le versement final, avec le contrôle de fin de lot (`controle-fin-de-lot.txt`, déjà déclaré en B, écrit APRÈS la poussée) :
+
+```
+docs/preuves/D353/audit-secrets-d353d.txt
+docs/preuves/D353/tri-audit-d353d.txt
+docs/preuves/D353/aucune-valeur-reelle-d353d.txt
+docs/preuves/D353/passe-d277.py
+docs/preuves/D353/passe-d277.md
+docs/preuves/D353/passe-d277-sortie.txt
+docs/preuves/D353/audit-secrets-d353e.txt
+docs/preuves/D353/tri-audit-d353e.txt
+docs/preuves/D353/aucune-valeur-reelle-d353e.txt
+```
+
+⚠ **Écrit pour ne pas se lire comme tenu** : déclarer un fichier avant qu'il existe n'est pas le promettre vert — si l'audit « e » n'est pas joué ou si la passe D277 ne trouve rien à écrire, le rapport de fin de lot dit lesquels de ces neuf fichiers existent.
