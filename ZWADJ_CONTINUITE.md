@@ -2361,11 +2361,11 @@ b) Les six garanties de base du § 5.3 du cadrage de D340, (a) à (f), telles qu
 - R-5. S-111 : une liste publique dont la licence permet la redistribution, au moins 10 000 entrées, source, licence et sha256 écrits dans la table ; comparaison après mise en minuscules. Aucune règle de mot de passe au-delà de DR5.
 - R-6. Avant qu'un PIN existe (ce lot), l'échéance d'un appareil est la durée du PIN (90 jours, même paramètre) ; L36-3b la ramène sous pin_expires_at. Motif : la tranche dit « jamais au-delà de pin_expires_at », et pin_expires_at est NULL tant qu'aucun PIN n'existe.
 - R-7. SIG-1 se répare au PREMIER commit de code de ce lot, seul, avant tout cookie neuf, avec une garde qui lit la sortie réelle du journal de l'application Nest démarrée (limite 12 du cadrage). Motif : S-112 ; la fuite existe déjà pour zwadj_rt.
-- R-8. L'audit « création et modification de fiche » (DR5) et S-107 appartiennent à L36-3a-2, pas à ce lot.
+- R-8. L'audit « création et modification de fiche » (DR5) et S-107 appartiennent à L36-3a-2, pas à ce lot. ⛔ *(D354, 19/11/2026 : **S-107 est CODÉE** (rang 56, R-2) ; **l'audit « création et modification de fiche » N'EST PAS écrit** — S-240 : la consigne du rang 56 (R-6) décrit l'audit des trois actions du PERSONNEL, que ce lot livre ; celui des FICHES CLIENT est la question du rapport de D354. Annoté, pas réécrit.)*
 - R-9. Lectures de D302 confirmées : « un rang que Ko arbitre » = un rang que le relecteur cadre et que Ko adopte en collant la consigne ; « aucun lot ne s'ouvre sans l'arbitrage de Ko » vaut pour chaque lot, une consigne collée chacun.
 - R-10. Les trois décisions dérivées par la session à la clôture de D340 sont confirmées : une passe pendant laquelle un relevé dit « batterie » est nulle et ne se rejoue pas dans la session (arrêt et rapport) ; un rouge : les sorties se commitent en local, sans pousser ; les refus du pilote passe-secteur.sh (batterie, Docker ou base absents, port d'e2e occupé, arbre sale). Ce pilote sert aux portes de clôture de ce lot. Motif : D290, D270, D276 ; elles tiennent la règle R-8 de D340.
 
-⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 44 **continue** : **L36-3a-1** est un lot de **CODE** par destination, méthode **RENFORCÉE** (R-3 de D340) **sous la pause** de certification (DR1 de D336 ; R-2 de D340) : ni session adverse B, ni certification immédiate ; restent dus les rouges avant le code (D334 item 5), le harnais `neutralisation/neutralize-r44.py`, le contrôle de fin de lot — la lecture adverse de la consigne est **faite** ; **(b)** compteur POUR MÉMOIRE **TROIS, inchangé à l'entrée**, QUATRE à la clôture si le code est livré ; la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque** ; **(c)** la nullabilité du § 5.2 et les six garanties de base du § 5.3 du cadrage de D340 sont des **extensions de la tranche [L36-3], ratifiées par adoption (DR8)** : la migration PEUT s'écrire, sous la réserve que la consigne écrit elle-même (« si ta lecture contredit la tranche, 1 a ou 1 b : NE MIGRE PAS, rapporte l'écart ») ; **aucun** déclencheur pour « jamais zéro Manager » ; **(d)** R-1 à R-10 (D341) sont écrites ici avec leurs motifs, dont **cinq qui changent ce que le cadrage de D340 proposait** : R-3 (D341) **REFUSE S-103** (le code `STAFF_LOGIN_PAUSED` n'existe pas ; une seule réponse, celle du mauvais mot de passe, au même coût) ; R-4 (D341) **AJOUTE** à S-110 (quatre lettres, deux familles de chiffres, les caractères invisibles) ; R-5 (D341) **FIXE** S-111 (liste publique redistribuable d'au moins 10 000 entrées, source, licence et empreinte écrites dans la table, comparaison en minuscules) ; R-6 (D341) fixe l'échéance d'un appareil à 90 jours tant qu'aucun PIN n'existe ; R-7 (D341) place la réparation de SIG-1 au **premier commit de code**, seul ; **(e)** la **lecture adverse** de la consigne (`docs/preuves/D341/lecture-adverse/`) rend **56 contrôles : 47 ✓ · 5 ≈ · 0 ✗ · 4 ?** — **aucune affirmation de la consigne n'est fausse contre le dépôt**, la règle « tu t'arrêtes et tu le dis » **ne joue pas à cette écriture** ; les cinq ≈ n'engagent aucun arrêt : **une TENSION** entre R-3 (D341) (la requête mise en pause paie un argon2 FACTICE, au même coût) et MP-17 du cadrage (« ne déclenchent pas 20 `argon2` »), levée par la lecture « au plus 5 vérifications du VRAI hachage, les autres paient le factice » (le coût total reste borné par la limite de débit par IP), à écrire dans la section D341 comme décision à ratifier ; S-105 couvre deux moitiés dont une seule est dans ce lot ; le mot « audit » de la ligne de 3a-1 ne dit pas quelles actions sont journalisées (à découper entre 3a-1 et 3a-2) ; ~~le recours administrateur d'un Manager seul n'a au backlog qu'une mention (dans l'annotation de L36-3), pas d'entrée à son nom — elle est **due par ce lot**, sans rang (D302)~~ ⛔ *(D341, clôture, 06/11/2026 : **FAUX CONTRE LE DÉPÔT, barré avec son motif** — l'entrée existe depuis D340, sous le titre « LE RECOURS ADMINISTRATEUR D'UN MANAGER SANS SECOND MANAGER N'EXISTE PAS » (`git show e40c141:ZWADJ_BACKLOG.md` la contient, 1 occurrence) ; l'instrument de la lecture adverse cherchait la formule « Manager seul », que l'entrée n'emploie pas, et a rendu un ≈ (4.7) que la première écriture d'autorité a recopié sans le recouper. Le lot n'a donc pas créé d'entrée : il a ANNOTÉ celle qui existait. Voir la section D341, « Écart relevé en clôture ».)* ; MP-14 et MP-25 ne sont pas codés (le champ `mustChangePassword` voyage, rien ne l'écrit à `true`) ; la passe 1 de l'instrument avait des défauts, versés à côté (`defauts-instrument.txt`) ; **(f)** une mesure de la session pour R-5 (D341), dite ici parce qu'elle change ce que la liste achète : la liste retenue (SecLists, MIT) compte **10 001** entrées, mais **340 seulement** passent déjà `passwordSchema` (≥ 8 caractères, une lettre, un chiffre) — elle n'ajoute que 340 refus à la règle d'aujourd'hui ; **(g)** **rien n'est codé par cette écriture** : la section D341, le point d'entrée du rang 44 (avec la table recopiée à l'identique), l'ordre des rangs, le registre, le backlog et `AGENTS.md` suivent **en dernier** ; les occurrences périmées (« À RATIFIER », « OUVERT », « aucune ligne de code de L36-3 ne s'ouvre ») sont traitées par la passe D277 des deux sens à la clôture — une seule est annotée dès maintenant, parce que c'est une **interdiction que cet arbitrage lève**.
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 44 **continue** : **L36-3a-1** est un lot de **CODE** par destination, méthode **RENFORCÉE** (R-3 de D340) **sous la pause** de certification (DR1 de D336 ; R-2 de D340) : ni session adverse B, ni certification immédiate ; restent dus les rouges avant le code (D334 item 5), le harnais `neutralisation/neutralize-r44.py`, le contrôle de fin de lot — la lecture adverse de la consigne est **faite** ; **(b)** compteur POUR MÉMOIRE **TROIS, inchangé à l'entrée**, QUATRE à la clôture si le code est livré ; la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque** ; **(c)** la nullabilité du § 5.2 et les six garanties de base du § 5.3 du cadrage de D340 sont des **extensions de la tranche [L36-3], ratifiées par adoption (DR8)** : la migration PEUT s'écrire, sous la réserve que la consigne écrit elle-même (« si ta lecture contredit la tranche, 1 a ou 1 b : NE MIGRE PAS, rapporte l'écart ») ; **aucun** déclencheur pour « jamais zéro Manager » ; **(d)** R-1 à R-10 (D341) sont écrites ici avec leurs motifs, dont **cinq qui changent ce que le cadrage de D340 proposait** : R-3 (D341) **REFUSE S-103** (le code `STAFF_LOGIN_PAUSED` n'existe pas ; une seule réponse, celle du mauvais mot de passe, au même coût) ; R-4 (D341) **AJOUTE** à S-110 (quatre lettres, deux familles de chiffres, les caractères invisibles) ; R-5 (D341) **FIXE** S-111 (liste publique redistribuable d'au moins 10 000 entrées, source, licence et empreinte écrites dans la table, comparaison en minuscules) ; R-6 (D341) fixe l'échéance d'un appareil à 90 jours tant qu'aucun PIN n'existe ; R-7 (D341) place la réparation de SIG-1 au **premier commit de code**, seul ; **(e)** la **lecture adverse** de la consigne (`docs/preuves/D341/lecture-adverse/`) rend **56 contrôles : 47 ✓ · 5 ≈ · 0 ✗ · 4 ?** — **aucune affirmation de la consigne n'est fausse contre le dépôt**, la règle « tu t'arrêtes et tu le dis » **ne joue pas à cette écriture** ; les cinq ≈ n'engagent aucun arrêt : **une TENSION** entre R-3 (D341) (la requête mise en pause paie un argon2 FACTICE, au même coût) et MP-17 du cadrage (« ne déclenchent pas 20 `argon2` »), levée par la lecture « au plus 5 vérifications du VRAI hachage, les autres paient le factice » (le coût total reste borné par la limite de débit par IP), à écrire dans la section D341 comme décision à ratifier ; S-105 couvre deux moitiés dont une seule est dans ce lot ; le mot « audit » de la ligne de 3a-1 ne dit pas quelles actions sont journalisées (à découper entre 3a-1 et 3a-2) ; ~~le recours administrateur d'un Manager seul n'a au backlog qu'une mention (dans l'annotation de L36-3), pas d'entrée à son nom — elle est **due par ce lot**, sans rang (D302)~~ ⛔ *(D341, clôture, 06/11/2026 : **FAUX CONTRE LE DÉPÔT, barré avec son motif** — l'entrée existe depuis D340, sous le titre « LE RECOURS ADMINISTRATEUR D'UN MANAGER SANS SECOND MANAGER N'EXISTE PAS » (`git show e40c141:ZWADJ_BACKLOG.md` la contient, 1 occurrence) ; l'instrument de la lecture adverse cherchait la formule « Manager seul », que l'entrée n'emploie pas, et a rendu un ≈ (4.7) que la première écriture d'autorité a recopié sans le recouper. Le lot n'a donc pas créé d'entrée : il a ANNOTÉ celle qui existait. Voir la section D341, « Écart relevé en clôture ».)* ; MP-14 et MP-25 ne sont pas codés (le champ `mustChangePassword` voyage, rien ne l'écrit à `true`) ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)* ; la passe 1 de l'instrument avait des défauts, versés à côté (`defauts-instrument.txt`) ; **(f)** une mesure de la session pour R-5 (D341), dite ici parce qu'elle change ce que la liste achète : la liste retenue (SecLists, MIT) compte **10 001** entrées, mais **340 seulement** passent déjà `passwordSchema` (≥ 8 caractères, une lettre, un chiffre) — elle n'ajoute que 340 refus à la règle d'aujourd'hui ; **(g)** **rien n'est codé par cette écriture** : la section D341, le point d'entrée du rang 44 (avec la table recopiée à l'identique), l'ordre des rangs, le registre, le backlog et `AGENTS.md` suivent **en dernier** ; les occurrences périmées (« À RATIFIER », « OUVERT », « aucune ligne de code de L36-3 ne s'ouvre ») sont traitées par la passe D277 des deux sens à la clôture — une seule est annotée dès maintenant, parce que c'est une **interdiction que cet arbitrage lève**.
 
 
 ⇒ **RANG 44 : CLOS SUR LE CODE (D341, 06/11/2026) — L36-3a-1, la couche du personnel et son Manager** : lot de **CODE**, méthode RENFORCÉE sous la pause (R-2 de D340, DR1 de D336 : ni session adverse B, ni certification immédiate), **fait en UNE session** (ouverte le 04/11/2026, close le 06/11/2026 ; le contexte de la conversation a été compacté une fois en cours de route) sur la consigne du relecteur adoptée par Ko ; compteur **POUR MÉMOIRE TROIS → QUATRE** (la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque**, pause de Ko) ; K-14 à K-18 (activer, se connecter, se déconnecter, l'état, changer son mot de passe), le **quatrième garde global fermé par défaut**, la réservation atomique d'une tentative (vingt connexions parallèles = cinq comptées), l'inactivité de 10 minutes et le plafond de 12 heures côté serveur, les cookies `zwadj_ss` et `zwadj_dv_*`, l'audit à charge utile fermée, **toute la tranche [L36-3] migrée d'un bloc** (`20261104170000_staff_layer`), la liste des mots de passe courants, **SIG-1 réparé au premier commit de code, SEUL** (`56b0fd8`) ; **les rouges commités AVANT le code** (109 lus + 11 fichiers tombés à la collecte, l'empreinte de chaque fichier joué) ; `neutralize-r44.py` 236 sur 236 cibles mordues · 0 muette · 0 non mesurée ; union des quatre campagnes que le lot touche : 428 mordues · 0 muette · 0 non mesurée (4 campagnes : r33, r38, r39, r44) + complément de l'angle mort du tri : 200 mordues · 0 muette · 0 non mesurée (5 campagnes : r4, r41, r42, r43, s11b) (⚠ l'angle mort du tri est dit : section D341, § 7) ; portes sur secteur (pilote de D340, SHA `40b7380`) : `typecheck` 0, `lint` 0, `test` 2 441 / 158, `build` 0, `test:int` 735 / 46, `test:e2e` 63 passés · 1 ignoré ; **aucun écran, donc aucun geste de Ko** ; **S-113 à S-129 sont À RATIFIER** (dont S-116 : MP-17 ne promettait pas ce qu'il disait) ; **K-19 à K-23 ne sont pas ratifiés** ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Point d'entrée : « ÉTAT À LA CLÔTURE DE LA SESSION D341 », plus bas ; section « Session du 04/11/2026 au 06/11/2026 — D341 ».
@@ -2787,6 +2787,614 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 56 est **L36-3a-2, le personnel et ses capacités, côté serveur** : lot de **CODE** (il compte, D283), **sans migration**, méthode RENFORCÉE sous la pause (ni session adverse B ni certification : DR1 de D336) ; **(b)** ~~« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »~~ est **PÉRIMÉ** — voir la ligne du rang 56 juste dessous (écrite à la clôture) ; **(c)** **S-231 à S-238 (D353) sont ratifiées par adoption** — leurs mentions « à ratifier » sont annotées ; **(d)** la question de D353 est **répondue : NON** — l'entrée `[CLIENT][PERF]` du backlog est annotée.
 
+⇒ **RANG 56 : CLOS SUR LE CODE (D354, 19/11/2026) — L36-3a-2, le personnel et ses capacités côté serveur : lister, créer, réinitialiser et désactiver un membre (K-19 à K-22), la table des capacités lue par le garde global, S-104 codée, « jamais zéro Manager » tenu sous course, l'audit des trois actions** : lot de **CODE** (il compte, D283), **sans migration, sans écran**, méthode RENFORCÉE sous la pause (DR1 de D336 : ni session adverse B ni certification) ; **les rouges précèdent le code** (pièces des rouges `a256322` < premier commit de code `92c8a3e`) ; **S-104 est mesurée rouge d'abord (12 tests par assertion) puis verte** ; `neutralize-r56.py` : **117 gardes mordues sur 117, 0 muette, 0 non mesurée, 0 non jouée, toutes lues, empreinte `b4dd015b…53344`**, dont **trois trous de garde trouvés par la découverte et corrigés dans les TESTS** (T-3, S-2, A-27) ; campagnes touchées : `adm1` 72/72, `adm2` 84/84, `r25` 11/11, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r43` 87/87, **`r44` 236/236** (modes complets) ; **les six portes à 0 dès la première passe, sans rejeu** (typecheck 0 · lint 0 · test 0 · build 0 · test:int 0 · test:e2e 0 ; api 91 / 1 593, intégration 56 / 907, client 583 et pro 862 inchangés, e2e 109 passés + 1 ignoré, deux passes vertes de suite) ; **un défaut croisé MESURÉ et RAPPORTÉ, non corrigé** (une connexion dont le mot de passe a été vérifié avant une réinitialisation ouvre une session après elle) ; décisions prises seule **S-239 à S-251, à ratifier** ; compteur POUR MÉMOIRE **TRENTE-CINQ → TRENTE-SIX** ; section D354 de ce fichier, pièces : `docs/preuves/D354/`.
+
+⇒ **RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 56, § 4) : **L36-3b, le PIN** (secret HMAC et refus au démarrage, générateur et liste des PIN triviaux, compteur atomique de trois essais, verrouillage et déblocage, expiration, route K-23 ; amendement des réponses de K-14, K-15 et K-18 : le PIN rendu une fois). **Pas arbitré** : le rang 57 n'est **pas** nommé par la session ; L36-4 (les écrans du personnel) dépend de L36-3 et n'a pas de rang. ⚠ **Ce qui attend Ko avant** : la ratification de **S-239 à S-251** (section D354, § 5) ; **la question du rapport** (l'audit de la création et de la modification d'une FICHE client, S-240) ; **la relecture humaine des six messages arabes du personnel** (D354) et des 29 clés arabes du bloc `map` (D351) ; ses gestes restants (`docs/preuves/D353/scenarios-ko.md`, puis ceux de D352, D351 et D350 s'ils ne sont pas faits) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+
+⛔ **TABLE D'OUVERTURE DU RANG 56 (D354), recopiée à l'IDENTIQUE de `docs/preuves/D354/table-ouverture.md`** (premier commit du lot, `7a42e16`, SEUL ; extension 1 `41f2dfe`, extension 2 `884d74c`, extension 3 `5cbb199`, extension 4 `9df1716`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les QUATRE extensions, la quatrième déclarant à l'avance les pièces de l'audit « d », de la passe D277 et de l'audit « e ») :
+
+~~~~markdown
+# D354 — rang 56 — table d'ouverture
+
+Lot : **L36-3a-2 — le personnel et ses capacités, côté serveur (créer, lister, réinitialiser, désactiver ; ce qu'un employé peut faire ; le mot de passe expiré)** — consigne du relecteur « RANG 56 » du 19/11/2026, adoptée par Ko tel quelle (`docs/preuves/D354/consigne.md`, versée dans le commit suivant). Lot de **CODE**, **chemin d'identité**, méthode **RENFORCÉE** (R-3 de D340), sous la pause de certification (Ko, 22/10/2026) ; il **compte** (D283) : compteur POUR MÉMOIRE TRENTE-CINQ → TRENTE-SIX à la clôture.
+
+- **SHA de départ** : `04239635cb09b20a06a0bf758531216c6b34b107` (clôture de D353). `HEAD` = `origin/main` après `git fetch` (les deux sur ce SHA), arbre propre (`git status --short` : 0 ligne), aucun stash (0 ligne), branche `main`. Branches distantes gardées, relevées : `origin/front-client`, `origin/integration-45`, `origin/par-carte`.
+- **Numéro** : D354 — pris en lisant le registre de `ZWADJ_CONTINUITE.md` : 308 lignes `| Dnnn |` (expression `^\| D(\d+) \|`), dernier numéro **353** ; `D354` ne figure dans aucun des quatre fichiers d'autorité (compte 0 sur le texte APLATI : 0, 0, 0, 0 ; caractères aplatis examinés : 4 574 573 ; calibré sur `D353`, qui rend 185, 16, 11 et 0). **S-239** est le premier numéro de décision de la session (S-231 à S-238, de D353, sont ratifiées par adoption : consigne, § 1 d).
+- **Reprise (consigne, § 0), relevée avant toute écriture** : rang 55 CLOS (D353) ; compteur POUR MÉMOIRE TRENTE-CINQ ; « RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : L36-3a-2 avec S-104) ; `origin/main` = `0423963` ; arbre propre, sans stash, sur `main` ; **aucun écart**. Lus : `CLAUDE.md`, `AGENTS.md` (en entier, importé), `ZWADJ_CONTINUITE.md` (état à la clôture du rang 55, ordre des rangs, registre, D341 §§ 3, 4, 13 à 16, D340 « Patrons »), `docs/preuves/D340/cadrage.md` EN ENTIER (sha256 du cadrage lu : `c5b1ae9eca0e3815eb86457614c312be9e0d9c13cf7318f4eaecd471acb02c74`), DR5 et la tranche [L36-3] de la section 4 de D336.
+- **Poste à l'ouverture** : **sur secteur** (`BatteryStatus` = 2, charge 100 %), RAM libre 3 903 Mo, `chrome` 0, `headless_shell` 0, Docker 29.8.0 lancé, ports 3100 et 3101 libres. ⚠ La barre de RAM de D273 (4 579 Mo) est un critère de **certification**, en pause : elle n'est pas appliquée à des portes ordinaires, et ce relevé est noté pour que personne ne le lise comme tel.
+- **Les constats du relecteur (consigne, § 2), RELEVÉS au dépôt avant d'écrire — par lecture** : (a) `ProStaffMember` (`apps/api/prisma/schema.prisma`) porte déjà `role`, `status`, `disabledAt`, `passwordExpiresAt`, `mustChangePassword`, `createdByMemberId`, `passwordFailedCount`, `passwordLockedUntil` — **aucune migration n'est nécessaire** (R-1) ; dernière migration : `20261104170000_staff_layer` ; (b) `apps/api/src/staff/` n'a qu'**un** contrôleur, `staff-session.controller.ts` (activate, login, session, logout, password) ; (c) **aucune table de capacités** n'existe (recherche de `STAFF_CAPABILIT`, `StaffCapabilit`, `peut(` dans `packages/types/src` et `apps/api/src` : 0 occurrence) ; (d) les sept contrôleurs nommés par le cadrage existent sous ces noms : `availability-blocks.controller.ts`, `availability.controller.ts` (une SECONDE classe, `pro/venues`, dans le fichier de la route publique), `bookings-pro.controller.ts`, `visit-bookings.controller.ts` (classe `@Roles(CLIENT)` avec deux handlers `@Roles(PRO)`), `quotes.controller.ts` dans `apps/api/src/venues/` ; `quote-document.controller.ts` dans `apps/api/src/documents/` ; `pro-clients.controller.ts` dans `apps/api/src/clients/` ; (e) `venues.controller.ts` porte aussi `GET pro/venues/:id/publication` (D349), une LECTURE ; (f) `StaffSessionGuard` ne regarde AUJOURD'HUI ni `must_change_password` ni `password_expires_at` (S-104 n'est pas codée) ni la méthode HTTP ni un rôle de membre ; `mustChangePassword` voyage dans les réponses et rien ne l'écrit à `true`.
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 et D334 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) l'extension 1 de cette table, SEULE ; (3) la consigne en pièce, la règle des portes (écrite et commitée AVANT les passes) et la sortie de la lecture adverse de la consigne ET du cadrage contre le dépôt, avec le premier audit de secrets, **avant tout `.md` d'autorité** ; (4) **les pièces des rouges** (sorties lues contre l'état d'avant, avec l'empreinte sha256 de chaque fichier de test joué) — dans un commit **ANTÉRIEUR au premier commit de code** (D334, item 5) ; (5) le code et ses tests ; (6) les harnais, les campagnes, les portes ; (7) les trois `.md` d'autorité, **les arbitrages de Ko en première écriture**, puis la passe D277 des deux sens ; (8) le contrôle de fin de lot, après la poussée. Toute extension de cette table : un commit propre, **avant** le commit du fichier qu'elle couvre.
+- **Règle d'arrêt** (consigne, § 0 et R-1) : un écart à la reprise ⇒ arrêt, et le dire. **Et** (R-1) : si une colonne manque à la mesure, **ARRÊT, rapport** — une extension du schéma est à Ko (DR8).
+- **Écrit pour ne pas se lire comme tenu** : cette table dit ce que le lot **prévoit** de toucher. Elle ne dit pas qu'un mode de défaillance est tenu, ni qu'une garde mord : chacun se **mesure** (rouge d'abord, neutralisation ensuite) et se rapporte avec ses chiffres.
+
+## A. Le départ
+
+Voir les puces ci-dessus (SHA, numéro, reprise, poste, constats). Aucun fichier n'est modifié à l'ouverture : ce fichier est le premier commit du lot.
+
+## B. Les fichiers de CE lot — chemins COMPLETS
+
+**Types, catalogues et client d'API** (la table des capacités et `peut`, les schémas et les codes de K-19 à K-22, les messages FR et AR, les quatre appels) :
+
+```
+packages/types/src/staff-capabilities.ts
+packages/types/src/staff.ts
+packages/types/src/index.ts
+apps/api/src/common/staff-capabilities.spec.ts
+apps/api/src/common/staff-contract.spec.ts
+packages/i18n/messages/fr.json
+packages/i18n/messages/ar.json
+packages/api-client/src/staff-client.ts
+packages/api-client/src/staff-client.test.ts
+```
+
+**Modules purs neufs** (D187 : sans dépendance, neutralisables en millisecondes) et leurs specs — l'état du compte (`etatDuCompte`, R-3), le verdict d'accès (état + capacité + méthode), le verdict « jamais zéro Manager », le générateur du mot de passe temporaire :
+
+```
+apps/api/src/staff/staff-account-state.ts
+apps/api/src/staff/staff-account-state.spec.ts
+apps/api/src/staff/staff-access-policy.ts
+apps/api/src/staff/staff-access-policy.spec.ts
+apps/api/src/staff/staff-members-policy.ts
+apps/api/src/staff/staff-members-policy.spec.ts
+apps/api/src/staff/staff-temporary-password.ts
+apps/api/src/staff/staff-temporary-password.spec.ts
+```
+
+**Le personnel — contrôleur, service, magasin** (K-19 à K-22 ; l'extension du magasin existant, cadrage § 5.5 : « extension du store » ; le garde et la connexion lisent la MÊME règle) :
+
+```
+apps/api/src/staff/staff-members.controller.ts
+apps/api/src/staff/staff-members.service.ts
+apps/api/src/staff/staff-members.service.spec.ts
+apps/api/src/staff/staff-decorators.ts
+apps/api/src/staff/staff-session.guard.ts
+apps/api/src/staff/staff-session.guard.spec.ts
+apps/api/src/staff/staff-session.service.ts
+apps/api/src/staff/staff-session.service.spec.ts
+apps/api/src/staff/staff-session.controller.ts
+apps/api/src/staff/staff-store.types.ts
+apps/api/src/staff/staff-store.prisma.ts
+apps/api/src/staff/staff-store.prisma.spec.ts
+apps/api/src/staff/staff.module.ts
+apps/api/src/staff/staff-source-guards.spec.ts
+```
+
+**Les déclarations de capacité**, au niveau de la CLASSE (R-2). Les **sept** de l'employé (consigne, § 1 c) : `availability-blocks`, `availability` (classe `pro/venues`), `bookings-pro`, `visit-bookings`, `quotes`, `quote-document`, `pro-clients`. ⚠ **Sept de plus, déclarées par la session (S-239, à ratifier)** : `venues`, `venue-media`, `visit-availabilities`, `slot-templates` (capacité `salle`), `pricing-rules` (`prix`), `services` (`prestations`), et le compte commun `account` (`compte`) — pour que « changer d'avis = changer UNE ligne de la table » soit **vrai** de ces trois lignes aussi (sans déclaration, leur ligne serait une donnée inerte et le comportement viendrait seulement de la règle par défaut). Elles **ne changent aucun comportement** : l'employé lit et n'écrit pas, comme la règle par défaut S-107 le dit déjà :
+
+```
+apps/api/src/clients/pro-clients.controller.ts
+apps/api/src/documents/quote-document.controller.ts
+apps/api/src/venues/availability-blocks.controller.ts
+apps/api/src/venues/availability.controller.ts
+apps/api/src/venues/bookings-pro.controller.ts
+apps/api/src/venues/visit-bookings.controller.ts
+apps/api/src/venues/quotes.controller.ts
+apps/api/src/venues/venues.controller.ts
+apps/api/src/venues/venue-media.controller.ts
+apps/api/src/venues/visit-availabilities.controller.ts
+apps/api/src/venues/slot-templates.controller.ts
+apps/api/src/venues/pricing-rules.controller.ts
+apps/api/src/venues/services.controller.ts
+apps/api/src/account/account.controller.ts
+```
+
+**Tests d'intégration** (PostgreSQL réel) et aides — K-19 à K-22 ; « jamais zéro Manager » sous course (R-4) ; la table des capacités dérivée du ROUTEUR avec une session d'employé (R-2) ; S-104, mesurée d'abord (R-3) ; le temporaire jamais dans le journal (R-5) ; l'audit dans la transaction (R-6) :
+
+```
+apps/api/test/int/staff-members.int-spec.ts
+apps/api/test/int/staff-last-manager.int-spec.ts
+apps/api/test/int/staff-capabilities.int-spec.ts
+apps/api/test/int/staff-password-expiry.int-spec.ts
+apps/api/test/int/log-temporary-password.int-spec.ts
+apps/api/test/int/staff-helpers.ts
+apps/api/test/int/route-collector.ts
+apps/api/test/int/staff-session-guard.int-spec.ts
+```
+
+**Harnais** (une garde neuve se neutralise : la preuve qu'elle mord) :
+
+```
+neutralisation/neutralize-r56.py
+```
+
+**Pièces du lot** (celles qu'on connaît à l'ouverture ; les autres entrent par extension, avant leur commit) :
+
+```
+docs/preuves/D354/table-ouverture.md
+docs/preuves/D354/consigne.md
+docs/preuves/D354/regle-portes.md
+docs/preuves/D354/lecture-adverse/confronter-consigne.py
+docs/preuves/D354/lecture-adverse/confronter-sortie.txt
+docs/preuves/D354/controle-fin-de-lot.txt
+```
+
+## C. Les fichiers d'autorité — écrits en dernier, les arbitrages de Ko en première écriture
+
+```
+ZWADJ_CONTINUITE.md
+ZWADJ_BACKLOG.md
+AGENTS.md
+```
+
+`AGENTS.md` : annotations seules (le compteur de la chaîne « AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE… » ; un invariant de la couche du personnel pour K-19 à K-22, les capacités et S-104 ; les phrases de l'invariant « LA COUCHE DU PERSONNEL… (D341) » que ce lot périme — **« S-104 n'est PAS codée »**, **« le recours d'un Manager seul… »** (inchangé), **« `mustChangePassword` voyage mais rien ne l'écrit à `true` »**). `ZWADJ_BACKLOG.md` : la réponse de Ko à la question de D353 en **annotation additive** de l'entrée `[CLIENT][PERF]` « LE COÛT DE LA RELECTURE D'UNE RÉPONSE VIDE N'EST PAS MESURÉ » (consigne, § 1 e), et les reports neufs de ce lot.
+
+## D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucune migration** (R-1), **aucun écran** (R-7 : rien dans `apps/pro` ni `apps/client`), **aucun montant, rien du chemin de l'argent** (R-7, D316 : par la fonction), **aucun contrat d'API autre que K-19 à K-22** (consigne, § 1 b : « et eux seuls »), aucune variable d'environnement, `apps/api/src/app.module.ts` non touché (le quatrième garde y est déjà).
+- **`apps/api/src/clients/pro-clients.service.ts` n'est PAS déclaré** : le cadrage (§ 5.5, ligne « lot 2 ») y met « les lignes d'audit « création et modification de fiche » », « du code du rang 41, déjà livré — à ratifier comme périmètre » ; la consigne (R-6) dit « L'audit des fiches (DR5, S-108) » **puis** décrit des actions du PERSONNEL (« chaque création, réinitialisation et désactivation, acteur = le membre Manager »). **Lecture de la session, écrite avant d'écrire** (S-240, à ratifier — c'est l'objet de la **question unique** du rapport) : l'audit du lot est celui des trois actions de gestion du personnel ; l'audit de la création et de la modification d'une **fiche client** ne s'écrit PAS ici (modifier le code du rang 41 est une modification de comportement non demandée : `CLAUDE.md`, « s'arrêter et demander »). La lecture adverse l'instruit.
+- **Hors lot** (consigne, R-8) : le PIN (L36-3b), les écrans (L36-4 — où il faudra mesurer le brouillon de D345 au changement de membre), le recours d'un Manager seul qui a perdu son mot de passe (backlog), le changement de rôle d'un membre (aucune route au cadrage), le saut de l'en-tête de l'assistant d'une salle (D352).
+- **Ni le PIN ni la révocation d'un PIN** : il n'existe pas encore (3b) ; la réinitialisation ne touche aucune colonne `pin_*` (R-5) — **à reprendre par 3b**, écrit au backlog.
+- **`neutralisation/lancer-campagnes.py`** n'est pas modifié ; les campagnes de D341 (`neutralize-r44.py`) sont **rejouées** (le lot touche les fichiers qu'elles lisent) et ne sont modifiées que si une ancre est périmée (conditionnel ci-dessous).
+
+## E. Le cadrage, RECOPIÉ par script depuis `docs/preuves/D340/cadrage.md` (consigne, § 2 : « depuis le fichier, jamais depuis ce message »)
+
+⛔ Ce qui suit est la sortie de `make_table.py` lue sur le cadrage (sha256 `c5b1ae9eca0e3815eb86457614c312be9e0d9c13cf7318f4eaecd471acb02c74`) : chaque ligne est celle du fichier, à l'identique. Le script abandonne si un motif ne trouve pas sa ligne ou si le compte attendu n'est pas atteint (§ 4 : les modes dont la colonne « lot » contient « 2 » — **15 lignes relevées** ; § 5.1 : K-19 à K-22 ; § 5.4 : la table des capacités et S-107 ; § 3.1 : les verrous ; § 5.5 : les trois lignes « lot 2 »).
+
+### E.1 § 3.1 — l'ordre total des verrous (S-101)
+
+| rang | objet verrouillé | pris par |
+|---|---|---|
+| **L1** | la ligne `pro_profiles` du pro (`SELECT … FOR UPDATE`, ou l'`UPDATE` de `staff_layer_enabled_at`) | activation ; **toute opération qui peut réduire le nombre de Managers actifs** (désactivation) |
+| **L2** | les lignes `pro_staff_members` (par `id` croissant s'il y en a plusieurs) | désactivation, réinitialisation, changement de mot de passe, **et l'`UPDATE` atomique des compteurs** (mot de passe, PIN) |
+| **L3** | les lignes `pro_staff_devices` | création et révocation d'appareils |
+| **L4** | les lignes `pro_staff_sessions` | création, fin, et le « toucher » d'activité du garde |
+
+**Règle** : une transaction ne prend jamais un verrou de rang inférieur à celui qu'elle tient déjà. Sans cycle possible dans l'ordre d'acquisition, **aucun interblocage n'existe** — c'est l'argument, pas un test qui n'en a pas trouvé.
+
+- **« Jamais zéro Manager »** : la désactivation prend **L1 d'abord**, compte les Managers actifs **sous ce verrou**, puis écrit L2 puis L4. Deux désactivations simultanées se **sérialisent sur L1** : la seconde voit un seul Manager actif et refuse (409). Aucune désactivation ne prend L2 avant L1.
+
+### E.2 § 4 — les modes de défaillance du lot (« un mode qui n'y est pas ne se code pas », D126) — la colonne « lot » : `1` = 3a-1 (fait, D341), `2` = ce lot, `P` = 3b
+
+| # | mode | garde serveur | garde base | mesure | lot |
+|---|---|---|---|---|---|
+| MP-4 | la session d'un membre **désactivé** | le garde joint le statut du membre ; `DISABLED` → refus et fin `DISABLED` | — (cohérence `status`/`disabled_at` : extension proposée, § 5.3) | int-spec : désactivation par SQL direct puis requête ; puis par la route (lot 2) | 1 · 2 |
+| MP-6 | **deux Managers se désactivent l'un l'autre en même temps** | § 3.2 : L1 puis comptage sous verrou | — (déclencheur différé hors tranche, § 3.2) | int-spec : 2 Managers, 2 requêtes simultanées répétées 30 fois ; invariant : **toujours 1 Manager actif** | 2 |
+| MP-11 | PIN / mot de passe / jeton **jamais en clair** hors de son unique affichage | une seule route rend le PIN (`Cache-Control: no-store`) ; le journal n'en porte aucun ; les journaux de requête rédigent `req.headers.authorization` et `req.headers.cookie` (`app.module.ts:30`) **mais PAS le `Set-Cookie` sortant : mesuré (M27), il est journalisé en clair** — c'est un défaut **existant** pour `zwadj_rt`, que les deux cookies neufs hériteraient (S-112, SIG-1) | — | int-spec : tout le corps des lignes `audit_logs` et **la sortie réelle du journal des requêtes** testés contre les valeurs posées en cookie ; garde de **source** : aucun `logger.*` ne reçoit un champ secret | 1 · 2 · P |
+| MP-14 | mot de passe temporaire : 7 jours, changement obligatoire | `must_change_password` : le garde n'admet que `POST /pro/staff/password` et `logout` ; un temporaire expiré est refusé (S-104) | — | int-spec : tout le reste → 403/401 tant que le changement n'est pas fait | 2 |
+| MP-19 | **jeton rejoué** après `logout`, après fin `DISABLED`, après réinitialisation | `ended_at` renseigné → refus immédiat (« révocable à l'instant ») | — | int-spec : requête avec l'ancien cookie, 401 | 1 · 2 |
+| MP-21 | **EMPLOYEE écrit** sur salle / prix / prestations / personnel / compte commun | garde de capacités (S-107) : 403 `STAFF_CAPABILITY_DENIED` | — | int-spec dérivé du routeur : chaque écriture non déclarée « employé » refusée | 2 |
+| MP-25 | mot de passe **expiré** (90 j) | connexion admise seulement vers « changement obligatoire » (S-104) | — | int-spec (vieillissement SQL) | 2 |
+| MP-29 | **réinitialisation** par le Manager | révoque sessions, appareils, efface le PIN, remet `must_change_password`, mot de passe temporaire de 7 jours | — | int-spec | 2 |
+| MP-30 | **désactivation** | sessions finies `DISABLED` dans la même transaction | — | int-spec | 2 |
+| MP-31 | un **Manager se désactive lui-même** | permis sauf s'il est le dernier | — | int-spec | 2 |
+| MP-32 | un **EMPLOYEE** crée / réinitialise / désactive | 403 | — | int-spec dérivé (MP-21) | 2 |
+| MP-33 | **audit** : une ligne par action de personnel, `actor_member_id` renseigné, **aucune donnée secrète** | écrite dans la **même transaction** que l'action (comme la promotion de D339) | FK `actor_member_id` `ON DELETE SET NULL` (dans la tranche) | int-spec : une ligne par action ; garde de source : `before`/`after` ne reçoivent que des objets listés | 1 · 2 · P |
+| MP-39 | **parité FR = AR** de tous les messages d'erreur | — | — | test de parité i18n existant | 1 · 2 · P |
+| MP-41 | **dérive de l'horloge** entre l'API et la base | tout ce qui se décide en SQL utilise `now()` de la base ; les modules purs reçoivent `now` en paramètre | — | garde de source : aucun `new Date()` dans les services du personnel | 1 · 2 · P |
+| MP-43 | **un seul levier de la durée d'inactivité** | constante exportée de `@zwadj/types` (10 min, 12 h, 15 min, 7 j, 90 j) — « paramètres, pas des colonnes figées » (DR5) | — | garde de source : aucun littéral de durée hors de ce module | 1 · 2 · P |
+
+⚠ **Lecture écrite avant le code** : MP-4, MP-11, MP-19, MP-33, MP-39, MP-41 et MP-43 portent « 1 · 2 » ou « 1 · 2 · P » ; la moitié « 1 » est tenue par D341, **la moitié « 2 » est à ce lot** (MP-4 : la désactivation PAR LA ROUTE ; MP-11 : le mot de passe temporaire jamais en clair hors de son unique affichage ; MP-19 : le jeton rejoué après réinitialisation ; MP-33 : une ligne d'audit par action de gestion ; MP-39 : la parité FR = AR des messages neufs ; MP-41 : aucune horloge côté API ; MP-43 : un seul levier de durée, dont les 7 jours du temporaire). MP-44 (le recours d'un Manager seul) est **hors lot** (colonne « hors »).
+
+### E.3 § 5.1 — les contrats neufs (adoptés par la consigne, § 1 b)
+
+| K | route | qui | ce qu'elle fait | lot |
+|---|---|---|---|---|
+| **K-19** | `GET /pro/staff/members` | Manager | liste des membres de la salle | 2 |
+| **K-20** | `POST /pro/staff/members` | Manager | crée un membre ; **mot de passe temporaire rendu une fois** (`no-store`) | 2 |
+| **K-21** | `POST /pro/staff/members/:id/reset-password` | Manager | nouveau temporaire ; révoque sessions et appareils (et PIN) | 2 |
+| **K-22** | `POST /pro/staff/members/:id/disable` | Manager | désactive ; « jamais zéro Manager » | 2 |
+
+⚠ Chaque route neuve apparaît aussi dans `packages/api-client` avec son chemin **en toutes lettres dans l'appel** (D182).
+
+### E.4 § 5.4 — la table des capacités (défaut de DR5 ; adoptée COMME DÉFAUT, consigne § 1 c) et la règle par défaut S-107
+
+| capacité | MANAGER | EMPLOYEE | routes (M08) |
+|---|---|---|---|
+| `agenda` | ✓ | ✓ | `availability-blocks`, `availability` |
+| `demandes` | ✓ | ✓ | `bookings-pro`, `visit-bookings` (Pro) |
+| `devis` | ✓ | ✓ | `quotes`, `quote-document` |
+| `clients` | ✓ | ✓ | `pro-clients` |
+| `reservations` | ✓ | ✓ | `bookings-pro` |
+| `annuaire` | ✓ | ✓ | *(L36-5, aucune route aujourd'hui)* |
+| `salle` | ✓ | lecture seule | `venues`, `venue-media`, `visit-availabilities`, `slot-templates` |
+| `prix` | ✓ | lecture seule | `pricing-rules` |
+| `prestations` | ✓ | lecture seule | `services` |
+| `personnel` | ✓ | — | `/pro/staff/members*` |
+| `compte` | ✓ | — | les six `/me/*` du compte commun |
+
+**Règle par défaut (S-107)** : une route Pro **sans déclaration** est **MANAGER seul pour les écritures** et **lisible par tous** pour les lectures ⇒ une route oubliée est **plus fermée**, jamais plus ouverte. Les déclarations d'employé se posent **au niveau de la classe** sur **sept** contrôleurs (`availability-blocks`, `availability`, `bookings-pro`, `visit-bookings`, `quotes`, `quote-document`, `pro-clients` — comptés dans la table ci-dessus), pas route par route. ⚠ **Question de lecture, pas de mesure** : « agenda » couvre-t-il les **plages de visite** (`visit-availabilities`) ? DR5 ne le dit pas ; le défaut ci-dessus les met côté `salle` (MANAGER seul en écriture) — c'est exactement ce que Q7 doit confirmer.
+
+### E.5 § 7 — les décisions de la session de D340 que ce lot code (S-104 à S-108)
+
+- **S-104 — Mot de passe de 90 jours expiré : connexion admise vers le seul changement ; temporaire de 7 jours expiré : refusé.** *Pour Ko :* un oubli de trois mois ne bloque pas la salle ; un temporaire oublié exige un nouveau passage par un Manager.
+- **S-105 — Changer son mot de passe met fin aux AUTRES sessions ; la réinitialisation par un Manager met fin à TOUTES, révoque les appareils et le PIN.** *Pour Ko :* conforme à DR5 (`:2111`) pour la réinitialisation ; pour le changement personnel, DR5 se tait, la session prend le choix le plus sûr.
+- **S-107 — Capacités : défaut fermé (écritures = MANAGER seul, lectures = tous), déclarations d'employé au niveau de la classe.** *Pour Ko :* la décision de la salle pilote (Q7) se change en une ligne de table.
+- **S-108 — Le journal est `audit_logs` (une ligne par action, `actor_member_id`, sans secret) ; pas de table neuve.** *Pour Ko :* aucune nouvelle table de journal ; les lignes servent MS-3 (carnet des accès).
+
+### E.6 § 5.5 — les trois lignes « lot 2 » du cadrage
+
+| 2 | `staff-members.controller.ts`, `staff-members.service.ts`, `staff-capabilities.ts` (+ extension du store) | personnel et capacités |
+| 2 | **déclarations de capacité** sur 7 contrôleurs existants (`availability-blocks`, `availability`, `bookings-pro`, `visit-bookings`, `quotes`, `quote-document`, `pro-clients`) | S-107 |
+| 2 | `apps/api/src/clients/pro-clients.service.ts` | **les lignes d'audit « création et modification de fiche »** que DR5 liste : c'est du code du rang 41, déjà livré — à ratifier comme périmètre |
+
+## Fichiers CONDITIONNELS (leur existence ou leur modification dépend d'un résultat)
+
+Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesquels existent.
+
+| fichier | condition |
+|---|---|
+| `neutralisation/neutralize-r44.py` et tout autre harnais dont `neutralisation/lancer-campagnes.py` (via `lancer-touchees.py`) trouve une **ancre périmée** par ce lot | le lot modifie des fichiers que lit `neutralize-r44.py` (le garde, le magasin, le service, le contrôleur du personnel) ; une ancre périmée est révisée par extension de la table, **avant** son commit, et la campagne **rejouée en entier** |
+| `apps/api/test/int/rbac-all-routes.int-spec.ts`, `apps/api/test/int/contract-api-client.int-spec.ts` | seulement si les quatre routes neuves exigent une entrée de liste blanche ou si le test de contrat relève un chemin non couvert |
+| `apps/api/src/staff/staff-session-policy.ts` | seulement si le garde ou la connexion exigent un changement de ce module (la règle neuve vit dans `staff-account-state.ts`, qui n'y touche pas) |
+| `apps/api/src/app.module.ts` | seulement si la mesure du journal (R-5) montre que le temporaire atteint le journal des requêtes : un chemin de plus dans `redact` |
+| `docs/preuves/D354/mesures/`, `docs/preuves/D354/rouges/`, `docs/preuves/D354/neutralisation/`, `docs/preuves/D354/portes/`, `docs/preuves/D354/lecture-adverse/` (autres pièces que celles listées en B) | les pièces des mesures, des rouges, des campagnes, des portes et de la lecture adverse ; **leurs noms dépendent des résultats** : chacune est déclarée par une extension, en chemins complets, avant son commit |
+| `docs/preuves/D354/scenarios-ko.md` | **non créé** : le lot n'a aucun écran, donc aucun geste de Ko (consigne, § 4) ; créé seulement si une mesure montre un état VISIBLE |
+
+## Extensions de la table
+
+*(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement : la note de la lecture adverse, la première passe de son instrument, l'audit de secrets « a » et son tri
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse (et avant le commit des rouges). Les fichiers déjà listés en B (`consigne.md`, `regle-portes.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`) entrent dans ce même commit. **Chemins COMPLETS des quatre fichiers que B ne listait pas** :
+
+```
+docs/preuves/D354/lecture-adverse/lecture-adverse.md
+docs/preuves/D354/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D354/audit-secrets-d354a.txt
+docs/preuves/D354/tri-audit-d354a.txt
+```
+
+**Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu un ✗ (contrôle 7.a) et deux comptes trop larges (6.a, 8.a) qui étaient des défauts DE L'INSTRUMENT, confrontés à la source avant d'être crus (D275) ; cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument réparé. **`lecture-adverse.md`** est la note qui les lit. **`audit-secrets-d354a.txt` et `tri-audit-d354a.txt`** : le premier audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
+
+### Extension 2 — les pièces des ROUGES, le second audit de secrets, et un fichier d'aide que la table B ne listait pas
+
+Écrite **avant** le commit qui verse les rouges, et donc **avant le premier commit de code** (D334, point 5). **Chemins COMPLETS** :
+
+```
+apps/api/test/int/row-lock.ts
+docs/preuves/D354/rouges/jouer-rouges.py
+docs/preuves/D354/rouges/rouge-unit.txt
+docs/preuves/D354/rouges/rouge-client.txt
+docs/preuves/D354/rouges/rouge-int.txt
+docs/preuves/D354/rouges/lecture-des-rouges.md
+docs/preuves/D354/audit-secrets-d354b.txt
+docs/preuves/D354/tri-audit-d354b.txt
+```
+
+**`apps/api/test/int/row-lock.ts`** — un fichier de CODE DE TEST que la section B ne listait pas : l'aide qui FORCE un entrelacement par un verrou de ligne tenu hors du service (D350) ne connaissait que deux tables (`account_deletion_requests`, `venues`) ; R-4 exige de tenir le verrou du PROFIL (`pro_profiles`, L1) hors du service pour y faire attendre deux désactivations. Une ligne d'union, un commentaire ; modifié AVANT les rouges (l'empreinte du fichier est celle de l'arbre au moment du jeu), commité avec le code. **Les pièces des rouges** : la commande, l'empreinte sha256 de CHAQUE fichier de test joué, le code de sortie et la sortie BRUTE de chaque famille (unitaire, client d'API, intégration), la note qui les LIT (`lecture-des-rouges.md` : assertion ou erreur ? combien de fichiers tombés à la collecte ?), et le lanceur (`jouer-rouges.py`, archivé comme preuve, jamais promu en instrument, D291). **`audit-secrets-d354b.txt` et `tri-audit-d354b.txt`** : le second audit de secrets (D298) et son tri différentiel (D299) contre la sortie « a », joués sur ces pièces avant leur versement.
+
+### Extension 3 — les pièces de la NEUTRALISATION (campagne r56 entière), la note des corrections de tests, l'audit de secrets « c », le balayage des mots de passe temporaires, et la révision de `neutralize-r44.py`
+
+Écrite **avant** le commit qui verse le harnais r56, les trois corrections de tests, la révision de `neutralize-r44.py` et ces pièces (D328, point 4 : une extension = un commit propre, AVANT le fichier qu'elle couvre). **Chemins COMPLETS** — aucun préfixe : une table par préfixe rendrait « 0 fichier non déclaré » vrai par construction. Les fichiers déjà listés en B (`neutralisation/neutralize-r56.py` ; `apps/api/src/staff/staff-session.service.spec.ts`, `apps/api/src/staff/staff-temporary-password.spec.ts` et `apps/api/test/int/staff-members.int-spec.ts`, corrigés — voir ci-dessous) entrent dans ce même versement.
+
+**1. Un fichier de harnais d'un lot ANTÉRIEUR, déclaré CONDITIONNEL à l'ouverture et dont la condition est remplie** (`verifier-harnais.py` sur les objets de `HEAD`, avant la campagne) : `neutralisation/neutralize-r44.py` — **trois ancres périmées par ce lot**, révisées une à une (le texte qu'elles visent a changé de forme dans `staff-store.prisma.ts` ou dans `staff-session.guard.ts`, pas de comportement) ; la campagne r44 est **rejouée EN ENTIER** (`--int`) parmi les campagnes touchées, harnais modifié ⇒ campagne entière. Les trois cibles : **G-12** (le contexte posé par le garde : la variable locale est maintenant `session`, la session lue AVEC l'heure de la base — S-241 —, au lieu de `touched.session`), **A-14** (`findMember` : la recherche par nom de compte, qui passait par Prisma, est une requête SQL brute qui rend aussi l'heure de la base ; la mutation retire maintenant le filtre `pro_profile_id` de cette requête), **A-55** (l'ancre `end_reason = 'PASSWORD_CHANGED'` n'était plus UNIQUE : la réinitialisation, K-21, écrit la même fin de session ; l'ancre porte maintenant la ligne `WHERE member_id` qui la suit et désigne le seul changement de mot de passe, K-18) :
+
+```
+neutralisation/neutralize-r44.py
+```
+
+**2. Les pièces de la neutralisation** — `docs/preuves/D354/neutralisation/`, **15 fichiers à la racine** : les instruments qui ont produit le harnais (copies, jamais promues en instruments, D291), la découverte, les titres relevés, la campagne ENTIÈRE et le rapport de masquage :
+
+```
+docs/preuves/D354/neutralisation/campagne-r56.txt
+docs/preuves/D354/neutralisation/cibles-r56.txt
+docs/preuves/D354/neutralisation/construire-r56.py
+docs/preuves/D354/neutralisation/decouverte-int-a27.txt
+docs/preuves/D354/neutralisation/decouverte-int.txt
+docs/preuves/D354/neutralisation/decouverte-unit-reste.txt
+docs/preuves/D354/neutralisation/decouverte-unit.txt
+docs/preuves/D354/neutralisation/empreintes-harnais.py
+docs/preuves/D354/neutralisation/lancer-touchees.py
+docs/preuves/D354/neutralisation/masquer-jetons.py
+docs/preuves/D354/neutralisation/rapport-masquage.txt
+docs/preuves/D354/neutralisation/remplir-titres.py
+docs/preuves/D354/neutralisation/titres.json
+docs/preuves/D354/neutralisation/verifier-cibles.py
+docs/preuves/D354/neutralisation/verifier-harnais.py
+```
+
+**3. Les 224 journaux de la campagne ENTIÈRE** (empreinte du harnais `b4dd015b…53344` en tête de chacun, vérifiée avant le versement : 224 sur 224 ; **12 journaux restent hors dépôt** — des restes de la découverte portant l'empreinte d'une version antérieure du harnais, de mesures retirées d'une cible parce qu'elles ne mordaient pas : `A-28-magasin`, `A-29-magasin`, `B-1-sources`, `B-2-sources`, `D-4-int-capacites`, `D-5-int-membres`, `D-8-int-capacites`, `D-9-int-capacites`, `G-6-int-capacites`, `I-3-int-contrat`, `K-5-int-capacites`, `T-3-service-membres`). Chacun est MASQUÉ (`masquer-jetons.py`) :
+
+```
+docs/preuves/D354/neutralisation/r56-journaux/A-1-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/A-1-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-10-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-11-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-11-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-12-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-13-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-13-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-14-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-14-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-15-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-15-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-16-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-16-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-17-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-17-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-18-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-19-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-19-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-2-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/A-2-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-20-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/A-20-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-21-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/A-21-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-22-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/A-22-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-23-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-24-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-24-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-25-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-25-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-26-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/A-26-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-27-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-27-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-28-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-29-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-3-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/A-3-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-30-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-31-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-31-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-4-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-4-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-5-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-6-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-6-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-7-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-7-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-8-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-8-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/A-9-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/A-9-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/B-1-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-10-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-10-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-11-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-12-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-12-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-13-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-13-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-14-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-14-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-2-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-3-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-3-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-4-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-4-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-5-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-5-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-6-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-6-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-7-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-7-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-8-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-8-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/B-9-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/B-9-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/C-1-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-1-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-10-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-2-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-2-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-3-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-3-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-4-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-4-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-5-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-6-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-7-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-8-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/C-9-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/C-9-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/D-1-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/D-1-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/D-10-int-journal.log
+docs/preuves/D354/neutralisation/r56-journaux/D-10-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/D-2-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/D-2-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/D-3-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/D-3-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/D-4-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/D-4-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/D-5-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/D-6-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/D-7-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/D-7-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/D-8-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/D-9-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/E-1-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-1-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/E-1-service.log
+docs/preuves/D354/neutralisation/r56-journaux/E-2-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-3-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-3-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/E-3-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/E-3-service.log
+docs/preuves/D354/neutralisation/r56-journaux/E-4-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-4-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/E-4-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/E-4-service.log
+docs/preuves/D354/neutralisation/r56-journaux/E-5-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-5-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/E-5-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/E-5-service.log
+docs/preuves/D354/neutralisation/r56-journaux/E-6-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/E-6-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/G-1-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-1-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/G-2-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-2-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/G-3-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-3-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/G-4-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-4-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/G-5-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-5-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/G-6-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-6-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/G-7-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-7-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/G-8-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-9-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/G-9-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/I-1-client-api.log
+docs/preuves/D354/neutralisation/r56-journaux/I-1-int-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/I-2-client-api.log
+docs/preuves/D354/neutralisation/r56-journaux/I-2-int-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/I-3-client-api.log
+docs/preuves/D354/neutralisation/r56-journaux/K-1-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/K-1-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/K-2-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/K-2-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/K-3-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/K-3-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/K-4-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/K-5-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/K-5-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/L-1-int-journal.log
+docs/preuves/D354/neutralisation/r56-journaux/M-1-membres-politique.log
+docs/preuves/D354/neutralisation/r56-journaux/M-2-membres-politique.log
+docs/preuves/D354/neutralisation/r56-journaux/M-3-membres-politique.log
+docs/preuves/D354/neutralisation/r56-journaux/M-4-membres-politique.log
+docs/preuves/D354/neutralisation/r56-journaux/S-1-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/S-1-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-2-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/S-2-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-3-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/S-3-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-4-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/S-4-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-5-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/S-5-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-6-service.log
+docs/preuves/D354/neutralisation/r56-journaux/S-6-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/T-1-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-2-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-3-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-4-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/T-4-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-5-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-6-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/T-7-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/T-7-temporaire.log
+docs/preuves/D354/neutralisation/r56-journaux/V-1-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-1-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-10-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-11-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-2-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-2-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-3-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-3-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-4-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-4-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-5-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-5-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-6-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-6-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-7-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-7-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-8-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-8-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-9-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/V-9-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/V-9-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-acces.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-client-api.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-etat.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-garde.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-capacites.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-contrat.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-dernier-manager.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-expiration.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-journal.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-int-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-magasin.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-membres-politique.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-service-membres.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-service.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-sources.log
+docs/preuves/D354/neutralisation/r56-journaux/prevol-temporaire.log
+```
+
+**4. La note des corrections de tests faites après les rouges, l'audit de secrets « c », son tri et le balayage** — `corrections-tests-apres-rouges.txt` porte, pour chaque fichier de test corrigé, l'empreinte sha256 AVANT (à `HEAD`, `92c8a3e`) et APRÈS ; ses deux parties : la chaîne d'empreintes relevée pendant l'écriture des verts (avant le premier commit de code) et les **trois trous de garde** que la découverte du harnais a trouvés (T-3, S-2, A-27 : la garde existait, sa preuve ne mordait pas) ; **aucun fichier de code produit n'est touché par ces corrections**. `balayage-temporaires.py` est le seul instrument neuf de ce versement hors neutralisation (calibré à deux bras ; il n'imprime jamais une valeur) :
+
+```
+docs/preuves/D354/corrections-tests-apres-rouges.txt
+docs/preuves/D354/audit-secrets-d354c.txt
+docs/preuves/D354/tri-audit-d354c.txt
+docs/preuves/D354/balayage-temporaires.py
+docs/preuves/D354/balayage-temporaires-c.txt
+```
+
+**Ce que cette extension ne couvre PAS** : les pièces des campagnes TOUCHÉES (`lancer-touchees` : adm1, adm2, r25, r33, r38, r39, r43, r44), de la mesure du défaut croisé « connexion ‖ réinitialisation », des six portes, de l'audit « d », de la passe D277 et du contrôle de fin de lot — **extension 4, avant leur commit** (leurs noms dépendent de résultats qui n'existent pas encore).
+
+### Extension 4 — les pièces des CAMPAGNES TOUCHÉES, de la MESURE du défaut croisé, des SIX PORTES, et celles qui suivront (audit « d », passe D277, audit « e », contrôle de fin de lot)
+
+Écrite **avant** le commit qui verse ces pièces (D328, point 4) ; **elle déclare à l'avance** les pièces de l'audit « d », de la passe D277, de l'audit « e » et du contrôle de fin de lot (leurs NOMS sont connus, leur CONTENU ne l'est pas encore), pour que la table soit définitive à sa recopie dans `ZWADJ_CONTINUITE.md`, comme à D353. **Chemins COMPLETS** — aucun préfixe. Les fichiers d'autorité (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`) sont déclarés en C ; `docs/preuves/D354/controle-fin-de-lot.txt` en B.
+
+**1. Les campagnes que le lot TOUCHE** — `lancer-touchees.py --liste` (`git diff 0423963..HEAD`) en désigne **neuf**, dont `r56` (jouée entière à part, extension 3) ; les **huit** autres sont jouées EN SÉRIE par `jouer-touchees.py` dans le mode qui couvre ce que le lot touche (`--int` pour sept d'entre elles), puis `r25` et `adm2` REJOUÉES en mode complet (`--int --e2e`). Sorties brutes MASQUÉES, liste du lanceur, empreintes des 71 harnais avant et après, le script qui les a jouées, le rapport de masquage (16 fichiers) :
+
+```
+docs/preuves/D354/neutralisation/touchees/adm1.txt
+docs/preuves/D354/neutralisation/touchees/adm2-complete.txt
+docs/preuves/D354/neutralisation/touchees/adm2.txt
+docs/preuves/D354/neutralisation/touchees/bilan.txt
+docs/preuves/D354/neutralisation/touchees/empreintes-harnais-apres.txt
+docs/preuves/D354/neutralisation/touchees/empreintes-harnais-avant.txt
+docs/preuves/D354/neutralisation/touchees/jouer-touchees.py
+docs/preuves/D354/neutralisation/touchees/lancer-touchees-liste.txt
+docs/preuves/D354/neutralisation/touchees/r25-complete.txt
+docs/preuves/D354/neutralisation/touchees/r25.txt
+docs/preuves/D354/neutralisation/touchees/r33.txt
+docs/preuves/D354/neutralisation/touchees/r38.txt
+docs/preuves/D354/neutralisation/touchees/r39.txt
+docs/preuves/D354/neutralisation/touchees/r43.txt
+docs/preuves/D354/neutralisation/touchees/r44.txt
+docs/preuves/D354/neutralisation/touchees/rapport-masquage.txt
+```
+
+**2. La mesure du défaut croisé « connexion ‖ réinitialisation »** (PIÈCE, jamais promue en test ; sa lecture écrit ce qu'elle ne dit PAS) — 4 fichiers :
+
+```
+docs/preuves/D354/mesures/course-connexion-reinitialisation.int-spec.ts
+docs/preuves/D354/mesures/lecture-course.md
+docs/preuves/D354/mesures/mesure-course.txt
+docs/preuves/D354/mesures/rapport-masquage.txt
+```
+
+**3. Les six portes et la seconde passe e2e** — les sorties brutes MASQUÉES du pilote de D340, la liste e2e et l'attendu dérivé AVANT la passe, l'état machine, la note qui les LIT (`portes.md`), le rapport de masquage (15 fichiers) :
+
+```
+docs/preuves/D354/portes/FIN
+docs/preuves/D354/portes/_index.txt
+docs/preuves/D354/portes/attendu-e2e.txt
+docs/preuves/D354/portes/build.txt
+docs/preuves/D354/portes/e2e-liste.txt
+docs/preuves/D354/portes/etat-avant-passe-2.txt
+docs/preuves/D354/portes/etat-machine-pendant.txt
+docs/preuves/D354/portes/lint.txt
+docs/preuves/D354/portes/portes.md
+docs/preuves/D354/portes/rapport-masquage.txt
+docs/preuves/D354/portes/test-e2e-passe-2.txt
+docs/preuves/D354/portes/test-e2e.txt
+docs/preuves/D354/portes/test-int.txt
+docs/preuves/D354/portes/test.txt
+docs/preuves/D354/portes/typecheck.txt
+```
+
+**4. Les pièces À VENIR, déclarées maintenant** — l'audit de secrets « d » (jouée sur les pièces des campagnes, de la mesure et des portes) et son tri ; **`aucune-valeur-reelle-d354d.txt`** (le contrôle dédié de D299 : les valeurs des journaux e2e BRUTS — 129 jetons de base jetable par passe — ne figurent dans aucune pièce versée) ; la passe D277 des deux sens (l'instrument, sa sortie, sa lecture) ; l'audit « e » (joué sur la passe, le contrôle de fin de lot et les ajouts des `.md` d'autorité) et son tri ; l'instrument du contrôle de fin de lot (sa sortie, `controle-fin-de-lot.txt`, est déclarée en B) :
+
+```
+docs/preuves/D354/audit-secrets-d354d.txt
+docs/preuves/D354/tri-audit-d354d.txt
+docs/preuves/D354/aucune-valeur-reelle-d354d.txt
+docs/preuves/D354/passe-d277.py
+docs/preuves/D354/passe-d277-sortie.txt
+docs/preuves/D354/passe-d277.md
+docs/preuves/D354/controle-fin-de-lot.py
+docs/preuves/D354/audit-secrets-d354e.txt
+docs/preuves/D354/tri-audit-d354e.txt
+```
+
+**Ce que cette extension ne couvre PAS** : rien d'autre n'est attendu — si une pièce de plus naît (un défaut d'instrument trouvé par un audit, une correction), elle reçoit son extension 5, **avant** son commit.
+~~~~
 ⛔ **TABLE D'OUVERTURE DU RANG 55 (D353), recopiée à l'IDENTIQUE de `docs/preuves/D353/table-ouverture.md`** (premier commit du lot, `f7fb47a`, SEUL ; extension 1 `413f01e`, extension 2 `a0bb065`, extension 3 `3c63304`, extension 4 `e8ed7e6`, extension 5 `3110399`, extension 6 `785aefd`, extension 7 `d082647`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SEPT extensions ; l'extension 7 déclare à l'avance les pièces de l'audit « d », de la passe D277 et de l'audit « e », pour que la table soit définitive à la recopie) :
 
 ~~~~markdown
@@ -3377,9 +3985,35 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## PROCHAIN LOT — rang 56 · `[CODE]` **L36-3a-2 : le personnel et ses capacités, côté serveur — lister, créer, réinitialiser et désactiver un membre ; ce qu'un employé peut faire ; le mot de passe expiré (S-104)** ⛔ **CLOS SUR LE CODE LE 19/11/2026 (D354)** *(ouvert le même jour : la table d'ouverture, la lecture adverse, les rouges et l'arbitrage de Ko écrits avant le code)*
+
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 56 (D354, 19/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **56 : CLOS SUR LE CODE** — L36-3a-2, le personnel et ses capacités côté serveur ; arbitré par Ko par adoption de la consigne du relecteur du 19/11/2026 ; **aucune migration, aucun écran** | ordre des rangs |
+| rang suivant | **« RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé (consigne du rang 56, § 4) : **L36-3b, le PIN** (secret HMAC, compteur atomique de 3 essais, verrouillage, route K-23) — **pas arbitré** ; L36-4 (les écrans) dépend de lui | ordre des rangs |
+| numéros | **D354 est au registre** ; dernier numéro attribué : **D354**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **TRENTE-SIX** (TRENTE-CINQ + ce lot de code) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| ce que le lot livre | **K-19 à K-22** (`StaffMembersController`, Manager seul) et leurs quatre appels dans `packages/api-client` ; **la table des capacités** (`STAFF_CAPABILITIES`, `peut`) déclarée au niveau de la classe sur **quatorze contrôleurs** et lue par le garde global ; **`etatDuCompte`** (UNE copie de la règle, lue par le garde et par la connexion) : **S-104 est codée** ; `staff-temporary-password.ts` (échantillonnage avec rejet) ; « jamais zéro Manager » sous course (verrous L1 puis L2, verdict pur, aucun déclencheur) ; l'audit des trois actions dans leur transaction ; six messages FR/AR ; `neutralize-r56.py` (117 cibles) | section D354 |
+| ce que le lot NE livre PAS | le PIN (3b), les écrans (L36-4), le recours d'un Manager seul, **le changement de rôle et la réactivation** (le nom d'un membre désactivé reste pris), **l'audit des FICHES client** (S-240 : la question du rapport), **la correction du défaut croisé « connexion ‖ réinitialisation »** (mesuré : une connexion dont le mot de passe a été vérifié avant la réinitialisation ouvre une session après elle ; backlog) | `ZWADJ_BACKLOG.md`, « Reports du 19/11/2026 — rang 56 » |
+| rouges | **S-104 mesurée d'abord : 12 tests rouges PAR ASSERTION** (7 unitaires, 5 d'intégration) contre l'état d'avant ; unitaire 59 en échec · 109 passés · 6 fichiers tombés à la collecte, client d'API 5 · 6, intégration 18 · 1 · 65 ignorés ; versés AVANT le premier commit de code, empreinte de chaque fichier de test jouée | `docs/preuves/D354/rouges/` |
+| portes (une passe, secteur, pilote de D340 non modifié, `HEAD` `ea0c86d`) | **TOUTES à 0, zéro rejeu** : `typecheck` 0 (22 s) · `lint` 0 (15 s) · `test` 0 (136 s : api-client 9 / 81, api 91 / 1 593, **client 47 / 583**, pro 58 / 862) · `build` 0 (37 s) · `test:int` 0 (559 s : **56 / 907**) · `test:e2e` 0 (425 s : **109 passés + 1 ignoré**, 110 listés) | `docs/preuves/D354/portes/` |
+| e2e | **deux passes vertes de suite**, 109 passés + 1 ignoré chacune (7,0 puis 6,6 minutes), sur secteur (0 échantillon sur batterie sur 39), attendu dérivé (`--list` : 110) avant la première passe | `docs/preuves/D354/portes/` |
+| campagnes | `neutralize-r56.py --int` ENTIER : **117 sur 117**, 0 muette, 0 non mesurée, 0 non jouée, toutes lues, empreinte `b4dd015b…53344` en tête de chacun des 224 journaux versés ; **trois trous de garde (T-3, S-2, A-27) trouvés par la découverte et corrigés dans les TESTS** ; touchées : `adm1` 72/72, `adm2` 84/84, `r25` 11/11, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r43` 87/87, **`r44` 236/236** (modes complets) ; **`r44` : trois ancres révisées, rejouée en entier** ; 71 harnais, même empreinte avant et après sauf `r44` (modifié) et `r56` (neuf) ; `--tout` NON joué | `docs/preuves/D354/neutralisation/` |
+| décisions prises seule | **S-239 à S-251**, à ratifier | section D354, § 5 |
+| ce que l'arbre garde | commits locaux puis POUSSÉS (`origin/main`) — voir le contrôle de fin de lot | `docs/preuves/D354/controle-fin-de-lot.txt` |
+| écritures sur la machine de Ko | **aucune sur la base de développement** ; sur le serveur PostgreSQL de Docker : `zwadj_test` et `zwadj_e2e` (jetables, recréées à chaque lancement) ; un fichier de mesure copié dans `apps/api/test/int/` puis supprimé | section D354, § 6 |
+| gestes de Ko | **AUCUN** (aucun écran, rien à regarder) | section D354, § 7 |
+| ce qui RESTE | (1) le rang 57, à cadrer ; (2) la ratification de S-239 à S-251 ; (3) **la question** : faut-il aussi auditer la création et la modification d'une FICHE CLIENT (S-240) ? ; (4) ⛔ le fournisseur des fonds de carte de production et la relecture juridique : BLOQUENT LE LANCEMENT ; (5) ⛔ la MFA et la relecture du rôle en base : BLOQUENT TOUT DÉPLOIEMENT ; (6) les entrées de backlog neuves (« Reports du 19/11/2026 — rang 56 ») | backlog |
+
+## ~~PROCHAIN LOT — rang 55~~ ⛔ *(D354 : l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 56 » juste au-dessus ; le bloc du rang 55 qui suit garde sa date. Barré avec son motif, pas effacé.)*
+
 ## PROCHAIN LOT — rang 55 · `[CODE]` **La mémoire du site client : une réponse VIDE d'un référentiel n'est plus jamais crue, le `no-store` de la carte est gardé, « sans créneau actif, avec une date » est joué sur la carte, `r48` n'a plus de tolérance** ⛔ **CLOS SUR LE CODE LE 19/11/2026 (D353)** *(ouvert le même jour : la table d'ouverture, la lecture adverse, les mesures de production, les rouges et l'arbitrage de Ko écrits avant le code)*
 
-### ⛔ ÉTAT À LA CLÔTURE DU RANG 55 (D353, 19/11/2026) — À LIRE EN PREMIER
+### ~~⛔ ÉTAT À LA CLÔTURE DU RANG 55 (D353, 19/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D354, 19/11/2026 : **PÉRIMÉ** sur « rang suivant : RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR », « compteur TRENTE-CINQ », « décisions prises seule : S-231 à S-238, à ratifier » (ratifiées par adoption) et « ce qui RESTE : (1) le rang 56, à cadrer » ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 56 » juste au-dessus ; celui-ci dit ce qui était vrai AVANT le rang 56. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -4734,7 +5368,7 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | mesure | le garde coûte **+1,851 ms par requête Pro** (+11,8 %), couche éteinte ; la couche ACTIVÉE n'est pas mesurée | `docs/preuves/D341/mesure/LISEZ-MOI.md` |
 | écriture sur la base de développement de Ko | **aucune** (la sonde de dérive COPIE la base par `TEMPLATE`, une lecture, et supprime la copie) ; la migration n'y est pas appliquée (S-129) | `docs/preuves/D341/derive-prisma.txt` |
 | clôture | commitée ET poussée ; local et `origin/main` sur le même SHA, rapportés | `docs/preuves/D341/controle-fin-de-lot.txt` |
-| ce qui reste OUVERT | **(1) le rang 45** (le relecteur cadre) ; **(2) S-113 à S-129 à ratifier** — dont **S-116 : MP-17 ne promettait pas ce que la consigne lui faisait dire** ; **(3) K-19 à K-23** non ratifiés ; **(4)** le recours d'un Manager seul (MP-44), MP-14 / MP-25 (S-104 non codée), l'angle mort du tri de campagnes, la garde des sorties console, NB-6 : backlog, sans rang ; **(5)** la contrainte de mise en service de `SameSite=Strict` (Pro et API sur le même site) ; la pause du paiement en ligne (E3 et R1) est **inchangée** | section D341, §§ 9 et 11 |
+| ce qui reste OUVERT | **(1) le rang 45** (le relecteur cadre) ; **(2) S-113 à S-129 à ratifier** — dont **S-116 : MP-17 ne promettait pas ce que la consigne lui faisait dire** ; **(3) K-19 à K-23** non ratifiés ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ; **(4)** le recours d'un Manager seul (MP-44), MP-14 / MP-25 (S-104 non codée) ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)*, l'angle mort du tri de campagnes, la garde des sorties console, NB-6 : backlog, sans rang ; **(5)** la contrainte de mise en service de `SameSite=Strict` (Pro et API sur le même site) ; la pause du paiement en ligne (E3 et R1) est **inchangée** | section D341, §§ 9 et 11 |
 | ce que le lot ne fait PAS | créer, lister, réinitialiser ou désactiver un membre ; les capacités d'un EMPLOYÉ ; le PIN ; un écran ; la réinitialisation d'un Manager par un ADMIN ; tout envoi réel | section D341 |
 
 ⛔ **Ce que cet état rend permis, dit pour que la passe D277 le retrouve** : **un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9) ; la limite de cinq est suspendue, le compteur à QUATRE n'est pas ce qui retient. **Ce qu'il NE rend PAS permis** : ouvrir L36-3a-2 ou L36-3b sans consigne collée ; coder K-19 à K-23 avant leur ratification ; coder S-104 hors de L36-3a-2.
@@ -5012,7 +5646,7 @@ Ordre des audits de la clôture, qui suit l'ordre des commits : « d » (déclar
 
 ⛔ **MISE À JOUR DU 04/11/2026 (note de Ko, R-7 à R-10 ; D340)** : **la passe sur SECTEUR (R-8) est VERTE** — `typecheck` 0 · `lint` 0 · `build` 0 · `test` 0 (**148 fichiers, 2 194 tests**) · `test:int` 0 (**40 fichiers, 619 tests**) · `test:e2e` 0 (**63 passés, 1 ignoré, 0 échec**), 29 relevés sur 29 « secteur », sur `b939301` ; **les passes du 03/11 sont NON CERTIFIANTES (R-7)** et ne décident rien, ni rouge ni vert ; **la clôture est POUSSÉE** (`docs/preuves/D340/controle-fin-de-lot-secteur.txt` le vérifie). Le rang 44 reste **OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE** ; le compteur reste TROIS ; ce qui reste ouvert est la ligne « ce qui reste OUVERT » du tableau ci-dessus **sans son point (0)**, levé. Le relecteur donne la découpe, S-98 à S-112, la nullabilité et les garanties de base dans la consigne du code de L36-3a-1, **après** la poussée de D340 (point 3 de la note). `docs/preuves/D340/portes/regle-passe-secteur.md`, § 6.
 
-⛔ **Ce que cet état NE rend PAS permis** : **aucune ligne de code de L36-3 ne s'ouvre** avant que le relecteur ait répondu à la question du cadrage **et** que le schéma (DR8) ait été ratifié par Ko ; un lot de L36-3 qui s'ouvre sans rang que le relecteur a cadré (délégation) ou que Ko a arbitré viole « aucun lot hors de l'ordre des rangs » (D302). Le compteur est à TROIS et la limite de cinq est SUSPENDUE : ce n'est pas elle qui retient. ⛔ *(D341, 04/11/2026 : **LEVÉ POUR L36-3a-1 SEUL** — le relecteur a répondu à la question du cadrage (trois lots : L36-3a-1, L36-3a-2, L36-3b) et Ko a adopté, par la consigne de L36-3a-1, la nullabilité du § 5.2 et les six garanties du § 5.3 (DR8) et la ligne « K-14 à K-18 » ; du code de L36-3 PEUT donc s'écrire pour **L36-3a-1 seul**. L36-3a-2 et L36-3b n'ont pas de rang et attendent chacun une consigne collée (R-9 (D341)) ; K-19 à K-23 ne sont pas ratifiés. Annoté, pas réécrit.)* ⛔ *(D341, clôture, 06/11/2026 : **CONSOMMÉ POUR L36-3a-1** — le code est écrit et clos ; « du code de L36-3 PEUT donc s'écrire pour L36-3a-1 seul » n'ouvre plus rien. **Un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9 (D341)) ; K-19 à K-23 restent non ratifiés. Annoté, pas réécrit.)*
+⛔ **Ce que cet état NE rend PAS permis** : **aucune ligne de code de L36-3 ne s'ouvre** avant que le relecteur ait répondu à la question du cadrage **et** que le schéma (DR8) ait été ratifié par Ko ; un lot de L36-3 qui s'ouvre sans rang que le relecteur a cadré (délégation) ou que Ko a arbitré viole « aucun lot hors de l'ordre des rangs » (D302). Le compteur est à TROIS et la limite de cinq est SUSPENDUE : ce n'est pas elle qui retient. ⛔ *(D341, 04/11/2026 : **LEVÉ POUR L36-3a-1 SEUL** — le relecteur a répondu à la question du cadrage (trois lots : L36-3a-1, L36-3a-2, L36-3b) et Ko a adopté, par la consigne de L36-3a-1, la nullabilité du § 5.2 et les six garanties du § 5.3 (DR8) et la ligne « K-14 à K-18 » ; du code de L36-3 PEUT donc s'écrire pour **L36-3a-1 seul**. L36-3a-2 et L36-3b n'ont pas de rang et attendent chacun une consigne collée (R-9 (D341)) ; K-19 à K-23 ne sont pas ratifiés. Annoté, pas réécrit.)* ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ⛔ *(D341, clôture, 06/11/2026 : **CONSOMMÉ POUR L36-3a-1** — le code est écrit et clos ; « du code de L36-3 PEUT donc s'écrire pour L36-3a-1 seul » n'ouvre plus rien. **Un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9 (D341)) ; K-19 à K-23 restent non ratifiés. Annoté, pas réécrit.)*
 
 ⛔ **La reprise se fait par ce fichier seul.** Lire dans l'ordre : le bloc « ARBITRÉ LE 03/11/2026 PAR KO — LE RANG 44 » (ordre des rangs), la section D340, puis `docs/preuves/D340/cadrage.md` — **§ 0 (le verdict), § 6 (la découpe), § 8 (la question)**.
 
@@ -7528,6 +8162,66 @@ vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
 
+## Session du 19/11/2026 — D354 · rang 56 CLOS SUR LE CODE, lot de CODE : L36-3a-2, le personnel et ses capacités côté serveur — lister, créer, réinitialiser et désactiver un membre (K-19 à K-22) ; la table des capacités et la déclaration par classe lue par le garde global ; S-104 codée (un mot de passe expiré ouvre seulement le changement de mot de passe, un temporaire expiré est refusé) ; « jamais zéro Manager » tenu sous course ; l'audit des trois actions — sans migration, sans écran ; compteur POUR MÉMOIRE TRENTE-CINQ → TRENTE-SIX
+
+⛔ **Écrit à la CLÔTURE.** Si `git log` et cette section se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et cette section qui se corrige. Les chiffres de portes et de campagnes sont **ceux des pièces versées** (`docs/preuves/D354/`), jamais recopiés d'un résumé.
+
+**La réponse à la question du lot (« un mot de passe expiré ouvre-t-il encore une session ? »)** : **avant ce lot, oui** — mesuré rouge contre le code d'avant (`0423963`) : sept tests unitaires du service et cinq tests d'intégration rougissent PAR ASSERTION (un mot de passe ordinaire de 90 jours expiré se connecte et rend `mustChangePassword: false` ; un temporaire expiré est ADMIS ; l'état d'un temporaire expiré rend encore un membre). **Après ce lot, non** : un mot de passe ordinaire expiré est admis à la connexion mais **n'ouvre que le changement de mot de passe et la déconnexion** (tout autre appel : 403 `STAFF_CAPABILITY_DENIED`) ; un temporaire expiré est **refusé** — à la connexion comme un compte inconnu, sur une session ouverte avant l'échéance comme n'importe quelle session refusée.
+
+### 1. Ce que la reprise a trouvé (lecture adverse : `docs/preuves/D354/lecture-adverse/`, versée AVANT tout `.md` d'autorité)
+**39 contrôles : 26 ✓ · 11 ≈ · 0 ✗ · 2 ?** (calibrés sur trois cas à deux bras, 0 manqué) — **sur la consigne ET sur le cadrage de D340**, contre les objets git du SHA de départ `0423963`. Aucun écart avec la reprise : rang 55 clos, compteur TRENTE-CINQ, « RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR », `origin/main` = `0423963`, arbre propre, sans stash, sur `main` — **la règle d'arrêt n'a pas joué** ; **les constats du relecteur tiennent** (toutes les colonnes existent dans le schéma ET dans la migration ; aucune table de capacités ; un seul contrôleur dans `apps/api/src/staff/` ; les sept contrôleurs existent ; `GET pro/venues/:id/publication` est une lecture). La première passe de l'instrument avait rendu **un ✗ et deux comptes trop larges qui étaient des défauts de l'INSTRUMENT** (un motif coupé au premier `]` qui est DANS une chaîne ; une sous-chaîne comptée dans un commentaire ; une union mal bornée) : confrontés à la source avant d'être crus (D275), gardés (`confronter-sortie-passe-1.txt`), instrument corrigé et rejoué EN ENTIER. **Les onze ≈ et les deux ? sont écrits un à un** (`lecture-adverse.md`, § 3) : leurs lectures sont **S-239 à S-245**.
+
+### 2. Ce qui a été fait (R-1 à R-8)
+- **R-1 — aucune migration** (re-mesuré : toutes les colonnes existent, `git diff` ne touche rien sous `apps/api/prisma/`). **R-7 — aucun écran** (rien dans `apps/pro` ni `apps/client`, aucun montant, rien du chemin de l'argent).
+- **R-2 — la table des capacités et le garde.** `packages/types/src/staff-capabilities.ts` : `STAFF_CAPABILITIES` (onze capacités × deux rôles × `write` / `read` / `none`, une donnée figée) et `peut(rôle, capacité, acte)` (fermé par défaut). `staff-decorators.ts` : `@RequiresStaffCapability("…")` au niveau de la CLASSE (**quatorze contrôleurs existants** : les sept de l'employé de la consigne + `venues`, `venue-media`, `visit-availabilities`, `slot-templates`, `pricing-rules`, `services`, `account` — S-239) et `@StaffAnyMember()` pour la route du membre sur sa propre session. `staff-access-policy.ts` (module pur) : le verdict du garde — l'ordre est la règle (désactivé ou temporaire expiré : refus de SESSION ; mot de passe à changer : seule la route du membre passe ; actif : la capacité déclarée décide, **S-107** sans déclaration : lectures à tous, écritures au Manager seul). **Le garde global de D341 les lit** ; il reste fermé par défaut. **Une garde de SOURCE** (`staff-source-guards.spec.ts`) liste chaque contrôleur `@Roles(PRO)` et ce qu'il déclare ; le test d'intégration `staff-capabilities.int-spec.ts` dérive **du ROUTEUR** (`route-collector.ts`) chaque route Pro et la joue avec une session d'employé : ce que la table refuse est refusé, ce qu'elle permet passe.
+- **R-3 — S-104, mesurée d'abord.** `staff-account-state.ts` : `etatDuCompte(membre, maintenant)` — **UNE copie de la règle**, lue par le garde et par la connexion ; l'heure est celle de la BASE (`now()` rendu avec la ligne, S-241). Les rouges (sept tests unitaires, cinq d'intégration par assertion) sont versés avant le code ; au vert, un mot de passe de 90 jours expiré est admis et n'ouvre que le changement (le garde 403 les autres routes, **S-242 : aucun code neuf**), un temporaire de 7 jours expiré est refusé (**même 401 `STAFF_INVALID_CREDENTIALS`** qu'un compte inconnu, le hachage FACTICE, aucune tentative réservée, le même corps à l'octet).
+- **R-4 — « jamais zéro Manager » (K-22), sous course.** `disableMember` du magasin : verrou du PROFIL (L1) puis du membre (L2), comptage des Managers actifs SOUS le verrou, verdict pur (`staff-members-policy.ts`), check-and-set sur `status = 'ACTIVE'`, fin des sessions `DISABLED`, audit dans la même transaction ; **aucun déclencheur**. **Mesuré sur PostgreSQL réel par un entrelacement FORCÉ** (S-243) : `row-lock.ts` tient le verrou de `pro_profiles` hors du service pendant que deux désactivations (deux Managers qui se désactivent l'un l'autre ; le dernier Manager qui se désactive lui-même) attendent ; **un seul passe**, l'autre rend 409 `STAFF_LAST_MANAGER`, la salle garde son Manager.
+- **R-5 — K-20 et K-21.** `staff-temporary-password.ts` (pur) : douze caractères d'un alphabet de 31 symboles (sans `0 O 1 I l`), **échantillonnage avec rejet** (jamais un modulo : 31 symboles tirés modulo 256 favoriseraient les huit premiers), jamais plus court ni refusé par `passwordSchema` ; le service le génère depuis les octets du `TokenService`, le HACHE, **le magasin ne reçoit que le hachage** (garde de source) ; la réponse le porte UNE fois, `Cache-Control: no-store`. **Une réinitialisation** remplace le hachage, lève `mustChangePassword`, fixe l'échéance à 7 jours et met fin à TOUTES les sessions du membre (`PASSWORD_CHANGED`, S-245) et révoque TOUS ses appareils ; **le PIN n'existe pas encore (3b) : rien à révoquer de ce côté** — aucune colonne `pin_*` n'est touchée (la spec du magasin affirme que la requête de réinitialisation ne contient aucun `pin_`). **Jamais journalisé** : le temporaire est cherché dans la SORTIE RÉELLE du journal de l'application pendant K-20, K-21 et la connexion (`log-temporary-password.int-spec.ts`) ; `app.module.ts` n'est pas modifié (le masque de `set-cookie` existait déjà, D341).
+- **R-6 — l'audit.** `staff.member_create`, `staff.member_reset_password`, `staff.member_disable` : UNE ligne `audit_logs` dans la MÊME transaction que l'action, le membre Manager pour acteur, **sans nom, sans mot de passe** ; mesuré par un **échec forcé** (un déclencheur d'insertion refuse l'action, puis un déclencheur DIFFÉRÉ refuse le commit) : l'état revient EXACTEMENT à celui d'avant, patron de D349.
+- **K-19 à K-22 dans `packages/api-client`** (`staff-client.ts`), chaque chemin LITTÉRAL dans l'appel à `request(...)` (D182) : lister, créer, réinitialiser, désactiver ; le test de contrat des chemins les relève.
+- **Six messages** (quatre d'erreur, deux de validation) dans les DEUX catalogues, parité mesurée ; **les messages arabes n'ont pas été relus par un arabophone**.
+
+### 3. Les mesures qui comptent, et ce qu'elles ne regardent PAS
+- **Les rouges** (versés AVANT le premier commit de code, `docs/preuves/D354/rouges/`, avec l'empreinte sha256 de CHAQUE fichier de test joué) : unitaire API **59 en échec · 109 passés** et **6 fichiers tombés à la collecte** ; client d'API **5 en échec · 6 passés** ; intégration **18 en échec · 1 passé · 65 ignorés** (trois fichiers tombés dès le `beforeAll` ou la collecte). **Ils prouvent que les tests ne passent pas à vide, pas qu'une garde mord** : sauf S-104 (12 tests par assertion contre l'état d'avant), ce sont des rouges d'ABSENCE ; la morsure est celle de la neutralisation.
+- **Les gardes neuves** : `neutralisation/neutralize-r56.py` — **117 gardes mordues sur 117, 0 muette, 0 non mesurée, 0 non jouée**, toutes lues en `AssertionError` ou `expect(` (la lecture R1 de D304, une liste de titres attendus par mesure, chacun exigé), empreinte du harnais `b4dd015b…53344` **en tête de chacun des 224 journaux versés** (224 sur 224 ; 12 restes de découverte à l'empreinte d'une version antérieure du harnais, non versés), arbre rendu à l'octet. **Les treize familles de cibles** : l'état du compte (E, 6), le verdict d'accès (V, 11), la table des capacités (C, 10), « jamais zéro Manager » (M, 4), le mot de passe temporaire (T, 7), le garde global (G, 9), le service de session (S, 6), le service de gestion (B, 14), le magasin (A, 31), les contrôleurs et les décorateurs (D, 10), le contrat de `@zwadj/types` (K, 5), le journal (L, 1) et le client d'API (I, 3).
+- **TROIS TROUS DE GARDE, trouvés par la DÉCOUVERTE du harnais et corrigés DANS LES TESTS** (jamais dans le code produit ; `corrections-tests-apres-rouges.txt`) : **T-3** (retirer la règle « douze caractères » ne faisait rougir AUCUN test : le contrôle lettre/chiffre qui suit la masquait sur les fixtures existantes) ; **S-2** (deux tests de connexion rougissaient par `UnauthorizedException`, que R1 lit PAS-ASSERTION) ; **A-27** (un test d'intégration déréférençait `body.member.state` sans garde : `TypeError`). Le harnais a été **reconstruit puis rejoué EN ENTIER** — la campagne ci-dessus est celle de la version finale ; **une cible a aussi été réparée** (A-23 : son remplacement était une sous-chaîne de son ancre, donc « posé » sans qu'on puisse le prouver — règle de D325).
+- **Les campagnes que le lot TOUCHE** (`lancer-touchees.py --liste`, `git diff 0423963..HEAD` : **neuf** campagnes, dont `r56` jouée à part) : `adm1 --int` **72 sur 72** ; `adm2 --int --e2e` **84 sur 84** ; `r25 --int --e2e` **11 sur 11** ; `r33 --int` **95 sur 95** ; `r38` **46 sur 46** ; `r39 --int` **51 sur 51** ; `r43 --int` **87 sur 87** ; **`r44 --int` 236 sur 236** — toutes 0 muette, 0 non mesurée, 0 non jouée, jouées une à une, en série, par `jouer-touchees.py` (**`r25` et `adm2` d'abord en `--int` seul : `r25` 8 sur 8 avec 3 cibles e2e non mesurées, `adm2` 78 sur 78 avec 6 non jouées — puis rejouées en mode complet**). **`neutralize-r44.py` a TROIS ancres révisées** (G-12, A-14, A-55 : le texte visé a changé de forme, pas de comportement) et la campagne est **rejouée EN ENTIER** ; **les 71 harnais ont la même empreinte avant et après, sauf `r44` (modifié) et `r56` (neuf)** ; `--tout` n'est PAS joué (la consigne : « les campagnes que le lot touche »).
+- **Un défaut CROISÉ, MESURÉ et RAPPORTÉ — pas corrigé** : une connexion dont le mot de passe a été vérifié AVANT une réinitialisation (ou un changement de mot de passe) **ouvre une session APRÈS elle** — `openSession` ne conditionne pas le hachage lu à la réservation. Séquence jouée au niveau du magasin, avec la vraie route K-21 pour l'événement intercalé, sur PostgreSQL réel : `openSession` rend `ok = true`, **1 session vivante** (`docs/preuves/D354/mesures/`). **Ce n'est pas du code de ce lot** (« un défaut croisé se RAPPORTE ») : entrée de backlog, `[API][IDENTITÉ]`.
+- **Les portes** (une passe, pilote de D340 non modifié, secteur, `HEAD` `ea0c86d`, arbre propre, **aucun rejeu**) : `typecheck` 0 (22 s) · `lint` 0 (15 s) · `test` 0 (136 s : api-client 9 fichiers / 81 tests, api 91 / 1 593, **client 47 / 583**, pro 58 / 862) · `build` 0 (37 s) · `test:int` 0 (559 s : **56 fichiers / 907 tests**) · `test:e2e` 0 (425 s : **109 passés + 1 ignoré**, 110 listés, l'attendu dérivé avant la passe) ; **seconde passe e2e : 109 + 1 ignoré, 6,6 minutes, code 0** (la première : 7,0). **0 échantillon sur batterie sur 39** ; `headless_shell` > 0 sur 13 relevés (le moteur PDF de `test:int`, puis le navigateur de l'e2e). `docs/preuves/D354/portes/`.
+- **Ce que ces mesures ne regardent PAS** : la fréquence en production du défaut croisé (seule sa possibilité est mesurée) ; **le coût de la couche ACTIVÉE** (toujours non mesuré) ; **un navigateur réel** (aucun écran) ; **un argon2 par création et par réinitialisation** (borné par le limiteur par défaut, D128, pas par une limite propre) ; **les messages arabes** ; **la qualité des mots de passe temporaires au-delà de leur construction** (douze symboles d'un alphabet de 31, environ 59 bits, valables sept jours : la fenêtre d'attaque est de cinq essais par pause de quinze minutes — non mesurée sous charge).
+
+### 4. Ce que ce lot ne fait pas
+Le PIN et sa révocation (3b) ; les écrans (L36-4, où il faudra mesurer le brouillon de D345 au changement de membre) ; le recours d'un Manager seul qui a perdu son mot de passe (SQL manuel, backlog) ; **le changement de rôle et la réactivation d'un membre** (aucune route au cadrage : le nom d'un membre désactivé reste PRIS — entrée de backlog) ; **l'audit de la création et de la modification d'une FICHE CLIENT** (S-240 : la question unique du rapport) ; un second mécanisme de limite de débit (D128) ; le saut de l'en-tête de l'assistant (D352, après) ; aucune certification (pause de Ko).
+
+### 5. Décisions prises par la session seule — **S-239 à S-251, À RATIFIER** (une phrase chacune, avec ce qu'elle change pour Ko)
+- **S-239** — **`peut(rôle, capacité, acte)` prend un TROISIÈME argument (lire ou écrire), et SEPT contrôleurs de plus déclarent leur capacité** (`venues`, `venue-media`, `visit-availabilities`, `slot-templates`, `pricing-rules`, `services`, `account`). *Pour Ko : « changer d'avis = changer UNE ligne » devient vrai aussi de la salle, des prix et des prestations ; l'employé lit et n'écrit pas, comme avant, aucun comportement ne change.*
+- **S-240** — **L'audit livré est celui des TROIS actions du personnel ; celui des FICHES CLIENT n'est pas écrit.** *Pour Ko : la consigne (R-6) dit « les fiches » puis décrit des actions du personnel, et le cadrage y met « création et modification de fiche » (code du rang 41) — c'est la question du rapport.*
+- **S-241** — **`etatDuCompte` reçoit l'heure de la base, rendue avec la ligne** (pas d'horloge de l'API dans le module ; « temporaire » = `must_change_password`, pas une colonne neuve). *Pour Ko : aucun changement de schéma ; l'état d'un compte est jugé à l'heure de PostgreSQL.*
+- **S-242** — **Un compte « à changer » refusé sur une route autre que la sienne rend le MÊME 403 `STAFF_CAPABILITY_DENIED` que tout refus de capacité ; un temporaire expiré rend le MÊME 401 que tout refus de session ; AUCUN code neuf.** *Pour Ko : un écran futur lira `mustChangePassword` de l'état (K-17) pour dire « changez votre mot de passe » ; il ne le distinguera pas par le code.*
+- **S-243** — **« Jamais zéro Manager » est mesuré par un entrelacement FORCÉ par un verrou de ligne tenu hors du service, en plus de la répétition demandée.** *Pour Ko : la preuve est plus forte que « 30 fois » ; elle ne dépend pas du hasard du calendrier.*
+- **S-244** — **Une garde lit la sortie RÉELLE du journal pendant K-20, K-21 et la connexion ; `app.module.ts` n'est modifié que si elle trouvait le temporaire (elle ne l'a pas trouvé).** *Pour Ko : aucune ligne de configuration de journal n'a changé.*
+- **S-245** — **Les sessions d'un membre dont le mot de passe est réinitialisé prennent la fin `PASSWORD_CHANGED` ; celles d'une désactivation, `DISABLED` ; aucune valeur d'énumération neuve (DR8).** *Pour Ko : l'historique d'une session dit pourquoi elle a pris fin, sans extension du schéma.*
+- **S-246** — **Le mot de passe temporaire fait douze caractères d'un alphabet de 31 symboles sans `0 O 1 I l`, valable sept jours.** *Pour Ko : un Manager peut le dicter à voix haute ; la consigne ne fixait ni la longueur ni l'alphabet.*
+- **S-247** — **La route du membre sur sa propre session (se déconnecter, changer son mot de passe) est marquée `@StaffAnyMember()` et passe quel que soit le rôle et même quand le mot de passe est à changer.** *Pour Ko : un employé dont le mot de passe a expiré peut encore le changer et se déconnecter, rien d'autre.*
+- **S-248** — **Le défaut croisé « connexion ‖ réinitialisation » est MESURÉ et RAPPORTÉ, pas corrigé.** *Pour Ko : une réinitialisation de sécurité a une fenêtre d'environ un `argon2` pendant laquelle l'ancien mot de passe peut encore ouvrir une session ; c'est une entrée de backlog à ordonner, avant le premier client réel.*
+- **S-249** — **Les trois trous de garde (T-3, S-2, A-27) sont corrigés dans les TESTS, après le premier commit de code ; le harnais est rejoué en entier.** *Pour Ko : aucun code produit n'a bougé après les rouges ; la preuve de morsure est celle de la campagne finale.*
+- **S-250** — **Trois ancres de `neutralize-r44.py` sont révisées et la campagne r44 est rejouée en entier.** *Pour Ko : ce que r44 mesure ne change pas ; ses 236 gardes mordent toujours.*
+- **S-251** — **Les campagnes touchées ont été jouées AVANT les six portes (la règle écrite dit « après les portes »), et `r25` et `adm2` ont été jouées une seconde fois en mode COMPLET (`--int --e2e`) après un premier passage en `--int` seul.** *Pour Ko : aucun code n'a changé entre les campagnes et les portes (les trois corrections de tests précèdent les deux) ; les portes ont donc mesuré le même arbre ; le premier passage de `r25` (8 sur 8, 3 cibles e2e non mesurées) et d'`adm2` (78 sur 78, 6 non jouées) est gardé à côté du complet (11 sur 11, 84 sur 84).*
+
+### 6. Écritures sur la machine de Ko (règle de D337) — **aucune sur la base de développement**
+- **La base de développement de Ko : ni lue ni écrite.** Sur le serveur PostgreSQL de Docker (`zwadj-db`) : `DROP`/`CREATE DATABASE zwadj_test` et `zwadj_e2e` (jetables, à chaque lancement).
+- **Un fichier de mesure copié dans `apps/api/test/int/` puis supprimé** : `course-connexion-reinitialisation.int-spec.ts` (la pièce est versée dans `docs/preuves/D354/mesures/`, jamais promue en test), joué contre `zwadj_test` ; l'arbre est revenu propre.
+- Docker, `zwadj-db` : non redémarré. Aucun `.env` lu par la session. Les journaux bruts des campagnes vivent dans `.neutralisation-journaux/` (ignoré par git) ; seuls leurs exemplaires masqués sont versés.
+
+### 7. Ce qui est DÛ à Ko, et la question
+- **Aucun geste** (aucun écran) : il n'y a rien à regarder dans un navigateur.
+- **La ratification de S-239 à S-251** (§ 5).
+- **Une question** : **faut-il aussi auditer la création et la modification d'une FICHE CLIENT** (code du rang 41, `pro-clients.service.ts`), ou l'audit des trois actions du personnel suffit-il ? La consigne (R-6) et le cadrage (§ 5.5) ne disent pas la même chose ; la session a lu la consigne.
+- Inchangés : le rang 57 (à cadrer : candidat L36-3b, le PIN), le fournisseur des fonds de carte et la relecture juridique (BLOQUENT LE LANCEMENT), la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT), les 29 clés arabes du bloc `map`, les six messages arabes du personnel.
+
+### 8. Ordre des commits (D328, D334 point 5), relevé par `git log --first-parent`
+Table d'ouverture seule (`7a42e16`) → extension 1, seule (`41f2dfe`) → consigne, règle des portes, lecture adverse et son tri, audit de secrets « a » (`11ff3d2`) → extension 2, seule (`884d74c`) → **pièces des rouges**, audit « b » (`a256322`) → **code et tests** (`92c8a3e`) → extension 3, seule (`5cbb199`) → **les trois trous de garde corrigés dans les tests, harnais `r56` et `r44` révisé** (`9af4f85`) → pièces de la neutralisation, audit « c » (`22a4110`) → fins de ligne de la note des corrections (`693a6d9`) → **première écriture d'autorité : l'arbitrage de Ko** (`ea0c86d`) → extension 4, seule (`9df1716`) → pièces des campagnes touchées, de la mesure du défaut croisé et des portes, audit « d » (`a220f6a`) → passe D277, audit « e », `.md` d'autorité de clôture → contrôle de fin de lot (SHA : voir `docs/preuves/D354/controle-fin-de-lot.txt`). **Les pièces des rouges (`a256322`) précèdent le premier commit de code (`92c8a3e`)** (`git log`). **Écart déclaré** : la correction des trois trous de garde (`9af4f85`) est postérieure au code et aux rouges, avec la chaîne d'empreintes de `corrections-tests-apres-rouges.txt`. `git diff 0423963..HEAD --name-only` ⊆ la table : voir `docs/preuves/D354/controle-fin-de-lot.txt`.
+
 ## Session du 19/11/2026 — D353 · rang 55 CLOS SUR LE CODE, lot de CODE : la mémoire du site client — une réponse VIDE d'un référentiel n'est plus jamais crue (relue sans cache) ; le `no-store` de la carte est gardé ; « sans créneau actif, avec une date » est joué sur la carte ; `r48` sans tolérance — sans migration ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ
 
 ⛔ **Écrit à la CLÔTURE.** Si `git log` et cette section se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et cette section qui se corrige. Les chiffres de portes et de campagnes sont **ceux des pièces versées** (`docs/preuves/D353/`), jamais recopiés d'un résumé.
@@ -8616,7 +9310,7 @@ Geste 0 (une écriture de Ko : appliquer la migration de D341 sur sa base) ; pui
 | décision | tenue par |
 |---|---|
 | **R-1** trois lots, L36-3a-1 d'abord | ce lot ne porte ni création de membre, ni liste, ni réinitialisation, ni désactivation, ni capacités, ni PIN (L36-3a-2, L36-3b) ; la migration porte déjà les colonnes de PIN |
-| **R-2** S-98, S-99, S-100, S-101, S-102, S-104, S-105, S-106, S-108, S-109, S-112 ratifiées ; `SameSite=Strict` = contrainte de mise en service | le garde (S-98), les cookies (S-99), `STAFF_SESSION_REQUIRED` 401 (S-100, **la moitié : le 403 `STAFF_CAPABILITY_DENIED` est de L36-3a-2**), le temps de la base (S-101), la réservation (S-102), le changement qui met fin aux AUTRES sessions (S-105, **la moitié : la réinitialisation est de L36-3a-2**), l'activation qui ouvre la session du Manager (S-106), l'audit (S-108), pas de port `Clock` (S-109), SIG-1 (S-112) ; **S-104 N'EST PAS CODÉE** (voir § 9) |
+| **R-2** S-98, S-99, S-100, S-101, S-102, S-104, S-105, S-106, S-108, S-109, S-112 ratifiées ; `SameSite=Strict` = contrainte de mise en service | le garde (S-98), les cookies (S-99), `STAFF_SESSION_REQUIRED` 401 (S-100, **la moitié : le 403 `STAFF_CAPABILITY_DENIED` est de L36-3a-2**), le temps de la base (S-101), la réservation (S-102), le changement qui met fin aux AUTRES sessions (S-105, **la moitié : la réinitialisation est de L36-3a-2**), l'activation qui ouvre la session du Manager (S-106), l'audit (S-108), pas de port `Clock` (S-109), SIG-1 (S-112) ; **S-104 N'EST PAS CODÉE** (voir § 9) ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)* |
 | **R-3** S-103 REFUSÉE | aucun code de pause ; inconnu, désactivé, pause, mauvais mot de passe = le MÊME 401 `STAFF_INVALID_CREDENTIALS`, le même corps à l'octet, UN argon2 chacun ; le message FR est mot pour mot celui de la consigne, l'AR au catalogue (parité) ; le test `staff-contract.spec.ts` l'exige |
 | **R-4** S-110 + quatre lettres, deux familles de chiffres, les invisibles | `packages/types/src/staff-account-name.ts` ; table de cas de `staff-account-name.spec.ts` |
 | **R-5** liste ≥ 10 000, source, licence, sha256 dans la table, minuscules | `staff-common-passwords.ts` généré, `staff-password-policy.spec.ts` confronte le module à sa source versée, à la table et à l'avis |
@@ -8740,7 +9434,7 @@ Le tri de `lancer-campagnes.py` croise les fichiers modifiés DEPUIS `HEAD` ; le
 1. **`SameSite=Strict` suppose l'application Pro et l'API sur le MÊME SITE** (R-2) : c'est une contrainte de MISE EN SERVICE, la même que celle du cookie `zwadj_rt` en `Lax`. Sur deux sites distincts, les quatre cookies tomberaient ensemble. Aucune protection CSRF supplémentaire n'est ajoutée : le Bearer reste seul à authentifier.
 2. **Le XSS n'est pas couvert** : `HttpOnly` empêche de LIRE un cookie, pas de l'UTILISER depuis la page.
 3. **Le recours d'un Manager qui perd son mot de passe quand il n'y en a pas d'autre n'existe pas** (MP-44) : aucune route ADMIN dans ce lot ; la procédure est manuelle (SQL). Entrée de backlog.
-4. **S-104 n'est pas codée** (MP-14, MP-25) : `mustChangePassword` voyage dans les réponses, **rien ne l'écrit à `true`** ; `password_expires_at` est écrit à 90 jours, **aucun refus ne le lit** : un mot de passe expiré ouvre une session. Lot L36-3a-2.
+4. **S-104 n'est pas codée** (MP-14, MP-25) : `mustChangePassword` voyage dans les réponses, **rien ne l'écrit à `true`** ; `password_expires_at` est écrit à 90 jours, **aucun refus ne le lit** : un mot de passe expiré ouvre une session. Lot L36-3a-2. ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)*
 5. **La liste de mots de passe courants n'ajoute que 340 refus** à `passwordSchema` (mesuré), est anglophone et ne dit rien de l'origine des mots ; un mot de passe de 8 caractères avec une lettre et un chiffre, hors liste, passe.
 6. **MP-17 ne tient pas comme il était écrit** (S-116) : le coût d'une rafale n'est pas borné par la pause mais par la limite de débit par IP.
 7. **Les messages arabes n'ont pas été relus par un arabophone** : la parité FR = AR est mesurée (même ensemble de clés, non vides), pas la qualité de la traduction.
@@ -8760,7 +9454,7 @@ Compteurs de départ relevés AVANT le lot (D340) : `test` 2 194 / 148, `test:in
 
 ### 11. Ce qui reste ouvert
 
-- **Le rang suivant : « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR »** (délégation de Ko, 02/11/2026) ; candidat désigné par R-1 : **L36-3a-2** (création, liste, réinitialisation, désactivation, capacités, audit des fiches, S-107, S-104). L36-3b (le PIN) n'a pas de rang. **K-19 à K-23 ne sont pas ratifiés.**
+- **Le rang suivant : « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR »** (délégation de Ko, 02/11/2026) ; candidat désigné par R-1 : **L36-3a-2** (création, liste, réinitialisation, désactivation, capacités, audit des fiches, S-107, S-104). L36-3b (le PIN) n'a pas de rang. **K-19 à K-23 ne sont pas ratifiés.** ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)*
 - **S-113 à S-129 sont à ratifier** (§ 4) — dont **S-116, qui change ce que MP-17 promettait**.
 - Le recours d'un Manager seul ; MP-14 / MP-25 ; l'angle mort du tri de campagnes ; la garde des sorties console ; NB-6 : entrées de backlog, sans rang (D302).
 - **La pause du paiement en ligne (E3 et R1) est INCHANGÉE.** La limite de cinq lots de code non certifiés reste SUSPENDUE par Ko ; compteur POUR MÉMOIRE **QUATRE**.
@@ -28459,4 +29153,5 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D350 | A | D350 — rang 52 ARBITRÉ PAR KO le 17/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 52 — ADM-2 : les écrans `/admin` dans l'app Pro, et le pro qui lit son refus ») et **CLOS SUR LE CODE le 17/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **ADM-2** — la garde de rôle ADMIN (D23 devient : un PRO hors de `/admin`, un ADMIN sous `/admin` seulement), trois écrans français hors de `packages/i18n` (la file des salles en attente, le détail avec publier / rejeter avec motif / corriger le motif, les demandes de suppression de compte, l'approbation derrière une fenêtre qui dit l'irréversible), `/admin` non indexable, le pro qui lit son refus à l'étape « Publication » et dans l'en-tête de l'assistant (FR et AR, six clés arabes à relire par un humain), **la file des suppressions décidée DANS la transaction en check-and-set (ROUGE mesuré sur PostgreSQL réel : quatre courses forcées par un verrou)**, **la correction du motif d'une salle déjà rejetée (200 là où D349 répondait 409 ; la ligne de journal garde l'ancien et le nouveau)**, **le fournisseur des salles du pro qui ne garde la liste que pour le compte qui l'a lue (fuite MD-ADM-10 mesurée puis corrigée)**, la spec e2e du chemin réel (cinq tests) ; `setRates` et `VENUE_ADMIN_SELECT` identiques à `b8e5511`, aucun taux modifiable ; `venue-form.tsx` intact ; **la PREMIÈRE passe des six portes était rouge sur `test` (garde FC-6 des formateurs `Intl`, défaut du lot, corrigé ; campagne et portes rejouées en entier)** ; harnais `neutralisation/neutralize-adm2.py` (84 cibles, 84 mordues en TROIS passes, 29 lues en erreur de requête : S-192) ; `neutralize-adm1.py` rejouée en entier (72 sur 72), `r37` : trois ancres reposées et P-3 retirée par écrit ; six portes vertes (`test:int` 50 fichiers / 798 tests ; `test:e2e` 102 passés + 1 ignoré, deux passes) ; **compteur POUR MÉMOIRE VINGT-CINQ → VINGT-SIX** ; S-180 à S-191 ratifiées par adoption, **S-192 à S-204 à ratifier** ; ⛔ MFA (D-7) et relecture du rôle en base (D-9, e3-c) bloquent toujours tout déploiement ; rang 53 : EN ATTENTE DE CADRAGE DU RELECTEUR ; section D350 ⛔ *(D352 : S-192 REFUSÉE ; les 29 gardes ont reçu une assertion native au rang 54 — « 29 lues en erreur de requête » est PÉRIMÉ.)* |
 | D351 | A | D351 — rang 53 ARBITRÉ PAR KO le 18/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 53 — L'INTÉGRATION, DANS `main`, DE LA BRANCHE `par-carte` (LA CARTE : RECHERCHE, ACCUEIL, FICHE, POINT POSÉ PAR LE PRO), REJOUÉE SUR LE POSTE DE KO ») et **CLOS SUR LE CODE le 18/11/2026**, lot de **CODE** par destination (il compte, D283), **sans migration** : **la carte** (la recherche, l'accueil, la fiche, le point posé par le pro ; six lots CA-1 à CA-6, 21 commits de la branche `par-carte`, session cloud des 13 et 14/11/2026) intégrée dans `main` par `git merge --no-ff` (`02b2d62`, ni rebase ni squash ; 155 fichiers, 0 migration, une dépendance : Leaflet 1.9.4), **l'arbre du commit de fusion IDENTIQUE à celui que `git merge-tree` recalcule seul** (contrôle de la fusion : 12 sur 12) ; lecture adverse de la consigne et du BILAN (45 contrôles : 31 ✓ · 10 ≈ · 1 ✗ · 3 ?, sept défauts d'instrument réparés ; **le ✗ : l'ancre H6 de `neutralize-horizon.py` n'est PAS « périmée avant la session », elle est trouvée sur l'arbre Windows — même classe `\r\n` en dur que `available-on` et `r49`**) ; **six portes sur le poste de Ko, TOUTES à 0 dès la première passe, zéro rejeu** (`test` 199 fichiers / 2 961 tests ; `test:int` 51 fichiers / 807 tests dont `pro-clients.int-spec.ts` et `quote-numbering.int-spec.ts` — **la réserve du BILAN, « `test:int` rouge dans le conteneur cloud », est LEVÉE** ; `test:e2e` 109 passés + 1 ignoré, **deux passes consécutives vertes**) ; `lancer-campagnes.py --tout` (**68 campagnes, 1 135 gardes mordues, 0 muette**, 111 non mesurées) et **sept campagnes à mode** (84 sur 84) — **les 116 gardes de la branche rejouées : 116 sur 116** —, 68 empreintes de harnais identiques, **aucune ancre périmée, aucun harnais modifié**, 62 cibles non jouées, dites ; **R-4** : `publicFilter` appelée par la liste ET la carte, brouillon / masquée / indisponible / supprimée absentes des deux (PostgreSQL réel), **deux trous en backlog dont le `no-store` de la carte, MESURÉ non gardé (la mutation survit : 47 fichiers / 564 tests restent verts)** ; **R-5** : le repère de parité **943 → 1 296**, la garde mord à 1 297 ; **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » BLOQUENT LE LANCEMENT** ; **compteur POUR MÉMOIRE VINGT-SIX → TRENTE-TROIS** ; les 22 décisions du BILAN et S-193 à S-204 ratifiées par adoption, **S-192 REFUSÉE (R-8)**, **S-205 à S-217 à ratifier** ; la liste « Mes salles » du pro doit dire « Refusée » (réponse de Ko, candidat du rang 54) ; les sept gestes de Ko restent à jouer (pas une condition de clôture) ; rang 54 : EN ATTENTE DE CADRAGE DU RELECTEUR ; section D351 |
 | D352 | A | D352 — rang 54 ARBITRÉ PAR KO le 18/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 54 — LA LISTE « MES SALLES » DIT « REFUSÉE », ET LES 29 GARDES DES ÉCRANS `/admin` PASSENT EN ASSERTION NATIVE ») et **CLOS SUR LE CODE le 18/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **la liste « Mes salles » du pro dit « Refusée » pour une salle refusée** (R-1, **voie (A)** : la carte d'une salle non publiée lit `GET pro/venues/:id/publication`, aucun contrat neuf, aucune clé de catalogue neuve ; rien n'est affirmé avant la réponse, une panne n'est pas « pas refusée », le motif n'entre jamais dans la liste ; mesurée : 3 lectures pour 3 salles non publiées, 0 pour la publiée, 3 → 6 à la relecture voulue) **et les 29 gardes des écrans `/admin` passent en assertion native** (R-2, **S-192 REFUSÉE** : `native-presence.ts`, le lecteur de `neutralize-adm2.py` ne reconnaît plus une erreur de requête de Testing Library comme une morsure, l'écart de son en-tête est barré ; **campagne rejouée EN ENTIER : 84 gardes mordues sur 84, **0 muette, 0 non mesurée, 0 non jouée**, toutes lues en `AssertionError`, empreinte du harnais `c9798594…df24` en tête de chaque journal, arbre rendu à son état de départ (18 fichiers, 0 différent)**) ; rouges de R-1 versés AVANT le code (10 échecs sur 24, empreinte du fichier de test) ; lecture adverse de la consigne (19 contrôles : 15 ✓, 3 ≈, 0 ✗, 1 ?) ; **le critère 4 a trouvé un vrai refus de l'e2e** (`r50` M-2 lisait la carte sans attendre : rouge avec 1,5 s de latence, corrigé) ; `neutralize-r54.py` (11 gardes mordues sur 11, 0 muette, 0 non mesurée, toutes lues en `AssertionError`, empreinte `7a64b058…eedb`) ; `neutralize-pub1.py` (ancre périmée, révisée, campagne rejouée) ; les six portes à 0 dès la première passe (typecheck 0 · lint 0 · test 0 · build 0 · test:int 0 · test:e2e 0, deux passes vertes de suite), deux passes e2e vertes ; décisions prises seule S-218 à S-230 à ratifier ; compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE ; **« RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D352 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D352/`. |
-| D353 | A | D353 — rang 55 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 55 — LA MÉMOIRE DU SITE CLIENT : CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **une réponse VIDE d'un référentiel n'est plus jamais crue** (`lireReferentiel`, `apps/client/src/lib/api.ts` : `getWilayas`, `getAmenities`, `getVenueStyles` lisent une liste PLEINE une fois, gardée une heure, et **relisent SANS cache une réponse vide**, dont la relecture est rendue ; un échec rend `[]` ; trois fonctions publiques inchangées ; mesuré sur un build de production : la réponse 200 vide est gardée toute la fenêtre, un 500 ou une API arrêtée ne le sont pas, une liste pleine survit à la panne ; sur `next dev`, 34 sondes sur 37, plus de 75 s) ; **le `no-store` de la carte est gardé** (rouge : la mutation de D351 sous le test neuf) ; **« sans créneau actif, avec une date » est joué sur la carte et la carte NE DIVERGE PAS de la liste** ; **`r48` n'a plus de tolérance** (attendu dérivé de la base) ; **la prédiction de la consigne sur la forme du rouge e2e est CONTREDITE** (la suite complète depuis un cache neuf est verte ; le rouge est celui de `r48` seule) et **la correction e2e à trois gestes est mesurée et NON LIVRÉE** (nécessaire avant la relecture, redondante après : S-232) ; `neutralize-r55.py` (10 gardes mordues sur 10, empreinte `94bea8a2…be75c`) ; campagnes touchées `available-on` 10, `ca2` 42/42, `horizon` 6, `r48 --e2e` 12/12, `ca1 --int` 24/24, `pub1 --e2e` 20/20 ; les six portes à 0 dès la première passe (client 583, intégration 808, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-231 à S-238 à ratifier ⛔ *(D354, 19/11/2026 : **RATIFIÉES par adoption** — consigne du rang 56, § 1 d.)* ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ ; **« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D353 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D353/`. |
+| D353 | A | D353 — rang 55 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 55 — LA MÉMOIRE DU SITE CLIENT : CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **une réponse VIDE d'un référentiel n'est plus jamais crue** (`lireReferentiel`, `apps/client/src/lib/api.ts` : `getWilayas`, `getAmenities`, `getVenueStyles` lisent une liste PLEINE une fois, gardée une heure, et **relisent SANS cache une réponse vide**, dont la relecture est rendue ; un échec rend `[]` ; trois fonctions publiques inchangées ; mesuré sur un build de production : la réponse 200 vide est gardée toute la fenêtre, un 500 ou une API arrêtée ne le sont pas, une liste pleine survit à la panne ; sur `next dev`, 34 sondes sur 37, plus de 75 s) ; **le `no-store` de la carte est gardé** (rouge : la mutation de D351 sous le test neuf) ; **« sans créneau actif, avec une date » est joué sur la carte et la carte NE DIVERGE PAS de la liste** ; **`r48` n'a plus de tolérance** (attendu dérivé de la base) ; **la prédiction de la consigne sur la forme du rouge e2e est CONTREDITE** (la suite complète depuis un cache neuf est verte ; le rouge est celui de `r48` seule) et **la correction e2e à trois gestes est mesurée et NON LIVRÉE** (nécessaire avant la relecture, redondante après : S-232) ; `neutralize-r55.py` (10 gardes mordues sur 10, empreinte `94bea8a2…be75c`) ; campagnes touchées `available-on` 10, `ca2` 42/42, `horizon` 6, `r48 --e2e` 12/12, `ca1 --int` 24/24, `pub1 --e2e` 20/20 ; les six portes à 0 dès la première passe (client 583, intégration 808, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-231 à S-238 à ratifier ⛔ *(D354, 19/11/2026 : **RATIFIÉES par adoption** — consigne du rang 56, § 1 d.)* ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ ; **« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ⛔ *(D354, 19/11/2026 : **PÉRIMÉ** — le rang 56 est CLOS (D354) ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 56 » ; « RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Annoté, pas réécrit.)* ; section D353 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D353/`. |
+| D354 | A | D354 — rang 56 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 56 — L36-3a-2 : LE PERSONNEL ET SES CAPACITÉS, CÔTÉ SERVEUR (CRÉER, LISTER, RÉINITIALISER, DÉSACTIVER ; CE QU'UN EMPLOYÉ PEUT FAIRE ; LE MOT DE PASSE EXPIRÉ) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration, sans écran** : **K-19 à K-22** (lister, créer, réinitialiser, désactiver un membre ; Manager seul ; le mot de passe temporaire est généré, haché, rendu UNE fois, `no-store`, jamais journalisé) ; **la table des capacités** (`STAFF_CAPABILITIES`, `peut`) déclarée au niveau de la classe sur quatorze contrôleurs et lue par le garde global (S-107 : sans déclaration, lectures à tous, écritures au Manager seul) ; **S-104 codée** (`etatDuCompte`, UNE copie lue par le garde et par la connexion : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; mesurée rouge d'abord, 12 tests par assertion) ; **« jamais zéro Manager » tenu sous course** (verrous L1 puis L2, comptage sous verrou, entrelacement forcé sur PostgreSQL réel, aucun déclencheur) ; l'audit des trois actions dans leur transaction ; **un défaut croisé mesuré et rapporté, non corrigé** (connexion ‖ réinitialisation) ; `neutralize-r56.py` (117 gardes mordues sur 117, empreinte `b4dd015b…53344`, trois trous de garde corrigés dans les tests) ; campagnes touchées `adm1` 72/72, `adm2` 84/84, `r25` 11/11, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r43` 87/87, `r44` 236/236 ; les six portes à 0 dès la première passe (api 1 593, intégration 907, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-239 à S-251 à ratifier ; compteur POUR MÉMOIRE TRENTE-CINQ → TRENTE-SIX ; **« RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D354 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D354/`. |

@@ -1,0 +1,20 @@
+D354 — tri différentiel de l'audit de secrets « e » (cinquième et dernier versement : la passe D277 des deux sens — son instrument, sa sortie, sa lecture —, l'instrument du contrôle de fin de lot, et les trois fichiers d'autorité écrits à la clôture)
+
+Instrument d'audit : python3 -I -X utf8 neutralisation/audit-secrets.py --sortie docs/preuves/D354/audit-secrets-d354e.txt (1 473 515 octets ; lancé à 15:54 le 19/11/2026, fini à 16:24 ; scellé : `sha256:bdd85452…972b2`), joué dans le dépôt de travail, en arrière-plan ; PENDANT l'audit, aucun fichier n'a été écrit dans le dépôt.
+
+Procédure du tri : python3 -I -X utf8 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D354/audit-secrets-d354d.txt docs/preuves/D354/audit-secrets-d354e.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · nouvelle (d354e) : 6 225 fichiers parcourus (218 613 492 octets), 6 009 audités (142 866 238 octets), 216 exclus (202 376 alertes d'écho non comptées), 4 968 alertes (« attendu 0 » : le critère D299 n'est PAS « zéro alerte » mais « aucune VALEUR réelle ») ; contrôle imprimé : audités + exclus = 6 225 (attendu 6 225).
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rendait 6 224 fichiers AVANT l'audit et 6 225 APRÈS (la sortie scellée « e » elle-même) ; l'audit en a parcouru 6 225. Le rapprochement « disque après = parcourus » FERME.
+  · La sortie « d » (sceau vérifié) est exclue par l'identité de ses octets ; ses 4 965 contextes ne sont pas recomptés. Calibration de l'outil de tri rejouée au lancement : négatif 0 nouvelle sur 0 attendue, positif 2 sur 2 attendues.
+  · Pièces neuves de ce versement, auditées avec le reste : `docs/preuves/D354/passe-d277.py`, `passe-d277.md`, `passe-d277-sortie.txt`, `controle-fin-de-lot.py` (**0 alerte** sur les quatre).
+
+Résultat du tri : **3 alertes ABSENTES de la précédente (« d »)**, **toutes les trois dans `docs/preuves/D354/tri-audit-d354d.txt`, [jeton]** — mon propre tri précédent, qui cite la FORME des liens masqués (`…/auth/verification-email?token=<jeton masqué #N (43 car.)>`) : le paramètre `token=` suivi du masque, jamais une valeur. Étiquettes de la sortie scellée : **2 « valeur déjà présente dans N fichier(s) suivi(s) hors preuves », 1 « valeur trop courte pour une recherche »** ; **0 alerte dont la valeur est ABSENTE de toute source suivie.**
+
+LES TROIS FICHIERS D'AUTORITÉ (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`), ÉCRITS À LA CLÔTURE : **l'outil d'audit ne les parcourt pas** (son périmètre est `docs/preuves/` ; mesuré : 6 225 fichiers parcourus = `find docs/preuves`). Ils sont donc contrôlés par les deux instruments dédiés, joués sur leur état FINAL :
+  · **`aucune-valeur-reelle.py`** (D299) — les 12 journaux e2e BRUTS (les deux des portes, trois de `r25`, sept de `adm2`), calibré à deux bras par journal : **346 valeurs cherchées ; parcouru : 8 fichiers, 4 977 910 octets (`AGENTS.md`, `ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `CLAUDE.md`, la passe D277 et le contrôle de fin de lot) ; porteurs : 0 (attendu 0).** (Le même contrôle, joué au versement « d » sur `docs/preuves/D354` et les quatre `.md` AVANT la clôture : 300 fichiers, 0 porteur.)
+  · **`balayage-temporaires.py`** — douze symboles de l'alphabet du temporaire, lettres et chiffres : **7 fichiers, 4 757 056 caractères, 0 valeur** (calibré à deux bras).
+  ⚠ **Écrit pour ne pas se lire comme plus** : ces deux contrôles cherchent des VALEURS CONNUES (les jetons des journaux e2e) et une FORME (le temporaire) ; ils ne cherchent pas « un secret inconnu d'une autre forme » dans les trois `.md` — l'audit à motifs ne les voit pas, et les textes qui y entrent sont de la prose de décision, relue à l'écriture, sans fichier d'exemple ni variable d'environnement copiée.
+
+Verdict : **0 valeur réelle** dans les pièces de ce versement ni dans les trois fichiers d'autorité.
