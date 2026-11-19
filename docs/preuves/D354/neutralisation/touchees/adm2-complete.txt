@@ -1,0 +1,309 @@
+⛔ PIÈCE MASQUÉE — adm2-complete.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 28605 octets, sha256 39634cefa23b0a5f8869ef9f3ec1839589195c21b6e60e3befe5de38241c4051. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c979859472a2a540110e2541a857346da29f0fdab8a82aceca41f2ed9d57df24  (neutralize-adm2.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library : PAS une morsure (S-192 refusée, D352) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plantage à l'intérieur du rendu (TypeError), même si le DOM est vide ensuite : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, assertion : MORD (attendu MORD)
+  calibration ✓ playwright, plantage sans expect( : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ playwright, rien d'exécuté : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ playwright, crochet en échec (0 ms) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 15 bras · 0 manqué(s) (attendu 0)
+contrôle R-1 (`setRates` et `VENUE_ADMIN_SELECT` identiques à `b8e5511`) :
+  contrôle R-1 ✓ le bloc `VENUE_ADMIN_SELECT` : 5 ligne(s) comparée(s) à `b8e5511` · identique (attendu identique)
+  contrôle R-1 ✓ la méthode `setRates` : 19 ligne(s) comparée(s) à `b8e5511` · identique (attendu identique)
+cibles : 84 déclarées · 84 jouées · 0 non jouée(s) (sans --int) · 17 mesure(s) distincte(s) · 18 fichier(s) muté(s)
+  pré-vol api-admin : code 0 · passés 39 · en échec 0
+  pré-vol api-journal : code 0 · passés 11 · en échec 0
+  pré-vol api-suppression : code 0 · passés 30 · en échec 0
+  pré-vol compte : code 0 · passés 3 · en échec 0
+  pré-vol coquille : code 0 · passés 4 · en échec 0
+  pré-vol detail : code 0 · passés 18 · en échec 0
+  pré-vol e2e-r52 : code 0 · ok 5 · x 0
+  pré-vol file : code 0 · passés 11 · en échec 0
+  pré-vol garde : code 0 · passés 12 · en échec 0
+  pré-vol int-courses : code 0 · passés 4 · en échec 0
+  pré-vol int-moderation : code 0 · passés 35 · en échec 0
+  pré-vol noindex : code 0 · passés 7 · en échec 0
+  pré-vol parite : code 0 · passés 5 · en échec 0
+  pré-vol refus : code 0 · passés 12 · en échec 0
+  pré-vol routes : code 0 · passés 23 · en échec 0
+  pré-vol suppressions : code 0 · passés 13 · en échec 0
+  pré-vol textes : code 0 · passés 16 · en échec 0
+✓ D-1. ⛔ R-2 — le check-and-set perd sa condition de statut (`updateMany` sans `status: "PENDING"`) : deux décisions passent toutes les deux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-courses] code 1 · passés 0 · en échec 4 · AssertionError: {"id":"01a1f548-c703-7d64-80c4-2cbb724ab741","status":"APPROVED","reason":null,"requestedAt":"2026-11-19T19:29:09.889Z","dec
+   [api-suppression] code 1 · passés 28 · en échec 2 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(2) }, …(1) } ]
+✓ D-2. ⛔ R-2 — un compte 0 ne lève plus (la demande déjà décidée ou annulée est écrasée sans erreur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-courses] code 1 · passés 0 · en échec 4 · AssertionError: {"id":"01a1f548-fe9e-7e4b-afef-f5720f7bebd5","status":"CANCELLED","reason":null,"requestedAt":"2026-11-19T19:29:24.125Z","de
+   [api-suppression] code 1 · passés 24 · en échec 6 · AssertionError: promise resolved "{ …(6) }" instead of rejecting
+✓ D-3. ⛔ R-2 — `approve` ne passe plus par le check-and-set (la décision d'avant la transaction décide de nouveau)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-courses] code 1 · passés 0 · en échec 4 · AssertionError: {"id":"01a1f549-37c5-7582-9d77-bc2c5f846b9b","status":"CANCELLED","reason":null,"requestedAt":"2026-11-19T19:29:38.753Z","de
+   [api-suppression] code 1 · passés 23 · en échec 7 · AssertionError: promise resolved "{ …(6) }" instead of rejecting
+✓ D-4. ⛔ R-2 — `reject` ne passe plus par le check-and-set
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-courses] code 1 · passés 2 · en échec 2 · AssertionError: {"id":"01a1f549-777c-7a02-8134-64a095d1d0d2","status":"PENDING","reason":null,"requestedAt":"2026-11-19T19:29:55.068Z","deci
+   [api-suppression] code 1 · passés 26 · en échec 4 · AssertionError: promise resolved "{ …(6) }" instead of rejecting
+✓ D-5. ⛔ R-2 — une demande qui n'est plus en attente répond une erreur d'état impossible au lieu du 400 DELETION_REQUEST_NOT_PENDING
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-courses] code 1 · passés 0 · en échec 4 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/admin/deletion-requests/01a1f549-ab2f-7041-9c78-6cea840f
+   [api-suppression] code 1 · passés 25 · en échec 5 · AssertionError: expected Error: décision de suppression : compte 0… to be an instance of BadRequestException
+✓ D-6. ⛔ R-2 — une demande inconnue ne répond plus 404
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-suppression] code 1 · passés 23 · en échec 7 · AssertionError: expected NotFoundException: account.errors.deletio… { …(3) } to be an instance of BadRequestException
+✓ V-1. ⛔ R-3 — la correction n'est plus conditionnée au motif PRÉCÉDENT (le check-and-set ne part que d'une salle jamais rejetée : corriger redevient impossible)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 38 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+   [int-moderation] code 1 · passés 28 · en échec 7 · AssertionError: expected 500 to be 200 // Object.is equality
+✓ V-2. ⛔ R-3 — le MÊME motif n'est plus reconnu avant l'écriture (une écriture et une ligne de journal pour un rejeu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 30 · en échec 9 · AssertionError: expected "spy" to be called with arguments: [ { where: { …(4) }, data: { …(1) } } ]
+✓ V-3. ⛔ R-3 — la ligne de journal d'une correction ne garde plus l'ANCIEN motif (`avant` vaut toujours « jamais rejetée »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 38 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-moderation] code 1 · passés 32 · en échec 3 · AssertionError: expected { rejectionReason: null } to deeply equal { Object (rejectionReason) }
+✓ V-4. ⛔ R-3 — compte 0 : le motif posé entre-temps par un autre admin, identique au nôtre, n'est plus reconnu (409 au lieu de « même état, même réponse »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 37 · en échec 2 · AssertionError: expected null to be an instance of ConflictException
+✓ V-5. ⛔ R-3 — une correction concurrente perdante ne répond plus VENUE_ALREADY_REJECTED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 38 · en échec 1 · AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+   [int-moderation] code 1 · passés 34 · en échec 1 · AssertionError: expected 'VENUE_NOT_DRAFT' to be 'VENUE_ALREADY_REJECTED' // Object.is equality
+✓ V-6. ⛔ MD-ADM-4 — une salle PUBLIÉE n'est plus refusée en tête (409 VENUE_NOT_DRAFT) : le sens unique ne tient que par la condition du check-and-set
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 28 · en échec 11 · AssertionError: expected TypeError: Cannot destructure property 'c… to be an instance of ConflictException
+✓ V-7. ⛔ MD-ADM-4 — le check-and-set de la correction accepte aussi une salle PUBLIÉE (la condition de statut est élargie : la publication concurrente ne protège plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-moderation] code 1 · passés 34 · en échec 1 · AssertionError: tour 2 : une salle publiée ne garde jamais son motif: expected 'Les photos sont floues. Merci de les …' to be null
+✓ V-8. ⛔ R-3 — compte 0 sur une salle SUPPRIMÉE entre-temps : une erreur au lieu du 404 indistinct
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-admin] code 1 · passés 38 · en échec 1 · AssertionError: expected Error: salle supprimée entre-temps to be an instance of NotFoundException
+✓ A-1. ⛔ R-3 — la ligne de journal d'un rejet n'écrit plus le motif PRÉCÉDENT (`avant` vaut toujours `null`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [api-journal] code 1 · passés 9 · en échec 2 · AssertionError: expected { rejectionReason: null } to deeply equal { rejectionReason: 'Photos floues.' }
+✓ G-1. ⛔ R-4 — un ADMIN hors de `/admin` n'est plus renvoyé sous `/admin` (la carte « mauvais rôle » du Pro le reçoit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 11 · en échec 1 · AssertionError: /: expected null not to be null
+✓ G-4. ⛔ R-4 — un PRO franchit la garde ADMIN (seul le CLIENT est refusé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 10 · en échec 2 · AssertionError: /admin: expected null not to be null
+   [noindex] code 1 · passés 6 · en échec 1 · AssertionError: expected null not to be null
+✓ G-5. ⛔ R-4 — le lien de retour est offert au CLIENT et retiré au PRO (inversé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 10 · en échec 2 · AssertionError: /admin: expected null not to be null
+✓ G-6. ⛔ R-4 — un anonyme sous `/admin` voit les écrans au lieu d'être renvoyé à la connexion
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [garde] code 1 · passés 11 · en échec 1 · AssertionError: expected null not to be null
+✓ G-7. ⛔ R-4 — pendant le démarrage de la session, la garde décide déjà (l'anonyme transitoire est renvoyé à la connexion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 9 · en échec 3 · AssertionError: /admin: expected null not to be null
+✓ G-8. ⛔ R-4 — « Se déconnecter » du refus ne fait rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 11 · en échec 1 · AssertionError: expected "spy" to be called at least once
+✓ G-9. ⛔ R-4 — la route des suppressions n'est plus derrière la garde ADMIN (un PRO y lit la page)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 11 · en échec 1 · AssertionError: /admin/suppressions: expected null not to be null
+✓ G-10. ⛔ R-5 — l'adresse des suppressions déclarée n'est plus celle de la table (la page n'est pas atteinte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [routes] code 1 · passés 21 · en échec 2 · AssertionError: expected 'adresse=/' to be 'adresse=/admin/suppressions' // Object.is equality
+✓ S-1. ⛔ MD-ADM-9 — la coquille n'appelle plus `useNoIndex` (les écrans deviennent indexables)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [noindex] code 1 · passés 6 · en échec 1 · AssertionError: /admin: expected [] to have a length of 1 but got +0
+✓ S-2. la navigation marque « Salles en attente » actif sous les suppressions (`end` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [coquille] code 1 · passés 3 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ S-3. ⛔ D-2 — la coquille de l'administration n'est plus en français de gauche à droite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [coquille] code 1 · passés 3 · en échec 1 · AssertionError: expected 'ar' to be 'fr' // Object.is equality
+✓ S-4. « Se déconnecter » de la coquille ne fait rien
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [coquille] code 1 · passés 3 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 0 times
+✓ N-1. ⛔ MD-ADM-9 — le double montage pose plusieurs balises (le compteur de références est ignoré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [noindex] code 1 · passés 3 · en échec 4 · AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+✓ N-2. ⛔ MD-ADM-9 — la balise survit à l'écran qui l'a posée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [noindex] code 1 · passés 1 · en échec 6 · AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+✓ N-3. ⛔ MD-ADM-9 — la balise est retirée au démontage du PREMIER écran même s'il en reste un
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [noindex] code 1 · passés 6 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+✓ N-4. ⛔ MD-ADM-9 — la balise dit « index, follow »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [noindex] code 1 · passés 5 · en échec 2 · AssertionError: expected 'index, follow' to be 'noindex, nofollow' // Object.is equality
+✓ T-1. ⛔ S-183 — un code d'erreur n'a plus de texte français (un identifiant technique serait affiché)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: expected 1 to be greater than 10
+✓ T-2. ⛔ MD-ADM-15 — un 403 est lu comme un refus métier (seul le 401 est « les droits »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: 403: expected 'refused' to be 'rights' // Object.is equality
+✓ T-3. ⛔ MD-ADM-15 / D217 — une erreur 5xx est lue comme un REFUS métier (jamais une issue inconnue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: ApiError: INTERNAL: expected 'refused' to be 'unknown' // Object.is equality
+✓ T-4. ⛔ MD-ADM-15 — une erreur d'API n'est plus reconnue (tout devient « issue inconnue »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 13 · en échec 3 · AssertionError: SLOT_TEMPLATE_REQUIRED: expected 'unknown' to be 'refused' // Object.is equality
+✓ T-5. ⛔ D48 — la date s'écrit à l'heure UTC et non à l'heure d'Alger (le 12 à 23 h 30 reste le 12)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: expected '12 novembre 2026' to contain '13'
+✓ T-6. ⛔ MD-ADM-7 — le taux perd ses décimales (2,5 % s'affiche 3 %)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: expected '3 %' to match /2[.,]5/
+✓ T-7. ⛔ S-183 — un code inconnu affiche son identifiant technique au lieu du texte générique
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [textes] code 1 · passés 15 · en échec 1 · AssertionError: expected 'CODE_QUI_N_EXISTE_PAS' to be 'L\'action a été refusée par le serveu…' // Object.is equality
+✓ Q-1. ⛔ MD-ADM-15 — une file de zéro salle n'est plus reconnue (« 0 salle en attente » à la place du message vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected null not to be null
+✓ Q-2. ⛔ MD-ADM-15 / D217 — une PANNE de lecture se lit « aucune salle en attente »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected null not to be null
+✓ Q-3. ⛔ R-5 — l'ordre du serveur n'est plus celui de l'écran (les rejetées avant les autres)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected [ 'Salle des Jasmins 8', …(2) ] to deeply equal [ 'Salle des Jasmins 9', …(2) ]
+✓ Q-4. ⛔ R-5 — une salle déjà rejetée n'est plus marquée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 9 · en échec 2 · AssertionError: expected null not to be null
+✓ Q-5. ⛔ R-5 — le MOTIF d'une salle rejetée n'est plus montré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 9 · en échec 2 · AssertionError: expected null not to be null
+✓ Q-6. ⛔ D212 — le nombre de pages est arrondi vers le bas (13 salles = 1 page)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 9 · en échec 2 · AssertionError: expected null not to be null
+✓ Q-7. ⛔ « Page précédente » reste active sur la première page
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ Q-8. ⛔ « Page suivante » saute une page
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected null not to be null
+✓ Q-9. ⛔ D-2 — le nom arabe n'est plus marqué `lang="ar" dir="rtl"`
+   ancre 1→0 · marqueur 6→7 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected null to be 'ar' // Object.is equality
+✓ Q-10. ⛔ la page n'est plus lue dans l'adresse (`?page=2` ouvre la page 1)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 8 · en échec 3 · AssertionError: expected null not to be null
+✓ Q-11. ⛔ D212 — une page au-delà de la fin n'est plus signalée (liste vide silencieuse)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [file] code 1 · passés 10 · en échec 1 · AssertionError: expected null not to be null
+✓ P-1. ⛔ MD-ADM-15 — « Publier » reste actif pendant la requête (un double clic envoie deux publications)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 17 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ P-2. ⛔ MD-ADM-15 — « La salle est publiée » s'affiche AVANT la réponse (la requête part sans être attendue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 14 · en échec 4 · AssertionError: expected null not to be null
+✓ P-3. ⛔ D-4 — le motif n'est plus vérifié par le schéma partagé (un motif vide part au serveur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 15 · en échec 3 · AssertionError: expected null not to be null
+✓ P-4. ⛔ MD-ADM-15 — après un refus ou une issue inconnue la salle n'est plus RELUE (l'écran garde un état périmé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 15 · en échec 3 · AssertionError: expected [ [ 'getVenue', …(1) ] ] to have a length of 2 but got 1
+✓ P-5. ⛔ MD-ADM-15 / D217 — un refus métier n'est plus préfixé « Refusé : » (il se lit comme une panne)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 15 · en échec 3 · AssertionError: expected 'Cette salle n\'a aucun créneau actif …' to contain 'Refusé :'
+✓ P-6. ⛔ R-3 — le bouton d'une salle déjà rejetée ne dit plus « Corriger le motif »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 14 · en échec 4 · AssertionError: expected null not to be null
+✓ P-7. ⛔ R-3 — le champ ne part plus du motif en vigueur (il est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 17 · en échec 1 · AssertionError: expected '' to be 'Les photos sont floues.' // Object.is equality
+✓ P-8. ⛔ A3-④ — une salle PUBLIÉE garde « Publier » et « Rejeter »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 15 · en échec 3 · AssertionError: expected <button type="button" …(1)></button> to be null
+✓ P-9. ⛔ MD-ADM-7 — la commission affiche le taux du cashback
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [detail] code 1 · passés 17 · en échec 1 · AssertionError: expected null not to be null
+✓ P-10. ⛔ MD-ADM-15 — le rejet n'est plus affiché à la RÉPONSE (le bloc « déjà rejetée » n'apparaît pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 16 · en échec 2 · AssertionError: expected null not to be null
+✓ P-11. ⛔ MD-ADM-15 — une salle inconnue (404 indistinct) est lue comme une panne (le message « introuvable » n'apparaît plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [detail] code 1 · passés 17 · en échec 1 · AssertionError: expected null not to be null
+✓ X-1. ⛔ R-5 — « Approuver » appelle l'API SANS la confirmation d'une action irréversible
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 8 · en échec 5 · AssertionError: expected null not to be null
+✓ X-2. ⛔ R-5 — la confirmation ne dit plus ce que l'approbation fait (la description est vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 12 · en échec 1 · AssertionError: expected null not to be null
+✓ X-3. ⛔ R-5 — rejeter n'exige plus de motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 12 · en échec 1 · AssertionError: expected null not to be null
+✓ X-4. ⛔ MD-ADM-15 — « approuvée » s'affiche AVANT la réponse (la requête part sans être attendue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 10 · en échec 3 · AssertionError: expected <p class="alert alert-success" …(1)></p> to be null
+✓ X-5. ⛔ MD-ADM-15 — après un refus ou une issue inconnue la liste n'est plus RELUE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 11 · en échec 2 · AssertionError: expected <h2></h2> to be null
+✓ X-6. ⛔ MD-ADM-15 / D217 — une PANNE de lecture se lit « aucune demande »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 12 · en échec 1 · AssertionError: expected null not to be null
+✓ X-7. ⛔ le nombre de salles archivées s'affiche aussi pour zéro salle
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 12 · en échec 1 · AssertionError: expected <span></span> to be null
+✓ X-8. ⛔ D55 — la borne haute du motif n'est plus celle du schéma partagé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [suppressions] code 1 · passés 11 · en échec 2 · AssertionError: expected null not to be null
+✓ R-1. ⛔ D-5 — une salle PUBLIÉE appelle la route du refus (publier efface le motif : il n'y a rien à lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 11 · en échec 1 · AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+✓ R-2. ⛔ D120 — une réponse MALFORMÉE se lit « pas refusée » (aucune panne n'est dite)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 11 · en échec 1 · AssertionError: expected null not to be null
+✓ R-3. ⛔ D133 / D142 — une PANNE de lecture se lit « pas refusée »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 10 · en échec 2 · AssertionError: expected null not to be null
+✓ R-4. ⛔ MD-ADM-5 — l'en-tête de l'assistant dit encore « en attente de publication » pour une salle refusée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 9 · en échec 3 · AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+✓ R-5. ⛔ le motif écrit par l'admin n'est plus rendu avec `dir="auto"`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 10 · en échec 2 · AssertionError: expected null to be 'auto' // Object.is equality
+✓ R-6. ⛔ la date du refus n'est plus montrée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 10 · en échec 2 · AssertionError: expected null not to be null
+✓ R-7. ⛔ D-5 — l'étape « Publication » ne montre plus l'avis de refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 4 · en échec 8 · AssertionError: expected null not to be null
+✓ R-8. ⛔ MD-ADM-5 — l'en-tête de la page de la salle ignore la lecture du refus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [refus] code 1 · passés 9 · en échec 3 · AssertionError: expected <span …(1)><span …(1)></span></span> to be null
+✓ C-1. ⛔ MD-ADM-10 — la liste de salles d'un compte est rendue à un AUTRE compte (sous un ADMIN, au pro suivant)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [compte] code 1 · passés 0 · en échec 3 · AssertionError: la liste de A ne survit pas à sa déconnexion: expected 'Salle de A' not to contain 'Salle de A'
+✓ J-1. ⛔ MD-ADM-11 — une clé du bloc `publicationReview` n'existe plus en arabe (la parité rougit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [parite] code 1 · passés 4 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+   [refus] code 1 · passés 11 · en échec 1 · AssertionError: expected [ 'loadError', 'noticeDate', …(4) ] to deeply equal [ 'loadError', 'noticeDate', …(4) ]
+✓ E-1. ⛔ MD-ADM-16 — l'adresse de l'administration n'est plus `/admin` (l'ADMIN qui se connecte n'arrive plus « sous `/admin` »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 0 · x 5 · Error: Timed out 15000ms waiting for expect(locator).toHaveURL(expected)
+✓ E-2. ⛔ MD-ADM-9 — la coquille n'appelle plus `useNoIndex` (la balise `noindex` n'existe pas dans le vrai navigateur)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 4 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toHaveAttribute(expected)
+✓ E-3. ⛔ MD-ADM-5 — l'en-tête de l'assistant dit encore « en attente de publication » pour une salle refusée, dans le vrai navigateur, en français ET en arabe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 4 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ E-4. ⛔ R-5 — « Approuver » appelle l'API SANS la confirmation d'une action irréversible, dans le vrai navigateur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 4 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+✓ E-5. ⛔ R-4 — un PRO franchit la garde ADMIN dans le vrai navigateur
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 4 · x 1 · Error: Timed out 15000ms waiting for expect(locator).toBeVisible()
+✓ E-6. ⛔ R-3 — la correction du motif est refusée côté serveur (le motif précédent n'est plus la condition) : le pro ne lit jamais le NOUVEAU motif
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [e2e-r52] code 1 · ok 4 · x 1 · Error: Timed out 7000ms waiting for expect(locator).toBeVisible()
+  empreintes : 18 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+84 garde(s) mordue(s) sur 84 cible(s) jouée(s) · toutes lues en AssertionError (S-192 refusée) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int ni --e2e) (attendu : 84 sur 84, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.

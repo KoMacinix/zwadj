@@ -1,0 +1,18 @@
+D354 — rapport de masquage des pièces de `docs/preuves/D354/neutralisation/touchees` (procédure : masquer-jetons.py, D343, copie de docs/preuves/D353/rouges/).
+Pièces masquées : 14. Chaque ligne : occurrences remplacées · suites distinctes · restantes après masquage (attendu 0) · taille et sha256 du BRUT (gardé hors dépôt).
+TOTAL des suites de forme jeton restantes sur 14 pièce(s) examinée(s) : 0 (attendu 0)
+
+r38.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 15966 octets sha256 2c6ed5d036a4b2d70e3dd847b859abfa6392a5b80d3e0c6cad856f033355e8d9
+r25.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 3677 octets sha256 1c80c250f1be9d4f9b54067287b16c5ee8a188275a01f759d37dc142178f1eba
+adm1.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 28149 octets sha256 8ed8839e9624d886a557fa00b1732adc9d9cb6cb96cda0215ba3a58e89f28f2d
+adm2.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 26493 octets sha256 5e5b3e3609100e0a915d44add7edfff488c64b7827e14f993861f031a3affbd5
+r33.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 30863 octets sha256 b60f9b839b37915397e1f76829920aa7cf85b3f247ce8bbba489b26f8c344b7c
+r39.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 18929 octets sha256 24321afcd5fbde69035c8851c629c30cf6b2599b41c2aa56182789f827e3d0c7
+r43.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 32094 octets sha256 ea5b9e85d26f041885519c6aec290f9cc58d7174b0dc5f74735ec4c5ad4418fb
+r44.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 69785 octets sha256 d7e004e4aea84aed89ba73bde54ef8fc20341f9848b17bff044f384200a823ac
+r25-complete.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 4064 octets sha256 48515a0471aa55df3d17e3eafe2cfd6d20eea4590d3d66b4490ebea248ac056f
+adm2-complete.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 28605 octets sha256 39634cefa23b0a5f8869ef9f3ec1839589195c21b6e60e3befe5de38241c4051
+bilan.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 3158 octets sha256 c7e424cc07b3f6ae3fd3a0ec977be5ea9d5045b87db8c0c0a832aa0525f9af83
+lancer-touchees-liste.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 1211 octets sha256 1b81c95d33d79f35eeae2aeae6c3d32508813ff450866080191f44baadaa2bec
+empreintes-harnais-avant.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 8567 octets sha256 f11f202d7489ee3b1e20769d1e55573c9d15b12537a45d53e0c8de34ea762430
+empreintes-harnais-apres.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 8567 octets sha256 f11f202d7489ee3b1e20769d1e55573c9d15b12537a45d53e0c8de34ea762430

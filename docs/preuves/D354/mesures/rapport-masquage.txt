@@ -1,0 +1,5 @@
+D354 — rapport de masquage des pièces de `docs/preuves/D354/mesures` (procédure : masquer-jetons.py, D343, copie de docs/preuves/D353/rouges/).
+Pièces masquées : 1. Chaque ligne : occurrences remplacées · suites distinctes · restantes après masquage (attendu 0) · taille et sha256 du BRUT (gardé hors dépôt).
+TOTAL des suites de forme jeton restantes sur 1 pièce(s) examinée(s) : 0 (attendu 0)
+
+mesure-course.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 1117 octets sha256 2c29d066a86396c3b5962e99fe7aa8c22431428394f8bc4bf7649db1a9cf1ebf

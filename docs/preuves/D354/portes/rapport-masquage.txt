@@ -1,0 +1,16 @@
+D354 — rapport de masquage des pièces de `docs/preuves/D354/portes` (procédure : masquer-jetons.py, D343, copie de docs/preuves/D353/rouges/).
+Pièces masquées : 12. Chaque ligne : occurrences remplacées · suites distinctes · restantes après masquage (attendu 0) · taille et sha256 du BRUT (gardé hors dépôt).
+TOTAL des suites de forme jeton restantes sur 12 pièce(s) examinée(s) : 0 (attendu 0)
+
+typecheck.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 627 octets sha256 032c9dfef438e01005fda583ca5798b7d00336bb473dbfaffe3c7475a32f52cc
+lint.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 526 octets sha256 2d223033cd6cfcc49df94dfe61abb658bcebebb9c7a35f73c79e6660f573ac01
+test.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 82115 octets sha256 3e80f5dde39e248d4dc0d034ede3b8971096c4846104332064577831c8d41710
+build.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 10812 octets sha256 6f13653c6a164192c65b5f62647ce4933d0f5c395dd47b636385abad9f72192a
+test-int.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 127858 octets sha256 65af39db96e0c72738a82039a03357a15d36b42faaa68eb0a119532d66ba327d
+test-e2e.txt : 129 occurrence(s) · 129 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2456456 octets sha256 1dc40f29adc70004ed647f273408a324e2c078a95cd2ee8f6591d5489cd7515c
+test-e2e-passe-2.txt : 129 occurrence(s) · 129 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2449717 octets sha256 361e6caadae58ff74456595b048c2320cb20ff2289aa3aa080fd401de4773a07
+e2e-liste.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 19770 octets sha256 ba27ed442a242292282201520ae88cec20823a4ba142175c20a0032d74eb3810
+_index.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 2199 octets sha256 d8ad1aedd290d0f34e52c8e5513d40a89032c73a9928d7ec9b77cd44be55f5c8
+etat-machine-pendant.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 3091 octets sha256 4b96acd845e3dc2a81b41bda02b403285b6192df9d22b06fc42d14655eb52fbf
+etat-avant-passe-2.txt : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 118 octets sha256 cc7b84a630bfda45485efb8303e1116a5ee2f0a70ac6744585787a541fca3871
+FIN : 0 occurrence(s) · 0 suite(s) distincte(s) · restantes après masquage : 0 (attendu 0) · brut 74 octets sha256 ede4f26f8efd2097ae93e371664fb3c8dbca1840370c8882f47d3377cb75ee73

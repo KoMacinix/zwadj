@@ -1,0 +1,28 @@
+D354 — tri différentiel de l'audit de secrets « d » (quatrième versement : les pièces des CAMPAGNES TOUCHÉES, de la MESURE du défaut croisé et des SIX PORTES, dont les deux journaux e2e complets)
+
+Instrument d'audit : python3 -I -X utf8 neutralisation/audit-secrets.py --sortie docs/preuves/D354/audit-secrets-d354d.txt (1 472 209 octets ; lancé à 15:21 le 19/11/2026, fini à 15:49 ; scellé : `sha256:73347023…a8cf6`), joué dans le dépôt de travail, en arrière-plan ; PENDANT l'audit, aucun fichier n'a été écrit dans le dépôt.
+
+Procédure du tri : python3 -I -X utf8 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D354/audit-secrets-d354c.txt docs/preuves/D354/audit-secrets-d354d.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · nouvelle (d354d) : 6 218 fichiers parcourus (217 082 245 octets), 6 003 audités (142 807 200 octets), 215 exclus (197 556 alertes d'écho non comptées), 4 965 alertes (« attendu 0 » : le critère D299 n'est PAS « zéro alerte » mais « aucune VALEUR réelle ») ; contrôle imprimé : audités + exclus = 6 218 (attendu 6 218).
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rendait 6 217 fichiers AVANT l'audit et 6 218 APRÈS (la sortie scellée « d » elle-même) ; l'audit en a parcouru 6 218. Le rapprochement « disque après = parcourus » FERME.
+  · La sortie « c » (sceau vérifié) est exclue par l'identité de ses octets ; ses 4 698 contextes ne sont pas recomptés. Calibration de l'outil de tri rejouée au lancement : négatif 0 nouvelle sur 0 attendue, positif 2 sur 2 attendues.
+  · Pièces neuves de ce versement, auditées avec le reste : `docs/preuves/D354/neutralisation/touchees/` (16 fichiers), `docs/preuves/D354/mesures/` (4), `docs/preuves/D354/portes/` (15).
+
+Résultat du tri : 267 alertes ABSENTES de la précédente (« c »). Réparties (relevé sur la sortie du tri, `--voir`) :
+  · **258 [jeton]** dans `portes/test-e2e.txt` (129) et `portes/test-e2e-passe-2.txt` (129) : **toutes de deux formes**, `…/auth/verification-email?token=<jeton masqué #N (43 car.)>` (136) et `…/fr/auth/verification-email?token=<jeton masqué #N (43 car.)>` (122) — le LIEN que l'application imprime dans le journal de l'e2e, dont la valeur a été remplacée par le masque (`masquer-jetons.py` : 129 suites distinctes par journal, **0 restante**, `portes/rapport-masquage.txt`) ; l'audit reconnaît le paramètre `token=`, pas une valeur. **Même nombre et mêmes deux formes qu'à l'audit « d » de D353 (258)** ;
+  · 2 [mot-de-passe] dans `portes/test-int.txt` — des TITRES de tests d'intégration (« un mot de passe TEMPORAIRE : … ») ; 1 [mot-de-passe] dans `neutralisation/touchees/` — une ligne de campagne ;
+  · 6 dans `tri-audit-d354c.txt` (4 [mot-de-passe], 1 [valeur-nommee-secrete], 1 [jeton]) — mon propre tri précédent, qui cite les noms des motifs de l'audit et des longueurs masquées (aucune valeur).
+  (258 + 3 + 6 = 267.)
+
+TRI AU CONTEXTE, avec l'étiquette que la sortie scellée porte sous chaque alerte (« → … ») :
+  · **263 alertes** : « valeur déjà présente dans N fichier(s) suivi(s) hors preuves » — un paramètre de lien, un nom de champ, un titre de test : du CODE, pas un secret ;
+  · **4 alertes** : « valeur trop courte pour une recherche » — **longueurs masquées relevées : 1 → 1 fois, 2 → 2 fois ; la plus longue fait 2 caractères** ;
+  · (263 + 4 = 267.) **0 alerte dont la valeur est ABSENTE de toute source suivie.**
+
+BALAYAGE DES MOTS DE PASSE TEMPORAIRES, rejoué sur l'ensemble versé (`docs/preuves/D354/balayage-temporaires.py`, calibré à deux bras ; il n'imprime jamais une valeur) : **392 fichiers, 15 390 600 caractères, 9 valeurs DISTINCTES** de douze symboles de l'alphabet du temporaire mêlant lettres et chiffres, **aucune dans une source suivie**. Huit sont celles du versement « c » (sorties de la fonction pure sur des graines fixes, dans des journaux de mesures UNITAIRES — voir `tri-audit-d354c.txt`) ; **la neuvième est la CONSTANTE DE CALIBRATION de l'outil lui-même** (le positif à douze symboles de `balayage-temporaires.py`, qui n'apparaît que dans ce fichier) : une fixture, pas un secret. **Aucune dans les journaux d'intégration ni dans les deux journaux e2e.**
+
+CONTRÔLE DÉDIÉ « 0 VALEUR RÉELLE » (D299 ; `docs/preuves/D354/aucune-valeur-reelle-d354d.txt`) : `python3 docs/preuves/D299/outils/aucune-valeur-reelle.py <douze journaux e2e bruts> -- docs/preuves/D354 AGENTS.md ZWADJ_CONTINUITE.md ZWADJ_BACKLOG.md CLAUDE.md`. Journaux nommés : **les deux journaux e2e BRUTS des portes** (129 valeurs chacun), **les trois journaux e2e de `r25`** et **les sept de `adm2`** (11 valeurs chacun) — **12 journaux, 346 valeurs cherchées**. Calibré à deux bras PAR journal (un positif construit, un négatif propre) ; le compte « large » s'accorde au compte « strict » pour chacun. **Parcouru : 300 fichiers, 18 883 957 octets ; porteurs : 0 (attendu 0).**
+
+Verdict : **0 valeur réelle** dans les pièces de ce versement. `docs/preuves/D354/neutralisation/touchees/rapport-masquage.txt` (14 pièces), `mesures/rapport-masquage.txt` (1) et `portes/rapport-masquage.txt` (12) comptent **0 suite de forme jeton restante** (attendu 0).

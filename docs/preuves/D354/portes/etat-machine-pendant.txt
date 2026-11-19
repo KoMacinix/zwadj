@@ -1,0 +1,44 @@
+⛔ PIÈCE MASQUÉE — etat-machine-pendant.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3091 octets, sha256 4b96acd845e3dc2a81b41bda02b403285b6192df9d22b06fc42d14655eb52fbf. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+14:52:26 | SECTEUR | RAM libre 3,786 Mo | chrome 0 | headless_shell 0 | node 0
+14:52:57 | SECTEUR | RAM libre 3,267 Mo | chrome 0 | headless_shell 0 | node 5
+14:53:28 | SECTEUR | RAM libre 3,088 Mo | chrome 0 | headless_shell 0 | node 15
+14:54:00 | SECTEUR | RAM libre 2,558 Mo | chrome 0 | headless_shell 0 | node 15
+14:54:31 | SECTEUR | RAM libre 3,064 Mo | chrome 0 | headless_shell 0 | node 8
+14:55:02 | SECTEUR | RAM libre 2,808 Mo | chrome 0 | headless_shell 0 | node 8
+14:55:33 | SECTEUR | RAM libre 2,381 Mo | chrome 0 | headless_shell 0 | node 6
+14:56:04 | SECTEUR | RAM libre 3,528 Mo | chrome 0 | headless_shell 0 | node 4
+14:56:34 | SECTEUR | RAM libre 3,258 Mo | chrome 0 | headless_shell 0 | node 5
+14:57:05 | SECTEUR | RAM libre 3,168 Mo | chrome 0 | headless_shell 4 | node 5
+14:57:36 | SECTEUR | RAM libre 3,422 Mo | chrome 0 | headless_shell 0 | node 5
+14:58:06 | SECTEUR | RAM libre 3,450 Mo | chrome 0 | headless_shell 0 | node 5
+14:58:37 | SECTEUR | RAM libre 3,235 Mo | chrome 0 | headless_shell 0 | node 5
+14:59:08 | SECTEUR | RAM libre 3,144 Mo | chrome 0 | headless_shell 0 | node 5
+14:59:39 | SECTEUR | RAM libre 3,695 Mo | chrome 0 | headless_shell 0 | node 5
+15:00:09 | SECTEUR | RAM libre 3,636 Mo | chrome 0 | headless_shell 0 | node 5
+15:00:40 | SECTEUR | RAM libre 3,417 Mo | chrome 0 | headless_shell 0 | node 5
+15:01:11 | SECTEUR | RAM libre 3,441 Mo | chrome 0 | headless_shell 0 | node 5
+15:01:41 | SECTEUR | RAM libre 3,334 Mo | chrome 0 | headless_shell 0 | node 5
+15:02:12 | SECTEUR | RAM libre 3,408 Mo | chrome 0 | headless_shell 0 | node 5
+15:02:43 | SECTEUR | RAM libre 3,441 Mo | chrome 0 | headless_shell 0 | node 5
+15:03:14 | SECTEUR | RAM libre 3,502 Mo | chrome 0 | headless_shell 0 | node 5
+15:03:44 | SECTEUR | RAM libre 3,262 Mo | chrome 0 | headless_shell 0 | node 5
+15:04:15 | SECTEUR | RAM libre 3,367 Mo | chrome 0 | headless_shell 0 | node 5
+15:04:46 | SECTEUR | RAM libre 3,233 Mo | chrome 0 | headless_shell 0 | node 5
+15:05:16 | SECTEUR | RAM libre 3,368 Mo | chrome 0 | headless_shell 0 | node 5
+15:05:47 | SECTEUR | RAM libre 1,763 Mo | chrome 0 | headless_shell 0 | node 11
+15:06:18 | SECTEUR | RAM libre 2,014 Mo | chrome 0 | headless_shell 4 | node 13
+15:06:49 | SECTEUR | RAM libre 1,665 Mo | chrome 0 | headless_shell 8 | node 14
+15:07:20 | SECTEUR | RAM libre 1,222 Mo | chrome 0 | headless_shell 10 | node 14
+15:07:51 | SECTEUR | RAM libre 1,174 Mo | chrome 0 | headless_shell 7 | node 16
+15:08:22 | SECTEUR | RAM libre 1,416 Mo | chrome 0 | headless_shell 8 | node 15
+15:08:53 | SECTEUR | RAM libre 1,208 Mo | chrome 0 | headless_shell 8 | node 16
+15:09:24 | SECTEUR | RAM libre 1,445 Mo | chrome 0 | headless_shell 9 | node 14
+15:09:55 | SECTEUR | RAM libre 1,359 Mo | chrome 0 | headless_shell 9 | node 14
+15:10:26 | SECTEUR | RAM libre 1,158 Mo | chrome 0 | headless_shell 8 | node 15
+15:10:58 | SECTEUR | RAM libre 988 Mo | chrome 0 | headless_shell 9 | node 14
+15:11:29 | SECTEUR | RAM libre 969 Mo | chrome 0 | headless_shell 5 | node 14
+15:12:00 | SECTEUR | RAM libre 650 Mo | chrome 0 | headless_shell 5 | node 14

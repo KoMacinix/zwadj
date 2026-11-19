@@ -1,0 +1,29 @@
+⛔ PIÈCE MASQUÉE — lancer-touchees-liste.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1211 octets, sha256 1b81c95d33d79f35eeae2aeae6c3d32508813ff450866080191f44baadaa2bec. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+316 fichier(s) modifié(s) depuis 0423963 → 9 campagne(s) concernée(s) sur 71 ; campagnes sans fichier détecté : 0 []
+  · neutralize-adm1.py  (1 fichier(s) en commun)
+      apps/api/src/venues/venues.controller.ts
+  · neutralize-adm2.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r25.py  (1 fichier(s) en commun)
+      apps/api/src/account/account.controller.ts
+  · neutralize-r33.py  (2 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+      packages/i18n/messages/fr.json
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r39.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r43.py  (1 fichier(s) en commun)
+      apps/api/src/venues/quotes.controller.ts
+  · neutralize-r44.py  (6 fichier(s) en commun)
+      apps/api/src/staff/staff-session.controller.ts
+      apps/api/src/staff/staff-session.guard.ts
+      apps/api/src/staff/staff-session.service.ts
+  · neutralize-r56.py  (16 fichier(s) en commun)
+      apps/api/src/staff/staff-access-policy.ts
+      apps/api/src/staff/staff-account-state.ts
+      apps/api/src/staff/staff-decorators.ts

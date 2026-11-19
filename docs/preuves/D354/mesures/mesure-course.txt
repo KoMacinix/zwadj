@@ -1,0 +1,19 @@
+⛔ PIÈCE MASQUÉE — mesure-course.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1117 octets, sha256 2c29d066a86396c3b5962e99fe7aa8c22431428394f8bc4bf7649db1a9cf1ebf. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+[90mstdout[2m | test/int/course-connexion-reinitialisation.int-spec.ts[2m > [22m[2mMESURE — connexion ‖ réinitialisation[2m > [22m[2mune connexion dont l'ancien mot de passe a été vérifié AVANT la réinitialisation ouvre-t-elle une session APRÈS ?
+[22m[39mMESURE : openSession après la réinitialisation → ok=true ; sessions vivantes après = 1
+
+ [32m✓[39m test/int/course-connexion-reinitialisation.int-spec.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1423[2mms[22m[39m
+   [33m[2m✓[22m[39m MESURE — connexion ‖ réinitialisation[2m > [22mune connexion dont l'ancien mot de passe a été vérifié AVANT la réinitialisation ouvre-t-elle une session APRÈS ? [33m 1161[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 11:36:14
+[2m   Duration [22m 6.98s[2m (transform 1.42s, setup 37ms, collect 4.67s, tests 1.42s, environment 0ms, prepare 176ms)[22m
+

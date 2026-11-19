@@ -1,0 +1,79 @@
+⛔ PIÈCE MASQUÉE — empreintes-harnais-avant.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 8567 octets, sha256 f11f202d7489ee3b1e20769d1e55573c9d15b12537a45d53e0c8de34ea762430. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreintes des harnais — SHA de départ 04239635cb09b20a06a0bf758531216c6b34b107 contre le disque (octets normalisés en LF des deux côtés)
+  identique  20c10bf15ff20ec804de06872899b2dc6d6c069b7c5362648c175dcfdae19803  neutralisation\neutralize-404.py
+  identique  851fd2b9ef49e79aba101f5b908713f7049e2bafa0bcb98b5e2faeb7e807c8b6  neutralisation\neutralize-act-plafonds.py
+  identique  1f741e788dd86118485077157d380603e793bc72ba7a754c92a088762e0f3a78  neutralisation\neutralize-adm1.py
+  identique  e8c4f3fdec4d8ff658e1990941b9758d531a08151b328e8c800705f7a42e6d5c  neutralisation\neutralize-adm2.py
+  identique  83d7b5c96492917e4567a9bb7bee20293ac4f753b5d156751b8eccbf0e164b40  neutralisation\neutralize-argon2.py
+  identique  fa93ddb24ffcc606da6ff08f37ccca87add4aaf94945069a847e9ebeb358705f  neutralisation\neutralize-available-on-api.py
+  identique  664d471bd9a909fdb1f46c910ee65ce7484aba144eb35a040e4c0395420659bd  neutralisation\neutralize-available-on.py
+  identique  ba2caa525fd14dd1f0857938429071051d94041597db700f019e2bf9bfe6e12f  neutralisation\neutralize-b7.py
+  identique  935405ab2e39deb2870f5bb326a1b9c34f7a78ba6520ea29d10188036608ea0a  neutralisation\neutralize-booking-status.py
+  identique  8fc1cfde916948606d046cfb535e4bb0e67910077af575bc77224d636d502184  neutralisation\neutralize-budgets.py
+  identique  51ad467517cf2c568c1401f9c18c89c4ba7d4f17a826c1d815babc226635d577  neutralisation\neutralize-ca1.py
+  identique  56442749d05a6cc8f0f1b706b62227d419c28a2915c3ebf02eb38359dbdfbdfa  neutralisation\neutralize-ca2.py
+  identique  5be19d74a108cb0153b342eaaf8d412ec758596339d7df1c35325b8b7fbf9a25  neutralisation\neutralize-ca3.py
+  identique  000f9f62c2f923a7bab657d2e473dda79581e80e37d1f84adbeaf0532d44d44d  neutralisation\neutralize-ca4.py
+  identique  b127c333e35fbe0cbda89cb53c97f4e799bd6d0e43c2b6df5fd39f04f328711b  neutralisation\neutralize-ca5.py
+  identique  b74a0d6c5bc5bfa6c23be4c21152f77a732875efed3239dfbc3678804c763699  neutralisation\neutralize-ca6.py
+  identique  4380a7c9b3a3ec89f866edfa2c0d267a2d879921d0901aa96967eda91da3c5b2  neutralisation\neutralize-e3d1-s8.py
+  identique  dfdb476f031974bb828a3e127cad5a76fb1f2ce151621830661f0d842b320e9d  neutralisation\neutralize-fc1.py
+  identique  1755d1d03f46279575177758c7e16e5baced925960b7691fe697a35fe82e3b32  neutralisation\neutralize-fc10.py
+  identique  ac96b3b5bdbb066a3c6c5d07122069605e9069820f7ee7fbee009a89141d8f65  neutralisation\neutralize-fc12.py
+  identique  39e861cd8d275cffb038f4490a893182b44700bdba2430ae2bd03e34da69f465  neutralisation\neutralize-fc2.py
+  identique  87fbb0494bca4ab424262377f88cc819cb685a3856352f6ed5b0ef9ba358e46b  neutralisation\neutralize-fc3.py
+  identique  1808360a7cd2f17d9b17f6fa0834884949d3da6b75ff5ce3148b242b9580cf07  neutralisation\neutralize-fc4.py
+  identique  e2b635ceae03456a83ed1c311a90f25f2946f37049f04ec7cff214dd56698aa0  neutralisation\neutralize-fc5.py
+  identique  9b9fa1d1522161dad2e6571bfd465e7a676cc7895dbcbaeda8e03b4a5d665027  neutralisation\neutralize-fc6.py
+  identique  b63962cdd4918838a1bb1c510b98d8cce60e523da54b517fbab3131562f4d77b  neutralisation\neutralize-fc7.py
+  identique  4131a7f0f3ef9eb5a882d5b2d06715ebbcfc6bcfbd9d53f0b8a777887a987d60  neutralisation\neutralize-fc8.py
+  identique  15d98cfd39b1d9e50755e34ffc6b23b8a5aee8c62a0f08898fa700f0990d3a57  neutralisation\neutralize-fc9.py
+  identique  f5628f868e49e203ecaf43234de62d5c565c3514fb495ff820b81ea2a3c878a3  neutralisation\neutralize-fp1.py
+  identique  34d20df25f184b3dfa7368e7e1cb74b2687e678722f004587e8d4250c2c2d9b1  neutralisation\neutralize-fp2.py
+  identique  785e5ef40b8648b668693dc27b8f4cf33ef9a0bf1a66209b1791f50a20d7850c  neutralisation\neutralize-fp3.py
+  identique  a686aabb065860839577530e9eb4ae8d43f11e6819b3e0731caa99ac9e75ca13  neutralisation\neutralize-horizon.py
+  identique  67ebcccc03b482883a2e790059663a090d0d34a466be9ac0bdcb61f13fa219ec  neutralisation\neutralize-horloge.py
+  identique  c0ff30b047b679f1272bd4ec2722216572a17f5520f081d43901a10236c439b0  neutralisation\neutralize-journey.py
+  identique  d4993665ed471dd913aadb3685f098366dffbfa5ae48379b0056336d4d0bc945  neutralisation\neutralize-maxprice.py
+  identique  bb27cdeb2cc1888a7125342c6e2dfec2db4e6d99a5125512d2f83eb1289dc904  neutralisation\neutralize-pub1.py
+  identique  44bea123a4d3045637c94b6370eed744036f187f2ba471bff749608189576513  neutralisation\neutralize-r25.py
+  identique  b834f0878cf21afbc6f5e803b5fca5f00aba8a5fe85a61cf66803ce7ebb92865  neutralisation\neutralize-r26.py
+  identique  b74cf0403ee7913bb4b59a6ed6a4fa66e9c8cd405f9d25eeb5d4a292001a186f  neutralisation\neutralize-r29.py
+  identique  512c3ae79a15453912feabb715ecc460d72239c767c1d884b397d5143b849f46  neutralisation\neutralize-r30.py
+  identique  1ebb6e3c838a8d82b7e6923501bfc9c9d7c9c989c5555b0f2531160ca4d28ab2  neutralisation\neutralize-r32.py
+  identique  b69d926469fa7cf9a4ee2c3a0641760f2a1e17204e44dea995390309eb2e2073  neutralisation\neutralize-r33.py
+  identique  168226e2a04d58ffad9b332a481f257a151b022d1b59f567487b2ab3484d9335  neutralisation\neutralize-r37.py
+  identique  c71b3cba9794473aad956e0f631bfa7099b0ba351ccf0e81cbae77c89819defb  neutralisation\neutralize-r38.py
+  identique  9cb94c98cdd70e6061b6c73d831f44fc9bcc3da3ac27ae36af3e70371da2b732  neutralisation\neutralize-r39.py
+  identique  cf54114dac5af41cfbcc5b9b9f9dd8b1f5fd50bb4d80a4e0dd5ddb4bc4886f62  neutralisation\neutralize-r4.py
+  identique  6611300c5abaa70cfd3ac5748ee426ffcabc958315f9bfec53c9d432df0e8edf  neutralisation\neutralize-r41.py
+  identique  c685ceb32e19082874548309115894a8365a1660013f78e76c829cc7c7f49255  neutralisation\neutralize-r42.py
+  identique  d6f7e2dc9df36cc66446e8929c08de407c2a0a7b425488c4c999d22f26f82e04  neutralisation\neutralize-r43.py
+  MODIFIÉ    6dab3d648b8abf81… → f2982f23658810f2dd9c1069e96eddf99446a281b8f6228e6869476aaef5dbd0  neutralisation\neutralize-r44.py
+  identique  9a0a7ed08d47375d04922e085740a67c846a4caf15f2489d5c68ccf6edffbd8f  neutralisation\neutralize-r45.py
+  identique  a56109c169983071915c5ecc41f9dfad18a4ad97a1654dc9a8b58fc51ee651a4  neutralisation\neutralize-r47.py
+  identique  f6994a612d5f79b5f0513e09b4b114a04b7ca2fc5451370b41c0e890eeaeff06  neutralisation\neutralize-r48.py
+  identique  42e7de9952b9fb5a07056c7a6f1dce7df7c28099b4d82cbdead6146b8c979b3a  neutralisation\neutralize-r49.py
+  identique  ddd2af62ea15b9cc828b0d508c51d73edb821cc447b6ebd97ed2bd89361d88d2  neutralisation\neutralize-r54.py
+  identique  13df205d746390d86282527cabbec815b2096e8696f5e747d6df4dfde3cc2fbd  neutralisation\neutralize-r55.py
+  NEUF       5aa48fe745ada0a1c923856578a970750e6b2093208eb50e83e9cad31336358a  neutralisation\neutralize-r56.py
+  identique  a1e39bfbd03b59f1259f352a773e9105d51da91a65160d2f6627318fd86757a1  neutralisation\neutralize-rang23.py
+  identique  7548c8335f88e4b5e6cba8f560ca7e14feb6b9ba0b50e864a413adc688c033a9  neutralisation\neutralize-s10a.py
+  identique  9a79df0d1cc528e87be7a7d2f975c5ab172742a8e92d084cc0d248d2d1ba1f5f  neutralisation\neutralize-s10b.py
+  identique  e8168ce20aaee7e78b73860959dd3e3ca83935fa35512f73dc338bf6158631ae  neutralisation\neutralize-s11a.py
+  identique  ef771861f2d18e7d6fadcef7907b7af7faaa05a553c34909022312e63f85bbf0  neutralisation\neutralize-s11b.py
+  identique  97c06c40f27bb159a1ee08bda9855772b4e0b1185438868fa67e45a6286f69d7  neutralisation\neutralize-s9.py
+  identique  9b3b6b7a8d2fe1f246cffca407269c0fcb07bb5f6b24e73e3326e472677c7a67  neutralisation\neutralize-solid-s1.py
+  identique  1ea08af1b8b64418fa7a05b9c9074207efe432cb3a1230ddb5daac9d7953e07c  neutralisation\neutralize-solid-s2.py
+  identique  e269fab5631aeb29399483dd9c115721860b6e28e2c9bde65f17669c912d5bb2  neutralisation\neutralize-solid-s3.py
+  identique  07108de487f8bb2742124963c51858ea0bc04f47d529b31124b64c8362e69caa  neutralisation\neutralize-solid-s4.py
+  identique  69d191fdf100feb8ca07531a0db13b883d5bad03940a531e20bea21b4e446833  neutralisation\neutralize-solid-s5a.py
+  identique  689e83b5477bbc86eb67648389c8ac15063c84444b5f7b694ab28469be131e14  neutralisation\neutralize-solid-s5b.py
+  identique  25dd6c8583f135175c2a2639ca68e320357fef7fc3f567398db86ab871acea5d  neutralisation\neutralize-solid-s6.py
+  identique  272495c0d1da4586780d26ed5c3410dcd7f8db567332bee25db3a1f27f498174  neutralisation\neutralize-solid-s7.py
+harnais examinés : 71 · identiques : 69 · modifiés : 1 ['neutralisation\\neutralize-r44.py'] · neufs : 1 ['neutralisation\\neutralize-r56.py']  (attendu : 1 modifié = neutralize-adm2.py, 1 neuf = neutralize-r54.py, tous les autres identiques)
+contrôle : identiques + modifiés + neufs = 71 (attendu 71, les examinés)

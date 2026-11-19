@@ -1,0 +1,40 @@
+⛔ PIÈCE MASQUÉE — bilan.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3158 octets, sha256 c7e424cc07b3f6ae3fd3a0ec977be5ea9d5045b87db8c0c0a832aa0525f9af83. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+[r38 ] départ 11:37:05 …
+    code 0 · 763 s · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+
+[r25 --int] départ 11:49:48 …
+    code 3 · 123 s · 8 garde(s) mordue(s) sur 8 cible(s) jouée(s) · 3 non mesurée(s) (attendu : 8 sur 8)
+
+[adm1 --int] départ 11:51:51 …
+    code 0 · 949 s · 72 garde(s) mordue(s) sur 72 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 72 sur 72, 0, 0, 0)
+
+[adm2 --int] départ 12:07:40 …
+    code 0 · 816 s · 78 garde(s) mordue(s) sur 78 cible(s) jouée(s) · toutes lues en AssertionError (S-192 refusée) · 0 muette(s) · 0 non mesurée(s) · 6 non jouée(s) (sans --int ni --e2e) (attendu : 78 sur 78, 0, 0, 0)
+
+[r33 --int] départ 12:21:17 …
+    code 0 · 1630 s · 95 garde(s) mordue(s) sur 95 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 95 sur 95, 0, 0, 0)
+
+[r39 --int] départ 12:48:27 …
+    code 0 · 837 s · 51 garde(s) mordue(s) sur 51 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 51 sur 51, 0, 0, 0)
+
+[r43 --int] départ 13:02:24 …
+    code 0 · 2901 s · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0, 0)
+
+[r44 --int] départ 13:50:46 …
+    code 0 · 1511 s · 236 garde(s) mordue(s) sur 236 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 236 sur 236, 0, 0, 0)
+
+== BILAN : 8 campagne(s) jouée(s), durée 9532 s ==
+  r38           code 0 · 763 s · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+  r25    --int  code 3 · 123 s · 8 garde(s) mordue(s) sur 8 cible(s) jouée(s) · 3 non mesurée(s) (attendu : 8 sur 8)
+  adm1   --int  code 0 · 949 s · 72 garde(s) mordue(s) sur 72 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 72 sur 72, 0, 0, 0)
+  adm2   --int  code 0 · 816 s · 78 garde(s) mordue(s) sur 78 cible(s) jouée(s) · toutes lues en AssertionError (S-192 refusée) · 0 muette(s) · 0 non mesurée(s) · 6 non jouée(s) (sans --int ni --e2e) (attendu : 78 sur 78, 0
+  r33    --int  code 0 · 1630 s · 95 garde(s) mordue(s) sur 95 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 95 sur 95, 0, 0, 0)
+  r39    --int  code 0 · 837 s · 51 garde(s) mordue(s) sur 51 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 51 sur 51, 0, 0, 0)
+  r43    --int  code 0 · 2901 s · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0, 0)
+  r44    --int  code 0 · 1511 s · 236 garde(s) mordue(s) sur 236 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 236 sur 236, 0, 0, 0)
+codes : 0 = 7 · autre = 1 (attendu : 0 partout)
