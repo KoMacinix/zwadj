@@ -1,0 +1,116 @@
+# D354 — rouge — famille « client »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api-client exec vitest run src/staff-client.test.ts
+# code de sortie : 1 ; durée : 5 s
+# empreintes sha256 des fichiers de test joués (octets de l'arbre de travail) :
+#   f470f5b208f45656a33a9d6b8fc5d3177a5a69183543738bd428e3fa875310a5  packages/api-client/src/staff-client.test.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/staff-client.test.ts (11 tests | 5 failed) 19ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-14 : `activate` POSTE le nom de compte et le mot de passe sur `/pro/staff/activate` 2ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-18 : `changePassword` POSTE l'actuel et le nouveau sur `/pro/staff/password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > le client rend EXACTEMENT ce que la requête rend (aucune transformation, aucune règle) 0ms
+   × le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps) 6ms
+     → (0 , createStaffClient)(...).listMembers is not a function
+   × le client du personnel — méthode, adresse et corps de chaque contrat > K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur) 1ms
+     → (0 , createStaffClient)(...).createMember is not a function
+   × le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password` 1ms
+     → (0 , createStaffClient)(...).resetMemberPassword is not a function
+   × le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable` 0ms
+     → (0 , createStaffClient)(...).disableMember is not a function
+   × le client du personnel — méthode, adresse et corps de chaque contrat > le client n'expose que les NEUF contrats (K-14 à K-22) : rien du PIN ni de la connexion par PIN (lot 3b) 7ms
+     → expected [ 'activate', 'changePassword', …(3) ] to deeply equal [ 'activate', 'changePassword', …(7) ]
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 6 passed (11)
+   Start at  09:26:58
+   Duration  1.21s (transform 115ms, setup 0ms, collect 110ms, tests 19ms, environment 1ms, prepare 605ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff-client.test.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps)
+TypeError: (0 , createStaffClient)(...).listMembers is not a function
+ ❯ src/staff-client.test.ts:65:52
+     63|   it("K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : …
+     64|     const { request, appels } = double({ members: [] });
+     65|     const liste = await createStaffClient(request).listMembers();
+       |                                                    ^
+     66|     expect(appels).toEqual([{ path: "/pro/staff/members", init: undefi…
+     67|     expect(liste).toEqual({ members: [] });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur)
+TypeError: (0 , createStaffClient)(...).createMember is not a function
+ ❯ src/staff-client.test.ts:72:38
+     70|   it("K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pr…
+     71|     const { request, appels } = double({ member: { id: "m2" }, tempora…
+     72|     await createStaffClient(request).createMember({ accountName: "Kari…
+       |                                      ^
+     73|     expect(appels).toEqual([{ path: "/pro/staff/members", init: { meth…
+     74|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password`
+TypeError: (0 , createStaffClient)(...).resetMemberPassword is not a function
+ ❯ src/staff-client.test.ts:78:38
+     76|   it("K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/…
+     77|     const { request, appels } = double({ member: { id: "m2" }, tempora…
+     78|     await createStaffClient(request).resetMemberPassword("m2");
+       |                                      ^
+     79|     expect(appels).toEqual([{ path: "/pro/staff/members/m2/reset-passw…
+     80|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable`
+TypeError: (0 , createStaffClient)(...).disableMember is not a function
+ ❯ src/staff-client.test.ts:84:38
+     82|   it("K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/member…
+     83|     const { request, appels } = double({ member: { id: "m2" } });
+     84|     await createStaffClient(request).disableMember("m2");
+       |                                      ^
+     85|     expect(appels).toEqual([{ path: "/pro/staff/members/m2/disable", i…
+     86|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > le client n'expose que les NEUF contrats (K-14 à K-22) : rien du PIN ni de la connexion par PIN (lot 3b)
+AssertionError: expected [ 'activate', 'changePassword', …(3) ] to deeply equal [ 'activate', 'changePassword', …(7) ]
+
+- Expected
++ Received
+
+  [
+    "activate",
+    "changePassword",
+-   "createMember",
+-   "disableMember",
+-   "listMembers",
+    "login",
+    "logout",
+-   "resetMemberPassword",
+    "session",
+  ]
+
+ ❯ src/staff-client.test.ts:90:60
+     88|   it("le client n'expose que les NEUF contrats (K-14 à K-22) : rien du…
+     89|     const { request } = double();
+     90|     expect(Object.keys(createStaffClient(request)).sort()).toEqual(["a…
+       |                                                            ^
+     91|   });
+     92| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+

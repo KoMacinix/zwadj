@@ -1,0 +1,1090 @@
+# D354 — rouge — famille « unit »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run src/common/staff-capabilities.spec.ts src/common/staff-contract.spec.ts src/staff/staff-account-state.spec.ts src/staff/staff-access-policy.spec.ts src/staff/staff-members-policy.spec.ts src/staff/staff-temporary-password.spec.ts src/staff/staff-members.service.spec.ts src/staff/staff-session.guard.spec.ts src/staff/staff-session.service.spec.ts src/staff/staff-store.prisma.spec.ts src/staff/staff-source-guards.spec.ts
+# code de sortie : 1 ; durée : 11 s
+# empreintes sha256 des fichiers de test joués (octets de l'arbre de travail) :
+#   58f6c841d45b7803ce733d8dc1c697fe518dc5db426c696a794bc94ef399f218  apps/api/src/common/staff-capabilities.spec.ts
+#   314380abce17dad572528759c3922a79eabf092e5e7ab5dde536a436a2fa8ad5  apps/api/src/common/staff-contract.spec.ts
+#   3ad3226d229ebd2a407c172029a0c568c9be29d7c8ef4403378bf87a680a48e3  apps/api/src/staff/staff-access-policy.spec.ts
+#   13f9304e79d409958fca79f78993649f06fd6f652ace33c705f3fdcaad27f0e3  apps/api/src/staff/staff-account-state.spec.ts
+#   c1f9e8943abaf1c023960010551278a018f11539333086a90f9c7cb917b8e0d2  apps/api/src/staff/staff-members-policy.spec.ts
+#   14e6973422da8bfa45dc82ee170562602638fa0023749bf9d287a316ac497c11  apps/api/src/staff/staff-members.service.spec.ts
+#   2da693c1ca38d4426ca90dc93a79c740305f51619b0c69c858f703bd5340dce9  apps/api/src/staff/staff-session.guard.spec.ts
+#   de6236e37d52d2f5cafff10ec8e8f568b212db0e2b64c4a68dfbc177e48d6ee4  apps/api/src/staff/staff-session.service.spec.ts
+#   d35ea8d1ab3c6d7e695be792e51baf28b901af81e18197065b08d5b150507bd8  apps/api/src/staff/staff-source-guards.spec.ts
+#   44593719260e67671c429b32a5f9fcd9892d7fe91e8605bdabb35fb054f7b1fc  apps/api/src/staff/staff-store.prisma.spec.ts
+#   0389ec53465fefd46fa849375be71bc3f20f43085ceda067ed7c4e9ee62cfac9  apps/api/src/staff/staff-temporary-password.spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/staff-capabilities.spec.ts (8 tests | 8 failed) 24ms
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > le cadrage a bien ONZE lignes de capacités, et la table en a autant (aucune capacité en trop, aucune en moins) 12ms
+     → Cannot convert undefined or null to object
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, « lecture seule » = lire sans écrire, « — » = ni l'un ni l'autre ; le MANAGER est « ✓ » partout 2ms
+     → (0 , peut) is not a function
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPENDANT du cadrage : l'employé écrit sur l'agenda, les demandes, les devis, les clients, les réservations ; lit la salle, les prix, les prestations ; ne touche ni au personnel ni au compte 1ms
+     → (0 , peut) is not a function
+   × la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté « salle » : la ligne `salle` du cadrage les porte, et l'employé n'y écrit pas (défaut fermé, consigne § 1 c) 3ms
+     → Cannot read properties of undefined (reading 'SALLE')
+   × `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette capacité » = écrire : la forme à deux arguments de la consigne vaut l'acte « write » 1ms
+     → Cannot read properties of undefined (reading 'AGENDA')
+   × `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : une capacité INCONNUE (une faute de frappe dans une déclaration) est refusée en lecture comme en écriture, même au MANAGER — elle ne lève pas 1ms
+     → (0 , peut) is not a function
+   × `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : un rôle INCONNU est refusé partout 1ms
+     → Cannot read properties of undefined (reading 'AGENDA')
+   × `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > la table est une DONNÉE figée : ni elle ni ses lignes ne se modifient à l'exécution (changer d'avis = changer le FICHIER, une ligne) 1ms
+     → Cannot convert undefined or null to object
+ ❯ src/common/staff-contract.spec.ts (30 tests | 11 failed) 78ms
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 : inactivité 10 minutes, plafond de session 12 h, pause de 15 minutes après 5 échecs, mot de passe 90 jours, PIN 90 jours 2ms
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : UN paramètre du levier, jamais un littéral ailleurs 9ms
+     → expected undefined to be 7 // Object.is equality
+   × STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver) 4ms
+     → expected [ 'DEVICE_COOKIES_MAX', …(6) ] to deeply equal [ 'DEVICE_COOKIES_MAX', …(7) ]
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > la borne de lecture des cookies d'appareil est 8 (cadrage, § 2.2) ; l'objet est figé (aucun appelant ne le modifie) 0ms
+   ✓ STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > le libellé d'un appareil est une constante (« Poste ») : aucun texte du navigateur n'est jamais reflété 0ms
+   ✓ les énumérations du personnel suivent le schéma ratifié (tranche [L36-3], D186) > StaffRole = MANAGER, EMPLOYEE ; StaffStatus = ACTIVE, DISABLED ; fins de session = IDLE, LOGOUT, DISABLED, PASSWORD_CHANGED, PIN_LOCKED 1ms
+   × les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE) 4ms
+     → expected [ 'STAFF_ACCOUNT_NAME_TAKEN', …(7) ] to deeply equal [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ]
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > chaque code a une clé de message, et cette clé existe, non vide, dans le catalogue FRANÇAIS ET dans le catalogue ARABE 2ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > deux codes n'ont jamais la même clé (un message partagé confondrait deux refus) 1ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > ⛔ R-3 (D341) — le message UNIQUE de la connexion refusée dit les deux causes, mot pour mot en français, et porte la DURÉE DU LEVIER dans les deux langues 1ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > aucune clé de pause n'existe dans les catalogues (S-103 refusée : la pause répond comme un mauvais mot de passe) 0ms
+   ✓ les codes d'erreur du personnel — messages FR = AR (MP-39) > le message de la session requise ne dit ni « expirée » ni « révoquée » : il ne donne aucune raison (un 401 par cause serait un oracle) 1ms
+   × les messages de K-19 à K-22 — FR = AR (MP-39, D354) > ⛔ S-242 — le refus de CAPACITÉ ne dit pas POURQUOI : ni le rôle, ni « mot de passe à changer », ni une expiration (le même message sert l'employé refusé et le membre dont le mot de passe est à changer : aucun refus n'est un oracle) 1ms
+     → Cannot read properties of undefined (reading 'split')
+   × les messages de K-19 à K-22 — FR = AR (MP-39, D354) > chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux 1ms
+     → Cannot read properties of undefined (reading 'split')
+   × les messages de K-19 à K-22 — FR = AR (MP-39, D354) > le message du dernier Manager dit CE QUI Y MET FIN : désigner un autre responsable avant de désactiver (un refus qui ne dit pas quoi faire renvoie l'utilisateur au support) 1ms
+     → Cannot read properties of undefined (reading 'split')
+   × les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR 10ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   ✓ les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*` des catalogues existent des deux côtés (parité propre au personnel, en plus de la parité globale) 1ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > accepte un corps valide et rend le nom rogné 1ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > applique la politique de mot de passe EXISTANTE (`passwordSchema`) : 8 à 128 caractères, une lettre, un chiffre — avec les clés `auth.validation.*` 3ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > refuse un rôle : K-14 crée un MANAGER, jamais un autre (une clé inconnue est refusée, pas ignorée) 1ms
+   ✓ staffActivateSchema — K-14 : le nom de compte et le mot de passe du Manager, rien d'autre > ⛔ un nom fait UNIQUEMENT de marques (accents, voyelles brèves) passe la forme mais se normalise en chaîne VIDE : il est refusé (`accountNameInvalid`), sinon la clé de nom serait vide 3ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > accepte n'importe quel mot de passe NON VIDE jusqu'à 128 caractères (un mot de passe trop court se refuse à la vérification, pas à la validation) 1ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > n'applique PAS les bornes du nom de compte de l'activation : un nom d'un caractère se rend en 401 identique, pas en 400 (aucun oracle sur ce qui existe) 0ms
+   ✓ staffLoginSchema — K-15 : NE révèle PAS la politique de mot de passe > ⛔ le nom de compte de la connexion a UNE borne haute (100 caractères) : une chaîne démesurée ne part pas jusqu'à la normalisation et à la base 1ms
+   ✓ staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > accepte un corps valide 0ms
+   ✓ staffPasswordChangeSchema — K-18 : l'actuel puis le nouveau, qui suit la politique > le nouveau mot de passe suit `passwordSchema` ; l'actuel n'est pas jugé par la politique (il peut dater d'avant elle) 0ms
+   × staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > accepte un corps valide pour chacun des deux rôles et rend le nom rogné 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ le rôle se choisit à la CRÉATION (aucune route ne le change, R-8) et il est EXACT : absent, vide, en minuscules ou inconnu sont refusés 1ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ une clé de plus est REFUSÉE, pas ignorée : le Manager ne choisit PAS le mot de passe du membre (le temporaire est généré par le serveur, DR5), ni son statut, ni ses dates 8ms
+     → Cannot read properties of undefined (reading 'safeParse')
+   × staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > le nom de compte suit la MÊME règle qu'à l'activation (une seule fonction, D147) : trop court, trop long, caractères interdits 13ms
+     → Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/staff/staff-source-guards.spec.ts (28 tests | 10 failed) 291ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'horloge : `new Date()`, `Date.now()` et leurs voisins sont VUS ; `Date` comme type et `date.toISOString()` ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > les durées en dur : un littéral dans un intervalle SQL, un produit « 15 * 60_000 », une valeur dérivée (900) sont VUS ; un paramètre, une constante et un facteur de conversion ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > le journal : un appel à `logger.`, `console.` ou `new Logger(` est VU ; un identifiant qui contient seulement le mot ne l'est pas 1ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'aléa : `Math.random()` (et ses variantes d'espacement) est VU ; `randomBytes`, `generate()` et `random` comme simple mot ne le sont pas 0ms
+   ✓ calibration des détecteurs (deux bras chacun) > le retrait des commentaires ne mange pas du code : une URL dans une chaîne reste, un commentaire de fin de ligne part 0ms
+   × les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée 18ms
+     → staff-members.controller.ts: expected [ 'staff-cookies.ts', …(9) ] to include 'staff-members.controller.ts'
+   ✓ les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`) 2ms
+   ✓ les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit) 2ms
+   ✓ les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN) 1ms
+   × les sources du personnel > ⛔ S-109 (D354) — AUCUN `Math.random` dans les sources du personnel : le mot de passe temporaire se tire d'un jeton cryptographique (`TokenService`) et l'aléa se PASSE en paramètre aux modules purs 2ms
+     → zéro fichier parcouru ne prouve rien (D290): expected 10 to be greater than or equal to 15
+   ✓ les sources du personnel > ⛔ R-5 (D354) — le MAGASIN ne voit JAMAIS le mot de passe temporaire en clair : ni `staff-store.types.ts` ni `staff-store.prisma.ts` ne nomment `temporaryPassword` (il ne reçoit que le hachage) 1ms
+   ✓ les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs` 1ms
+   × les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage 3ms
+     → le module pur staff-account-state.ts existe: expected undefined to be defined
+   ✓ le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6) 2ms
+   ✓ le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même) 1ms
+   ✓ le câblage > ⛔ MP-37 — `Secure` des cookies du personnel suit le levier EXISTANT `AUTH_COOKIE_SECURE`, lu par le contrôleur : ni littéral `secure = true|false`, ni second levier (aucun test d'intégration ne démarre l'application avec ce levier allumé) 1ms
+   ✓ le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`) 1ms
+   ✓ le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b) 197ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ — calibration (deux bras) > un contrôleur `@Roles(UserRole.PRO)` est VU, un `@Roles(UserRole.CLIENT)` ou un commentaire ne l'est pas ; une déclaration est lue, une déclaration COMMENTÉE ne l'est pas 1ms
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le détecteur a parcouru les contrôleurs de l'application (un zéro sur zéro fichier ne prouve rien, D290) : au moins 25, dont les seize de la table 14ms
+     → le contrôleur de la table n'existe pas : staff/staff-members.controller.ts: expected false to be true // Object.is equality
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ TOUT contrôleur `@Roles(UserRole.PRO)` de l'application figure dans la table : un contrôleur Pro NEUF ne passe pas sans qu'on décide ce qu'il déclare 4ms
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT ce que la table écrit, UNE fois, et la valeur est une capacité de la TABLE DES CAPACITÉS (jamais une faute de frappe que le garde refuserait pour tout le monde) 4ms
+     → Cannot convert undefined or null to object
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ aucun contrôleur HORS de la table ne déclare une capacité (une déclaration orpheline serait une décision que personne n'a écrite ici) 4ms
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > `availability.controller.ts` porte DEUX classes : la déclaration `agenda` est sur celle de `pro/venues` (la publique, `@Public()`, n'a rien à déclarer) — elle précède immédiatement son `@Controller` 10ms
+     → la déclaration existe: expected -1 to be greater than 0
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE : `@StaffAnyMember()` n'apparaît que dans `staff-session.controller.ts`, sur exactement DEUX handlers (se déconnecter, changer son mot de passe) 10ms
+     → expected {} to deeply equal { …(1) }
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` est posé sur EXACTEMENT deux handlers du contrôleur du personnel : ceux qui rendent le mot de passe temporaire 1ms
+     → Cannot read properties of undefined (reading 'match')
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > les deux routes à `:id` du contrôleur du personnel valident l'identifiant (`ParseUUIDPipe`) : un identifiant qui n'est pas un UUID est refusé en 400, jamais transmis au SQL (`::uuid` lèverait une 500) 1ms
+     → Cannot read properties of undefined (reading 'match')
+   × les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le contrôleur du personnel est sous `@Roles(UserRole.PRO)` ET sous `@Controller("pro/staff/members")` : le chemin des quatre routes est celui du contrat (K-19 à K-22) 1ms
+     → expected false to be true // Object.is equality
+ ❯ src/staff/staff-session.service.spec.ts (38 tests | 7 failed) 95ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, AUCUN factice ; le membre est rendu, une session s'ouvre, le jeton de session est posé 7ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la recherche du membre se fait par la CLÉ normalisée du nom, dans la salle du Bearer (jamais par le nom tel que tapé) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucune ligne d'échec — et le refus est `STAFF_INVALID_CREDENTIALS` (401) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > un PRO sans profil (aucune salle) est traité comme un compte inconnu : factice, même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservation (on ne compte pas d'échec sur un compte éteint), même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la réservation), l'échec est consigné avec son compte, le refus est le même 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-16 — l'échec qui FRANCHIT le seuil est consigné tel que la réservation le rend : le compte d'échecs ET `pausedNow: true` (c'est ce booléen qui fait écrire la ligne de pause) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUN échec consigné — et le MÊME corps que le mauvais mot de passe 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 / R-3 — inconnu, désactivé, en pause et mauvais mot de passe : QUATRE refus au corps IDENTIQUE à l'octet et au statut identique 3ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouverture (désactivation concurrente) : le MÊME refus, aucune session 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la clé de la tentative est réservée AVANT toute vérification : l'ordre des appels est findMember, reservePasswordAttempt, verify, openSession 1ms
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true` 14ms
+     → expected false to be true // Object.is equality
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true` 5ms
+     → expected false to be true // Object.is equality
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe valable : `mustChangePassword: false` (l'état est jugé, il n'est pas copié de la colonne) 0ms
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps 1ms
+     → un refus était attendu
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi) 2ms
+     → un refus était attendu
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée 1ms
+     → un refus était attendu
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > l'appareil : sans cookie d'appareil, un jeton neuf est offert (le magasin le crée) et le cookie d'appareil est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et quand le magasin RÉUTILISE un appareil reconnu, aucun cookie d'appareil neuf n'est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > les jetons de session et d'appareil sont transmis HACHÉS, et le jeton de session posé en cookie est le jeton en clair dont le hachage a été donné 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, session ET appareil dans la même demande au magasin, libellé d'appareil constant 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tout appel au magasin — la valeur est DÉRIVÉE de la liste (une entrée qui passe déjà le schéma), jamais écrite de mémoire 5ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérifié, 403 `FORBIDDEN` sans profil, 409 nom déjà pris 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit rien d'autre 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel pour la réutilisation, hache le nouveau, remplace SOUS la condition du hachage lu, et rend le membre 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci 0ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'échec est consigné et compté, rien n'est remplacé 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucun échec consigné 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le compteur est remis à zéro (le bon mot de passe actuel n'est pas un échec), rien n'est remplacé 5ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation : un refus qui ne dit rien de l'actuel ne consomme pas d'essai 8ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant) : le même refus que le mot de passe actuel faux 1ms
+   ✓ logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste 2ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche éteinte : `enabled: false`, aucun membre, et AUCUNE autre lecture 2ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche activée, sans cookie de session : `member: null` (jamais un 401), les membres reconnus sur ce poste sont listés par le hachage de leurs cookies d'appareil 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais par `touchSession` 4ms
+   × state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne 7ms
+     → expected false to be true // Object.is equality
+   × state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera 5ms
+     → expected { Object (id, accountName, ...) } to be null
+   ✓ state — K-17 : exemptée, jamais un refus > sans profil : couche éteinte, sans erreur 1ms
+ ❯ src/staff/staff-store.prisma.spec.ts (64 tests | 23 failed) 135ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > lit le profil du compte (id et drapeau) et ne fait aucune requête brute 6ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > un compte sans profil ⇒ null 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ UNE seule instruction SQL, aucune transaction : lire puis écrire laisserait N requêtes parallèles faire N vérifications 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDATE`), n'admet qu'un membre ACTIF hors pause, incrémente et RENVOIE — le tout dans la même instruction 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-43 — le seuil et la durée de pause sont des PARAMÈTRES issus du levier unique, jamais des littéraux du SQL 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-41 — le temps vient de la BASE (`now()`), jamais d'un paramètre horodaté par l'API 0ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > aucune ligne rendue ⇒ `reserved: false` (membre éteint, inconnu, ou EN PAUSE : le service ne distingue pas, il paie le factice) 0ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > une ligne rendue ⇒ le hachage à vérifier, le compte après incrément, et si CETTE réservation a déclenché la pause 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊME salle que le Bearer, membre ACTIF, session non terminée, plafond non atteint, inactivité non dépassée 2ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-43 — la durée d'inactivité est le PARAMÈTRE du levier unique ; aucune durée en dur dans le texte 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > une session vivante est rendue (identité du contexte posé par le garde) ; AUCUNE autre instruction 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — inactive : la fin IDLE s'écrit, conditionnée à `ended_at IS NULL` (jamais deux fins) 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-4 — membre désactivé, session ouverte : la fin DISABLED s'écrit 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-18 — session d'une AUTRE salle : RIEN ne s'écrit (on ne termine pas la session d'autrui) 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — PLAFOND atteint : rien ne s'écrit (l'énumération des fins n'a pas de valeur « plafond ») 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-19 — session déjà terminée, ou jeton inconnu : rien ne s'écrit 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > la sonde calcule les drapeaux AVEC L'HEURE DE LA BASE et la durée en paramètre 0ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ n'émet AUCUN `UPDATE` ni `INSERT` : une lecture, avec les MÊMES prédicats que le garde 1ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ MP-43 — même durée d'inactivité (paramètre), même séparation : le garde et l'état jugent la session de la MÊME façon 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-22 — l'ordre : lecture du profil, CAS du drapeau (`staff_layer_enabled_at IS NULL`, compte 1), insertion du membre, de l'appareil, de la session, audit 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTRES du levier : mot de passe 90 jours, appareil = durée du PIN, session = plafond ; aucune durée en dur 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ le drapeau déjà posé (compte 0) : AUCUNE écriture ne suit — ni membre, ni appareil, ni session, ni audit 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > un compte sans profil : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-23 — un e-mail non vérifié : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ un nom de compte déjà pris (insertion sans ligne) : la transaction est ANNULÉE — le drapeau posé une instruction plus tôt ne reste pas posé sans Manager 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-33 — la ligne d'audit est écrite DANS la transaction, avec le membre pour acteur, et ne porte que le rôle 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberInactive` SANS autre écriture (connexion ‖ désactivation, D305) 2ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ un appareil reconnu (lui-même, sa salle, ni révoqué ni expiré) est RÉUTILISÉ : on le marque utilisé, on n'en crée pas 2ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-3 — l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est pas réutilisé : un appareil neuf est créé 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > sans cookie d'appareil présenté : AUCUNE lecture d'appareils, un appareil neuf directement 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est la durée du PIN, la session le plafond : des paramètres du levier 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, sans secret : le membre et si l'appareil était déjà reconnu 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est écrit que si la session s'est VRAIMENT terminée (compte 1) 3ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hachage lu, puis fin des AUTRES sessions (`id <> courante`), audit : MP-5 2ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > changePassword : le hachage lu n'est plus le courant ⇒ `changedConcurrently`, RIEN n'est écrit de plus (ni sessions terminées, ni audit) 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword : le membre introuvable ou éteint (le verrou ne rend AUCUNE ligne) ⇒ `changedConcurrently`, aucun remplacement ne part 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif de CETTE salle, appareil ni révoqué ni expiré 2ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > resetPasswordAttempts : remet le compteur et la pause à zéro, sous condition du membre 1ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_pause` SEULEMENT quand cet échec a déclenché la pause 2ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > l'échec d'un changement de mot de passe porte son propre nom d'action 1ms
+   ✓ l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33, MP-11) > ⛔ toute ligne d'audit porte les clés autorisées, et aucune valeur secrète ne peut s'y glisser (hachage, jeton, mot de passe, PIN, nom de compte) 3ms
+   × findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > ⛔ UNE requête brute (plus de lecture par l'ORM : l'heure ne se lit que par `now()`) qui filtre par la salle ET la clé du nom, sans aucune écriture 30ms
+     → expected [] to have a length of 1 but got +0
+   × findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > aucun membre : null ; et AUCUN hachage de mot de passe n'est lu (il n'est rendu que par la réservation) 2ms
+     → Cannot read properties of undefined (reading 'sql')
+   × touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre 8ms
+     → expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.status::text AS status'
+   × touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ peekSession : les MÊMES colonnes, en lecture seule — le garde et l'état jugent le compte de la même façon 2ms
+     → expected 'SELECT s.id::text AS "sessionId", m.i…' to contain 'm.status::text AS status'
+   × listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audit), filtrée par la salle, ordonnée de façon stable 1ms
+     → f.store.listMembers is not a function
+   × listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni compteur, ni verrou, ni jeton (un SELECT qui ne les lit pas ne peut pas les rendre) 1ms
+     → f.store.listMembers is not a function
+   × createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer »), pose `must_change_password` et l'échéance TEMPORAIRE par PARAMÈTRE du levier, et rattache le créateur 1ms
+     → f.store.createMember is not a function
+   × createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transaction, avec le MANAGER pour acteur (et le compte commun), et ne porte que le rôle ; la transaction est validée 1ms
+     → f.store.createMember is not a function
+   × createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `accountNameTaken`, AUCUNE ligne d'audit — une action sans effet n'a pas de trace 0ms
+     → f.store.createMember is not a function
+   × createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — l'audit est écrit APRÈS l'insertion et par le même client de transaction : un échec de l'audit ANNULE la création (une action sans trace n'existe pas) 0ms
+     → f.store.createMember is not a function
+   × resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa salle), le remplacement du mot de passe, la révocation des appareils, la fin de TOUTES les sessions, l'audit — jamais l'inverse (L2 < L3 < L4) 1ms
+     → f.store.resetMemberPassword is not a function
+   × resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b) 2ms
+     → f.store.resetMemberPassword is not a function
+   × resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fin `PASSWORD_CHANGED` (aucune n'est épargnée : pas de `id <>`), TOUS ses appareils sont révoqués, chacun sous sa propre condition (`… IS NULL`) 1ms
+     → f.store.resetMemberPassword is not a function
+   × resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, les COMPTES de sessions et d'appareils pour charge utile — jamais le temporaire, jamais un hachage 1ms
+     → f.store.resetMemberPassword is not a function
+   × resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE écriture ; un membre désactivé : `disabled`, AUCUNE écriture ni audit 3ms
+     → f1.store.resetMemberPassword is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'ORDRE : verrou du PROFIL (`FOR UPDATE`) AVANT le verrou du membre, le COMPTAGE des Managers actifs APRÈS les deux verrous et AVANT toute écriture, puis le CAS du statut, puis les sessions 5ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le CAS de la transition : `status = 'DISABLED'` posé SOUS `status = 'ACTIVE'` (D305), avec `disabled_at = now()` ; les sessions finissent `DISABLED`, sous `ended_at IS NULL` 4ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AUCUNE écriture ni audit ; la transaction se referme sans effet 5ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la règle ne vise que les Managers) 3ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écriture et SANS ligne d'audit (une répétition ne fait pas une seconde trace) 2ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un membre introuvable DANS CETTE SALLE : `notFound` après les deux verrous, AUCUNE écriture 3ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ compte = 1 EXIGÉ : si le CAS ne rend aucune ligne (le statut a bougé sous nos pieds — impossible sous verrou, mais l'écrire est une garde), la transaction est ANNULÉE bruyamment, jamais un succès 1ms
+     → f.store.disableMember is not a function
+   × disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'audit dans la transaction, MANAGER pour acteur, rôle du membre et nombre de sessions pour charge utile ; un échec de l'audit ANNULE la désactivation 8ms
+     → f.store.disableMember is not a function
+
+ Test Files  11 failed (11)
+      Tests  59 failed | 109 passed (168)
+   Start at  09:26:47
+   Duration  6.67s (transform 4.14s, setup 0ms, collect 11.90s, tests 622ms, environment 4ms, prepare 11.56s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/staff-capabilities.spec.ts src/common/staff-contract.spec.ts src/staff/staff-account-state.spec.ts src/staff/staff-access-policy.spec.ts src/staff/staff-members-policy.spec.ts src/staff/staff-temporary-password.spec.ts src/staff/staff-members.service.spec.ts src/staff/staff-session.guard.spec.ts src/staff/staff-session.service.spec.ts src/staff/staff-store.prisma.spec.ts src/staff/staff-source-guards.spec.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-access-policy.spec.ts [ src/staff/staff-access-policy.spec.ts ]
+Error: Cannot find module './staff-access-policy' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-access-policy.spec.ts'
+ ❯ src/staff/staff-access-policy.spec.ts:8:1
+      6| import { describe, expect, it } from "vitest";
+      7| import { StaffAccountState, StaffCapability, StaffRole } from "@zwadj/…
+      8| import { accessVerdict, type AccessInput } from "./staff-access-policy…
+       | ^
+      9| 
+     10| const base: AccessInput = { state: StaffAccountState.ACTIVE, role: Sta…
+
+Caused by: Error: Failed to load url ./staff-access-policy (resolved id: ./staff-access-policy) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-access-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/65]⎯
+
+ FAIL  src/staff/staff-account-state.spec.ts [ src/staff/staff-account-state.spec.ts ]
+Error: Cannot find module './staff-account-state' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-account-state.spec.ts'
+ ❯ src/staff/staff-account-state.spec.ts:7:1
+      5| import { describe, expect, it } from "vitest";
+      6| import { StaffAccountState, StaffStatus } from "@zwadj/types";
+      7| import { etatDuCompte } from "./staff-account-state";
+       | ^
+      8| 
+      9| const MAINTENANT = new Date("2026-11-19T10:00:00.000Z");
+
+Caused by: Error: Failed to load url ./staff-account-state (resolved id: ./staff-account-state) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-account-state.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/65]⎯
+
+ FAIL  src/staff/staff-members-policy.spec.ts [ src/staff/staff-members-policy.spec.ts ]
+Error: Cannot find module './staff-members-policy' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-members-policy.spec.ts'
+ ❯ src/staff/staff-members-policy.spec.ts:6:1
+      4| import { describe, expect, it } from "vitest";
+      5| import { StaffRole, StaffStatus } from "@zwadj/types";
+      6| import { disableVerdict } from "./staff-members-policy";
+       | ^
+      7| 
+      8| const v = (targetRole: StaffRole, targetStatus: StaffStatus, activeMan…
+
+Caused by: Error: Failed to load url ./staff-members-policy (resolved id: ./staff-members-policy) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-members-policy.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/65]⎯
+
+ FAIL  src/staff/staff-members.service.spec.ts [ src/staff/staff-members.service.spec.ts ]
+Error: Cannot find module './staff-members.service' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-members.service.spec.ts'
+ ❯ src/staff/staff-members.service.spec.ts:10:1
+      8| import { StaffAccountState, StaffErrorCode, StaffRole, StaffStatus, no…
+      9| import type { StaffContext } from "./staff-decorators";
+     10| import { StaffMembersService } from "./staff-members.service";
+       | ^
+     11| import type { MemberListRow, StaffActor, StaffStore } from "./staff-st…
+     12| 
+
+Caused by: Error: Failed to load url ./staff-members.service (resolved id: ./staff-members.service) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-members.service.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/65]⎯
+
+ FAIL  src/staff/staff-session.guard.spec.ts [ src/staff/staff-session.guard.spec.ts ]
+TypeError: (0 , RequiresStaffCapability) is not a function
+ ❯ src/staff/staff-session.guard.spec.ts:49:54
+     49|   accountName: "Amine",
+     50|   mustChangePassword: false,
+     51|   status: "ACTIVE",
+       | ^
+     52|   passwordExpiresAt: new Date("2027-01-01T00:00:00.000Z"),
+     53|   now: HEURE_BASE,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/65]⎯
+
+ FAIL  src/staff/staff-temporary-password.spec.ts [ src/staff/staff-temporary-password.spec.ts ]
+Error: Cannot find module './staff-temporary-password' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-temporary-password.spec.ts'
+ ❯ src/staff/staff-temporary-password.spec.ts:8:1
+      6| import { passwordSchema } from "@zwadj/types";
+      7| import { isCommonPassword } from "./staff-password-policy";
+      8| import { TEMPORARY_PASSWORD_ALPHABET, TEMPORARY_PASSWORD_LENGTH, tempo…
+       | ^
+      9| 
+     10| /** xorshift32 : une suite d'octets reproductible. */
+
+Caused by: Error: Failed to load url ./staff-temporary-password (resolved id: ./staff-temporary-password) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/staff/staff-temporary-password.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/65]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 59 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > le cadrage a bien ONZE lignes de capacités, et la table en a autant (aucune capacité en trop, aucune en moins)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-capabilities.spec.ts:39:19
+     37|   it("le cadrage a bien ONZE lignes de capacités, et la table en a aut…
+     38|     expect(cadrage.lignes).toBe(11);
+     39|     expect(Object.keys(STAFF_CAPABILITIES).sort()).toEqual(Object.keys…
+       |                   ^
+     40|     expect(Object.values(StaffCapability).sort()).toEqual(Object.keys(…
+     41|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ pour CHAQUE ligne du cadrage : « ✓ » = lire et écrire, « lecture seule » = lire sans écrire, « — » = ni l'un ni l'autre ; le MANAGER est « ✓ » partout
+TypeError: (0 , peut) is not a function
+ ❯ src/common/staff-capabilities.spec.ts:49:22
+     47|       const attendu = cellule === "✓" ? { lire: true, ecrire: true } :…
+     48|       expect(attendu, `cellule inconnue du cadrage pour ${capacite} : …
+     49|       expect({ lire: peut(StaffRole.EMPLOYEE, cap, "read"), ecrire: pe…
+       |                      ^
+     50|       expect(cadrage.manager[capacite], `MANAGER sur ${capacite} (cadr…
+     51|       expect({ lire: peut(StaffRole.MANAGER, cap, "read"), ecrire: peu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > ⛔ la phrase de la consigne (§ 1 c), second oracle INDÉPENDANT du cadrage : l'employé écrit sur l'agenda, les demandes, les devis, les clients, les réservations ; lit la salle, les prix, les prestations ; ne touche ni au personnel ni au compte
+TypeError: (0 , peut) is not a function
+ ❯ src/common/staff-capabilities.spec.ts:59:39
+     57|     const lit = ["salle", "prix", "prestations"] as const;
+     58|     const rien = ["personnel", "compte"] as const;
+     59|     for (const c of ecrit) expect([c, peut(StaffRole.EMPLOYEE, c, "wri…
+       |                                       ^
+     60|     for (const c of lit) expect([c, peut(StaffRole.EMPLOYEE, c, "read"…
+     61|     for (const c of rien) expect([c, peut(StaffRole.EMPLOYEE, c, "read…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > la table des capacités = celle du cadrage § 5.4 (adoptée COMME DÉFAUT par la consigne, § 1 c) > les plages de VISITE (`visit-availabilities`) sont du côté « salle » : la ligne `salle` du cadrage les porte, et l'employé n'y écrit pas (défaut fermé, consigne § 1 c)
+TypeError: Cannot read properties of undefined (reading 'SALLE')
+ ❯ src/common/staff-capabilities.spec.ts:68:53
+     66|     expect(lignesBrutes.length).toBe(1);
+     67|     expect(lignesBrutes[0]).toContain("visit-availabilities");
+     68|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.SALLE, "write")).t…
+       |                                                     ^
+     69|   });
+     70| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > sans `acte`, `peut` répond à « peut-il UTILISER cette capacité » = écrire : la forme à deux arguments de la consigne vaut l'acte « write »
+TypeError: Cannot read properties of undefined (reading 'AGENDA')
+ ❯ src/common/staff-capabilities.spec.ts:74:53
+     72| describe("`peut(role, capacité, acte)` — S-239 : trois états par rôle …
+     73|   it("sans `acte`, `peut` répond à « peut-il UTILISER cette capacité »…
+     74|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.AGENDA)).toBe(true…
+       |                                                     ^
+     75|     expect(peut(StaffRole.EMPLOYEE, StaffCapability.SALLE)).toBe(false…
+     76|     expect(peut(StaffRole.MANAGER, StaffCapability.PERSONNEL)).toBe(tr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : une capacité INCONNUE (une faute de frappe dans une déclaration) est refusée en lecture comme en écriture, même au MANAGER — elle ne lève pas
+TypeError: (0 , peut) is not a function
+ ❯ src/common/staff-capabilities.spec.ts:81:12
+     79| 
+     80|   it("⛔ FERMÉ PAR DÉFAUT : une capacité INCONNUE (une faute de frappe …
+     81|     expect(peut(StaffRole.MANAGER, "inconnue" as never, "read")).toBe(…
+       |            ^
+     82|     expect(peut(StaffRole.MANAGER, "inconnue" as never, "write")).toBe…
+     83|     expect(peut(StaffRole.EMPLOYEE, "inconnue" as never)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > ⛔ FERMÉ PAR DÉFAUT : un rôle INCONNU est refusé partout
+TypeError: Cannot read properties of undefined (reading 'AGENDA')
+ ❯ src/common/staff-capabilities.spec.ts:87:55
+     85| 
+     86|   it("⛔ FERMÉ PAR DÉFAUT : un rôle INCONNU est refusé partout", () => {
+     87|     expect(peut("STAGIAIRE" as never, StaffCapability.AGENDA, "read"))…
+       |                                                       ^
+     88|     expect(peut("STAGIAIRE" as never, StaffCapability.AGENDA, "write")…
+     89|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/65]⎯
+
+ FAIL  src/common/staff-capabilities.spec.ts > `peut(role, capacité, acte)` — S-239 : trois états par rôle ne tiennent pas dans deux arguments > la table est une DONNÉE figée : ni elle ni ses lignes ne se modifient à l'exécution (changer d'avis = changer le FICHIER, une ligne)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/common/staff-capabilities.spec.ts:93:32
+     91|   it("la table est une DONNÉE figée : ni elle ni ses lignes ne se modi…
+     92|     expect(Object.isFrozen(STAFF_CAPABILITIES)).toBe(true);
+     93|     for (const ligne of Object.values(STAFF_CAPABILITIES)) expect(Obje…
+       |                                ^
+     94|   });
+     95| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinitialisation) vaut SEPT jours : UN paramètre du levier, jamais un littéral ailleurs
+AssertionError: expected undefined to be 7 // Object.is equality
+
+- Expected: 
+7
+
++ Received: 
+undefined
+
+ ❯ src/common/staff-contract.spec.ts:48:50
+     46| 
+     47|   it("DR5 (D354, MP-43) — un mot de passe TEMPORAIRE (création, réinit…
+     48|     expect(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS).toBe(7);
+       |                                                  ^
+     49|   });
+     50| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver)
+AssertionError: expected [ 'DEVICE_COOKIES_MAX', …(6) ] to deeply equal [ 'DEVICE_COOKIES_MAX', …(7) ]
+
+- Expected
++ Received
+
+@@ -4,7 +4,6 @@
+    "PASSWORD_MAX_FAILURES",
+    "PASSWORD_PAUSE_MINUTES",
+    "PASSWORD_VALIDITY_DAYS",
+    "PIN_VALIDITY_DAYS",
+    "SESSION_MAX_HOURS",
+-   "TEMPORARY_PASSWORD_DAYS",
+  ]
+
+ ❯ src/common/staff-contract.spec.ts:52:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les codes d'erreur du personnel — messages FR = AR (MP-39) > l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN code de pause (`STAFF_LOGIN_PAUSED` est la décision S-103, REFUSÉE)
+AssertionError: expected [ 'STAFF_ACCOUNT_NAME_TAKEN', …(7) ] to deeply equal [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ]
+
+- Expected
++ Received
+
+  [
+    "STAFF_ACCOUNT_NAME_TAKEN",
+    "STAFF_ALREADY_ACTIVATED",
+-   "STAFF_CAPABILITY_DENIED",
+    "STAFF_CURRENT_PASSWORD_INVALID",
+    "STAFF_EMAIL_NOT_VERIFIED",
+    "STAFF_INVALID_CREDENTIALS",
+-   "STAFF_LAST_MANAGER",
+-   "STAFF_MEMBER_DISABLED",
+-   "STAFF_MEMBER_NOT_FOUND",
+    "STAFF_PASSWORD_COMMON",
+    "STAFF_PASSWORD_REUSED",
+    "STAFF_SESSION_REQUIRED",
+  ]
+
+ ❯ src/common/staff-contract.spec.ts:77:50
+     75| describe("les codes d'erreur du personnel — messages FR = AR (MP-39)",…
+     76|   it("l'ensemble des codes est celui du lot ; ⛔ R-3 (D341) : AUCUN cod…
+     77|     expect(Object.values(StaffErrorCode).sort()).toEqual(
+       |                                                  ^
+     78|       [
+     79|         "STAFF_ACCOUNT_NAME_TAKEN",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > ⛔ S-242 — le refus de CAPACITÉ ne dit pas POURQUOI : ni le rôle, ni « mot de passe à changer », ni une expiration (le même message sert l'employé refusé et le membre dont le mot de passe est à changer : aucun refus n'est un oracle)
+TypeError: Cannot read properties of undefined (reading 'split')
+ ❯ lire src/common/staff-contract.spec.ts:28:32
+     26| function lire(tree: Tree, chemin: string): string | undefined {
+     27|   let courant: string | Tree | undefined = tree;
+     28|   for (const segment of chemin.split(".")) {
+       |                                ^
+     29|     if (courant === undefined || typeof courant === "string") return u…
+     30|     courant = courant[segment];
+ ❯ src/common/staff-contract.spec.ts:133:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > chacun des quatre codes neufs a un message FRANÇAIS et un message ARABE non vides, distincts entre eux
+TypeError: Cannot read properties of undefined (reading 'split')
+ ❯ lire src/common/staff-contract.spec.ts:28:32
+     26| function lire(tree: Tree, chemin: string): string | undefined {
+     27|   let courant: string | Tree | undefined = tree;
+     28|   for (const segment of chemin.split(".")) {
+       |                                ^
+     29|     if (courant === undefined || typeof courant === "string") return u…
+     30|     courant = courant[segment];
+ ❯ src/common/staff-contract.spec.ts:141:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les messages de K-19 à K-22 — FR = AR (MP-39, D354) > le message du dernier Manager dit CE QUI Y MET FIN : désigner un autre responsable avant de désactiver (un refus qui ne dit pas quoi faire renvoie l'utilisateur au support)
+TypeError: Cannot read properties of undefined (reading 'split')
+ ❯ lire src/common/staff-contract.spec.ts:28:32
+     26| function lire(tree: Tree, chemin: string): string | undefined {
+     27|   let courant: string | Tree | undefined = tree;
+     28|   for (const segment of chemin.split(".")) {
+       |                                ^
+     29|     if (courant === undefined || typeof courant === "string") return u…
+     30|     courant = courant[segment];
+ ❯ src/common/staff-contract.spec.ts:149:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:177:24
+    175|     const cles = new Set<string>();
+    176|     for (const [nom, schema, entree] of entreesFautives) {
+    177|       const r = schema.safeParse(entree);
+       |                        ^
+    178|       expect(r.success, nom).toBe(false);
+    179|       for (const issue of r.error?.issues ?? []) cles.add(issue.messag…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > accepte un corps valide pour chacun des deux rôles et rend le nom rogné
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:267:41
+    265|   it("accepte un corps valide pour chacun des deux rôles et rend le no…
+    266|     for (const role of ["MANAGER", "EMPLOYEE"]) {
+    267|       const r = staffMemberCreateSchema.safeParse({ accountName: "  Ka…
+       |                                         ^
+    268|       expect(r.success, role).toBe(true);
+    269|       if (r.success) expect(r.data).toEqual({ accountName: "Karim", ro…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ le rôle se choisit à la CRÉATION (aucune route ne le change, R-8) et il est EXACT : absent, vide, en minuscules ou inconnu sont refusés
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:275:38
+    273|   it("⛔ le rôle se choisit à la CRÉATION (aucune route ne le change, R…
+    274|     for (const role of [undefined, "", "manager", "employee", "ADMIN",…
+    275|       expect(staffMemberCreateSchema.safeParse({ accountName: "Karim",…
+       |                                      ^
+    276|     }
+    277|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > ⛔ une clé de plus est REFUSÉE, pas ignorée : le Manager ne choisit PAS le mot de passe du membre (le temporaire est généré par le serveur, DR5), ni son statut, ni ses dates
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:281:38
+    279|   it("⛔ une clé de plus est REFUSÉE, pas ignorée : le Manager ne chois…
+    280|     for (const extra of [{ password: "Motdepasse1" }, { temporaryPassw…
+    281|       expect(staffMemberCreateSchema.safeParse({ accountName: "Karim",…
+       |                                      ^
+    282|     }
+    283|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/65]⎯
+
+ FAIL  src/common/staff-contract.spec.ts > staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN d'autre (le mot de passe est GÉNÉRÉ) > le nom de compte suit la MÊME règle qu'à l'activation (une seule fonction, D147) : trop court, trop long, caractères interdits
+TypeError: Cannot read properties of undefined (reading 'safeParse')
+ ❯ src/common/staff-contract.spec.ts:286:36
+    284| 
+    285|   it("le nom de compte suit la MÊME règle qu'à l'activation (une seule…
+    286|     expect(staffMemberCreateSchema.safeParse({ accountName: "a", role:…
+       |                                    ^
+    287|     expect(staffMemberCreateSchema.safeParse({ accountName: "a".repeat…
+    288|     expect(staffMemberCreateSchema.safeParse({ accountName: "<b>", rol…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true`
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-session.service.spec.ts:186:46
+    184|     expect(m.mots.verify).toHaveBeenCalledTimes(1);
+    185|     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    186|     expect(r.body.member.mustChangePassword).toBe(true);
+       |                                              ^
+    187|   });
+    188| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true`
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-session.service.spec.ts:193:46
+    191|     const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE…
+    192|     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    193|     expect(r.body.member.mustChangePassword).toBe(true);
+       |                                              ^
+    194|   });
+    195| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps
+AssertionError: un refus était attendu
+ ❯ corpsDuRefus src/staff/staff-session.service.spec.ts:64:17
+
+ ❯ src/staff/staff-session.service.spec.ts:203:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi)
+AssertionError: un refus était attendu
+ ❯ corpsDuRefus src/staff/staff-session.service.spec.ts:64:17
+
+ ❯ refus src/staff/staff-session.service.spec.ts:214:93
+ ❯ src/staff/staff-session.service.spec.ts:218:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée
+AssertionError: un refus était attendu
+ ❯ corpsDuRefus src/staff/staff-session.service.spec.ts:64:17
+
+ ❯ src/staff/staff-session.service.spec.ts:224:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-session.service.spec.ts:430:126
+    428|     expect((await temporaire.service.state(user, { session: "y".repeat…
+    429|     const ordinaireExpire = monde({ peekSession: vi.fn(async () => ({ …
+    430|     expect((await ordinaireExpire.service.state(user, { session: "y".r…
+       |                                                                                                                              ^
+    431|   });
+    432| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/65]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera
+AssertionError: expected { Object (id, accountName, ...) } to be null
+
+- Expected: 
+null
+
++ Received: 
+{
+  "accountName": "Amine",
+  "id": "m1",
+  "mustChangePassword": true,
+  "role": "MANAGER",
+}
+
+ ❯ src/staff/staff-session.service.spec.ts:437:22
+    435|     const r = await m.service.state(user, { session: "y".repeat(43), d…
+    436|     expect(r.enabled).toBe(true);
+    437|     expect(r.member).toBeNull();
+       |                      ^
+    438|   });
+    439| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée
+AssertionError: staff-members.controller.ts: expected [ 'staff-cookies.ts', …(9) ] to include 'staff-members.controller.ts'
+ ❯ src/staff/staff-source-guards.spec.ts:80:50
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ S-109 (D354) — AUCUN `Math.random` dans les sources du personnel : le mot de passe temporaire se tire d'un jeton cryptographique (`TokenService`) et l'aléa se PASSE en paramètre aux modules purs
+AssertionError: zéro fichier parcouru ne prouve rien (D290): expected 10 to be greater than or equal to 15
+ ❯ src/staff/staff-source-guards.spec.ts:103:75
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage
+AssertionError: le module pur staff-account-state.ts existe: expected undefined to be defined
+ ❯ src/staff/staff-source-guards.spec.ts:124:54
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le détecteur a parcouru les contrôleurs de l'application (un zéro sur zéro fichier ne prouve rien, D290) : au moins 25, dont les seize de la table
+AssertionError: le contrôleur de la table n'existe pas : staff/staff-members.controller.ts: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-source-guards.spec.ts:247:137
+    245|   it("le détecteur a parcouru les contrôleurs de l'application (un zér…
+    246|     expect(controleurs.length, controleurs.map((c) => c.chemin).join("…
+    247|     for (const chemin of Object.keys(DECLARATIONS)) expect(parChemin.h…
+       |                                                                                                                                         ^
+    248|   });
+    249| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT ce que la table écrit, UNE fois, et la valeur est une capacité de la TABLE DES CAPACITÉS (jamais une faute de frappe que le garde refuserait pour tout le monde)
+TypeError: Cannot convert undefined or null to object
+ ❯ src/staff/staff-source-guards.spec.ts:258:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > `availability.controller.ts` porte DEUX classes : la déclaration `agenda` est sur celle de `pro/venues` (la publique, `@Public()`, n'a rien à déclarer) — elle précède immédiatement son `@Controller`
+AssertionError: la déclaration existe: expected -1 to be greater than 0
+ ❯ src/staff/staff-source-guards.spec.ts:280:44
+    278|     const iDecl = code.indexOf('@RequiresStaffCapability("agenda")');
+    279|     expect(iPro, "la classe `pro/venues` existe").toBeGreaterThan(0);
+    280|     expect(iDecl, "la déclaration existe").toBeGreaterThan(0);
+       |                                            ^
+    281|     expect(iPro - iDecl, "la déclaration est juste avant `@Controller(…
+    282|     expect(iDecl).toBeLessThan(iPro);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE : `@StaffAnyMember()` n'apparaît que dans `staff-session.controller.ts`, sur exactement DEUX handlers (se déconnecter, changer son mot de passe)
+AssertionError: expected {} to deeply equal { …(1) }
+
+- Expected
++ Received
+
+- {
+-   "staff/staff-session.controller.ts": 2,
+- }
++ {}
+
+ ❯ src/staff/staff-source-guards.spec.ts:291:21
+    289|       if (n > 0) comptes[c.chemin] = n;
+    290|     }
+    291|     expect(comptes).toEqual({ "staff/staff-session.controller.ts": 2 }…
+       |                     ^
+    292|   });
+    293| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` est posé sur EXACTEMENT deux handlers du contrôleur du personnel : ceux qui rendent le mot de passe temporaire
+TypeError: Cannot read properties of undefined (reading 'match')
+ ❯ src/staff/staff-source-guards.spec.ts:296:18
+    294|   it("⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` est posé sur EX…
+    295|     const code = parChemin.get("staff/staff-members.controller.ts")!;
+    296|     expect((code.match(/@Header\(\s*"Cache-Control"\s*,\s*"no-store"\s…
+       |                  ^
+    297|   });
+    298| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > les deux routes à `:id` du contrôleur du personnel valident l'identifiant (`ParseUUIDPipe`) : un identifiant qui n'est pas un UUID est refusé en 400, jamais transmis au SQL (`::uuid` lèverait une 500)
+TypeError: Cannot read properties of undefined (reading 'match')
+ ❯ src/staff/staff-source-guards.spec.ts:301:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/65]⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le contrôleur du personnel est sous `@Roles(UserRole.PRO)` ET sous `@Controller("pro/staff/members")` : le chemin des quatre routes est celui du contrat (K-19 à K-22)
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-source-guards.spec.ts:306:39
+    304|   it("le contrôleur du personnel est sous `@Roles(UserRole.PRO)` ET so…
+    305|     const code = parChemin.get("staff/staff-members.controller.ts")!;
+    306|     expect(CONTROLEUR_PRO.test(code)).toBe(true);
+       |                                       ^
+    307|     expect(code).toMatch(/@Controller\(\s*"pro\/staff\/members"\s*\)/);
+    308|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > ⛔ UNE requête brute (plus de lecture par l'ORM : l'heure ne se lit que par `now()`) qui filtre par la salle ET la clé du nom, sans aucune écriture
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/staff/staff-store.prisma.spec.ts:518:22
+    516|     const f = faux([[{ id: MEMBRE, accountName: "Amine", role: "MANAGE…
+    517|     const m = await f.store.findMember(SALLE, "amine");
+    518|     expect(f.appels).toHaveLength(1);
+       |                      ^
+    519|     const { sql, valeurs } = f.appels[0]!;
+    520|     expect(f.appels[0]!.type).toBe("query");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > aucun membre : null ; et AUCUN hachage de mot de passe n'est lu (il n'est rendu que par la réservation)
+TypeError: Cannot read properties of undefined (reading 'sql')
+ ❯ src/staff/staff-store.prisma.spec.ts:534:25
+    532|     const f = faux([[]]);
+    533|     expect(await f.store.findMember(SALLE, "inconnu")).toBeNull();
+    534|     expect(f.appels[0]!.sql).not.toMatch(/password_hash/);
+       |                         ^
+    535|   });
+    536| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre
+AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'm.status::text AS status'
+
+Expected: "m.status::text AS status"
+Received: "UPDATE pro_staff_sessions s SET last_activity_at = now() FROM pro_staff_members m WHERE s.token_hash = ? AND m.id = s.member_id AND m.pro_profile_id = ?::uuid AND m.status = 'ACTIVE' AND s.ended_at IS NULL AND s.expires_at > now() AND s.last_activity_at > now() - make_interval(mins => ?::int) RETURNING s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword""
+
+ ❯ src/staff/staff-store.prisma.spec.ts:545:17
+    543|     expect(await f.store.touchSession({ tokenHash: "h", proProfileId: …
+    544|     const { sql, valeurs } = f.appels[0]!;
+    545|     expect(sql).toContain('m.status::text AS status');
+       |                 ^
+    546|     expect(sql).toContain('m.password_expires_at AS "passwordExpiresAt…
+    547|     expect(sql).toContain('now() AS "now"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ peekSession : les MÊMES colonnes, en lecture seule — le garde et l'état jugent le compte de la même façon
+AssertionError: expected 'SELECT s.id::text AS "sessionId", m.i…' to contain 'm.status::text AS status'
+
+Expected: "m.status::text AS status"
+Received: "SELECT s.id::text AS "sessionId", m.id::text AS "memberId", m.role::text AS role, m.account_name AS "accountName", m.must_change_password AS "mustChangePassword" FROM pro_staff_sessions s JOIN pro_staff_members m ON m.id = s.member_id WHERE s.token_hash = ? AND m.pro_profile_id = ?::uuid AND m.status = 'ACTIVE' AND s.ended_at IS NULL AND s.expires_at > now() AND s.last_activity_at > now() - make_interval(mins => ?::int)"
+
+ ❯ src/staff/staff-store.prisma.spec.ts:556:17
+    554|     const { sql } = f.appels[0]!;
+    555|     expect(sql).toMatch(/^SELECT/);
+    556|     expect(sql).toContain('m.status::text AS status');
+       |                 ^
+    557|     expect(sql).toContain('m.password_expires_at AS "passwordExpiresAt…
+    558|     expect(sql).toContain('now() AS "now"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audit), filtrée par la salle, ordonnée de façon stable
+TypeError: f.store.listMembers is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:565:26
+    563|   it("⛔ une seule requête brute, en lecture seule (ni écriture, ni tra…
+    564|     const f = faux([[LIGNE_LISTE]]);
+    565|     expect(await f.store.listMembers(SALLE)).toEqual([LIGNE_LISTE]);
+       |                          ^
+    566|     expect(f.appels).toHaveLength(1);
+    567|     expect(f.appels[0]!.type).toBe("query");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni compteur, ni verrou, ni jeton (un SELECT qui ne les lit pas ne peut pas les rendre)
+TypeError: f.store.listMembers is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:578:19
+    576|   it("⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de pa…
+    577|     const f = faux([[LIGNE_LISTE]]);
+    578|     await f.store.listMembers(SALLE);
+       |                   ^
+    579|     expect(f.appels[0]!.sql).not.toMatch(SECRETS_EN_BASE);
+    580|     expect(f.appels[0]!.sql).toContain('now() AS "now"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer »), pose `must_change_password` et l'échéance TEMPORAIRE par PARAMÈTRE du levier, et rattache le créateur
+TypeError: f.store.createMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:589:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transaction, avec le MANAGER pour acteur (et le compte commun), et ne porte que le rôle ; la transaction est validée
+TypeError: f.store.createMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:610:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `accountNameTaken`, AUCUNE ligne d'audit — une action sans effet n'a pas de trace
+TypeError: f.store.createMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:619:26
+    617|   it("⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `account…
+    618|     const f = faux([[]]);
+    619|     expect(await f.store.createMember(entree)).toEqual({ ok: false, re…
+       |                          ^
+    620|     expect(f.audits).toHaveLength(0);
+    621|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — l'audit est écrit APRÈS l'insertion et par le même client de transaction : un échec de l'audit ANNULE la création (une action sans trace n'existe pas)
+TypeError: f.store.createMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:626:26
+    624|     const f = faux([[LIGNE_LISTE]]);
+    625|     f.client.auditLog.create.mockRejectedValueOnce(new Error("audit re…
+    626|     await expect(f.store.createMember(entree)).rejects.toThrow("audit …
+       |                          ^
+    627|     expect(f.issues).toEqual(["annulée"]);
+    628|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa salle), le remplacement du mot de passe, la révocation des appareils, la fin de TOUTES les sessions, l'audit — jamais l'inverse (L2 < L3 < L4)
+TypeError: f.store.resetMemberPassword is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:636:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b)
+TypeError: f.store.resetMemberPassword is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:652:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fin `PASSWORD_CHANGED` (aucune n'est épargnée : pas de `id <>`), TOUS ses appareils sont révoqués, chacun sous sa propre condition (`… IS NULL`)
+TypeError: f.store.resetMemberPassword is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:667:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, les COMPTES de sessions et d'appareils pour charge utile — jamais le temporaire, jamais un hachage
+TypeError: f.store.resetMemberPassword is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:678:19
+    676|   it("⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, le…
+    677|     const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], …
+    678|     await f.store.resetMemberPassword(entree);
+       |                   ^
+    679|     expect(f.audits).toHaveLength(1);
+    680|     expect(f.audits[0]!.data).toEqual({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE écriture ; un membre désactivé : `disabled`, AUCUNE écriture ni audit
+TypeError: f1.store.resetMemberPassword is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:694:27
+    692|   it("⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE éc…
+    693|     const f1 = faux([[]]);
+    694|     expect(await f1.store.resetMemberPassword(entree)).toEqual({ ok: f…
+       |                           ^
+    695|     expect(f1.appels).toHaveLength(1);
+    696|     expect(f1.audits).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'ORDRE : verrou du PROFIL (`FOR UPDATE`) AVANT le verrou du membre, le COMPTAGE des Managers actifs APRÈS les deux verrous et AVANT toute écriture, puis le CAS du statut, puis les sessions
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:711:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le CAS de la transition : `status = 'DISABLED'` posé SOUS `status = 'ACTIVE'` (D305), avec `disabled_at = now()` ; les sessions finissent `DISABLED`, sous `ended_at IS NULL`
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:729:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AUCUNE écriture ni audit ; la transaction se referme sans effet
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:740:26
+    738|   it("⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AU…
+    739|     const f = faux([[{ id: SALLE }], [MANAGER_CIBLE], [{ n: 1 }]]);
+    740|     expect(await f.store.disableMember(entree)).toEqual({ ok: false, r…
+       |                          ^
+    741|     expect(f.appels).toHaveLength(3);
+    742|     expect(f.audits).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la règle ne vise que les Managers)
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:747:27
+    745|   it("un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la rè…
+    746|     const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 1 }], [DESAC…
+    747|     expect((await f.store.disableMember(entree)).ok).toBe(true);
+       |                           ^
+    748|   });
+    749| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écriture et SANS ligne d'audit (une répétition ne fait pas une seconde trace)
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:752:26
+    750|   it("⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écritu…
+    751|     const f = faux([[{ id: SALLE }], [DESACTIVE], [{ n: 2 }]]);
+    752|     expect(await f.store.disableMember(entree)).toEqual({ ok: true, me…
+       |                          ^
+    753|     expect(f.appels).toHaveLength(3);
+    754|     expect(f.audits).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un membre introuvable DANS CETTE SALLE : `notFound` après les deux verrous, AUCUNE écriture
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:759:26
+    757|   it("un membre introuvable DANS CETTE SALLE : `notFound` après les de…
+    758|     const f = faux([[{ id: SALLE }], []]);
+    759|     expect(await f.store.disableMember(entree)).toEqual({ ok: false, r…
+       |                          ^
+    760|     expect(f.appels).toHaveLength(2);
+    761|     expect(f.audits).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[63/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ compte = 1 EXIGÉ : si le CAS ne rend aucune ligne (le statut a bougé sous nos pieds — impossible sous verrou, mais l'écrire est une garde), la transaction est ANNULÉE bruyamment, jamais un succès
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:766:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[64/65]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'audit dans la transaction, MANAGER pour acteur, rôle du membre et nombre de sessions pour charge utile ; un échec de l'audit ANNULE la désactivation
+TypeError: f.store.disableMember is not a function
+ ❯ src/staff/staff-store.prisma.spec.ts:773:19
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[65/65]⎯
+

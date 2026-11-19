@@ -1,0 +1,506 @@
+# D354 — rouge — famille « int »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/staff-members.int-spec.ts test/int/staff-last-manager.int-spec.ts test/int/staff-capabilities.int-spec.ts test/int/staff-password-expiry.int-spec.ts test/int/log-temporary-password.int-spec.ts test/int/staff-session-guard.int-spec.ts
+# code de sortie : 1 ; durée : 62 s
+# empreintes sha256 des fichiers de test joués (octets de l'arbre de travail) :
+#   09c88f2940f2e05a518c971601243bc0a95616ff63eee47d2fb49a15463eb820  apps/api/test/int/log-temporary-password.int-spec.ts
+#   3bba1154bf7362c93ebfe7f0aac6d79e0de247101516d8dc0d54b5eecd1a3176  apps/api/test/int/staff-capabilities.int-spec.ts
+#   b9a7a4fd1dd106eb2dca6aa52ec537ed44b4d264c1cd5b1b38271c13ba26a6f8  apps/api/test/int/staff-last-manager.int-spec.ts
+#   e8d2469865c32f979715e4351f96730c5c7c544124fb74ee0f9719d2cbed774b  apps/api/test/int/staff-members.int-spec.ts
+#   417d8f4f658625e500c607f7f0e6eec9bd00593075460263aa53e66a4a64c85d  apps/api/test/int/staff-password-expiry.int-spec.ts
+#   c605ce4be3cfa97017ec2a159a4a46a9461efa637fdd6c879c3492c44e969215  apps/api/test/int/staff-session-guard.int-spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-session-guard.int-spec.ts (18 tests | 18 skipped) 423ms
+   ↓ le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 55 routes atteignables par un PRO, dont les cinq routes du lot ; sans cela, tous les cas ci-dessous passeraient sur une liste vide
+   ↓ le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement quatre (état du compte commun, activer, se connecter, lire l'état) — une route neuve exemptée sans décision fait rougir ce test
+   ↓ le collecteur — garde-fou du garde-fou > aucune route PUBLIQUE n'est exemptée par erreur (une route publique n'a pas besoin de l'être : le garde l'ignore)
+   ↓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`
+   ↓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > le cookie de session n'est lu que sous SON nom : la même valeur posée sous le nom du cookie de rafraîchissement n'ouvre rien
+   ↓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > un cookie qui n'a pas la forme d'un jeton : le MÊME 401 que l'absence de cookie
+   ↓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`
+   ↓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > ⛔ le MÊME Bearer : la requête d'avant passe, la requête d'APRÈS l'activation est refusée (le drapeau est relu à chaque requête, jamais mis dans le jeton)
+   ↓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > le jeton d'accès NE PORTE PAS le drapeau : ses claims sont toujours { sub, role } (D4) — un jeton émis avant l'activation reste valable après
+   ↓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session terminée par SQL (fin `LOGOUT` posée à la main) est refusée à la requête suivante, sans attendre
+   ↓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée
+   ↓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)
+   ↓ MP-19 / MP-4 — la révocation à l'instant > le hachage SHA-256 du cookie est ce qui est cherché : un cookie dont le hachage a été retiré de la base est refusé
+ ❯ test/int/staff-capabilities.int-spec.ts (47 tests | 47 skipped) 314ms
+   ↓ le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 60 routes atteignables par un PRO, dont les QUATRE routes du personnel de ce lot ; au moins 14 portent une capacité déclarée ; sans cela tout ce qui suit passerait sur une liste vide
+   ↓ le collecteur — garde-fou du garde-fou > toute capacité DÉCLARÉE par une route existe dans la table des capacités (une faute de frappe refuserait la route à tout le monde, y compris au MANAGER)
+   ↓ le collecteur — garde-fou du garde-fou > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE dérivée du routeur : se déconnecter et changer son mot de passe — rien d'autre
+   ↓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ pour chaque route : refusée par capacité SI ET SEULEMENT SI la table, la déclaration et la méthode le disent — une écriture non permise, un `GET` sur `personnel` ou `compte`
+   ↓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ AUCUN refus ne dit pourquoi : TOUS les refus de capacité de l'employé ont le MÊME corps (même code, même clé de message), quelle que soit la route
+   ↓ une session d'EMPLOYÉ sur TOUTES les routes atteignables par un PRO (MP-21, MP-32) > ⛔ le MANAGER n'est refusé par capacité sur AUCUNE route (la déconnexion, qui termine sa session, est jouée à part)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : modifier : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : supprimer : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — la salle : créer : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les photos de la salle : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les créneaux de la salle : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les PLAGES DE VISITE (du côté « salle », consigne § 1 c) : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prix : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : créer : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — les prestations : modifier : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : créer un membre : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : réinitialiser : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le personnel : désactiver : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : le profil : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : l'adresse e-mail : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne peut PAS — le compte commun : demander la suppression du compte : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le personnel : LIRE la liste (« ni l'un ni l'autre ») : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > ⛔ l'employé ne LIT même pas — le compte commun : LIRE la demande de suppression : 403 `STAFF_CAPABILITY_DENIED`
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE ses salles : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE une salle : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — la salle : LIRE l'état de publication (D349, une lecture) : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les prestations : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les plages de visite : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : bloquer une date : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — l'agenda : débloquer une date : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : accepter : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les demandes : refuser : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les rendez-vous de visite : annuler : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : LIRE : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : créer : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : convertir en réservation : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les devis : le document PDF : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : chercher une fiche : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > l'employé PEUT — les clients : créer une fiche : le garde laisse passer (jamais `STAFF_CAPABILITY_DENIED`)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > le MANAGER, lui, passe partout où l'employé est refusé (la capacité est une affaire de RÔLE, pas de route)
+   ↓ les CAS NOMMÉS de la consigne (§ 1 c) — second oracle, qui ne passe par aucune fonction du code > une lecture RÉELLE aboutit pour l'employé : `GET /pro/venues` rend 200 et une liste (la salle d'un PRO neuf est vide), comme pour le Manager
+   ↓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ une session « à changer » (le temporaire d'un membre neuf) : TOUTE route atteignable par un PRO est refusée 403 `STAFF_CAPABILITY_DENIED`, SAUF les routes exemptées et celles du membre (se déconnecter, changer son mot de passe) — dérivé du routeur
+   ↓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > l'état de session dit `mustChangePassword: true` (c'est ce que l'écran lira pour afficher le seul changement de mot de passe) ; le compte commun reste lisible (`GET /auth/me` est exemptée)
+   ↓ S-104 — l'état « mot de passe à changer » n'ouvre que le changement de mot de passe, sur TOUTES les routes (MP-14) > ⛔ le MÊME corps de refus que le refus de capacité d'un employé (aucun refus ne dit pourquoi) ; et changer son mot de passe suffit à rouvrir les routes permises
+ ❯ test/int/staff-last-manager.int-spec.ts (7 tests | 7 failed) 4061ms
+   × le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il reste ACTIF, sa session est VIVANTE, aucune ligne d'audit de désactivation 877ms
+     → expected [ 404, 'ROUTE_NOT_FOUND' ] to deeply equal [ 409, undefined ]
+   × le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, ne peut pas se désactiver (409) 482ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:50.681Z"}
+   × le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > un EMPLOYÉ se désactive quel que soit le nombre de Managers (la règle ne vise que les Managers) : le Manager seul désactive son employé, 200 488ms
+     → Cannot read properties of undefined (reading 'state')
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deux requêtes partent et se BLOQUENT dessus ; relâché, EXACTEMENT une réussit (200) et l'autre refuse (409 `STAFF_LAST_MANAGER`) : il reste UN Manager actif 473ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:51.645Z"}
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désactivations réussissent, la TROISIÈME refuse — il reste UN Manager actif, jamais zéro 450ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:52.095Z"}
+   × deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à CHAQUE manche, exactement une réussit et il reste UN Manager actif (l'autre : 409, ou 401 si sa session a déjà pris fin) 467ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:52.562Z"}
+   × l'ordre des verrous L1 < L2 < L3 < L4 : AUCUN interblocage sous un mélange d'opérations simultanées (S-101) > ⛔ créer, réinitialiser, désactiver, lister et se désactiver mutuellement, TOUT EN MÊME TEMPS, cinq manches : aucune réponse 5xx (un interblocage détecté par PostgreSQL ferait une 500), et la salle garde un Manager actif 464ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:53.027Z"}
+ ❯ test/int/staff-password-expiry.int-spec.ts (9 tests | 8 failed) 2799ms
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) et dit `mustChangePassword: true` ; TOUTE autre route est refusée 403 `STAFF_CAPABILITY_DENIED` ; l'état de session le dit aussi 194ms
+     → expected false to be true // Object.is equality
+   ✓ un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ changer son mot de passe (K-18) ROUVRE tout : l'échéance repart à 90 jours (le levier), `must_change_password` reste faux, et la même requête qui était refusée passe  609ms
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE dont le mot de passe expire pendant qu'elle vit : la requête SUIVANTE est refusée (le garde relit l'état à chaque requête, jamais dans le jeton) — puis le changement la rouvre 221ms
+     → expected [ 200, undefined ] to deeply equal [ 403, undefined ]
+   × un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est encore valable — aucune route n'est refusée ; une échéance à `now()` ou dépassée l'est 138ms
+     → expected 401 to be 200 // Object.is equality
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChangePassword: true`), toute autre route est refusée, et le changement rouvre la salle 11ms
+     → expected 400 to be 200 // Object.is equality
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de passe est REFUSÉE — le même 401 `STAFF_INVALID_CREDENTIALS`, le même corps à l'octet qu'un mauvais mot de passe, un compte inconnu et un désactivé ; AUCUNE session, AUCUN échec compté, AUCUNE ligne d'audit d'échec 30ms
+     → 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `22P02`. Message: `invalid input syntax for type uuid: ""`
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a plus de droits dès qu'il expire : 401 `STAFF_SESSION_REQUIRED` — même sur la route du changement de mot de passe — et l'état de session ne rend plus de membre 10ms
+     → expected 400 to be 200 // Object.is equality
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation rend un NOUVEAU temporaire valable, avec lequel le membre se connecte 10ms
+     → 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `22P02`. Message: `invalid input syntax for type uuid: ""`
+   × un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : le MÊME membre, échéance dépassée — marqué temporaire il est REFUSÉ, démarqué (mot de passe ordinaire de 90 jours) il est ADMIS vers le changement 9ms
+     → création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:28:04.359Z"}
+ ❯ test/int/log-temporary-password.int-spec.ts (3 tests | 3 failed) 1135ms
+   × le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la sortie du journal — ni la valeur du cookie de session du Manager, ni son mot de passe 21ms
+     → expected 404 to be 201 // Object.is equality
+   × le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-21 : le temporaire rendu par la réinitialisation n'est pas dans le journal non plus 13ms
+     → expected 404 to be 200 // Object.is equality
+   × le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe saisi (corps de la requête) et les valeurs des cookies posés (session, appareil) ne sont pas dans le journal ; le champ `set-cookie` est masqué 18ms
+     → expected 400 to be 200 // Object.is equality
+
+ Test Files  6 failed (6)
+      Tests  18 failed | 1 passed | 65 skipped (84)
+   Start at  09:27:14
+   Duration  58.34s (transform 2.95s, setup 194ms, collect 40.59s, tests 8.73s, environment 2ms, prepare 3.19s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-members.int-spec.ts test/int/staff-last-manager.int-spec.ts test/int/staff-capabilities.int-spec.ts test/int/staff-password-expiry.int-spec.ts test/int/log-temporary-password.int-spec.ts test/int/staff-session-guard.int-spec.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-capabilities.int-spec.ts [ test/int/staff-capabilities.int-spec.ts ]
+TypeError: Cannot read properties of undefined (reading 'KEY')
+ ❯ Reflector.get ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/services/reflector.service.js:37:52
+ ❯ Reflector.getAllAndOverride ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/services/reflector.service.js:92:33
+ ❯ collectRoutes test/int/route-collector.ts:53:43
+     51|         const isPublic = reflector.getAllAndOverride<boolean | undefin…
+     52|         const staffExempt = reflector.getAllAndOverride<boolean | unde…
+     53|         const staffCapability = reflector.getAllAndOverride<string | u…
+       |                                           ^
+     54|         const staffAnyMember = reflector.getAllAndOverride<boolean | u…
+     55|         const verbs = ["get", "post", "put", "delete", "patch"] as con…
+ ❯ test/int/staff-capabilities.int-spec.ts:32:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  test/int/staff-members.int-spec.ts [ test/int/staff-members.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-temporary-password' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-members.int-spec.ts'
+ ❯ test/int/staff-members.int-spec.ts:13:1
+     11| import { STAFF_LIMITS, StaffAccountState, StaffErrorCode } from "@zwad…
+     12| import { PasswordService } from "../../src/auth/password.service";
+     13| import { TEMPORARY_PASSWORD_ALPHABET, TEMPORARY_PASSWORD_LENGTH } from…
+       | ^
+     14| import { createTestApp, truncateAll, type TestContext } from "./helper…
+     15| import {
+
+Caused by: Error: Failed to load url ../../src/staff/staff-temporary-password (resolved id: ../../src/staff/staff-temporary-password) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-members.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  test/int/staff-session-guard.int-spec.ts [ test/int/staff-session-guard.int-spec.ts ]
+TypeError: Cannot read properties of undefined (reading 'KEY')
+ ❯ Reflector.get ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/services/reflector.service.js:37:52
+ ❯ Reflector.getAllAndOverride ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/services/reflector.service.js:92:33
+ ❯ collectRoutes test/int/route-collector.ts:53:43
+     51|         const isPublic = reflector.getAllAndOverride<boolean | undefin…
+     52|         const staffExempt = reflector.getAllAndOverride<boolean | unde…
+     53|         const staffCapability = reflector.getAllAndOverride<string | u…
+       |                                           ^
+     54|         const staffAnyMember = reflector.getAllAndOverride<boolean | u…
+     55|         const verbs = ["get", "post", "put", "delete", "patch"] as con…
+ ❯ test/int/staff-session-guard.int-spec.ts:47:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-20 : le temporaire rendu par la création n'est NULLE PART dans la sortie du journal — ni la valeur du cookie de session du Manager, ni son mot de passe
+AssertionError: expected 404 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 404
+
+ ❯ test/int/log-temporary-password.int-spec.ts:33:24
+     31|     ctx.vider();
+     32|     const { res, temporaryPassword } = await creerMembre(ctx, m.pro, m…
+     33|     expect(res.status).toBe(201);
+       |                        ^
+     34|     expect(temporaryPassword.length, "un vrai temporaire, pas une vale…
+     35|     const ligne = await ctx.attendreRequete("POST", "/api/v1/pro/staff…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ K-21 : le temporaire rendu par la réinitialisation n'est pas dans le journal non plus
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/log-temporary-password.int-spec.ts:50:24
+     48|     const chemin = `/api/v1/pro/staff/members/${e.id}/reset-password`;
+     49|     const res = await appeler(ctx, m.pro.token, m.jar, "post", chemin);
+     50|     expect(res.status).toBe(200);
+       |                        ^
+     51|     const neuf = (res.body as { temporaryPassword: string }).temporary…
+     52|     const ligne = await ctx.attendreRequete("POST", chemin);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  test/int/log-temporary-password.int-spec.ts > le journal réel de l'application ne porte AUCUNE valeur secrète du personnel > ⛔ la CONNEXION d'un membre avec son temporaire : le mot de passe saisi (corps de la requête) et les valeurs des cookies posés (session, appareil) ne sont pas dans le journal ; le champ `set-cookie` est masqué
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ test/int/log-temporary-password.int-spec.ts:64:24
+     62|     const jar = new Jar();
+     63|     const res = await connecter(ctx, m.pro, jar, "Samir", e.temporaryP…
+     64|     expect(res.status).toBe(200);
+       |                        ^
+     65|     const session = jar.session()!;
+     66|     const appareils = jar.appareils().map((c) => c.value);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un Manager SEUL qui se désactive lui-même : 409 `STAFF_LAST_MANAGER` ; il reste ACTIF, sa session est VIVANTE, aucune ligne d'audit de désactivation
+AssertionError: expected [ 404, 'ROUTE_NOT_FOUND' ] to deeply equal [ 409, undefined ]
+
+- Expected
++ Received
+
+  [
+-   409,
+-   undefined,
++   404,
++   "ROUTE_NOT_FOUND",
+  ]
+
+ ❯ test/int/staff-last-manager.int-spec.ts:42:39
+     40|     const salle = await proActive(ctx);
+     41|     const res = await appeler(ctx, salle.pro.token, salle.jar, "post",…
+     42|     expect([res.status, codeDe(res)]).toEqual([409, StaffErrorCode.STA…
+       |                                       ^
+     43|     expect((await membreParId(ctx.prisma, salle.membreId)).status).toB…
+     44|     for (const s of await sessionsDuMembre(ctx.prisma, salle.membreId)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > ⛔ un second Manager DÉSACTIVÉ ne compte pas : le Manager restant, seul actif, ne peut pas se désactiver (409)
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:50.681Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ salleADeuxManagers test/int/staff-last-manager.int-spec.ts:33:18
+ ❯ test/int/staff-last-manager.int-spec.ts:51:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > le dernier Manager actif — jamais désactivé, même par lui-même (MP-31) > un EMPLOYÉ se désactive quel que soit le nombre de Managers (la règle ne vise que les Managers) : le Manager seul désactive son employé, 200
+TypeError: Cannot read properties of undefined (reading 'state')
+ ❯ test/int/staff-last-manager.int-spec.ts:63:76
+     61|     const e = await creerMembre(ctx, salle.pro, salle.jar, "Employe");
+     62|     const res = await appeler(ctx, salle.pro.token, salle.jar, "post",…
+     63|     expect([res.status, (res.body as { member: { state: string } }).me…
+       |                                                                            ^
+     64|     expect(await compterManagersActifs(ctx.prisma, salle.pro.proProfil…
+     65|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ ENTRELACEMENT FORCÉ — le verrou du profil (L1) est tenu hors du service ; les deux requêtes partent et se BLOQUENT dessus ; relâché, EXACTEMENT une réussit (200) et l'autre refuse (409 `STAFF_LAST_MANAGER`) : il reste UN Manager actif
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:51.645Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ salleADeuxManagers test/int/staff-last-manager.int-spec.ts:33:18
+ ❯ test/int/staff-last-manager.int-spec.ts:71:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ TROIS Managers en cycle (M1→M2, M2→M3, M3→M1), entrelacement FORCÉ : deux désactivations réussissent, la TROISIÈME refuse — il reste UN Manager actif, jamais zéro
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:52.095Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ salleADeuxManagers test/int/staff-last-manager.int-spec.ts:33:18
+ ❯ test/int/staff-last-manager.int-spec.ts:89:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > deux Managers qui se désactivent l'un l'autre EN MÊME TEMPS (MP-6) > ⛔ RÉPÉTITION — 30 manches de deux désactivations simultanées SANS verrou forcé : à CHAQUE manche, exactement une réussit et il reste UN Manager actif (l'autre : 409, ou 401 si sa session a déjà pris fin)
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:52.562Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ salleADeuxManagers test/int/staff-last-manager.int-spec.ts:33:18
+ ❯ test/int/staff-last-manager.int-spec.ts:106:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+ FAIL  test/int/staff-last-manager.int-spec.ts > l'ordre des verrous L1 < L2 < L3 < L4 : AUCUN interblocage sous un mélange d'opérations simultanées (S-101) > ⛔ créer, réinitialiser, désactiver, lister et se désactiver mutuellement, TOUT EN MÊME TEMPS, cinq manches : aucune réponse 5xx (un interblocage détecté par PostgreSQL ferait une 500), et la salle garde un Manager actif
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:27:53.027Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ salleADeuxManagers test/int/staff-last-manager.int-spec.ts:33:18
+ ❯ test/int/staff-last-manager.int-spec.ts:127:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la connexion réussit (200) et dit `mustChangePassword: true` ; TOUTE autre route est refusée 403 `STAFF_CAPABILITY_DENIED` ; l'état de session le dit aussi
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:39:35
+     37|     const connexion = await connecter(ctx, m.pro, jar);
+     38|     expect(connexion.status).toBe(200);
+     39|     expect(mustChange(connexion)).toBe(true);
+       |                                   ^
+     40|     const lecture = await venues(m.pro.token, jar);
+     41|     expect([lecture.status, codeDe(lecture)]).toEqual([403, StaffError…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ une session DÉJÀ OUVERTE dont le mot de passe expire pendant qu'elle vit : la requête SUIVANTE est refusée (le garde relit l'état à chaque requête, jamais dans le jeton) — puis le changement la rouvre
+AssertionError: expected [ 200, undefined ] to deeply equal [ 403, undefined ]
+
+- Expected
++ Received
+
+  [
+-   403,
++   200,
+    undefined,
+  ]
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:68:43
+     66|     await echeanceDuMotDePasse(ctx.prisma, m.membreId, -1);
+     67|     const refus = await venues(m.pro.token, jar);
+     68|     expect([refus.status, codeDe(refus)]).toEqual([403, StaffErrorCode…
+       |                                           ^
+     69|     expect((await changerMotDePasse(ctx, m.pro, jar, MOT_DE_PASSE_MEMB…
+     70|     expect((await venues(m.pro.token, jar)).status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est admise, et n'ouvre que le changement de mot de passe > ⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est encore valable — aucune route n'est refusée ; une échéance à `now()` ou dépassée l'est
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:75:87
+     73|   it("⛔ la BORNE : une échéance dans DEUX SECONDES (selon la base) est…
+     74|     const jar = new Jar();
+     75|     expect((await connecter(ctx, m.pro, jar, "Amine", MOT_DE_PASSE_MEM…
+       |                                                                                       ^
+     76|     await echeanceDuMotDePasse(ctx.prisma, m.membreId, 3600);
+     77|     expect((await venues(m.pro.token, jar)).status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire VALABLE : la connexion est admise (`mustChangePassword: true`), toute autre route est refusée, et le changement rouvre la salle
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:95:30
+     93|     const jar = new Jar();
+     94|     const connexion = await connecter(ctx, m.pro, jar, "Karim", e.temp…
+     95|     expect(connexion.status).toBe(200);
+       |                              ^
+     96|     expect(mustChange(connexion)).toBe(true);
+     97|     const refus = await venues(m.pro.token, jar);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ un temporaire EXPIRÉ : la connexion avec le BON mot de passe est REFUSÉE — le même 401 `STAFF_INVALID_CREDENTIALS`, le même corps à l'octet qu'un mauvais mot de passe, un compte inconnu et un désactivé ; AUCUNE session, AUCUN échec compté, AUCUNE ligne d'audit d'échec
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `22P02`. Message: `invalid input syntax for type uuid: ""`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ echeanceDuMotDePasse test/int/staff-helpers.ts:262:3
+    260| /** Fixe l'échéance du mot de passe À `secondes` secondes d'AUJOURD'HU…
+    261| export async function echeanceDuMotDePasse(prisma: PrismaService, memb…
+    262|   await prisma.$executeRaw`UPDATE pro_staff_members SET password_expir…
+       |   ^
+    263| }
+    264| 
+ ❯ test/int/staff-password-expiry.int-spec.ts:105:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ une session ouverte AVANT l'expiration du temporaire n'a plus de droits dès qu'il expire : 401 `STAFF_SESSION_REQUIRED` — même sur la route du changement de mot de passe — et l'état de session ne rend plus de membre
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ test/int/staff-password-expiry.int-spec.ts:122:95
+    120|     const e = await creerMembre(ctx, m.pro, m.jar, "ExpireEnSession");
+    121|     const jar = new Jar();
+    122|     expect((await connecter(ctx, m.pro, jar, "ExpireEnSession", e.temp…
+       |                                                                                               ^
+    123|     await echeanceDuMotDePasse(ctx.prisma, e.id, -1);
+    124|     const refus = await changerMotDePasse(ctx, m.pro, jar, e.temporary…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ « le Manager doit en refaire un » : une réinitialisation rend un NOUVEAU temporaire valable, avec lequel le membre se connecte
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `22P02`. Message: `invalid input syntax for type uuid: ""`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ echeanceDuMotDePasse test/int/staff-helpers.ts:262:3
+    260| /** Fixe l'échéance du mot de passe À `secondes` secondes d'AUJOURD'HU…
+    261| export async function echeanceDuMotDePasse(prisma: PrismaService, memb…
+    262|   await prisma.$executeRaw`UPDATE pro_staff_members SET password_expir…
+       |   ^
+    263| }
+    264| 
+ ❯ test/int/staff-password-expiry.int-spec.ts:133:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/21]⎯
+
+ FAIL  test/int/staff-password-expiry.int-spec.ts > un mot de passe TEMPORAIRE : à changer tant qu'il est valable, REFUSÉ une fois expiré > ⛔ la distinction ne repose que sur `must_change_password` : le MÊME membre, échéance dépassée — marqué temporaire il est REFUSÉ, démarqué (mot de passe ordinaire de 90 jours) il est ADMIS vers le changement
+Error: création du membre de test échouée (404) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/members","timestamp":"2026-11-19T14:28:04.359Z"}
+ ❯ membreActif test/int/staff-helpers.ts:226:38
+    224| ): Promise<{ id: string; jar: Jar; password: string }> {
+    225|   const cree = await creerMembre(ctx, pro, jarManager, accountName, ro…
+    226|   if (cree.res.status !== 201) throw new Error(`création du membre de …
+       |                                      ^
+    227|   const jar = new Jar();
+    228|   const connexion = await connecter(ctx, pro, jar, accountName, cree.t…
+ ❯ test/int/staff-password-expiry.int-spec.ts:144:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/21]⎯
+
