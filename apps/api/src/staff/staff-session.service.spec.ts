@@ -185,7 +185,9 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
   // ── S-104 (R-3, D354) : le mot de passe À CHANGER et le TEMPORAIRE EXPIRÉ ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
   it("⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true`", async () => {
     const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, passwordExpiresAt: ms(-1) })) }, { verify: () => true });
-    const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    const issue = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE).then((corps) => ({ admise: true as const, corps }), () => ({ admise: false as const, corps: null }));
+    expect(issue.admise, "la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage)").toBe(true);
+    const r = issue.corps!;
     expect(m.mots.verify).toHaveBeenCalledTimes(1);
     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
     expect(r.body.member.mustChangePassword).toBe(true);
@@ -193,7 +195,9 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
 
   it("⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true`", async () => {
     const m = monde({ findMember: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(7 * 24 * 60 * 60_000) })) }, { verify: () => true });
-    const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    const issue = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE).then((corps) => ({ admise: true as const, corps }), () => ({ admise: false as const, corps: null }));
+    expect(issue.admise, "la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage)").toBe(true);
+    const r = issue.corps!;
     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
     expect(r.body.member.mustChangePassword).toBe(true);
   });

@@ -72,6 +72,10 @@ describe("temporaryPasswordFrom — l'échantillonnage AVEC REJET (le biais modu
     expect(temporaryPasswordFrom(new Uint8Array(40).fill(255))).toBeNull();
     expect(temporaryPasswordFrom(new Uint8Array(TEMPORARY_PASSWORD_LENGTH - 1).fill(3))).toBeNull();
     expect(temporaryPasswordFrom(new Uint8Array(0))).toBeNull();
+    // ⛔ ONZE octets acceptés qui MÊLENT lettre et chiffre : la règle « douze » est la SEULE à les refuser (le contrôle lettre/chiffre, lui, les laisserait passer) — sans ce cas, retirer la règle ne fait rougir rien
+    const chiffre = TEMPORARY_PASSWORD_ALPHABET.search(/[2-9]/);
+    const onzeMelanges = Uint8Array.from({ length: TEMPORARY_PASSWORD_LENGTH - 1 }, (_, i) => (i % 2 === 0 ? 0 : chiffre));
+    expect(temporaryPasswordFrom(onzeMelanges), "onze caractères valables mais PLUS COURTS que douze : null").toBeNull();
   });
 
   it("⛔ une chaîne SANS chiffre ou SANS lettre est refusée (null) : le contrat `passwordSchema` en exige un de chaque, et un mot de passe que le contrat refuserait ne serait pas utilisable comme actuel", () => {

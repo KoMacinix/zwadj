@@ -343,7 +343,7 @@ describe("K-22 — désactiver : les sessions finissent `DISABLED`, jamais un se
 
   it("⛔ patron de D349 — une désactivation RÉPÉTÉE est un 200 SANS écriture : la date de désactivation ne bouge pas, aucune ligne d'audit de plus", async () => {
     const res = await appeler(ctx, m.pro.token, m.jar, "post", url(`/${e.id}/disable`));
-    expect([res.status, (res.body as { member: { state: string } }).member.state]).toEqual([200, StaffAccountState.DISABLED]);
+    expect([res.status, (res.body as { member?: { state?: string } }).member?.state]).toEqual([200, StaffAccountState.DISABLED]);
     expect((await membreParId(ctx.prisma, e.id)).disabled_at).toEqual(disabledAt);
     expect((await lignesAudit(ctx.prisma, "staff.member_disable")).filter((l) => l.entity_id === e.id)).toHaveLength(1);
   });

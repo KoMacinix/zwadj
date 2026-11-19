@@ -162,7 +162,7 @@ cible("G-10. ⛔ MP-18 — la salle du magasin n'est plus celle du PROFIL du Bea
 cible("G-11. ⛔ un refus du magasin n'est plus un refus (la session d'une autre salle passe)", GARDE,
       "    if (!touched.ok) throw sessionRequise();", "    if (false) throw sessionRequise();", ["garde", "int-garde"])
 cible("G-12. ⛔ le contexte posé sur la requête porte l'identifiant de SESSION à la place de celui du membre", GARDE,
-      "      memberId: touched.session.memberId,", "      memberId: touched.session.sessionId,", ["garde"])
+      "      memberId: session.memberId,", "      memberId: session.sessionId,", ["garde"])
 cible("G-13. ⛔ le refus du garde change de CODE (le client ne reconnaît plus « session requise »)", GARDE,
       "  new UnauthorizedException({ code: StaffErrorCode.STAFF_SESSION_REQUIRED, message: STAFF_ERROR_MESSAGE_KEYS.STAFF_SESSION_REQUIRED });",
       "  new UnauthorizedException({ code: StaffErrorCode.STAFF_INVALID_CREDENTIALS, message: STAFF_ERROR_MESSAGE_KEYS.STAFF_SESSION_REQUIRED });", ["garde", "int-garde"])
@@ -348,7 +348,7 @@ cible("A-12. ⛔ MP-43 — le plafond de la session de l'activation n'est plus l
 cible("A-13. ⛔ MP-43 — l'échéance du mot de passe de l'activation n'est plus celle du levier", MAGASIN,
       "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int))", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int))", ["magasin", "int-activation"])
 cible("A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles", MAGASIN,
-      "      where: { proProfileId, accountNameKey },", "      where: { accountNameKey },", ["magasin", "int-connexion"])
+      "       WHERE pro_profile_id = ${proProfileId}::uuid AND account_name_key = ${accountNameKey}", "       WHERE account_name_key = ${accountNameKey}", ["magasin", "int-connexion"])
 cible("A-15. ⛔ MP-16 / MP-17 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)", MAGASIN,
       "password_locked_until <= now())\n           FOR UPDATE", "password_locked_until <= now())\n           -- sans verrou", ["magasin"])
 cible("A-16. ⛔ MP-4 — la réservation compte aussi sur un membre DÉSACTIVÉ", MAGASIN,
@@ -432,7 +432,7 @@ cible("A-53. ⛔ K-18 — le remplacement du mot de passe n'est plus conditionn�
 cible("A-54. ⛔ K-18 — le membre n'est plus VERROUILLÉ avant le remplacement", MAGASIN,
       "AND status = 'ACTIVE' FOR UPDATE`;", "AND status = 'ACTIVE' FOR SHARE`;", ["magasin"])
 cible("A-55. ⛔ MP-5 — les autres sessions prennent la fin « déconnexion » au lieu de « mot de passe changé »", MAGASIN,
-      "end_reason = 'PASSWORD_CHANGED'", "end_reason = 'LOGOUT'", ["magasin", "int-mdp"])
+      "end_reason = 'PASSWORD_CHANGED'\n         WHERE member_id", "end_reason = 'LOGOUT'\n         WHERE member_id", ["magasin", "int-mdp"])
 cible("A-56. ⛔ MP-5 — le changement termine la session COURANTE et laisse les autres", MAGASIN,
       "AND id <> ${input.currentSessionId}::uuid", "AND id = ${input.currentSessionId}::uuid", ["magasin", "int-mdp"])
 cible("A-57. ⛔ K-18 — le changement laisse `must_change_password` levé", MAGASIN,
