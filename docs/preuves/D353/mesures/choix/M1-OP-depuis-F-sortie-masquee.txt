@@ -1,0 +1,377 @@
+⛔ PIÈCE MASQUÉE — D353 M1-OP-depuis-F. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 65018 octets, sha256 6d8a9647796fb97f9a7c95631818e4230396e5c8c270c5a2b2e982108a7ef5a2. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mStarting Nest application...[39m [90m{"context":"NestFactory"}[39m
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mConfigModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mConfigHostModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mThrottlerModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mConfigModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.047] [32mINFO[39m (3528): [36mLoggerModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mPrismaModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mEmailModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mWhatsAppModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mHealthModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mJwtModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mMediaModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mPaymentsModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mAppModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mReferentialsModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mDocumentsModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mProClientsModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mStaffModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mAuthModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mAccountModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mVenuesModule dependencies initialized[39m [90m{"context":"InstanceLoader"}[39m
+[2m[WebServer] [22m[01:51:03.048] [33mWARN[39m (3528): [36mUnsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert...[39m [90m{"context":"LegacyRouteConverter"}[39m
+[2m[WebServer] [22m[01:51:03.048] [33mWARN[39m (3528): [36mUnsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert...[39m [90m{"context":"LegacyRouteConverter"}[39m
+[2m[WebServer] [22m[01:51:03.048] [32mINFO[39m (3528): [36mAuthController {/api/v1/auth}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/register, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/verify-email/:token, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/resend-verification, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/login, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/google, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/me, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/forgot-password, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/reset-password, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/refresh, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/logout, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mAccountController {/api/v1/me}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/profile, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/change-email, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/change-password, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/deletion-request, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/deletion-request, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/me/deletion-request/cancel, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mAccountPublicController {/api/v1/auth}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/auth/confirm-email-change/:token, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mAccountAdminController {/api/v1/admin/deletion-requests}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/deletion-requests, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/deletion-requests/:id/approve, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/deletion-requests/:id/reject, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mHealthController {/api/v1/health}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/health, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMediaController {/api/v1/media}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mMapped {/api/v1/media/:key, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.049] [32mINFO[39m (3528): [36mReferentialsController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/wilayas, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/amenities, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/venue-styles, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mVenuesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/venues, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.050] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/publication, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mVenueMediaController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/photos, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/photos/order, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/photos/:photoId, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/photos/:photoId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/virtual-tour, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mSlotTemplatesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates/:slotId, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates/:slotId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mPricingRulesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/slot-templates/:slotId/pricing-rules/:ruleId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mVenuesAdminController {/api/v1/admin/venues}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/venues/pending-publication, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/venues/:id, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/venues/:id/publish, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/venues/:id/reject, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/admin/venues/:id/commission-rate, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mVenuesPublicController {/api/v1/venues}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:slug, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mVenueMapController {/api/v1/venue-map}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venue-map, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mAvailabilityController {/api/v1/venues}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:slug/availability, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mAvailabilityProController {/api/v1/pro/venues}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/availability, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mAvailabilityBlocksController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/availability-blocks, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/availability-blocks, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/availability-blocks/:blockId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mVisitAvailabilitiesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/visit-availabilities, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/visit-availabilities, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/visit-availabilities/:availabilityId, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.051] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/visit-availabilities/:availabilityId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mVisitSlotsController {/api/v1/venues}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:slug/visit-slots, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mVisitBookingsController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:slug/visit-bookings, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/me/visit-bookings, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/visit-bookings/:id, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/visit-bookings, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/visit-bookings/:bookingId, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mBookingsController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:slug/bookings, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/me/bookings, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/bookings/:id, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mBookingsProController {/api/v1/pro}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/bookings, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/bookings/:id/accept, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/bookings/:id/decline, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/bookings/:id/cancel, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mServicesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/services, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/services, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/services/:id, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/services/:id, DELETE} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mQuotesController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/quotes, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/venues/:id/quotes/conversion, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/venues/:id/quotes, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/deliver, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/revise, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/convert, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/cancel, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/promote, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/client-name, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mQuoteDocumentController {/api/v1}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/quotes/:id/document, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mProClientsController {/api/v1/pro/clients}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/clients/lookup, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/clients, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/clients/:id/names, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/clients/:id, PATCH} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mStaffSessionController {/api/v1/pro/staff}:[39m [90m{"context":"RoutesResolver"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/staff/activate, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/staff/login, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/staff/session, GET} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/staff/logout, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mMapped {/api/v1/pro/staff/password, POST} route[39m [90m{"context":"RouterExplorer"}[39m
+[2m[WebServer] [22m[01:51:03.052] [32mINFO[39m (3528): [36mNest application successfully started[39m [90m{"context":"NestApplication"}[39m
+[2m[WebServer] [22m[01:51:03.825] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":1,"method":"GET","url":"/api/v1/health","query":{},"params":{"path":["health"]},"headers":{"accept":"*/*","host":"localhost:3101","connection":"keep-alive"},"remoteAddress":"::1","remotePort":21329},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-5rs1uTcSw8WPxWYmJkN1fu00sdA\""}},"responseTime":87}[39m
+[2m[WebServer] [22m[01:51:21.891] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":4,"method":"GET","url":"/api/v1/wilayas","query":{},"params":{"path":["wilayas"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21353},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"2","etag":"W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""}},"responseTime":40}[39m
+[2m[WebServer] [22m[01:51:21.899] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":3,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21352},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999998","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":56}[39m
+[2m[WebServer] [22m[01:51:21.900] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":2,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21351},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":113}[39m
+
+> @zwadj/api@0.0.0 prisma:migrate C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+Datasource "db": PostgreSQL database "zwadj_e2e", schema "public" at "localhost:5432"
+
+33 migrations found in prisma/migrations
+
+Applying migration `20260707000000_init`
+Applying migration `20260707000001_booking_constraints`
+Applying migration `20260717120000_refresh_token_persistent`
+Applying migration `20260718150000_user_google_oauth`
+Applying migration `20260720120000_city_natural_key`
+Applying migration `20260720140000_venue_status_lifecycle`
+Applying migration `20260720160000_venue_cashback_public_read`
+Applying migration `20260722090000_venue_media_tour`
+Applying migration `20260723090000_venue_drop_capacity_min`
+Applying migration `20260723120000_account_profile_email_change`
+Applying migration `20260723120100_account_deletion_request`
+Applying migration `20260726100000_a6a_matterport_replace_360_tour`
+Applying migration `20260727120000_slot_template_base_price`
+Applying migration `20260727130000_pricing_rule_per_slot`
+Applying migration `20260729000000_visits_exclusive_and_pro_channels`
+Applying migration `20260730000000_visit_booking_contact_phone`
+Applying migration `20260730120000_venue_styles_and_ceremony_type`
+Applying migration `20260802120000_booking_request_and_deposit_policy`
+Applying migration `20260802140000_quote_lifecycle`
+Applying migration `20260804120000_refresh_token_rotation_grace`
+Applying migration `20260814120000_quote_sent_via`
+Applying migration `20260814140000_quote_delivery_switch`
+Applying migration `20260815120000_quote_drop_valid_until`
+Applying migration `20260821000000_quote_status_cancelled`
+Applying migration `20260821000100_quote_cancel_without_delivery`
+Applying migration `20260824120000_payment_one_pending_per_booking`
+Applying migration `20260909120000_booking_quote_total_coherent`
+Applying migration `20261015100000_venue_number`
+Applying migration `20261015100100_quote_reference`
+Applying migration `20261022120000_pro_client_records`
+Applying migration `20261024100000_booking_contact_phone_optional`
+Applying migration `20261028100000_quote_unofficial_draft`
+Applying migration `20261104170000_staff_layer`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260707000000_init/
+    └─ migration.sql
+  └─ 20260707000001_booking_constraints/
+    └─ migration.sql
+  └─ 20260717120000_refresh_token_persistent/
+    └─ migration.sql
+  └─ 20260718150000_user_google_oauth/
+    └─ migration.sql
+  └─ 20260720120000_city_natural_key/
+    └─ migration.sql
+  └─ 20260720140000_venue_status_lifecycle/
+    └─ migration.sql
+  └─ 20260720160000_venue_cashback_public_read/
+    └─ migration.sql
+  └─ 20260722090000_venue_media_tour/
+    └─ migration.sql
+  └─ 20260723090000_venue_drop_capacity_min/
+    └─ migration.sql
+  └─ 20260723120000_account_profile_email_change/
+    └─ migration.sql
+  └─ 20260723120100_account_deletion_request/
+    └─ migration.sql
+  └─ 20260726100000_a6a_matterport_replace_360_tour/
+    └─ migration.sql
+  └─ 20260727120000_slot_template_base_price/
+    └─ migration.sql
+  └─ 20260727130000_pricing_rule_per_slot/
+    └─ migration.sql
+  └─ 20260729000000_visits_exclusive_and_pro_channels/
+    └─ migration.sql
+  └─ 20260730000000_visit_booking_contact_phone/
+    └─ migration.sql
+  └─ 20260730120000_venue_styles_and_ceremony_type/
+    └─ migration.sql
+  └─ 20260802120000_booking_request_and_deposit_policy/
+    └─ migration.sql
+  └─ 20260802140000_quote_lifecycle/
+    └─ migration.sql
+  └─ 20260804120000_refresh_token_rotation_grace/
+    └─ migration.sql
+  └─ 20260814120000_quote_sent_via/
+    └─ migration.sql
+  └─ 20260814140000_quote_delivery_switch/
+    └─ migration.sql
+  └─ 20260815120000_quote_drop_valid_until/
+    └─ migration.sql
+  └─ 20260821000000_quote_status_cancelled/
+    └─ migration.sql
+  └─ 20260821000100_quote_cancel_without_delivery/
+    └─ migration.sql
+  └─ 20260824120000_payment_one_pending_per_booking/
+    └─ migration.sql
+  └─ 20260909120000_booking_quote_total_coherent/
+    └─ migration.sql
+  └─ 20261015100000_venue_number/
+    └─ migration.sql
+  └─ 20261015100100_quote_reference/
+    └─ migration.sql
+  └─ 20261022120000_pro_client_records/
+    └─ migration.sql
+  └─ 20261024100000_booking_contact_phone_optional/
+    └─ migration.sql
+  └─ 20261028100000_quote_unofficial_draft/
+    └─ migration.sql
+  └─ 20261104170000_staff_layer/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+Running 3 tests using 1 worker
+
+[2m[WebServer] [22m[01:51:45.195] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":6,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21375},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999996","x-ratelimit-reset":"37","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":46}[39m
+[2m[WebServer] [22m[01:51:45.207] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":5,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21374},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999997","x-ratelimit-reset":"37","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":62}[39m
+[2m[WebServer] [22m[01:51:47.180] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":7,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd"},"remoteAddress":"::1","remotePort":21389},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9999","x-ratelimit-reset":"900","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-92lYZ9oLQ9kJ+8ZU6z+83HBNPeA\""}},"responseTime":2}[39m
+[2m[WebServer] [22m[01:51:47.268] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":8,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21374},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999995","x-ratelimit-reset":"35","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":21}[39m
+[2m[WebServer] [22m[01:51:47.287] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":9,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21375},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"35","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":16}[39m
+[2m[WebServer] [22m[01:51:49.418] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":10,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21389},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9998","x-ratelimit-reset":"898","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-v2NXD3i9C7SY5yRk+SAtS7Rw28E\""}},"responseTime":2}[39m
+[2m[WebServer] [22m[01:51:54.188] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":11,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21393},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999993","x-ratelimit-reset":"28","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":16}[39m
+[2m[WebServer] [22m[01:51:54.194] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":12,"method":"GET","url":"/api/v1/amenities","query":{},"params":{"path":["amenities"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21394},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"3615","etag":"W/\"e1f-RQwpllWI+Raj/mjtGRiwa3BluRQ\""}},"responseTime":6}[39m
+[2m[WebServer] [22m[01:51:54.195] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":13,"method":"GET","url":"/api/v1/venue-styles","query":{},"params":{"path":["venue-styles"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21395},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"482","etag":"W/\"1e2-wQfIGumtXHVoXORTcpu8EyoohbM\""}},"responseTime":5}[39m
+[2m[WebServer] [22m[01:51:56.067] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":14,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21401},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9997","x-ratelimit-reset":"892","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-70lNFnoA/pH6ATW8dV+xAWEYY+o\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:03.131] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":15,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21407},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9996","x-ratelimit-reset":"885","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-SQt6o5SE5Fi4JGyfp5wbydfvRIo\""}},"responseTime":2}[39m
+[2m[WebServer] [22m[01:52:10.439] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":16,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21420},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9995","x-ratelimit-reset":"877","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-b2xiy6vxPa8qnSYjqR/cyB8Subg\""}},"responseTime":2}[39m
+[2m[WebServer] [22m[01:52:10.764] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":17,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21420},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9994","x-ratelimit-reset":"877","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-JLySvzwFh4hMx/tHrYEN9WzCCFQ\""}},"responseTime":0}[39m
+[2m[WebServer] [22m[01:52:11.140] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":18,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21420},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9993","x-ratelimit-reset":"877","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-k62BmCpeb+Hkvb7npgn/aCwdJx4\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:11.574] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":19,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21420},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9992","x-ratelimit-reset":"876","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-BdM3686ILmbCAWC22mQlKYAz/jg\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:12.072] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":20,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:5273","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:5273/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21420},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:5273","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9991","x-ratelimit-reset":"876","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-EeL/wXM1GqqRPVXtOn3d3ThWIac\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:17.465] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":21,"method":"GET","url":"/api/v1/venues/prechauffage-route-dynamique","query":{},"params":{"path":["venues","prechauffage-route-dynamique"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21425},"res":{"statusCode":404,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999999","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"181","etag":"W/\"b5-tqYwALNZNn9/7f2GtdgTvQv5uUU\""}},"responseTime":107}[39m
+[2m[WebServer] [22m[01:52:18.852] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":22,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21436},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9990","x-ratelimit-reset":"869","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-uwKCk6xAHyivGkTeY2OcHVN8QCc\""}},"responseTime":2}[39m
+  ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (36.9s)
+[2m[WebServer] [22m[01:52:34.861] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":23,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21442},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":35}[39m
+[2m[WebServer] [22m[01:52:34.867] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":24,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21443},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999993","x-ratelimit-reset":"60","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":37}[39m
+[2m[WebServer] [22m[01:52:36.864] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":25,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd"},"remoteAddress":"::1","remotePort":21457},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9989","x-ratelimit-reset":"851","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-ofu/0XlDBcoPF8iLTegJn2SOVhk\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:37.404] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":26,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21442},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999992","x-ratelimit-reset":"58","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":18}[39m
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/fr/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  2 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (6.5s)
+[2m[WebServer] [22m[01:52:53.699] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":27,"method":"GET","url":"/api/v1/venues?sort=recent&pageSize=6","query":{"sort":"recent","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21463},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999995","x-ratelimit-reset":"42","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":119}[39m
+[2m[WebServer] [22m[01:52:53.708] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":28,"method":"GET","url":"/api/v1/venues?sort=price_asc&pageSize=6","query":{"sort":"price_asc","pageSize":"6"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21464},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"42","content-type":"application/json; charset=utf-8","content-length":"63","etag":"W/\"3f-F96qtxKkV5hEkn1KpjPZkLgbDOg\""}},"responseTime":126}[39m
+[2m[WebServer] [22m[01:52:55.655] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":29,"method":"POST","url":"/api/v1/auth/refresh","query":{},"params":{"path":["auth","refresh"]},"headers":{"host":"localhost:3101","connection":"keep-alive","content-length":"0","sec-ch-ua-platform":"\"Windows\"","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.16 Safari/537.36","sec-ch-ua":"\"Not(A:Brand\";v=\"99\", \"HeadlessChrome\";v=\"133\", \"Chromium\";v=\"133\"","accept-language":"en-US","sec-ch-ua-mobile":"?0","accept":"*/*","origin":"http://localhost:3100","sec-fetch-site":"same-site","sec-fetch-mode":"cors","sec-fetch-dest":"empty","referer":"http://localhost:3100/","accept-encoding":"gzip, deflate, br, zstd","cookie":"[Redacted]"},"remoteAddress":"::1","remotePort":21478},"res":{"statusCode":401,"headers":{"x-powered-by":"Express","access-control-allow-origin":"http://localhost:3100","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"10000","x-ratelimit-remaining":"9988","x-ratelimit-reset":"832","content-type":"application/json; charset=utf-8","content-length":"164","etag":"W/\"a4-XIIiDQOixDiH+jCBCio5jQkxaIo\""}},"responseTime":1}[39m
+[2m[WebServer] [22m[01:52:56.054] [32mINFO[39m (3528): [36mrequest completed[39m [90m{"req":{"id":30,"method":"GET","url":"/api/v1/venues?sort=recent&page=1&pageSize=12","query":{"sort":"recent","page":"1","pageSize":"12"},"params":{"path":["venues"]},"headers":{"host":"localhost:3101","connection":"keep-alive","accept":"*/*","accept-language":"*","sec-fetch-mode":"cors","user-agent":"node","pragma":"no-cache","cache-control":"no-cache","accept-encoding":"gzip, deflate"},"remoteAddress":"::1","remotePort":21463},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","vary":"Origin","access-control-allow-credentials":"true","x-ratelimit-limit":"1000000","x-ratelimit-remaining":"999994","x-ratelimit-reset":"39","content-type":"application/json; charset=utf-8","content-length":"64","etag":"W/\"40-HWTW6wpUKLfRLvzVtF9xcX8IXwI\""}},"responseTime":15}[39m
+MESURE-ASSISTANT 0-ouverture city {"voulu":"","vu":""}
+MESURE-FORMULAIRE 0-ouverture {"url":"/ar/salles?guide=city","voulu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]},"vu":{"cityId":"","guestsPoignee":"20","maxPricePoignee":"1500000","styles":[],"amenities":[]}}
+  x  3 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » (6.2s)
+
+
+  1) [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: not [32m""[39m
+
+      125 |     // 1. la commune : la première commune réelle de la liste.
+      126 |     const valeurCommune = await boite.locator("#wz-city option").evaluateAll((os) => (os as HTMLOptionElement[]).map((o) => o.value).filter((v) => v !== "")[0] ?? "");
+    > 127 |     expect(valeurCommune).not.toBe("");
+          |                               ^
+      128 |     await boite.locator("#wz-city").selectOption(valeurCommune);
+      129 |     await boite.getByRole("button", { name: cat.wizard.continue }).click();
+      130 |     await expect(page).toHaveURL(/guide=guests/);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:127:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r48-assistant-choix.e2e.ts-c0ca3-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: not [32m""[39m
+
+      125 |     // 1. la commune : la première commune réelle de la liste.
+      126 |     const valeurCommune = await boite.locator("#wz-city option").evaluateAll((os) => (os as HTMLOptionElement[]).map((o) => o.value).filter((v) => v !== "")[0] ?? "");
+    > 127 |     expect(valeurCommune).not.toBe("");
+          |                               ^
+      128 |     await boite.locator("#wz-city").selectOption(valeurCommune);
+      129 |     await boite.getByRole("button", { name: cat.wizard.continue }).click();
+      130 |     await expect(page).toHaveURL(/guide=guests/);
+        at C:\Users\benla\Desktop\MyProjct\Zwadj\e2e\specs\r48-assistant-choix.e2e.ts:127:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\r48-assistant-choix.e2e.ts-d3013-ur-et-après-«-Recommencer-»-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [warmup] › specs\warmup.setup.ts (36.9s)
+  Consider running tests from slow files in parallel, see https://playwright.dev/docs/test-parallel.
+  2 failed
+    [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+    [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au retour, et après « Recommencer » 
+  1 passed (2.4m)
+
+To open last HTML report run:
+[36m[39m
+[36m  pnpm exec playwright show-report[39m
+[36m[39m
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\e2e:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: playwright test specs/r48-assistant-choix.e2e.ts

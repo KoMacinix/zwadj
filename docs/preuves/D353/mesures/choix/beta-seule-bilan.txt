@@ -1,0 +1,6 @@
+e2e/global-setup.ts (arbre de travail, corrigé) · sha256 312f06c8b92083718ef040d1a0a70149b8367c509cc9cdffeb2731543dda7ed4
+e2e/playwright.config.ts (arbre de travail, corrigé) · sha256 0517d161edea5e3ef37e85722e3b5de01586aa99ebe6022bf5043226ca60b371
+e2e du DÉPART posé (global-setup.ts et playwright.config.ts de HEAD) ; api.ts reste corrigé (β)
+β seule depuis F : code de sortie 0 ; ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (34.9s) | ok 2 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au ret | ok 3 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au ret | 3 passed (2.4m)
+β seule depuis E : code de sortie 0 ; ok 1 [warmup] › specs\warmup.setup.ts:57:5 › préchauffe les routes des deux applications (18.6s) | ok 2 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › fr — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au ret | ok 3 [chromium] › specs\r48-assistant-choix.e2e.ts:116:7 › ar — R-1 : les choix de l'assistant reparaissent dans le formulaire, à chaque étape, au ret | 3 passed (1.4m)
+restauration des deux fichiers e2e à l'octet : True

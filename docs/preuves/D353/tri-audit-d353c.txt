@@ -1,0 +1,18 @@
+D353 — tri différentiel de l'audit de secrets « c » (troisième versement : les pièces du choix de la correction e2e, le rouge unitaire de R-3, et le tri « b » lui-même)
+
+Instrument d'audit : python3 -I -X utf8 neutralisation/audit-secrets.py --sortie docs/preuves/D353/audit-secrets-d353c.txt (1 161 756 octets ; lancé à 02:20:36, fini à 02:44:32 le 19/11/2026), joué dans le dépôt de travail, en arrière-plan pendant la campagne `neutralize-r55.py` et les portes préliminaires (il ne lit que `docs/preuves/`, où rien n'a été écrit pendant sa course).
+
+Procédure du tri : python3 -I -X utf8 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D353/audit-secrets-d353b.txt docs/preuves/D353/audit-secrets-d353c.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d353b) : 5 846 fichiers parcourus, 5 638 audités, 208 exclus, 3 973 alertes.
+  · nouvelle (d353c)   : 5 868 fichiers parcourus (195 205 620 octets), 5 659 audités, 209 exclus (172 398 alertes d'écho non comptées), 3 979 alertes = 3 973 + 6. Contrôle de l'outil : audités + exclus = 5 659 + 209 = 5 868 (attendu 5 868, les parcourus).
+  · Exclus : 209 contre 208, soit un de plus — la sortie scellée « b » (sceau vérifié) ; aucune exclusion de « b » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 868 fichiers APRÈS l'audit, sortie scellée « c » comprise ; l'audit en a parcouru 5 868 (« disque après = parcourus » FERME — S-228 de D352). ⚠ Ce tri et `aucune-valeur-reelle-d353c.txt` sont nés APRÈS l'audit et seront parcourus par l'audit suivant.
+  · Les pièces neuves de ce versement — les 19 de l'extension 4 (`mesures/choix-e2e.md`, les 16 pièces de `mesures/choix/`, `rouges/r3-rouge-tests-referentiels.py`, `rouges/r3-tests-referentiels-contre-code-d-avant.txt`) — : **0 alerte**.
+
+Résultat du tri différentiel : 6 alertes ABSENTES de la sortie précédente. Ventilation par motif : jeton = 3 · url-avec-identifiants = 1 · mot-de-passe = 1 · valeur-nommee-secrete = 1. **Les six visent le MÊME fichier** : `docs/preuves/D353/tri-audit-d353b.txt` — la pièce de tri « b », écrite APRÈS la sortie « b » (elle ne pouvait donc pas y figurer) et qui CITE, pour les trier, les contextes d'alerte de l'audit « b » (c'est la famille « écho de tri » déjà relevée à D352 : une pièce qui trie des alertes les récite).
+
+TRI AU CONTEXTE (chaque ligne a été lue) : les lignes 16 et 17 de `tri-audit-d353b.txt` citent la forme `token=<jeton masqué #N (43 car.)>` (la valeur est le MASQUE, jamais une valeur) et le code de l'outil de masquage ; la ligne 18 cite `const SERVEUR = "postgresql://zwadj:zwadj@localhost:5432";` — l'utilisateur et le mot de passe PAR DÉFAUT du conteneur de développement, déjà présents dans trois fichiers suivis hors preuves (`docker-compose.yml`, `apps/api/.env.example`, `e2e/playwright.config.ts`), triés à « b ». **0 valeur réelle, 0 fuite.**
+
+Contrôle « 0 valeur réelle » (D299) : python3 docs/preuves/D299/outils/aucune-valeur-reelle.py <brut de la suite complète, hors dépôt> -- docs/preuves/D353 → voir `aucune-valeur-reelle-d353c.txt` : même journal, 129 valeurs cherchées, **0 porteur** (attendu 0), calibration à deux bras. Les sorties de run versées à ce versement (`mesures/choix/*-sortie-masquee.txt`) ont toutes un rapport de masquage à 0 occurrence (`mesures/choix/rapport-masquage.txt`) : elles ne portent aucune suite de forme jeton.

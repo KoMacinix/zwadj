@@ -1,0 +1,50 @@
+diff --git a/e2e/global-setup.ts b/e2e/global-setup.ts
+index dc3ef43..22a7a17 100644
+--- a/e2e/global-setup.ts
++++ b/e2e/global-setup.ts
+@@ -1,5 +1,8 @@
+ import { execFileSync } from "node:child_process";
++import { rmSync } from "node:fs";
++import { resolve } from "node:path";
+ import { Client } from "pg";
++import { seedReferentials } from "./fixtures/harness";
+ import { DATABASE_URL } from "./playwright.config";
+ 
+ /**
+@@ -38,4 +41,19 @@ export default async function globalSetup(): Promise<void> {
+     env: { ...process.env, DATABASE_URL },
+     shell: process.platform === "win32" // ⚠ Ko travaille sous Windows : sans ça, `pnpm` n'est pas résolu.
+   });
++
++  // ⛔ D353 (R-1) — LE CACHE DE DONNÉES DU CLIENT NE DOIT JAMAIS GARDER DES RÉFÉRENTIELS VIDES D'UNE PASSE À L'AUTRE, NI D'UN INSTANT À L'AUTRE DE CETTE PASSE.
++  // MESURÉ (`docs/preuves/D353/rouges/`, `mesures/`) : (1) aucune migration n'insère de référentiel — avant le semis les listes de styles, d'équipements et de
++  // communes sont VIDES ; (2) le client les lit en `next: { revalidate: 3600 }` et le serveur de développement NE RELIT PAS une entrée vide gardée (34 sondes sur 37,
++  // plus de 75 s, page vide pendant que l'API est pleine) ; (3) les serveurs démarrent AVANT ce `globalSetup` (code de Playwright 1.50.1) : leur sonde de disponibilité
++  // rend l'accueil sur la base LAISSÉE par la passe précédente ; (4) le projet `warmup` visite `/fr/salles` avant tout spec, donc avant `seedReferentials()` des specs.
++  // Résultat mesuré : `r48` jouée seule rougissait (« puces de STYLES : attendu 4, reçu 0 » depuis un cache neuf, `expect(valeurCommune).not.toBe("")` depuis un cache
++  // empoisonné), et la suite COMPLÈTE n'était verte que parce qu'un spec antérieur recharge la page (un rechargement rafraîchit le cache) — un couplage caché.
++  // ⇒ TROIS gestes, tous dans `e2e/`, AUCUNE ligne d'`apps/` : (a) la sonde de disponibilité du client vise une ressource STATIQUE (`playwright.config.ts`) — sans cela le
++  // serveur garde en MÉMOIRE la réponse vide de l'accueil, et purger le fichier ne l'efface pas (mesuré : `valeurCommune` vide malgré semis et purge) ; (b) ICI : SEMER, pour que le
++  // préchauffage voie des listes pleines (mesuré : sans semis, « puces de STYLES : attendu 4, reçu 0 ») ; (c) ICI : PURGER le cache de données, pour qu'aucune entrée vide d'une
++  // passe ou d'une session de développement antérieure — moins d'une heure — ne survive (mesuré : sans purge, depuis un cache empoisonné, `valeurCommune` vide).
++  // Chacun est NÉCESSAIRE : `docs/preuves/D353/mesures/choix-e2e.md`.
++  seedReferentials();
++  rmSync(resolve(__dirname, "../apps/client/.next/cache/fetch-cache"), { recursive: true, force: true });
+ }
+diff --git a/e2e/playwright.config.ts b/e2e/playwright.config.ts
+index 8be07ee..0f61906 100644
+--- a/e2e/playwright.config.ts
++++ b/e2e/playwright.config.ts
+@@ -179,7 +179,11 @@ export default defineConfig({
+     },
+     {
+       command: `pnpm --filter @zwadj/client exec next dev --port ${CLIENT_PORT}`,
+-      url: CLIENT,
++      // ⛔ D353 (R-1) — LA SONDE DE DISPONIBILITÉ NE RENDRAIT PAS L'ACCUEIL. Les serveurs démarrent AVANT `globalSetup` (code de Playwright 1.50.1) ; vers `CLIENT` (une page), la
++      // sonde faisait lire à l'accueil `/api/v1/wilayas` sur la base LAISSÉE par la passe précédente (relevé : journal de l'API, `GET /wilayas` à 01:51:21, avant la migration) ; le
++      // serveur de développement garde cette réponse EN MÉMOIRE — purger le fichier de cache ne l'efface pas (mesuré : `valeurCommune` vide malgré semis et purge). Une ressource
++      // STATIQUE (`/icon.svg`, `src/app/icon.svg`) répond sans toucher l'API : la première page qui lit les référentiels est celle du préchauffage, APRÈS le semis.
++      url: `${CLIENT}/icon.svg`,
+       reuseExistingServer: false,
+       timeout: 180_000,
+       env: { NEXT_PUBLIC_API_URL: API, NEXT_PUBLIC_PRO_URL: PRO }

@@ -1,0 +1,19 @@
+fichier de test joué : apps/client/src/lib/api.test.ts · sha256 daa3aca0c7f08fc6e3278acde481403e7f3df082ae77ab50f7ddf0dee2db26ba
+api.ts de HEAD (code d'AVANT la correction) · sha256 180342cfbbdada2500320cc7cfe96c88d03a43299995eb8a6d81082d15e54f6c · octets 14316 ; api.ts corrigé (arbre de travail) · sha256 132d12e4858c701f285d753f47f4aae0e217aab8be02f9a17541e20d5be5e48c · octets 16035
+code de sortie contre le code d'AVANT : 1
+  Test Files  1 failed (1)
+  Tests  6 failed | 26 passed (32)
+  ✗ FAIL  src/lib/api.test.ts > getWilayas — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue
+      ↳ première ligne du bloc : AssertionError: expected [] to deeply equal [ { id: 'a1' }, { id: 'b2' } ]
+  ✗ FAIL  src/lib/api.test.ts > getAmenities — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue
+      ↳ première ligne du bloc : AssertionError: expected [] to deeply equal [ { id: 'a1' }, { id: 'b2' } ]
+  ✗ FAIL  src/lib/api.test.ts > getVenueStyles — la mémoire d'un référentiel (D353, R-3) > ⛔ réponse VIDE gardée : relue SANS CACHE, et c'est la RELECTURE qui est rendue — une liste vide gardée n'est jamais crue
+      ↳ première ligne du bloc : AssertionError: expected [] to deeply equal [ { id: 'a1' }, { id: 'b2' } ]
+  ✗ FAIL  src/lib/api.test.ts > getWilayas — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé)
+      ↳ première ligne du bloc : AssertionError: expected "spy" to be called 2 times, but got 1 times
+  ✗ FAIL  src/lib/api.test.ts > getAmenities — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé)
+      ↳ première ligne du bloc : AssertionError: expected "spy" to be called 2 times, but got 1 times
+  ✗ FAIL  src/lib/api.test.ts > getVenueStyles — la mémoire d'un référentiel (D353, R-3) > l'API est vraiment vide : `[]`, après la relecture (rien n'est inventé)
+      ↳ première ligne du bloc : AssertionError: expected "spy" to be called 2 times, but got 1 times
+  échecs lus : 6 ; dont en AssertionError : 6
+restauration de la correction : sha256 après 132d12e4858c701f285d753f47f4aae0e217aab8be02f9a17541e20d5be5e48c · identique : True
