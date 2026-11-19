@@ -1,0 +1,27 @@
+calibration : la table (7a42e16) précède la consigne (11ff3d2) : True (attendu vrai) ; la consigne précède la table : False (attendu faux)
+✓ [1] le PREMIER commit du lot ne contient que `docs/preuves/D354/table-ouverture.md`
+     ↳ 14 commits du lot (--first-parent) ; 0 commit(s) importé(s) ; premier = 7a42e16 ; fichiers du premier commit : ['docs/preuves/D354/table-ouverture.md']
+calibration : `staff-members.service.ts` déclaré : True (attendu vrai) ; `apps/api/src/main.ts` déclaré : False (attendu faux) ; chemins déclarés lus : 378
+✓ [2] `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises)
+     ↳ 363 fichiers modifiés depuis le départ ; 378 chemins déclarés ; NON déclarés : 0 [] (attendu 0)
+✓ [3] la sortie de la lecture adverse entre dans un commit ANTÉRIEUR au premier commit qui touche un `.md` d'autorité
+     ↳ lecture adverse : 11ff3d2 (#2) ; premier commit d'autorité : ea0c86d (#10)
+✓ [4] la première écriture d'autorité porte l'arbitrage de Ko (bloc « ARBITRÉ LE 19/11/2026 PAR KO — LE RANG 56 »)
+     ↳ commit ea0c86d ; bloc d'arbitrage dans le diff : True
+✓ [5] chaque fichier du lot est déclaré dans la table AVANT (ou dans) le commit qui le touche pour la première fois — l'extension précède le fichier qu'elle couvre
+     ↳ 362 fichiers touchés examinés, 4 extensions ; en retard : 0 [] (attendu 0)
+✓ [6] les pièces des rouges (unitaire, client d'API, intégration, leur lecture) entrent dans un commit ANTÉRIEUR au premier commit de code (D334, point 5)
+     ↳ rouges : {rouge-unit.txt: a256322 (#4), rouge-client.txt: a256322 (#4), rouge-int.txt: a256322 (#4), lecture-des-rouges.md: a256322 (#4)} ; premier commit de code : 92c8a3e (#5)
+calibration : chaîne triviale (départ = arrivée) : True (attendu vrai) ; chaîne vers une empreinte inventée : False (attendu faux)
+✓ [7] chaque fichier de test joué aux rouges est, à la livraison, identique OU rattaché au rouge par la chaîne AVANT → APRÈS déclarée
+     ↳ 18 fichiers joués aux rouges : 13 identiques, 5 corrigés et chaînés, chaîne rompue : 0 [] (attendu 0)
+✓ [8] aucun fichier de `apps/pro` ni de `apps/client` au diff (R-7 : aucun écran)
+     ↳ 363 fichiers au diff ; sous `apps/pro/` ou `apps/client/` : 0 [] (attendu 0)
+✓ [9] aucun fichier de `apps/api/prisma/` au diff (R-1 : aucune migration)
+     ↳ sous `apps/api/prisma/` : 0 [] (attendu 0)
+✓ [10] l'arbre est propre (`git status --short` : 0 ligne), aucun stash
+     ↳ lignes : 0 [] ; stash : 0
+✓ [11] local et `origin/main` sur le MÊME SHA (D288) — après push puis fetch
+     ↳ HEAD = cb643ba64667fdde8bf8266addfdd498d35e3357 ; origin/main = cb643ba64667fdde8bf8266addfdd498d35e3357
+
+TOTAL : 11 contrôles — 11 ✓ · 0 ✗  (attendu : tous ✓)
