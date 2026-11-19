@@ -1,0 +1,30 @@
+calibration : la table (f7fb47a) précède la consigne (4523384) : True (attendu vrai) ; la consigne précède la table : False (attendu faux)
+✓ [1] le PREMIER commit du lot ne contient que `docs/preuves/D353/table-ouverture.md`
+     ↳ 16 commits du lot (--first-parent) ; 0 commit(s) importé(s) ; premier = f7fb47a ; fichiers : ['docs/preuves/D353/table-ouverture.md']
+calibration : `api.test.ts` déclaré : True (attendu vrai) ; `apps/api/src/main.ts` déclaré : False (attendu faux) ; chemins déclarés lus : 139
+✓ [2] `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises)
+     ↳ 125 fichiers modifiés depuis le départ ; 139 chemins déclarés ; NON déclarés : 0 [] (attendu 0)
+✓ [3] la sortie de la lecture adverse entre dans un commit ANTÉRIEUR au premier commit qui touche un `.md` d'autorité
+     ↳ lecture adverse : 4523384 (#2) ; premier commit d'autorité : 997f8fe (#14)
+✓ [4] la première écriture d'autorité porte l'arbitrage de Ko (bloc « ARBITRÉ LE 19/11/2026 PAR KO — LE RANG 55 ») et la table recopiée
+     ↳ commit 997f8fe ; bloc d'arbitrage dans le diff : True ; table recopiée : True
+✓ [5] chaque fichier du lot est déclaré dans la table AVANT (ou dans) le commit qui le touche pour la première fois — l'extension précède le fichier qu'elle couvre
+     ↳ 124 fichiers touchés examinés, 7 extensions ; en retard : 0 [] (attendu 0)
+✓ [6] les pièces des rouges (R-1, R-2, R-3, R-4, R-5) entrent dans un commit ANTÉRIEUR au premier commit de code (D334, point 5)
+     ↳ rouge e2e r48 seule : e387977 (#5) ; lecture des rouges : e387977 (#5) ; rouge unitaire R-3 : bac98d8 (#8) ; mesure de production R-2 : e387977 (#5) ; premier commit de code : 8cfcb3e (#9) — fichiers de code : {'apps/client/src/lib/api.ts': '8cfcb3e', 'apps/client/src/lib/api.test.ts': '8cfcb3e', 'apps/api/test/int/venue-map.int-spec.ts': '8cfcb3e', 'e2e/specs/r48-assistant-choix.e2e.ts': '8cfcb3e', 'neutralisation/neutralize-r55.py': 'd70be45'}
+✓ [7a] `r48` livrée a l'empreinte jouée au rouge e2e
+     ↳ rouges : 226032872cca15128236cb7fb6ea000c5f78452cfd9f11f127817597b4c70d10 ; disque : 226032872cca15128236cb7fb6ea000c5f78452cfd9f11f127817597b4c70d10
+✓ [7b] `venue-map.int-spec.ts` livré a l'empreinte jouée au rouge de R-5
+     ↳ rouges : 1cdfdbffd7b17a2edec286945f3530b83de0cfdb5ec423b6139f967c3e225c66 ; disque : 1cdfdbffd7b17a2edec286945f3530b83de0cfdb5ec423b6139f967c3e225c66
+✓ [7c] `api.test.ts` livré a l'empreinte jouée au rouge unitaire de R-3
+     ↳ rouge R-3 : daa3aca0c7f08fc6e3278acde481403e7f3df082ae77ab50f7ddf0dee2db26ba ; disque : daa3aca0c7f08fc6e3278acde481403e7f3df082ae77ab50f7ddf0dee2db26ba
+     (information) le rouge de R-4 a joué un état ANTÉRIEUR de `api.test.ts` (3242f5aa4ac9…, avant l'ajout des tests de R-3) : le fichier a GRANDI, le test de R-4 est inchangé ; la cible R55-1 de `neutralize-r55.py` rejoue la mutation sur le fichier livré
+     (information) empreinte du harnais livré `neutralize-r55.py` : 94bea8a21c27db3123a677494e16113a05992e422e760982e5f2b5518debe75c ; à rapprocher de la première ligne de chaque journal de campagne
+✓ [8] l'arbre est propre (`git status --short` : 0 ligne), aucun stash
+     ↳ lignes : 0 [] ; stash : 0
+✓ [9] les trois branches distantes gardées n'ont pas bougé
+     ↳ relevé {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'} ; attendu {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'}
+✓ [10] local et `origin/main` sur le MÊME SHA (D288) — après push puis fetch
+     ↳ HEAD = f01b28cf14831f827e5d319d6b9de6a2347e6c98 ; origin/main = f01b28cf14831f827e5d319d6b9de6a2347e6c98
+
+TOTAL : 12 contrôles — 12 ✓ · 0 ✗  (attendu : tous ✓)
