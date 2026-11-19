@@ -139,40 +139,50 @@ export async function countVenues(query: URLSearchParams, signal?: AbortSignal):
   }
 }
 
-/** Référentiels : quasi immuables (un seed), donc revalidés à l'heure. Un
- *  échec renvoie une liste VIDE — les filtres disparaissent, les résultats
- *  restent : une panne de référentiel ne doit pas vider la page. */
-export async function getWilayas(): Promise<WilayaDTO[]> {
+/**
+ * Lit un référentiel : quasi immuable (un seed), donc revalidé à l'heure — **sauf une réponse VIDE** (D353, R-3).
+ *
+ * ⛔ UNE LISTE PLEINE PEUT RESTER GARDÉE UNE HEURE ; UNE RÉPONSE VIDE OU EN ÉCHEC NE DOIT JAMAIS L'ÊTRE. MESURÉ sur un build de production (`docs/preuves/D353/mesures/`) :
+ *  · une réponse 200 **vide** (base migrée, pas encore semée) est gardée toute la fenêtre — la page montre des filtres vides pendant que l'API rend ses listes
+ *    (4 sondes de suite pendant que l'API est pleine, puis une réponse périmée encore servie) ; sur le serveur de développement, plus de 75 s, jamais relue ;
+ *  · une réponse 500, une API arrêtée, une exception : **jamais gardées** (la page montre `[]` pendant la panne, puis les listes au premier sondage qui suit) ;
+ *  · une liste PLEINE gardée survit à une panne de plus de trois fenêtres (permis : les référentiels ne changent qu'au semis).
+ * ⇒ une réponse vide n'est JAMAIS crue : on la relit SANS cache, et c'est cette relecture qui est rendue. La liste gardée vide reste sur disque (le cache de données de
+ * Next ne se vide pas depuis un rendu) ; elle n'est simplement plus lue pour décider. Coût : UNE lecture d'API de plus par liste et par rendu, **seulement tant que la
+ * liste gardée est vide** — jamais pour une liste pleine (non mesuré en production ; D348 notait déjà `no-store` partout comme un coût `[CLIENT][PERF]`).
+ * Options écartées : `cache: "no-store"` sur les trois listes (le plus simple, mais trois lectures de plus à CHAQUE vue, même quand tout va bien) ; `unstable_cache`
+ * (API que Next 15 marque instable ; il faudrait lever dans le cache pour ne rien garder) ; `revalidateTag` (interdit pendant un rendu).
+ *
+ * Un échec (réponse non ok, exception) renvoie une liste VIDE — les filtres disparaissent, les résultats restent : une panne de référentiel ne doit pas vider la page.
+ */
+async function lireReferentiel<T>(chemin: string): Promise<T[]> {
   try {
-    const res = await fetch(`${API_URL}/api/v1/wilayas`, { next: { revalidate: 3600 } });
+    const url = `${API_URL}/api/v1/${chemin}`;
+    const res = await fetch(url, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
-    return (await res.json()) as WilayaDTO[];
+    const liste = (await res.json()) as T[];
+    if (liste.length > 0) return liste;
+    const fraiche = await fetch(url, { cache: "no-store" });
+    if (!fraiche.ok) return [];
+    return (await fraiche.json()) as T[];
   } catch {
     return [];
   }
 }
 
+export async function getWilayas(): Promise<WilayaDTO[]> {
+  return lireReferentiel<WilayaDTO>("wilayas");
+}
+
 export async function getAmenities(): Promise<AmenityDTO[]> {
-  try {
-    const res = await fetch(`${API_URL}/api/v1/amenities`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    return (await res.json()) as AmenityDTO[];
-  } catch {
-    return [];
-  }
+  return lireReferentiel<AmenityDTO>("amenities");
 }
 
 /** Référentiel des styles (D65). Même contrat que les équipements : un tableau
  *  vide en cas d'échec, jamais une exception — le panneau de filtres perd des
  *  puces, la recherche continue de fonctionner. */
 export async function getVenueStyles(): Promise<VenueStyleDTO[]> {
-  try {
-    const res = await fetch(`${API_URL}/api/v1/venue-styles`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    return (await res.json()) as VenueStyleDTO[];
-  } catch {
-    return [];
-  }
+  return lireReferentiel<VenueStyleDTO>("venue-styles");
 }
 
 /**

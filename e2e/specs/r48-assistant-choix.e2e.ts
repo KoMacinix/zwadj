@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 import ar from "../../packages/i18n/messages/ar.json";
 import fr from "../../packages/i18n/messages/fr.json";
-import { CLIENT } from "../playwright.config";
+import { Client } from "pg";
+import { CLIENT, DATABASE_URL } from "../playwright.config";
 import { seedReferentials } from "../fixtures/harness";
 
 /**
@@ -13,6 +14,19 @@ import { seedReferentials } from "../fixtures/harness";
 test.beforeAll(() => {
   seedReferentials();
 });
+
+/** Ce que la base de l'e2e porte, lu par `SELECT count(*)` — l'AUTORITÉ de ce que l'assistant doit montrer (D353, R-1). */
+async function compterReferentiels(): Promise<{ styles: number; amenities: number }> {
+  const db = new Client({ connectionString: DATABASE_URL });
+  await db.connect();
+  try {
+    const styles = await db.query<{ n: string }>("SELECT count(*)::text AS n FROM venue_styles");
+    const amenities = await db.query<{ n: string }>("SELECT count(*)::text AS n FROM amenities");
+    return { styles: Number(styles.rows[0]?.n), amenities: Number(amenities.rows[0]?.n) };
+  } finally {
+    await db.end();
+  }
+}
 
 interface Etat {
   cityId: string;
@@ -127,19 +141,21 @@ for (const [locale, cat] of [["fr", fr], ["ar", ar]] as const) {
     await expect(page).toHaveURL(/guide=taste/);
     await mesurerTout(page, "3-apres-budget");
 
-    // 4. les goûts : un style et un équipement.
+    // 4. les goûts : un style et un équipement — EXIGÉS, jamais tolérés (D353, R-1 ; S-153 de D346, qui les tolérait, est RETIRÉE).
+    // ⚠ L'attendu se DÉRIVE de la base de l'e2e (`SELECT count(*)`), jamais un nombre écrit : le composant rend TOUTES les puces (pas de
+    // troncature, `filter-wizard.tsx`). Le commentaire d'avant disait « la base e2e ne publie AUCUN style » : FAUX — le semis en pose quatre et
+    // l'API les rend tous ; ce qui manquait était la mémoire du client, qui gardait une heure les listes VIDES vues par le préchauffage.
     const groupes = page.getByRole("dialog").locator(".wz-group");
-    // ⚠ la base e2e ne publie AUCUN style (`/venue-styles` rend `[]`) : la rangée des styles est vide, celle des équipements non.
-    if ((await groupes.nth(0).locator(".wz-chip").count()) > 0) {
-      await groupes.nth(0).locator(".wz-chip").first().click();
-      await expect(page).toHaveURL(/styles=/);
-    }
-    // ⚠ DANS LA SUITE COMPLÈTE le préchauffage lit `/fr/salles` AVANT tout semis : le client met ces listes en cache une heure, VIDES
-    // (`next: { revalidate: 3600 }`, sur disque). Sans puce, il n'y a rien à cocher et rien à comparer — le test le dit au lieu de mentir.
-    if ((await groupes.nth(1).locator(".wz-chip").count()) > 0) {
-      await groupes.nth(1).locator(".wz-chip").first().click();
-      await expect(page).toHaveURL(/amenities=/);
-    }
+    const attendus = await compterReferentiels();
+    expect(attendus.styles, "la base de l'e2e doit porter des styles semés").toBeGreaterThan(0);
+    expect(attendus.amenities, "la base de l'e2e doit porter des équipements semés").toBeGreaterThan(0);
+    const puces = (rangee: number) => groupes.nth(rangee).locator(".wz-chip");
+    await expect.poll(() => puces(0).count(), { message: `${locale} — puces de STYLES (la base en compte ${attendus.styles})`, ...ATTENTE }).toBe(attendus.styles);
+    await expect.poll(() => puces(1).count(), { message: `${locale} — puces d'ÉQUIPEMENTS (la base en compte ${attendus.amenities})`, ...ATTENTE }).toBe(attendus.amenities);
+    await puces(0).first().click();
+    await expect(page).toHaveURL(/styles=/);
+    await puces(1).first().click();
+    await expect(page).toHaveURL(/amenities=/);
     await mesurerTout(page, "4-apres-gouts");
 
     // 5. on revisite l'étape des invités PUIS celle de la commune par la liste d'étapes (« Modifier »), sans rien changer.

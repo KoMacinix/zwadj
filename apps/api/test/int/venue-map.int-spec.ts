@@ -3,8 +3,9 @@
 // MÊMES salles. Le test ne recopie aucun filtre : il lit la liste (toutes ses
 // pages), lit la carte, et confronte les identifiants.
 import request from "supertest";
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { VENUE_MAP_MAX_POINTS, type VenueListResponse, type VenueMapPointDTO, type VenueMapResponse } from "@zwadj/types";
+import { civilTodayAt, formatCivilDate } from "../../src/venues/availability-time";
 import { createTestApp, truncateAll, type TestContext } from "./helpers";
 
 let ctx: TestContext;
@@ -77,6 +78,13 @@ async function makeVenue(
   });
 }
 
+/** Un créneau de soirée (20h → 02h) pour une salle, actif ou non — la donnée que « sans créneau actif » interroge. */
+async function ajouterCreneau(venueId: string, isActive: boolean) {
+  return ctx.prisma.slotTemplate.create({
+    data: { venueId, nameFr: "Soirée", nameAr: "سهرة", startMinutes: 1200, endMinutes: 1560, basePriceCents: 18_000_000, isActive }
+  });
+}
+
 /** TOUS les identifiants de la liste pour cette requête, page après page. */
 async function idsDeLaListe(query: string): Promise<{ ids: string[]; total: number }> {
   const ids: string[] = [];
@@ -107,6 +115,10 @@ afterAll(async () => {
 beforeEach(async () => {
   seq = 0;
   await truncateAll(ctx.prisma);
+});
+afterEach(() => {
+  // L'horloge figée par un test (D353, R-5) ne doit JAMAIS fuir vers le suivant.
+  vi.useRealTimers();
 });
 
 describe("GET /venue-map — la carte et la liste parlent des mêmes salles", () => {
@@ -251,5 +263,48 @@ describe("GET /venue-map — ce que la route refuse, et ce qu'elle ne masque pas
     const res = await api().get("/api/v1/venues/map");
     expect(res.status).toBe(200);
     expect((res.body as { id?: string }).id).toBe(salle.id);
+  });
+});
+
+describe("GET /venue-map — « sans créneau actif », AVEC une date : la carte fait EXACTEMENT ce que fait la liste (D353, R-5)", () => {
+  it("⛔ sans date : les trois salles sont des deux côtés ; AVEC une date : seule la salle à créneau ACTIF reste, des deux côtés", async () => {
+    const ids = await seedFixtures();
+    // Trois salles PUBLIQUES et SITUÉES : la seule différence est leur créneau.
+    const avecCreneau = await makeVenue(ids);
+    const sansCreneau = await makeVenue(ids);
+    const creneauInactif = await makeVenue(ids);
+    await ajouterCreneau(avecCreneau.id, true);
+    await ajouterCreneau(creneauInactif.id, false);
+    const [idAvec, idSans, idInactif] = [avecCreneau.id, sansCreneau.id, creneauInactif.id];
+
+    // Horloge figée (D48) : la date demandée en DÉRIVE (dix jours plus tard, à Alger), elle n'est jamais écrite — une date « dans le futur »
+    // cesserait de l'être (D213, D227). `toFake: ["Date"]` seul, précédent de `quote-numbering.int-spec.ts` ; l'`afterEach` la rend.
+    const maintenant = Date.parse("2026-12-15T10:00:00.000Z");
+    vi.useFakeTimers({ toFake: ["Date"], now: maintenant });
+    const dateDemandee = formatCivilDate(civilTodayAt(maintenant + 10 * 86_400_000));
+
+    // SANS date : la recherche non datée « ne pose pas la question » — les trois salles restent visibles, sur la liste comme sur la carte.
+    const listeSans = await idsDeLaListe("");
+    const carteSans = await carte("");
+    expect([...listeSans.ids].sort()).toEqual([idAvec, idSans, idInactif].sort());
+    expect(carteSans.points.map((p) => p.id).sort()).toEqual([...listeSans.ids].sort());
+    expect(carteSans.total).toBe(listeSans.total);
+
+    // AVEC une date : la salle sans AUCUN créneau et celle dont le seul créneau est inactif sont EXCLUES (situation B : aucune date ne marchera
+    // jamais). LA CARTE FAIT EXACTEMENT CE QUE FAIT LA LISTE — mêmes identifiants, même total, même écho de la date — et c'est une seule autorité
+    // (`publicFilter`) : ce test ne recopie aucun filtre, il lit la liste (toutes ses pages) puis la carte.
+    const requete = `availableOn=${dateDemandee}`;
+    const listeAvec = await idsDeLaListe(requete);
+    const carteAvec = await carte(requete);
+    expect(carteAvec.points.map((p) => p.id).sort(), "les points de la carte = les salles de la liste").toEqual([...listeAvec.ids].sort());
+    expect(carteAvec.total, "le total de la carte = celui de la liste").toBe(listeAvec.total);
+    expect(carteAvec.withoutCoordinates).toBe(0);
+    expect(carteAvec.availableOn, "l'écho de la date").toBe(dateDemandee);
+    // La règle du produit elle-même (une carte et une liste qui divergeraient de la même façon ne la respecteraient pas) : seule la salle à
+    // créneau ACTIF reste. Les identifiants viennent des salles créées ci-dessus, jamais d'une liste écrite.
+    expect(listeAvec.ids).toEqual([idAvec]);
+    expect(carteAvec.points.map((p) => p.id)).toEqual([idAvec]);
+    // Un compteur dit ce qu'il a parcouru : trois salles créées, trois vues sans date, une seule avec.
+    expect([listeSans.total, carteSans.points.length, listeAvec.total, carteAvec.points.length]).toEqual([3, 3, 1, 1]);
   });
 });
