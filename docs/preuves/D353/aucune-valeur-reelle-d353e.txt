@@ -1,0 +1,7 @@
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/e2e/rouge-F-sortie.txt : occurrences stricte 129 · large 129 (doivent s'accorder) · valeurs distinctes 129 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/portes/pilote/test-e2e.txt : occurrences stricte 129 · large 129 (doivent s'accorder) · valeurs distinctes 129 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/portes/test-e2e-passe-2.txt : occurrences stricte 129 · large 129 (doivent s'accorder) · valeurs distinctes 129 · positif 1 (attendu 1) · négatif 0 (attendu 0)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/e2e/rouge-F-sortie.txt porte 129 valeur(s) (attendu ≥ 129)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/portes/pilote/test-e2e.txt porte 129 valeur(s) (attendu ≥ 129)
+✓ lu comme une cible, C:/Users/benla/AppData/Local/Temp/claude/5acfabb9f267091b/c7c54815-19bf-4908-b4a1-b9a3c863de17/scratchpad/portes/test-e2e-passe-2.txt porte 129 valeur(s) (attendu ≥ 129)
+== valeurs cherchées : 387 (3 journal/journaux) · parcourus : 116 fichiers, 15131149 octets · porteurs : 0 (attendu 0)

@@ -1,0 +1,18 @@
+D353 — tri différentiel de l'audit de secrets « e » (versement final : les trois pièces de la passe D277, et le trio de l'audit « d »)
+
+Instrument d'audit : python3 -I -X utf8 neutralisation/audit-secrets.py --sortie docs/preuves/D353/audit-secrets-d353e.txt (1 230 303 octets ; lancé à 04:46:05, fini à 05:09:13 le 19/11/2026), joué dans le dépôt de travail, sans qu'aucun fichier de `docs/preuves/` n'ait été écrit pendant sa course.
+
+Procédure du tri : python3 -I -X utf8 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D353/audit-secrets-d353d.txt docs/preuves/D353/audit-secrets-d353e.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · précédente (d353d) : 5 913 fichiers parcourus, 5 703 audités, 210 exclus, 4 242 alertes.
+  · nouvelle (d353e)   : 5 919 fichiers parcourus (203 254 124 octets), 5 708 audités, 211 exclus (180 463 alertes d'écho non comptées), 4 246 alertes = 4 242 + 4. Contrôle de l'outil : audités + exclus = 5 708 + 211 = 5 919 (attendu 5 919, les parcourus).
+  · Exclus : 211 contre 210, soit un de plus — la sortie scellée « d » (sceau vérifié) ; aucune exclusion de « d » n'a disparu.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 919 fichiers APRÈS l'audit ; l'audit en a parcouru 5 919 : **le rapprochement « disque après = parcourus » FERME** (l'écart de UN fichier du tri « d », `passe-d277.py`, est résorbé : il est parcouru ici, avec `passe-d277.md`, `passe-d277-sortie.txt` et les deux fichiers du tri « d » — `tri-audit-d353d.txt`, `aucune-valeur-reelle-d353d.txt`).
+  · Les pièces neuves de ce versement — `passe-d277.py`, `passe-d277.md`, `passe-d277-sortie.txt` : **0 alerte**.
+
+Résultat du tri différentiel : 4 alertes ABSENTES de la sortie précédente. Ventilation par motif : jeton = 2 · url-avec-identifiants = 1 · mot-de-passe = 1. **Les quatre visent le MÊME fichier** : `docs/preuves/D353/tri-audit-d353d.txt` — la pièce de tri « d », écrite APRÈS la sortie « d » (elle ne pouvait donc pas y figurer) et qui CITE, pour les trier, les contextes d'alerte de l'audit « d » : la famille « écho de tri » (D352 ; tri « c » de ce lot). TRI AU CONTEXTE (lu) : les lignes citées sont la forme `token=<jeton masqué #N (43 car.)>`, l'URL par défaut du conteneur de développement (`zwadj:zwadj@…`) et le titre de test « forgot-password : <7 car. masques> CONSTANTE » — la valeur est le masque, ou un défaut publié par le dépôt. **0 valeur réelle, 0 fuite.**
+
+Contrôle « 0 valeur réelle » (D299) : même procédure et mêmes trois bruts e2e hors dépôt qu'à « d » → voir `aucune-valeur-reelle-d353e.txt` : **387 valeurs cherchées, 0 porteur (attendu 0)**, calibration à deux bras, code 0.
+
+⚠ **La queue non auditée, écrite pour ne pas se lire comme couverte** : ce tri, `aucune-valeur-reelle-d353e.txt` et `controle-fin-de-lot.txt` (écrit APRÈS la poussée) naissent après l'audit « e » ; ce sont des textes de tri et des SHA de commits, sans valeur — mais aucun audit ne les a parcourus. Le contrôle « 0 valeur réelle » ci-dessus (116 fichiers parcourus) a été joué AVANT l'écriture de ce tri : il couvre `aucune-valeur-reelle-d353e.txt` (sa propre sortie) mais ni ce tri ni `controle-fin-de-lot.txt`, qui n'existaient pas encore.
