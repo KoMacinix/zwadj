@@ -133,8 +133,9 @@ CIBLES = [
     cible("PUB1-20. la fiche est gardée 300 s : une salle renommée, masquée ou supprimée y reste vue (le défaut mesuré par M-3)", CLIENT_API,
           [("`${API_URL}/api/v1/venues/${encodeURIComponent(slug)}`, {\r\n      cache: \"no-store\"", "`${API_URL}/api/v1/venues/${encodeURIComponent(slug)}`, {\r\n      next: { revalidate: 300 }")], "e2e-m3", M3),
     # ── Le Pro : ce que le pro lit
+    # ⛔ ANCRE RÉVISÉE LE 18/11/2026 (D352, rang 54) : la carte de « Mes salles » ne rend plus `PublicationBadge` directement mais `PublicationListBadge` (R-1) — l'ancre d'AVANT (`<PublicationBadge status={venue.publicationStatus} />`) n'existait plus : le lanceur `lancer-touchees.py` l'a trouvée PÉRIMÉE (« ARBRE NON CONFORME AU DÉPART : PUB1-21 : ancre ×0 »), la campagne ne démarrait pas. La cible mesure la MÊME chose (le pro ne lit plus l'état de publication de sa salle : le badge disparaît) ; campagne REJOUÉE EN ENTIER (`--e2e`).
     cible("PUB1-21. le pro ne lit plus l'état de publication de sa salle (le badge disparaît)", PRO_LIST,
-          [("<PublicationBadge status={venue.publicationStatus} />", "{null}")], "e2e-m2", M2),
+          [("<PublicationListBadge venue={venue} />", "{null}")], "e2e-m2", M2),
 ]
 
 
