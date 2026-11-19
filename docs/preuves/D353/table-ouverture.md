@@ -137,3 +137,40 @@ docs/preuves/D353/aucune-valeur-reelle-d353b.txt
 ```
 
 **Ce que cette extension écrit de ce que les mesures ont changé du plan** (détail : `rouges/rouges.md`, `mesures/choix-e2e.md`, versés à l'extension suivante) : la correction e2e candidate (`e2e/global-setup.ts`, `e2e/playwright.config.ts`) a été écrite, mesurée et **NE SERA PAS LIVRÉE** — la relecture des listes vides côté application (`apps/client/src/lib/api.ts`, R-3) rend `r48` verte depuis les deux états sans elle ; ces deux fichiers restent donc déclarés CONDITIONNELS et **n'existent pas au diff** (le rapport de fin de lot le dit).
+
+### Extension 4 — les pièces du choix de la correction e2e et du rouge unitaire de R-3, et le STATUT des fichiers de code
+
+Écrite **avant** le commit qui verse ces pièces et **avant le premier commit de code**. **Pièces** (chemins COMPLETS, relevés sur le disque, `git ls-files --others --exclude-standard docs/preuves/D353`, 19 fichiers) :
+
+```
+docs/preuves/D353/mesures/choix-e2e.md
+docs/preuves/D353/mesures/choix/M1-OP-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M5-QOP-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M6-QOP-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M7-QO-sans-purge-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M8-QP-sans-semis-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/beta-seule-bilan.txt
+docs/preuves/D353/mesures/choix/beta-seule-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/beta-seule-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/cache-apres-M1-OP-sans-sonde-statique.txt
+docs/preuves/D353/mesures/choix/cache-apres-M5-sonde-semis-purge-depuis-F.txt
+docs/preuves/D353/mesures/choix/cache-apres-M6-sonde-semis-purge-depuis-E.txt
+docs/preuves/D353/mesures/choix/cache-apres-M7-sonde-semis-SANS-purge-depuis-E.txt
+docs/preuves/D353/mesures/choix/cache-apres-M8-sonde-purge-SANS-semis-depuis-F.txt
+docs/preuves/D353/mesures/choix/candidat-e2e-correction-ecartee.diff
+docs/preuves/D353/mesures/choix/mesure-beta-seule.py
+docs/preuves/D353/mesures/choix/rapport-masquage.txt
+docs/preuves/D353/rouges/r3-rouge-tests-referentiels.py
+docs/preuves/D353/rouges/r3-tests-referentiels-contre-code-d-avant.txt
+```
+
+**Le STATUT des fichiers de code, écrit avant leur commit** (la table dit « conditionnel » pour ceux dont l'existence dépendait d'un résultat) :
+
+| fichier | statut | motif |
+|---|---|---|
+| `apps/client/src/lib/api.ts` | **EXISTE au diff** (R-3) | la condition de la table est REMPLIE : le cas (i) de la mesure sur un build de production est **ROUGE** (`docs/preuves/D353/mesures/r2-production.md` : la page reste vide 4 sondes de suite pendant que l'API rend ses listes ; sur `next dev`, 34 sondes sur 37). Le **plus petit** changement qui tient le critère : une relecture SANS cache d'une réponse VIDE, dans un assistant privé (`lireReferentiel`) ; les trois fonctions publiques gardent leur nom, leur type et leur retour. Options écartées, écrites dans le commentaire du code : `no-store` sur les trois listes, `unstable_cache`, `revalidateTag`. Rouge unitaire versé AVANT (`rouges/r3-tests-referentiels-contre-code-d-avant.txt` : 6 échecs sur 32, tous en `AssertionError`) |
+| `apps/client/src/lib/api.test.ts`, `apps/api/test/int/venue-map.int-spec.ts`, `e2e/specs/r48-assistant-choix.e2e.ts`, `neutralisation/neutralize-r55.py` | **EXISTENT au diff** | déclarés en B à l'ouverture |
+| `e2e/global-setup.ts`, `e2e/playwright.config.ts` | **N'EXISTENT PAS au diff** (conditionnels de la table, condition « la mesure désigne un de ces fichiers » **NON retenue**) | la correction e2e candidate (trois gestes : sonde de disponibilité statique, semis, purge) a été écrite et mesurée nécessaire AVANT R-3 ; avec la relecture de R-3, `r48` seule est verte depuis F et depuis E **sans elle** : décision de la session S-232 (plus petit changement, pas de couplage à un chemin interne de Next). Diff versé comme option écartée : `docs/preuves/D353/mesures/choix/candidat-e2e-correction-ecartee.diff` |
+| `neutralisation/neutralize-r48.py`, `neutralize-pub1.py`, `neutralize-ca1.py`, `neutralize-ca6.py` | **à relever** | conditionnels : seulement si `lancer-touchees.py` trouve une ancre périmée ; leur éventuelle révision sera déclarée par une extension, avant son commit |
+
+**Pièces encore À VENIR** (déclarées par des extensions ultérieures, avant leurs commits) : les journaux de `neutralize-r55.py` et des campagnes touchées, les portes, les deux passes e2e, les audits « c » et suivants, le contrôle de fin de lot.
