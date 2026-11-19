@@ -123,3 +123,103 @@ docs/preuves/D352/tri-audit-d352c.txt
 - **`e2e/specs/r50-salle-publiee.e2e.ts`** (déclaré **conditionnel** à l'extension 1 comme « seulement si l'e2e MESURE… » : `a2-mount-effects` est écarté ; c'est `r50` que la mesure a cité) : une ligne d'attente web-first avant la lecture `innerText()` de la carte. **Le rouge** (`e2e-latence-rouge.txt`) a été produit sur une COPIE jetable du spec (`zz-r50-latence.e2e.ts.txt`, retirée de `e2e/specs/` avant tout commit) avec 1,5 s de latence injectée sur la route de lecture du refus ; **le vert** (`e2e-latence-vert.txt`) sur la même copie reprise du spec corrigé.
 - **`portes/masquer-jetons.py`** : copie NON modifiée de `docs/preuves/D351/portes/masquer-jetons.py` ; les trois sorties e2e versées sont MASQUÉES (3, 3 et 26 suites de forme jeton remplacées, 0 restante).
 - **Les audits** : « c » couvre ce versement ; un audit « d » couvrira les pièces des portes, des campagnes et de la clôture (extension 3).
+
+### Extension 3 — la campagne de `pub1` (ancre périmée), et TOUTES les pièces de la clôture (portes, campagnes, passe D277, gestes de Ko, contrôle de fin de lot, quatrième audit)
+
+Écrite **avant** le commit qui verse les pièces de la clôture et **avant** le commit de `neutralisation/neutralize-pub1.py`. Chemins COMPLETS (87) :
+
+```
+neutralisation/neutralize-pub1.py
+docs/preuves/D352/portes/_index.txt
+docs/preuves/D352/portes/typecheck.txt
+docs/preuves/D352/portes/lint.txt
+docs/preuves/D352/portes/test.txt
+docs/preuves/D352/portes/build.txt
+docs/preuves/D352/portes/test-int.txt
+docs/preuves/D352/portes/test-e2e.txt
+docs/preuves/D352/portes/test-e2e-passe-2.txt
+docs/preuves/D352/portes/etat-machine-pendant.txt
+docs/preuves/D352/portes/etat-machine-passe-2.txt
+docs/preuves/D352/portes/attendu-e2e.txt
+docs/preuves/D352/portes/e2e-liste.txt
+docs/preuves/D352/portes/rapport-masquage.txt
+docs/preuves/D352/portes/FIN
+docs/preuves/D352/portes/portes.md
+docs/preuves/D352/neutralisation/campagne-adm2-entiere.txt
+docs/preuves/D352/neutralisation/campagne-r54.txt
+docs/preuves/D352/neutralisation/decouverte-adm2-29-gardes.txt
+docs/preuves/D352/neutralisation/decouverte-r54.txt
+docs/preuves/D352/neutralisation/localisation-29-gardes.txt
+docs/preuves/D352/neutralisation/localiser-gardes.py
+docs/preuves/D352/neutralisation/extraits-des-echecs-adm2.txt
+docs/preuves/D352/neutralisation/extraire-echecs.py
+docs/preuves/D352/neutralisation/empreintes-harnais.py
+docs/preuves/D352/neutralisation/empreintes-harnais-avant.txt
+docs/preuves/D352/neutralisation/empreintes-harnais-apres.txt
+docs/preuves/D352/neutralisation/lancer-touchees.py
+docs/preuves/D352/neutralisation/lancer-touchees-liste.txt
+docs/preuves/D352/neutralisation/lancer-touchees-bilan.txt
+docs/preuves/D352/neutralisation/pub1-ancre-perimee.txt
+docs/preuves/D352/neutralisation/pub1-e2e.txt
+docs/preuves/D352/neutralisation/pub1-e2e-premiere-tentative.txt
+docs/preuves/D352/neutralisation/ca6-e2e.txt
+docs/preuves/D352/neutralisation/touchees-ca5.txt
+docs/preuves/D352/neutralisation/touchees-r37.txt
+docs/preuves/D352/neutralisation/touchees-r38.txt
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-1-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-4-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-4-noindex.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-5-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-6-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-7-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/G-9-garde.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-1-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-2-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-4-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-5-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-6-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-8-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-10-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/Q-11-file.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-2-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-3-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-6-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-9-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-10-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/P-11-detail.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/X-1-suppressions.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/X-2-suppressions.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/X-3-suppressions.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/X-6-suppressions.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/X-8-suppressions.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/R-2-refus.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/R-3-refus.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/R-6-refus.log
+docs/preuves/D352/neutralisation/adm2-journaux-29-gardes/R-7-refus.log
+docs/preuves/D352/neutralisation/r54-journaux/L-1-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-2-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-3-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-4-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-5-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-6-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-7-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-8-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-9-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-10-liste.log
+docs/preuves/D352/neutralisation/r54-journaux/L-11-liste.log
+docs/preuves/D352/passe-d277.md
+docs/preuves/D352/passe-d277-sortie.txt
+docs/preuves/D352/passe-d277.py
+docs/preuves/D352/scenarios-ko.md
+docs/preuves/D352/controle-fin-de-lot.py
+docs/preuves/D352/controle-fin-de-lot.txt
+docs/preuves/D352/aucune-valeur-reelle.txt
+docs/preuves/D352/audit-secrets-d352d.txt
+docs/preuves/D352/tri-audit-d352d.txt
+```
+
+- **`neutralisation/neutralize-pub1.py`** — **MODIFIÉ** (déclaré ici, il ne l'était pas à l'ouverture) : la cible `PUB1-21` ancrait `<PublicationBadge status={venue.publicationStatus} />` dans `venue-list-page.tsx` ; R-1 a remplacé cette ligne par `<PublicationListBadge venue={venue} />`. **Le tri des campagnes touchées (`lancer-touchees.py`) l'a trouvée périmée** (« ARBRE NON CONFORME AU DÉPART : PUB1-21 : ancre ×0 » — la campagne ne démarrait pas : `pub1-ancre-perimee.txt`, **gardée**) ; l'ancre est révisée (la cible mesure la MÊME chose : « le pro ne lit plus l'état de publication de sa salle »), la campagne est **REJOUÉE EN ENTIER** (`--e2e`) sur le harnais modifié (consigne : « campagne rejouée EN ENTIER si le harnais change »). `pub1-e2e-premiere-tentative.txt` est la tentative faite AVANT la révision, si elle a eu lieu.
+- **Les pièces des portes** : sorties du pilote de D340 et de la seconde passe e2e ; les deux sorties e2e sont MASQUÉES (`portes/masquer-jetons.py`).
+- **Les pièces des campagnes** : le bilan de `neutralize-adm2.py --int --e2e` ENTIER, celui de `neutralize-r54.py`, la découverte qui a relevé les titres et la lecture de la première ligne des 29 verdicts, les journaux **masqués** des 29 gardes (30 fichiers : `G-4` compte deux mesures) et des 11 cibles de `r54`, les extraits de tous les échecs d'`adm2`, le tri des campagnes touchées et ses sorties, les empreintes des 69 harnais avant et après.
+- **Conditionnels** (leur existence dépend d'un résultat) : `pub1-e2e-premiere-tentative.txt` (n'existe que si une tentative a précédé la révision de l'ancre) ; `touchees-ca5.txt`, `touchees-r37.txt`, `touchees-r38.txt` (les trois campagnes concernées jouées par le tri ; `ca6` et `pub1` ont leur pièce propre) ; `aucune-valeur-reelle.txt` (le contrôle « 0 valeur réelle », rejoué avec TOUS les journaux bruts) ; `audit-secrets-d352d.txt` et `tri-audit-d352d.txt` (le dernier audit, joué sur le dernier versement). Le rapport de fin de lot dit lesquels existent.
+- **Les `.md` d'autorité** (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`) étaient déjà déclarés (section C).
