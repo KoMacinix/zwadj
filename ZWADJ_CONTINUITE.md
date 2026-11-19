@@ -2750,7 +2750,288 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 54 : CLOS SUR LE CODE (D352, 18/11/2026) — la liste « Mes salles » du pro dit « Refusée » pour une salle refusée (R-1, voie (A) : la carte lit `GET pro/venues/:id/publication`, aucun contrat neuf, aucune clé de catalogue neuve) et les 29 gardes des écrans `/admin` passent en assertion native (R-2, S-192 refusée)** : lot de **CODE** (il compte, D283), **sans migration**, sans session adverse ni certification (pause de Ko) ; **les rouges de R-1 précèdent le code** (`d5f5195` < `fca8da9`) ; **les six portes sont à 0 dès la première passe** (typecheck 0 · lint 0 · test 0 · build 0 · test:int 0 · test:e2e 0, deux passes vertes de suite), **deux passes e2e vertes de suite** (109 passés + 1 ignoré chacune) ; `neutralize-adm2.py` rejoué **EN ENTIER** (`--int --e2e`) : **84 gardes mordues sur 84, **0 muette, 0 non mesurée, 0 non jouée**, toutes lues en `AssertionError`, empreinte du harnais `c9798594…df24` en tête de chaque journal, arbre rendu à son état de départ (18 fichiers, 0 différent)** ; `neutralize-r54.py` : **11 gardes mordues sur 11, 0 muette, 0 non mesurée, toutes lues en `AssertionError`, empreinte `7a64b058…eedb`** ; campagnes touchées : 7 sur 69 — `ca5` 14 sur 14, `r37` 20 sur 20, `r38` 46 sur 46, `pub1` **20 sur 20 rejouée EN ENTIER** (`--e2e`, après la révision d'une ancre périmée), `ca6` **9 sur 9** (`--e2e`), `adm2` et `r54` à part ; **le critère 4 a trouvé un vrai refus de l'e2e** (`r50` M-2 lisait la carte sans attendre : ROUGE avec 1,5 s de latence), corrigé ; **compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE** (la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque**) ; **S-205 à S-217 ratifiées par adoption, S-218 à S-230 à ratifier** ; **les gestes de Ko restent à jouer** (`docs/preuves/D352/scenarios-ko.md` — le rang est clos **sur le code**, pas sur ce regard) ; la pause du paiement en ligne (E3 et R1) est **inchangée**. Point d'entrée : « ÉTAT À LA CLÔTURE DU RANG 54 ».
 
-⇒ **RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 54, R-5) : **« la mémoire du site client »** — (i) le `no-store` de `getVenueMap` qu'aucun test ne garde ; (ii) « sans créneau actif (avec une date) » non joué sur la carte ; (iii) le cache d'une heure des référentiels du client (wilayas, équipements, styles), dont le message `claude/rang50-message.md` n'est dans aucun fichier du dépôt. **Pas arbitré** : le rang 55 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D352/scenarios-ko.md` ; puis, s'ils ne sont pas faits, ceux de `docs/preuves/D351/scenarios-ko.md` et de `docs/preuves/D350/scenarios-ko.md`) ; la ratification de **S-218 à S-230** (section D352, § 5) ; **la relecture humaine des 29 clés arabes** du bloc `map` (D351 ; ce lot n'ajoute **aucune** clé arabe) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+⇒ ~~**RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D353, 19/11/2026 : **PÉRIMÉ** — le rang 55 est arbitré par Ko par adoption de la consigne du relecteur « RANG 55 — LA MÉMOIRE DU SITE CLIENT : CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE) » : voir le bloc « ARBITRÉ LE 19/11/2026 PAR KO — LE RANG 55 » juste dessous ; la suite de cette ligne — « Candidat **proposé** … **Pas arbitré** » — dit ce qui était vrai AVANT. Barré avec son motif, pas effacé.)* *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 54, R-5) : **« la mémoire du site client »** — (i) le `no-store` de `getVenueMap` qu'aucun test ne garde ; (ii) « sans créneau actif (avec une date) » non joué sur la carte ; (iii) le cache d'une heure des référentiels du client (wilayas, équipements, styles), dont le message `claude/rang50-message.md` n'est dans aucun fichier du dépôt. **Pas arbitré** : le rang 55 n'est **pas** nommé par la session. L36-3a-2 (avec S-104) et L36-3b restent sans rang. ⚠ **Ce qui attend Ko avant** : ses gestes (`docs/preuves/D352/scenarios-ko.md` ; puis, s'ils ne sont pas faits, ceux de `docs/preuves/D351/scenarios-ko.md` et de `docs/preuves/D350/scenarios-ko.md`) ; la ratification de **S-218 à S-230** (section D352, § 5) ; **la relecture humaine des 29 clés arabes** du bloc `map` (D351 ; ce lot n'ajoute **aucune** clé arabe) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+
+⛔ **ARBITRÉ LE 19/11/2026 PAR KO — LE RANG 55 : LA MÉMOIRE DU SITE CLIENT, CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE), mot pour mot : les SECTIONS 0 à 4 de la consigne du relecteur (première écriture d'autorité du lot D353 ; la table d'ouverture `f7fb47a`, son extension 1 `413f01e`, la consigne en pièce, la règle des portes, la lecture adverse `4523384` et les pièces des rouges `e387977` la précèdent — `git` le prouve).** ⚠ Le texte est celui du relecteur, **collé par Ko** et adopté par adoption de son message (« adopté par Ko tel quel », 19/11/2026) ; il est versé en entier dans `docs/preuves/D353/consigne.md`. **Aucune phrase de cette consigne n'est une dérivation de la session.**
+
+- **[1a] Le rang 55 = TROIS entrées du backlog, un seul sujet (ce que le site client garde en mémoire)** : (i) « LES LISTES DE RÉFÉRENTIELS DU CLIENT SONT MISES EN CACHE UNE HEURE… » (`[E2E][INFRA]`, D346 ; le message `claude/rang50-message.md` du 10/11 n'a jamais été adopté, ce rang le remplace) ; (ii) « LE `no-store` DE `getVenueMap` N'EST AFFIRMÉ PAR AUCUN TEST » (`[TESTS][CARTE]`, D351) ; (iii) « « SANS CRÉNEAU ACTIF » (AVEC UNE DATE) N'EST PAS JOUÉE SUR LA CARTE » (`[TESTS][CARTE]`, D351). Numéro : **D353**, pris en LISANT le registre (dernier : D352 ; « D353 » dans aucun des quatre fichiers d'autorité, texte aplati : 0, 0, 0, 0). **Lot de CODE** : il compte (D283), compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ à la clôture.
+- **[1b] Ratifié par adoption** : les décisions prises seule par la session de D352 (**S-218 à S-230**).
+- **[1c] Réponse de Ko à la question de D352** (l'en-tête de l'assistant d'une salle dit « en attente » avant la réponse, puis « Refusée ») : **« APRÈS »** — une entrée de backlog `[PRO]`, sans rang, « le même saut que S-219 a fermé sur la liste », avec le patron de S-219 comme piste. *(La lecture adverse a trouvé que l'entrée existe DÉJÀ : elle est annotée, pas dupliquée — S-235.)*
+- **[R-1] Partie e2e** : la suite complète voit les référentiels SEMÉS ; le correctif vit dans `e2e/` seul (ordre du semis et du préchauffage, ou purge du cache de fetch du client : à trancher par la mesure, motif écrit) ; la PREUVE : la tolérance de `r48` est RETIRÉE (`r48` exige les puces de styles ET d'équipements et coche l'une et l'autre) ; rouge d'abord : `r48` durcie, jouée dans la suite COMPLÈTE avant le correctif, rougit sur une assertion ; verte après. *(Ce que la mesure a fait de cette forme : `docs/preuves/D353/rouges/rouges.md`, S-231 et S-232.)*
+- **[R-2] Partie production** : MESURER d'abord, sur un build de production local du client (`next build` + `next start`), pièce versée pour chaque cas : (i) l'API rend 200 avec une liste VIDE, puis la liste se remplit ; (ii) l'API rend 500 ou est arrêtée alors qu'une liste pleine était déjà gardée, puis revient ; (iii) la PREMIÈRE visite se fait API arrêtée, puis l'API revient. Durée réduite pour la mesure seule, sur une copie hors du dépôt, déclarée, jamais commitée.
+- **[R-3] Le critère** (il découle de D348 : « un délai de cache se corrige s'il fait mentir la page ») : **une liste PLEINE peut rester gardée une heure ; une réponse VIDE ou en ÉCHEC ne doit jamais être gardée.** Rouge sous ce critère ⇒ corriger ICI, par le plus petit changement qui tient le critère, rouge versé avant le code, motif écrit, options écartées écrites (dont `no-store` partout et son coût) ; vert ⇒ rien n'est changé dans `apps/`, et on le dit.
+- **[R-4] La carte reste en `no-store` et c'est GARDÉ** : un test qui affirme `cache: "no-store"` pour `getVenueMap`, et une cible de harnais qui le mute (`no-store` → `force-cache`) et doit rougir ; la mutation de D351 (`docs/preuves/D351/r4/`) est le rouge de référence.
+- **[R-5] « Sans créneau actif, avec une date » sur la carte** : un test d'intégration dans `venue-map.int-spec.ts` qui affirme que la carte fait EXACTEMENT ce que fait la liste pour la même requête (une seule autorité, `publicFilter`, D351) ; si elles divergent : défaut, rouge versé, rapporté, **et le lot s'arrête sur ce point** — pas de correctif de filtre dans ce lot.
+- **[R-6] Aucun contrat d'API neuf, aucune migration, aucun montant ; rien dans `apps/pro`** ; le reste d'`apps/client/src/lib/api.ts` n'est pas touché (`getVenueBySlug` et `searchVenues` restent en `no-store`, invariant de D348). **[R-7] HORS lot** : le saut de l'en-tête de l'assistant, les trois clés mortes de catalogue (D351), le titre « Carte des salles · Alger » (texte de Ko), le fournisseur des tuiles (BLOQUE le lancement).
+- **[3, 4] La forme et la fin** : premier commit = la table d'ouverture SEULE ; extension = commit seul avant son fichier ; lecture adverse avant tout `.md` d'autorité ; consigne versée ; **les rouges AVANT le code** ; `neutralize-r55.py` pour chaque garde neuve (empreinte en tête de chaque journal ; campagne rejouée EN ENTIER si le harnais change) ; `lancer-touchees.py` (D352) pour les campagnes que le lot touche, dont `r48` et `ca1` ; journaux bruts masqués ; audits de secrets avant chaque versement (D298) ; six portes après la dernière modification ; **deux passes e2e vertes de suite**, règle commitée avant (R-15 de D343) ; contrôle de fin de lot (D288, D328, `--first-parent`), push puis fetch, local = `origin/main` ; **« RANG 55 : CLOS », puis « RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** (candidat proposé : L36-3a-2, le personnel — créer, gérer, capacités — avec S-104 : un mot de passe expiré à 90 jours ouvre encore une session) ; gestes de Ko : aucun, sauf si R-3 corrige quelque chose de visible (alors `docs/preuves/D353/scenarios-ko.md`) ; rapport en français, une session, un lot.
+
+⇒ **Ce que cet arbitrage fait dans les fichiers, à ce commit** : **(a)** le rang 55 est **la mémoire du site client** (trois entrées du backlog) : lot de **CODE** (il compte, D283), **sans migration**, sans session adverse ni certification (pause de Ko) ; **(b)** ~~« RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR »~~ est **PÉRIMÉ** — voir la ligne « RANG 55 : CLOS » juste dessous ; **(c)** S-218 à S-230 (D352) sont **ratifiées par adoption** ; **(d)** la question de D352 (l'en-tête de l'assistant) est **répondue : « APRÈS »**.
+
+⇒ **RANG 55 : CLOS SUR LE CODE (D353, 19/11/2026) — la mémoire du site client : une réponse VIDE d'un référentiel n'est plus jamais crue (relue sans cache), le `no-store` de la carte est gardé, « sans créneau actif, avec une date » est joué sur la carte et la carte NE DIVERGE PAS de la liste, `r48` n'a plus de tolérance** : lot de **CODE** (il compte, D283), **sans migration**, sans session adverse ni certification (pause de Ko) ; **les rouges précèdent le code** (pièces des rouges `e387977`, du choix e2e `bac98d8`, < premier commit de code `8cfcb3e`) ; **la mesure sur un build de production est ROUGE sur UN cas sur cinq** ((i) la réponse vide est gardée toute la fenêtre ; (ii) et (iii) verts) ; **la prédiction de la consigne sur la forme du rouge e2e est CONTREDITE** (la suite COMPLÈTE depuis un cache neuf est VERTE ; le rouge est celui de `r48` jouée SEULE) ; **la correction e2e à trois gestes est MESURÉE, ÉCRITE et NON LIVRÉE** (nécessaire avant la relecture de R-3, redondante après : S-232) ; **les six portes sont à 0 dès la première passe, sans rejeu** (typecheck 0 · lint 0 · test 0 · build 0 · test:int 0 · test:e2e 0 ; **client 583, intégration 808, e2e 109 passés + 1 ignoré, deux passes vertes de suite**) ; `neutralize-r55.py` : **10 gardes mordues sur 10, 0 muette, 0 non mesurée, 0 non jouée, toutes lues en `AssertionError` ou `expect(`, empreinte `94bea8a2…be75c`** ; campagnes touchées : `available-on` 10, `ca2` 42 sur 42, `horizon` 6, **`r48 --e2e` 12 sur 12, `ca1 --int` 24 sur 24, `pub1 --e2e` 20 sur 20**, 70 harnais à la même empreinte avant et après ; décisions prises seule **S-231 à S-238, à ratifier** ; compteur POUR MÉMOIRE **TRENTE-QUATRE → TRENTE-CINQ** ; section D353 de ce fichier, pièces : `docs/preuves/D353/`.
+
+⇒ **RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 55, § 4) : **L36-3a-2, le personnel — créer, gérer, capacités — avec S-104** (un mot de passe expiré à 90 jours ouvre encore une session ; `password_expires_at` est écrit et aucun refus ne le lit : D341). **Pas arbitré** : le rang 56 n'est **pas** nommé par la session. L36-3b reste sans rang. ⚠ **Ce qui attend Ko avant** : **son geste** (un seul : `docs/preuves/D353/scenarios-ko.md` — les filtres apparaissent après le semis ; puis, s'ils ne sont pas faits, ceux de `docs/preuves/D352/scenarios-ko.md`, de `D351` et de `D350`) ; la ratification de **S-231 à S-238** (section D353, § 5) ; **la relecture humaine des 29 clés arabes** du bloc `map` (D351 ; ce lot n'ajoute **aucune** clé) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+
+⛔ **TABLE D'OUVERTURE DU RANG 55 (D353), recopiée à l'IDENTIQUE de `docs/preuves/D353/table-ouverture.md`** (premier commit du lot, `f7fb47a`, SEUL ; extension 1 `413f01e`, extension 2 `a0bb065`, extension 3 `3c63304`, extension 4 `e8ed7e6`, extension 5 `3110399`, extension 6 `785aefd`, extension 7 `d082647`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SEPT extensions ; l'extension 7 déclare à l'avance les pièces de l'audit « d », de la passe D277 et de l'audit « e », pour que la table soit définitive à la recopie) :
+
+~~~~markdown
+# D353 — rang 55 — table d'ouverture
+
+Lot : **la mémoire du site client — ce qu'il garde et ce qu'il ne doit pas garder (les listes de référentiels, la carte)** — consigne du relecteur « RANG 55 » du 19/11/2026, adoptée par Ko tel quel (`docs/preuves/D353/consigne.md`, versée dans le commit suivant). Trois entrées du backlog, un seul sujet : (i) « LES LISTES DE RÉFÉRENTIELS DU CLIENT SONT MISES EN CACHE UNE HEURE… » (`[E2E][INFRA]`, D346), (ii) « LE `no-store` DE `getVenueMap` N'EST AFFIRMÉ PAR AUCUN TEST » (`[TESTS][CARTE]`, D351), (iii) « « SANS CRÉNEAU ACTIF » (AVEC UNE DATE) N'EST PAS JOUÉE SUR LA CARTE » (`[TESTS][CARTE]`, D351). Lot de **CODE** (il compte, D283) : compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ à la clôture ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** (pause de Ko).
+
+- **SHA de départ** : `cd8e07921a4c18c2559506c463ede06eed3178a1` (clôture de D352). `HEAD` = `origin/main` après `git fetch` (les deux sur ce SHA), arbre propre (`git status --short` : 0 ligne), aucun stash (0 ligne), branche `main`. Branches distantes gardées, relevées : `origin/front-client` = `43996e2`, `origin/integration-45` = `63511ce`, `origin/par-carte` = `7fdc679`.
+- **Numéro** : D353 — pris en lisant le registre de `ZWADJ_CONTINUITE.md` : 307 lignes `| Dnnn |` (expression `^\| D(\d+) \|`), dernier numéro **352** ; `D353` ne figure dans aucun des quatre fichiers d'autorité (compte 0 sur le texte APLATI : 0, 0, 0, 0 ; caractères aplatis examinés : 4 500 187).
+- **Reprise (consigne, § 0), relevée avant toute écriture** : rang 54 CLOS (D352) ; compteur POUR MÉMOIRE TRENTE-QUATRE ; « RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : la mémoire du site client) ; `origin/main` = `cd8e079` ; arbre propre, sans stash, sur `main` ; **aucun écart**.
+- **Poste à l'ouverture** : **sur secteur** (`BatteryStatus` = 2, `PowerLineStatus` = Online, charge 65 %), RAM libre 5 251 Mo, `chrome` 0, `headless_shell` 0, `node` 0, Docker 29.8.0 lancé, conteneur `zwadj-db` « Up 2 days », ports 3100, 3101, 5273 et 5274 libres.
+- **Les constats du relecteur (consigne, § 2), RELEVÉS au dépôt avant d'écrire — par lecture, à MESURER ensuite** : `getWilayas`, `getAmenities`, `getVenueStyles` (`apps/client/src/lib/api.ts`) lisent l'API en `next: { revalidate: 3600 }` et rendent `[]` sur une réponse non ok ou une exception ; `getVenueMap` est en `cache: "no-store"` ; le projet `warmup` de `e2e/playwright.config.ts` est une dépendance de `chromium` ; `r48-assistant-choix.e2e.ts` tolère l'absence de puces (`if (… .wz-chip … count() > 0)`) et son commentaire dit « la base e2e ne publie AUCUN style » alors que D346 écrit « 4 styles en base » ; `apps/api/prisma/seed.ts` sème **les quatre listes** (wilayas, villes, équipements, styles) et **aucune migration n'en insère** : avant le semis, les quatre listes sont vides, et le préchauffage les voit dans cet état (**non encore mesuré**). `apps/client/.next/cache/fetch-cache` (ignoré par git) porte aujourd'hui des listes PLEINES, écrites le 18/11/2026 à 20:25-20:26 : **l'état de ce cache dépend de l'historique des passes**.
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 et D334 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) l'extension 1 de cette table, SEULE ; (3) la consigne en pièce, la règle des portes (écrite et commitée AVANT les passes) et la sortie de la lecture adverse de la consigne contre le dépôt, avec le premier audit de secrets, **avant tout `.md` d'autorité** ; (4) **les pièces des rouges** — r48 durcie dans la suite COMPLÈTE (R-1), les mesures sur un build de production (R-2), la mutation `no-store` sous le test neuf (R-4), le cas de R-5 — **avec l'empreinte sha256 de chaque fichier de test joué, AVANT le premier commit de code** ; (5) le code et les tests ; (6) le harnais, les campagnes, les portes, l'e2e ; (7) les `.md` d'autorité, les arbitrages de Ko en première écriture ; (8) le contrôle de fin de lot, push puis fetch. Toute extension de cette table : un commit propre qui l'ajoute **avant** le commit du fichier qu'elle couvre.
+- **Règle d'arrêt** (consigne, § 0, R-5) : « Un écart : tu t'arrêtes et tu le dis. » Aucun écart à l'ouverture. **Et** (R-5) : si la carte et la liste DIVERGENT pour « sans créneau actif, avec une date », c'est un défaut : le rouge est versé, il est rapporté, **et le lot s'arrête sur ce point** — aucun correctif de filtre dans ce lot.
+- **Écrit pour ne pas se lire comme tenu** : cette table ne dit pas que les référentiels sont gardés vides en production, ni que la suite e2e voit des listes vides — ce sont les constats du relecteur, à mesurer (R-1 sur la suite complète, R-2 sur un build de production). Elle ne dit pas non plus qu'un correctif de `apps/client/src/lib/api.ts` aura lieu : il n'est déclaré qu'à titre **conditionnel** (R-3).
+
+## A. Le départ
+
+Voir les puces ci-dessus (SHA, numéro, reprise, poste). Aucun fichier n'est modifié à l'ouverture : ce fichier est le premier commit du lot.
+
+## B. Les fichiers de CE lot — chemins COMPLETS
+
+Code et tests (R-1 : la tolérance de `r48` retirée ; R-4 : le `no-store` de la carte ; R-5 : « sans créneau actif » sur la carte), harnais :
+
+```
+e2e/specs/r48-assistant-choix.e2e.ts
+apps/client/src/lib/api.test.ts
+apps/api/test/int/venue-map.int-spec.ts
+neutralisation/neutralize-r55.py
+```
+
+Pièces du lot (celles qu'on connaît à l'ouverture ; les autres entrent par extension, avant leur commit) :
+
+```
+docs/preuves/D353/table-ouverture.md
+docs/preuves/D353/consigne.md
+docs/preuves/D353/regle-portes.md
+docs/preuves/D353/lecture-adverse/confronter-consigne.py
+docs/preuves/D353/lecture-adverse/confronter-sortie.txt
+docs/preuves/D353/controle-fin-de-lot.txt
+```
+
+## C. Les fichiers d'autorité — écrits en dernier, les arbitrages de Ko en première écriture
+
+```
+ZWADJ_CONTINUITE.md
+ZWADJ_BACKLOG.md
+AGENTS.md
+```
+
+`AGENTS.md` : annotations seules (le compteur de la chaîne « AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE… » ; l'invariant « LA FICHE D'UNE SALLE N'EST JAMAIS EN CACHE (D348) », qui dit que les listes de référentiels « n'ont pas été mesurées sous ce mécanisme » ; et, **seulement si R-3 corrige**, un invariant sur les référentiels) — annoté, pas réécrit. `CLAUDE.md` n'est pas modifié.
+
+## D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucune migration, aucun contrat d'API neuf, aucun montant, rien dans `apps/pro`** (consigne, R-6). `getVenueBySlug` et `searchVenues` restent en `no-store` : l'invariant de D348 ne bouge pas.
+- **Rien de `apps/api/src/`** : « pas de correctif de filtre dans ce lot » (R-5). Si la carte et la liste divergent, le lot s'arrête sur ce point.
+- **Hors lot** (consigne, R-7) : le saut de l'en-tête de l'assistant d'une salle (c'est une entrée de backlog `[PRO]`, sans rang : le seul fichier touché est `ZWADJ_BACKLOG.md`) ; les trois clés mortes du catalogue (D351) ; le titre « Carte des salles · Alger » ; le fournisseur des tuiles (BLOQUE le lancement, Ko).
+- **`neutralisation/lancer-campagnes.py`** n'est pas modifié ; **`packages/i18n/messages/*.json`** ne sont pas touchés (aucune clé neuve).
+
+## Fichiers CONDITIONNELS (leur existence ou leur modification dépend d'un résultat)
+
+Chacun est déclaré **avec sa condition** ; le rapport de fin de lot dit lesquels existent.
+
+| fichier | condition |
+|---|---|
+| `e2e/global-setup.ts`, `e2e/playwright.config.ts`, `e2e/fixtures/harness.ts`, `e2e/specs/warmup.setup.ts` | **R-1, partie e2e** : le correctif vit dans `e2e/` seul (ordre du semis et du préchauffage, ou purge du cache de fetch du client au démarrage de la suite) ; **lequel de ces fichiers, la mesure le désigne** — le motif est écrit dans une extension de cette table, **avant** le premier d'entre eux |
+| `apps/client/src/lib/api.ts` | **R-3 seulement** : si la mesure sur un build de production est ROUGE sous le critère (une réponse VIDE ou en ÉCHEC ne doit jamais être gardée) ; rouge versé AVANT le code, le plus petit changement qui tient le critère, les options écartées écrites ; **vert ⇒ rien n'est changé dans `apps/`, et le rapport le dit** |
+| `neutralisation/neutralize-r48.py`, `neutralisation/neutralize-pub1.py`, `neutralisation/neutralize-ca1.py`, `neutralisation/neutralize-ca6.py` | seulement si `lancer-touchees.py` trouve une ANCRE périmée par ce lot (un fichier lu par la campagne a changé) ; la révision est déclarée par extension **avant** son commit, et la campagne est rejouée EN ENTIER (précédent S-230 de D352) |
+| `docs/preuves/D353/scenarios-ko.md` | seulement si R-3 corrige quelque chose de **visible** (consigne, § 4 : « Gestes de Ko : aucun, sauf si R-3 corrige quelque chose de visible ») |
+| `docs/preuves/D353/mesures/`, `docs/preuves/D353/rouges/`, `docs/preuves/D353/neutralisation/`, `docs/preuves/D353/portes/` | les pièces des mesures, des rouges, des campagnes et des portes ; **leurs noms dépendent des résultats** : chacune est déclarée par une extension, en chemins complets, avant son commit |
+
+## Extensions de la table
+
+*(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
+
+### Extension 1 — les pièces du premier versement : la note de la lecture adverse, la première passe de son instrument, l'audit de secrets « a » et son tri
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes et la lecture adverse (et avant le commit des rouges). Les fichiers déjà listés en B (`consigne.md`, `regle-portes.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`) entrent dans ce même commit. **Chemins COMPLETS des pièces qui s'y ajoutent** :
+
+```
+docs/preuves/D353/lecture-adverse/lecture-adverse.md
+docs/preuves/D353/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D353/audit-secrets-d353a.txt
+docs/preuves/D353/tri-audit-d353a.txt
+```
+
+**Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu deux ✗ qui étaient des défauts DE L'INSTRUMENT (contrôles 1.c et 2.h), confrontés à la source avant d'être crus (D275). Cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument corrigé, rejoué en entier, calibration comprise (règle de D298). La note `lecture-adverse.md` écrit les deux défauts et les six « ≈ ».
+
+### Extension 2 — les pièces des ROUGES (R-1, R-4, R-5) et des mesures de production (R-2)
+
+Écrite **avant** le commit qui verse ces pièces, et donc **avant le premier commit de code** (D334, point 5). Elle déclare AUSSI les pièces de ce versement qui ne sont pas des rouges (l'instrument de mesure et ses sorties, la lecture des mesures de production) : tout ce qui est sorti du scratchpad de la session pour entrer au dépôt. Chemins COMPLETS, relevés sur le disque (`git ls-files --others --exclude-standard docs/preuves/D353`, 32 fichiers) :
+
+```
+docs/preuves/D353/mesures/pieces/calibration.txt
+docs/preuves/D353/mesures/pieces/cas-i-dev.txt
+docs/preuves/D353/mesures/pieces/cas-i-passe-1-instrument-bloquant.txt
+docs/preuves/D353/mesures/pieces/cas-i.txt
+docs/preuves/D353/mesures/pieces/cas-ii-500.txt
+docs/preuves/D353/mesures/pieces/cas-ii-arret.txt
+docs/preuves/D353/mesures/pieces/cas-iii-bis.txt
+docs/preuves/D353/mesures/pieces/cas-iii.txt
+docs/preuves/D353/mesures/pieces/cas-reload-dev.txt
+docs/preuves/D353/mesures/pieces/depouillement.txt
+docs/preuves/D353/mesures/pieces/depouiller.py
+docs/preuves/D353/mesures/pieces/instrument-r55.mjs
+docs/preuves/D353/mesures/pieces/lire-cache.py
+docs/preuves/D353/mesures/r2-production.md
+docs/preuves/D353/rouges/cache-00-avant-D353-ouverture.txt
+docs/preuves/D353/rouges/cache-01-apres-r48-seule-depuis-F.txt
+docs/preuves/D353/rouges/cache-02-etat-E-empoisonne-par-la-mesure-dev.txt
+docs/preuves/D353/rouges/cache-03-apres-warmup-seul-1.txt
+docs/preuves/D353/rouges/cache-04-apres-warmup-seul-2.txt
+docs/preuves/D353/rouges/masquer-jetons.py
+docs/preuves/D353/rouges/r1-etat-avant-rouge-F.txt
+docs/preuves/D353/rouges/r1-r48-seule-etat-E-ROUGE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-r48-seule-etat-F-ROUGE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-suite-complete-etat-F-VERTE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-2-base-timeline.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-2-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-sortie-masquee.txt
+docs/preuves/D353/rouges/r4-mutation-no-store-sous-test-neuf.txt
+docs/preuves/D353/rouges/r4-mutation-no-store.py
+docs/preuves/D353/rouges/r5-carte-sans-creneau-actif-sortie.txt
+docs/preuves/D353/rouges/rapport-masquage.txt
+docs/preuves/D353/rouges/rouges.md
+```
+
+**Ce que cette extension écrit de ce que le rouge a trouvé** (détail : `docs/preuves/D353/rouges/rouges.md`) : la prédiction P1 de `regle-portes.md` (« la suite COMPLÈTE depuis F est rouge ») est **CONTREDITE par la mesure** — 109 passés, 1 ignoré ; le rouge du lot est celui de `r48` **jouée seule**, depuis F et depuis E. La décision de la session (S-231) est écrite dans `rouges.md`, § 1. **Les fichiers de code que la mesure du choix désignera** (`e2e/global-setup.ts`, éventuellement `e2e/playwright.config.ts`) restent déclarés CONDITIONNELS par la table ci-dessus ; leur extension, avec le motif, précède leur commit.
+
+**Pièces de la table qui N'ENTRENT PAS dans ce commit** : `neutralisation/neutralize-r55.py`, les trois fichiers de test, `docs/preuves/D353/controle-fin-de-lot.txt` — ils viennent après.
+
+### Extension 3 — les pièces de l'audit de secrets « b » et de son tri
+
+Écrite **avant** le commit qui verse les pièces de l'extension 2 (le deuxième versement). Ces trois fichiers n'étaient pas dans l'extension 2 : ils sont nés de l'audit « b » lui-même (la sortie scellée, son tri différentiel, le contrôle « 0 valeur réelle » de D299). Chemins COMPLETS :
+
+```
+docs/preuves/D353/audit-secrets-d353b.txt
+docs/preuves/D353/tri-audit-d353b.txt
+docs/preuves/D353/aucune-valeur-reelle-d353b.txt
+```
+
+**Ce que cette extension écrit de ce que les mesures ont changé du plan** (détail : `rouges/rouges.md`, `mesures/choix-e2e.md`, versés à l'extension suivante) : la correction e2e candidate (`e2e/global-setup.ts`, `e2e/playwright.config.ts`) a été écrite, mesurée et **NE SERA PAS LIVRÉE** — la relecture des listes vides côté application (`apps/client/src/lib/api.ts`, R-3) rend `r48` verte depuis les deux états sans elle ; ces deux fichiers restent donc déclarés CONDITIONNELS et **n'existent pas au diff** (le rapport de fin de lot le dit).
+
+### Extension 4 — les pièces du choix de la correction e2e et du rouge unitaire de R-3, et le STATUT des fichiers de code
+
+Écrite **avant** le commit qui verse ces pièces et **avant le premier commit de code**. **Pièces** (chemins COMPLETS, relevés sur le disque, `git ls-files --others --exclude-standard docs/preuves/D353`, 19 fichiers) :
+
+```
+docs/preuves/D353/mesures/choix-e2e.md
+docs/preuves/D353/mesures/choix/M1-OP-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M5-QOP-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M6-QOP-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M7-QO-sans-purge-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/M8-QP-sans-semis-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/beta-seule-bilan.txt
+docs/preuves/D353/mesures/choix/beta-seule-depuis-E-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/beta-seule-depuis-F-sortie-masquee.txt
+docs/preuves/D353/mesures/choix/cache-apres-M1-OP-sans-sonde-statique.txt
+docs/preuves/D353/mesures/choix/cache-apres-M5-sonde-semis-purge-depuis-F.txt
+docs/preuves/D353/mesures/choix/cache-apres-M6-sonde-semis-purge-depuis-E.txt
+docs/preuves/D353/mesures/choix/cache-apres-M7-sonde-semis-SANS-purge-depuis-E.txt
+docs/preuves/D353/mesures/choix/cache-apres-M8-sonde-purge-SANS-semis-depuis-F.txt
+docs/preuves/D353/mesures/choix/candidat-e2e-correction-ecartee.diff
+docs/preuves/D353/mesures/choix/mesure-beta-seule.py
+docs/preuves/D353/mesures/choix/rapport-masquage.txt
+docs/preuves/D353/rouges/r3-rouge-tests-referentiels.py
+docs/preuves/D353/rouges/r3-tests-referentiels-contre-code-d-avant.txt
+```
+
+**Le STATUT des fichiers de code, écrit avant leur commit** (la table dit « conditionnel » pour ceux dont l'existence dépendait d'un résultat) :
+
+| fichier | statut | motif |
+|---|---|---|
+| `apps/client/src/lib/api.ts` | **EXISTE au diff** (R-3) | la condition de la table est REMPLIE : le cas (i) de la mesure sur un build de production est **ROUGE** (`docs/preuves/D353/mesures/r2-production.md` : la page reste vide 4 sondes de suite pendant que l'API rend ses listes ; sur `next dev`, 34 sondes sur 37). Le **plus petit** changement qui tient le critère : une relecture SANS cache d'une réponse VIDE, dans un assistant privé (`lireReferentiel`) ; les trois fonctions publiques gardent leur nom, leur type et leur retour. Options écartées, écrites dans le commentaire du code : `no-store` sur les trois listes, `unstable_cache`, `revalidateTag`. Rouge unitaire versé AVANT (`rouges/r3-tests-referentiels-contre-code-d-avant.txt` : 6 échecs sur 32, tous en `AssertionError`) |
+| `apps/client/src/lib/api.test.ts`, `apps/api/test/int/venue-map.int-spec.ts`, `e2e/specs/r48-assistant-choix.e2e.ts`, `neutralisation/neutralize-r55.py` | **EXISTENT au diff** | déclarés en B à l'ouverture |
+| `e2e/global-setup.ts`, `e2e/playwright.config.ts` | **N'EXISTENT PAS au diff** (conditionnels de la table, condition « la mesure désigne un de ces fichiers » **NON retenue**) | la correction e2e candidate (trois gestes : sonde de disponibilité statique, semis, purge) a été écrite et mesurée nécessaire AVANT R-3 ; avec la relecture de R-3, `r48` seule est verte depuis F et depuis E **sans elle** : décision de la session S-232 (plus petit changement, pas de couplage à un chemin interne de Next). Diff versé comme option écartée : `docs/preuves/D353/mesures/choix/candidat-e2e-correction-ecartee.diff` |
+| `neutralisation/neutralize-r48.py`, `neutralize-pub1.py`, `neutralize-ca1.py`, `neutralize-ca6.py` | **à relever** | conditionnels : seulement si `lancer-touchees.py` trouve une ancre périmée ; leur éventuelle révision sera déclarée par une extension, avant son commit |
+
+**Pièces encore À VENIR** (déclarées par des extensions ultérieures, avant leurs commits) : les journaux de `neutralize-r55.py` et des campagnes touchées, les portes, les deux passes e2e, les audits « c » et suivants, le contrôle de fin de lot.
+
+### Extension 5 — les pièces de l'audit de secrets « c » et de son tri, et le script du contrôle de fin de lot
+
+Écrite **avant** le commit qui verse les pièces de l'extension 4 (le troisième versement). Chemins COMPLETS :
+
+```
+docs/preuves/D353/audit-secrets-d353c.txt
+docs/preuves/D353/tri-audit-d353c.txt
+docs/preuves/D353/aucune-valeur-reelle-d353c.txt
+docs/preuves/D353/controle-fin-de-lot.py
+```
+
+`controle-fin-de-lot.py` (le script, adapté de `docs/preuves/D352/controle-fin-de-lot.py`) n'existe pas encore : il est écrit à la fin du lot, avec sa sortie `controle-fin-de-lot.txt` (déjà déclarée en B). Il est déclaré ICI, avant son commit.
+
+### Extension 6 — les pièces des campagnes, des portes et des gestes de Ko, et le script du contrôle de fin de lot
+
+Écrite **avant** le commit qui verse ces pièces (le quatrième versement) et avant l'audit de secrets « d » qui les couvre. Elle déclare, en chemins COMPLETS relevés sur le disque (`git ls-files --others --exclude-standard docs/preuves/D353`, 42 fichiers non suivis dont 41 pas encore déclarés), **tout ce que ce versement ajoute**, sauf les trois pièces de l'audit « d » (sortie scellée, tri, contrôle « 0 valeur réelle »), déclarées par l'extension suivante, avant leur commit. `controle-fin-de-lot.py` et `scenarios-ko.md` (conditionnel de la table : R-3 corrige quelque chose de VISIBLE) existent maintenant.
+
+```
+docs/preuves/D353/mesures/pieces/fin-suppression-base-jetable.txt
+docs/preuves/D353/neutralisation/campagne-ca1-int.txt
+docs/preuves/D353/neutralisation/campagne-pub1-e2e.txt
+docs/preuves/D353/neutralisation/campagne-r48-e2e.txt
+docs/preuves/D353/neutralisation/campagne-r55-complete.txt
+docs/preuves/D353/neutralisation/empreintes-harnais-apres.txt
+docs/preuves/D353/neutralisation/empreintes-harnais-avant.txt
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-available-on.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-ca2.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-journaux/neutralize-horizon.py.log
+docs/preuves/D353/neutralisation/lancer-touchees-sortie.txt
+docs/preuves/D353/neutralisation/r55-journaux/R55-1-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-10-e2e-r48.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-2-int-carte.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-3-int-carte.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-4-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-5-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-6-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-7-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-8-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/R55-9-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-client-api.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-e2e-r48.log
+docs/preuves/D353/neutralisation/r55-journaux/prevol-int-carte.log
+docs/preuves/D353/neutralisation/rapport-masquage.txt
+docs/preuves/D353/portes/FIN
+docs/preuves/D353/portes/_index.txt
+docs/preuves/D353/portes/attendu-e2e.txt
+docs/preuves/D353/portes/build.txt
+docs/preuves/D353/portes/e2e-liste.txt
+docs/preuves/D353/portes/etat-avant-passe-2.txt
+docs/preuves/D353/portes/etat-machine-pendant.txt
+docs/preuves/D353/portes/lint.txt
+docs/preuves/D353/portes/portes.md
+docs/preuves/D353/portes/rapport-masquage.txt
+docs/preuves/D353/portes/test-e2e-passe-2.txt
+docs/preuves/D353/portes/test-e2e.txt
+docs/preuves/D353/portes/test-int.txt
+docs/preuves/D353/portes/test.txt
+docs/preuves/D353/portes/typecheck.txt
+docs/preuves/D353/scenarios-ko.md
+```
+
+**Ce que ces pièces portent** : `neutralisation/` — la campagne complète de `neutralize-r55.py` (**10 gardes mordues sur 10**, empreinte `94bea8a2…be75c` en première ligne de chaque journal), les trois campagnes du lanceur, `r48 --e2e`, `ca1 --int`, `pub1 --e2e`, les empreintes de TOUS les harnais avant et après (70 contre 70, 0 différent) ; `portes/` — les six portes du pilote, la passe 2 de l'e2e, l'attendu dérivé, le relevé de l'état machine ; `scenarios-ko.md` — le geste de Ko ; `mesures/pieces/fin-suppression-base-jetable.txt` — la suppression de la base jetable de mesure.
+
+### Extension 7 — les pièces de l'audit « d », de la passe D277 et de l'audit final « e » (déclarées AVANT d'exister, pour que la table soit définitive quand elle est recopiée)
+
+Écrite **avant** le commit qui verse les pièces de l'extension 6 (le quatrième versement) et avant la recopie de cette table dans `ZWADJ_CONTINUITE.md`. Chemins COMPLETS. **L'audit « d »** couvre le quatrième versement (en cours à l'écriture de cette ligne) ; **la passe D277** (la recherche mécanique, dans les deux sens, des affirmations d'autorité que ce lot invalide ou rend permises — D277, D287) et **l'audit « e »** couvrent le versement final, avec le contrôle de fin de lot (`controle-fin-de-lot.txt`, déjà déclaré en B, écrit APRÈS la poussée) :
+
+```
+docs/preuves/D353/audit-secrets-d353d.txt
+docs/preuves/D353/tri-audit-d353d.txt
+docs/preuves/D353/aucune-valeur-reelle-d353d.txt
+docs/preuves/D353/passe-d277.py
+docs/preuves/D353/passe-d277.md
+docs/preuves/D353/passe-d277-sortie.txt
+docs/preuves/D353/audit-secrets-d353e.txt
+docs/preuves/D353/tri-audit-d353e.txt
+docs/preuves/D353/aucune-valeur-reelle-d353e.txt
+```
+
+⚠ **Écrit pour ne pas se lire comme tenu** : déclarer un fichier avant qu'il existe n'est pas le promettre vert — si l'audit « e » n'est pas joué ou si la passe D277 ne trouve rien à écrire, le rapport de fin de lot dit lesquels de ces neuf fichiers existent.
+~~~~
 
 ⛔ **TABLE D'OUVERTURE DU RANG 54 (D352), recopiée à l'IDENTIQUE de `docs/preuves/D352/table-ouverture.md`** (premier commit du lot, `16ff81d`, SEUL ; extension 1 `fc5e216`, extension 2 `c0d7f55`, extension 3 `d91ba78`, extension 4 `e997fdc`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les QUATRE extensions) :
 
@@ -3080,9 +3361,36 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
+## PROCHAIN LOT — rang 55 · `[CODE]` **La mémoire du site client : une réponse VIDE d'un référentiel n'est plus jamais crue, le `no-store` de la carte est gardé, « sans créneau actif, avec une date » est joué sur la carte, `r48` n'a plus de tolérance** ⛔ **CLOS SUR LE CODE LE 19/11/2026 (D353)** *(ouvert le même jour : la table d'ouverture, la lecture adverse, les mesures de production, les rouges et l'arbitrage de Ko écrits avant le code)*
+
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 55 (D353, 19/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **55 : CLOS SUR LE CODE** — la mémoire du site client (trois entrées du backlog) ; arbitré par Ko par adoption de la consigne du relecteur du 19/11/2026 ; **aucune migration** | ordre des rangs |
+| rang suivant | **« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé (consigne du rang 55, § 4) : **L36-3a-2, le personnel — créer, gérer, capacités — avec S-104** (un mot de passe expiré à 90 jours ouvre encore une session) — **pas arbitré** ; L36-3b sans rang | ordre des rangs |
+| numéros | **D353 est au registre** ; dernier numéro attribué : **D353**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **TRENTE-CINQ** (TRENTE-QUATRE + ce lot de code) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| ce que le lot livre | **`lireReferentiel`** (`apps/client/src/lib/api.ts`, privé) : `getWilayas`, `getAmenities`, `getVenueStyles` lisent une liste PLEINE une fois (gardée une heure, inchangé) et **relisent SANS cache une réponse VIDE, dont la relecture est rendue** ; un échec rend `[]` ; trois fonctions publiques inchangées ; **le test du `no-store` de la carte** ; **le cas « sans créneau actif, avec une date » sur la carte** (VERT : la carte ne diverge pas de la liste) ; **`r48` sans tolérance, attendu dérivé de la base** ; `neutralize-r55.py` (10 cibles) | section D353 |
+| ce que le lot NE livre PAS | **la correction e2e à trois gestes** (sonde de disponibilité statique, semis, purge) : mesurée nécessaire AVANT la relecture, redondante APRÈS ; son diff est versé comme option écartée (S-232) | `docs/preuves/D353/mesures/choix-e2e.md` |
+| mesure de production | **un cas rouge sur cinq** : (i) 200 + liste vide puis semis = la page reste vide 4 sondes de suite pendant que l'API est pleine (fenêtre de 20 s sur une copie) ; (ii) 500 ou API arrêtée avec une liste pleine gardée = **vert** ; (iii) première visite API arrêtée ou en 500 = **vert** ; sur `next dev` avec la valeur réelle : 34 sondes sur 37, plus de 75 s, jamais relue | `docs/preuves/D353/mesures/` |
+| rouges | **la suite complète depuis un cache neuf est VERTE (prédiction CONTREDITE)** ; **`r48` jouée SEULE : rouge depuis F** (« attendu 4, reçu 0 ») **et depuis E** (`valeurCommune` vide) ; R-4 : la mutation de D351 sous le test neuf = `1 failed | 564 passed (565)` ; R-3 : **6 échecs sur 32** contre le code d'avant ; R-5 : vert. Versés AVANT le code, empreintes des fichiers de test jouées | `docs/preuves/D353/rouges/` |
+| portes (une passe, secteur, pilote de D340, `HEAD` `d70be45`) | **TOUTES à 0, zéro rejeu** : `typecheck` 0 (27 s) · `lint` 0 (16 s) · `test` 0 (146 s : api-client 9 / 77, api 85 / 1 469, **client 47 / 583**, pro 58 / 862) · `build` 0 (40 s) · `test:int` 0 (584 s : **51 / 808**) · `test:e2e` 0 (464 s : **109 passés + 1 ignoré**, 110 listés) | `docs/preuves/D353/portes/` |
+| e2e | **deux passes vertes de suite**, 109 passés + 1 ignoré chacune (7,7 puis 7,2 minutes), sur secteur (42 relevés sur 42), attendu dérivé (`--list` : 110) avant la première passe ; `headless_shell` > 0 seulement pendant la porte e2e (le navigateur de l'e2e) | `docs/preuves/D353/portes/` |
+| campagnes | `neutralize-r55.py --int --e2e` ENTIER : **10 sur 10**, 0 muette, 0 non mesurée, 0 non jouée, toutes lues, empreinte `94bea8a2…be75c` ; touchées : `available-on` 10 · `ca2` **42 sur 42** · `horizon` 6 · **`r48 --e2e` 12 sur 12 · `ca1 --int` 24 sur 24 · `pub1 --e2e` 20 sur 20** ; **70 harnais, même empreinte avant et après** ; `--tout` NON joué (la consigne : « les campagnes que le lot touche ») | `docs/preuves/D353/neutralisation/` |
+| décisions prises seule | **S-231 à S-238**, à ratifier | section D353, § 5 |
+| ce que l'arbre garde | commits locaux puis POUSSÉS (`origin/main`) — voir le contrôle de fin de lot | `docs/preuves/D353/controle-fin-de-lot.txt` |
+| écritures sur la machine de Ko | **aucune sur la base de développement** ; sur le serveur PostgreSQL de Docker : `zwadj_test` et `zwadj_e2e` (jetables, recréées à chaque lancement), **`zwadj_r55mesure` créée puis SUPPRIMÉE** ; le dossier de cache de données du client déplacé puis purgé (`fetch-cache.avant-D353` conservé) | section D353, § 6 |
+| gestes de Ko | **UN geste** (R-3 corrige un état VISIBLE : les filtres apparaissent après le semis, sur une base jetable) — `docs/preuves/D353/scenarios-ko.md` ; puis, s'ils ne sont pas faits, ceux de D352, D351 et D350 | `docs/preuves/D353/scenarios-ko.md` |
+| ce qui RESTE | (1) le rang 56, à cadrer ; (2) la ratification de S-231 à S-238 ; (3) le geste de Ko ; (4) ⛔ le fournisseur des fonds de carte de production et la relecture juridique : BLOQUENT LE LANCEMENT ; (5) ⛔ la MFA et la relecture du rôle en base : BLOQUENT TOUT DÉPLOIEMENT ; (6) les entrées de backlog neuves (« Reports du 19/11/2026 — rang 55 ») | backlog |
+
+## ~~PROCHAIN LOT — rang 54~~ ⛔ *(D353 : l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 55 » juste au-dessus ; le bloc du rang 54 qui suit garde sa date. Barré avec son motif, pas effacé.)*
+
 ## PROCHAIN LOT — rang 54 · `[CODE]` **La liste « Mes salles » du pro dit « Refusée » pour une salle refusée, et les 29 gardes des écrans `/admin` passent en assertion native** ⛔ **CLOS SUR LE CODE LE 18/11/2026 (D352)** *(ouvert le même jour : la table d'ouverture, la lecture adverse, les rouges de R-1 et l'arbitrage de Ko écrits avant le code)*
 
-### ⛔ ÉTAT À LA CLÔTURE DU RANG 54 (D352, 18/11/2026) — À LIRE EN PREMIER
+### ~~⛔ ÉTAT À LA CLÔTURE DU RANG 54 (D352, 18/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D353, 19/11/2026 : **PÉRIMÉ** sur « rang suivant : RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR », « compteur TRENTE-QUATRE », « décisions prises seule : S-218 à S-230, à ratifier » et « ce qui RESTE : (1) le rang 55, à cadrer ; (2) la ratification de S-218 à S-230 » ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 55 » juste au-dessus ; celui-ci dit ce qui était vrai AVANT le rang 55. Barré avec son motif, pas effacé.)*
 
 ⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -7204,6 +7512,66 @@ vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
 
+## Session du 19/11/2026 — D353 · rang 55 CLOS SUR LE CODE, lot de CODE : la mémoire du site client — une réponse VIDE d'un référentiel n'est plus jamais crue (relue sans cache) ; le `no-store` de la carte est gardé ; « sans créneau actif, avec une date » est joué sur la carte ; `r48` sans tolérance — sans migration ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ
+
+⛔ **Écrit à la CLÔTURE.** Si `git log` et cette section se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et cette section qui se corrige. Les chiffres de portes et de campagnes sont **ceux des pièces versées** (`docs/preuves/D353/`), jamais recopiés d'un résumé.
+
+**La réponse à la question de la consigne (« une liste vide ou une panne restent-elles affichées une heure ? »)** : **une liste VIDE, oui — avant ce lot** (une réponse 200 vide est gardée toute la fenêtre : 4 sondes de suite pendant que l'API est pleine sur un build de production avec une fenêtre de 20 s ; plus de 75 s, jamais relue, sur le serveur de développement avec la valeur réelle) ; **une PANNE, non** (un 500, une API arrêtée, une exception ne sont jamais gardés ; une liste PLEINE déjà gardée survit à plus de trois fenêtres de panne, ce que la consigne permet). **Après ce lot, une réponse vide n'est plus crue** : elle est relue sans cache et c'est la relecture qui est rendue.
+
+### 1. Ce que la reprise a trouvé (lecture adverse : `docs/preuves/D353/lecture-adverse/`, versée AVANT tout `.md` d'autorité)
+**26 contrôles : 19 ✓ · 6 ≈ · 0 ✗ · 1 ?** (calibrés sur 12 cas, 0 manqué). Aucun écart au § 0 de la consigne : rang 54 clos, compteur TRENTE-QUATRE, `origin/main` = `cd8e079`, arbre propre, sans stash, branches gardées inchangées — **la règle d'arrêt n'a pas joué**. La première passe de l'instrument avait rendu **deux ✗ qui étaient des défauts de l'INSTRUMENT** (une égalité de plage au lieu d'une inclusion ; la sous-chaîne « seed » comptée dans un commentaire) : confrontés à la source avant d'être crus (D275), gardés (`confronter-sortie-passe-1.txt`), instrument corrigé et rejoué EN ENTIER (D298) ; **et deux caractères de contrôle** laissés par mon outil d'édition dans deux expressions régulières, trouvés par un balayage d'octets.
+- **[1.d ≈] L'entrée de backlog sur l'en-tête de l'assistant d'une salle EXISTE DÉJÀ** (rang 54, `[PRO][À ORDONNER PAR KO]`) : la consigne (1 c) la présentait comme « à écrire ». **Annotée avec la réponse de Ko (« APRÈS »), pas dupliquée** (S-235).
+- **[2.e ≈] « la base e2e ne publie AUCUN style » (commentaire de `r48`) contre « 4 styles en base » (D346)** : par lecture, le commentaire était faux (`listVenueStyles` ne filtre rien) ; **mesuré ensuite : ce qui manquait était la mémoire du client**, pas la base.
+- **[2.i ≈] Dans Playwright 1.50.1 les serveurs (`webServer`) démarrent AVANT `globalSetup`** — le fait qui a expliqué la mesure M1 (§ 3).
+- **[R-4.a ≈] Le « patron : `venue-detail-view.test.tsx` l. 374 pour la fiche »** garde `getVisitSlots`, **pas la fiche** : aucun test unitaire de `getVenueBySlug` n'existe (sa garde est l'e2e `r50` M-3 et la cible PUB1-20). Patron de FORME juste, utilisé tel quel pour la carte ; entrée de backlog.
+- **[R-5.a ≈] La carte ne joue aucune date future** (confirme le trou) ; **[3.a ≈] `lancer-touchees.py` et `masquer-jetons.py` sont des PIÈCES versées de D352**, pas des fichiers de `neutralisation/`.
+- Confirmés au dépôt : trois `next: { revalidate: 3600 }`, `[]` sur non-ok ET sur exception ; `getVenueMap` en `no-store` ; le projet `warmup` précède `chromium` ; une seule autorité `publicFilter` pour la liste et la carte ; les trois entrées du backlog, une fois chacune ; `claude/rang50-message.md` n'est dans aucun fichier du dépôt ; S-218 à S-230 sont définies ; aucune migration n'insère de référentiel.
+
+### 2. Ce qui a été fait (R-1 à R-7)
+- **R-3 — LA correction, par le plus petit changement qui tient le critère.** `apps/client/src/lib/api.ts` : `getWilayas`, `getAmenities`, `getVenueStyles` passent par UN assistant privé, `lireReferentiel` — une liste PLEINE est lue une fois, gardée une heure (`next: { revalidate: 3600 }`, inchangé) ; **une réponse VIDE n'est jamais crue : relue SANS cache, et c'est la relecture qui est rendue** ; un échec (non ok, exception, relecture en échec) rend `[]`. **Les trois fonctions gardent leur nom, leur type et leur retour.** Options écartées, écrites dans le code : `no-store` sur les trois listes (trois lectures de plus à CHAQUE vue, même quand tout va bien), `unstable_cache` (API que Next 15 marque instable), `revalidateTag` (interdit pendant un rendu). **Coût : UNE lecture d'API de plus par liste et par rendu, SEULEMENT tant que la liste gardée est vide — non mesuré.**
+- **R-2 — la mesure de production, FAITE D'ABORD, et rouge sur UN cas sur cinq** (`docs/preuves/D353/mesures/r2-production.md`) : build de production d'une COPIE hors du dépôt, fenêtre ramenée à 20 s, API du dépôt inchangée sur une base jetable, instrument calibré sur deux états connus. **(i) 200 + liste vide puis semis : ROUGE** (la page reste vide 4 sondes de suite pendant que l'API est pleine, 8,3 s après l'API ; la réponse vide gardée toute la fenêtre) ; **(ii) liste pleine gardée puis API en 500 ou arrêtée : VERT** (0 sonde vide sur 57 et 58 ; la liste pleine survit à plus de trois fenêtres) ; **(iii) première visite API arrêtée, ou en 500, puis retour : VERT** (les listes reviennent au premier sondage qui suit). Les cinq cas tiennent **exactement** les prédictions écrites avant (`regle-portes.md`, § 2).
+- **R-1 — `r48` n'a plus de tolérance**, et la mesure a contredit la consigne sur la forme du rouge. `e2e/specs/r48-assistant-choix.e2e.ts` : les deux gardes `if (… .wz-chip … count() > 0)` (S-153 de D346, **retirée**) disparaissent ; **l'attendu se dérive de la base de l'e2e** (`SELECT count(*)` sur `venue_styles` et `amenities`, jamais un nombre écrit), `expect.poll(...).toBe(...)` sur les deux rangées de puces, une puce de chaque cochée. **Prédiction P1 CONTREDITE** : la suite COMPLÈTE depuis un cache neuf est **VERTE** (109 passés, 1 ignoré). **Le rouge est celui de `r48` jouée SEULE** : depuis F (cache absent) « puces de STYLES : attendu 4, reçu 0 » ; depuis E (cache empoisonné) `expect(valeurCommune).not.toBe("")`. **Pourquoi la suite complète est verte (mécanisme MESURÉ, spec INFÉRÉ)** : un rechargement du navigateur (`Cache-Control: no-cache`) rafraîchit le cache de développement ; un spec antérieur recharge `/fr/salles` après le semis. **D346 est confirmé** : sur le serveur de développement avec la valeur réelle, 34 sondes sur 37, plus de 75 s, la page reste vide pendant que l'API est pleine.
+- **R-1, la correction e2e — MESURÉE, ÉCRITE, NON LIVRÉE (S-232).** Trois gestes (la sonde de disponibilité du client vise `/icon.svg` ; `globalSetup` sème ; `globalSetup` purge `fetch-cache`) : **chacun NÉCESSAIRE quand l'application ne relit pas une réponse vide** (M1 : O+P sans la sonde statique = ROUGE — **la prédiction P5 de la règle est CONTREDITE : la sonde de disponibilité rend l'accueil sur la base laissée par la passe précédente, avant `globalSetup`, et le serveur en garde la réponse EN MÉMOIRE, la purge du fichier ne l'efface pas** ; M5/M6 : les trois gestes = VERT depuis F et E ; M7 sans purge depuis E = ROUGE ; M8 sans semis = ROUGE) ; **mais avec la relecture de R-3, `r48` seule est VERTE depuis F et depuis E sans aucun des trois**. Plus petit changement ⇒ non livrée ; le diff est versé comme option écartée (`mesures/choix/candidat-e2e-correction-ecartee.diff`). `e2e/global-setup.ts` et `e2e/playwright.config.ts` ne sont PAS au diff.
+- **R-4 — le `no-store` de la carte est gardé.** `apps/client/src/lib/api.test.ts` : le second argument de `fetch` porte `cache: "no-store"` (valeur lue par `toBe`). **Rouge : la mutation de D351, rejouée SOUS le test neuf — la suite client passe de 564/564 verts à `1 failed | 564 passed (565)`, `AssertionError: expected 'force-cache' to be 'no-store'`** (même empreinte de départ que D351 : `180342cf…`). Cible R55-1.
+- **R-5 — « sans créneau actif, avec une date » est joué sur la carte, et la carte NE DIVERGE PAS de la liste.** `apps/api/test/int/venue-map.int-spec.ts` : trois salles publiques et situées (créneau actif, aucun créneau, seul créneau inactif), horloge figée (`vi.useFakeTimers({ toFake: ["Date"] })`), date dérivée de l'horloge (`civilTodayAt`/`formatCivilDate`) ; sans date, les trois des deux côtés ; avec date, seule la salle à créneau ACTIF, des deux côtés, même total, même écho. **VERT dès la première passe sur PostgreSQL réel : pas de défaut à rapporter, la règle d'arrêt de R-5 n'a pas joué.** Cibles R55-2 (la carte ignore la date) et R55-3 (le filtre perd sa clause).
+- **R-6 — aucun contrat d'API neuf, aucune migration, aucun montant, rien dans `apps/pro`, rien dans `apps/api/src`.** Le seul fichier d'application touché est `apps/client/src/lib/api.ts`, et dans lui seulement les trois fonctions de référentiels ; `getVenueBySlug`, `searchVenues`, `countVenues`, `getVenueAvailability`, `getVisitSlots`, `getVenueMap`, `getApiHealth` restent en `no-store` (contrôle de la lecture adverse).
+- **R-7 — hors lot, respecté** : l'en-tête de l'assistant (backlog, annoté), les trois clés mortes, le titre « Carte des salles · Alger », le fournisseur des tuiles.
+
+### 3. Les mesures qui comptent, et ce qu'elles ne regardent PAS
+- **Les gardes neuves** : `neutralisation/neutralize-r55.py` — **10 gardes mordues sur 10, 0 muette, 0 non mesurée, 0 non jouée, toutes lues en `AssertionError` ou `expect(`, empreinte `94bea8a2…be75c` en tête de chaque journal**, arbre rendu à l'octet ; trois pré-vols verts (client 32 tests, intégration 10, `r48` seule depuis un cache empoisonné, FABRIQUÉ par le harnais). R55-1 la carte sans cache · R55-2 et R55-3 la carte et la liste · R55-4 à R55-9 une réponse vide n'est jamais crue, un échec n'est pas relu · **R55-10 `r48` seule depuis un cache empoisonné rougit si la relecture est retirée** (c'est la garde de la partie e2e).
+- **Les campagnes que le lot TOUCHE** (`lancer-touchees.py` de D352, `git diff cd8e079..HEAD`) : `available-on` 10 rouges, `ca2` **42 sur 42**, `horizon` 6 rouges (lanceur) ; **`r48 --e2e` 12 sur 12 ; `ca1 --int` 24 sur 24 ; `pub1 --e2e` 20 sur 20** (jouées à part, en mode complet ; PUB1-17 a été retirée à D348). **Aucune ancre périmée** : aucun harnais n'a été modifié, **les 70 harnais ont la même empreinte avant et après** ; **`--tout` n'est PAS joué** (la consigne : « les campagnes que le lot touche »).
+- **La garde de R-3 ne mord pas en e2e seule** : avec la relecture en place, aucun des trois gestes e2e ne rougit `r48` — c'est exactement ce que dit S-232 ; le harnais neutralise donc la RELECTURE, pas les gestes.
+- **Les portes** (une passe, pilote de D340 non modifié, secteur, `HEAD` `d70be45`, arbre propre, **aucun rejeu**) : `typecheck` 0 (27 s) · `lint` 0 (16 s) · `test` 0 (146 s : api-client 9 fichiers / 77 tests, api 85 / 1 469, **client 47 / 583** — **+19** : 1 test de R-4 et 18 de R-3 —, pro 58 / 862) · `build` 0 (40 s) · `test:int` 0 (584 s : **51 fichiers / 808 tests** — **+1** : le cas de R-5) · `test:e2e` 0 (464 s : **109 passés + 1 ignoré**, 110 listés, l'attendu dérivé avant la passe) ; **seconde passe e2e : 109 + 1 ignoré, 7,2 minutes, code 0** (la première : 7,7). **0 échantillon sur batterie sur 42** ; `headless_shell` > 0 sur 13 relevés, tous pendant la porte e2e (le navigateur de l'e2e lui-même). `docs/preuves/D353/portes/`.
+- **Ce que ces mesures ne regardent PAS** : **la valeur réelle de 3 600 s** en production (fenêtre de 20 s sur une copie ; D348 avait mesuré 300 s en vraie valeur) ; **un autre hébergeur** (cache de données ailleurs, purgé au déploiement) ; **`next start` sondé avec `Cache-Control: no-cache`** (seul `next dev` l'a été : on ignore si un rechargement rafraîchit le cache de production) ; **le coût** d'une lecture de plus par liste et par rendu tant que la liste est vide ; **le spec précis** de la suite complète qui rafraîchit le cache (aucune bissection) ; **la suite complète depuis l'état E** ; **le tableau de `next build`** marque `● /[locale]/salles` (SSG) alors que la route n'est pas préchauffée (`prerender-manifest.json` ne liste que `/_not-found` et `/icon.svg`) — relevé, pas expliqué ; un navigateur réel sur l'écran corrigé (le geste de Ko).
+
+### 4. Ce que ce lot ne fait pas
+Aucun correctif de filtre (R-5 : la carte et la liste ne divergent pas). `getVenueBySlug` : pas de garde unitaire de son `no-store` (backlog). L'en-tête de l'assistant d'une salle : inchangé (backlog, annoté « APRÈS »). Les trois gestes e2e : non livrés (S-232). Le fournisseur des fonds de carte et sa relecture juridique, la MFA et la relecture du rôle en base : inchangés (bloquants). Aucune certification.
+
+### 5. Décisions prises par la session seule — **S-231 à S-238, À RATIFIER** (une phrase chacune, avec ce qu'elle change pour Ko)
+- **S-231** — **Le rouge de R-1 est celui de `r48` jouée SEULE (depuis F et depuis E), parce que la suite COMPLÈTE est VERTE (mesuré).** *Pour Ko : on ne peut pas écrire « la suite complète rougit » ; le défaut de fond est que `r48` ne passe en suite complète que grâce à l'effet de bord d'un autre spec.*
+- **S-232** — **La correction e2e (trois gestes) n'est PAS livrée : nécessaire avant la relecture de R-3, redondante après (mesuré : `r48` seule verte depuis F et E sans elle).** *Pour Ko : la consigne attendait un correctif « dans `e2e/` seul » ; il n'y en a pas, et le diff reste versé pour être repris en un geste si la relecture est un jour retirée.*
+- **S-233** — **R-3 corrige l'APPLICATION (le plus petit changement qui tient le critère), pas `no-store` partout.** *Pour Ko : le site relit une réponse vide à chaque rendu tant qu'elle l'est ; le coût d'une lecture de plus par liste n'est pas mesuré.*
+- **S-234** — **La mesure de production est complétée par une mesure sur le vrai serveur de développement et un test `Cache-Control: no-cache`** (non demandés par R-2), parce que la suite complète verte appelait une explication. *Pour Ko : ces deux pièces ne sont PAS des cas de production ; elles expliquent l'e2e.*
+- **S-235** — **L'entrée de backlog sur l'en-tête de l'assistant est ANNOTÉE (réponse de Ko : « APRÈS »), pas dupliquée** (elle existait). *Pour Ko : une seule entrée, qui porte maintenant ta réponse.*
+- **S-236** — **`lancer-touchees.py` et `masquer-jetons.py` sont pris dans les pièces de D352, non modifiés** (la consigne les cite sans chemin). *Pour Ko : aucun outil nouveau n'entre dans `neutralisation/` ; seul `neutralize-r55.py` est neuf.*
+- **S-237** — **`pub1` est jouée EN ENTIER (`--e2e`, 20 cibles), `r48` en `--e2e` et `ca1` en `--int`, à part du lanceur, qui ne passe aucun mode.** *Pour Ko : 20 et non 21 cibles — PUB1-17 est retirée depuis D348.*
+- **S-238** — **Le rouge de R-4 a joué un état ANTÉRIEUR de `api.test.ts`** (avant l'ajout des tests de R-3) : le fichier a grandi, le test de R-4 est inchangé ; l'empreinte du fichier joué au rouge unitaire de R-3 est celle du livré. *Pour Ko : la cible R55-1 rejoue la mutation sur le fichier livré.*
+
+### 6. Écritures sur la machine de Ko (règle de D337) — **aucune sur la base de développement**
+- **La base de développement de Ko : ni lue ni écrite.** Sur le serveur PostgreSQL de Docker (`zwadj-db`) : `DROP`/`CREATE DATABASE zwadj_test` et `zwadj_e2e` (jetables, à chaque lancement) ; **`zwadj_r55mesure` CRÉÉE et SUPPRIMÉE par la session** (la mesure de production et de développement, `node instrument-r55.mjs fin`).
+- **`apps/client/.next/cache/fetch-cache`** (ignoré par git) : déplacé en `fetch-cache.avant-D353` pour produire l'état F, **purgé et empoisonné** par la mesure sur `next dev` (qui écrit dans le vrai dossier) ; **les dossiers que la session a créés à côté (`fetch-cache.E-poisonne-…`, `fetch-cache.F-…`, `fetch-cache.apres-M…`, `fetch-cache.avant-M…`) sont supprimés** ; `fetch-cache.avant-D353` (ton cache d'avant) est conservé.
+- **Une copie du dépôt** (`git archive`) et son installation hors ligne dans le scratchpad de la session : supprimée à la fin.
+- Docker, `zwadj-db` : non redémarré. Aucun `.env` lu par la session (l'API et les serveurs lisent le leur).
+
+### 7. Ce qui est DÛ à Ko, et la question
+- **Le geste** (un seul, R-3 corrige un état VISIBLE) : `docs/preuves/D353/scenarios-ko.md` — sur une base JETABLE, ouvrir `/fr/salles` avec l'API vide (aucun filtre), semer, recharger : **les filtres doivent apparaître** (avant ce lot, jusqu'à une heure plus tard). Ta base de développement n'est ni lue ni écrite.
+- **La ratification de S-231 à S-238** (§ 5), dont **S-232 : la correction e2e n'est pas livrée** (la consigne attendait un correctif « dans `e2e/` seul »).
+- **Une question** : la relecture d'une réponse vide coûte **une lecture d'API de plus par liste et par rendu tant que la liste est vide** — jamais pour une liste pleine ; **ce coût n'est pas mesuré**. Faut-il le mesurer avant le lancement (entrée de backlog `[CLIENT][PERF]`), ou l'accepter tel quel parce qu'il ne joue que dans un état qui est déjà une panne de déploiement ?
+- Inchangés : le rang 56 (à cadrer), le fournisseur des fonds de carte et la relecture juridique (BLOQUENT LE LANCEMENT), la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT), les 29 clés arabes du bloc `map`.
+
+### 8. Ordre des commits (D328, D334 point 5), relevé par `git log --first-parent`
+Table d'ouverture seule (`f7fb47a`) → extension 1, seule (`413f01e`) → consigne, règle des portes, lecture adverse et son tri, audit de secrets « a » (`4523384`) → extension 2, seule (`a0bb065`) → **pièces des rouges et des mesures de production**, audit « b » (`e387977`) → extension 3, seule (`3c63304`) → extension 4, seule (`e8ed7e6`) → extension 5, seule (`3110399`) → **pièces du choix e2e et du rouge unitaire de R-3**, audit « c » (`bac98d8`) → **code et tests** (`8cfcb3e`) → harnais (`d70be45`) → extension 6, seule (`785aefd`) → pièces des campagnes et des portes, audit « d » → `.md` d'autorité → contrôle de fin de lot. **Les pièces des rouges précèdent le premier commit de code** (`git log`). `git diff cd8e079..HEAD --name-only` ⊆ la table : voir `docs/preuves/D353/controle-fin-de-lot.txt`.
+
 ## Session du 18/11/2026 — D352 · rang 54 CLOS SUR LE CODE, lot de CODE : la liste « Mes salles » du pro dit « Refusée » pour une salle refusée (voie (A) : la carte lit `GET pro/venues/:id/publication`, aucun contrat neuf) et les 29 gardes des écrans `/admin` passent en assertion native (S-192 refusée) — sans migration ; compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE
 
 ⛔ **Écrit à la CLÔTURE.** Si `git log` et cette section se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et cette section qui se corrige. Les chiffres de portes et de campagnes sont **ceux des pièces versées** (`docs/preuves/D352/`), jamais recopiés d'un résumé.
@@ -7811,14 +8179,14 @@ Consigne : celle du relecteur « RANG 48 », adoptée par Ko telle quelle (`docs
 - **S-150** — « Précédent » est lu comme *liste d'étapes + récapitulatif + bouton retour du navigateur* : **l'assistant n'a pas de bouton « Précédent »** (lecture adverse, ligne 7). Pour Ko : ses gestes n'incluent pas de bouton qui n'existe pas ; s'il veut ce bouton, c'est une décision produit (backlog).
 - **S-151** — La clé du panneau est faite des **huit champs seulement**, jamais de la page ni du tri. Pour Ko : une case cochée sans être soumise **survit** à un changement de page.
 - **S-152** — La clé est posée à l'appel dans `SearchView`, pas dans le formulaire : l'état de la radio de cérémonie et des curseurs vit AU-DESSUS du `<form>`, une clé sur lui ne l'aurait pas remonté. Pour Ko : rien de visible.
-- **S-153** — La spec du lot tolère l'absence de puces de goûts. Pour Ko : dans la suite complète, la partie « goûts » en navigateur n'est **mesurée que si** les listes de référentiels existent ; elle l'est toujours en composant (voir le piège ci-dessous).
+- **S-153** — ~~La spec du lot tolère l'absence de puces de goûts.~~ ⛔ *(D353, 19/11/2026 : **RETIRÉE** — `r48` n'a plus de tolérance : les deux gardes `if (… .wz-chip … count() > 0)` sont supprimées et l'attendu des puces se dérive de la base (`SELECT count(*)`) ; la suite COMPLÈTE était verte par l'effet de bord d'un autre spec (un rechargement rafraîchit le cache), `r48` jouée SEULE rougissait — `docs/preuves/D353/rouges/`. Barrée avec son motif, pas effacée.)* Pour Ko : dans la suite complète, la partie « goûts » en navigateur n'est **mesurée que si** les listes de référentiels existent ; elle l'est toujours en composant (voir le piège ci-dessous).
 - **S-154** — Quatre tests à champ unique (styles, équipements, plafond de capacité, plancher de budget) ajoutés **après** le premier rouge, qui est amendé (la première version, 6 sur 51, reste au commit `1f95e06`). Pour Ko : sans eux, retirer un seul champ de la clé n'aurait fait rougir aucun test.
 - **S-155** — Les mesures de la spec attendent que l'écran atteigne l'adresse (sondage de 2,5 s). Pour Ko : un rouge de cette spec est un vrai rouge, pas une lecture trop tôt.
 - **S-156** — Les trois campagnes voisines (`available-on`, `horizon`, `fc8`) sont rejouées par moi, par un `grep` des harnais qui nomment `search-view` ; la liste n'est pas celle d'un outil. Pour Ko : rien à faire.
 - **S-157** — « Recommencer » est mesuré **depuis un état plein** (rouvert par le retour du navigateur), pas depuis un état vide. Pour Ko : c'est le cas qui peut mentir, pas l'autre.
 
 ### 4. Un piège relevé en jouant, hors du lot (entrée de backlog, rien n'est corrigé ici)
-Le serveur de développement du client met en cache **une heure** les listes de référentiels (`next: { revalidate: 3600 }`, `apps/client/src/lib/api.ts`), **sur disque** (`apps/client/.next/cache/fetch-cache`), et le préchauffage de la suite e2e visite `/fr/salles` **avant** tout semis : les listes de styles et d'équipements y sont mises en cache **vides** et survivent aux relances. Mesuré : l'assistant disait « Aucun style publié » avec 4 styles en base. La reproduction a été jouée sans préchauffage (`--no-deps`) et le cache vidé. Piste, non établie : en production, une liste vide rendue par l'API au démarrage resterait une heure.
+Le serveur de développement du client met en cache **une heure** les listes de référentiels (`next: { revalidate: 3600 }`, `apps/client/src/lib/api.ts`), **sur disque** (`apps/client/.next/cache/fetch-cache`), et le préchauffage de la suite e2e visite `/fr/salles` **avant** tout semis : les listes de styles et d'équipements y sont mises en cache **vides** et survivent aux relances. Mesuré : l'assistant disait « Aucun style publié » avec 4 styles en base. La reproduction a été jouée sans préchauffage (`--no-deps`) et le cache vidé. ~~Piste, non établie : en production, une liste vide rendue par l'API au démarrage resterait une heure.~~ ⛔ *(D353, 19/11/2026 : **LA PISTE EST ÉTABLIE** — mesurée sur un build de production (fenêtre de 20 s sur une copie) : une réponse 200 VIDE est gardée toute la fenêtre ; sur `next dev` à la valeur réelle, 34 sondes sur 37, plus de 75 s ; corrigé par `lireReferentiel` — `docs/preuves/D353/mesures/`. Barrée avec son motif, pas effacée.)*
 
 ### 5. Limites écrites, pour ne pas se lire comme tenues
 - **La partie « goûts » en navigateur n'est mesurée dans la suite complète que si les listes existent** (§ 4) ; en composant, elle l'est toujours.
@@ -28075,3 +28443,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D350 | A | D350 — rang 52 ARBITRÉ PAR KO le 17/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 52 — ADM-2 : les écrans `/admin` dans l'app Pro, et le pro qui lit son refus ») et **CLOS SUR LE CODE le 17/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **ADM-2** — la garde de rôle ADMIN (D23 devient : un PRO hors de `/admin`, un ADMIN sous `/admin` seulement), trois écrans français hors de `packages/i18n` (la file des salles en attente, le détail avec publier / rejeter avec motif / corriger le motif, les demandes de suppression de compte, l'approbation derrière une fenêtre qui dit l'irréversible), `/admin` non indexable, le pro qui lit son refus à l'étape « Publication » et dans l'en-tête de l'assistant (FR et AR, six clés arabes à relire par un humain), **la file des suppressions décidée DANS la transaction en check-and-set (ROUGE mesuré sur PostgreSQL réel : quatre courses forcées par un verrou)**, **la correction du motif d'une salle déjà rejetée (200 là où D349 répondait 409 ; la ligne de journal garde l'ancien et le nouveau)**, **le fournisseur des salles du pro qui ne garde la liste que pour le compte qui l'a lue (fuite MD-ADM-10 mesurée puis corrigée)**, la spec e2e du chemin réel (cinq tests) ; `setRates` et `VENUE_ADMIN_SELECT` identiques à `b8e5511`, aucun taux modifiable ; `venue-form.tsx` intact ; **la PREMIÈRE passe des six portes était rouge sur `test` (garde FC-6 des formateurs `Intl`, défaut du lot, corrigé ; campagne et portes rejouées en entier)** ; harnais `neutralisation/neutralize-adm2.py` (84 cibles, 84 mordues en TROIS passes, 29 lues en erreur de requête : S-192) ; `neutralize-adm1.py` rejouée en entier (72 sur 72), `r37` : trois ancres reposées et P-3 retirée par écrit ; six portes vertes (`test:int` 50 fichiers / 798 tests ; `test:e2e` 102 passés + 1 ignoré, deux passes) ; **compteur POUR MÉMOIRE VINGT-CINQ → VINGT-SIX** ; S-180 à S-191 ratifiées par adoption, **S-192 à S-204 à ratifier** ; ⛔ MFA (D-7) et relecture du rôle en base (D-9, e3-c) bloquent toujours tout déploiement ; rang 53 : EN ATTENTE DE CADRAGE DU RELECTEUR ; section D350 ⛔ *(D352 : S-192 REFUSÉE ; les 29 gardes ont reçu une assertion native au rang 54 — « 29 lues en erreur de requête » est PÉRIMÉ.)* |
 | D351 | A | D351 — rang 53 ARBITRÉ PAR KO le 18/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 53 — L'INTÉGRATION, DANS `main`, DE LA BRANCHE `par-carte` (LA CARTE : RECHERCHE, ACCUEIL, FICHE, POINT POSÉ PAR LE PRO), REJOUÉE SUR LE POSTE DE KO ») et **CLOS SUR LE CODE le 18/11/2026**, lot de **CODE** par destination (il compte, D283), **sans migration** : **la carte** (la recherche, l'accueil, la fiche, le point posé par le pro ; six lots CA-1 à CA-6, 21 commits de la branche `par-carte`, session cloud des 13 et 14/11/2026) intégrée dans `main` par `git merge --no-ff` (`02b2d62`, ni rebase ni squash ; 155 fichiers, 0 migration, une dépendance : Leaflet 1.9.4), **l'arbre du commit de fusion IDENTIQUE à celui que `git merge-tree` recalcule seul** (contrôle de la fusion : 12 sur 12) ; lecture adverse de la consigne et du BILAN (45 contrôles : 31 ✓ · 10 ≈ · 1 ✗ · 3 ?, sept défauts d'instrument réparés ; **le ✗ : l'ancre H6 de `neutralize-horizon.py` n'est PAS « périmée avant la session », elle est trouvée sur l'arbre Windows — même classe `\r\n` en dur que `available-on` et `r49`**) ; **six portes sur le poste de Ko, TOUTES à 0 dès la première passe, zéro rejeu** (`test` 199 fichiers / 2 961 tests ; `test:int` 51 fichiers / 807 tests dont `pro-clients.int-spec.ts` et `quote-numbering.int-spec.ts` — **la réserve du BILAN, « `test:int` rouge dans le conteneur cloud », est LEVÉE** ; `test:e2e` 109 passés + 1 ignoré, **deux passes consécutives vertes**) ; `lancer-campagnes.py --tout` (**68 campagnes, 1 135 gardes mordues, 0 muette**, 111 non mesurées) et **sept campagnes à mode** (84 sur 84) — **les 116 gardes de la branche rejouées : 116 sur 116** —, 68 empreintes de harnais identiques, **aucune ancre périmée, aucun harnais modifié**, 62 cibles non jouées, dites ; **R-4** : `publicFilter` appelée par la liste ET la carte, brouillon / masquée / indisponible / supprimée absentes des deux (PostgreSQL réel), **deux trous en backlog dont le `no-store` de la carte, MESURÉ non gardé (la mutation survit : 47 fichiers / 564 tests restent verts)** ; **R-5** : le repère de parité **943 → 1 296**, la garde mord à 1 297 ; **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » BLOQUENT LE LANCEMENT** ; **compteur POUR MÉMOIRE VINGT-SIX → TRENTE-TROIS** ; les 22 décisions du BILAN et S-193 à S-204 ratifiées par adoption, **S-192 REFUSÉE (R-8)**, **S-205 à S-217 à ratifier** ; la liste « Mes salles » du pro doit dire « Refusée » (réponse de Ko, candidat du rang 54) ; les sept gestes de Ko restent à jouer (pas une condition de clôture) ; rang 54 : EN ATTENTE DE CADRAGE DU RELECTEUR ; section D351 |
 | D352 | A | D352 — rang 54 ARBITRÉ PAR KO le 18/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 54 — LA LISTE « MES SALLES » DIT « REFUSÉE », ET LES 29 GARDES DES ÉCRANS `/admin` PASSENT EN ASSERTION NATIVE ») et **CLOS SUR LE CODE le 18/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **la liste « Mes salles » du pro dit « Refusée » pour une salle refusée** (R-1, **voie (A)** : la carte d'une salle non publiée lit `GET pro/venues/:id/publication`, aucun contrat neuf, aucune clé de catalogue neuve ; rien n'est affirmé avant la réponse, une panne n'est pas « pas refusée », le motif n'entre jamais dans la liste ; mesurée : 3 lectures pour 3 salles non publiées, 0 pour la publiée, 3 → 6 à la relecture voulue) **et les 29 gardes des écrans `/admin` passent en assertion native** (R-2, **S-192 REFUSÉE** : `native-presence.ts`, le lecteur de `neutralize-adm2.py` ne reconnaît plus une erreur de requête de Testing Library comme une morsure, l'écart de son en-tête est barré ; **campagne rejouée EN ENTIER : 84 gardes mordues sur 84, **0 muette, 0 non mesurée, 0 non jouée**, toutes lues en `AssertionError`, empreinte du harnais `c9798594…df24` en tête de chaque journal, arbre rendu à son état de départ (18 fichiers, 0 différent)**) ; rouges de R-1 versés AVANT le code (10 échecs sur 24, empreinte du fichier de test) ; lecture adverse de la consigne (19 contrôles : 15 ✓, 3 ≈, 0 ✗, 1 ?) ; **le critère 4 a trouvé un vrai refus de l'e2e** (`r50` M-2 lisait la carte sans attendre : rouge avec 1,5 s de latence, corrigé) ; `neutralize-r54.py` (11 gardes mordues sur 11, 0 muette, 0 non mesurée, toutes lues en `AssertionError`, empreinte `7a64b058…eedb`) ; `neutralize-pub1.py` (ancre périmée, révisée, campagne rejouée) ; les six portes à 0 dès la première passe (typecheck 0 · lint 0 · test 0 · build 0 · test:int 0 · test:e2e 0, deux passes vertes de suite), deux passes e2e vertes ; décisions prises seule S-218 à S-230 à ratifier ; compteur POUR MÉMOIRE TRENTE-TROIS → TRENTE-QUATRE ; **« RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D352 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D352/`. |
+| D353 | A | D353 — rang 55 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 55 — LA MÉMOIRE DU SITE CLIENT : CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **une réponse VIDE d'un référentiel n'est plus jamais crue** (`lireReferentiel`, `apps/client/src/lib/api.ts` : `getWilayas`, `getAmenities`, `getVenueStyles` lisent une liste PLEINE une fois, gardée une heure, et **relisent SANS cache une réponse vide**, dont la relecture est rendue ; un échec rend `[]` ; trois fonctions publiques inchangées ; mesuré sur un build de production : la réponse 200 vide est gardée toute la fenêtre, un 500 ou une API arrêtée ne le sont pas, une liste pleine survit à la panne ; sur `next dev`, 34 sondes sur 37, plus de 75 s) ; **le `no-store` de la carte est gardé** (rouge : la mutation de D351 sous le test neuf) ; **« sans créneau actif, avec une date » est joué sur la carte et la carte NE DIVERGE PAS de la liste** ; **`r48` n'a plus de tolérance** (attendu dérivé de la base) ; **la prédiction de la consigne sur la forme du rouge e2e est CONTREDITE** (la suite complète depuis un cache neuf est verte ; le rouge est celui de `r48` seule) et **la correction e2e à trois gestes est mesurée et NON LIVRÉE** (nécessaire avant la relecture, redondante après : S-232) ; `neutralize-r55.py` (10 gardes mordues sur 10, empreinte `94bea8a2…be75c`) ; campagnes touchées `available-on` 10, `ca2` 42/42, `horizon` 6, `r48 --e2e` 12/12, `ca1 --int` 24/24, `pub1 --e2e` 20/20 ; les six portes à 0 dès la première passe (client 583, intégration 808, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-231 à S-238 à ratifier ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ ; **« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D353 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D353/`. |
