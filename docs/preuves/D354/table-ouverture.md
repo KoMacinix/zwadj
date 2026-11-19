@@ -528,3 +528,73 @@ docs/preuves/D354/balayage-temporaires-c.txt
 ```
 
 **Ce que cette extension ne couvre PAS** : les pièces des campagnes TOUCHÉES (`lancer-touchees` : adm1, adm2, r25, r33, r38, r39, r43, r44), de la mesure du défaut croisé « connexion ‖ réinitialisation », des six portes, de l'audit « d », de la passe D277 et du contrôle de fin de lot — **extension 4, avant leur commit** (leurs noms dépendent de résultats qui n'existent pas encore).
+
+### Extension 4 — les pièces des CAMPAGNES TOUCHÉES, de la MESURE du défaut croisé, des SIX PORTES, et celles qui suivront (audit « d », passe D277, audit « e », contrôle de fin de lot)
+
+Écrite **avant** le commit qui verse ces pièces (D328, point 4) ; **elle déclare à l'avance** les pièces de l'audit « d », de la passe D277, de l'audit « e » et du contrôle de fin de lot (leurs NOMS sont connus, leur CONTENU ne l'est pas encore), pour que la table soit définitive à sa recopie dans `ZWADJ_CONTINUITE.md`, comme à D353. **Chemins COMPLETS** — aucun préfixe. Les fichiers d'autorité (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`) sont déclarés en C ; `docs/preuves/D354/controle-fin-de-lot.txt` en B.
+
+**1. Les campagnes que le lot TOUCHE** — `lancer-touchees.py --liste` (`git diff 0423963..HEAD`) en désigne **neuf**, dont `r56` (jouée entière à part, extension 3) ; les **huit** autres sont jouées EN SÉRIE par `jouer-touchees.py` dans le mode qui couvre ce que le lot touche (`--int` pour sept d'entre elles), puis `r25` et `adm2` REJOUÉES en mode complet (`--int --e2e`). Sorties brutes MASQUÉES, liste du lanceur, empreintes des 71 harnais avant et après, le script qui les a jouées, le rapport de masquage (16 fichiers) :
+
+```
+docs/preuves/D354/neutralisation/touchees/adm1.txt
+docs/preuves/D354/neutralisation/touchees/adm2-complete.txt
+docs/preuves/D354/neutralisation/touchees/adm2.txt
+docs/preuves/D354/neutralisation/touchees/bilan.txt
+docs/preuves/D354/neutralisation/touchees/empreintes-harnais-apres.txt
+docs/preuves/D354/neutralisation/touchees/empreintes-harnais-avant.txt
+docs/preuves/D354/neutralisation/touchees/jouer-touchees.py
+docs/preuves/D354/neutralisation/touchees/lancer-touchees-liste.txt
+docs/preuves/D354/neutralisation/touchees/r25-complete.txt
+docs/preuves/D354/neutralisation/touchees/r25.txt
+docs/preuves/D354/neutralisation/touchees/r33.txt
+docs/preuves/D354/neutralisation/touchees/r38.txt
+docs/preuves/D354/neutralisation/touchees/r39.txt
+docs/preuves/D354/neutralisation/touchees/r43.txt
+docs/preuves/D354/neutralisation/touchees/r44.txt
+docs/preuves/D354/neutralisation/touchees/rapport-masquage.txt
+```
+
+**2. La mesure du défaut croisé « connexion ‖ réinitialisation »** (PIÈCE, jamais promue en test ; sa lecture écrit ce qu'elle ne dit PAS) — 4 fichiers :
+
+```
+docs/preuves/D354/mesures/course-connexion-reinitialisation.int-spec.ts
+docs/preuves/D354/mesures/lecture-course.md
+docs/preuves/D354/mesures/mesure-course.txt
+docs/preuves/D354/mesures/rapport-masquage.txt
+```
+
+**3. Les six portes et la seconde passe e2e** — les sorties brutes MASQUÉES du pilote de D340, la liste e2e et l'attendu dérivé AVANT la passe, l'état machine, la note qui les LIT (`portes.md`), le rapport de masquage (15 fichiers) :
+
+```
+docs/preuves/D354/portes/FIN
+docs/preuves/D354/portes/_index.txt
+docs/preuves/D354/portes/attendu-e2e.txt
+docs/preuves/D354/portes/build.txt
+docs/preuves/D354/portes/e2e-liste.txt
+docs/preuves/D354/portes/etat-avant-passe-2.txt
+docs/preuves/D354/portes/etat-machine-pendant.txt
+docs/preuves/D354/portes/lint.txt
+docs/preuves/D354/portes/portes.md
+docs/preuves/D354/portes/rapport-masquage.txt
+docs/preuves/D354/portes/test-e2e-passe-2.txt
+docs/preuves/D354/portes/test-e2e.txt
+docs/preuves/D354/portes/test-int.txt
+docs/preuves/D354/portes/test.txt
+docs/preuves/D354/portes/typecheck.txt
+```
+
+**4. Les pièces À VENIR, déclarées maintenant** — l'audit de secrets « d » (jouée sur les pièces des campagnes, de la mesure et des portes) et son tri ; **`aucune-valeur-reelle-d354d.txt`** (le contrôle dédié de D299 : les valeurs des journaux e2e BRUTS — 129 jetons de base jetable par passe — ne figurent dans aucune pièce versée) ; la passe D277 des deux sens (l'instrument, sa sortie, sa lecture) ; l'audit « e » (joué sur la passe, le contrôle de fin de lot et les ajouts des `.md` d'autorité) et son tri ; l'instrument du contrôle de fin de lot (sa sortie, `controle-fin-de-lot.txt`, est déclarée en B) :
+
+```
+docs/preuves/D354/audit-secrets-d354d.txt
+docs/preuves/D354/tri-audit-d354d.txt
+docs/preuves/D354/aucune-valeur-reelle-d354d.txt
+docs/preuves/D354/passe-d277.py
+docs/preuves/D354/passe-d277-sortie.txt
+docs/preuves/D354/passe-d277.md
+docs/preuves/D354/controle-fin-de-lot.py
+docs/preuves/D354/audit-secrets-d354e.txt
+docs/preuves/D354/tri-audit-d354e.txt
+```
+
+**Ce que cette extension ne couvre PAS** : rien d'autre n'est attendu — si une pièce de plus naît (un défaut d'instrument trouvé par un audit, une correction), elle reçoit son extension 5, **avant** son commit.
