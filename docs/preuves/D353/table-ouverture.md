@@ -82,3 +82,46 @@ docs/preuves/D353/tri-audit-d353a.txt
 ```
 
 **Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu deux ✗ qui étaient des défauts DE L'INSTRUMENT (contrôles 1.c et 2.h), confrontés à la source avant d'être crus (D275). Cette sortie est gardée, non retouchée ; la sortie finale (`confronter-sortie.txt`) vient de l'instrument corrigé, rejoué en entier, calibration comprise (règle de D298). La note `lecture-adverse.md` écrit les deux défauts et les six « ≈ ».
+
+### Extension 2 — les pièces des ROUGES (R-1, R-4, R-5) et des mesures de production (R-2)
+
+Écrite **avant** le commit qui verse ces pièces, et donc **avant le premier commit de code** (D334, point 5). Elle déclare AUSSI les pièces de ce versement qui ne sont pas des rouges (l'instrument de mesure et ses sorties, la lecture des mesures de production) : tout ce qui est sorti du scratchpad de la session pour entrer au dépôt. Chemins COMPLETS, relevés sur le disque (`git ls-files --others --exclude-standard docs/preuves/D353`, 32 fichiers) :
+
+```
+docs/preuves/D353/mesures/pieces/calibration.txt
+docs/preuves/D353/mesures/pieces/cas-i-dev.txt
+docs/preuves/D353/mesures/pieces/cas-i-passe-1-instrument-bloquant.txt
+docs/preuves/D353/mesures/pieces/cas-i.txt
+docs/preuves/D353/mesures/pieces/cas-ii-500.txt
+docs/preuves/D353/mesures/pieces/cas-ii-arret.txt
+docs/preuves/D353/mesures/pieces/cas-iii-bis.txt
+docs/preuves/D353/mesures/pieces/cas-iii.txt
+docs/preuves/D353/mesures/pieces/cas-reload-dev.txt
+docs/preuves/D353/mesures/pieces/depouillement.txt
+docs/preuves/D353/mesures/pieces/depouiller.py
+docs/preuves/D353/mesures/pieces/instrument-r55.mjs
+docs/preuves/D353/mesures/pieces/lire-cache.py
+docs/preuves/D353/mesures/r2-production.md
+docs/preuves/D353/rouges/cache-00-avant-D353-ouverture.txt
+docs/preuves/D353/rouges/cache-01-apres-r48-seule-depuis-F.txt
+docs/preuves/D353/rouges/cache-02-etat-E-empoisonne-par-la-mesure-dev.txt
+docs/preuves/D353/rouges/cache-03-apres-warmup-seul-1.txt
+docs/preuves/D353/rouges/cache-04-apres-warmup-seul-2.txt
+docs/preuves/D353/rouges/masquer-jetons.py
+docs/preuves/D353/rouges/r1-etat-avant-rouge-F.txt
+docs/preuves/D353/rouges/r1-r48-seule-etat-E-ROUGE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-r48-seule-etat-F-ROUGE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-suite-complete-etat-F-VERTE-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-2-base-timeline.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-2-sortie-masquee.txt
+docs/preuves/D353/rouges/r1-warmup-seul-etat-F-sortie-masquee.txt
+docs/preuves/D353/rouges/r4-mutation-no-store-sous-test-neuf.txt
+docs/preuves/D353/rouges/r4-mutation-no-store.py
+docs/preuves/D353/rouges/r5-carte-sans-creneau-actif-sortie.txt
+docs/preuves/D353/rouges/rapport-masquage.txt
+docs/preuves/D353/rouges/rouges.md
+```
+
+**Ce que cette extension écrit de ce que le rouge a trouvé** (détail : `docs/preuves/D353/rouges/rouges.md`) : la prédiction P1 de `regle-portes.md` (« la suite COMPLÈTE depuis F est rouge ») est **CONTREDITE par la mesure** — 109 passés, 1 ignoré ; le rouge du lot est celui de `r48` **jouée seule**, depuis F et depuis E. La décision de la session (S-231) est écrite dans `rouges.md`, § 1. **Les fichiers de code que la mesure du choix désignera** (`e2e/global-setup.ts`, éventuellement `e2e/playwright.config.ts`) restent déclarés CONDITIONNELS par la table ci-dessus ; leur extension, avec le motif, précède leur commit.
+
+**Pièces de la table qui N'ENTRENT PAS dans ce commit** : `neutralisation/neutralize-r55.py`, les trois fichiers de test, `docs/preuves/D353/controle-fin-de-lot.txt` — ils viennent après.
