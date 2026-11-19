@@ -223,3 +223,14 @@ docs/preuves/D352/tri-audit-d352d.txt
 - **Les pièces des campagnes** : le bilan de `neutralize-adm2.py --int --e2e` ENTIER, celui de `neutralize-r54.py`, la découverte qui a relevé les titres et la lecture de la première ligne des 29 verdicts, les journaux **masqués** des 29 gardes (30 fichiers : `G-4` compte deux mesures) et des 11 cibles de `r54`, les extraits de tous les échecs d'`adm2`, le tri des campagnes touchées et ses sorties, les empreintes des 69 harnais avant et après.
 - **Conditionnels** (leur existence dépend d'un résultat) : `pub1-e2e-premiere-tentative.txt` (n'existe que si une tentative a précédé la révision de l'ancre) ; `touchees-ca5.txt`, `touchees-r37.txt`, `touchees-r38.txt` (les trois campagnes concernées jouées par le tri ; `ca6` et `pub1` ont leur pièce propre) ; `aucune-valeur-reelle.txt` (le contrôle « 0 valeur réelle », rejoué avec TOUS les journaux bruts) ; `audit-secrets-d352d.txt` et `tri-audit-d352d.txt` (le dernier audit, joué sur le dernier versement). Le rapport de fin de lot dit lesquels existent.
 - **Les `.md` d'autorité** (`ZWADJ_CONTINUITE.md`, `ZWADJ_BACKLOG.md`, `AGENTS.md`) étaient déjà déclarés (section C).
+
+### Extension 4 — le cinquième audit de secrets et son tri (le contrôle de fin de lot, écrit APRÈS la poussée)
+
+Écrite **avant** le commit qui verse le contrôle de fin de lot (déclaré à l'extension 3) et ces deux pièces. Chemins COMPLETS :
+
+```
+docs/preuves/D352/audit-secrets-d352e.txt
+docs/preuves/D352/tri-audit-d352e.txt
+```
+
+- Le contrôle de fin de lot ne peut se jouer qu'**APRÈS** la poussée (son contrôle n° 10 compare le SHA local à `origin/main`) : sa sortie entre donc dans un commit POSTÉRIEUR à celui que l'audit « d » a couvert ; l'audit « e » couvre ce dernier versement (précédent D351, audit « f »). **Le contrôle ajoute, à sa calibration d'origine (l'ordre), un bras de DÉCLARATION** (un chemin du lot est déclaré, un chemin étranger ne l'est pas) — sans lui, « 0 non déclaré » serait vrai de n'importe quelle liste ; la première passe, entièrement verte, n'avait pas ce bras et n'est pas versée.
