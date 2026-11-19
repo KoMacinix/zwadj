@@ -1,0 +1,73 @@
+Lecture adverse de la consigne du rang 55 contre le dépôt — D353
+SHA de départ lu : cd8e07921a4c18c2559506c463ede06eed3178a1
+── calibration
+  calibration ✓ motif présent dans un fichier d'un SHA (cas vrai connu) : True (attendu True)
+  calibration ✓ motif absent (cas faux connu) : False (attendu False)
+  calibration ✓ ancêtre (cas vrai : le départ est ancêtre de lui-même) : True (attendu True)
+  calibration ✓ ancêtre (cas faux : la pointe de par-carte n'est pas descendante de HEAD) : False (attendu False)
+  calibration ✓ existence d'un chemin (vrai) : True (attendu True)
+  calibration ✓ existence d'un chemin (faux) : False (attendu False)
+  calibration ✓ comptage d'occurrences (`getVenueMap` apparaît au moins une fois) : True (attendu True)
+  calibration ✓ comptage d'occurrences (un jeton inexistant en compte zéro) : True (attendu True)
+  calibration ✓ définition `- **S-218** —` dans la section D352 (cas vrai connu) : True (attendu True)
+  calibration ✓ définition `- **S-999** —` dans la section D352 (cas faux connu) : False (attendu False)
+  calibration ✓ motif d'APPEL du semis trouvé dans harness.ts (cas vrai connu) : True (attendu True)
+  calibration ✓ motif d'APPEL du semis : le commentaire « Elle NE seede PAS » de global-setup.ts ne le déclenche pas (le faux positif de la passe 1) : False (attendu False)
+  calibration : 12 cas · 0 manqué(s) (attendu 0)
+── contrôles
+(information) origin/main au moment de la lecture : cd8e07921a4c18c2559506c463ede06eed3178a1 ; HEAD : f7fb47ae25e560c6297e889f54785de2ce1657d1 ; parent de HEAD : cd8e07921a4c18c2559506c463ede06eed3178a1
+[0.a] ✓  origin/main = cd8e079 (consigne, § 0) ; le premier commit du lot est la table d'ouverture SEULE
+      origin/main = cd8e079 ; le parent du premier commit du lot est cd8e079 ; `git diff cd8e079 HEAD --name-only` = ['docs/preuves/D353/table-ouverture.md']
+[0.b] ✓  branches distantes gardées (relevé de la table d'ouverture)
+      relevé : {'front-client': '43996e2', 'integration-45': '63511ce', 'par-carte': '7fdc679'}
+[0.c] ✓  rang 54 CLOS (D352), compteur POUR MÉMOIRE TRENTE-QUATRE, « RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : la mémoire du site client)
+      texte aplati parcouru : 3483596 caractères ; « TRENTE-QUATRE » : 8 occurrence(s) ; « RANG 55 : EN ATTENTE DE CADRAGE DU RELECTEUR » : 5 occurrence(s) ; « mémoire du site client » : 8
+[0.d] ✓  numéro attendu : D353, pris en LISANT le registre
+      307 lignes de registre parcourues, dernier numéro 352 ; « D353 » : 0 dans la continuité, 0 au backlog, 0 dans AGENTS.md ; 4494981 caractères aplatis examinés
+[1.a] ✓  les trois entrées du backlog existent, UNE fois chacune
+      backlog aplati parcouru : 751113 caractères ; occurrences : {'(i) référentiels': 1, '(ii) no-store de la carte': 1, '(iii) sans créneau actif': 1} ; étiquettes : `[E2E][INFRA]` 3 · `[TESTS][CARTE]` 4
+[1.b] ✓  le message `claude/rang50-message.md` du 10/11 « n'a jamais été adopté » : il n'est dans aucun fichier du dépôt
+      `git cat-file -e cd8e079:claude/rang50-message.md` : False ; (non vérifiable plus avant : le message n'est PAS lu ici, la consigne le remplace)
+[1.c] ✓  S-218 à S-230 existent dans la section D352 (ratifiées par adoption, 1 b)
+      section D352 BRUTE parcourue : 17954 caractères, 61 lignes ; DÉFINITIONS `- **S-nnn** —` trouvées parmi 218 à 230 : 13 sur 13 (218 à 230) ; numéros S-2nn simplement CITÉS dans la section : 13 (218 à 230) — la section renvoie aussi à S-210…S-217 de D351, ce n'est pas une anomalie
+[1.d] ≈  (1 c) « Une entrée de backlog [PRO], sans rang » pour l'en-tête de l'assistant — la consigne la présente comme À ÉCRIRE
+      l'entrée EXISTE DÉJÀ dans le backlog (rang 54, étiquette `[PRO][À ORDONNER PAR KO]`) : trouvée : True ; elle posait la question que Ko a tranchée (« APRÈS ») ⇒ **ANNOTER cette entrée avec la réponse de Ko, sans en écrire une seconde** (un doublon se contredirait au premier changement) ; décision de la session, dite au rapport
+[2.a] ✓  getWilayas, getAmenities, getVenueStyles : `fetch(…, { next: { revalidate: 3600 } })` et rendent `[]` sur une réponse non ok OU une exception
+      299 lignes parcourues ; `next: { revalidate: 3600 }` : 3 occurrence(s) ; les trois fonctions trouvées : ['getWilayas', 'getAmenities', 'getVenueStyles'] ; `[]` sur non-ok ET sur exception : {'getWilayas': True, 'getAmenities': True, 'getVenueStyles': True}
+[2.b] ✓  getVenueMap est en `cache: "no-store"`
+      corps de getVenueMap parcouru : 12 lignes ; `{ cache: "no-store", signal }` : 1 ; l'ancre est unique dans le fichier ? `{ cache: "no-store", signal }` apparaît 2 fois au total (countVenues aussi : la mutation de D351 vise la fin de l'adresse de la carte)
+[2.c] ✓  le projet `warmup` passe avant `chromium`
+      197 lignes parcourues ; `name: "warmup"` : 1 ; `dependencies: ["warmup"]` : 1
+[2.d] ✓  r48 TOLÈRE l'absence de puces (S-153 : `if (… .wz-chip … count() > 0)`) et son commentaire dit « la base e2e ne publie AUCUN style »
+      181 lignes parcourues ; gardes `count() > 0` : 2 (styles ET équipements : la consigne ne parle que des « goûts ») ; phrase « la base e2e ne publie AUCUN style » : 1
+[2.e] ≈  « D346 écrivait « la base e2e contenait 4 styles » : l'un des deux est faux, mesure-le » — lu, PAS encore mesuré
+      « 4 styles en base » dans la continuité : True ; `seed.ts` sème ['wilaya.upsert', 'city.upsert', 'amenity.upsert', 'venueStyle.upsert'] ; `listVenueStyles` filtre par `where` : False (aucun filtre de publication : tout style semé est rendu) ⇒ **par lecture, c'est le commentaire de r48 (« AUCUN style ») qui est faux** ; **mais aucune migration n'insère de référentiel** : avant le semis les QUATRE listes sont vides, et c'est ce que le préchauffage voit ; **à MESURER** (R-1), pas à conclure d'ici
+[2.f] ✓  (non affirmé par la consigne — risque relevé) aucune migration n'insère de référentiel : le préchauffage voit des listes VIDES
+      migrations `migration.sql` examinées : 33 ; celles qui insèrent dans wilayas/cities/amenities/venue_styles : 0
+[2.g] ✓  `seedReferentials()` existe et rejoue le semis de production (`db:seed`)
+      355 lignes parcourues ; fonction : True ; `db:seed` : 1
+[2.h] ✓  (non affirmé par la consigne — risque relevé) `global-setup.ts` ne sème rien : seul `seedReferentials()`, appelé par les specs, le fait — APRÈS le préchauffage
+      41 lignes parcourues ; APPELS du semis (`db:seed`, `seedReferentials(`, `seed(`) : 0 ; le MOT « seed » apparaît 1 fois, en CONTEXTE : [(13, '* ⚠ Elle NE seede PAS de comptes. Chaque spec crée les siens (voir')] (un commentaire, pas un appel : la passe 1 comptait la sous-chaîne et s'est trompée)
+[2.i] ≈  (non affirmé par la consigne — fait relevé dans le code de Playwright 1.50.1) les serveurs (`webServer`) démarrent AVANT `globalSetup`
+      `node_modules/.pnpm/playwright@1.50.1/node_modules/playwright/lib/runner/tasks.js`, `createGlobalSetupTasks` : `tasks.push(...createPluginSetupTasks(config), …globalTeardowns…, ...globalSetups…)` — les plugins (dont `webServer`) PRÉCÈDENT les `globalSetup` ; relevé sur disque (non versionné : `node_modules`), à rejouer ; conséquence : un correctif d'ordre dans `global-setup.ts` précède bien le préchauffage (projet `warmup`, dépendance de `chromium`), mais le serveur du client est DÉJÀ debout
+[R-4.a] ≈  « patron : venue-detail-view.test.tsx l. 374 pour la fiche »
+      `venue-detail-view.test.tsx` : 434 lignes parcourues ; l. 372-378 : « toHaveBeenCalledWith(stringContaining("/venues/salle-el-ryad/visit-slots?"), objectContaining({ cache: "no-store" })) » : True — **le patron de FORME est juste** (assertion sur le second argument de `fetch`), **mais il garde `getVisitSlots`, pas la fiche** : aucun test unitaire de `getVenueBySlug` n'existe (`grep getVenueBySlug` dans les `*.test.*` de apps/client : 0 fichier) ; sa garde est l'e2e `r50` M-3 et la cible PUB1-20 (D348). **Écart de désignation, sans conséquence sur ce lot** (R-6 : `getVenueBySlug` n'est pas touché) ; entrée de backlog
+[R-4.b] ✓  la mutation de D351 (`docs/preuves/D351/r4/`) est le rouge de référence : sous `force-cache`, la suite client reste verte
+      5 lignes parcourues ; « code de sortie … : 0 » : True ; « 47 passed » et « 564 passed » : True ; restauration à l'octet : True
+[R-5.a] ≈  « sans créneau actif, avec une date » n'est jouée par aucune spec de la carte
+      `venue-map.int-spec.ts` : 255 lignes parcourues ; `availableOn` : 3 occurrences, en CONTEXTE : [(176, '["availableOn", "limit", "points", "total", "truncated", "withoutCoord'), (191, 'expect(reponse.availableOn).toBeNull();'), (237, 'const res = await api().get("/api/v1/venue-map?availableOn=2020-01-01"')] (une clé de contrat, un attendu `null`, une date PASSÉE ⇒ 400 — aucune date future) ; `slotTemplate` : 0 ; `ACTIVE_SLOT` : 0
+[R-5.b] ✓  une seule autorité, `publicFilter`, pour la liste ET la carte (D351)
+      602 lignes parcourues ; `this.publicFilter(query, Date.now())` : 2 appel(s) (liste + carte) ; la clause « sans créneau actif » `slotTemplates: { some: ACTIVE_SLOT }` : 1 occurrence (dans `publicFilter`, rien de copié)
+[R-6] ✓  `getVenueBySlug` et `searchVenues` restent en `no-store` (invariant de D348)
+      fonctions examinées : 7 ; en `no-store` : {'searchVenues': True, 'getVenueBySlug': True, 'countVenues': True, 'getVenueAvailability': True, 'getVisitSlots': True, 'getVenueMap': True, 'getApiHealth': True}
+[3.a] ≈  `lancer-touchees.py (D352)` et `masquer-jetons.py` — les outils de la forme
+      `lancer-touchees.py` existe à docs/preuves/D352/neutralisation/lancer-touchees.py : True ; `masquer-jetons.py` existe à docs/preuves/D352/portes/masquer-jetons.py : True ; **ce sont des PIÈCES versées de D352, PAS des fichiers de `neutralisation/`** (la consigne dit « lancer-touchees.py (D352) » sans chemin) ; copiés par le lot tels quels ; `neutralisation/audit-secrets.py` existe : True ; `neutralisation/lancer-campagnes.py` : True
+[3.b] ✓  « deux passes e2e vertes de suite, règle commitée avant (R-15 de D343) »
+      « R-15. LA PREUVE » : 1 ; « DEUX fois de suite » : 2
+[F-1] ✓  compteur TRENTE-QUATRE → TRENTE-CINQ : D283 — un lot qui touche un test ou un harnais compte
+      34 + 1 = 35 ; le lot écrit des tests (e2e, client, intégration) et un harnais
+[F-2] ?  R-9 : sur batterie, aucune porte
+      engagement de méthode ; relevé de l'état machine : table d'ouverture (secteur, BatteryStatus = 2) ; se constate à chaque passe (pilote de D340)
+
+TOTAL : 26 contrôles — 19 ✓ · 6 ≈ · 0 ✗ · 1 ?   (attendu : la somme égale le nombre de contrôles listés ci-dessus)
+somme des verdicts = 26 ; contrôles imprimés = 26 ; égalité : True

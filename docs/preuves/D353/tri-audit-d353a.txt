@@ -1,0 +1,16 @@
+D353 — tri différentiel de l'audit de secrets « a » (premier versement : la consigne, la règle des portes, la lecture adverse de la consigne, sa sortie et sa note, la première passe de son instrument)
+
+Instrument d'audit : python3 -I -X utf8 neutralisation/audit-secrets.py --sortie docs/preuves/D353/audit-secrets-d353a.txt (1 119 811 octets ; lancé à 01:00:29, fini à 01:23:45 le 19/11/2026), joué dans le dépôt de travail, en arrière-plan pendant l'écriture des tests (il ne lit que `docs/preuves/`).
+
+Procédure du tri : python3 -I -X utf8 docs/preuves/D299/outils/alertes-nouvelles.py docs/preuves/D352/audit-secrets-d352e.txt docs/preuves/D353/audit-secrets-d353a.txt --voir
+
+Ce que l'audit a parcouru (D290) :
+  · nouvelle (d353a) : 5 813 fichiers parcourus (189 472 145 octets), 5 606 audités, 207 exclus (164 742 alertes d'écho non comptées), 3 835 alertes (« attendu 0 » : le critère D299 n'est PAS « zéro alerte » mais « aucune VALEUR réelle » ; toute alerte nouvelle se trie au contexte). Contrôle de l'outil : audités + exclus = 5 606 + 207 = 5 813 (attendu 5 813, les parcourus).
+  · précédente (d352e) et nouvelle : 3 835 contextes lus de part et d'autre.
+  · RAPPROCHEMENT MESURÉ avec le disque : `find docs/preuves -type f` rend 5 813 fichiers APRÈS l'audit, sortie scellée « a » comprise ; l'audit en a parcouru 5 813. Le rapprochement « disque après = parcourus » FERME (l'audit compte sa propre sortie, rectification S-228 de D352 ; `docs/preuves/D352/tri-audit-d352b.txt`).
+  · Les pièces neuves de ce versement (`docs/preuves/D353/consigne.md`, `regle-portes.md`, `table-ouverture.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`, `lecture-adverse/confronter-sortie-passe-1.txt`, `lecture-adverse/lecture-adverse.md`) : 0 alerte (le texte « D353 » apparaît UNE fois dans la sortie scellée, et c'est une ligne d'alerte INFORMATIVE « chemin-local=1 » d'un fichier que ce tri a supprimé : voir ci-dessous).
+  · UN fichier parasite a été parcouru puis supprimé AVANT le commit : `docs/preuves/D353/lecture-adverse/__pycache__/confronter-consigne.cpython-314.pyc` (37 093 octets), créé par l'import de l'instrument de lecture adverse dans un sondage de débogage (`importlib`) ; il est ignoré par git (`.gitignore`, ligne 45), il n'a jamais été commité, et sa seule alerte est informative (« chemin local »). Les 5 813 fichiers parcourus l'incluent ; le disque, lui, ne le porte plus : le rapprochement ci-dessus a été relevé AVANT sa suppression (5 813 = 5 813).
+
+Résultat du tri différentiel : 0 alerte ABSENTE de la sortie précédente. Ventilation par motif : aucune. Calibration de l'outil de tri : 2 bras sur 2 (négatif : D298 contre elle-même, 0 nouvelle ; positif : D298 contre D297, 2 nouvelles, chemins attendus).
+
+Contrôle « 0 valeur réelle » (D299) : NON joué à ce versement — aucun journal à valeurs réelles n'existe dans la session (les journaux d'e2e, qui portent des jetons de développement, ne sont pas encore versés : le contrôle sera joué avant le versement des portes).
