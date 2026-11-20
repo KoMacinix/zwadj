@@ -17,6 +17,8 @@ import { QuoteCommand, quoteAllowedFrom, quoteWrittenStatus } from "./quote-tran
 import type { QuoteRow, QuoteStore } from "./quote-store.types";
 
 const USER_ID = "018f0000-0000-7000-8000-00000000aaaa";
+// D355 (rang 57, R-2) : le membre du personnel dont la session a passé le garde — `null` quand la couche est éteinte. K-5 écrit parfois la FICHE : la ligne de journal le porte.
+const MEMBRE = "018f0000-0000-7000-8000-00000000bbbb";
 const VENUE_ID = "018f0000-0000-7000-8000-00000000eeee";
 const QUOTE_ID = "018f0000-0000-7000-8000-00000000dddd";
 
@@ -371,17 +373,26 @@ describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NUL
   it("la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin`", async () => {
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: devisRow({ clientNameAr: "آمنة" }) });
-    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة" });
-    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة" }, MEMBRE);
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" }, MEMBRE);
     const champs = devis.completerNomDuClient.mock.calls.map((c) => (c[0] as { champ: string }).champ);
     expect(champs).toEqual([QUOTE_CLIENT_NAME_FIELD.ar, QUOTE_CLIENT_NAME_FIELD.fr]);
     expect(devis.completerNomDuClient.mock.calls[0]![0]).toMatchObject({ userId: USER_ID, quoteId: QUOTE_ID, nom: "آمنة" });
   });
 
+  it("⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dans la ligne de journal de la fiche : le membre quand une session existe, `null` quand la couche est éteinte — jamais un autre", async () => {
+    const { service, devis } = build();
+    devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: devisRow() });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة" }, MEMBRE);
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة" }, null);
+    expect(devis.completerNomDuClient.mock.calls[0]![0]).toMatchObject({ userId: USER_ID, memberId: MEMBRE });
+    expect(devis.completerNomDuClient.mock.calls[1]![0]).toMatchObject({ userId: USER_ID, memberId: null });
+  });
+
   it("⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas)", async () => {
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: true, devis: devisRow() });
-    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة بن سالم" });
+    await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar", name: "آمنة بن سالم" }, MEMBRE);
     const decide = (devis.completerNomDuClient.mock.calls[0]![0] as { completerLaFiche: (fiche: unknown, copie: unknown) => boolean }).completerLaFiche;
     const fiche = { id: "f", nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: null };
     expect(decide(fiche, { ar: "آمنة بن سالم", latin: "Amina Bensalem" })).toBe(true);
@@ -393,16 +404,16 @@ describe("⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NUL
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "Amina Bensalem" }));
-    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" }, MEMBRE)), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
   });
 
   it("le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port", async () => {
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(null);
-    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" })), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina" }, MEMBRE)), NotFoundException, "QUOTE_NOT_FOUND");
     devis.completerNomDuClient.mockClear();
-    estRefus(await refus(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" })), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.completeClientName(USER_ID, "pas-un-uuid", { locale: "fr", name: "Amina" }, MEMBRE)), NotFoundException, "QUOTE_NOT_FOUND");
     expect(devis.completerNomDuClient).not.toHaveBeenCalled();
   });
 });
@@ -492,7 +503,7 @@ describe("⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(devisRow({ isOfficial: false }));
-    const e = await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina Bensalem" }));
+    const e = await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Amina Bensalem" }, MEMBRE));
     estRefus(e, ConflictException, "QUOTE_DRAFT_HAS_NO_CLIENT");
     expect(((e as ConflictException).getResponse() as { message?: string }).message).toBe("quote.errors.draftHasNoClient");
   });
@@ -501,9 +512,9 @@ describe("⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'
     const { service, devis } = build();
     devis.completerNomDuClient.mockResolvedValue({ ok: false });
     devis.trouverDuPro.mockResolvedValue(devisRow({ clientNameLatin: "Amina Bensalem" }));
-    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" }, MEMBRE)), ConflictException, "QUOTE_CLIENT_NAME_ALREADY_SET");
     devis.trouverDuPro.mockResolvedValue(null);
-    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" })), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.completeClientName(USER_ID, QUOTE_ID, { locale: "fr", name: "Autre" }, MEMBRE)), NotFoundException, "QUOTE_NOT_FOUND");
   });
 });
 

@@ -250,9 +250,12 @@ export interface QuoteStore {
   /** ⛔ Rang 41 (D336, K-5, S-51) — UNE transaction : (1) la COPIE du nom du devis dans l'écriture `champ`, par compare-and-set sur `NULL` (le devis du pro, salle
    *  vivante — une copie présente n'est jamais remplacée, M-6) ; (2) si le devis a une fiche, la fiche VERROUILLÉE (`FOR UPDATE`), puis la décision C-C3 de
    *  L'APPELANT (`completerLaFiche`, la politique pure : le port ne la réécrit pas) ; (3) si elle dit oui, la fiche complétée par un `UPDATE` qui RE-POSE ses
-   *  conditions (nom absent, fiche non liée). ⚠ Refus de (1) : `{ ok: false }`, rien d'autre n'est lu ni écrit — le service relit pour choisir le code. */
+   *  conditions (nom absent, fiche non liée). ⚠ Refus de (1) : `{ ok: false }`, rien d'autre n'est lu ni écrit — le service relit pour choisir le code.
+   *  ⛔ D355 (R-2) : si (3) a VRAIMENT écrit la fiche (compte 1), la ligne `audit_logs` `client_record.complete_names` s'écrit dans cette MÊME transaction (le champ, le devis, jamais un nom) ; `memberId` est le
+   *  membre dont la session a passé le garde (`null` : couche éteinte). La copie du nom sur le devis n'est PAS une écriture de fiche : elle n'a pas de ligne. */
   completerNomDuClient(args: {
     readonly userId: string;
+    readonly memberId: string | null;
     readonly quoteId: string;
     readonly champ: QuoteClientNameField;
     readonly nom: string;

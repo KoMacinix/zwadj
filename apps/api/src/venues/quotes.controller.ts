@@ -10,7 +10,7 @@
 // un acte que le système ne faisait pas et que le pro ne faisait pas non plus —
 // il cliquait pour débloquer l'étape suivante. Le nouveau verbe ne débloque
 // rien, il ENREGISTRE ce qui a eu lieu.
-import { RequiresStaffCapability } from "../staff/staff-decorators";
+import { CurrentStaff, RequiresStaffCapability, type StaffContext } from "../staff/staff-decorators";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -205,8 +205,9 @@ export class QuotesController {
   completeClientName(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @Body(new ZodValidationPipe(quoteClientNameSchema)) body: QuoteClientNameInput
+    @Body(new ZodValidationPipe(quoteClientNameSchema)) body: QuoteClientNameInput,
+    @CurrentStaff() staff: StaffContext | undefined
   ): Promise<QuoteDTO> {
-    return this.quotes.completeClientName(user.userId, id, body);
+    return this.quotes.completeClientName(user.userId, id, body, staff?.memberId ?? null);
   }
 }

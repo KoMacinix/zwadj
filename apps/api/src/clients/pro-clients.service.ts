@@ -14,6 +14,7 @@ import {
   type ClientRecordNamesInput,
   type ClientRecordUpdateInput
 } from "@zwadj/types";
+import type { FicheAuteur } from "./client-record-audit";
 import { decisionCreation, estContactDuPro, peutModifier } from "./pro-client-policy";
 import { PRO_CLIENT_STORE, type FicheRow, type ProClientStore } from "./pro-client-store.types";
 
@@ -45,17 +46,23 @@ export class ProClientsService {
   }
 
   /** ⛔ K-2 (MD-1, MD-2, MD-4) — crée la fiche, ou REND celle qui existe (telle quelle) ; le contact du pro est refusé avant toute écriture ; le numéro et
-   *  l'e-mail sur deux fiches différentes : 409, rien n'est fusionné. */
-  async create(userId: string, input: ClientRecordCreateInput): Promise<ClientRecordCreateDTO> {
+   *  l'e-mail sur deux fiches différentes : 409, rien n'est fusionné. ⛔ D355 (R-2) : `memberId` est le membre dont la session a passé le garde (`null` : couche éteinte) ; avec `userId` (le Bearer) il fait
+   *  l'AUTEUR que le magasin écrit dans la ligne de journal, dans la transaction de l'écriture. */
+  async create(userId: string, input: ClientRecordCreateInput, memberId: string | null): Promise<ClientRecordCreateDTO> {
     const pro = await this.fiches.contactDuPro(userId);
     if (pro === null) this.throwNotFound();
+    const auteur: FicheAuteur = { userId, memberId };
     if (estContactDuPro(input, pro)) this.throwProContact();
-    const resultat = await this.fiches.creerSiAbsente(pro.proProfileId, {
-      phone: input.phone ?? null,
-      email: input.email ?? null,
-      nameAr: input.nameAr ?? null,
-      nameLatin: input.nameLatin ?? null
-    });
+    const resultat = await this.fiches.creerSiAbsente(
+      pro.proProfileId,
+      {
+        phone: input.phone ?? null,
+        email: input.email ?? null,
+        nameAr: input.nameAr ?? null,
+        nameLatin: input.nameLatin ?? null
+      },
+      auteur
+    );
     if (resultat.cree) return { created: true, record: toClientRecordDTO(resultat.fiche) };
     const decision = decisionCreation(resultat.parTelephone, resultat.parEmail);
     if (decision.kind === "rendre") return { created: false, record: toClientRecordDTO(decision.fiche) };
@@ -64,9 +71,9 @@ export class ProClientsService {
   }
 
   /** ⛔ K-3 (MD-7, MD-6) — complète un nom MANQUANT ; un nom présent n'est jamais remplacé, une fiche liée ne se complète pas. */
-  async completeNames(userId: string, id: string, input: ClientRecordNamesInput): Promise<ClientRecordDTO> {
+  async completeNames(userId: string, id: string, input: ClientRecordNamesInput, memberId: string | null): Promise<ClientRecordDTO> {
     if (!UUID_PATTERN.test(id)) this.throwNotFound();
-    const resultat = await this.fiches.completerNoms(userId, id, input);
+    const resultat = await this.fiches.completerNoms(userId, id, input, { userId, memberId });
     if (resultat.ok) return toClientRecordDTO(resultat.fiche);
     if (resultat.actuelle === null) this.throwNotFound();
     if (!peutModifier(resultat.actuelle)) this.throwLinked();
@@ -74,14 +81,14 @@ export class ProClientsService {
   }
 
   /** ⛔ K-3b (S-48 ; MD-2, MD-4, MD-6) — modifie une fiche du pro (DB-11). Ne touche aucune copie déjà faite sur un devis (R8) : il n'écrit que la fiche. */
-  async update(userId: string, id: string, input: ClientRecordUpdateInput): Promise<ClientRecordDTO> {
+  async update(userId: string, id: string, input: ClientRecordUpdateInput, memberId: string | null): Promise<ClientRecordDTO> {
     if (!UUID_PATTERN.test(id)) this.throwNotFound();
     if (input.phone !== undefined || input.email !== undefined) {
       const pro = await this.fiches.contactDuPro(userId);
       if (pro === null) this.throwNotFound();
       if (estContactDuPro(input, pro)) this.throwProContact();
     }
-    const resultat = await this.fiches.modifier(userId, id, input);
+    const resultat = await this.fiches.modifier(userId, id, input, { userId, memberId });
     if (resultat.ok) return toClientRecordDTO(resultat.fiche);
     if (resultat.raison === "unicite") this.throwIdentifiersConflict();
     if (resultat.actuelle === null) this.throwNotFound();

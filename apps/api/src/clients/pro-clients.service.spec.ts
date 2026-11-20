@@ -6,11 +6,14 @@ import { join } from "node:path";
 import { BadRequestException, ConflictException, NotFoundException } from "@nestjs/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ProClientsService } from "./pro-clients.service";
+import type { FicheAuteur } from "./client-record-audit";
 import type { FicheRow, ProClientStore } from "./pro-client-store.types";
 
 const USER_ID = "018f0000-0000-7000-8000-00000000aaaa";
 const PP_ID = "018f0000-0000-7000-8000-00000000bbbb";
 const FICHE_ID = "018f0000-0000-7000-8000-00000000cccc";
+// D355 (rang 57, R-2) : le membre du personnel dont la session a passé le garde — `null` quand la couche est éteinte (l'acteur est alors le compte commun seul).
+const MEMBRE = "018f0000-0000-7000-8000-00000000dddd";
 const CONTACT_DU_PRO = { proProfileId: PP_ID, phone: "+213550000009", phone2: "+213770000009", email: "pro@example.dz" };
 
 const ligne = (over: Partial<FicheRow> = {}): FicheRow => ({
@@ -32,15 +35,15 @@ function build() {
     contactDuPro: vi.fn(async (_userId: string) => CONTACT_DU_PRO as typeof CONTACT_DU_PRO | null),
     rechercher: vi.fn(async (_userId: string, _critere: { phone: string } | { email: string }) => null as FicheRow | null),
     creerSiAbsente: vi.fn(
-      async (_proProfileId: string, _donnees: { phone: string | null; email: string | null; nameAr: string | null; nameLatin: string | null }) =>
+      async (_proProfileId: string, _donnees: { phone: string | null; email: string | null; nameAr: string | null; nameLatin: string | null }, _auteur: FicheAuteur) =>
         ({ cree: true, fiche: ligne() }) as Awaited<ReturnType<ProClientStore["creerSiAbsente"]>>
     ),
     completerNoms: vi.fn(
-      async (_userId: string, _id: string, _noms: { nameAr?: string; nameLatin?: string }) =>
+      async (_userId: string, _id: string, _noms: { nameAr?: string; nameLatin?: string }, _auteur: FicheAuteur) =>
         ({ ok: true, fiche: ligne() }) as Awaited<ReturnType<ProClientStore["completerNoms"]>>
     ),
     modifier: vi.fn(
-      async (_userId: string, _id: string, _champs: { phone?: string; email?: string; nameAr?: string; nameLatin?: string }) =>
+      async (_userId: string, _id: string, _champs: { phone?: string; email?: string; nameAr?: string; nameLatin?: string }, _auteur: FicheAuteur) =>
         ({ ok: true, fiche: ligne() }) as Awaited<ReturnType<ProClientStore["modifier"]>>
     )
   } satisfies ProClientStore;
@@ -106,33 +109,33 @@ describe("K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écri
 
   it("⛔ MD-4 — le numéro, le second numéro ou l'e-mail du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN", async () => {
     for (const contact of [{ phone: "+213550000009" }, { phone: "+213770000009" }, { email: "pro@example.dz" }]) {
-      estRefus(await refus(ctx.service.create(USER_ID, { ...contact, nameLatin: "Amina" })), BadRequestException, "CLIENT_IS_PRO_CONTACT");
+      estRefus(await refus(ctx.service.create(USER_ID, { ...contact, nameLatin: "Amina" }, MEMBRE)), BadRequestException, "CLIENT_IS_PRO_CONTACT");
     }
     expect(ctx.store.creerSiAbsente).not.toHaveBeenCalled();
   });
 
   it("une fiche créée : `{ created: true, record }`, et le port reçoit le PROFIL du pro, les valeurs telles que le contrat les a rendues", async () => {
-    const r = await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Amina Bensalem" });
+    const r = await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Amina Bensalem" }, MEMBRE);
     expect(r.created).toBe(true);
     expect(r.record.id).toBe(FICHE_ID);
-    expect(ctx.store.creerSiAbsente).toHaveBeenCalledWith(PP_ID, { phone: "+213555123456", email: null, nameAr: null, nameLatin: "Amina Bensalem" });
+    expect(ctx.store.creerSiAbsente).toHaveBeenCalledWith(PP_ID, { phone: "+213555123456", email: null, nameAr: null, nameLatin: "Amina Bensalem" }, { userId: USER_ID, memberId: MEMBRE });
   });
 
   it("rien n'a été inséré, la fiche du numéro existe : `{ created: false, record }` — la fiche EXISTANTE, telle quelle", async () => {
     const existante = ligne({ nameLatin: "Premier Nom" });
     ctx.store.creerSiAbsente.mockResolvedValue({ cree: false, parTelephone: existante, parEmail: null });
-    const r = await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Autre Nom" });
+    const r = await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Autre Nom" }, MEMBRE);
     expect(r).toEqual({ created: false, record: expect.objectContaining({ id: FICHE_ID, nameLatin: "Premier Nom" }) });
   });
 
   it("⛔ MD-2 — le numéro et l'e-mail sur DEUX fiches : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT", async () => {
     ctx.store.creerSiAbsente.mockResolvedValue({ cree: false, parTelephone: ligne({ id: "a" }), parEmail: ligne({ id: "b" }) });
-    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", email: "karim@example.dz", nameLatin: "X" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
+    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", email: "karim@example.dz", nameLatin: "X" }, MEMBRE)), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 
   it("rien inséré ET rien relu (une modification simultanée a déplacé l'identifiant) : 409 plutôt qu'une fiche inventée", async () => {
     ctx.store.creerSiAbsente.mockResolvedValue({ cree: false, parTelephone: null, parEmail: null });
-    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "X" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
+    estRefus(await refus(ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "X" }, MEMBRE)), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 });
 
@@ -143,23 +146,23 @@ describe("K-3 — compléter un nom : le refus du port devient le BON code", () 
   });
 
   it("un identifiant hors motif UUID : 404 SANS toucher le port", async () => {
-    estRefus(await refus(ctx.service.completeNames(USER_ID, "pas-un-uuid", { nameAr: "آمنة" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
+    estRefus(await refus(ctx.service.completeNames(USER_ID, "pas-un-uuid", { nameAr: "آمنة" }, MEMBRE)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
     expect(ctx.store.completerNoms).not.toHaveBeenCalled();
   });
 
   it("refus, fiche introuvable (absente, ou d'un autre pro) : 404 CLIENT_RECORD_NOT_FOUND", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: null });
-    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" }, MEMBRE)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
   });
 
   it("⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: ligne({ linkedUserId: "u1", linkedAt: new Date() }) });
-    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" })), ConflictException, "CLIENT_RECORD_LINKED");
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" }, MEMBRE)), ConflictException, "CLIENT_RECORD_LINKED");
   });
 
   it("⛔ MD-7 — refus, le nom est déjà là : 409 CLIENT_RECORD_NAME_ALREADY_SET", async () => {
     ctx.store.completerNoms.mockResolvedValue({ ok: false, actuelle: ligne({ nameAr: "آمنة" }) });
-    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "أمينة" })), ConflictException, "CLIENT_RECORD_NAME_ALREADY_SET");
+    estRefus(await refus(ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "أمينة" }, MEMBRE)), ConflictException, "CLIENT_RECORD_NAME_ALREADY_SET");
   });
 });
 
@@ -170,31 +173,73 @@ describe("K-3b — modifier une fiche : contact du pro, unicité, fiche liée", 
   });
 
   it("⛔ MD-4 — le contact du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN", async () => {
-    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213770000009" })), BadRequestException, "CLIENT_IS_PRO_CONTACT");
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213770000009" }, MEMBRE)), BadRequestException, "CLIENT_IS_PRO_CONTACT");
     expect(ctx.store.modifier).not.toHaveBeenCalled();
   });
 
   it("⛔ MD-2 — l'unicité refusée par la base : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT", async () => {
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "unicite" });
-    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213661234567" })), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { phone: "+213661234567" }, MEMBRE)), ConflictException, "CLIENT_RECORD_IDENTIFIERS_CONFLICT");
   });
 
   it("⛔ MD-6 — la fiche LIÉE : 409 CLIENT_RECORD_LINKED ; introuvable : 404", async () => {
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "absenteOuLiee", actuelle: ligne({ linkedUserId: "u1", linkedAt: new Date() }) });
-    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })), ConflictException, "CLIENT_RECORD_LINKED");
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" }, MEMBRE)), ConflictException, "CLIENT_RECORD_LINKED");
     ctx.store.modifier.mockResolvedValue({ ok: false, raison: "absenteOuLiee", actuelle: null });
-    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" })), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
+    estRefus(await refus(ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "X" }, MEMBRE)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
   });
 
   it("la fiche modifiée est rendue en DTO", async () => {
     ctx.store.modifier.mockResolvedValue({ ok: true, fiche: ligne({ nameLatin: "Nouveau Nom" }) });
-    const r = await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" });
+    const r = await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" }, MEMBRE);
     expect(r.nameLatin).toBe("Nouveau Nom");
     expect(r.linked).toBe(false);
   });
 });
 
-// ── ⛔ MD-10 (M-4) — GARDE DE SOURCE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// ── ⛔ R-2 (D355) — l'AUTEUR de l'écriture voyage jusqu'au port ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// Le service ne décide pas de la ligne de journal : le MAGASIN l'écrit, dans la transaction de l'écriture. Il lui faut l'auteur — le compte commun (le Bearer) ET le membre dont la session a passé le garde (`null`
+// quand la couche est éteinte). Ce que ce service tient : il ne le fabrique pas, il ne le perd pas, et un refus d'avant l'écriture n'appelle pas le port (aucune trace ne peut naître d'une action refusée).
+describe("⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction", () => {
+  let ctx: ReturnType<typeof build>;
+  beforeEach(() => {
+    ctx = build();
+  });
+
+  it("K-2 : `creerSiAbsente` reçoit le profil, les valeurs ET l'auteur `{ userId, memberId }` — le membre est celui du garde, le compte est le Bearer", async () => {
+    await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Amina Bensalem" }, MEMBRE);
+    expect(ctx.store.creerSiAbsente).toHaveBeenCalledTimes(1);
+    expect(ctx.store.creerSiAbsente.mock.calls[0]![2]).toEqual({ userId: USER_ID, memberId: MEMBRE });
+  });
+
+  it("K-3 : `completerNoms` reçoit l'auteur en dernier argument", async () => {
+    await ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" }, MEMBRE);
+    expect(ctx.store.completerNoms).toHaveBeenCalledWith(USER_ID, FICHE_ID, { nameAr: "آمنة" }, { userId: USER_ID, memberId: MEMBRE });
+  });
+
+  it("K-3b : `modifier` reçoit l'auteur en dernier argument", async () => {
+    await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" }, MEMBRE);
+    expect(ctx.store.modifier).toHaveBeenCalledWith(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" }, { userId: USER_ID, memberId: MEMBRE });
+  });
+
+  it("⛔ la couche ÉTEINTE : le membre est `null` aux trois écritures — l'auteur est le compte commun seul, jamais un membre inventé", async () => {
+    await ctx.service.create(USER_ID, { phone: "+213555123456", nameLatin: "Amina" }, null);
+    await ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة" }, null);
+    await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau Nom" }, null);
+    expect(ctx.store.creerSiAbsente.mock.calls[0]![2]).toEqual({ userId: USER_ID, memberId: null });
+    expect(ctx.store.completerNoms.mock.calls[0]![3]).toEqual({ userId: USER_ID, memberId: null });
+    expect(ctx.store.modifier.mock.calls[0]![3]).toEqual({ userId: USER_ID, memberId: null });
+  });
+
+  it("⛔ un refus D'AVANT l'écriture (le contact du pro) n'appelle PAS le port : aucune ligne de journal ne peut naître d'une action refusée", async () => {
+    await refus(ctx.service.create(USER_ID, { phone: "+213550000009", nameLatin: "Amina" }, MEMBRE));
+    await refus(ctx.service.update(USER_ID, FICHE_ID, { email: "pro@example.dz" }, MEMBRE));
+    expect(ctx.store.creerSiAbsente).not.toHaveBeenCalled();
+    expect(ctx.store.modifier).not.toHaveBeenCalled();
+  });
+});
+
+// ── ⛔ MD-10 (M-4) — GARDE DE SOURCE─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Les tests ci-dessus prouvent que `lookup` n'appelle pas `contactDuPro` ; ils ne voient pas l'ADAPTATEUR, que le double remplace. Celui-ci pourrait
 // sélectionner la relation du compte dans sa recherche, ou joindre la table `users` en SQL brut, et aucun double ne le dirait. La garde lit donc la SOURCE :
 // le corps de `rechercher`, la sélection qu'il rend (`FICHE_SELECT`) et le corps de `lookup` — commentaires RETIRÉS, puisqu'ils nomment justement ce qui

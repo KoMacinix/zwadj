@@ -457,12 +457,13 @@ export class QuotesService {
    *  La copie se complète par compare-and-set sur `NULL` dans le port ; la FICHE, dans la même transaction, seulement si c'est la même personne (C-C3 :
    *  `completeAussiLaFiche`, la politique pure, passée au port qui ne la réécrit pas). ⚠ Aucun statut n'est lu ni écrit : la copie du nom n'est pas une
    *  transition, et elle ne touche aucun montant. */
-  async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput): Promise<QuoteDTO> {
+  async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput, memberId: string | null): Promise<QuoteDTO> {
     if (!UUID_PATTERN.test(quoteId)) this.throwNotFound();
     const champ = QUOTE_CLIENT_NAME_FIELD[input.locale];
     const champDeLaFiche = champ === "clientNameAr" ? "nameAr" : "nameLatin";
     const resultat = await this.devis.completerNomDuClient({
       userId,
+      memberId,
       quoteId,
       champ,
       nom: input.name,

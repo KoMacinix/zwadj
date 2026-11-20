@@ -4,7 +4,7 @@
 // connecté (D149) — une fiche d'un autre pro rend le MÊME 404 qu'une fiche absente (D47).
 // ⚠ `POST lookup` et `POST` (créer ou rendre) répondent 200 : la recherche est une LECTURE (son corps porte l'identifiant, qu'une adresse de requête n'a pas à
 // recopier dans les journaux), et la création est IDEMPOTENTE — `created` dit si la fiche vient de naître.
-import { RequiresStaffCapability } from "../staff/staff-decorators";
+import { CurrentStaff, RequiresStaffCapability, type StaffContext } from "../staff/staff-decorators";
 import { Body, Controller, HttpCode, HttpStatus, Param, Patch, Post } from "@nestjs/common";
 import { ApiBadRequestResponse, ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
@@ -64,9 +64,10 @@ export class ProClientsController {
   @ApiConflictResponse({ description: "CLIENT_RECORD_IDENTIFIERS_CONFLICT." })
   create(
     @CurrentUser() user: AuthenticatedUser,
-    @Body(new ZodValidationPipe(clientRecordCreateSchema)) body: ClientRecordCreateInput
+    @Body(new ZodValidationPipe(clientRecordCreateSchema)) body: ClientRecordCreateInput,
+    @CurrentStaff() staff: StaffContext | undefined
   ): Promise<ClientRecordCreateDTO> {
-    return this.clients.create(user.userId, body);
+    return this.clients.create(user.userId, body, staff?.memberId ?? null);
   }
 
   @Patch(":id/names")
@@ -77,9 +78,10 @@ export class ProClientsController {
   completeNames(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @Body(new ZodValidationPipe(clientRecordNamesSchema)) body: ClientRecordNamesInput
+    @Body(new ZodValidationPipe(clientRecordNamesSchema)) body: ClientRecordNamesInput,
+    @CurrentStaff() staff: StaffContext | undefined
   ): Promise<ClientRecordDTO> {
-    return this.clients.completeNames(user.userId, id, body);
+    return this.clients.completeNames(user.userId, id, body, staff?.memberId ?? null);
   }
 
   @Patch(":id")
@@ -96,8 +98,9 @@ export class ProClientsController {
   update(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @Body(new ZodValidationPipe(clientRecordUpdateSchema)) body: ClientRecordUpdateInput
+    @Body(new ZodValidationPipe(clientRecordUpdateSchema)) body: ClientRecordUpdateInput,
+    @CurrentStaff() staff: StaffContext | undefined
   ): Promise<ClientRecordDTO> {
-    return this.clients.update(user.userId, id, body);
+    return this.clients.update(user.userId, id, body, staff?.memberId ?? null);
   }
 }

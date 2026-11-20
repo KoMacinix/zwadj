@@ -16,6 +16,8 @@ import { QUOTE_SELECT } from "./quote-store.types";
 
 const VENUE_ID = "018f0000-0000-7000-8000-00000000eeee";
 const QUOTE_ID = "018f0000-0000-7000-8000-00000000dddd";
+// D355 (rang 57, R-2) : le membre du personnel dont la session a passé le garde — la ligne de journal de la fiche le porte (`actor_member_id`), `null` quand la couche est éteinte.
+const MEMBRE = "018f0000-0000-7000-8000-00000000aaaa";
 const CHAINE = "018f0000-0000-7000-8000-00000000cccc";
 // Rang 39 (D333, L35-3) — des valeurs DISTINCTES pour ce que le compteur rend (89), ce que la tête porte (2026 / 42) et l'identifiant pré-généré : une interversion ne passe pas inaperçue.
 const NOUVEL_ID = "018f0000-0000-7000-8000-00000000bbbb";
@@ -514,7 +516,7 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     const ctx = build();
     const { store, prisma, tx } = ctx;
     relire(ctx, { id: QUOTE_ID, clientRecordId: null, clientNameAr: "آمنة", clientNameLatin: "Amina" });
-    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
+    await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
     expect(tx.quote.updateMany).toHaveBeenCalledWith({
       where: { id: QUOTE_ID, isOfficial: true, clientNameAr: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
@@ -529,7 +531,7 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
       return { count: 0 };
     });
     await expect(
-      store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours })
+      store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours })
     ).resolves.toEqual({ ok: false });
     expect(journal).toEqual(["updateMany"]);
     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
@@ -540,8 +542,8 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     const { store, tx, journal } = ctx;
     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
     const decide = vi.fn(() => true);
-    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة بن سالم", completerLaFiche: decide });
-    expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche FOR UPDATE", "fiche updateMany"]);
+    await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة بن سالم", completerLaFiche: decide });
+    expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche FOR UPDATE", "fiche updateMany", "audit"]);
     expect(decide).toHaveBeenCalledWith(
       { id: FICHE, nameAr: null, nameLatin: "Amina Bensalem", linkedUserId: null },
       { ar: "آمنة بن سالم", latin: "Amina Bensalem" }
@@ -557,7 +559,7 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     const ctx = build();
     const { store, tx } = ctx;
     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "ياسين", clientNameLatin: "Yacine" });
-    const r = await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameAr", nom: "ياسين", completerLaFiche: jamais });
+    const r = await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "ياسين", completerLaFiche: jamais });
     expect(r.ok).toBe(true);
     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
   });
@@ -566,16 +568,86 @@ describe("⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, pui
     const ctx = build();
     const { store, tx, journal } = ctx;
     relire(ctx, { id: QUOTE_ID, clientRecordId: null, clientNameAr: null, clientNameLatin: "Amina" });
-    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
     expect(journal).toEqual(["updateMany", "findUniqueOrThrow"]);
     expect(tx.proClientRecord.updateMany).not.toHaveBeenCalled();
+  });
+
+  // ── R-2 (D355) : la ligne de journal de la FICHE, écrite dans la transaction, seulement quand la fiche a VRAIMENT été écrite ───────────────────────────────────────────────────────────────────────────
+  it("⛔ R-2 — la fiche complétée écrit UNE ligne de journal, DANS la transaction, APRÈS l'écriture : `client_record.complete_names`, le compte ET le membre, le champ écrit, le devis — et AUCUN nom", async () => {
+    const ctx = build();
+    const { store, tx, journal } = ctx;
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
+    await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة بن سالم", completerLaFiche: toujours });
+    expect(tx.auditLog.create).toHaveBeenCalledTimes(1);
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: {
+        actorId: "u-1",
+        actorRole: "PRO",
+        actorMemberId: MEMBRE,
+        action: "client_record.complete_names",
+        entityType: "client_record",
+        entityId: FICHE,
+        after: { fields: ["nameAr"], quoteId: QUOTE_ID }
+      }
+    });
+    expect(journal.indexOf("audit"), "la ligne vient APRÈS l'écriture de la fiche").toBeGreaterThan(journal.indexOf("fiche updateMany"));
+    expect(JSON.stringify(tx.auditLog.create.mock.calls[0]![0]), "ni le nom écrit, ni le nom latin de la fiche : le journal ne recopie aucune valeur").not.toMatch(/آمنة|Amina|Bensalem/);
+  });
+
+  it("⛔ R-2 — le champ LATIN : la ligne dit `nameLatin`, jamais `nameAr`", async () => {
+    const ctx = build();
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    await ctx.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    expect(ctx.tx.auditLog.create).toHaveBeenCalledTimes(1);
+    expect((ctx.tx.auditLog.create.mock.calls[0]![0] as { data: { after: unknown } }).data.after).toEqual({ fields: ["nameLatin"], quoteId: QUOTE_ID });
+  });
+
+  it("⛔ R-2 — la couche ÉTEINTE : `actorMemberId` vaut `null` (la clé est présente) — l'acteur est le compte commun seul", async () => {
+    const ctx = build();
+    relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    await ctx.store.completerNomDuClient({ userId: "u-1", memberId: null, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
+    expect(ctx.tx.auditLog.create).toHaveBeenCalledTimes(1);
+    const data = (ctx.tx.auditLog.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(data.actorMemberId).toBeNull();
+    expect(Object.keys(data)).toContain("actorMemberId");
+    expect(data.actorId).toBe("u-1");
+  });
+
+  it("⛔ R-2 — la fiche N'A PAS été écrite (la politique dit NON, ou l'`updateMany` conditionné ne trouve rien) : AUCUNE ligne — une trace sans action est interdite", async () => {
+    const a = build();
+    relire(a, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "ياسين", clientNameLatin: "Yacine" });
+    await a.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "ياسين", completerLaFiche: jamais });
+    expect(a.tx.auditLog.create, "la politique dit NON : la fiche n'est pas écrite").not.toHaveBeenCalled();
+
+    const b = build();
+    relire(b, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
+    b.tx.proClientRecord.updateMany.mockImplementation(async () => {
+      b.journal.push("fiche updateMany");
+      return { count: 0 };
+    });
+    await b.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameAr", nom: "آمنة", completerLaFiche: toujours });
+    expect(b.tx.proClientRecord.updateMany, "l'écriture conditionnée a bien été tentée").toHaveBeenCalledTimes(1);
+    expect(b.tx.auditLog.create, "compte 0 : rien n'a été écrit, rien n'est consigné").not.toHaveBeenCalled();
+  });
+
+  it("⛔ R-2 — un devis SANS fiche, ou un refus du compare-and-set de la copie : AUCUNE ligne de fiche (la copie du nom sur le devis n'est PAS une écriture de fiche)", async () => {
+    const a = build();
+    relire(a, { id: QUOTE_ID, clientRecordId: null, clientNameAr: null, clientNameLatin: "Amina" });
+    await a.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    expect(a.tx.auditLog.create).not.toHaveBeenCalled();
+
+    const b = build();
+    b.tx.quote.updateMany.mockImplementation(async () => ({ count: 0 }));
+    await expect(b.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours })).resolves.toEqual({ ok: false });
+    expect(b.tx.auditLog.create).not.toHaveBeenCalled();
   });
 
   it("le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche", async () => {
     const ctx = build();
     const { store, tx } = ctx;
     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "آمنة", clientNameLatin: "Amina" });
-    await store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
+    await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: toujours });
     expect(tx.quote.updateMany.mock.calls[0]![0]).toMatchObject({ where: { clientNameLatin: null }, data: { clientNameLatin: "Amina" } });
     expect(tx.proClientRecord.updateMany).toHaveBeenCalledWith({ where: { id: FICHE, nameLatin: null, linkedUserId: null }, data: { nameLatin: "Amina" } });
   });
@@ -691,7 +763,7 @@ describe("⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un br
   it("⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro", async () => {
     const ctx = build();
     ctx.tx.quote.findUniqueOrThrow.mockResolvedValue({ id: QUOTE_ID, clientRecordId: null });
-    await ctx.store.completerNomDuClient({ userId: "u-1", quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: () => false });
+    await ctx.store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE, quoteId: QUOTE_ID, champ: "clientNameLatin", nom: "Amina", completerLaFiche: () => false });
     expect(ctx.tx.quote.updateMany).toHaveBeenCalledWith({
       where: { id: QUOTE_ID, isOfficial: true, clientNameLatin: null, venue: { deletedAt: null, owner: { userId: "u-1" } } },
       data: { clientNameLatin: "Amina" }

@@ -7,6 +7,7 @@ import { Injectable } from "@nestjs/common";
 import { BookingStatus, type QuoteClientNameField, type QuoteStatus } from "@zwadj/types";
 import type { Prisma } from "../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { ficheAuditEntry } from "../clients/client-record-audit";
 import type { CopieDuNom } from "../clients/pro-client-policy";
 import {
   type DevisChiffre,
@@ -381,6 +382,7 @@ export class PrismaQuoteStore implements QuoteStore {
   /** ⛔ Rang 41 (D336, K-5) — UNE transaction (voir le port) : la copie par compare-and-set, PUIS la fiche sous verrou et sous la décision de l'appelant. */
   async completerNomDuClient(args: {
     readonly userId: string;
+    readonly memberId: string | null;
     readonly quoteId: string;
     readonly champ: QuoteClientNameField;
     readonly nom: string;
@@ -404,10 +406,22 @@ export class PrismaQuoteStore implements QuoteStore {
           const fiche: FicheDuDevis = { id: ligne.id, nameAr: ligne.name_ar, nameLatin: ligne.name_latin, linkedUserId: ligne.linked_user_id };
           if (args.completerLaFiche(fiche, { ar: devis.clientNameAr, latin: devis.clientNameLatin })) {
             // L'écriture RE-POSE ses conditions : jamais remplacer un nom de la fiche, jamais une fiche liée — même si la décision se trompait.
-            await tx.proClientRecord.updateMany({
+            const completee = await tx.proClientRecord.updateMany({
               where: { id: fiche.id, ...(enArabe ? { nameAr: null } : { nameLatin: null }), linkedUserId: null },
               data: enArabe ? { nameAr: args.nom } : { nameLatin: args.nom }
             });
+            // ⛔ D355 (R-2) — la ligne de journal de la FICHE, dans la MÊME transaction, seulement si l'écriture conditionnée a VRAIMENT écrit (compte 1) : la copie du nom sur le devis n'est pas une écriture de fiche.
+            if (completee.count === 1) {
+              await tx.auditLog.create({
+                data: ficheAuditEntry({
+                  auteur: { userId: args.userId, memberId: args.memberId },
+                  action: "client_record.complete_names",
+                  ficheId: fiche.id,
+                  champs: [enArabe ? "nameAr" : "nameLatin"],
+                  quoteId: args.quoteId
+                })
+              });
+            }
           }
         }
       }

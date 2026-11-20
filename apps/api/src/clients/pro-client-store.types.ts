@@ -5,6 +5,7 @@
 // ⚠ L'unicité `(pro, numéro)` et `(pro, e-mail)` est en base, en index PARTIELS (D186) : Prisma ne la connaît pas, d'où `creerSiAbsente` en SQL
 // (`INSERT … ON CONFLICT DO NOTHING`) suivie d'une relecture — jamais « lire puis insérer » (MD-1).
 import type { Prisma } from "../generated/prisma/client";
+import type { FicheAuteur } from "./client-record-audit";
 
 export const FICHE_SELECT = {
   id: true,
@@ -64,16 +65,19 @@ export interface ProClientStore {
   rechercher(userId: string, critere: CritereRecherche): Promise<FicheRow | null>;
 
   /** ⛔ K-2 (MD-1) — `INSERT … ON CONFLICT DO NOTHING`, puis, si rien n'est inséré, la relecture des fiches du numéro et de l'e-mail. Une fiche existante n'est
-   *  JAMAIS modifiée ici. */
-  creerSiAbsente(proProfileId: string, donnees: DonneesFiche): Promise<ResultatCreation>;
+   *  JAMAIS modifiée ici. ⛔ D355 (R-2) : l'insertion et sa ligne de journal (`client_record.create`) vivent dans UNE transaction ; une fiche rendue telle quelle n'écrit rien, donc rien n'est consigné. */
+  creerSiAbsente(proProfileId: string, donnees: DonneesFiche, auteur: FicheAuteur): Promise<ResultatCreation>;
 
-  /** ⛔ K-3 (MD-7) — complète les noms FOURNIS, chacun seulement s'il est NULL, sur une fiche NON liée du pro : un seul `UPDATE`, conditionné. */
-  completerNoms(userId: string, id: string, noms: { readonly nameAr?: string; readonly nameLatin?: string }): Promise<ResultatComplement>;
+  /** ⛔ K-3 (MD-7) — complète les noms FOURNIS, chacun seulement s'il est NULL, sur une fiche NON liée du pro : un seul `UPDATE`, conditionné. ⛔ D355 (R-2) : il s'écrit dans UNE transaction avec sa ligne de journal
+   *  (`client_record.complete_names`), qui n'existe que si l'`UPDATE` a écrit (compte 1). */
+  completerNoms(userId: string, id: string, noms: { readonly nameAr?: string; readonly nameLatin?: string }, auteur: FicheAuteur): Promise<ResultatComplement>;
 
-  /** ⛔ K-3b (MD-6, MD-2) — modifie les champs FOURNIS d'une fiche du pro, sous verrou de sa ligne, si elle n'est pas liée ; une violation d'unicité est RENDUE. */
+  /** ⛔ K-3b (MD-6, MD-2) — modifie les champs FOURNIS d'une fiche du pro, sous verrou de sa ligne, si elle n'est pas liée ; une violation d'unicité est RENDUE. ⛔ D355 (R-2) : la ligne de journal
+   *  (`client_record.update`, les NOMS des champs envoyés) s'écrit dans la même transaction, après l'écriture ; une violation d'unicité l'annule : rien n'est consigné. */
   modifier(
     userId: string,
     id: string,
-    champs: { readonly phone?: string; readonly email?: string; readonly nameAr?: string; readonly nameLatin?: string }
+    champs: { readonly phone?: string; readonly email?: string; readonly nameAr?: string; readonly nameLatin?: string },
+    auteur: FicheAuteur
   ): Promise<ResultatModification>;
 }
