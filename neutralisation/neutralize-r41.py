@@ -203,10 +203,10 @@ cible("A-2. ⛔ la recherche ne filtre plus par le PRO : la fiche d'un autre pro
 cible("A-3. ⛔ MD-1 — l'insertion ne fait plus « rien sur conflit » : un doublon lève", MAGASIN_FICHES,
       "      ON CONFLICT DO NOTHING\n", "      -- (aucun conflit géré)\n", {"int-fiches": "MD-1 — DIX créations SIMULTANÉES du même numéro"})
 cible("A-4. ⛔ MD-6 — le complément d'un nom écrit sur une fiche LIÉE", MAGASIN_FICHES,
-      "        linkedUserId: null,\n        ...(noms.nameAr !== undefined ? { nameAr: null } : {}),", "        linkedUserId: undefined,\n        ...(noms.nameAr !== undefined ? { nameAr: null } : {}),",
+      "          linkedUserId: null,\n          ...(noms.nameAr !== undefined ? { nameAr: null } : {}),", "          linkedUserId: undefined,\n          ...(noms.nameAr !== undefined ? { nameAr: null } : {}),",
       {"int-fiches": "MD-6 — une fiche LIÉE ne se complète pas : 409 CLIENT_RECORD_LINKED"})
 cible("A-5. ⛔ MD-7 — le complément REMPLACE un nom présent (le compare-and-set sur NULL saute)", MAGASIN_FICHES,
-      "        ...(noms.nameAr !== undefined ? { nameAr: null } : {}),\n        ...(noms.nameLatin !== undefined ? { nameLatin: null } : {})\n      },", "        ...{}\n      },",
+      "          ...(noms.nameAr !== undefined ? { nameAr: null } : {}),\n          ...(noms.nameLatin !== undefined ? { nameLatin: null } : {})\n        },", "          ...{}\n        },",
       {"int-fiches": "MD-7 — un nom PRÉSENT n'est jamais remplacé"})
 cible("A-6. ⛔ MD-6 — la modification écrit une fiche LIÉE", MAGASIN_FICHES,
       'if (actuelle.linkedUserId !== null) return { ok: false, raison: "absenteOuLiee", actuelle };', 'if (actuelle.id === "") return { ok: false, raison: "absenteOuLiee", actuelle };',

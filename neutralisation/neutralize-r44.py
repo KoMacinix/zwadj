@@ -297,7 +297,7 @@ cible("S-22. ⛔ le bon mot de passe actuel, refusé pour réutilisation, laisse
 cible("S-23. ⛔ MP-5 — le changement désigne la session d'un autre identifiant comme « courante » (la courante serait terminée)", SERVICE,
       "      currentSessionId: staff.sessionId,", "      currentSessionId: staff.memberId,", ["service", "int-mdp"])
 cible("S-24. ⛔ le remplacement n'est plus conditionné au hachage LU", SERVICE,
-      "      expectedPasswordHash: reservation.passwordHash,", "      expectedPasswordHash: newPasswordHash,", ["service", "int-mdp"])
+      "      currentSessionId: staff.sessionId,\n      expectedPasswordHash: reservation.passwordHash,", "      currentSessionId: staff.sessionId,\n      expectedPasswordHash: newPasswordHash,", ["service", "int-mdp"])
 cible("S-25. ⛔ un remplacement concurrent perdu n'est plus refusé (le service répond comme s'il avait réussi)", SERVICE,
       "    if (!changed.ok) throw motDePasseActuelRefuse();", "    if (false) throw motDePasseActuelRefuse();", ["service"])
 cible("S-26. ⛔ R-3 — l'identifiant refusé porte le code du mot de passe ACTUEL faux", SERVICE,
@@ -382,7 +382,7 @@ cible("A-29. ⛔ D305 — le CAS de la connexion n'exige plus un membre ACTIF", 
 cible("A-30. ⛔ MP-18 — le CAS de la connexion n'exige plus la salle du Bearer", MAGASIN,
       "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status", "WHERE id = ${input.memberId}::uuid AND pro_profile_id IS NOT NULL AND status", ["magasin"])
 cible("A-31. ⛔ D305 — un CAS refusé (compte 0) n'arrête plus la connexion", MAGASIN,
-      '      if (membre === undefined) return { ok: false, reason: "memberInactive" };', '      if (false) return { ok: false, reason: "memberInactive" };', ["magasin"])
+      '      if (membre === undefined) return { ok: false, reason: "memberChanged" };', '      if (false) return { ok: false, reason: "memberChanged" };', ["magasin"])
 cible("A-32. ⛔ MP-3 — n'importe quel appareil présenté est réutilisé (la politique n'est plus consultée)", MAGASIN,
       "      const reutilisable = pickReusableDevice(candidats, membre.id, input.proProfileId);", "      const reutilisable = candidats[0] ?? null;", ["magasin", "int-connexion"])
 cible("A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé", MAGASIN,
@@ -428,7 +428,7 @@ cible("A-51. ⛔ K-16 — l'audit de la déconnexion s'écrit même si la sessio
 cible("A-52. ⛔ K-16 — l'audit de la déconnexion désigne le membre à la place de la session", MAGASIN,
       'entityType: "staff_session", entityId: input.sessionId, after: { memberId: input.memberId } }', 'entityType: "staff_session", entityId: input.memberId, after: { memberId: input.memberId } }', ["magasin", "int-connexion"])
 cible("A-53. ⛔ K-18 — le remplacement du mot de passe n'est plus conditionné au hachage LU", MAGASIN,
-      "password_hash = ${input.expectedPasswordHash}", "password_hash IS NOT NULL", ["magasin", "int-mdp"])
+      "AND password_hash = ${input.expectedPasswordHash} AND status = 'ACTIVE'", "AND password_hash IS NOT NULL AND status = 'ACTIVE'", ["magasin", "int-mdp"])
 cible("A-54. ⛔ K-18 — le membre n'est plus VERROUILLÉ avant le remplacement", MAGASIN,
       "AND status = 'ACTIVE' FOR UPDATE`;", "AND status = 'ACTIVE' FOR SHARE`;", ["magasin"])
 cible("A-55. ⛔ MP-5 — les autres sessions prennent la fin « déconnexion » au lieu de « mot de passe changé »", MAGASIN,

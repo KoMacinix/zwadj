@@ -237,7 +237,7 @@ cible("A-16. ⛔ la création écrit TOUJOURS `isOfficial: true` (le brouillon d
       "isOfficial: reference.officiel", "isOfficial: true",
       {"magasin": "⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: tru", "int-devis": "un brouillon naît en DRAFT, v1, `isOfficial: false`, référence `BROUILLON-…`, sa"})
 cible("A-17. ⛔ l'audit s'écrit HORS de la transaction de la promotion (un échec d'audit laisserait le devis promu)", MAGASIN,
-      "await tx.auditLog.create({", "await this.prisma.auditLog.create({",
+      "\n      await tx.auditLog.create({", "\n      await this.prisma.auditLog.create({",
       {"magasin": "⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre t"})
 cible("A-18. ⛔ la sélection des lignes n'inclut plus `isOfficial` (le DTO le rendrait absent)", MAGASIN_TYPES,
       "isOfficial: true,", "isOfficial: false,",
