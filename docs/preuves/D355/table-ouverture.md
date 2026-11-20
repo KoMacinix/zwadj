@@ -146,3 +146,22 @@ docs/preuves/D355/tri-audit-d355a.txt
 ```
 
 **Pourquoi `recopier-citations.py`** : la table d'ouverture dit (§ E) que ses citations sont recopiées PAR SCRIPT, et que le script est versé au commit suivant — c'est celui-ci, **copie octet pour octet** de l'outil qui a écrit les six lignes de la table (sha256 `6d41dfd3ff38163a75f511559d69e6ec789dc4589a2236d512765d962b7da478`) ; une PIÈCE, jamais promue en instrument (D291). **Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu un ✗ (contrôle 2.h) qui était un défaut DE L'INSTRUMENT (la recherche des décisions S-2nn portait sur tout le fichier), confronté à la source avant d'être cru (D275) ; cette sortie est gardée, non retouchée ; la sortie finale vient de l'instrument réparé et rejoué EN ENTIER. **`audit-secrets-d355a.txt` et `tri-audit-d355a.txt`** : le premier audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
+
+
+### Extension 2 — les pièces des ROUGES, le second audit de secrets et son tri
+
+Écrite **avant** le commit qui verse les rouges, et donc **avant le premier commit de code** (D334, point 5). La règle des portes (`regle-portes.md`) et les deux cartes sont déjà commitées (premier versement) : les prédictions précèdent les mesures, `git log` le prouve. **Chemins COMPLETS** :
+
+```
+docs/preuves/D355/rouges/jouer-rouges.py
+docs/preuves/D355/rouges/lire-rouges.py
+docs/preuves/D355/rouges/rouge-unit.txt
+docs/preuves/D355/rouges/rouge-int.txt
+docs/preuves/D355/rouges/lecture-rouge-unit.txt
+docs/preuves/D355/rouges/lecture-rouge-int.txt
+docs/preuves/D355/rouges/lecture-des-rouges.md
+docs/preuves/D355/audit-secrets-d355b.txt
+docs/preuves/D355/tri-audit-d355b.txt
+```
+
+**Les pièces des rouges** : `jouer-rouges.py` (adapté de celui de D354 : seules les listes de fichiers et l'étiquette du lot changent) joue les fichiers de test du lot contre le code d'AVANT — **aucun fichier de production n'est modifié à ce moment** : `git status` ne liste, parmi les fichiers suivis, que des `*.spec.ts` et l'aide `row-lock.ts` — et verse pour chaque famille la commande, l'empreinte sha256 de CHAQUE fichier de test joué (et de leurs aides), le code de sortie et la sortie BRUTE. `lire-rouges.py` lit ces sorties (la classe de la première ligne de chaque bloc d'échec ; les fichiers tombés à la collecte), calibré sur deux sorties connues de D354 ; `lecture-rouge-unit.txt` et `lecture-rouge-int.txt` sont ses sorties ; `lecture-des-rouges.md` est la note qui les lit et compare chaque famille à la prédiction de `regle-portes.md`. **`audit-secrets-d355b.txt` et `tri-audit-d355b.txt`** : le second audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
