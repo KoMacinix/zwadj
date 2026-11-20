@@ -1011,6 +1011,9 @@ const brouillon = async (f: Fixture, over: Record<string, unknown> = {}): Promis
 const promouvoir = (f: Fixture, id: string, corps: Record<string, unknown>) => act(f, id, "promote", corps);
 const NOM = { clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" };
 const compte = async (table: "quotes" | "bookings" | "audit_logs"): Promise<number> => Number((await sqlBrut<{ n: string }>(`SELECT count(*)::text AS n FROM ${table}`))[0]!.n);
+// ⛔ D355 (rang 57, R-2) — la création d'une fiche (K-2, `ficheDe`) écrit désormais sa propre ligne `client_record.create` : le setup de ces tests en écrit une. Ce que les assertions ci-dessous gardent est « la promotion n'a écrit AUCUNE
+// autre ligne » : on écarte les lignes de FICHE (`client_record.%`), toute AUTRE ligne d'audit reste comptée (une promotion refusée qui écrirait n'importe quelle autre ligne rougit toujours).
+const compteHorsFiches = async (): Promise<number> => Number((await sqlBrut<{ n: string }>(`SELECT count(*)::text AS n FROM audit_logs WHERE action NOT LIKE 'client_record.%'`))[0]!.n);
 
 describe("⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom", () => {
   it("un brouillon naît en DRAFT, v1, `isOfficial: false`, référence `BROUILLON-…`, sans fiche ni nom, jamais remis — et la ligne en base le dit", async () => {
@@ -1223,7 +1226,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     const fiche = await ficheDe(f.token, { phone: "+213550000011", email: "amina.bensalem@example.dz", nameLatin: "Amina Bensalem" });
     const b = await brouillon(f);
     await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201));
-    const lignes = await ctx.prisma.auditLog.findMany();
+    const lignes = await ctx.prisma.auditLog.findMany({ where: { NOT: { action: { startsWith: "client_record." } } } });
     expect(lignes).toHaveLength(1);
     const a = lignes[0]!;
     const pro = await ctx.prisma.user.findFirstOrThrow({ where: { email: PRO.email } });
@@ -1248,7 +1251,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     const encore = await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM });
     expect(encore.status).toBe(409);
     expect(encore.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
-    expect(await compte("audit_logs")).toBe(1);
+    expect(await compteHorsFiches()).toBe(1);
   });
 
   it("⛔ D-5 — CINQ promotions SIMULTANÉES de la même demande : EXACTEMENT un 201, quatre 409 `QUOTE_ALREADY_OFFICIAL`, EXACTEMENT une ligne d'audit", async () => {
@@ -1258,7 +1261,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     const reponses = await Promise.all(Array.from({ length: 5 }, () => promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM })));
     expect(reponses.map((r) => r.status).sort()).toEqual([201, 409, 409, 409, 409]);
     for (const r of reponses.filter((x) => x.status === 409)) expect(r.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
-    expect(await compte("audit_logs")).toBe(1);
+    expect(await compteHorsFiches()).toBe(1);
   });
 
   it("⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut", async () => {
@@ -1270,7 +1273,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     expect(refus.status).toBe(409);
     expect(refus.body.message.code).toBe("QUOTE_VERSION_NOT_ACTIVE");
     expect(refus.body.message.latestVersion).toBe(2);
-    expect(await compte("audit_logs")).toBe(0);
+    expect(await compteHorsFiches()).toBe(0);
     const ok = (await promouvoir(f, v2.id, { clientRecordId: fiche.id, ...NOM }).expect(statutEst(201))).body as QuoteDTO;
     expect(ok.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v2$/u);
     const v1Apres = (await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [v1.id]))[0];
@@ -1313,7 +1316,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     const b = await promouvoir(f, officielClos.id, { clientRecordId: fiche.id, ...NOM });
     expect(b.status).toBe(409);
     expect(b.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
-    expect(await compte("audit_logs")).toBe(0);
+    expect(await compteHorsFiches()).toBe(0);
   });
 
   it("⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture", async () => {
@@ -1335,7 +1338,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     expect((await promouvoir(f, b.id, { ...NOM })).status, "sans fiche").toBe(400);
     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id })).status, "sans nom").toBe(400);
     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id, ...NOM, isOfficial: true })).status, "clé inconnue").toBe(400);
-    expect(await compte("audit_logs")).toBe(0);
+    expect(await compteHorsFiches()).toBe(0);
     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [b.id]))[0]).toEqual({ is_official: false });
   });
 
@@ -1352,7 +1355,7 @@ describe("⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même nu
     expect(res.status, JSON.stringify(res.body)).toBe(409);
     expect(res.body.message.code).toBe("CLIENT_RECORD_LINKED");
     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_official FROM quotes WHERE id = $1`, [b.id]))[0]).toEqual({ is_official: false });
-    expect(await compte("audit_logs")).toBe(0);
+    expect(await compteHorsFiches()).toBe(0);
   });
 
   it("⛔ après la promotion, le devis est REMIS puis CONVERTI comme tout devis officiel (la chaîne complète du comptoir : brouillon, refusé à la remise, promu, puis remis)", async () => {
