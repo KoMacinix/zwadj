@@ -165,3 +165,15 @@ docs/preuves/D355/tri-audit-d355b.txt
 ```
 
 **Les pièces des rouges** : `jouer-rouges.py` (adapté de celui de D354 : seules les listes de fichiers et l'étiquette du lot changent) joue les fichiers de test du lot contre le code d'AVANT — **aucun fichier de production n'est modifié à ce moment** : `git status` ne liste, parmi les fichiers suivis, que des `*.spec.ts` et l'aide `row-lock.ts` — et verse pour chaque famille la commande, l'empreinte sha256 de CHAQUE fichier de test joué (et de leurs aides), le code de sortie et la sortie BRUTE. `lire-rouges.py` lit ces sorties (la classe de la première ligne de chaque bloc d'échec ; les fichiers tombés à la collecte), calibré sur deux sorties connues de D354 ; `lecture-rouge-unit.txt` et `lecture-rouge-int.txt` sont ses sorties ; `lecture-des-rouges.md` est la note qui les lit et compare chaque famille à la prédiction de `regle-portes.md`. **`audit-secrets-d355b.txt` et `tri-audit-d355b.txt`** : le second audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
+
+
+### Extension 3 — la PREMIÈRE PASSE des rouges (gardée, non retouchée)
+
+Écrite **avant** le commit qui verse les rouges, et donc avant le premier commit de code (D334, point 5). La première passe des rouges a rendu quatre échecs par `TypeError` qui étaient des défauts de MES tests (des lectures `[0]!` sans garde, A-27 de D354) ; ils ont été corrigés **avant** que les pièces n'entrent dans un commit, les rouges rejoués EN ENTIER (`lecture-des-rouges.md`, § 1, avec les empreintes avant → après des deux fichiers corrigés). Les sorties de la première passe sont gardées à côté de la seconde. **Chemins COMPLETS** :
+
+```
+docs/preuves/D355/rouges/rouge-unit-passe-1.txt
+docs/preuves/D355/rouges/rouge-int-passe-1.txt
+docs/preuves/D355/rouges/lecture-rouge-unit-passe-1.txt
+docs/preuves/D355/rouges/lecture-rouge-int-passe-1.txt
+```
