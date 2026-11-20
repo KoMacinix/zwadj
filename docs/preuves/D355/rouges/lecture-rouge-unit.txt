@@ -1,0 +1,41 @@
+docs/preuves/D354/rouges/rouge-client.txt — 117 lignes parcourues
+   Test Files  1 failed (1)
+   Tests  5 failed | 6 passed (11)
+   tests en échec lus : 5 · par classe de première ligne : {'TypeError': 4, 'AssertionError': 1}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+docs/preuves/D354/rouges/rouge-int.txt — 507 lignes parcourues
+   Test Files  6 failed (6)
+   Tests  18 failed | 1 passed | 65 skipped (84)
+   tests en échec lus : 18 · par classe de première ligne : {'AssertionError': 9, 'Error': 6, 'TypeError': 1, 'PrismaClientKnownRequestError': 2}
+   fichiers tombés (collecte ou crochet) : 3 · par classe : {'TypeError': 2, 'import introuvable (collecte)': 1}
+      · test/int/staff-capabilities.int-spec.ts — TypeError
+      · test/int/staff-members.int-spec.ts — import introuvable (collecte)
+      · test/int/staff-session-guard.int-spec.ts — TypeError
+CALIBRATION : rouge-client → 5 échecs (1 AssertionError + 4 TypeError) : True ; rouge-int → ≥ 3 fichiers tombés, le premier en TypeError : True
+calibration : les deux cas ont rendu leur verdict attendu.
+
+docs/preuves/D355/rouges/rouge-unit.txt — 845 lignes parcourues
+   Test Files  7 failed (7)
+   Tests  19 failed | 234 passed (253)
+   tests en échec lus : 19 · par classe de première ligne : {'AssertionError': 19}
+   fichiers tombés (collecte ou crochet) : 1 · par classe : {'import introuvable (collecte)': 1}
+      · src/clients/client-record-audit.spec.ts — import introuvable (collecte)
+      ✗ [AssertionError] client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meur
+      ✗ [AssertionError] client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meur
+      ✗ [AssertionError] client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meur
+      ✗ [AssertionError] client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meur
+      ✗ [AssertionError] client-record-writes.spec.ts > ⛔ (e) les actions du journal des fiches ne sont construites QUE par le module pur > aucun fichier de production autre qu
+      ✗ [AssertionError] pro-clients.service.spec.ts > K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > une fiche créée : `{ created: true, record }`, e
+      ✗ [AssertionError] pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la 
+      ✗ [AssertionError] pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la 
+      ✗ [AssertionError] pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la 
+      ✗ [AssertionError] pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la 
+      ✗ [AssertionError] staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR L
+      ✗ [AssertionError] staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre es
+      ✗ [AssertionError] staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS
+      ✗ [AssertionError] staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appel
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appel
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appel
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appel
+      ✗ [AssertionError] quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du ga

@@ -1,0 +1,41 @@
+docs/preuves/D354/rouges/rouge-client.txt — 117 lignes parcourues
+   Test Files  1 failed (1)
+   Tests  5 failed | 6 passed (11)
+   tests en échec lus : 5 · par classe de première ligne : {'TypeError': 4, 'AssertionError': 1}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+docs/preuves/D354/rouges/rouge-int.txt — 507 lignes parcourues
+   Test Files  6 failed (6)
+   Tests  18 failed | 1 passed | 65 skipped (84)
+   tests en échec lus : 18 · par classe de première ligne : {'AssertionError': 9, 'Error': 6, 'TypeError': 1, 'PrismaClientKnownRequestError': 2}
+   fichiers tombés (collecte ou crochet) : 3 · par classe : {'TypeError': 2, 'import introuvable (collecte)': 1}
+      · test/int/staff-capabilities.int-spec.ts — TypeError
+      · test/int/staff-members.int-spec.ts — import introuvable (collecte)
+      · test/int/staff-session-guard.int-spec.ts — TypeError
+CALIBRATION : rouge-client → 5 échecs (1 AssertionError + 4 TypeError) : True ; rouge-int → ≥ 3 fichiers tombés, le premier en TypeError : True
+calibration : les deux cas ont rendu leur verdict attendu.
+
+docs/preuves/D355/rouges/rouge-int.txt — 456 lignes parcourues
+   Test Files  2 failed (2)
+   Tests  20 failed | 7 passed (27)
+   tests en échec lus : 20 · par classe de première ligne : {'AssertionError': 18, 'TypeError': 2}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [TypeError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL 
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MA
+      ✗ [TypeError] client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'E
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble >
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble >
+      ✗ [AssertionError] client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble >
+      ✗ [AssertionError] staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APR
+      ✗ [AssertionError] staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APR
+      ✗ [AssertionError] staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APR
+      ✗ [AssertionError] staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APR

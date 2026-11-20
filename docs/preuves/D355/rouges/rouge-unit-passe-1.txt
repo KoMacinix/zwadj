@@ -1,0 +1,844 @@
+# D355 — rouge — famille « unit »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run src/staff/staff-session.service.spec.ts src/staff/staff-store.prisma.spec.ts src/clients/client-record-audit.spec.ts src/clients/client-record-writes.spec.ts src/clients/pro-clients.service.spec.ts src/venues/quote-store.prisma.spec.ts src/venues/quotes.service.spec.ts
+# code de sortie : 1 ; durée : 6 s
+# empreintes sha256 des fichiers de test joués et de leurs aides (octets de l'arbre de travail au moment du jeu)
+#   effa69c45b8cede98bb85940cc0797e9d74f5277f14ed1ab9467284bfa0845c1  apps/api/src/clients/client-record-audit.spec.ts
+#   2386414b20723bfddb9aeca7b6c85af77e166b54de900558590256d2e0a93cb9  apps/api/src/clients/client-record-writes.spec.ts
+#   56a3b831edc01b6f4221e8f2438eaffc5cf6ae3ab6a110bb4aecae3400ee129c  apps/api/src/clients/pro-clients.service.spec.ts
+#   9839345976b89e976d00f70f055b4b054968d18ee66d02e7c48a6bbdcebc01ed  apps/api/src/staff/staff-session.service.spec.ts
+#   6e0e94ac586963b646fdf3d02981bf6501cbc92eb84eeda999181bc9f051960a  apps/api/src/staff/staff-store.prisma.spec.ts
+#   4426017e7c208ee57c0f91b8c204cf7838a50483c24cea7c423b7083b438d033  apps/api/src/venues/quote-store.prisma.spec.ts
+#   04a2947ddd0305689d34598c6d22c7883e805745b66dadea4896aa7400ccaf14  apps/api/src/venues/quotes.service.spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/client-record-writes.spec.ts (11 tests | 5 failed) 321ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'écriture de la table : un INSERT, un UPDATE, un DELETE, `create`, `updateMany`, `upsert` sont VUS ; un SELECT, un `findFirst`, un identifiant voisin et un commentaire ne le sont pas 4ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'extracteur de méthode : rend le corps d'une méthode et s'arrête à la suivante ; une méthode absente rend une chaîne vide 1ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ni un fichier de plus, ni un de moins — et la garde dit combien elle a parcouru 62ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ⛔ (d) la conversion d'un devis n'écrit AUCUNE fiche : `quotes.service.ts` ne contient aucune écriture de la table 32ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > clients/pro-client-store.prisma.ts : 3 écriture(s), une par méthode de la carte 22ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > venues/quote-store.prisma.ts : 1 écriture(s), une par méthode de la carte 41ms
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › creerSiAbsente 32ms
+     → creerSiAbsente s'exécute dans une transaction: expected 'async creerSiAbsente(proProfileId: st…' to match /\$transaction\s*\(/
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › completerNoms 37ms
+     → completerNoms s'exécute dans une transaction: expected 'async completerNoms(userId: string, i…' to match /\$transaction\s*\(/
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › modifier 28ms
+     → modifier construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > venues/quote-store.prisma.ts › completerNomDuClient 32ms
+     → completerNomDuClient construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+   × ⛔ (e) les actions du journal des fiches ne sont construites QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` ne porte un nom d'action `client_record.…` — aucun magasin ne l'écrit à la main 28ms
+     → expected [] to deeply equal [ 'clients/client-record-audit.ts' ]
+ ❯ src/clients/pro-clients.service.spec.ts (24 tests | 5 failed) 59ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > ⛔ M-4 — sans fiche : EXACTEMENT `{ found: false }`, quel que soit l'identifiant 5ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > ⛔ M-4 — la recherche n'appelle QUE `rechercher` : jamais le contact du pro (qui lit `users`), jamais une écriture 2ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > une fiche trouvée : `{ found: true, record }` ; la fiche expose `linked` (un booléen), JAMAIS l'identifiant du compte ni le profil (S-53) 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-4 — le numéro, le second numéro ou l'e-mail du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN 1ms
+   × K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > une fiche créée : `{ created: true, record }`, et le port reçoit le PROFIL du pro, les valeurs telles que le contrat les a rendues 15ms
+     → expected "spy" to be called with arguments: [ …(3) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,10 +4,6 @@
+      "email": null,
+      "nameAr": null,
+      "nameLatin": "Amina Bensalem",
+      "phone": "+213555123456",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > rien n'a été inséré, la fiche du numéro existe : `{ created: false, record }` — la fiche EXISTANTE, telle quelle 2ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-2 — le numéro et l'e-mail sur DEUX fiches : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > rien inséré ET rien relu (une modification simultanée a déplacé l'identifiant) : 409 plutôt qu'une fiche inventée 1ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > un identifiant hors motif UUID : 404 SANS toucher le port 2ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > refus, fiche introuvable (absente, ou d'un autre pro) : 404 CLIENT_RECORD_NOT_FOUND 3ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED 1ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-7 — refus, le nom est déjà là : 409 CLIENT_RECORD_NAME_ALREADY_SET 1ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-4 — le contact du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN 1ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-2 — l'unicité refusée par la base : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT 1ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-6 — la fiche LIÉE : 409 CLIENT_RECORD_LINKED ; introuvable : 404 1ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > la fiche modifiée est rendue en DTO 1ms
+   × ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-2 : `creerSiAbsente` reçoit le profil, les valeurs ET l'auteur `{ userId, memberId }` — le membre est celui du garde, le compte est le Bearer 4ms
+     → expected undefined to deeply equal { …(2) }
+   × ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3 : `completerNoms` reçoit l'auteur en dernier argument 3ms
+     → expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -2,10 +2,6 @@
+    "018f0000-0000-7000-8000-00000000aaaa",
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameAr": "آمنة",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+   × ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3b : `modifier` reçoit l'auteur en dernier argument 2ms
+     → expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -2,10 +2,6 @@
+    "018f0000-0000-7000-8000-00000000aaaa",
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameLatin": "Nouveau Nom",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+   × ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > ⛔ la couche ÉTEINTE : le membre est `null` aux trois écritures — l'auteur est le compte commun seul, jamais un membre inventé 2ms
+     → expected undefined to deeply equal { …(2) }
+   ✓ ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > ⛔ un refus D'AVANT l'écriture (le contact du pro) n'appelle PAS le port : aucune ligne de journal ne peut naître d'une action refusée 1ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > l'adaptateur : `rechercher` lit `proClientRecord` SEUL — la propriété par `proProfile`, sans relation au compte, sans SQL brut 2ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > la sélection que la recherche rend (`FICHE_SELECT`) : des colonnes de la fiche, aucune relation 2ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > le service : `lookup` ne touche le port que par `rechercher` 1ms
+ ❯ src/staff/staff-session.service.spec.ts (41 tests | 1 failed) 75ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, AUCUN factice ; le membre est rendu, une session s'ouvre, le jeton de session est posé 6ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la recherche du membre se fait par la CLÉ normalisée du nom, dans la salle du Bearer (jamais par le nom tel que tapé) 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucune ligne d'échec — et le refus est `STAFF_INVALID_CREDENTIALS` (401) 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > un PRO sans profil (aucune salle) est traité comme un compte inconnu : factice, même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservation (on ne compte pas d'échec sur un compte éteint), même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la réservation), l'échec est consigné avec son compte, le refus est le même 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-16 — l'échec qui FRANCHIT le seuil est consigné tel que la réservation le rend : le compte d'échecs ET `pausedNow: true` (c'est ce booléen qui fait écrire la ligne de pause) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUN échec consigné — et le MÊME corps que le mauvais mot de passe 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 / R-3 — inconnu, désactivé, en pause et mauvais mot de passe : QUATRE refus au corps IDENTIQUE à l'octet et au statut identique 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouverture (désactivation concurrente) : le MÊME refus, aucune session 4ms
+   × login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR LA RÉSERVATION : `openSession` reçoit `expectedPasswordHash`, et c'est CE hachage-là qui a été vérifié 14ms
+     → expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+
+Received: 
+
+  1st spy call:
+
+  [
+-   ObjectContaining {
+-     "expectedPasswordHash": "HASH-LU-A-LA-RESERVATION",
++   {
++     "actor": {
++       "role": "PRO",
++       "userId": "018f0000-0000-7000-8000-0000000000c1",
++     },
++     "candidateDeviceHashes": [],
++     "deviceLabel": "Poste",
++     "memberId": "m1",
++     "newDeviceTokenHash": "sha(jeton-000000000000000000000000000000000002)",
++     "proProfileId": "018f0000-0000-7000-8000-0000000000b1",
++     "sessionTokenHash": "sha(jeton-000000000000000000000000000000000001)",
+    },
+  ]
+
+
+Number of calls: 1
+
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse l'ouverture) : le MÊME refus qu'un mauvais mot de passe, à l'octet — UN seul hachage réel, AUCUN factice, AUCUNE ligne d'échec, aucun cookie 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — le refus d'ouverture ne pose AUCUN cookie : l'exception remonte avant tout jeton rendu au contrôleur 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la clé de la tentative est réservée AVANT toute vérification : l'ordre des appels est findMember, reservePasswordAttempt, verify, openSession 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true` 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true` 0ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe valable : `mustChangePassword: false` (l'état est jugé, il n'est pas copié de la colonne) 0ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi) 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > l'appareil : sans cookie d'appareil, un jeton neuf est offert (le magasin le crée) et le cookie d'appareil est posé 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et quand le magasin RÉUTILISE un appareil reconnu, aucun cookie d'appareil neuf n'est posé 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > les jetons de session et d'appareil sont transmis HACHÉS, et le jeton de session posé en cookie est le jeton en clair dont le hachage a été donné 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, session ET appareil dans la même demande au magasin, libellé d'appareil constant 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tout appel au magasin — la valeur est DÉRIVÉE de la liste (une entrée qui passe déjà le schéma), jamais écrite de mémoire 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérifié, 403 `FORBIDDEN` sans profil, 409 nom déjà pris 3ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit rien d'autre 3ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel pour la réutilisation, hache le nouveau, remplace SOUS la condition du hachage lu, et rend le membre 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'échec est consigné et compté, rien n'est remplacé 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucun échec consigné 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le compteur est remis à zéro (le bon mot de passe actuel n'est pas un échec), rien n'est remplacé 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation : un refus qui ne dit rien de l'actuel ne consomme pas d'essai 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant) : le même refus que le mot de passe actuel faux 1ms
+   ✓ logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche éteinte : `enabled: false`, aucun membre, et AUCUNE autre lecture 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche activée, sans cookie de session : `member: null` (jamais un 401), les membres reconnus sur ce poste sont listés par le hachage de leurs cookies d'appareil 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais par `touchSession` 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera 0ms
+   ✓ state — K-17 : exemptée, jamais un refus > sans profil : couche éteinte, sans erreur 0ms
+ ❯ src/staff/staff-store.prisma.spec.ts (66 tests | 3 failed) 91ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > lit le profil du compte (id et drapeau) et ne fait aucune requête brute 6ms
+   ✓ readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage) > un compte sans profil ⇒ null 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ UNE seule instruction SQL, aucune transaction : lire puis écrire laisserait N requêtes parallèles faire N vérifications 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ l'instruction VERROUILLE la ligne (`FOR UPDATE`), n'admet qu'un membre ACTIF hors pause, incrémente et RENVOIE — le tout dans la même instruction 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-43 — le seuil et la durée de pause sont des PARAMÈTRES issus du levier unique, jamais des littéraux du SQL 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > ⛔ MP-41 — le temps vient de la BASE (`now()`), jamais d'un paramètre horodaté par l'API 0ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > aucune ligne rendue ⇒ `reserved: false` (membre éteint, inconnu, ou EN PAUSE : le service ne distingue pas, il paie le factice) 1ms
+   ✓ reservePasswordAttempt — MP-16 / MP-17 : la tentative se RÉSERVE avant d'être vérifiée, en UNE instruction > une ligne rendue ⇒ le hachage à vérifier, le compte après incrément, et si CETTE réservation a déclenché la pause 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ l'UPDATE joint le membre et exige : jeton, MÊME salle que le Bearer, membre ACTIF, session non terminée, plafond non atteint, inactivité non dépassée 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-43 — la durée d'inactivité est le PARAMÈTRE du levier unique ; aucune durée en dur dans le texte 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > une session vivante est rendue (identité du contexte posé par le garde) ; AUCUNE autre instruction 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — inactive : la fin IDLE s'écrit, conditionnée à `ended_at IS NULL` (jamais deux fins) 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-4 — membre désactivé, session ouverte : la fin DISABLED s'écrit 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-18 — session d'une AUTRE salle : RIEN ne s'écrit (on ne termine pas la session d'autrui) 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-13 — PLAFOND atteint : rien ne s'écrit (l'énumération des fins n'a pas de valeur « plafond ») 0ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > ⛔ MP-19 — session déjà terminée, ou jeton inconnu : rien ne s'écrit 1ms
+   ✓ touchSession — le garde : UNE instruction, tous les prédicats, la durée en paramètre (MP-13, MP-18, MP-4) > la sonde calcule les drapeaux AVEC L'HEURE DE LA BASE et la durée en paramètre 1ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ n'émet AUCUN `UPDATE` ni `INSERT` : une lecture, avec les MÊMES prédicats que le garde 1ms
+   ✓ peekSession — la LECTURE SEULE de l'état (K-17) ne prolonge jamais et n'écrit jamais > ⛔ MP-43 — même durée d'inactivité (paramètre), même séparation : le garde et l'état jugent la session de la MÊME façon 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-22 — l'ordre : lecture du profil, CAS du drapeau (`staff_layer_enabled_at IS NULL`, compte 1), insertion du membre, de l'appareil, de la session, audit 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTRES du levier : mot de passe 90 jours, appareil = durée du PIN, session = plafond ; aucune durée en dur 1ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ le drapeau déjà posé (compte 0) : AUCUNE écriture ne suit — ni membre, ni appareil, ni session, ni audit 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > un compte sans profil : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-23 — un e-mail non vérifié : refusé avant toute écriture 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ un nom de compte déjà pris (insertion sans ligne) : la transaction est ANNULÉE — le drapeau posé une instruction plus tôt ne reste pas posé sans Manager 0ms
+   ✓ activate — K-14 : une transaction, le drapeau d'abord (L1), puis Manager, appareil, session, audit > ⛔ MP-33 — la ligne d'audit est écrite DANS la transaction, avec le membre pour acteur, et ne porte que le rôle 1ms
+   × openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberChanged` SANS autre écriture (connexion ‖ désactivation, D305) 14ms
+     → expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+   × openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservation, dans le WHERE de la MÊME instruction que `status = 'ACTIVE'` : une réinitialisation ou un changement de mot de passe entre la réservation et l'ouverture ne trouve plus la ligne 3ms
+     → expected ' WHERE id = ?::uuid AND pro_profile_i…' to contain 'password_hash = ?'
+   × openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture : ni appareil, ni session, ni audit `staff.login` (compte 0 ⇒ la transaction s'arrête là) 1ms
+     → expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ un appareil reconnu (lui-même, sa salle, ni révoqué ni expiré) est RÉUTILISÉ : on le marque utilisé, on n'en crée pas 2ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-3 — l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est pas réutilisé : un appareil neuf est créé 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > sans cookie d'appareil présenté : AUCUNE lecture d'appareils, un appareil neuf directement 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est la durée du PIN, la session le plafond : des paramètres du levier 1ms
+   ✓ openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > l'audit `staff.login` est écrit dans la transaction, sans secret : le membre et si l'appareil était déjà reconnu 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > closeSession : la fin LOGOUT est conditionnée à `ended_at IS NULL` ; l'audit n'est écrit que si la session s'est VRAIMENT terminée (compte 1) 2ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hachage lu, puis fin des AUTRES sessions (`id <> courante`), audit : MP-5 2ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > changePassword : le hachage lu n'est plus le courant ⇒ `changedConcurrently`, RIEN n'est écrit de plus (ni sessions terminées, ni audit) 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > ⛔ changePassword : le membre introuvable ou éteint (le verrou ne rend AUCUNE ligne) ⇒ `changedConcurrently`, aucun remplacement ne part 1ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > listKnownMembers : sans hachage d'appareil, AUCUNE requête ; sinon un membre actif de CETTE salle, appareil ni révoqué ni expiré 2ms
+   ✓ closeSession, changePassword, listKnownMembers, resetPasswordAttempts > resetPasswordAttempts : remet le compteur et la pause à zéro, sous condition du membre 1ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > ⛔ MP-33 — une ligne `staff.login_failed` avec le compte d'échecs ; une seconde `staff.password_pause` SEULEMENT quand cet échec a déclenché la pause 1ms
+   ✓ recordPasswordFailure — l'échec consigné, sans secret > l'échec d'un changement de mot de passe porte son propre nom d'action 1ms
+   ✓ l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33, MP-11) > ⛔ toute ligne d'audit porte les clés autorisées, et aucune valeur secrète ne peut s'y glisser (hachage, jeton, mot de passe, PIN, nom de compte) 3ms
+   ✓ findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > ⛔ UNE requête brute (plus de lecture par l'ORM : l'heure ne se lit que par `now()`) qui filtre par la salle ET la clé du nom, sans aucune écriture 2ms
+   ✓ findMember — rend l'ÉCHÉANCE du mot de passe et l'HEURE DE LA BASE dans la MÊME instruction (S-104, S-241) > aucun membre : null ; et AUCUN hachage de mot de passe n'est lu (il n'est rendu que par la réservation) 1ms
+   ✓ touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ touchSession : l'instruction RETURNING porte `status`, `password_expires_at` et `now()` de la base ; aucune date ne voyage en paramètre 1ms
+   ✓ touchSession et peekSession — rendent le statut, l'échéance du mot de passe et l'HEURE DE LA BASE (S-241) > ⛔ peekSession : les MÊMES colonnes, en lecture seule — le garde et l'état jugent le compte de la même façon 0ms
+   ✓ listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ une seule requête brute, en lecture seule (ni écriture, ni transaction, ni audit), filtrée par la salle, ordonnée de façon stable 1ms
+   ✓ listMembers — K-19 : UNE lecture, les membres de la salle, aucun secret > ⛔ la liste ne SÉLECTIONNE aucun secret : ni hachage de mot de passe ou de PIN, ni compteur, ni verrou, ni jeton (un SELECT qui ne les lit pas ne peut pas les rendre) 0ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ l'insertion est atomique (`ON CONFLICT … DO NOTHING`, jamais « lire puis insérer »), pose `must_change_password` et l'échéance TEMPORAIRE par PARAMÈTRE du levier, et rattache le créateur 1ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — la ligne d'audit s'écrit DANS la transaction, avec le MANAGER pour acteur (et le compte commun), et ne porte que le rôle ; la transaction est validée 1ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ un nom déjà pris (l'insertion ne rend aucune ligne) : `accountNameTaken`, AUCUNE ligne d'audit — une action sans effet n'a pas de trace 1ms
+   ✓ createMember — K-20 : le membre ET son audit dans UNE transaction, mot de passe temporaire de 7 jours > ⛔ R-6 — l'audit est écrit APRÈS l'insertion et par le même client de transaction : un échec de l'audit ANNULE la création (une action sans trace n'existe pas) 2ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ l'ORDRE : le verrou du membre (`FOR UPDATE`, sa salle), le remplacement du mot de passe, la révocation des appareils, la fin de TOUTES les sessions, l'audit — jamais l'inverse (L2 < L3 < L4) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b) 1ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ S-105 — TOUTES les sessions du membre prennent fin `PASSWORD_CHANGED` (aucune n'est épargnée : pas de `id <>`), TOUS ses appareils sont révoqués, chacun sous sa propre condition (`… IS NULL`) 0ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ R-6 — l'audit dans la transaction : le MANAGER pour acteur, les COMPTES de sessions et d'appareils pour charge utile — jamais le temporaire, jamais un hachage 0ms
+   ✓ resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (L4), audit — dans UNE transaction > ⛔ un membre introuvable DANS CETTE SALLE : `notFound`, AUCUNE écriture ; un membre désactivé : `disabled`, AUCUNE écriture ni audit 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-6 — l'ORDRE : verrou du PROFIL (`FOR UPDATE`) AVANT le verrou du membre, le COMPTAGE des Managers actifs APRÈS les deux verrous et AVANT toute écriture, puis le CAS du statut, puis les sessions 2ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ MP-30 — le CAS de la transition : `status = 'DISABLED'` posé SOUS `status = 'ACTIVE'` (D305), avec `disabled_at = now()` ; les sessions finissent `DISABLED`, sous `ended_at IS NULL` 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ le DERNIER Manager actif : `lastManager`, trois lectures et AUCUNE écriture ni audit ; la transaction se referme sans effet 5ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un EMPLOYÉ se désactive même quand il n'y a qu'UN Manager (la règle ne vise que les Managers) 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ patron de D349 — un membre DÉJÀ désactivé : succès SANS écriture et SANS ligne d'audit (une répétition ne fait pas une seconde trace) 1ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > un membre introuvable DANS CETTE SALLE : `notFound` après les deux verrous, AUCUNE écriture 0ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ compte = 1 EXIGÉ : si le CAS ne rend aucune ligne (le statut a bougé sous nos pieds — impossible sous verrou, mais l'écrire est une garde), la transaction est ANNULÉE bruyamment, jamais un succès 0ms
+   ✓ disableMember — K-22 : « jamais zéro Manager » — le profil (L1) d'abord, le comptage SOUS ce verrou, puis le membre (L2), les sessions (L4) > ⛔ R-6 — l'audit dans la transaction, MANAGER pour acteur, rôle du membre et nombre de sessions pour charge utile ; un échec de l'audit ANNULE la désactivation 1ms
+ ❯ src/venues/quote-store.prisma.spec.ts (63 tests | 4 failed) 98ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui 5ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3) 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⚠ les montants passent TELS QUELS 0ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule) 2ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé 5ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` — dans cet ordre, ou la garde ne sert à rien 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà 2ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le statut admis est dans le WHERE de l'UPDATE, pas lu avant 4ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ refus : le statut est RELU DANS la transaction et remonte dans le résultat 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le port NE LÈVE PAS sur un refus — il rend 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⚠ `marquerRemis` écrit le canal et la date, JAMAIS un statut 1ms
+   ✓ PrismaQuoteStore — les lectures > ⚠ l'entonnoir ne compte QUE les devis portant un canal (D162) 2ms
+   ✓ PrismaQuoteStore — les lectures > ⛔ `trouverDuPro` : le devis, sa salle VIVANTE, et à MOI — en un seul WHERE 2ms
+   ✓ PrismaQuoteStore — les lectures > `salleAppartientAu` rend un booléen, jamais la ligne 2ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ UNE SEULE REQUÊTE : la demande ET ses lignes, imbriquées 2ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 + une demande EXISTE pour ce devis → `dejaConverti` 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 SANS demande pour ce devis → L'ERREUR REPART 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ toute AUTRE erreur remonte sans relecture 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus` 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⚠ et l'EXPLICATION est restée dans les deux fichiers 1ms
+   ✓ ⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble » > le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche 1ms
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée 15ms
+     → expected [ 'updateMany', …(3) ] to deeply equal [ 'updateMany', …(4) ]
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > un devis SANS fiche : aucune lecture ni écriture de fiche 2ms
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche complétée écrit UNE ligne de journal, DANS la transaction, APRÈS l'écriture : `client_record.complete_names`, le compte ET le membre, le champ écrit, le devis — et AUCUN nom 2ms
+     → expected "spy" to be called 1 times, but got 0 times
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le champ LATIN : la ligne dit `nameLatin`, jamais `nameAr` 2ms
+     → Cannot read properties of undefined (reading '0')
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la couche ÉTEINTE : `actorMemberId` vaut `null` (la clé est présente) — l'acteur est le compte commun seul 2ms
+     → Cannot read properties of undefined (reading '0')
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche N'A PAS été écrite (la politique dit NON, ou l'`updateMany` conditionné ne trouve rien) : AUCUNE ligne — une trace sans action est interdite 3ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — un devis SANS fiche, ou un refus du compare-and-set de la copie : AUCUNE ligne de fiche (la copie du nom sur le devis n'est PAS une écriture de fiche) 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche 1ms
+   ✓ ⛔ D339 — `creerTeteDeChaine` : la tête naît avec le drapeau que le SERVICE décide > ⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: true` ⇒ `true` — le même compteur, la même transaction 6ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la séquence : le verrou, PUIS la plus haute version (son numéro ET son drapeau), PUIS l'écriture 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est un BROUILLON : la révision en est un — la ligne écrite porte `isOfficial: false`, et le port rend `{ ok: true }` 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est OFFICIELLE : la révision l'est — le drapeau de la version PARENTE n'est pas lu (la v1 brouillon d'une chaîne dont la v2 est promue) 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et une fiche : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom arabe : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom latin : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ `marquerRemis` : `isOfficial: true` est dans le WHERE du check-and-set, EN PLUS du statut — jamais lu avant 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus : le statut ET le drapeau sont RELUS DANS la transaction 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus d'un brouillon OUVERT : `nonOfficiel` 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond `statutConflit` (le devis est clos), pas `nonOfficiel` 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ D-12 — `changerStatut` (l'annulation) N'EXIGE PAS l'état officiel : le WHERE est exactement le statut — annuler un brouillon reste permis 1ms
+   ✓ ⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un brouillon n'a pas de nom) > ⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { deletedAt: null, owner: { userId } }`, jamais un identifiant qui « ressemble » 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET le statut admis dans le WHERE, et la fiche et les deux copies ÉCRITES AVEC le drapeau 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l'ACTEUR et son RÔLE, le drapeau et l'identifiant de fiche — et RIEN d'autre 0ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-6 — la version n'est plus la dernière : le port REND `versionNonActive` (avec la version active), sans écrire NI le devis NI l'audit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ le devis n'est pas au pro (la propriété ne rend rien) : `introuvable`, et la chaîne n'est ni verrouillée ni lue 0ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ compte = 0 : le statut et le drapeau sont RELUS dans la transaction ; un devis déjà officiel ⇒ `dejaOfficiel`, SANS ligne d'audit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ L'ORDRE, sur des cas doublement fautifs : un brouillon ANNULÉ répond `statutConflit` ; un devis OFFICIEL annulé répond `dejaOfficiel` (vrai quel que soit son statut) 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre trace (la transaction l'annule) 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant : le WHERE et le SET ne nomment que le drapeau, la fiche et les deux copies 1ms
+   ✓ ⛔ D339 — la lecture du cycle de vie rend le drapeau > `QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pourrait pas dire s'il est officiel ni bâtir sa référence) 0ms
+ ❯ src/venues/quotes.service.spec.ts (48 tests | 1 failed) 59ms
+   ✓ QuotesService — 404 indistincts > id hors motif UUID : 404 SANS toucher le port 4ms
+   ✓ QuotesService — 404 indistincts > le port rend `null` (inexistant / salle supprimée / autre pro) : même 404 1ms
+   ✓ QuotesService — 404 indistincts > salle d'un autre pro : `listForVenue` s'arrête AVANT de lire les devis 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `cancel` refusé : 409 avec le statut RELU, pas un booléen 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `deliver` refusé : même 409, même statut porté 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⚠ le statut ADMIS vient de la machine à états, pas du port 2ms
+   ✓ QuotesService.deliver — une remise est RÉPÉTABLE (D160) > ⚠ le devis ne change PAS de statut : seuls le canal et la date sont écrits 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`) 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ les QUATRE MONTANTS partent VERBATIM du devis — aucun recalcul 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ `source` est une lecture MÉTIER de la provenance, faite ICI 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ le refus du port devient un 409 `QUOTE_ALREADY_CONVERTED`, jamais un 500 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ la garde applicative évite d'écrire pour rien — et rend LE MÊME code 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ LE DEVIS NE BOUGE PAS — il attend l'acompte 0ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > sans fiche, le port des fiches n'est PAS lu (un devis du parcours sans contact reste possible) 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin` 2ms
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dans la ligne de journal de la fiche : le membre quand une session existe, `null` quand la couche est éteinte — jamais un autre 15ms
+     → expected { …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas) 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET 0ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port 1ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un devis officiel : `isOfficial: true` et `DEVIS-…` (inchangé d'un octet) 1ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un brouillon : `isOfficial: false` et `BROUILLON-…`, même année, mêmes numéros, même version — bâtie par la MÊME formule 1ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ dans une même chaîne, la v1 brouillon et la v2 promue portent chacune le préfixe de SA ligne — le numéro est le même 1ms
+   ✓ ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `nonOfficiel` : 409 QUOTE_NOT_OFFICIAL, le message du catalogue, et aucun statut dans la réponse 1ms
+   ✓ ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `statutConflit` : 409 QUOTE_STATUS_CONFLICT avec le statut RELU — deux refus, deux codes, jamais confondus 0ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ un brouillon DRAFT : 409 QUOTE_NOT_OFFICIAL ; ni la salle, ni le créneau ne sont lus, aucune demande n'est écrite 1ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (le devis est clos — l'information utile), pas « pas officiel » 0ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⚠ un devis OFFICIEL se convertit comme avant (la garde ne gêne pas ce qu'elle ne vise pas) 0ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⛔ le port refuse ET le devis est un brouillon : 409 QUOTE_DRAFT_HAS_NO_CLIENT (pas « déjà renseigné » — il n'y a rien à compléter sur un brouillon) 0ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⚠ le port refuse, le devis est OFFICIEL : le refus d'avant (copie déjà là) est inchangé ; introuvable : 404 d'abord 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée) 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active) 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS) 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant 1ms
+   ✓ ⛔ D-15 — `revise` : la fiche d'un autre pro sur une chaîne brouillon reste un 404, décidé AVANT le verrou > ⛔ l'ordre : la fiche (404) est décidée avant l'écriture ; le refus « un brouillon ne porte pas de client » vient du PORT, sous le verrou de la chaîne 4ms
+
+ Test Files  7 failed (7)
+      Tests  19 failed | 234 passed (253)
+   Start at  21:42:01
+   Duration  3.26s (transform 2.01s, setup 0ms, collect 10.53s, tests 701ms, environment 2ms, prepare 2.68s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-session.service.spec.ts src/staff/staff-store.prisma.spec.ts src/clients/client-record-audit.spec.ts src/clients/client-record-writes.spec.ts src/clients/pro-clients.service.spec.ts src/venues/quote-store.prisma.spec.ts src/venues/quotes.service.spec.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-audit.spec.ts [ src/clients/client-record-audit.spec.ts ]
+Error: Cannot find module './client-record-audit' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/client-record-audit.spec.ts'
+ ❯ src/clients/client-record-audit.spec.ts:11:1
+      9| import { join } from "node:path";
+     10| import { describe, expect, it } from "vitest";
+     11| import { FICHE_AUDIT_ACTIONS, FICHE_CHAMPS, champsEcrits, ficheAuditEn…
+       | ^
+     12| 
+     13| const FICHE = "018f0000-0000-7000-8000-0000000000f1";
+
+Caused by: Error: Failed to load url ./client-record-audit (resolved id: ./client-record-audit) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/src/clients/client-record-audit.spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › creerSiAbsente
+AssertionError: creerSiAbsente s'exécute dans une transaction: expected 'async creerSiAbsente(proProfileId: st…' to match /\$transaction\s*\(/
+
+- Expected: 
+/\$transaction\s*\(/
+
++ Received: 
+"async creerSiAbsente(proProfileId: string, donnees: DonneesFiche): Promise<ResultatCreation> {
+    const inseree = await this.prisma.$queryRaw<{ id: string }[]>`
+      INSERT INTO pro_client_records (pro_profile_id, phone, email, name_ar, name_latin)
+      VALUES (${proProfileId}::uuid, ${donnees.phone}, ${donnees.email}, ${donnees.nameAr}, ${donnees.nameLatin})
+      ON CONFLICT DO NOTHING
+      RETURNING id::text AS id`;
+    const nouvelle = inseree[0];
+    if (inseree.length === 1 && nouvelle !== undefined) {
+      return { cree: true, fiche: await this.prisma.proClientRecord.findUniqueOrThrow({ where: { id: nouvelle.id }, select: FICHE_SELECT }) };
+    }
+    const [parTelephone, parEmail] = await Promise.all([
+      donnees.phone === null ? Promise.resolve(null) : this.prisma.proClientRecord.findFirst({ where: { proProfileId, phone: donnees.phone }, select: FICHE_SELECT }),
+      donnees.email === null ? Promise.resolve(null) : this.prisma.proClientRecord.findFirst({ where: { proProfileId, email: donnees.email }, select: FICHE_SELECT })
+    ]);
+    return { cree: false, parTelephone, parEmail };
+  }
+
+  
+  
+"
+
+ ❯ src/clients/client-record-writes.spec.ts:139:64
+    137|         expect(c.length, `le corps de ${methode} a été extrait`).toBeG…
+    138|         expect(nbEcritures(c), `${methode} écrit la table une fois`).t…
+    139|         expect(c, `${methode} s'exécute dans une transaction`).toMatch…
+       |                                                                ^
+    140|         const ecrit = premiereEcriture(c);
+    141|         const journal = c.indexOf("ficheAuditEntry(");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › completerNoms
+AssertionError: completerNoms s'exécute dans une transaction: expected 'async completerNoms(userId: string, i…' to match /\$transaction\s*\(/
+
+- Expected: 
+/\$transaction\s*\(/
+
++ Received: 
+"async completerNoms(userId: string, id: string, noms: { readonly nameAr?: string; readonly nameLatin?: string }): Promise<ResultatComplement> {
+    const ecrit = await this.prisma.proClientRecord.updateMany({
+      where: {
+        id,
+        proProfile: { userId },
+        linkedUserId: null,
+        ...(noms.nameAr !== undefined ? { nameAr: null } : {}),
+        ...(noms.nameLatin !== undefined ? { nameLatin: null } : {})
+      },
+      data: { ...(noms.nameAr !== undefined ? { nameAr: noms.nameAr } : {}), ...(noms.nameLatin !== undefined ? { nameLatin: noms.nameLatin } : {}) }
+    });
+    if (ecrit.count === 1) return { ok: true, fiche: await this.prisma.proClientRecord.findUniqueOrThrow({ where: { id }, select: FICHE_SELECT }) };
+    return { ok: false, actuelle: await this.prisma.proClientRecord.findFirst({ where: { id, proProfile: { userId } }, select: FICHE_SELECT }) };
+  }
+
+  
+  
+"
+
+ ❯ src/clients/client-record-writes.spec.ts:139:64
+    137|         expect(c.length, `le corps de ${methode} a été extrait`).toBeG…
+    138|         expect(nbEcritures(c), `${methode} écrit la table une fois`).t…
+    139|         expect(c, `${methode} s'exécute dans une transaction`).toMatch…
+       |                                                                ^
+    140|         const ecrit = premiereEcriture(c);
+    141|         const journal = c.indexOf("ficheAuditEntry(");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › modifier
+AssertionError: modifier construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+ ❯ src/clients/client-record-writes.spec.ts:142:87
+    140|         const ecrit = premiereEcriture(c);
+    141|         const journal = c.indexOf("ficheAuditEntry(");
+    142|         expect(journal, `${methode} construit la ligne du journal par …
+       |                                                                                       ^
+    143|         expect(journal, `${methode} journalise APRÈS avoir écrit (la l…
+    144|         expect(c, `${methode} écrit la ligne par \`auditLog.create\`, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > venues/quote-store.prisma.ts › completerNomDuClient
+AssertionError: completerNomDuClient construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+ ❯ src/clients/client-record-writes.spec.ts:142:87
+    140|         const ecrit = premiereEcriture(c);
+    141|         const journal = c.indexOf("ficheAuditEntry(");
+    142|         expect(journal, `${methode} construit la ligne du journal par …
+       |                                                                                       ^
+    143|         expect(journal, `${methode} journalise APRÈS avoir écrit (la l…
+    144|         expect(c, `${methode} écrit la ligne par \`auditLog.create\`, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (e) les actions du journal des fiches ne sont construites QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` ne porte un nom d'action `client_record.…` — aucun magasin ne l'écrit à la main
+AssertionError: expected [] to deeply equal [ 'clients/client-record-audit.ts' ]
+
+- Expected
++ Received
+
+- [
+-   "clients/client-record-audit.ts",
+- ]
++ []
+
+ ❯ src/clients/client-record-writes.spec.ts:155:22
+    153|     const porteurs = sources.filter((s) => /client_record\./.test(s.co…
+    154|     expect(sources.length).toBeGreaterThan(100);
+    155|     expect(porteurs).toEqual(["clients/client-record-audit.ts"]);
+       |                      ^
+    156|   });
+    157| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/20]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > une fiche créée : `{ created: true, record }`, et le port reçoit le PROFIL du pro, les valeurs telles que le contrat les a rendues
+AssertionError: expected "spy" to be called with arguments: [ …(3) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -4,10 +4,6 @@
+      "email": null,
+      "nameAr": null,
+      "nameLatin": "Amina Bensalem",
+      "phone": "+213555123456",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/clients/pro-clients.service.spec.ts:121:38
+    119|     expect(r.created).toBe(true);
+    120|     expect(r.record.id).toBe(FICHE_ID);
+    121|     expect(ctx.store.creerSiAbsente).toHaveBeenCalledWith(PP_ID, { pho…
+       |                                      ^
+    122|   });
+    123| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/20]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-2 : `creerSiAbsente` reçoit le profil, les valeurs ET l'auteur `{ userId, memberId }` — le membre est celui du garde, le compte est le Bearer
+AssertionError: expected undefined to deeply equal { …(2) }
+
+- Expected: 
+{
+  "memberId": "018f0000-0000-7000-8000-00000000dddd",
+  "userId": "018f0000-0000-7000-8000-00000000aaaa",
+}
+
++ Received: 
+undefined
+
+ ❯ src/clients/pro-clients.service.spec.ts:212:56
+    210|     await ctx.service.create(USER_ID, { phone: "+213555123456", nameLa…
+    211|     expect(ctx.store.creerSiAbsente).toHaveBeenCalledTimes(1);
+    212|     expect(ctx.store.creerSiAbsente.mock.calls[0]![2]).toEqual({ userI…
+       |                                                        ^
+    213|   });
+    214| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/20]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3 : `completerNoms` reçoit l'auteur en dernier argument
+AssertionError: expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -2,10 +2,6 @@
+    "018f0000-0000-7000-8000-00000000aaaa",
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameAr": "آمنة",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/clients/pro-clients.service.spec.ts:217:37
+    215|   it("K-3 : `completerNoms` reçoit l'auteur en dernier argument", asyn…
+    216|     await ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة…
+    217|     expect(ctx.store.completerNoms).toHaveBeenCalledWith(USER_ID, FICH…
+       |                                     ^
+    218|   });
+    219| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/20]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3b : `modifier` reçoit l'auteur en dernier argument
+AssertionError: expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -2,10 +2,6 @@
+    "018f0000-0000-7000-8000-00000000aaaa",
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameLatin": "Nouveau Nom",
+    },
+-   {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
+-     "userId": "018f0000-0000-7000-8000-00000000aaaa",
+-   },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/clients/pro-clients.service.spec.ts:222:32
+    220|   it("K-3b : `modifier` reçoit l'auteur en dernier argument", async ()…
+    221|     await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau …
+    222|     expect(ctx.store.modifier).toHaveBeenCalledWith(USER_ID, FICHE_ID,…
+       |                                ^
+    223|   });
+    224| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/20]⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > ⛔ la couche ÉTEINTE : le membre est `null` aux trois écritures — l'auteur est le compte commun seul, jamais un membre inventé
+AssertionError: expected undefined to deeply equal { …(2) }
+
+- Expected: 
+{
+  "memberId": null,
+  "userId": "018f0000-0000-7000-8000-00000000aaaa",
+}
+
++ Received: 
+undefined
+
+ ❯ src/clients/pro-clients.service.spec.ts:229:56
+    227|     await ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة…
+    228|     await ctx.service.update(USER_ID, FICHE_ID, { nameLatin: "Nouveau …
+    229|     expect(ctx.store.creerSiAbsente.mock.calls[0]![2]).toEqual({ userI…
+       |                                                        ^
+    230|     expect(ctx.store.completerNoms.mock.calls[0]![3]).toEqual({ userId…
+    231|     expect(ctx.store.modifier.mock.calls[0]![3]).toEqual({ userId: USE…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/20]⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR LA RÉSERVATION : `openSession` reçoit `expectedPasswordHash`, et c'est CE hachage-là qui a été vérifié
+AssertionError: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+
+Received: 
+
+  1st spy call:
+
+  [
+-   ObjectContaining {
+-     "expectedPasswordHash": "HASH-LU-A-LA-RESERVATION",
++   {
++     "actor": {
++       "role": "PRO",
++       "userId": "018f0000-0000-7000-8000-0000000000c1",
++     },
++     "candidateDeviceHashes": [],
++     "deviceLabel": "Poste",
++     "memberId": "m1",
++     "newDeviceTokenHash": "sha(jeton-000000000000000000000000000000000002)",
++     "proProfileId": "018f0000-0000-7000-8000-0000000000b1",
++     "sessionTokenHash": "sha(jeton-000000000000000000000000000000000001)",
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/staff/staff-session.service.spec.ts:177:35
+    175|     expect(m.mots.verify).toHaveBeenCalledWith("HASH-LU-A-LA-RESERVATI…
+    176|     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    177|     expect(m.magasin.openSession).toHaveBeenCalledWith(expect.objectCo…
+       |                                   ^
+    178|   });
+    179| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/20]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberChanged` SANS autre écriture (connexion ‖ désactivation, D305)
+AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+
+- Expected
++ Received
+
+  {
+    "ok": false,
+-   "reason": "memberChanged",
++   "reason": "memberInactive",
+  }
+
+ ❯ src/staff/staff-store.prisma.spec.ts:328:47
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/20]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservation, dans le WHERE de la MÊME instruction que `status = 'ACTIVE'` : une réinitialisation ou un changement de mot de passe entre la réservation et l'ouverture ne trouve plus la ligne
+AssertionError: expected ' WHERE id = ?::uuid AND pro_profile_i…' to contain 'password_hash = ?'
+
+Expected: "password_hash = ?"
+Received: " WHERE id = ?::uuid AND pro_profile_id = ?::uuid AND status = 'ACTIVE'"
+
+ ❯ src/staff/staff-store.prisma.spec.ts:347:19
+    345|     expect(where, "le WHERE de l'UPDATE du membre a été isolé").toCont…
+    346|     expect(where, "le statut et le hachage sont dans le MÊME WHERE : l…
+    347|     expect(where).toContain("password_hash = ?");
+       |                   ^
+    348|     expect(premier.valeurs, "les paramètres : le membre, sa salle, le …
+    349|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/20]⎯
+
+ FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture : ni appareil, ni session, ni audit `staff.login` (compte 0 ⇒ la transaction s'arrête là)
+AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+
+- Expected
++ Received
+
+  {
+    "ok": false,
+-   "reason": "memberChanged",
++   "reason": "memberInactive",
+  }
+
+ ❯ src/staff/staff-store.prisma.spec.ts:353:47
+    351|   it("⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture : ni appa…
+    352|     const f = faux([[]]);
+    353|     expect(await f.store.openSession(entree)).toEqual({ ok: false, rea…
+       |                                               ^
+    354|     expect(f.appels.map((a) => a.sql).filter((s) => /^INSERT/.test(s))…
+    355|     expect(f.audits).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/20]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée
+AssertionError: expected [ 'updateMany', …(3) ] to deeply equal [ 'updateMany', …(4) ]
+
+- Expected
++ Received
+
+  [
+    "updateMany",
+    "findUniqueOrThrow",
+    "fiche FOR UPDATE",
+    "fiche updateMany",
+-   "audit",
+  ]
+
+ ❯ src/venues/quote-store.prisma.spec.ts:546:21
+    544|     const decide = vi.fn(() => true);
+    545|     await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE…
+    546|     expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche…
+       |                     ^
+    547|     expect(decide).toHaveBeenCalledWith(
+    548|       { id: FICHE, nameAr: null, nameLatin: "Amina Bensalem", linkedUs…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/20]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche complétée écrit UNE ligne de journal, DANS la transaction, APRÈS l'écriture : `client_record.complete_names`, le compte ET le membre, le champ écrit, le devis — et AUCUN nom
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ src/venues/quote-store.prisma.spec.ts:582:32
+    580|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    581|     await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE…
+    582|     expect(tx.auditLog.create).toHaveBeenCalledTimes(1);
+       |                                ^
+    583|     expect(tx.auditLog.create).toHaveBeenCalledWith({
+    584|       data: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/20]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le champ LATIN : la ligne dit `nameLatin`, jamais `nameAr`
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ src/venues/quote-store.prisma.spec.ts:602:49
+    600|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    601|     await ctx.store.completerNomDuClient({ userId: "u-1", memberId: ME…
+    602|     expect((ctx.tx.auditLog.create.mock.calls[0]![0] as { data: { afte…
+       |                                                 ^
+    603|   });
+    604| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/20]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la couche ÉTEINTE : `actorMemberId` vaut `null` (la clé est présente) — l'acteur est le compte commun seul
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ src/venues/quote-store.prisma.spec.ts:609:55
+    607|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    608|     await ctx.store.completerNomDuClient({ userId: "u-1", memberId: nu…
+    609|     const data = (ctx.tx.auditLog.create.mock.calls[0]![0] as { data: …
+       |                                                       ^
+    610|     expect(data.actorMemberId).toBeNull();
+    611|     expect(Object.keys(data)).toContain("actorMemberId");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/20]⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dans la ligne de journal de la fiche : le membre quand une session existe, `null` quand la couche est éteinte — jamais un autre
+AssertionError: expected { …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "memberId": "018f0000-0000-7000-8000-00000000bbbb",
+    "userId": "018f0000-0000-7000-8000-00000000aaaa",
+  }
+
+ ❯ src/venues/quotes.service.spec.ts:388:58
+    386|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+    387|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+    388|     expect(devis.completerNomDuClient.mock.calls[0]![0]).toMatchObject…
+       |                                                          ^
+    389|     expect(devis.completerNomDuClient.mock.calls[1]![0]).toMatchObject…
+    390|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/20]⎯
+

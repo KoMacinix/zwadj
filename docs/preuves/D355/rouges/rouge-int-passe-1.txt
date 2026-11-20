@@ -1,0 +1,455 @@
+# D355 — rouge — famille « int »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/staff-login-race.int-spec.ts test/int/client-record-audit.int-spec.ts
+# code de sortie : 1 ; durée : 23 s
+# empreintes sha256 des fichiers de test joués et de leurs aides (octets de l'arbre de travail au moment du jeu)
+#   7c92d31a6e6a83f4d64185c762023546648ebc90582d7757cea65c47f4b76ddc  apps/api/test/int/client-record-audit.int-spec.ts
+#   c8572aa33ebcc43448b516dc0c8b55f47430bc00a04623041ee24f8fc3780f10  apps/api/test/int/helpers.ts
+#   9cc63c405f7fd76dc305df3eef7aa161785aaeb2c47cce2f4a3ed04514e64e9b  apps/api/test/int/row-lock.ts
+#   a87e700c4d496f6592ccb23729ea1bfa570964454bd5221a7995884fcd6f0071  apps/api/test/int/staff-helpers.ts
+#   2aef5b7fa695b94c15ccedacd7c75aadc20135654e227ca25ac4716d8a41375b  apps/api/test/int/staff-login-race.int-spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/client-record-audit.int-spec.ts (19 tests | 16 failed) 3141ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit 42ms
+     → expected [] to have a length of 1 but got +0
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit 38ms
+     → expected [] to have a length of 1 but got +0
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre 22ms
+     → Cannot read properties of undefined (reading 'after')
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus 41ms
+     → expected [] to deeply equal [ 'client_record.create', …(1) ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs 36ms
+     → expected [] to have a length of 2 but got +0
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien 188ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom 89ms
+     → expected [] to deeply equal [ 'client_record.create', …(1) ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche 106ms
+     → la fiche n'a que sa ligne de création: expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus 60ms
+     → expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus 140ms
+     → expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises 4ms
+     → des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 0 to be greater than or equal to 8
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien) 113ms
+     → une ligne de plus: expected +0 to be 1 // Object.is equality
+   × ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun 123ms
+     → expected [] to deeply equal [ Array(5) ]
+   × ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager 20ms
+     → Cannot read properties of undefined (reading 'action')
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ sans session de personnel (le garde refuse : 401) : AUCUNE fiche, AUCUNE ligne — une trace ne peut pas naître d'une action refusée 13ms
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal 25ms
+     → {"created":true,"record":{"id":"01a1f6d5-5d82-7474-9864-56719b1418a2","phone":"+213555000019","email":null,"nameAr":null,"nameLatin":"Amina Bensalem","linked":false,"createdAt":"2026-11-20T02:42:20.674Z","updatedAt":"2026-11-20T02:42:20.674Z"}}: expected 200 to be 500 // Object.is equality
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE 33ms
+     → expected 200 to be 500 // Object.is equality
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche) 68ms
+     → {"id":"01a1f6d5-5dcf-73c8-9fab-8f5c0715eb35","venueId":"01a1f6d5-5d58-7f8a-ad85-a5ffce305419","clientId":null,"status":"DRAFT","isOfficial":true,"version":1,"reference":"DEVIS-2026-0001-0001 v1","chainId":"01a1f6d5-5dcf-73c8-9fab-8f5c0715eb35","parentQuoteId":null,"eventDate":"2027-03-20","slotTemplateId":"01a1f6d5-5d6c-79ea-827a-c208435c5270","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"lines":[],"sentAt":null,"sentVia":null,"acceptedAt":null,"createdAt":"2026-11-20T02:42:20.748Z","bookingId":null,"clientRecordId":"01a1f6d5-5db7-78a5-88fa-3e6b2eb74e30","clientNameAr":"آمنة بن سالم","clientNameLatin":"Amina Bensalem"}: expected 201 to be 500 // Object.is equality
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5 131ms
+ ❯ test/int/staff-login-race.int-spec.ts (8 tests | 4 failed) 7307ms
+   × ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le hachage lu : REFUSÉE, aucune session vivante, aucune ligne `staff.login`, `last_login_at` intact 1042ms
+     → l'ouverture, avec le hachage de l'ANCIEN mot de passe, doit être refusée: expected true to be false // Object.is equality
+   × ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un CHANGEMENT de mot de passe par le membre (K-18, vraie route) à la place de la réinitialisation : ouverture REFUSÉE, aucune session de plus 954ms
+     → l'ouverture, avec le hachage de l'ancien mot de passe, doit être refusée: expected true to be false // Object.is equality
+   × ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le hachage est remplacé par une transaction tenue hors du service ; l'ouverture part, ATTEND derrière le verrou de la ligne, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant) 799ms
+     → l'ouverture, qui attendait derrière la transaction qui remplaçait le hachage, doit relire la ligne et être REFUSÉE: expected true to be false // Object.is equality
+   × ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /pro/staff/login` dont la vérification de l'argon2 est interrompue par une réinitialisation : 401 STAFF_INVALID_CREDENTIALS, aucun cookie de session, aucune session vivante, le MÊME corps qu'un mauvais mot de passe, UN seul argon2 réel 1285ms
+     → {"member":{"id":"01a1f6d5-783b-71de-ae0a-6376adcd492c","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected 200 to be 401 // Object.is equality
+   ✓ ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE, aucune session de plus, le membre reste désactivé  734ms
+   ✓ ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération  750ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le hachage lu : acceptée, UNE session de plus, une ligne `staff.login` pour ce membre  722ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > par la route : un mot de passe juste, rien d'intercalé : 200, un cookie de session, une session vivante de plus  797ms
+
+ Test Files  2 failed (2)
+      Tests  20 failed | 7 passed (27)
+   Start at  21:42:10
+   Duration  20.52s (transform 1.57s, setup 53ms, collect 8.32s, tests 10.45s, environment 0ms, prepare 345ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-login-race.int-spec.ts test/int/client-record-audit.int-spec.ts
+
+--- stderr ---
+(node:5940) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:172:20
+    170|     const id = await ficheDe(m, undefined, { phone: telephone(), nameL…
+    171|     const lignes = await lignesDe(id);
+    172|     expect(lignes).toHaveLength(1);
+       |                    ^
+    173|     expect(lignes[0]).toEqual({
+    174|       action: "client_record.create",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:191:32
+    189|     expect(encore.status).toBe(200);
+    190|     expect((encore.body as { created: boolean }).created).toBe(false);
+    191|     expect(await lignesDe(id)).toHaveLength(1);
+       |                                ^
+    192|   });
+    193| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre
+TypeError: Cannot read properties of undefined (reading 'after')
+ ❯ test/int/client-record-audit.int-spec.ts:196:39
+    194|   it("⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans…
+    195|     const seul = await ficheDe(m, undefined, { email: courriel(), name…
+    196|     expect((await lignesDe(seul))[0]!.after).toEqual({ fields: ["email…
+       |                                       ^
+    197|     const tout = await ficheDe(m, undefined, { phone: telephone(), ema…
+    198|     expect((await lignesDe(tout))[0]!.after).toEqual({ fields: ["phone…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus
+AssertionError: expected [] to deeply equal [ 'client_record.create', …(1) ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+-   "client_record.complete_names",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:206:41
+    204|     expect(ok.status, JSON.stringify(ok.body)).toBe(200);
+    205|     const lignes = await lignesDe(id);
+    206|     expect(lignes.map((l) => l.action)).toEqual(["client_record.create…
+       |                                         ^
+    207|     expect(lignes[1]).toMatchObject({ actor_id: m.pro.userId, actor_ro…
+    208|     const refus = await completer(m, undefined, id, { nameAr: "أمينة" …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs
+AssertionError: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:218:20
+    216|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+    217|     const lignes = await lignesDe(id);
+    218|     expect(lignes).toHaveLength(2);
+       |                    ^
+    219|     expect(lignes[1]).toMatchObject({ action: "client_record.update", …
+    220|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom
+AssertionError: expected [] to deeply equal [ 'client_record.create', …(1) ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+-   "client_record.complete_names",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:244:41
+    242|     expect(await ficheEnBase(id)).toMatchObject({ name_ar: "آمنة بن سا…
+    243|     const lignes = await lignesDe(id);
+    244|     expect(lignes.map((l) => l.action)).toEqual(["client_record.create…
+       |                                         ^
+    245|     expect(lignes[1]).toMatchObject({ actor_id: m.pro.userId, actor_ro…
+    246|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche
+AssertionError: la fiche n'a que sa ligne de création: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:256:96
+    254|     const sansFiche = (await devisAvecFiche(m, undefined, {})).body as…
+    255|     expect((await boiteDeLangue(m, undefined, sansFiche.id, { locale: …
+    256|     expect((await lignesDe(id)).map((l) => l.action), "la fiche n'a qu…
+       |                                                                                                ^
+    257|   });
+    258| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus
+AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:265:57
+    263|     expect((await copieEnBase(q1.id))?.client_name_ar, "la copie du de…
+    264|     expect((await ficheEnBase(deja))?.name_ar, "la fiche garde son nom…
+    265|     expect((await lignesDe(deja)).map((l) => l.action)).toEqual(["clie…
+       |                                                         ^
+    266|   });
+    267| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus
+AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:275:57
+    273|     expect((await copieEnBase(q2.id))?.client_name_ar).toBe("آمنة بن س…
+    274|     expect((await ficheEnBase(liee))?.name_ar, "une fiche liée n'est j…
+    275|     expect((await lignesDe(liee)).map((l) => l.action)).toEqual(["clie…
+       |                                                         ^
+    276|   });
+    277| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises
+AssertionError: des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 0 to be greater than or equal to 8
+ ❯ test/int/client-record-audit.int-spec.ts:280:92
+    278|   it("⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur…
+    279|     const lignes = await ctx.prisma.$queryRawUnsafe<Array<{ t: string …
+    280|     expect(lignes.length, "des lignes parcourues (un zéro sur zéro lig…
+       |                                                                                            ^
+    281|     const texte = lignes.map((l) => l.t).join("\n");
+    282|     expect(valeursGenerees.length, "des numéros et des e-mails ont bie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien)
+AssertionError: une ligne de plus: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:294:63
+    292|     expect(reponses.filter((r) => (r.body as { created: boolean }).cre…
+    293|     expect(await nombreDeFiches(), "une fiche de plus").toBe(avantFich…
+    294|     expect((await lignesFiche()).length, "une ligne de plus").toBe(ava…
+       |                                                               ^
+    295|   });
+    296| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun
+AssertionError: expected [] to deeply equal [ Array(5) ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.complete_names",
+-   "client_record.complete_names",
+-   "client_record.create",
+-   "client_record.create",
+-   "client_record.update",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:312:48
+    310|     expect((await boiteDeLangue(m, m.jar, devis.id, { locale: "ar", na…
+    311|     const lignes = [...(await lignesDe(id)), ...(await lignesDe(autre)…
+    312|     expect(lignes.map((l) => l.action).sort()).toEqual(["client_record…
+       |                                                ^
+    313|     for (const l of lignes) {
+    314|       expect(l.actor_member_id, `${l.action} : le membre qui agit`).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager
+TypeError: Cannot read properties of undefined (reading 'action')
+ ❯ test/int/client-record-audit.int-spec.ts:324:18
+    322|     expect(m.employe!.id).not.toBe(m.membre);
+    323|     const ligne = (await lignesDe(id))[0]!;
+    324|     expect(ligne.action).toBe("client_record.create");
+       |                  ^
+    325|     expect(ligne.actor_member_id).toBe(m.employe!.id);
+    326|     expect(ligne.actor_id).toBe(m.pro.userId);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal
+AssertionError: {"created":true,"record":{"id":"01a1f6d5-5d82-7474-9864-56719b1418a2","phone":"+213555000019","email":null,"nameAr":null,"nameLatin":"Amina Bensalem","linked":false,"createdAt":"2026-11-20T02:42:20.674Z","updatedAt":"2026-11-20T02:42:20.674Z"}}: expected 200 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 200
+
+ ❯ test/int/client-record-audit.int-spec.ts:352:54
+    350|     await forcerEchecDuJournal("client_record.create");
+    351|     const echec = await creer(m, undefined, { phone: numero, nameLatin…
+    352|     expect(echec.status, JSON.stringify(echec.body)).toBe(500);
+       |                                                      ^
+    353|     expect(await nombreDeFiches(), "action sans trace : la fiche n'a p…
+    354|     await restaurer();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE
+AssertionError: expected 200 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 200
+
+ ❯ test/int/client-record-audit.int-spec.ts:364:31
+    362|     await forcerEchecDuJournal("client_record.complete_names");
+    363|     const completion = await completer(m, undefined, id, { nameAr: "آم…
+    364|     expect(completion.status).toBe(500);
+       |                               ^
+    365|     expect((await ficheEnBase(id))?.name_ar, "le nom n'est pas complét…
+    366|     await restaurer();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/20]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche)
+AssertionError: {"id":"01a1f6d5-5dcf-73c8-9fab-8f5c0715eb35","venueId":"01a1f6d5-5d58-7f8a-ad85-a5ffce305419","clientId":null,"status":"DRAFT","isOfficial":true,"version":1,"reference":"DEVIS-2026-0001-0001 v1","chainId":"01a1f6d5-5dcf-73c8-9fab-8f5c0715eb35","parentQuoteId":null,"eventDate":"2027-03-20","slotTemplateId":"01a1f6d5-5d6c-79ea-827a-c208435c5270","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"lines":[],"sentAt":null,"sentVia":null,"acceptedAt":null,"createdAt":"2026-11-20T02:42:20.748Z","bookingId":null,"clientRecordId":"01a1f6d5-5db7-78a5-88fa-3e6b2eb74e30","clientNameAr":"آمنة بن سالم","clientNameLatin":"Amina Bensalem"}: expected 201 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 201
+
+ ❯ test/int/client-record-audit.int-spec.ts:380:54
+    378|     await forcerEchecDuJournal("client_record.complete_names");
+    379|     const echec = await boiteDeLangue(m, undefined, devis.id, { locale…
+    380|     expect(echec.status, JSON.stringify(echec.body)).toBe(500);
+       |                                                      ^
+    381|     expect((await ficheEnBase(id))?.name_ar).toBeNull();
+    382|     expect((await copieEnBase(devis.id))?.client_name_ar, "la copie du…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/20]⎯
+
+ FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le hachage lu : REFUSÉE, aucune session vivante, aucune ligne `staff.login`, `last_login_at` intact
+AssertionError: l'ouverture, avec le hachage de l'ANCIEN mot de passe, doit être refusée: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/int/staff-login-race.int-spec.ts:96:100
+     94| 
+     95|     const ouverte = await w.ouvrir(lu, "jeton-apres-reinitialisation");
+     96|     expect(ouverte.ok, "l'ouverture, avec le hachage de l'ANCIEN mot d…
+       |                                                                                                    ^
+     97|     expect(await w.vivantes(), "aucune session vivante : rien n'a été …
+     98|     expect(await w.lignesDeSession(), "aucune ligne de session de plus…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/20]⎯
+
+ FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un CHANGEMENT de mot de passe par le membre (K-18, vraie route) à la place de la réinitialisation : ouverture REFUSÉE, aucune session de plus
+AssertionError: l'ouverture, avec le hachage de l'ancien mot de passe, doit être refusée: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/int/staff-login-race.int-spec.ts:113:100
+    111| 
+    112|     const ouverte = await w.ouvrir(lu, "jeton-apres-changement");
+    113|     expect(ouverte.ok, "l'ouverture, avec le hachage de l'ancien mot d…
+       |                                                                                                    ^
+    114|     expect(await w.lignesDeSession(), "aucune ligne de session de plus…
+    115|     expect(await w.vivantes(), "le nombre de sessions vivantes est cel…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/20]⎯
+
+ FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le hachage est remplacé par une transaction tenue hors du service ; l'ouverture part, ATTEND derrière le verrou de la ligne, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)
+AssertionError: l'ouverture, qui attendait derrière la transaction qui remplaçait le hachage, doit relire la ligne et être REFUSÉE: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/int/staff-login-race.int-spec.ts:135:143
+    133|     await verrou.done;
+    134|     const resultat = await ouverture;
+    135|     expect(resultat.ok, "l'ouverture, qui attendait derrière la transa…
+       |                                                                                                                                               ^
+    136|     expect(await w.lignesDeSession(), "aucune ligne de session de plus…
+    137|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/20]⎯
+
+ FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /pro/staff/login` dont la vérification de l'argon2 est interrompue par une réinitialisation : 401 STAFF_INVALID_CREDENTIALS, aucun cookie de session, aucune session vivante, le MÊME corps qu'un mauvais mot de passe, UN seul argon2 réel
+AssertionError: {"member":{"id":"01a1f6d5-783b-71de-ae0a-6376adcd492c","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected 200 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 200
+
+ ❯ test/int/staff-login-race.int-spec.ts:159:62
+    157| 
+    158|     expect(statutDeLaReinitialisation, "la réinitialisation est bien t…
+    159|     expect(connexion.status, JSON.stringify(connexion.body)).toBe(401);
+       |                                                              ^
+    160|     expect(codeDe(connexion)).toBe("STAFF_INVALID_CREDENTIALS");
+    161|     expect(lireCookies(connexion).find((c) => c.name === "zwadj_ss"), …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/20]⎯
+
