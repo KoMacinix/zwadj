@@ -2808,7 +2808,7 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 57, § 4) : **L36-3b, le PIN** (secret HMAC et refus au démarrage, générateur et liste des PIN triviaux, compteur atomique de trois essais, verrouillage et déblocage, expiration, route K-23 ; amendement des réponses de K-14, K-15 et K-18 : le PIN rendu une fois ; **il ouvrira ses sessions par l'appel d'`openSession` que ce lot a conditionné, et y ajoutera SA preuve**). **Pas arbitré** : le rang 58 n'est **pas** nommé par la session ; L36-4 (les écrans du personnel) dépend de L36-3 et n'a pas de rang. ⚠ **Ce qui attend Ko avant** : la ratification de **S-252 à S-268** (section D355, § 5) ; **la question du rapport** (traiter l'intermittence de l'injection de `Reflector`, cause non élucidée, dans un petit lot de configuration d'intégration ?) ; **la relecture humaine des six messages arabes du personnel** (D354) et des 29 clés arabes du bloc `map` (D351) ; ses gestes restants (`docs/preuves/D353/scenarios-ko.md`, puis ceux de D352, D351 et D350 s'ils ne sont pas faits) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
 
-⛔ **TABLE D'OUVERTURE DU RANG 57 (D355), recopiée à l'IDENTIQUE de `docs/preuves/D355/table-ouverture.md`** (premier commit du lot, `57fc15e`, SEUL ; extension 1 `d397176`, extension 2 `30f166a`, extension 3 `02bf30c`, extension 4 `1f7e223`, extension 5 `8aae2aa`, extension 6 `e1c1d9b`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SIX extensions, la cinquième déclarant à l'avance les pièces de la passe D277, du contrôle de fin de lot et de l'audit « d ») :
+⛔ **TABLE D'OUVERTURE DU RANG 57 (D355), recopiée à l'IDENTIQUE de `docs/preuves/D355/table-ouverture.md`** (premier commit du lot, `57fc15e`, SEUL ; extension 1 `d397176`, extension 2 `30f166a`, extension 3 `02bf30c`, extension 4 `1f7e223`, extension 5 `8aae2aa`, extension 6 `e1c1d9b`, extension 7 `ce28757`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SEPT extensions, la cinquième déclarant à l'avance les pièces de la passe D277, du contrôle de fin de lot et de l'audit « d », la sixième les attestations de « le même arbre », la septième les procédures d'écriture des fichiers d'autorité) :
 
 ~~~~markdown
 # D355 — rang 57 — table d'ouverture
@@ -3180,6 +3180,16 @@ docs/preuves/D355/tri-audit-d355d.txt
 
 ```
 docs/preuves/D355/attestations-arbre.txt
+```
+
+### Extension 7 — les procédures d'écriture des fichiers d'autorité
+
+Écrite **avant** le commit qui verse ces pièces. Les `.md` d'autorité ont été écrits PAR SCRIPT (les blocs sont des fichiers, jamais une chaîne qui traverse un interpréteur, D289 ; chaque ancre est comptée avant d'écrire, le résultat est RELU dans le fichier, les fins de ligne CRLF sont conservées) : `ecrire-autorite.py` (l'arbitrage de Ko, la clôture, `AGENTS.md`, le backlog) et les deux scripts des annotations de la passe D277. **Procédures archivées comme PIÈCES (D291), jamais promues en instruments.** L'extension 5 ne les déclarait pas : la passe D277 (`passe-d277.md`) les cite.
+
+```
+docs/preuves/D355/ecrire-autorite.py
+docs/preuves/D355/annoter-d277.py
+docs/preuves/D355/annoter-d277-agents.py
 ```
 ~~~~
 
