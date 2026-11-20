@@ -1,0 +1,32 @@
+calibration : la table (57fc15e) précède la consigne (80d6e6e) : True (attendu vrai) ; la consigne précède la table : False (attendu faux)
+✓ [1] le PREMIER commit du lot ne contient que `docs/preuves/D355/table-ouverture.md`
+     ↳ 21 commits du lot (--first-parent) ; 0 commit(s) importé(s) ; premier = 57fc15e ; fichiers du premier commit : ['docs/preuves/D355/table-ouverture.md']
+calibration : `client-record-audit.ts` déclaré : True (attendu vrai) ; `apps/api/src/main.ts` déclaré : False (attendu faux) ; chemins déclarés lus : 241
+✓ [2] `git diff <SHA de départ>..HEAD --name-only` ⊆ la table (chemins COMPLETS, extensions comprises)
+     ↳ 224 fichiers modifiés depuis le départ ; 241 chemins déclarés ; NON déclarés : 0 [] (attendu 0)
+✓ [3] la sortie de la lecture adverse entre dans un commit ANTÉRIEUR au premier commit qui touche un `.md` d'autorité
+     ↳ lecture adverse : 80d6e6e (#2) ; premier commit d'autorité : e2e196f (#14)
+✓ [4] la première écriture d'autorité porte l'arbitrage de Ko (bloc « ARBITRÉ LE 19/11/2026 PAR KO — LE RANG 57 »)
+     ↳ commit e2e196f ; bloc d'arbitrage dans le diff : True
+✓ [5] chaque fichier du lot est déclaré dans la table AVANT (ou dans) le commit qui le touche pour la première fois — l'extension précède le fichier qu'elle couvre
+     ↳ 223 fichiers touchés examinés, 7 extensions ; en retard : 0 [] (attendu 0)
+✓ [6] les pièces des rouges (unitaire, intégration, leur lecture) entrent dans un commit ANTÉRIEUR au premier commit de code (D334, point 5)
+     ↳ rouges : {rouge-unit.txt: 3dc0113 (#5), rouge-int.txt: 3dc0113 (#5), lecture-des-rouges.md: 3dc0113 (#5)} ; premier commit de code : 2608255 (#6)
+calibration : chaîne triviale (départ = arrivée) : True (attendu vrai) ; chaîne vers une empreinte inventée : False (attendu faux)
+✓ [7] chaque fichier de test joué aux rouges est, à la livraison, identique OU rattaché au rouge par la chaîne AVANT → APRÈS déclarée
+     ↳ 12 fichiers joués aux rouges : 10 identiques, 2 corrigés et chaînés, chaîne rompue : 0 [] (attendu 0)
+✓ [8] aucun fichier de `apps/pro` ni de `apps/client` au diff (R-4 : aucun écran)
+     ↳ 224 fichiers au diff ; sous `apps/pro/` ou `apps/client/` : 0 [] (attendu 0)
+✓ [9] aucun fichier de `apps/api/prisma/` au diff (R-4 : aucune migration)
+     ↳ sous `apps/api/prisma/` : 0 [] (attendu 0)
+✓ [10] aucun fichier de `packages/` au diff (R-4 : aucun contrat d'API neuf, aucun message)
+     ↳ 224 fichiers au diff ; sous `packages/` : 0 [] (attendu 0)
+calibration : `pricing-engine.ts` reconnu comme chemin de l'argent : True (attendu vrai) ; `client-record-audit.ts` : False (attendu faux)
+✓ [11] aucun fichier de `apps/api/src/` dont le nom désigne le chemin de l'argent (prix, acompte, montants, paiement, commission, cashback) au diff — ce contrôle ne lit QUE les noms de fichier : que `quote-store.prisma.ts` et `quotes.service.ts` ne portent que la boîte de langue (K-5) est une LECTURE du diff, faite par la session, pas par ce contrôle
+     ↳ 224 fichiers au diff ; noms de fichier reconnus comme chemin de l'argent : 0 [] (attendu 0)
+✓ [12] l'arbre est propre (`git status --short` : 0 ligne), aucun stash
+     ↳ lignes : 0 [] ; stash : 0
+✓ [13] local et `origin/main` sur le MÊME SHA (D288) — après push puis fetch
+     ↳ HEAD = 1b5aae17ef61b3d29b9acf6a580ff8a016015d89 ; origin/main = 1b5aae17ef61b3d29b9acf6a580ff8a016015d89
+
+TOTAL : 13 contrôles — 13 ✓ · 0 ✗  (attendu : tous ✓)
