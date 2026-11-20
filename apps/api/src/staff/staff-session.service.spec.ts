@@ -162,10 +162,43 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
   });
 
   it("⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouverture (désactivation concurrente) : le MÊME refus, aucune session", async () => {
-    const m = monde({ openSession: vi.fn(async () => ({ ok: false as const, reason: "memberInactive" as const })) }, { verify: () => true });
+    const m = monde({ openSession: vi.fn(async () => ({ ok: false as const, reason: "memberChanged" as const })) }, { verify: () => true });
     const { status, corps } = await corpsDuRefus(m.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
     expect(status).toBe(401);
     expect(corps).toEqual({ code: "STAFF_INVALID_CREDENTIALS", message: "staff.errors.invalidCredentials" });
+  });
+
+  // ── R-1 (D355) : « connexion ‖ réinitialisation » — l'ouverture est CONDITIONNÉE au hachage lu à la réservation ───────────────────────────────────────────────────────────────────────────────────────
+  it("⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR LA RÉSERVATION : `openSession` reçoit `expectedPasswordHash`, et c'est CE hachage-là qui a été vérifié", async () => {
+    const m = monde({ reservePasswordAttempt: vi.fn(async () => ({ reserved: true as const, passwordHash: "HASH-LU-A-LA-RESERVATION", failedCount: 1, pausedNow: false })) }, { verify: () => true });
+    await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    expect(m.mots.verify).toHaveBeenCalledWith("HASH-LU-A-LA-RESERVATION", "Motdepasse1");
+    expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
+    expect(m.magasin.openSession).toHaveBeenCalledWith(expect.objectContaining({ expectedPasswordHash: "HASH-LU-A-LA-RESERVATION" }));
+  });
+
+  it("⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse l'ouverture) : le MÊME refus qu'un mauvais mot de passe, à l'octet — UN seul hachage réel, AUCUN factice, AUCUNE ligne d'échec, aucun cookie", async () => {
+    const remplace = monde({ openSession: vi.fn(async () => ({ ok: false as const, reason: "memberChanged" as const })) }, { verify: () => true });
+    const refusDOuverture = await corpsDuRefus(remplace.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
+    const mauvais = monde({}, { verify: () => false });
+    const refusDeMotDePasse = await corpsDuRefus(mauvais.service.login(user, CORPS_CONNEXION, SANS_COOKIE));
+    expect(refusDOuverture.status).toBe(401);
+    expect(refusDOuverture, "même statut, même corps, à l'octet : aucune fuite d'état (R-3 de D341)").toEqual(refusDeMotDePasse);
+    expect(remplace.mots.verify, "UN seul argon2 sur le vrai hachage : le coût d'un mauvais mot de passe").toHaveBeenCalledTimes(1);
+    expect(mauvais.mots.verify).toHaveBeenCalledTimes(1);
+    expect(remplace.mots.verifyAgainstDummy, "aucun hachage factice : la vraie vérification a déjà été payée").not.toHaveBeenCalled();
+    expect(remplace.magasin.recordPasswordFailure, "S-253 : un refus d'ouverture n'est pas un échec de mot de passe — rien n'est consigné").not.toHaveBeenCalled();
+    expect(remplace.magasin.openSession).toHaveBeenCalledTimes(1);
+  });
+
+  it("⛔ R-1 — le refus d'ouverture ne pose AUCUN cookie : l'exception remonte avant tout jeton rendu au contrôleur", async () => {
+    const m = monde({ openSession: vi.fn(async () => ({ ok: false as const, reason: "memberChanged" as const })) }, { verify: () => true });
+    const issue = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE).then(
+      (reponse) => ({ refusee: false as const, cookies: reponse.cookies }),
+      () => ({ refusee: true as const, cookies: null })
+    );
+    expect(issue.refusee, "la connexion est refusée").toBe(true);
+    expect(issue.cookies, "aucune réponse, donc aucun cookie à poser").toBeNull();
   });
 
   it("la clé de la tentative est réservée AVANT toute vérification : l'ordre des appels est findMember, reservePasswordAttempt, verify, openSession", async () => {

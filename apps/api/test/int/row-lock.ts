@@ -9,7 +9,9 @@ import type { PrismaService } from "../../src/prisma/prisma.service";
 /** Les seules tables dont on verrouille une ligne : le nom d'une table ne se passe pas en paramètre, on ne laisse donc pas un texte libre entrer dans la requête. */
 // D354 (rang 56, R-4) : `pro_profiles` — le verrou L1 de « jamais zéro Manager » (cadrage D340, § 3.1). Tenu hors du service, il fait ATTENDRE deux désactivations simultanées à l'endroit exact où elles se
 // sérialisent ; un comptage des Managers fait AVANT ce verrou les laisserait réussir toutes les deux.
-type LockableTable = "account_deletion_requests" | "pro_profiles" | "venues";
+// D355 (rang 57, R-1) : `pro_staff_members` — le verrou L2 de « connexion ‖ réinitialisation » et de « connexion ‖ désactivation ». Tenu hors du service avec le changement (un hachage remplacé, un statut éteint) écrit mais NON
+// validé, il fait ATTENDRE l'ouverture d'une session à l'endroit exact où elle doit relire la ligne : un contrôle fait AVANT la transaction la laisserait passer, celui qui est DANS le CAS la refuse.
+type LockableTable = "account_deletion_requests" | "pro_profiles" | "pro_staff_members" | "venues";
 type Tx = Parameters<Parameters<PrismaService["$transaction"]>[0]>[0];
 
 export interface RowLock {

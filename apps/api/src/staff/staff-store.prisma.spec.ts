@@ -310,12 +310,22 @@ describe("activate — K-14 : une transaction, le drapeau d'abord (L1), puis Man
 });
 
 describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse", () => {
-  const entree = { actor: acteur, proProfileId: SALLE, memberId: MEMBRE, sessionTokenHash: "hs", candidateDeviceHashes: ["h-candidat"], newDeviceTokenHash: "hd", deviceLabel: "Poste" };
+  // `expectedPasswordHash` (D355, R-1) : le hachage lu par la RÉSERVATION de la tentative — l'ouverture lui est CONDITIONNÉE, dans le CAS du membre.
+  const entree = {
+    actor: acteur,
+    proProfileId: SALLE,
+    memberId: MEMBRE,
+    sessionTokenHash: "hs",
+    candidateDeviceHashes: ["h-candidat"],
+    newDeviceTokenHash: "hd",
+    deviceLabel: "Poste",
+    expectedPasswordHash: "HASH-LU-A-LA-RESERVATION"
+  };
   const appareil = (surcharge: Record<string, unknown> = {}) => ({ id: "d0", memberId: MEMBRE, proProfileId: SALLE, revoked: false, expired: false, ...surcharge });
 
-  it("⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberInactive` SANS autre écriture (connexion ‖ désactivation, D305)", async () => {
+  it("⛔ le CAS du membre est la PREMIÈRE instruction (`status = 'ACTIVE'`, la salle, remise à zéro du compteur) ; compte 0 ⇒ `memberChanged` SANS autre écriture (connexion ‖ désactivation, D305)", async () => {
     const f = faux([[]]);
-    expect(await f.store.openSession(entree)).toEqual({ ok: false, reason: "memberInactive" });
+    expect(await f.store.openSession(entree)).toEqual({ ok: false, reason: "memberChanged" });
     expect(f.appels).toHaveLength(1);
     const sql = f.appels[0]!.sql;
     expect(sql).toMatch(/^UPDATE pro_staff_members/);
@@ -324,6 +334,24 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
     expect(sql).toContain("password_failed_count = 0");
     expect(sql).toContain("password_locked_until = NULL");
     expect(sql).toContain("last_login_at = now()");
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservation, dans le WHERE de la MÊME instruction que `status = 'ACTIVE'` : une réinitialisation ou un changement de mot de passe entre la réservation et l'ouverture ne trouve plus la ligne", async () => {
+    const f = faux([[]]);
+    await f.store.openSession(entree);
+    const premier = f.appels[0]!;
+    const where = premier.sql.slice(premier.sql.indexOf(" WHERE "), premier.sql.indexOf(" RETURNING "));
+    expect(where, "le WHERE de l'UPDATE du membre a été isolé").toContain("pro_profile_id =");
+    expect(where, "le statut et le hachage sont dans le MÊME WHERE : l'un sans l'autre laisserait passer l'ouverture d'un mot de passe remplacé").toContain("status = 'ACTIVE'");
+    expect(where).toContain("password_hash = ?");
+    expect(premier.valeurs, "les paramètres : le membre, sa salle, le hachage LU (jamais le jeton ni un autre secret)").toEqual([MEMBRE, SALLE, "HASH-LU-A-LA-RESERVATION"]);
+  });
+
+  it("⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture : ni appareil, ni session, ni audit `staff.login` (compte 0 ⇒ la transaction s'arrête là)", async () => {
+    const f = faux([[]]);
+    expect(await f.store.openSession(entree)).toEqual({ ok: false, reason: "memberChanged" });
+    expect(f.appels.map((a) => a.sql).filter((s) => /^INSERT/.test(s))).toEqual([]);
     expect(f.audits).toHaveLength(0);
   });
 
@@ -470,7 +498,7 @@ describe("l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33,
     }
     {
       const f = faux([[LIGNE_MEMBRE], [], [{ id: "d1" }], [{ id: "s1" }]]);
-      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
+      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, expectedPasswordHash: "SECRET-HASH-LU", sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
     }
     {
       const f = faux([[{ id: MEMBRE }], [LIGNE_MEMBRE], 1]);

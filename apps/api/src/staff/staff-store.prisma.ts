@@ -214,15 +214,20 @@ export class PrismaStaffStore implements StaffStore {
 
   // ⛔ K-15 — connexion ‖ désactivation (§ 3.2 du cadrage) : le CAS du membre (`status = 'ACTIVE'`, sa salle, compte exigé) est la PREMIÈRE instruction (L2) ; il remet les compteurs à zéro (le mot de passe vient d'être
   // vérifié) et écrit `last_login_at`. Puis l'appareil (L3), la session (L4), l'audit. Un appareil n'est réutilisé que s'il est de CE membre, de CETTE salle, ni révoqué ni expiré (`pickReusableDevice`, MP-3).
+  // ⛔ D355 (rang 57, R-1) — connexion ‖ RÉINITIALISATION : le MÊME CAS porte le hachage lu à la réservation (`password_hash = $expected`). Une réinitialisation (K-21) ou un changement (K-18) qui tombe entre la
+  // réservation et cette instruction a remplacé le hachage : l'`UPDATE`, qui attend le verrou de la ligne puis ÉVALUE SON WHERE sur la version à jour, ne trouve plus rien — compte 0, aucune écriture, le même
+  // refus qu'une désactivation. La condition est DANS la transaction, sur la ligne verrouillée (ordre des verrous L2, S-101) : un contrôle d'avant la transaction aurait lu l'ancien hachage. Elle vit ICI, à UN
+  // endroit : le PIN (lot 3b) ouvrira ses sessions par cet appel et y ajoutera SA preuve.
   async openSession(input: OpenSessionInput): Promise<OpenSessionResult> {
     return this.prisma.$transaction(async (tx): Promise<OpenSessionResult> => {
       const membres = await tx.$queryRaw<LigneMembre[]>`
         UPDATE pro_staff_members
            SET last_login_at = now(), password_failed_count = 0, password_locked_until = NULL, updated_at = now()
          WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'
+           AND password_hash = ${input.expectedPasswordHash}
         RETURNING id::text AS id, account_name AS "accountName", role::text AS role, must_change_password AS "mustChangePassword"`;
       const membre = membres[0];
-      if (membre === undefined) return { ok: false, reason: "memberInactive" };
+      if (membre === undefined) return { ok: false, reason: "memberChanged" };
 
       const candidats =
         input.candidateDeviceHashes.length === 0

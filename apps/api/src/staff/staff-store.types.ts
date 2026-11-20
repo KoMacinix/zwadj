@@ -85,6 +85,13 @@ export interface OpenSessionInput {
   actor: StaffActor;
   proProfileId: string;
   memberId: string;
+  /**
+   * ⛔ D355 (rang 57, R-1) — le hachage du mot de passe LU par la RÉSERVATION de la tentative : celui que `login` a vérifié. L'ouverture lui est CONDITIONNÉE, dans le CAS du membre (la ligne que cet `UPDATE`
+   * verrouille) : un mot de passe remplacé ENTRE la réservation et l'ouverture — une réinitialisation (K-21), un changement (K-18) — ne trouve plus la ligne, et la connexion qui avait vérifié l'ANCIEN mot de
+   * passe n'ouvre aucune session. Ce n'est PAS un contrôle fait AVANT la transaction : entre ce contrôle et l'écriture la ligne peut encore changer — la condition est dans le CAS, lue sur la ligne verrouillée.
+   * Le PIN (lot 3b) ouvrira ses sessions par ce même appel et y ajoutera SA preuve.
+   */
+  expectedPasswordHash: string;
   sessionTokenHash: string;
   /** Les hachages des cookies d'appareil présentés (bornés à 8) : l'adaptateur en cherche un réutilisable. */
   candidateDeviceHashes: readonly string[];
@@ -92,9 +99,13 @@ export interface OpenSessionInput {
   newDeviceTokenHash: string;
   deviceLabel: string;
 }
+/**
+ * Le refus d'ouvrir est UN seul résultat (`memberChanged`) : le membre n'est plus celui que la réservation a vu — désactivé, ou son mot de passe remplacé (D355, R-1). Le CAS ne dit pas lequel, et le service non plus
+ * (aucun refus ne dit pourquoi, R-3 de D341) : il rend le même refus qu'un mauvais mot de passe.
+ */
 export type OpenSessionResult =
   | { ok: true; member: StaffMemberView; sessionId: string; deviceReused: boolean }
-  | { ok: false; reason: "memberInactive" };
+  | { ok: false; reason: "memberChanged" };
 
 // ── Le garde et l'état ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 export interface TouchInput {

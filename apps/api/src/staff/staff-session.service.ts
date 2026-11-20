@@ -104,7 +104,8 @@ export class StaffSessionService {
     return { body: { member: result.member }, cookies: { session: sessionToken, device: { suffix, token: deviceToken } } };
   }
 
-  // ⛔ K-15 — la connexion. L'ORDRE EST LA RÈGLE : chercher le membre, RÉSERVER la tentative, ENSUITE seulement vérifier (le vrai hachage si réservée, le factice sinon), puis ouvrir la session.
+  // ⛔ K-15 — la connexion. L'ORDRE EST LA RÈGLE : chercher le membre, RÉSERVER la tentative, ENSUITE seulement vérifier (le vrai hachage si réservée, le factice sinon), puis ouvrir la session — SOUS CONDITION du
+  // hachage que la réservation a rendu et que la vérification a jugé (D355, R-1) : un mot de passe remplacé entre les deux n'ouvre rien.
   async login(user: StaffActor, input: StaffLoginInput, cookies: StaffCookiesIn): Promise<StaffReply<StaffLoginDTO>> {
     const layer = await this.store.readLayer(user.userId);
     const member = layer === null ? null : await this.store.findMember(layer.proProfileId, normalizeStaffAccountName(input.accountName));
@@ -136,12 +137,14 @@ export class StaffSessionService {
       actor: user,
       proProfileId: layer.proProfileId,
       memberId: member.id,
+      expectedPasswordHash: reservation.passwordHash,
       sessionTokenHash: this.tokens.hash(sessionToken),
       candidateDeviceHashes: cookies.devices.map((d) => this.tokens.hash(d.value)),
       newDeviceTokenHash: this.tokens.hash(deviceToken),
       deviceLabel: STAFF_DEVICE_DEFAULT_LABEL
     });
-    // Désactivé entre la réservation et l'ouverture : le même refus, aucune session (la base a refusé le CAS).
+    // Désactivé — OU son mot de passe remplacé (réinitialisation, changement) — entre la réservation et l'ouverture : le même refus qu'un mauvais mot de passe, aucune session (la base a refusé le CAS, D355).
+    // Le vrai hachage a déjà été vérifié : le coût est UN argon2, celui d'un mauvais mot de passe ; rien n'est consigné comme échec (le compteur de la réservation reste, comme pour un mauvais mot de passe).
     if (!opened.ok) throw identifiantsRefuses();
     return {
       body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD } },
