@@ -1,0 +1,101 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/P-2-audit-pur.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6857 octets, sha256 8619f0c5561e91ecb51e14c61e0eec6616170eafa657cf7a1bf38a41080e0eca. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/client-record-audit.spec.ts (13 tests | 3 failed) 22ms
+   × champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), quel que soit l'ordre des clés de l'objet reçu 11ms
+     → expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+   × champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ écrit : K-2 reçoit `null` pour ce que la fiche n'a pas 1ms
+     → expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+   × champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms distinctifs n'y laissent aucune trace 3ms
+     → expected '["+213555123456","amina.bensalem@exam…' to be '["phone","email","nameAr","nameLatin"]' // Object.is equality
+   ✓ champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > la liste fermée est exactement celle de la table : quatre champs, dans cet ordre 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d'autre (les clés sont exactement celles-ci) 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `before` n'est JAMAIS écrit : pas de copie de l'état d'avant (la valeur d'un champ est une donnée personnelle) 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ sans session de personnel (couche éteinte), `actorMemberId` vaut NULL — la clé est PRÉSENTE avec la valeur `null`, pas absente : l'acteur est alors le compte commun 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > l'ordre des champs est FIXE : l'ordre dans lequel l'appelant les donne ne change pas la ligne 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'a pas d'autre place : une création ou une modification qui le reçoit est refusée 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'existe pas) ou RÉPÉTÉ est une erreur de programmation : elle LÈVE 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une action qui n'est pas l'une des trois est refusée : la liste des actions du journal est fermée 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ l'entité est toujours `client_record` et le rôle toujours `PRO` : une fiche n'est écrite que par un pro 0ms
+   ✓ le module est PUR (D187) : aucune dépendance — ni Nest, ni Prisma, ni un autre module du dépôt > la source ne contient aucun `import` ni aucun `require`, commentaires retirés 1ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 10 passed (13)
+   Start at  22:40:51
+   Duration  781ms (transform 71ms, setup 0ms, collect 80ms, tests 22ms, environment 0ms, prepare 286ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/client-record-audit.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), quel que soit l'ordre des clés de l'objet reçu
+AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+
+- Expected
++ Received
+
+  [
+-   "phone",
+-   "nameLatin",
++   "+213555123456",
++   "Amina",
+  ]
+
+ ❯ src/clients/client-record-audit.spec.ts:22:74
+     20| describe("champsEcrits — les NOMS des champs d'une écriture, jamais le…
+     21|   it("rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr…
+     22|     expect(champsEcrits({ nameLatin: "Amina", phone: "+213555123456" }…
+       |                                                                          ^
+     23|     expect(champsEcrits({ nameLatin: "Amina", nameAr: "آمنة", email: "…
+     24|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ écrit : K-2 reçoit `null` pour ce que la fiche n'a pas
+AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+
+- Expected
++ Received
+
+  [
+-   "phone",
+-   "nameLatin",
++   "+213555123456",
++   "Amina",
+  ]
+
+ ❯ src/clients/client-record-audit.spec.ts:27:106
+     25| 
+     26|   it("un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ…
+     27|     expect(champsEcrits({ phone: "+213555123456", email: null, nameAr:…
+       |                                                                                                          ^
+     28|     expect(champsEcrits({})).toEqual([]);
+     29|     expect(champsEcrits({ phone: null, email: null, nameAr: null, name…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms distinctifs n'y laissent aucune trace
+AssertionError: expected '["+213555123456","amina.bensalem@exam…' to be '["phone","email","nameAr","nameLatin"]' // Object.is equality
+
+Expected: "["phone","email","nameAr","nameLatin"]"
+Received: "["+213555123456","amina.bensalem@example.dz","آمنة بن سالم","Amina Bensalem"]"
+
+ ❯ src/clients/client-record-audit.spec.ts:34:20
+     32|   it("⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et…
+     33|     const sortie = JSON.stringify(champsEcrits({ phone: "+213555123456…
+     34|     expect(sortie).toBe('["phone","email","nameAr","nameLatin"]');
+       |                    ^
+     35|     for (const valeur of ["213555123456", "amina.bensalem", "example.d…
+     36|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

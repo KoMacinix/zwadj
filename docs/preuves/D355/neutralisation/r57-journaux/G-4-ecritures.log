@@ -1,0 +1,76 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/G-4-ecritures.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5693 octets, sha256 e5cd682ab69eb7bd316f0bacb649811158b0a563f11c23b5f21cad332f572674. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/client-record-writes.spec.ts (12 tests | 1 failed) 162ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'écriture de la table : un INSERT, un UPDATE, un DELETE, `create`, `updateMany`, `upsert` sont VUS ; un SELECT, un `findFirst`, un identifiant voisin et un commentaire ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'extracteur de méthode : rend le corps d'une méthode et s'arrête à la suivante ; une méthode absente rend une chaîne vide 0ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ni un fichier de plus, ni un de moins — et la garde dit combien elle a parcouru 20ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ⛔ (d) la conversion d'un devis n'écrit AUCUNE fiche : `quotes.service.ts` ne contient aucune écriture de la table 16ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > clients/pro-client-store.prisma.ts : 3 écriture(s), une par méthode de la carte 15ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > venues/quote-store.prisma.ts : 1 écriture(s), une par méthode de la carte 16ms
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › creerSiAbsente 15ms
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › completerNoms 16ms
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › modifier 24ms
+     → modifier : la charge utile de la ligne vient du constructeur du module pur, jamais d'un objet écrit sur place: expected 'async modifier(\r\n    userId: string…' to match /\bauditLog\s*\.\s*create\s*\(\s*\{\s*…/
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > venues/quote-store.prisma.ts › completerNomDuClient 18ms
+   ✓ ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > calibration : une entité écrite à la main est VUE ; un nom d'action passé au constructeur ne l'est pas 0ms
+   ✓ ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` n'écrit `entityType: "client_record"` — aucun magasin ne bâtit la ligne à la main 17ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  22:47:35
+   Duration  816ms (transform 44ms, setup 0ms, collect 54ms, tests 162ms, environment 0ms, prepare 187ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/client-record-writes.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › modifier
+AssertionError: modifier : la charge utile de la ligne vient du constructeur du module pur, jamais d'un objet écrit sur place: expected 'async modifier(\r\n    userId: string…' to match /\bauditLog\s*\.\s*create\s*\(\s*\{\s*…/
+
+- Expected: 
+/\bauditLog\s*\.\s*create\s*\(\s*\{\s*data\s*:\s*ficheAuditEntry\s*\(/
+
++ Received: 
+"async modifier(
+    userId: string,
+    id: string,
+    champs: { readonly phone?: string; readonly email?: string; readonly nameAr?: string; readonly nameLatin?: string },
+    auteur: FicheAuteur
+  ): Promise<ResultatModification> {
+    try {
+      return await this.prisma.$transaction(async (tx): Promise<ResultatModification> => {
+        const verrou = await tx.$queryRaw<{ id: string }[]>`
+          SELECT r.id::text AS id FROM pro_client_records r JOIN pro_profiles p ON p.id = r.pro_profile_id
+           WHERE r.id = ${id}::uuid AND p.user_id = ${userId}::uuid
+           FOR UPDATE OF r`;
+        if (verrou.length !== 1) return { ok: false, raison: \"absenteOuLiee\", actuelle: null };
+        const actuelle = await tx.proClientRecord.findUniqueOrThrow({ where: { id }, select: FICHE_SELECT });
+        if (actuelle.linkedUserId !== null) return { ok: false, raison: \"absenteOuLiee\", actuelle };
+        const fiche = await tx.proClientRecord.update({ where: { id }, data: { ...champs }, select: FICHE_SELECT });
+        
+        await tx.auditLog.create({ data: { ...ficheAuditEntry({ auteur, action: \"client_record.update\", ficheId: id, champs: champsEcrits(champs) }) } });
+        return { ok: true, fiche };
+      });
+    } catch (error) {
+      if (estViolationUnicite(error)) return { ok: false, raison: \"unicite\" };
+      throw error;
+    }
+  }
+}
+"
+
+ ❯ src/clients/client-record-writes.spec.ts:145:134
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

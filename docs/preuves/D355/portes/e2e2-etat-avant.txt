@@ -1,0 +1,6 @@
+⛔ PIÈCE MASQUÉE — portes/e2e2-etat-avant.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 66 octets, sha256 dd7eb434fcb544f301ae618fa050c04a5e467f50ee5e699afc66f6bcee101f5d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+avant la passe e2e 2 : BatteryStatus=2 RAM libre Mo=3993 15:48:31

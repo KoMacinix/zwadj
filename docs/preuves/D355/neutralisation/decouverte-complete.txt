@@ -1,0 +1,554 @@
+⛔ PIÈCE MASQUÉE — decouverte-complete.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 72766 octets, sha256 d0b0dc3ee06fc205c2c8a554bcbf2e5d08e310fe4ecdd9c19d633cf0fb13202b. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 56 déclarées · 56 jouées · 0 non jouée(s) (sans --int) · 9 mesure(s) distincte(s) · 9 fichier(s) muté(s)
+  pré-vol audit-pur : code 0 · passés 13 · en échec 0
+  pré-vol course-magasin : code 0 · passés 66 · en échec 0
+  pré-vol course-service : code 0 · passés 41 · en échec 0
+  pré-vol ecritures : code 0 · passés 12 · en échec 0
+  pré-vol int-course : code 0 · passés 8 · en échec 0
+  pré-vol int-fiches : code 0 · passés 19 · en échec 0
+  pré-vol magasin-devis : code 0 · passés 63 · en échec 0
+  pré-vol service-devis : code 0 · passés 48 · en échec 0
+  pré-vol service-fiches : code 0 · passés 24 · en échec 0
+■ A-1. ⛔ R-1 — le CAS d'ouverture ne compare plus le hachage lu à la réservation (une réinitialisation ou un changement intercalé n'empêche plus l'ouverture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-magasin] code 1 · ROUGE — passés 65 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservati
+         ↳ AssertionError: expected ' WHERE id = ?::uuid AND pro_profile_i…' to contain 'password_hash = ?'
+   [int-course] code 1 · ROUGE — passés 4 · en échec 4
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE
+         ↳ AssertionError: l'ouverture, avec le hachage de l'ANCIEN mot de passe, doit être refusée: expected true to be false // Object.is equality
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un
+         ↳ AssertionError: l'ouverture, avec le hachage de l'ancien mot de passe, doit être refusée: expected true to be false // Object.is equality
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — 
+         ↳ AssertionError: l'ouverture, qui attendait derrière la transaction qui remplaçait le hachage, doit relire la ligne et être REFUSÉE: expected true to b
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /
+         ↳ AssertionError: {"member":{"id":"01a1f6fe-48a8-7f68-b464-af2668498abb","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected 
+■ A-2. ⛔ R-1 — le CAS compare le hachage à un AUTRE secret (le jeton de session) : l'ouverture n'est plus jamais acceptée
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-magasin] code 1 · ROUGE — passés 65 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservati
+         ↳ AssertionError: les paramètres : le membre, sa salle, le hachage LU (jamais le jeton ni un autre secret): expected [ …(3) ] to deeply equal [ …(3) ]
+   [int-course] code 1 · ROUGE — passés 0 · en échec 8
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — 
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désact
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture 
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > par la route : un mot de
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+■ A-3. ⛔ R-1 — « connexion ‖ désactivation » : le CAS d'ouverture ne conditionne plus le STATUT (un membre désactivé entre la réservation et l'ouverture ouvre une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-magasin] code 1 · ROUGE — passés 64 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to contain 'status = \'ACTIVE\''
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS porte le HACHAGE lu à la réservati
+         ↳ AssertionError: le statut et le hachage sont dans le MÊME WHERE : l'un sans l'autre laisserait passer l'ouverture d'un mot de passe remplacé: expected
+   [int-course] code 1 · ROUGE — passés 6 · en échec 2
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désact
+         ↳ AssertionError: un membre désactivé ne se connecte pas: expected true to be false // Object.is equality
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut
+         ↳ AssertionError: l'ouverture, qui attendait derrière la désactivation, doit relire le statut et être REFUSÉE: expected true to be false // Object.is eq
+■ A-4. ⛔ R-1 — le hachage est comparé à une LECTURE de l'instantané de l'instruction (sous-requête) et non à la ligne VERROUILLÉE : un contrôle qui ne relit pas sous le verrou
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-course] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — 
+         ↳ AssertionError: l'ouverture, qui attendait derrière la transaction qui remplaçait le hachage, doit relire la ligne et être REFUSÉE: expected true to b
+■ A-5. ⛔ R-1 — le refus d'ouverture change de nom de motif (`memberChanged` devient `memberInactive`) : le contrat du port se désaccorde de sa définition
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-magasin] code 1 · ROUGE — passés 64 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture :
+         ↳ AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+■ S-1. ⛔ R-1 — le service transmet un autre secret que le hachage lu à la réservation (le mot de passe en clair)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-course] code 1 · ROUGE — passés 0 · en échec 8
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — 
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désact
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture 
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > par la route : un mot de
+         ↳ Error: connexion du membre de test échouée (401) : {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCred
+   [course-service] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR LA RÉSERVATION : `openSession` re
+         ↳ AssertionError: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+■ S-2. ⛔ R-1 / S-253 — un refus d'ouverture est consigné comme un échec de mot de passe (une ligne d'échec pour un mot de passe qui était JUSTE)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-service] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse 
+         ↳ AssertionError: S-253 : un refus d'ouverture n'est pas un échec de mot de passe — rien n'est consigné: expected "spy" to not be called at all, but act
+■ S-3. ⛔ R-1 — un refus d'ouverture paie UN hachage FACTICE de plus (le coût diffère de celui d'un mauvais mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-course] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /
+         ↳ AssertionError: UN seul argon2 sur le vrai hachage — le coût d'un mauvais mot de passe: expected 2 to be 1 // Object.is equality
+   [course-service] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse 
+         ↳ AssertionError: aucun hachage factice : la vraie vérification a déjà été payée: expected "spy" to not be called at all, but actually been called 1 tim
+■ S-4. ⛔ R-1 — un refus d'ouverture n'est plus le même corps qu'un mauvais mot de passe (un 403 « interdit » : le refus dit POURQUOI)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-course] code 1 · ROUGE — passés 7 · en échec 1
+      FAIL  test/int/staff-login-race.int-spec.ts > ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /
+         ↳ AssertionError: {"statusCode":403,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCredentials"},"path":"/api/v1/pro/staff
+   [course-service] code 1 · ROUGE — passés 39 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouvertur
+         ↳ AssertionError: expected 403 to be 401 // Object.is equality
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse 
+         ↳ AssertionError: expected 403 to be 401 // Object.is equality
+■ P-1. ⛔ R-2 — `before` est écrit (la valeur d'avant d'un champ est une donnée personnelle)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [audit-pur] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d
+         ↳ AssertionError: expected { …(8) } to deeply equal { …(7) }
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `before` n'est JAMAIS écrit : pas de copie de l'état d'avant (la valeur d'un champ
+         ↳ AssertionError: client_record.create: expected true to be false // Object.is equality
+   [ecritures] code 0 · VERT — passés 12 · en échec 0
+■ P-2. ⛔ R-2 — `champsEcrits` rend les VALEURS au lieu des noms (le journal recopie un numéro, un e-mail, un nom)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 10 · en échec 3
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), 
+         ↳ AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ écrit : K-2 r
+         ↳ AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms dis
+         ↳ AssertionError: expected '["+213555123456","amina.bensalem@exam…' to be '["phone","email","nameAr","nameLatin"]' // Object.is equality
+■ P-3. ⛔ R-2 — l'ordre des champs n'est plus fixe (l'ordre de l'appelant fait foi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > l'ordre des champs est FIXE : l'ordre dans lequel l'appelant les donne ne change pas
+         ↳ AssertionError: expected [ 'nameLatin', 'phone', 'nameAr' ] to deeply equal [ 'phone', 'nameAr', 'nameLatin' ]
+■ P-4. ⛔ R-2 — la ligne n'écrit jamais le membre (`actor_member_id` toujours NULL, même quand une session de personnel existe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.create : le membre qui agit: expected null to be '01a1f700-6cd6-7705-a163-25402e05b04e' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected null to be '01a1f700-6d37-7e97-a38b-71dc7af13142' // Object.is equality
+■ P-5. ⛔ R-2 — sans membre, la ligne y met le compte commun (un membre INVENTÉ)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ sans session de personnel (couche éteinte), `actorMemberId` vaut NULL — la clé est
+         ↳ AssertionError: expected '018f0000-0000-7000-8000-0000000000c1' to be null
+   [int-fiches] code 1 · ROUGE — passés 3 · en échec 16
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `clien
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.351Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ exista
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.384Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la lign
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.406Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.427Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.449Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déj
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.470Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.488Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est 
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.510Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un no
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.530Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à u
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:35.548Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les
+         ↳ AssertionError: des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 0 to be greater than or equal to 8
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simult
+         ↳ AssertionError: [500,500,500,500,500,500,500,500,500,500]: expected false to be true // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'inse
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'inse
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:37.147Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'inse
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:37.163Z"}: expected 500
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur D
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:29:37.206Z"}: expected 500
+■ P-6. ⛔ R-2 — le rôle de l'acteur n'est plus PRO
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ l'entité est toujours `client_record` et le rôle toujours `PRO` : une fiche n'est 
+         ↳ AssertionError: client_record.create: expected 'CLIENT' to be 'PRO' // Object.is equality
+   [int-fiches] code 1 · ROUGE — passés 15 · en échec 4
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `clien
+         ↳ AssertionError: expected { Object (action, actor_id, ...) } to deeply equal { Object (action, actor_id, ...) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected 'CLIENT' to be 'PRO' // Object.is equality
+■ P-7. ⛔ R-2 — une ligne SANS champ écrit est acceptée (un journal qui se tait sur ce qu'il n'a pas compris)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-8. ⛔ R-2 — un champ INCONNU (un secret, une colonne qui n'existe pas) est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-9. ⛔ R-2 — un champ RÉPÉTÉ est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-10. ⛔ R-2 — `quoteId` est accepté pour une création ou une modification (il n'a de place que pour K-5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'
+         ↳ AssertionError: client_record.create: expected [Function] to throw an error
+■ P-11. ⛔ R-2 — une action qui n'est pas l'une des trois est acceptée (la liste du journal n'est plus fermée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une action qui n'est pas l'une des trois est refusée : la liste des actions du jou
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-12. ⛔ R-2 — l'entité de la ligne n'est plus `client_record`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d
+         ↳ AssertionError: expected { …(7) } to deeply equal { …(7) }
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ l'entité est toujours `client_record` et le rôle toujours `PRO` : une fiche n'est 
+         ↳ AssertionError: client_record.create: expected 'fiche' to be 'client_record' // Object.is equality
+   [int-fiches] code 1 · ROUGE — passés 16 · en échec 3
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `clien
+         ↳ AssertionError: expected { Object (action, actor_id, ...) } to deeply equal { Object (action, actor_id, ...) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+■ P-13. ⛔ R-2 — la clé `quoteId` est toujours présente (même pour K-3, même `undefined`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-14. ⛔ R-2 — la liste fermée des champs perd `email` (un e-mail écrit n'est plus consigné)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 9 · en échec 4
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), 
+         ↳ AssertionError: expected [ 'phone', 'nameAr', 'nameLatin' ] to deeply equal [ 'phone', 'email', 'nameAr', …(1) ]
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms dis
+         ↳ AssertionError: expected '["phone","nameAr","nameLatin"]' to be '["phone","email","nameAr","nameLatin"]' // Object.is equality
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > la liste fermée est exactement celle de la table : quatre champs, dans cet ord
+         ↳ AssertionError: expected [ 'phone', 'nameAr', 'nameLatin' ] to deeply equal [ 'phone', 'email', 'nameAr', …(1) ]
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `before` n'est JAMAIS écrit : pas de copie de l'état d'avant (la valeur d'un champ
+         ↳ Error: journal des fiches : champ inconnu « email » (liste fermée : phone, nameAr, nameLatin)
+   [int-fiches] code 1 · ROUGE — passés 16 · en échec 3
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la lign
+         ↳ AssertionError: expected { fields: [ 'nameLatin' ] } to deeply equal { fields: [ 'email', 'nameLatin' ] }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `
+         ↳ AssertionError: expected { Object (action, actor_id, ...) } to match object { Object (action, actor_id, ...) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+■ P-15. ⛔ R-2 — la liste fermée des actions est désaccordée de la table (un nom d'action change)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'
+         ↳ Error: journal des fiches : action inconnue « client_record.complete_names »
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une action qui n'est pas l'une des trois est refusée : la liste des actions du jou
+         ↳ AssertionError: expected [ 'client_record.create', …(2) ] to deeply equal [ 'client_record.create', …(2) ]
+   [int-fiches] code 1 · ROUGE — passés 14 · en échec 5
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients/01a1f701-b4b6-7824-a2ff-6d953ee0bfe0/names","timestamp
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/quotes/01a1f701-b5ed-7c72-9466-d1fdc697fba6/client-name","timestam
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'inse
+         ↳ AssertionError: expected 500 to be 201 // Object.is equality
+   [ecritures] code 0 · VERT — passés 12 · en échec 0
+■ P-16. ⛔ R-2 — le module pur importe une dépendance (il n'est plus sans dépendance, D187)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > le module est PUR (D187) : aucune dépendance — ni Nest, ni Prisma, ni un autre module du dépôt > la source ne contient aucun `import` ni aucun `require`
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ F-1. ⛔ R-2 — K-2 : la fiche créée n'écrit plus sa ligne de journal (une action sans trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 5 · en échec 14
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `clien
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ exista
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la lign
+         ↳ AssertionError: expected [] to have a length of 1 but got +0
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `
+         ↳ AssertionError: expected [ { …(8) } ] to have a length of 2 but got 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est 
+         ↳ AssertionError: la fiche n'a que sa ligne de création: expected [] to deeply equal [ 'client_record.create' ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un no
+         ↳ AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à u
+         ↳ AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les
+         ↳ AssertionError: des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 3 to be greater than or equal to 8
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simult
+         ↳ AssertionError: une ligne de plus: expected 3 to be 4 // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected [ Array(3) ] to deeply equal [ Array(5) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: la création par l'employé a écrit sa ligne: expected [] to have a length of 1 but got +0
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'inse
+         ↳ AssertionError: {"created":true,"record":{"id":"01a1f701-fd87-7939-b8ed-02f612a38219","phone":"+213555000019","email":null,"nameAr":null,"nameLatin":"
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-clie
+         ↳ AssertionError: creerSiAbsente construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+■ F-2. ⛔ R-2 — K-2 : une ligne de journal est écrite même quand RIEN n'a été inséré (une fiche rendue telle quelle laisse une trace d'une écriture qui n'a pas eu lieu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ exista
+         ↳ AssertionError: expected 500 to be 200 // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simult
+         ↳ AssertionError: [200,500,500,500,500,500,500,500,500,500]: expected false to be true // Object.is equality
+■ F-3. ⛔ R-2 — K-3 : la ligne de journal est écrite même quand l'`UPDATE` conditionné n'a rien écrit (un refus laisse une trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `clie
+         ↳ AssertionError: un refus n'écrit rien : aucune ligne: expected [ { …(8) }, { …(8) }, { …(8) } ] to have a length of 2 but got 3
+■ F-4. ⛔ R-2 — K-3b : la modification porte le nom d'action de la complétion
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 16 · en échec 3
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `
+         ↳ AssertionError: expected { …(8) } to match object { Object (action, actor_id, ...) }
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal [ Array(5) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'inse
+         ↳ AssertionError: expected 200 to be 500 // Object.is equality
+■ F-5. ⛔ R-2 — K-3b : la ligne consigne TOUS les champs, pas ceux qui ont été envoyés
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `
+         ↳ AssertionError: expected { Object (action, actor_id, ...) } to match object { Object (action, actor_id, ...) }
+■ F-6. ⛔ R-2 — K-2 : le membre de la session n'est pas transmis à la ligne (le Manager et l'Employé ne se distinguent plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.create : le membre qui agit: expected null to be '01a1f702-e038-71ad-bc27-45c55b0e838f' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected null to be '01a1f702-e098-743c-89ee-6472ff51fd76' // Object.is equality
+■ F-7. ⛔ R-2 — K-2 : l'insertion n'est plus dans une transaction avec sa ligne (une insertion validée seule, la ligne échoue ensuite : une action sans trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'inse
+         ↳ AssertionError: action sans trace : la fiche n'a pas été créée: expected 1 to be +0 // Object.is equality
+■ F-8. ⛔ R-2 — K-3 : l'`UPDATE` n'est plus dans une transaction avec sa ligne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'inse
+         ↳ AssertionError: le nom n'est pas complété: expected 'آمنة بن سالم' to be null
+■ F-9. ⛔ R-2 — K-3b : l'`UPDATE` n'est plus dans la transaction de sa ligne de journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'inse
+         ↳ AssertionError: la fiche est inchangée: expected 'Autre Nom' to be 'Amina Bensalem' // Object.is equality
+■ F-10. ⛔ R-2 — K-2 : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction (elle est validée seule : si le commit de l'insertion échoue ensuite, la trace d'une action qui n'a pas eu lieu survit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur D
+         ↳ AssertionError: K-2 : aucune ligne n'a survécu à l'échec du commit: expected 6 to be 5 // Object.is equality
+■ F-11. ⛔ R-2 — K-3 : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur D
+         ↳ AssertionError: K-3, K-3b, K-5 : aucune ligne n'a survécu: expected 7 to be 6 // Object.is equality
+■ F-12. ⛔ R-2 — K-3b : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur D
+         ↳ AssertionError: K-3, K-3b, K-5 : aucune ligne n'a survécu: expected 7 to be 6 // Object.is equality
+■ Q-1. ⛔ R-2 — K-5 : la fiche complétée n'écrit plus sa ligne de journal
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 16 · en échec 3
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected [ 'client_record.create' ] to deeply equal [ 'client_record.create', …(1) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: expected [ Array(4) ] to deeply equal [ Array(5) ]
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'inse
+         ↳ AssertionError: {"id":"01a1f704-1283-73c3-aa6e-c636a91136ca","venueId":"01a1f704-11cb-710c-9f07-dd4ba8b9869d","clientId":null,"status":"DRAFT","isOffi
+   [magasin-devis] code 1 · ROUGE — passés 59 · en échec 4
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — u
+         ↳ AssertionError: expected [ 'updateMany', …(3) ] to deeply equal [ 'updateMany', …(4) ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+■ Q-2. ⛔ R-2 — K-5 : la ligne de journal est écrite même quand l'écriture conditionnée de la fiche n'a rien écrit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 0 · VERT — passés 19 · en échec 0
+   [magasin-devis] code 1 · ROUGE — passés 62 · en échec 1
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: compte 0 : rien n'a été écrit, rien n'est consigné: expected "spy" to not be called at all, but actually been called 1 times
+■ Q-3. ⛔ R-2 — K-5 : la ligne ne porte plus le devis qui a fait compléter la fiche
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+   [magasin-devis] code 1 · ROUGE — passés 61 · en échec 2
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { actorId: 'u-1', …(6) } } ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le
+         ↳ AssertionError: expected { fields: [ 'nameLatin' ] } to deeply equal { fields: [ 'nameLatin' ], …(1) }
+■ Q-4. ⛔ R-2 — K-5 : la ligne nomme l'AUTRE champ (le nom arabe complété est consigné comme latin)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue comp
+         ↳ AssertionError: expected { …(8) } to match object { …(6) }
+   [magasin-devis] code 1 · ROUGE — passés 61 · en échec 2
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { actorId: 'u-1', …(6) } } ]
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le
+         ↳ AssertionError: expected { fields: [ 'nameAr' ], …(1) } to deeply equal { fields: [ 'nameLatin' ], …(1) }
+■ Q-5. ⛔ R-2 — K-5 : le membre de la session n'est pas transmis à la ligne
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.complete_names : le membre qui agit: expected null to be '01a1f704-fdf3-7aae-a7ce-c1f484be2c03' // Object.is equality
+   [magasin-devis] code 1 · ROUGE — passés 62 · en échec 1
+      FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { data: { actorId: 'u-1', …(6) } } ]
+■ Q-6. ⛔ R-2 — K-5 : la ligne de journal de la fiche s'écrit sur UNE AUTRE connexion que la transaction (une trace sans action si le commit échoue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur D
+         ↳ AssertionError: K-3, K-3b, K-5 : aucune ligne n'a survécu: expected 7 to be 6 // Object.is equality
+■ V-1. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-2)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-fiches] code 1 · ROUGE — passés 22 · en échec 2
+      FAIL  src/clients/pro-clients.service.spec.ts > K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > une fiche créée : `{ created: true, record }`, et le port reçoit le PROFIL du pr
+         ↳ AssertionError: expected "spy" to be called with arguments: [ …(3) ]
+      FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-2 : `creerSiAbse
+         ↳ AssertionError: expected { …(2) } to deeply equal { …(2) }
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.create : le membre qui agit: expected null to be '01a1f705-7364-7b75-8e96-6ffeb25d191e' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected null to be '01a1f705-73bf-7f60-b507-2cce207d0414' // Object.is equality
+■ V-2. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-3)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-fiches] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3 : `completerNo
+         ↳ AssertionError: expected "spy" to be called with arguments: [ …(4) ]
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.complete_names : le membre qui agit: expected null to be '01a1f705-ad8a-7223-b730-b5aa0b3890bf' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+■ V-3. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-3b)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-fiches] code 1 · ROUGE — passés 23 · en échec 1
+      FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3b : `modifier` 
+         ↳ AssertionError: expected "spy" to be called with arguments: [ …(4) ]
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.update : le membre qui agit: expected null to be '01a1f705-e715-7f06-8f4d-0160a9f1ae1b' // Object.is equality
+■ V-4. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-2)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.create : le membre qui agit: expected null to be '01a1f706-11c1-7ca1-9e52-114a0e1e0b7e' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected null to be '01a1f706-121d-7048-be56-a20edc6265fd' // Object.is equality
+■ V-5. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-3)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 17 · en échec 2
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.complete_names : le membre qui agit: expected null to be '01a1f706-3cf1-7f3d-b088-0d68ebd45905' // Object.is equality
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en é
+         ↳ AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+■ V-6. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-3b)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.update : le membre qui agit: expected null to be '01a1f706-6989-7712-addb-e6dd16284106' // Object.is equality
+■ V-7. ⛔ R-2 — le contrôleur des devis ne lit pas le membre du garde (K-5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.complete_names : le membre qui agit: expected null to be '01a1f706-9492-7b1d-8261-5735bea5d961' // Object.is equality
+■ V-8. ⛔ R-2 — le service des devis ne passe pas le membre au port (K-5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-devis] code 1 · ROUGE — passés 47 · en échec 1
+      FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dan
+         ↳ AssertionError: expected { …(6) } to match object { …(2) }
+   [int-fiches] code 1 · ROUGE — passés 18 · en échec 1
+      FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, 
+         ↳ AssertionError: client_record.complete_names : le membre qui agit: expected null to be '01a1f706-cfb0-769a-a57a-7024c8d7b45a' // Object.is equality
+■ G-1. ⛔ R-2 — un CINQUIÈME fichier écrit la table des fiches (le service des devis, par exemple : la conversion écrirait une fiche)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ni un fichier de plus, ni un de moins — et la
+         ↳ AssertionError: expected [ …(3) ] to deeply equal [ …(2) ]
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ⛔ (d) la conversion d'un devis n'écrit AUCUNE
+         ↳ AssertionError: expected 1 to be +0 // Object.is equality
+■ G-2. ⛔ R-2 — une écriture de PLUS dans un fichier de la carte (un quatrième site dans le magasin des fiches)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > clients/pro-c
+         ↳ AssertionError: expected 4 to be 3 // Object.is equality
+■ G-3. ⛔ R-2 — la LIGNE du journal est bâtie à la main dans un magasin (une entité écrite sur place, hors du module pur)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` n'écrit `e
+         ↳ AssertionError: expected [ …(2) ] to deeply equal [ 'clients/client-record-audit.ts' ]
+■ G-4. ⛔ R-2 — la charge utile de la ligne ne vient plus DIRECTEMENT du constructeur du module pur (une enveloppe autour de l'appel : le comportement est le même, la forme n'est plus la garantie)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-clie
+         ↳ AssertionError: modifier : la charge utile de la ligne vient du constructeur du module pur, jamais d'un objet écrit sur place: expected 'async modifie
+■ G-5. ⛔ R-2 — la ligne est CONSTRUITE avant l'écriture qu'elle consigne (K-3 : la ligne ne peut pas précéder l'écriture)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-clie
+         ↳ AssertionError: completerNoms journalise APRÈS avoir écrit (la ligne ne précède pas l'écriture qu'elle consigne): expected 291 to be greater than 434
+  empreintes : 9 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 56 cible(s) jouée(s) sur 56, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit decouverte complete = 0

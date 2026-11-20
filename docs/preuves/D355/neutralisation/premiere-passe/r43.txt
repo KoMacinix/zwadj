@@ -1,0 +1,99 @@
+⛔ PIÈCE MASQUÉE — premiere-passe/r43.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4658 octets, sha256 e8a2ccfc233ef909eb90db54517ec942c32261bf5fe5b19898336bc764054666. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 87 déclarées · 87 jouées · 0 non jouée(s) (sans --int) · 13 mesure(s) distincte(s) · 12 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 11 · en échec 0
+  pré-vol contrat : code 0 · passés 32 · en échec 0
+  pré-vol document : code 0 · passés 61 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+✗ PRÉ-VOL int-devis : code 1, ROUGE — passés 80 · en échec 7
+méro, UNE ligne d'audit > ⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1273:40
+    1271|     expect(refus.body.message.code).toBe("QUOTE_VERSION_NOT_ACTIVE");
+    1272|     expect(refus.body.message.latestVersion).toBe(2);
+    1273|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1274|     const ok = (await promouvoir(f, v2.id, { clientRecordId: fiche.id,…
+    1275|     expect(ok.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v2$/u);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promouvoir un brouillon ANNULÉ : 409 « statut » (clos) ; promouvoir un devis OFFICIEL annulé : 409 « déjà officiel » — l'ordre se mesure sur des cas doublement fautifs
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1316:40
+    1314|     expect(b.status).toBe(409);
+    1315|     expect(b.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    1316|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1317|   });
+    1318| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture
+AssertionError: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/int/quotes.int-spec.ts:1338:40
+    1336|     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id }))…
+    1337|     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id, ..…
+    1338|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1339|     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_officia…
+    1340|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 `CLIENT_RECORD_LINKED`, et le brouillon reste un brouillon
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1355:40
+    1353|     expect(res.body.message.code).toBe("CLIENT_RECORD_LINKED");
+    1354|     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_officia…
+    1355|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1356|   });
+    1357| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+

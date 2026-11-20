@@ -1,0 +1,123 @@
+⛔ PIÈCE MASQUÉE — mesures/diagnostic-unitaire-api.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 14101 octets, sha256 3075d9fdbc761624b19d540ca819b090a6d709775cb636b2e5fe9c7cce868ed2. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+> @zwadj/api@0.0.0 test C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mC:/Users/benla/Desktop/MyProjct/Zwadj/apps/api[39m
+
+ [32m✓[39m src/clients/client-record-writes.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 367[2mms[22m[39m
+ [32m✓[39m src/staff/staff-source-guards.spec.ts [2m([22m[2m28 tests[22m[2m)[22m[32m 86[2mms[22m[39m
+ [32m✓[39m src/staff/staff-temporary-password.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 545[2mms[22m[39m
+   [33m[2m✓[22m[39m sur beaucoup de tirages (déterministes)[2m > [22m⛔ CHAQUE mot de passe rendu : 12 caractères, alphabet seul, accepté par `passwordSchema` (le contrat), absent de la liste des mots de passe courants (le dépôt) [33m 517[2mms[22m[39m
+ [32m✓[39m src/common/staff-contract.spec.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document.service.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 83[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session.service.spec.ts [2m([22m[2m41 tests[22m[2m)[22m[32m 143[2mms[22m[39m
+ [32m✓[39m src/staff/staff-password-policy.spec.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 1401[2mms[22m[39m
+   [33m[2m✓[22m[39m la liste — fidélité à sa SOURCE VERSÉE (R-5 (D341) : au moins 10 000 entrées, source, licence, empreinte)[2m > [22mtoutes les entrées sont des chaînes non vides, sans espace de bord ni saut de ligne (le format d'une liste à une entrée par ligne) [33m 1342[2mms[22m[39m
+ [32m✓[39m src/common/staff-account-name.spec.ts [2m([22m[2m53 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/staff/staff-cookies.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session.guard.spec.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32m✓[39m src/staff/staff-access-policy.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/staff/staff-store.prisma.spec.ts [2m([22m[2m66 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+ [32m✓[39m src/venues/quotes.service.spec.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 118[2mms[22m[39m
+ [32m✓[39m src/venues/quote-store.prisma.spec.ts [2m([22m[2m63 tests[22m[2m)[22m[32m 206[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document.spec.ts [2m([22m[2m61 tests[22m[2m)[22m[32m 223[2mms[22m[39m
+ [32m✓[39m src/common/quote-reference.spec.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/staff/staff-account-state.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/staff/staff-members.service.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m src/clients/client-record-audit.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/staff/staff-session-policy.spec.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m src/common/staff-capabilities.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/staff/staff-members-policy.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/venues/quote-reference.spec.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/media/image-pipeline.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1113[2mms[22m[39m
+   [33m[2m✓[22m[39m processVenuePhoto[2m > [22mau-delà du plafond : la grande redescend à 1920 de large [33m 446[2mms[22m[39m
+ [32m✓[39m src/venues/venue-review-queue.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/auth/password.service.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 186[2mms[22m[39m
+ [32m✓[39m src/documents/playwright-pdf.renderer.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 579[2mms[22m[39m
+ [32m✓[39m src/common/e2e-api-sans-surveillance.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/common/notifications/notification-dispatch.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m src/venues/venues-public.service.spec.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 106[2mms[22m[39m
+ [32m✓[39m src/common/client-record.spec.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mRéponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=undefined checkout_url=http://pay.chargily.dz/test/checkouts/01m05y9z6k74j2m0hw2j6yxvpb/pay[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mRéponse Chargily inexploitable (paymentId=0199aa00-0000-7000-8000-000000000001) : id=01m05y9z6k74j2m0hw2j6yxvpb checkout_url=undefined[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TimeoutError: The operation was aborted due to timeout[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=422) : The amount field must be greater than or equal to 50.[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily injoignable à la création de session (paymentId=0199aa00-0000-7000-8000-000000000001) : TypeError: fetch failed[39m
+[31m[Nest] 18504  - [39m2026-11-20, 1:29:54 p.m. [31m  ERROR[39m [38;5;3m[ChargilyGateway] [39m[31mChargily refuse la création de session (paymentId=0199aa00-0000-7000-8000-000000000001, http=500) : <html>502 Bad Gateway</html>[39m
+ [32m✓[39m src/payments/chargily.gateway.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+ [32m✓[39m src/venues/venues-admin.service.spec.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 108[2mms[22m[39m
+ [32m✓[39m src/auth/auth.service.spec.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 162[2mms[22m[39m
+ [32m✓[39m src/account/account-deletion.service.spec.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 109[2mms[22m[39m
+ [32m✓[39m src/common/quote-draft.spec.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 130[2mms[22m[39m
+ [32m✓[39m src/account/account.service.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m src/venues/bookings.schemas.spec.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m src/media/disk-storage.adapter.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/admin/first-admin.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/venues/availability-time.spec.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m src/venues/booking-notification-input.spec.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/venues/quote-transitions.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/venues/venue-filters.schemas.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/venues/visit-notifications.service.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m src/common/contact.spec.ts [2m([22m[2m49 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m src/venues/venue-media.service.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m src/venues/venue-media.schemas.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/common/phone.spec.ts [2m([22m[2m55 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+ [32m✓[39m src/config/env.spec.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m src/venues/venue-store.prisma.spec.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/clients/pro-clients.service.spec.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m src/venues/domain-events.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/auth/google-auth.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+ [32m✓[39m src/common/i18n-parity.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/venues/visit-slots-engine.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/payments/payment-intent.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/auth/auth.schemas.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/venues/availability-engine.spec.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/venues/booking-transitions.spec.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/documents/html.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/venues/venue-map.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m prisma/seed-data/seed-data.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m src/clients/pro-client-policy.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/venues/venues.service.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+ [32m✓[39m src/auth/jwt-auth.guard.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/referentials/referentials.service.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/common/admin-audit.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m src/documents/quote-document-policy.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/auth/token.service.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/venues/venue-moderation.schemas.spec.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/venues/deposit.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/auth/password.service.dummy.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/venues/service-pricing.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/common/email/render.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/payments/payments.service.spec.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/venues/booking-admission.spec.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/venues/visit-bookings.schemas.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/venues/booking-window.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/health/health.controller.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m src/venues/pricing-engine.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/venues/slug.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/common/whatsapp/dev-logger.whatsapp.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/venues/booking-charge.spec.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/auth/google-verifier.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/common/filters/all-exceptions.filter.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/venues/booking-deadline.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/payments/payment-store.prisma.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/venues/slot-templates.service.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/payments/payment-gateway.factory.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/auth/roles.guard.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/common/email/dev-logger.email.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/auth/auth-emails.service.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m93 passed[39m[22m[90m (93)[39m
+[2m      Tests [22m [1m[32m1634 passed[39m[22m[90m (1634)[39m
+[2m   Start at [22m 13:29:45
+[2m   Duration [22m 19.52s[2m (transform 5.19s, setup 0ms, collect 98.68s, tests 7.77s, environment 42ms, prepare 52.41s)[22m
+

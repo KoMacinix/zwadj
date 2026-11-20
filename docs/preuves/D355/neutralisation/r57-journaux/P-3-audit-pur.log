@@ -1,0 +1,60 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/P-3-audit-pur.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4444 octets, sha256 2e7b75d57b5dd564b47a4bb42d927a060aac1a532a16d87f9a51bfee37816382. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/client-record-audit.spec.ts (13 tests | 1 failed) 18ms
+   ✓ champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), quel que soit l'ordre des clés de l'objet reçu 2ms
+   ✓ champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ écrit : K-2 reçoit `null` pour ce que la fiche n'a pas 0ms
+   ✓ champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms distinctifs n'y laissent aucune trace 1ms
+   ✓ champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > la liste fermée est exactement celle de la table : quatre champs, dans cet ordre 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d'autre (les clés sont exactement celles-ci) 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `before` n'est JAMAIS écrit : pas de copie de l'état d'avant (la valeur d'un champ est une donnée personnelle) 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ sans session de personnel (couche éteinte), `actorMemberId` vaut NULL — la clé est PRÉSENTE avec la valeur `null`, pas absente : l'acteur est alors le compte commun 1ms
+   × ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > l'ordre des champs est FIXE : l'ordre dans lequel l'appelant les donne ne change pas la ligne 9ms
+     → expected [ 'nameLatin', 'phone', 'nameAr' ] to deeply equal [ 'phone', 'nameAr', 'nameLatin' ]
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'a pas d'autre place : une création ou une modification qui le reçoit est refusée 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'existe pas) ou RÉPÉTÉ est une erreur de programmation : elle LÈVE 1ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une action qui n'est pas l'une des trois est refusée : la liste des actions du journal est fermée 0ms
+   ✓ ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ l'entité est toujours `client_record` et le rôle toujours `PRO` : une fiche n'est écrite que par un pro 0ms
+   ✓ le module est PUR (D187) : aucune dépendance — ni Nest, ni Prisma, ni un autre module du dépôt > la source ne contient aucun `import` ni aucun `require`, commentaires retirés 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  22:40:54
+   Duration  712ms (transform 66ms, setup 0ms, collect 83ms, tests 18ms, environment 0ms, prepare 225ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/client-record-audit.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > l'ordre des champs est FIXE : l'ordre dans lequel l'appelant les donne ne change pas la ligne
+AssertionError: expected [ 'nameLatin', 'phone', 'nameAr' ] to deeply equal [ 'phone', 'nameAr', 'nameLatin' ]
+
+- Expected
++ Received
+
+  [
++   "nameLatin",
+    "phone",
+    "nameAr",
+-   "nameLatin",
+  ]
+
+ ❯ src/clients/client-record-audit.spec.ts:75:28
+     73|     const a = ficheAuditEntry({ auteur, action: "client_record.update"…
+     74|     const b = ficheAuditEntry({ auteur, action: "client_record.update"…
+     75|     expect(a.after.fields).toEqual(["phone", "nameAr", "nameLatin"]);
+       |                            ^
+     76|     expect(a).toEqual(b);
+     77|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

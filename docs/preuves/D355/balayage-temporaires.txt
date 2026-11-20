@@ -1,0 +1,6 @@
+calibration (positif 1 · trois négatifs 0) : ✓
+fichiers examinés : 164 · caractères : 6884249 · valeurs DISTINCTES de douze symboles (lettres et chiffres) : 4
+  sha256 07e5ab825235 · dossiers : ['docs/preuves/D355/neutralisation/touchees'] · dans une source suivie : non
+  sha256 3f3aca55590a · dossiers : ['docs/preuves/D355/neutralisation/touchees'] · dans une source suivie : non
+  sha256 46ea48ed3a29 · dossiers : ['docs/preuves/D355/neutralisation/touchees'] · dans une source suivie : non
+  sha256 f063fc781092 · dossiers : ['docs/preuves/D355/neutralisation/touchees'] · dans une source suivie : non

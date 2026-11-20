@@ -1,0 +1,150 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/Q-1-magasin-devis.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 19551 octets, sha256 762c2bfdabe2b3673f09c399336024a62b770082dc2bc26cf4ede2c09132d0a1. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/quote-store.prisma.spec.ts (63 tests | 4 failed) 68ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur, l'identifiant, la tête, la relecture — dans cet ordre, dans le MÊME bloc transactionnel, RIEN hors de lui 4ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ le compteur s'incrémente par `INSERT … ON CONFLICT … DO UPDATE … + 1 … RETURNING` — JAMAIS « lire le plus grand puis ajouter 1 » (R3) 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ la tête porte l'identifiant pré-généré COMME chain_id, la version 1, l'année PASSÉE, le numéro RENDU par le compteur, et la date de création PASSÉE 1ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⚠ les montants passent TELS QUELS 0ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un échec de l'insertion APRÈS le compteur : la création échoue, et le compteur n'a été touché que DANS la transaction (qui l'annule) 2ms
+   ✓ PrismaQuoteStore.creerTeteDeChaine — le compteur, l'identifiant et la tête, UNE transaction > ⛔ un compteur qui ne rend PAS exactement une ligne entière positive : la création LÈVE, aucun numéro n'est inventé 2ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ `FOR UPDATE` puis la plus haute version (L36-2 : son numéro ET son drapeau, en une lecture) puis `create` — dans cet ordre, ou la garde ne sert à rien 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ une révision NE TOUCHE AUCUN COMPTEUR (F-2, F-4) : elle recopie année et numéro de la tête qu'elle verrouille déjà 2ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⛔ la tête introuvable (le verrou ne rend aucune ligne) : la révision LÈVE, rien n'est créé 1ms
+   ✓ PrismaQuoteStore.creerRevision — le verrou AVANT la lecture du maximum > ⚠ la version suivante est MAX + 1, et le parent est désigné 0ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le statut admis est dans le WHERE de l'UPDATE, pas lu avant 2ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ refus : le statut est RELU DANS la transaction et remonte dans le résultat 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⛔ le port NE LÈVE PAS sur un refus — il rend 1ms
+   ✓ PrismaQuoteStore — le check-and-set, écrit une seule fois > ⚠ `marquerRemis` écrit le canal et la date, JAMAIS un statut 0ms
+   ✓ PrismaQuoteStore — les lectures > ⚠ l'entonnoir ne compte QUE les devis portant un canal (D162) 1ms
+   ✓ PrismaQuoteStore — les lectures > ⛔ `trouverDuPro` : le devis, sa salle VIVANTE, et à MOI — en un seul WHERE 1ms
+   ✓ PrismaQuoteStore — les lectures > `salleAppartientAu` rend un booléen, jamais la ligne 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ UNE SEULE REQUÊTE : la demande ET ses lignes, imbriquées 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ les montants sont ÉCRITS TELS QUELS — l'adaptateur ne calcule rien 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ AUCUNE ÉCRITURE SUR LE DEVIS — il attend l'acompte 0ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 + une demande EXISTE pour ce devis → `dejaConverti` 1ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⛔ P2002 SANS demande pour ce devis → L'ERREUR REPART 0ms
+   ✓ ⛔ PrismaQuoteStore.convertirEnDemande — CHEMIN DE L'ARGENT > ⚠ toute AUTRE erreur remonte sans relecture 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ l'ADAPTATEUR n'écrit plus le littéral : il dérive de `BookingStatus` 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⛔ le TÉMOIN INDÉPENDANT survit dans `quotes.int-spec.ts` — littéral EXIGÉ 1ms
+   ✓ Garde de SOURCE — le statut de la demande dérive de l'autorité (D268) > ⚠ et l'EXPLICATION est restée dans les deux fichiers 1ms
+   ✓ ⛔ D336 — `ficheDuPro` : la fiche se lit par la RELATION au pro (D149), jamais par un identifiant qui « ressemble » > le WHERE traverse `proProfile: { userId }` et ne sélectionne que ce que la copie du nom exige — rien du compte lié 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-7 — le compare-and-set est dans le WHERE de l'UPDATE : la copie NULLE, le devis du pro (salle vivante) — jamais une lecture puis une écriture 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ refus (rien n'a été écrit) : le port REND `{ ok: false }`, sans lire ni écrire la fiche 1ms
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée 11ms
+     → expected [ 'updateMany', …(3) ] to deeply equal [ 'updateMany', …(4) ]
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — la politique dit NON (l'autre écriture diffère) : la fiche n'est PAS écrite, la copie l'est 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > un devis SANS fiche : aucune lecture ni écriture de fiche 1ms
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche complétée écrit UNE ligne de journal, DANS la transaction, APRÈS l'écriture : `client_record.complete_names`, le compte ET le membre, le champ écrit, le devis — et AUCUN nom 1ms
+     → expected "spy" to be called 1 times, but got 0 times
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le champ LATIN : la ligne dit `nameLatin`, jamais `nameAr` 1ms
+     → expected "spy" to be called 1 times, but got 0 times
+   × ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la couche ÉTEINTE : `actorMemberId` vaut `null` (la clé est présente) — l'acteur est le compte commun seul 1ms
+     → expected "spy" to be called 1 times, but got 0 times
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche N'A PAS été écrite (la politique dit NON, ou l'`updateMany` conditionné ne trouve rien) : AUCUNE ligne — une trace sans action est interdite 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — un devis SANS fiche, ou un refus du compare-and-set de la copie : AUCUNE ligne de fiche (la copie du nom sur le devis n'est PAS une écriture de fiche) 1ms
+   ✓ ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > le champ LATIN s'écrit de la même façon, sur la copie puis sur la fiche 1ms
+   ✓ ⛔ D339 — `creerTeteDeChaine` : la tête naît avec le drapeau que le SERVICE décide > ⛔ `officiel: false` ⇒ la ligne écrite porte `isOfficial: false` ; `officiel: true` ⇒ `true` — le même compteur, la même transaction 5ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la séquence : le verrou, PUIS la plus haute version (son numéro ET son drapeau), PUIS l'écriture 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est un BROUILLON : la révision en est un — la ligne écrite porte `isOfficial: false`, et le port rend `{ ok: true }` 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ la plus haute version est OFFICIELLE : la révision l'est — le drapeau de la version PARENTE n'est pas lu (la v1 brouillon d'une chaîne dont la v2 est promue) 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et une fiche : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom arabe : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 0ms
+   ✓ ⛔ D-15 (R-1, Q3) — `creerRevision` : le drapeau est HÉRITÉ de la plus haute version, lu SOUS le verrou ; un brouillon ne reçoit ni fiche ni nom > ⛔ un brouillon et un nom latin : le port REND `brouillonAvecClient` (il ne lève pas) et N'ÉCRIT RIEN 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ `marquerRemis` : `isOfficial: true` est dans le WHERE du check-and-set, EN PLUS du statut — jamais lu avant 2ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus : le statut ET le drapeau sont RELUS DANS la transaction 0ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ refus d'un brouillon OUVERT : `nonOfficiel` 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond `statutConflit` (le devis est clos), pas `nonOfficiel` 1ms
+   ✓ ⛔ D-1, D-12 — la REMISE exige un devis officiel, l'ANNULATION non ; et le STATUT passe avant l'état officiel > ⛔ D-12 — `changerStatut` (l'annulation) N'EXIGE PAS l'état officiel : le WHERE est exactement le statut — annuler un brouillon reste permis 1ms
+   ✓ ⛔ D-17 — K-5 : le WHERE de la copie exige un devis OFFICIEL (un brouillon n'a pas de nom) > ⛔ `isOfficial: true` est dans le compare-and-set, avec la copie NULLE et le devis du pro 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ la propriété se lit par la RELATION au pro (D149) : `venue: { deletedAt: null, owner: { userId } }`, jamais un identifiant qui « ressemble » 0ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-5 — l'écriture est un CHECK-AND-SET : `isOfficial: false` ET le statut admis dans le WHERE, et la fiche et les deux copies ÉCRITES AVEC le drapeau 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 — la ligne d'audit : l'action, l'entité, l'identifiant, l'ACTEUR et son RÔLE, le drapeau et l'identifiant de fiche — et RIEN d'autre 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ D-6 — la version n'est plus la dernière : le port REND `versionNonActive` (avec la version active), sans écrire NI le devis NI l'audit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ le devis n'est pas au pro (la propriété ne rend rien) : `introuvable`, et la chaîne n'est ni verrouillée ni lue 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ compte = 0 : le statut et le drapeau sont RELUS dans la transaction ; un devis déjà officiel ⇒ `dejaOfficiel`, SANS ligne d'audit 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ L'ORDRE, sur des cas doublement fautifs : un brouillon ANNULÉ répond `statutConflit` ; un devis OFFICIEL annulé répond `dejaOfficiel` (vrai quel que soit son statut) 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⛔ un échec de l'écriture d'audit LÈVE : la promotion ne survit pas à sa propre trace (la transaction l'annule) 1ms
+   ✓ ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS donnée personnelle > ⚠ `promouvoir` ne touche NI le compteur, NI le statut, NI la remise, NI aucun montant : le WHERE et le SET ne nomment que le drapeau, la fiche et les deux copies 1ms
+   ✓ ⛔ D339 — la lecture du cycle de vie rend le drapeau > `QUOTE_SELECT` sélectionne `isOfficial` (sans lui, le DTO ne pourrait pas dire s'il est officiel ni bâtir sa référence) 0ms
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 59 passed (63)
+   Start at  22:44:39
+   Duration  1.94s (transform 385ms, setup 0ms, collect 1.25s, tests 68ms, environment 0ms, prepare 203ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/quote-store.prisma.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ MD-8 — un devis AVEC fiche : la fiche est VERROUILLÉE (`FOR UPDATE`) dans la même transaction, PUIS l'appelant décide, PUIS l'écriture conditionnée
+AssertionError: expected [ 'updateMany', …(3) ] to deeply equal [ 'updateMany', …(4) ]
+
+- Expected
++ Received
+
+  [
+    "updateMany",
+    "findUniqueOrThrow",
+    "fiche FOR UPDATE",
+    "fiche updateMany",
+-   "audit",
+  ]
+
+ ❯ src/venues/quote-store.prisma.spec.ts:546:21
+    544|     const decide = vi.fn(() => true);
+    545|     await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE…
+    546|     expect(journal).toEqual(["updateMany", "findUniqueOrThrow", "fiche…
+       |                     ^
+    547|     expect(decide).toHaveBeenCalledWith(
+    548|       { id: FICHE, nameAr: null, nameLatin: "Amina Bensalem", linkedUs…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la fiche complétée écrit UNE ligne de journal, DANS la transaction, APRÈS l'écriture : `client_record.complete_names`, le compte ET le membre, le champ écrit, le devis — et AUCUN nom
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ src/venues/quote-store.prisma.spec.ts:582:32
+    580|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    581|     await store.completerNomDuClient({ userId: "u-1", memberId: MEMBRE…
+    582|     expect(tx.auditLog.create).toHaveBeenCalledTimes(1);
+       |                                ^
+    583|     expect(tx.auditLog.create).toHaveBeenCalledWith({
+    584|       data: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — le champ LATIN : la ligne dit `nameLatin`, jamais `nameAr`
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ src/venues/quote-store.prisma.spec.ts:602:36
+    600|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    601|     await ctx.store.completerNomDuClient({ userId: "u-1", memberId: ME…
+    602|     expect(ctx.tx.auditLog.create).toHaveBeenCalledTimes(1);
+       |                                    ^
+    603|     expect((ctx.tx.auditLog.create.mock.calls[0]![0] as { data: { afte…
+    604|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/venues/quote-store.prisma.spec.ts > ⛔ D336 — `completerNomDuClient` : compare-and-set de la COPIE, puis la fiche sous verrou et sous la politique de l'appelant — UNE transaction > ⛔ R-2 — la couche ÉTEINTE : `actorMemberId` vaut `null` (la clé est présente) — l'acteur est le compte commun seul
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ src/venues/quote-store.prisma.spec.ts:610:36
+    608|     relire(ctx, { id: QUOTE_ID, clientRecordId: FICHE, clientNameAr: "…
+    609|     await ctx.store.completerNomDuClient({ userId: "u-1", memberId: nu…
+    610|     expect(ctx.tx.auditLog.create).toHaveBeenCalledTimes(1);
+       |                                    ^
+    611|     const data = (ctx.tx.auditLog.create.mock.calls[0]![0] as { data: …
+    612|     expect(data.actorMemberId).toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+

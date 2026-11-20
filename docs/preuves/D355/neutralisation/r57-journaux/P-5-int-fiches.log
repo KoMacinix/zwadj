@@ -1,0 +1,370 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/P-5-int-fiches.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 26728 octets, sha256 f97cfe6cd1f854be8e5116a15bb75450a2b3baf5bfd595d08508bd40d26ee06d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/client-record-audit.int-spec.ts (19 tests | 16 failed) 2474ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit 62ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.518Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit 22ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.548Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre 19ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.569Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus 19ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.588Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs 19ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.607Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien 18ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.626Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom 18ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.643Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche 23ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.666Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus 20ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.686Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus 18ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.704Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises 5ms
+     → des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 0 to be greater than or equal to 8
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien) 139ms
+     → [500,500,500,500,500,500,500,500,500,500]: expected false to be true // Object.is equality
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun 143ms
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager 43ms
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ sans session de personnel (le garde refuse : 401) : AUCUNE fiche, AUCUNE ligne — une trace ne peut pas naître d'une action refusée 15ms
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal 48ms
+     → expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE 17ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.144Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche) 17ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.161Z"}: expected 500 to be 200 // Object.is equality
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5 43ms
+     → {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.203Z"}: expected 500 to be 200 // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 3 passed (19)
+   Start at  22:41:10
+   Duration  7.66s (transform 1.34s, setup 36ms, collect 4.34s, tests 2.47s, environment 0ms, prepare 166ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/client-record-audit.int-spec.ts
+
+(node:12216) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.518Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:170:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.548Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:187:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.569Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:195:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.588Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:206:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.607Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:218:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.626Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:227:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.643Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:242:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.666Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:253:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.686Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:264:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:16.704Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:273:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises
+AssertionError: des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 0 to be greater than or equal to 8
+ ❯ test/int/client-record-audit.int-spec.ts:284:92
+    282|   it("⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur…
+    283|     const lignes = await ctx.prisma.$queryRawUnsafe<Array<{ t: string …
+    284|     expect(lignes.length, "des lignes parcourues (un zéro sur zéro lig…
+       |                                                                                            ^
+    285|     const texte = lignes.map((l) => l.t).join("\n");
+    286|     expect(valeursGenerees.length, "des numéros et des e-mails ont bie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien)
+AssertionError: [500,500,500,500,500,500,500,500,500,500]: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/int/client-record-audit.int-spec.ts:295:100
+    293|     const avantLignes = (await lignesFiche()).length;
+    294|     const reponses = await Promise.all(Array.from({ length: 10 }, () =…
+    295|     expect(reponses.every((r) => r.status === 200), JSON.stringify(rep…
+       |                                                                                                    ^
+    296|     expect(reponses.filter((r) => (r.body as { created: boolean }).cre…
+    297|     expect(await nombreDeFiches(), "une fiche de plus").toBe(avantFich…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ test/int/client-record-audit.int-spec.ts:362:27
+    360|     await restaurer();
+    361|     const reussi = await creer(m, undefined, { phone: numero, nameLati…
+    362|     expect(reussi.status).toBe(200);
+       |                           ^
+    363|     expect((reussi.body as { created: boolean }).created).toBe(true);
+    364|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.144Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:367:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche)
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.161Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:382:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/16]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5
+AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/clients","timestamp":"2026-11-20T03:41:18.203Z"}: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ ficheDe test/int/client-record-audit.int-spec.ts:129:48
+    127| async function ficheDe(m: Monde, qui: Jar | undefined, corps: Record<s…
+    128|   const res = await creer(m, qui, corps);
+    129|   expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                ^
+    130|   return (res.body as { record: { id: string } }).record.id;
+    131| }
+ ❯ test/int/client-record-audit.int-spec.ts:405:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/16]⎯
+

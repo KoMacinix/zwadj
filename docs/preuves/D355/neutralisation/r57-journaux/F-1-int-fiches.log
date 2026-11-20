@@ -1,0 +1,332 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/F-1-int-fiches.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 22074 octets, sha256 8268405bd4484d6e896baf5ecba7a47629c6c55b6c815eb289d527f89024f1f4. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/client-record-audit.int-spec.ts (19 tests | 14 failed) 3007ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit 48ms
+     → expected [] to have a length of 1 but got +0
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit 45ms
+     → expected [] to have a length of 1 but got +0
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre 23ms
+     → expected [] to have a length of 1 but got +0
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus 44ms
+     → expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs 36ms
+     → expected [ { …(8) } ] to have a length of 2 but got 1
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien 180ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom 83ms
+     → expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche 100ms
+     → la fiche n'a que sa ligne de création: expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus 54ms
+     → expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus 133ms
+     → expected [] to deeply equal [ 'client_record.create' ]
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises 5ms
+     → des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 3 to be greater than or equal to 8
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien) 119ms
+     → une ligne de plus: expected 3 to be 4 // Object.is equality
+   × ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun 111ms
+     → expected [ Array(3) ] to deeply equal [ Array(5) ]
+   × ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager 23ms
+     → la création par l'employé a écrit sa ligne: expected [] to have a length of 1 but got +0
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ sans session de personnel (le garde refuse : 401) : AUCUNE fiche, AUCUNE ligne — une trace ne peut pas naître d'une action refusée 12ms
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal 25ms
+     → {"created":true,"record":{"id":"01a1f70c-9b2a-7f88-bc90-f79d15df10e4","phone":"+213555000019","email":null,"nameAr":null,"nameLatin":"Amina Bensalem","linked":false,"createdAt":"2026-11-20T03:42:40.937Z","updatedAt":"2026-11-20T03:42:40.937Z"}}: expected 200 to be 500 // Object.is equality
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE 79ms
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche) 88ms
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5 118ms
+
+ Test Files  1 failed (1)
+      Tests  14 failed | 5 passed (19)
+   Start at  22:42:33
+   Duration  8.14s (transform 1.31s, setup 45ms, collect 4.30s, tests 3.01s, environment 0ms, prepare 163ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/client-record-audit.int-spec.ts
+
+(node:3516) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:172:20
+    170|     const id = await ficheDe(m, undefined, { phone: telephone(), nameL…
+    171|     const lignes = await lignesDe(id);
+    172|     expect(lignes).toHaveLength(1);
+       |                    ^
+    173|     expect(lignes[0]).toEqual({
+    174|       action: "client_record.create",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:191:32
+    189|     expect(encore.status).toBe(200);
+    190|     expect((encore.body as { created: boolean }).created).toBe(false);
+    191|     expect(await lignesDe(id)).toHaveLength(1);
+       |                                ^
+    192|   });
+    193| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:197:24
+    195|     const seul = await ficheDe(m, undefined, { email: courriel(), name…
+    196|     const lignesSeul = await lignesDe(seul);
+    197|     expect(lignesSeul).toHaveLength(1);
+       |                        ^
+    198|     expect(lignesSeul[0]!.after).toEqual({ fields: ["email", "nameLati…
+    199|     const tout = await ficheDe(m, undefined, { phone: telephone(), ema…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus
+AssertionError: expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "client_record.create",
+    "client_record.complete_names",
+  ]
+
+ ❯ test/int/client-record-audit.int-spec.ts:210:41
+    208|     expect(ok.status, JSON.stringify(ok.body)).toBe(200);
+    209|     const lignes = await lignesDe(id);
+    210|     expect(lignes.map((l) => l.action)).toEqual(["client_record.create…
+       |                                         ^
+    211|     expect(lignes[1]).toMatchObject({ actor_id: m.pro.userId, actor_ro…
+    212|     const refus = await completer(m, undefined, id, { nameAr: "أمينة" …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs
+AssertionError: expected [ { …(8) } ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/int/client-record-audit.int-spec.ts:222:20
+    220|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+    221|     const lignes = await lignesDe(id);
+    222|     expect(lignes).toHaveLength(2);
+       |                    ^
+    223|     expect(lignes[1]).toMatchObject({ action: "client_record.update", …
+    224|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom
+AssertionError: expected [ 'client_record.complete_names' ] to deeply equal [ 'client_record.create', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "client_record.create",
+    "client_record.complete_names",
+  ]
+
+ ❯ test/int/client-record-audit.int-spec.ts:248:41
+    246|     expect(await ficheEnBase(id)).toMatchObject({ name_ar: "آمنة بن سا…
+    247|     const lignes = await lignesDe(id);
+    248|     expect(lignes.map((l) => l.action)).toEqual(["client_record.create…
+       |                                         ^
+    249|     expect(lignes[1]).toMatchObject({ actor_id: m.pro.userId, actor_ro…
+    250|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche
+AssertionError: la fiche n'a que sa ligne de création: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:260:96
+    258|     const sansFiche = (await devisAvecFiche(m, undefined, {})).body as…
+    259|     expect((await boiteDeLangue(m, undefined, sansFiche.id, { locale: …
+    260|     expect((await lignesDe(id)).map((l) => l.action), "la fiche n'a qu…
+       |                                                                                                ^
+    261|   });
+    262| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus
+AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:269:57
+    267|     expect((await copieEnBase(q1.id))?.client_name_ar, "la copie du de…
+    268|     expect((await ficheEnBase(deja))?.name_ar, "la fiche garde son nom…
+    269|     expect((await lignesDe(deja)).map((l) => l.action)).toEqual(["clie…
+       |                                                         ^
+    270|   });
+    271| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus
+AssertionError: expected [] to deeply equal [ 'client_record.create' ]
+
+- Expected
++ Received
+
+- [
+-   "client_record.create",
+- ]
++ []
+
+ ❯ test/int/client-record-audit.int-spec.ts:279:57
+    277|     expect((await copieEnBase(q2.id))?.client_name_ar).toBe("آمنة بن س…
+    278|     expect((await ficheEnBase(liee))?.name_ar, "une fiche liée n'est j…
+    279|     expect((await lignesDe(liee)).map((l) => l.action)).toEqual(["clie…
+       |                                                         ^
+    280|   });
+    281| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises
+AssertionError: des lignes parcourues (un zéro sur zéro ligne ne prouve rien): expected 3 to be greater than or equal to 8
+ ❯ test/int/client-record-audit.int-spec.ts:284:92
+    282|   it("⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur…
+    283|     const lignes = await ctx.prisma.$queryRawUnsafe<Array<{ t: string …
+    284|     expect(lignes.length, "des lignes parcourues (un zéro sur zéro lig…
+       |                                                                                            ^
+    285|     const texte = lignes.map((l) => l.t).join("\n");
+    286|     expect(valeursGenerees.length, "des numéros et des e-mails ont bie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien)
+AssertionError: une ligne de plus: expected 3 to be 4 // Object.is equality
+
+- Expected
++ Received
+
+- 4
++ 3
+
+ ❯ test/int/client-record-audit.int-spec.ts:298:63
+    296|     expect(reponses.filter((r) => (r.body as { created: boolean }).cre…
+    297|     expect(await nombreDeFiches(), "une fiche de plus").toBe(avantFich…
+    298|     expect((await lignesFiche()).length, "une ligne de plus").toBe(ava…
+       |                                                               ^
+    299|   });
+    300| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun
+AssertionError: expected [ Array(3) ] to deeply equal [ Array(5) ]
+
+- Expected
++ Received
+
+  [
+    "client_record.complete_names",
+    "client_record.complete_names",
+-   "client_record.create",
+-   "client_record.create",
+    "client_record.update",
+  ]
+
+ ❯ test/int/client-record-audit.int-spec.ts:316:48
+    314|     expect((await boiteDeLangue(m, m.jar, devis.id, { locale: "ar", na…
+    315|     const lignes = [...(await lignesDe(id)), ...(await lignesDe(autre)…
+    316|     expect(lignes.map((l) => l.action).sort()).toEqual(["client_record…
+       |                                                ^
+    317|     for (const l of lignes) {
+    318|       expect(l.actor_member_id, `${l.action} : le membre qui agit`).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager
+AssertionError: la création par l'employé a écrit sa ligne: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/client-record-audit.int-spec.ts:328:76
+    326|     expect(m.employe!.id).not.toBe(m.membre);
+    327|     const lignesDeLEmploye = await lignesDe(id);
+    328|     expect(lignesDeLEmploye, "la création par l'employé a écrit sa lig…
+       |                                                                            ^
+    329|     const ligne = lignesDeLEmploye[0]!;
+    330|     expect(ligne.action).toBe("client_record.create");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal
+AssertionError: {"created":true,"record":{"id":"01a1f70c-9b2a-7f88-bc90-f79d15df10e4","phone":"+213555000019","email":null,"nameAr":null,"nameLatin":"Amina Bensalem","linked":false,"createdAt":"2026-11-20T03:42:40.937Z","updatedAt":"2026-11-20T03:42:40.937Z"}}: expected 200 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 200
+
+ ❯ test/int/client-record-audit.int-spec.ts:358:54
+    356|     await forcerEchecDuJournal("client_record.create");
+    357|     const echec = await creer(m, undefined, { phone: numero, nameLatin…
+    358|     expect(echec.status, JSON.stringify(echec.body)).toBe(500);
+       |                                                      ^
+    359|     expect(await nombreDeFiches(), "action sans trace : la fiche n'a p…
+    360|     await restaurer();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯
+

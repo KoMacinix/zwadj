@@ -1,0 +1,34 @@
+BISSECTION DE L'ERREUR D'INJECTION DE `Reflector` — rang 57 (D355) — relevé de la session, ÉCRIT À LA MAIN depuis les sorties lues (19/11/2026)
+
+⚠ Ce n'est PAS une sortie brute. Chaque ligne ci-dessous résume un lancement dont la sortie a été LUE par la session ; seule la sortie du DERNIER lancement de `bisect.sh` est conservée sur le disque, et elle n'est pas versée. Les sorties brutes des lancements en ÉCHEC et de deux lancements de réussite sont versées dans ce dossier (voir `intermittence-injection-nest.md`, § 6). Les heures sont celles de l'horloge du poste, relevées par `date` dans la commande ; une heure précédée de « ≈ » n'a pas été relevée à la minute.
+
+PROCÉDURE (`bisect.sh`, jointe, archivée comme PIÈCE, jamais promue en instrument) : applique un SOUS-ENSEMBLE des douze fichiers de production du lot (copiés depuis une sauvegarde dont l'empreinte sha256 est vérifiée : « 12 OK »), joue la sonde, puis REMET l'état d'avant (`git checkout` des fichiers modifiés, suppression du module neuf). Les trois groupes : « staff » (3 fichiers de `apps/api/src/staff/`), « clients » (4 fichiers de `apps/api/src/clients/`) et « venues » (4 fichiers de `apps/api/src/venues/`), plus « module » (le fichier neuf `client-record-audit.ts`, exigé par « clients » et « venues »).
+
+PREMIÈRE SÉRIE — sonde : `staff-login.int-spec.ts` (34 tests ; il importe `@zwadj/types` et `password.service` AVANT `./helpers`) — avant la fenêtre d'échec
+  ≈ 21:53  code de production d'AVANT (les douze fichiers rétablis)        34 sur 34 passés
+  ≈ 21:55  groupe « staff » seul                                           34 sur 34
+  ≈ 21:56  groupe « clients » + « module »                                 34 sur 34
+  ≈ 21:57  groupe « venues » + « module »                                  34 sur 34
+  ≈ 21:57  les quatre groupes ensemble (= le code final du lot)            34 sur 34
+
+(les douze fichiers réappliqués, empreintes « 12 OK » ; puis :)
+  21:58:22 → 21:58:53  `staff-login-race.int-spec.ts`                      8 sur 8 PASSÉS            (`vert-course-1.txt`)
+  21:58:59 → 21:59:20  `client-record-audit.int-spec.ts`                   ÉCHEC À L'AMORÇAGE        (`echec-audit-1.txt`)
+  21:59:56 → 22:00:18  sonde jetable (les imports de la spec d'audit)      ÉCHEC À L'AMORÇAGE        (`echec-sonde-1.txt`)
+  22:00:34 → 22:01:17  sondes jetables A, B et C (la même commande)        ÉCHEC À L'AMORÇAGE ×3     (`echec-sondes-abc.txt`)
+     A = `./helpers` seul · B = `./helpers` + `./staff-helpers`, sans l'import de type · C = `./helpers` + l'import de type de `@zwadj/types`, sans `./staff-helpers`
+
+DEUXIÈME SÉRIE — sonde A (`./helpers` seul ; elle importe `./helpers` EN PREMIER) — après la fenêtre d'échec
+  ≈ 22:02  code de production d'AVANT                                      1 sur 1 passé
+  ≈ 22:03  groupe « staff » seul · « clients » + « module » · « venues » + « module »      chacun 1 sur 1
+  ≈ 22:04  paires « staff » + « clients » · « staff » + « venues » · « clients » + « venues » (avec « module »)      chacune 1 sur 1
+  ≈ 22:04  les quatre groupes ensemble                                     1 sur 1
+  22:05:33 et 22:05:53  les douze fichiers réappliqués À LA MAIN (empreintes « 12 OK »), sans `bisect.sh`, deux lancements     1 sur 1 ×2
+  22:07:13 → 22:07:45  `staff-login-race.int-spec.ts`                      8 sur 8 PASSÉS            (`reussite-rejeu-course.txt`)
+  22:07:45 → 22:08:10  `client-record-audit.int-spec.ts`                   19 sur 19 PASSÉS          (`reussite-rejeu-audit.txt`)
+
+TROISIÈME SÉRIE — l'hypothèse « un fichier de `@nestjs/core` exécuté par vite-node »
+  22:09:40 → 22:10:01  la sonde A avec une configuration jetable qui force « inline » le fichier de `Reflector`      1 sur 1 PASSÉ      (`mecanisme-inline-reflector.txt`) — l'erreur NE se reproduit PAS
+
+CE QUE CE RELEVÉ ÉTABLIT : cinq lancements consécutifs (21:58:59 → 22:01:17) ont échoué sur un arbre de production dont les douze fichiers ont l'empreinte de ceux qui ont réussi avant (21:58:22) et après (22:05 →). Le code du lot, l'ordre des imports de la spec et le groupe de fichiers ne sont donc pas la cause.
+CE QU'IL N'ÉTABLIT PAS : la cause. Voir `intermittence-injection-nest.md`.

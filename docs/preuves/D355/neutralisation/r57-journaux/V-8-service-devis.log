@@ -1,0 +1,96 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/V-8-service-devis.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 12145 octets, sha256 5918ae0d015dcc47ae317082fc008f0c91e187480455489e4907e89c75af7b3a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/venues/quotes.service.spec.ts (48 tests | 1 failed) 49ms
+   ✓ QuotesService — 404 indistincts > id hors motif UUID : 404 SANS toucher le port 4ms
+   ✓ QuotesService — 404 indistincts > le port rend `null` (inexistant / salle supprimée / autre pro) : même 404 1ms
+   ✓ QuotesService — 404 indistincts > salle d'un autre pro : `listForVenue` s'arrête AVANT de lire les devis 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `cancel` refusé : 409 avec le statut RELU, pas un booléen 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⛔ `deliver` refusé : même 409, même statut porté 1ms
+   ✓ QuotesService — le refus du check-and-set devient un 409 QUI PORTE LE STATUT > ⚠ le statut ADMIS vient de la machine à états, pas du port 2ms
+   ✓ QuotesService.deliver — une remise est RÉPÉTABLE (D160) > ⚠ le devis ne change PAS de statut : seuls le canal et la date sont écrits 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ le DTO porte `reference`, bâtie sur la ligne stockée : année, numéro de la salle, numéro du devis, version — une seule formule (`formatQuoteReference`) 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ une révision garde l'année et les deux numéros de sa tête ; SEULE la version change 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ l'ancienne référence (les huit premiers caractères de l'identifiant) a DISPARU 1ms
+   ✓ ⛔ QuotesService — la référence du devis (K-6, rang 39) > ⛔ la référence rendue par une transition (remise, annulation) est celle du devis, pas une autre 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ les QUATRE MONTANTS partent VERBATIM du devis — aucun recalcul 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ `source` est une lecture MÉTIER de la provenance, faite ICI 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ le refus du port devient un 409 `QUOTE_ALREADY_CONVERTED`, jamais un 500 1ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⚠ la garde applicative évite d'écrire pour rien — et rend LE MÊME code 0ms
+   ✓ ⛔ QuotesService.convert — CHEMIN DE L'ARGENT (S10b-2) > ⛔ LE DEVIS NE BOUGE PAS — il attend l'acompte 0ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-11 — la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND, et RIEN n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ MD-6 — une fiche LIÉE et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est chiffré ni écrit 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > la RÉVISION applique la même règle : la fiche d'un autre pro est refusée avant le verrou de chaîne 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > sans fiche, le port des fiches n'est PAS lu (un devis du parcours sans contact reste possible) 1ms
+   ✓ ⛔ D336 — K-4 : la fiche se vérifie AVANT tout chiffrage, et la copie d'une fiche LIÉE est celle de la fiche > ⛔ K-6 — le DTO porte la fiche et les DEUX copies, telles que STOCKÉES 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > la langue choisit la copie par l'AUTORITÉ (`QUOTE_CLIENT_NAME_FIELD`) : « ar » écrit `clientNameAr`, « fr » `clientNameLatin` 1ms
+   × ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dans la ligne de journal de la fiche : le membre quand une session existe, `null` quand la couche est éteinte — jamais un autre 12ms
+     → expected { …(6) } to match object { …(2) }
+(4 matching properties omitted from actual)
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-8 — la décision de compléter AUSSI la fiche est la politique C-C3, passée au port (le port ne la réécrit pas) 1ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ MD-7 — le port refuse (la copie est déjà là) : 409 QUOTE_CLIENT_NAME_ALREADY_SET 0ms
+   ✓ ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > le port refuse ET le devis n'est pas au pro : 404 QUOTE_NOT_FOUND ; un identifiant hors motif : 404 sans toucher le port 1ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un devis officiel : `isOfficial: true` et `DEVIS-…` (inchangé d'un octet) 0ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ un brouillon : `isOfficial: false` et `BROUILLON-…`, même année, mêmes numéros, même version — bâtie par la MÊME formule 0ms
+   ✓ ⛔ D339 — le DTO d'un devis dit s'il est officiel, et sa référence porte le préfixe de SON état > ⛔ dans une même chaîne, la v1 brouillon et la v2 promue portent chacune le préfixe de SA ligne — le numéro est le même 0ms
+   ✓ ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `nonOfficiel` : 409 QUOTE_NOT_OFFICIAL, le message du catalogue, et aucun statut dans la réponse 1ms
+   ✓ ⛔ D-1 — `deliver` : un brouillon ne se remet pas, et le STATUT passe avant l'état officiel > ⛔ le port refuse `statutConflit` : 409 QUOTE_STATUS_CONFLICT avec le statut RELU — deux refus, deux codes, jamais confondus 0ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ un brouillon DRAFT : 409 QUOTE_NOT_OFFICIAL ; ni la salle, ni le créneau ne sont lus, aucune demande n'est écrite 1ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (le devis est clos — l'information utile), pas « pas officiel » 0ms
+   ✓ ⛔ D-2 (Q5) — `convert` : un brouillon ne se convertit pas, refusé AVANT toute lecture et toute écriture > ⚠ un devis OFFICIEL se convertit comme avant (la garde ne gêne pas ce qu'elle ne vise pas) 0ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⛔ le port refuse ET le devis est un brouillon : 409 QUOTE_DRAFT_HAS_NO_CLIENT (pas « déjà renseigné » — il n'y a rien à compléter sur un brouillon) 0ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 404, puis « un brouillon n'a pas de nom », puis « copie déjà là » > ⚠ le port refuse, le devis est OFFICIEL : le refus d'avant (copie déjà là) est inchangé ; introuvable : 404 d'abord 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée) 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active) 0ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS) 1ms
+   ✓ ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant 3ms
+   ✓ ⛔ D-15 — `revise` : la fiche d'un autre pro sur une chaîne brouillon reste un 404, décidé AVANT le verrou > ⛔ l'ordre : la fiche (404) est décidée avant l'écriture ; le refus « un brouillon ne porte pas de client » vient du PORT, sous le verrou de la chaîne 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 47 passed (48)
+   Start at  22:47:13
+   Duration  1.96s (transform 439ms, setup 0ms, collect 1.31s, tests 49ms, environment 0ms, prepare 211ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/venues/quotes.service.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/venues/quotes.service.spec.ts > ⛔ D336 — K-5 : compléter la copie du nom (compare-and-set sur NULL), la fiche sous C-C3 > ⛔ R-2 (D355) — le MEMBRE du garde est passé au port, qui l'écrit dans la ligne de journal de la fiche : le membre quand une session existe, `null` quand la couche est éteinte — jamais un autre
+AssertionError: expected { …(6) } to match object { …(2) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "memberId": "018f0000-0000-7000-8000-00000000bbbb",
++   "memberId": null,
+    "userId": "018f0000-0000-7000-8000-00000000aaaa",
+  }
+
+ ❯ src/venues/quotes.service.spec.ts:388:58
+    386|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+    387|     await service.completeClientName(USER_ID, QUOTE_ID, { locale: "ar"…
+    388|     expect(devis.completerNomDuClient.mock.calls[0]![0]).toMatchObject…
+       |                                                          ^
+    389|     expect(devis.completerNomDuClient.mock.calls[1]![0]).toMatchObject…
+    390|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

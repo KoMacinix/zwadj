@@ -1,0 +1,67 @@
+
+ RUN  v3.2.7 c:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/client-record-audit.int-spec.ts (19 tests | 19 skipped) 85ms
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises
+   ↓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien)
+   ↓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun
+   ↓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager
+   ↓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ sans session de personnel (le garde refuse : 401) : AUCUNE fiche, AUCUNE ligne — une trace ne peut pas naître d'une action refusée
+   ↓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal
+   ↓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE
+   ↓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche)
+   ↓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts [ test/int/client-record-audit.int-spec.ts ]
+Error: Nest can't resolve dependencies of the JwtAuthGuard (JwtService, ?). Please make sure that the argument Reflector at index [1] is available in the AuthModule module.
+
+Potential solutions:
+- Is AuthModule a valid NestJS module?
+- If Reflector is a provider, is it part of the current AuthModule?
+- If Reflector is exported from a separate @Module, is that module imported within AuthModule?
+  @Module({
+    imports: [ /* the Module containing Reflector */ ]
+  })
+
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+ ❯ TestingInjector.lookupComponentInParentModules ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/injector.js:300:19
+ ❯ TestingInjector.resolveComponentWrapper ../../node_modules/.pnpm/@nestjs+testing@11.1.27_@ne_aae172480682ce770688823ac8f3f3da/node_modules/@nestjs/testing/testing-injector.js:19:45
+ ❯ resolveParam ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/injector.js:150:38
+ ❯ TestingInjector.resolveConstructorParams ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/injector.js:179:27
+ ❯ TestingInjector.loadInstance ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/injector.js:77:13
+ ❯ TestingInjector.loadProvider ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/injector.js:111:9
+ ❯ ../../node_modules/.pnpm/@nestjs+core@11.1.27_@nestj_678d8367b6ebdd1429d0393fb65d07e5/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts [ test/int/client-record-audit.int-spec.ts ]
+TypeError: Cannot read properties of undefined (reading 'prisma')
+ ❯ restaurer test/int/client-record-audit.int-spec.ts:157:13
+    155| }
+    156| async function restaurer(): Promise<void> {
+    157|   await ctx.prisma.$executeRawUnsafe("DROP TRIGGER IF EXISTS r57_fail_…
+       |             ^
+    158|   await ctx.prisma.$executeRawUnsafe("DROP FUNCTION IF EXISTS r57_fail…
+    159|   await ctx.prisma.$executeRawUnsafe("DROP TRIGGER IF EXISTS r57_fail_…
+ ❯ test/int/client-record-audit.int-spec.ts:22:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  19 skipped (19)
+   Start at  21:59:04
+   Duration  14.65s (transform 3.36s, setup 36ms, collect 12.91s, tests 85ms, environment 0ms, prepare 487ms)
+

@@ -1,0 +1,139 @@
+# ── A — R-1 : le CAS d'`openSession` (le magasin du personnel), la connexion ne survit plus à une réinitialisation.
+cible("A-1. ⛔ R-1 — le CAS d'ouverture ne compare plus le hachage lu à la réservation (une réinitialisation ou un changement intercalé n'empêche plus l'ouverture)", MAGASIN,
+      "\n           AND password_hash = ${input.expectedPasswordHash}\n", "\n           AND ${input.expectedPasswordHash}::text IS NOT NULL\n", ["course-magasin", "int-course"])
+cible("A-2. ⛔ R-1 — le CAS compare le hachage à un AUTRE secret (le jeton de session) : l'ouverture n'est plus jamais acceptée", MAGASIN,
+      "\n           AND password_hash = ${input.expectedPasswordHash}\n", "\n           AND password_hash = ${input.sessionTokenHash}\n", ["course-magasin", "int-course"])
+cible("A-3. ⛔ R-1 — « connexion ‖ désactivation » : le CAS d'ouverture ne conditionne plus le STATUT (un membre désactivé entre la réservation et l'ouverture ouvre une session)", MAGASIN,
+      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'",
+      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND true", ["course-magasin", "int-course"])
+cible("A-4. ⛔ R-1 — le hachage est comparé à une LECTURE de l'instantané de l'instruction (sous-requête) et non à la ligne VERROUILLÉE : un contrôle qui ne relit pas sous le verrou", MAGASIN,
+      "\n           AND password_hash = ${input.expectedPasswordHash}\n",
+      "\n           AND ${input.expectedPasswordHash} = (SELECT m2.password_hash FROM pro_staff_members m2 WHERE m2.id = ${input.memberId}::uuid)\n", ["int-course"])
+cible("A-5. ⛔ R-1 — le refus d'ouverture change de nom de motif (`memberChanged` devient `memberInactive`) : le contrat du port se désaccorde de sa définition", MAGASIN,
+      '      if (membre === undefined) return { ok: false, reason: "memberChanged" };', '      if (membre === undefined) return { ok: false, reason: "memberInactive" as "memberChanged" };', ["course-magasin"])
+
+# ── S — R-1 : le SERVICE de connexion (le hachage transmis, le refus identique à un mauvais mot de passe).
+cible("S-1. ⛔ R-1 — le service transmet un autre secret que le hachage lu à la réservation (le mot de passe en clair)", SERVICE,
+      "      memberId: member.id,\n      expectedPasswordHash: reservation.passwordHash,", "      memberId: member.id,\n      expectedPasswordHash: input.password,", ["course-service", "int-course"])
+cible("S-2. ⛔ R-1 / S-253 — un refus d'ouverture est consigné comme un échec de mot de passe (une ligne d'échec pour un mot de passe qui était JUSTE)", SERVICE,
+      "    if (!opened.ok) throw identifiantsRefuses();",
+      '    if (!opened.ok) { await this.store.recordPasswordFailure({ actor: user, memberId: member.id, failedCount: reservation.failedCount, pausedNow: reservation.pausedNow, action: "staff.login_failed" }); throw identifiantsRefuses(); }', ["course-service"])
+cible("S-3. ⛔ R-1 — un refus d'ouverture paie UN hachage FACTICE de plus (le coût diffère de celui d'un mauvais mot de passe)", SERVICE,
+      "    if (!opened.ok) throw identifiantsRefuses();",
+      "    if (!opened.ok) { await this.passwords.verifyAgainstDummy(input.password); throw identifiantsRefuses(); }", ["course-service", "int-course"])
+cible("S-4. ⛔ R-1 — un refus d'ouverture n'est plus le même corps qu'un mauvais mot de passe (un 403 « interdit » : le refus dit POURQUOI)", SERVICE,
+      "    if (!opened.ok) throw identifiantsRefuses();",
+      "    if (!opened.ok) throw new ForbiddenException(erreurDe(StaffErrorCode.STAFF_INVALID_CREDENTIALS));", ["course-service", "int-course"])
+
+# ── P — R-2 : le module PUR du journal des fiches (`client-record-audit.ts`).
+cible("P-1. ⛔ R-2 — `before` est écrit (la valeur d'avant d'un champ est une donnée personnelle)", AUDIT,
+      "    entityId: args.ficheId,", "    entityId: args.ficheId,\n    before: null,", ["audit-pur", "ecritures"], "insertion")
+cible("P-2. ⛔ R-2 — `champsEcrits` rend les VALEURS au lieu des noms (le journal recopie un numéro, un e-mail, un nom)", AUDIT,
+      "  return FICHE_CHAMPS.filter((champ) => donnees[champ] !== undefined && donnees[champ] !== null);",
+      "  return FICHE_CHAMPS.filter((champ) => donnees[champ] !== undefined && donnees[champ] !== null).map((champ) => donnees[champ] as unknown as FicheChamp);", ["audit-pur"])
+cible("P-3. ⛔ R-2 — l'ordre des champs n'est plus fixe (l'ordre de l'appelant fait foi)", AUDIT,
+      "  const fields = FICHE_CHAMPS.filter((champ) => args.champs.includes(champ));", "  const fields = [...args.champs];", ["audit-pur"])
+cible("P-4. ⛔ R-2 — la ligne n'écrit jamais le membre (`actor_member_id` toujours NULL, même quand une session de personnel existe)", AUDIT,
+      "    actorMemberId: args.auteur.memberId,", "    actorMemberId: null,", ["audit-pur", "int-fiches"])
+cible("P-5. ⛔ R-2 — sans membre, la ligne y met le compte commun (un membre INVENTÉ)", AUDIT,
+      "    actorMemberId: args.auteur.memberId,", "    actorMemberId: args.auteur.memberId ?? args.auteur.userId,", ["audit-pur", "int-fiches"])
+cible("P-6. ⛔ R-2 — le rôle de l'acteur n'est plus PRO", AUDIT,
+      '    actorRole: "PRO",', '    actorRole: "CLIENT" as "PRO",', ["audit-pur", "int-fiches"])
+cible("P-7. ⛔ R-2 — une ligne SANS champ écrit est acceptée (un journal qui se tait sur ce qu'il n'a pas compris)", AUDIT,
+      "  if (args.champs.length === 0) throw", "  if (false) throw", ["audit-pur"])
+cible("P-8. ⛔ R-2 — un champ INCONNU (un secret, une colonne qui n'existe pas) est accepté", AUDIT,
+      "  if (inconnus.length > 0) throw", "  if (false) throw", ["audit-pur"])
+cible("P-9. ⛔ R-2 — un champ RÉPÉTÉ est accepté", AUDIT,
+      "  if (new Set(args.champs).size !== args.champs.length) throw", "  if (false) throw", ["audit-pur"])
+cible("P-10. ⛔ R-2 — `quoteId` est accepté pour une création ou une modification (il n'a de place que pour K-5)", AUDIT,
+      '  if (args.quoteId !== undefined && args.action !== "client_record.complete_names") throw', "  if (false) throw", ["audit-pur"])
+cible("P-11. ⛔ R-2 — une action qui n'est pas l'une des trois est acceptée (la liste du journal n'est plus fermée)", AUDIT,
+      "  if (!FICHE_AUDIT_ACTIONS.includes(args.action)) throw", "  if (false) throw", ["audit-pur"])
+cible("P-12. ⛔ R-2 — l'entité de la ligne n'est plus `client_record`", AUDIT,
+      '    entityType: "client_record",', '    entityType: "fiche",', ["audit-pur", "int-fiches"])
+cible("P-13. ⛔ R-2 — la clé `quoteId` est toujours présente (même pour K-3, même `undefined`)", AUDIT,
+      "    after: args.quoteId === undefined ? { fields } : { fields, quoteId: args.quoteId }", "    after: { fields, quoteId: args.quoteId }", ["audit-pur"])
+cible("P-14. ⛔ R-2 — la liste fermée des champs perd `email` (un e-mail écrit n'est plus consigné)", AUDIT,
+      'export const FICHE_CHAMPS = ["phone", "email", "nameAr", "nameLatin"] as const;', 'export const FICHE_CHAMPS = ["phone", "nameAr", "nameLatin"] as const;', ["audit-pur", "int-fiches"])
+cible("P-15. ⛔ R-2 — la liste fermée des actions est désaccordée de la table (un nom d'action change)", AUDIT,
+      '"client_record.complete_names"] as const;', '"client_record.complete_name"] as const;', ["audit-pur", "ecritures", "int-fiches"])
+cible("P-16. ⛔ R-2 — le module pur importe une dépendance (il n'est plus sans dépendance, D187)", AUDIT,
+      "/** Les quatre champs d'une fiche qu'une écriture peut toucher, dans l'ORDRE FIXE de la ligne. */",
+      'import { randomUUID } from "node:crypto";\n/** Les quatre champs d\'une fiche qu\'une écriture peut toucher, dans l\'ORDRE FIXE de la ligne. */', ["audit-pur"], "insertion")
+
+# ── F — R-2 : le magasin des fiches (K-2, K-3, K-3b).
+cible("F-1. ⛔ R-2 — K-2 : la fiche créée n'écrit plus sa ligne de journal (une action sans trace)", FICHE_STORE,
+      '        await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.create", ficheId: creee.id, champs: champsEcrits(donnees) }) });',
+      "        void auteur;", ["ecritures", "int-fiches"])
+cible("F-2. ⛔ R-2 — K-2 : une ligne de journal est écrite même quand RIEN n'a été inséré (une fiche rendue telle quelle laisse une trace d'une écriture qui n'a pas eu lieu)", FICHE_STORE,
+      "      if (lignes.length === 1 && creee !== undefined) {", "      if (true) {", ["int-fiches"])
+cible("F-3. ⛔ R-2 — K-3 : la ligne de journal est écrite même quand l'`UPDATE` conditionné n'a rien écrit (un refus laisse une trace)", FICHE_STORE,
+      "      if (resultat.count === 1) {", "      if (true) {", ["int-fiches"])
+cible("F-4. ⛔ R-2 — K-3b : la modification porte le nom d'action de la complétion", FICHE_STORE,
+      'ficheAuditEntry({ auteur, action: "client_record.update", ficheId: id, champs: champsEcrits(champs) })',
+      'ficheAuditEntry({ auteur, action: "client_record.complete_names", ficheId: id, champs: champsEcrits(champs) })', ["int-fiches"])
+cible("F-5. ⛔ R-2 — K-3b : la ligne consigne TOUS les champs, pas ceux qui ont été envoyés", FICHE_STORE,
+      "champs: champsEcrits(champs)", 'champs: ["phone", "email", "nameAr", "nameLatin"]', ["int-fiches"])
+cible("F-6. ⛔ R-2 — K-2 : le membre de la session n'est pas transmis à la ligne (le Manager et l'Employé ne se distinguent plus)", FICHE_STORE,
+      'ficheAuditEntry({ auteur, action: "client_record.create"', 'ficheAuditEntry({ auteur: { userId: auteur.userId, memberId: null }, action: "client_record.create"', ["int-fiches"])
+cible("F-7. ⛔ R-2 — K-2 : l'insertion n'est plus dans une transaction avec sa ligne (une insertion validée seule, la ligne échoue ensuite : une action sans trace)", FICHE_STORE,
+      "    const inseree = await this.prisma.$transaction(async (tx) => {", "    const inseree = await this.prisma.$transaction(async (_tx) => {\n      const tx = this.prisma;", ["int-fiches"])
+cible("F-8. ⛔ R-2 — K-3 : l'`UPDATE` n'est plus dans une transaction avec sa ligne", FICHE_STORE,
+      "    const ecrit = await this.prisma.$transaction(async (tx) => {", "    const ecrit = await this.prisma.$transaction(async (_tx) => {\n      const tx = this.prisma;", ["int-fiches"])
+cible("F-9. ⛔ R-2 — K-3b : l'`UPDATE` n'est plus dans la transaction de sa ligne de journal", FICHE_STORE,
+      "      return await this.prisma.$transaction(async (tx): Promise<ResultatModification> => {", "      return await this.prisma.$transaction(async (_tx): Promise<ResultatModification> => {\n        const tx = this.prisma;", ["int-fiches"])
+
+cible("F-10. ⛔ R-2 — K-2 : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction (elle est validée seule : si le commit de l'insertion échoue ensuite, la trace d'une action qui n'a pas eu lieu survit)", FICHE_STORE,
+      '        await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.create"', '        await this.prisma.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.create"', ["int-fiches"])
+cible("F-11. ⛔ R-2 — K-3 : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction", FICHE_STORE,
+      '        await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.complete_names"', '        await this.prisma.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.complete_names"', ["int-fiches"])
+cible("F-12. ⛔ R-2 — K-3b : la ligne de journal s'écrit sur UNE AUTRE connexion que la transaction", FICHE_STORE,
+      '        await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.update"', '        await this.prisma.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.update"', ["int-fiches"])
+
+# ── Q — R-2 : K-5, la boîte de langue complète AUSSI la fiche (le magasin des devis).
+cible("Q-1. ⛔ R-2 — K-5 : la fiche complétée n'écrit plus sa ligne de journal", QUOTE_STORE,
+      "            if (completee.count === 1) {", "            if (false) {", ["magasin-devis", "int-fiches"])
+cible("Q-2. ⛔ R-2 — K-5 : la ligne de journal est écrite même quand l'écriture conditionnée de la fiche n'a rien écrit", QUOTE_STORE,
+      "            if (completee.count === 1) {", "            if (true) {", ["magasin-devis", "int-fiches"])
+cible("Q-3. ⛔ R-2 — K-5 : la ligne ne porte plus le devis qui a fait compléter la fiche", QUOTE_STORE,
+      "                  quoteId: args.quoteId", "                  quoteId: undefined", ["magasin-devis", "int-fiches"])
+cible("Q-4. ⛔ R-2 — K-5 : la ligne nomme l'AUTRE champ (le nom arabe complété est consigné comme latin)", QUOTE_STORE,
+      '                  champs: [enArabe ? "nameAr" : "nameLatin"],', '                  champs: [enArabe ? "nameLatin" : "nameAr"],', ["magasin-devis", "int-fiches"])
+cible("Q-5. ⛔ R-2 — K-5 : le membre de la session n'est pas transmis à la ligne", QUOTE_STORE,
+      "                  auteur: { userId: args.userId, memberId: args.memberId },", "                  auteur: { userId: args.userId, memberId: null },", ["magasin-devis", "int-fiches"])
+cible("Q-6. ⛔ R-2 — K-5 : la ligne de journal de la fiche s'écrit sur UNE AUTRE connexion que la transaction (une trace sans action si le commit échoue)", QUOTE_STORE,
+      "              await tx.auditLog.create({\n                data: ficheAuditEntry({", "              await this.prisma.auditLog.create({\n                data: ficheAuditEntry({", ["int-fiches"])
+
+# ── V — R-2 : les services et les contrôleurs (le membre du garde voyage jusqu'au magasin).
+cible("V-1. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-2)", FICHE_SVC,
+      "    const auteur: FicheAuteur = { userId, memberId };", "    const auteur: FicheAuteur = { userId, memberId: null };", ["service-fiches", "int-fiches"])
+cible("V-2. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-3)", FICHE_SVC,
+      "this.fiches.completerNoms(userId, id, input, { userId, memberId })", "this.fiches.completerNoms(userId, id, input, { userId, memberId: null })", ["service-fiches", "int-fiches"])
+cible("V-3. ⛔ R-2 — le service des fiches ne transmet jamais le membre (K-3b)", FICHE_SVC,
+      "this.fiches.modifier(userId, id, input, { userId, memberId })", "this.fiches.modifier(userId, id, input, { userId, memberId: null })", ["service-fiches", "int-fiches"])
+cible("V-4. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-2)", FICHE_CTRL,
+      "    return this.clients.create(user.userId, body, staff?.memberId ?? null);", "    return this.clients.create(user.userId, body, null);", ["int-fiches"])
+cible("V-5. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-3)", FICHE_CTRL,
+      "    return this.clients.completeNames(user.userId, id, body, staff?.memberId ?? null);", "    return this.clients.completeNames(user.userId, id, body, null);", ["int-fiches"])
+cible("V-6. ⛔ R-2 — le contrôleur des fiches ne lit pas le membre du garde (K-3b)", FICHE_CTRL,
+      "    return this.clients.update(user.userId, id, body, staff?.memberId ?? null);", "    return this.clients.update(user.userId, id, body, null);", ["int-fiches"])
+cible("V-7. ⛔ R-2 — le contrôleur des devis ne lit pas le membre du garde (K-5)", QUOTES_CTRL,
+      "    return this.quotes.completeClientName(user.userId, id, body, staff?.memberId ?? null);", "    return this.quotes.completeClientName(user.userId, id, body, null);", ["int-fiches"])
+cible("V-8. ⛔ R-2 — le service des devis ne passe pas le membre au port (K-5)", QUOTES_SVC,
+      "    const resultat = await this.devis.completerNomDuClient({\n      userId,\n      memberId,\n      quoteId,",
+      "    const resultat = await this.devis.completerNomDuClient({\n      userId,\n      memberId: null,\n      quoteId,", ["service-devis", "int-fiches"])
+
+# ── G — R-2 : la garde de SOURCE (`client-record-writes.spec.ts`) tient la CARTE des écritures.
+cible("G-1. ⛔ R-2 — un CINQUIÈME fichier écrit la table des fiches (le service des devis, par exemple : la conversion écrirait une fiche)", QUOTES_SVC,
+      "async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput, memberId: string | null): Promise<QuoteDTO> {",
+      'const ecritureDeFiche = "UPDATE pro_client_records SET name_ar = NULL";\n  async completeClientName(userId: string, quoteId: string, input: QuoteClientNameInput, memberId: string | null): Promise<QuoteDTO> {', ["ecritures"], "insertion")
+cible("G-2. ⛔ R-2 — une écriture de PLUS dans un fichier de la carte (un quatrième site dans le magasin des fiches)", FICHE_STORE,
+      "function estViolationUnicite(error: unknown): boolean {", 'const cinquiemeSite = "DELETE FROM pro_client_records WHERE false";\nfunction estViolationUnicite(error: unknown): boolean {', ["ecritures"], "insertion")
+cible("G-3. ⛔ R-2 — la LIGNE du journal est bâtie à la main dans un magasin (une entité écrite sur place, hors du module pur)", FICHE_STORE,
+      "function estViolationUnicite(error: unknown): boolean {", 'const ligneALaMain = { entityType: "client_record" };\nfunction estViolationUnicite(error: unknown): boolean {', ["ecritures"], "insertion")
+cible("G-4. ⛔ R-2 — la charge utile de la ligne ne vient plus DIRECTEMENT du constructeur du module pur (une enveloppe autour de l'appel : le comportement est le même, la forme n'est plus la garantie)", FICHE_STORE,
+      'await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.update", ficheId: id, champs: champsEcrits(champs) }) });',
+      'await tx.auditLog.create({ data: { ...ficheAuditEntry({ auteur, action: "client_record.update", ficheId: id, champs: champsEcrits(champs) }) } });', ["ecritures"])
+cible("G-5. ⛔ R-2 — la ligne est CONSTRUITE avant l'écriture qu'elle consigne (K-3 : la ligne ne peut pas précéder l'écriture)", FICHE_STORE,
+      "      const resultat = await tx.proClientRecord.updateMany({",
+      '      const avantEcriture = ficheAuditEntry({ auteur, action: "client_record.complete_names", ficheId: id, champs: champsEcrits(noms) });\n      const resultat = await tx.proClientRecord.updateMany({', ["ecritures"], "insertion")

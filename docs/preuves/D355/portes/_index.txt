@@ -1,0 +1,29 @@
+⛔ PIÈCE MASQUÉE — portes/_index.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2200 octets, sha256 055cfbfd23a57a082aa40a451891d09b538af4eedc9fba7960893ead1cb40eba. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+D340 — PASSE SUR SECTEUR (R-8) — départ 20/11/2026 15:20:46
+SHA: 4d671cc32340a824cfb9034eaee97a1747b5c8a4
+origin/main: cc653dd9b1a74b319ab3fe6e0f4a6e5df18d1f2a
+arbre (git status --short): []
+stash: []
+état machine JUSTE AVANT: 15:20:46 | SECTEUR | RAM libre 2,906 Mo | chrome 9 | headless_shell 0 | node 0
+docker: zwadj-db Up 2 hours
+ports d'e2e occupés (3100 3101 5273 5274): []
+=== typecheck — départ 15:20:50 — 15:20:51 | SECTEUR | RAM libre 2,868 Mo | chrome 9 | headless_shell 0 | node 0
+    typecheck : code de sortie 0 · durée 22 s · fin 15:21:13 — 15:21:14 | SECTEUR | RAM libre 3,047 Mo | chrome 9 | headless_shell 0 | node 0
+=== lint — départ 15:21:14 — 15:21:15 | SECTEUR | RAM libre 3,012 Mo | chrome 9 | headless_shell 0 | node 0
+    lint : code de sortie 0 · durée 17 s · fin 15:21:32 — 15:21:32 | SECTEUR | RAM libre 2,996 Mo | chrome 9 | headless_shell 0 | node 0
+=== test — départ 15:21:33 — 15:21:33 | SECTEUR | RAM libre 2,971 Mo | chrome 9 | headless_shell 0 | node 0
+    test : code de sortie 1 · durée 142 s · fin 15:23:55 — 15:23:55 | SECTEUR | RAM libre 3,076 Mo | chrome 9 | headless_shell 0 | node 0
+=== build — départ 15:23:56 — 15:23:56 | SECTEUR | RAM libre 3,049 Mo | chrome 9 | headless_shell 0 | node 0
+    build : code de sortie 0 · durée 44 s · fin 15:24:40 — 15:24:41 | SECTEUR | RAM libre 3,054 Mo | chrome 9 | headless_shell 0 | node 0
+=== test-int — départ 15:24:41 — 15:24:41 | SECTEUR | RAM libre 3,055 Mo | chrome 9 | headless_shell 0 | node 0
+    test-int : code de sortie 0 · durée 740 s · fin 15:37:02 — 15:37:03 | SECTEUR | RAM libre 2,679 Mo | chrome 9 | headless_shell 0 | node 0
+=== test-e2e — départ 15:37:03 — 15:37:03 | SECTEUR | RAM libre 2,684 Mo | chrome 9 | headless_shell 0 | node 0
+    test-e2e : code de sortie 0 · durée 496 s · fin 15:45:20 — 15:45:20 | SECTEUR | RAM libre 3,920 Mo | chrome 9 | headless_shell 0 | node 0
+état machine JUSTE APRÈS: 15:45:21 | SECTEUR | RAM libre 3,916 Mo | chrome 9 | headless_shell 0 | node 0
+arbre après la passe (git status --short): []
+fin 20/11/2026 15:45:21
+PASSE TERMINEE — échantillons sur BATTERIE pendant la passe : 0 sur 48

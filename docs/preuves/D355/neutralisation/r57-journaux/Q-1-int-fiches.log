@@ -1,0 +1,111 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/Q-1-int-fiches.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 11443 octets, sha256 a192bdeb3c9ee25dab9fd1b47aa2e3b41153ba375cc53ed51fa0009666417703. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/client-record-audit.int-spec.ts (19 tests | 3 failed) 3251ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-2 — la fiche créée : `client_record.create`, entité `client_record`, le compte commun, le rôle PRO, NULL pour le membre, les champs présents — `before` jamais écrit 35ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — une fiche DÉJÀ existante, rendue telle quelle (`created: false`) : AUCUNE ligne de plus — rien n'a été écrit 38ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-2 — les champs de la ligne sont ceux de la fiche créée, dans l'ordre fixe : un e-mail seul, puis les quatre 41ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3 — un nom complété : `client_record.complete_names`, le champ écrit ; un nom DÉJÀ présent refusé (409) : AUCUNE ligne de plus 51ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-3b — une fiche modifiée : `client_record.update`, les champs ENVOYÉS dans l'ordre fixe, jamais leurs valeurs 40ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-3b — un refus (numéro déjà pris par une AUTRE fiche : 409 ; fiche d'un autre pro ou absente : 404 ; fiche LIÉE : 409) : AUCUNE ligne — la transaction annulée n'écrit rien 187ms
+   × ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom 96ms
+     → expected [ 'client_record.create' ] to deeply equal [ 'client_record.create', …(1) ]
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — l'AUTRE écriture est une AUTRE personne (C-C3 : la fiche reste intacte), ou un devis SANS fiche : la copie du devis est complétée, la fiche n'est pas écrite — AUCUNE ligne de fiche 96ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche a DÉJÀ un nom dans cette langue : la copie du devis se complète, la fiche n'est pas écrite (l'`UPDATE` conditionné ne trouve rien) — AUCUNE ligne de fiche de plus 61ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ K-5 — la fiche est LIÉE à un compte : la copie du devis se complète, la fiche n'est jamais écrite — AUCUNE ligne de fiche de plus 134ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ TOUT le journal : après les écritures ci-dessus, AUCUNE valeur personnelle — ni numéro, ni e-mail, ni nom — n'apparaît nulle part dans `audit_logs`, colonnes JSON comprises 5ms
+   ✓ ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > ⛔ MD-1 — DIX créations simultanées du même numéro : UNE fiche et UNE seule ligne de journal (l'écriture qui ne fait rien n'écrit rien) 103ms
+   × ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun 181ms
+     → expected [ Array(4) ] to deeply equal [ Array(5) ]
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ l'EMPLOYÉ (capacité `clients` en écriture) écrit une fiche : la ligne porte l'identifiant de L'EMPLOYÉ, pas celui du Manager 88ms
+   ✓ ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > ⛔ sans session de personnel (le garde refuse : 401) : AUCUNE fiche, AUCUNE ligne — une trace ne peut pas naître d'une action refusée 15ms
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-2 — le journal refuse l'insertion : la route répond 500 et la fiche N'EXISTE PAS ; le déclencheur retiré, le MÊME appel réussit — ce qui a échoué est bien le journal 51ms
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-3 — le journal refuse l'insertion : 500, le nom N'EST PAS complété ; K-3b : 500, la fiche est INCHANGÉE 87ms
+   × ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche) 70ms
+     → {"id":"01a1f70e-9838-716d-8d79-b849560dfff3","venueId":"01a1f70e-9775-7282-ae81-137efeb5237b","clientId":null,"status":"DRAFT","isOfficial":true,"version":1,"reference":"DEVIS-2026-0001-0001 v1","chainId":"01a1f70e-9838-716d-8d79-b849560dfff3","parentQuoteId":null,"eventDate":"2027-03-20","slotTemplateId":"01a1f70e-9787-74b2-9ef2-eaefcb160827","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"lines":[],"sentAt":null,"sentVia":null,"acceptedAt":null,"createdAt":"2026-11-20T03:44:51.254Z","bookingId":null,"clientRecordId":"01a1f70e-9822-7979-8f02-e9ebf7db6fe9","clientNameAr":"آمنة بن سالم","clientNameLatin":"Amina Bensalem"}: expected 201 to be 500 // Object.is equality
+   ✓ ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > ⛔ AU COMMIT — un déclencheur DIFFÉRÉ refuse la transaction après que tout a été écrit : AUCUNE ligne n'a survécu (une ligne écrite hors de la transaction y survivrait) — K-2, K-3, K-3b, K-5 133ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 16 passed (19)
+   Start at  22:44:43
+   Duration  8.43s (transform 1.37s, setup 40ms, collect 4.38s, tests 3.25s, environment 0ms, prepare 170ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/client-record-audit.int-spec.ts
+
+(node:17236) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ÉTEINTE : chaque écriture de fiche écrit UNE ligne, le compte commun pour acteur, `actor_member_id` NULL > K-5 — la boîte de langue complète la fiche (C-C3 : la même personne) : UNE ligne `client_record.complete_names`, le champ ET le devis, aucun nom
+AssertionError: expected [ 'client_record.create' ] to deeply equal [ 'client_record.create', …(1) ]
+
+- Expected
++ Received
+
+  [
+    "client_record.create",
+-   "client_record.complete_names",
+  ]
+
+ ❯ test/int/client-record-audit.int-spec.ts:248:41
+    246|     expect(await ficheEnBase(id)).toMatchObject({ name_ar: "آمنة بن سا…
+    247|     const lignes = await lignesDe(id);
+    248|     expect(lignes.map((l) => l.action)).toEqual(["client_record.create…
+       |                                         ^
+    249|     expect(lignes[1]).toMatchObject({ actor_id: m.pro.userId, actor_ro…
+    250|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — couche ACTIVÉE : la ligne porte le MEMBRE qui agit (`actor_member_id`), et le compte commun (`actor_id`) > le MANAGER écrit une fiche par K-2, K-3, K-3b et K-5 : chaque ligne porte son identifiant de membre ET celui du compte commun
+AssertionError: expected [ Array(4) ] to deeply equal [ Array(5) ]
+
+- Expected
++ Received
+
+  [
+    "client_record.complete_names",
+-   "client_record.complete_names",
+    "client_record.create",
+    "client_record.create",
+    "client_record.update",
+  ]
+
+ ❯ test/int/client-record-audit.int-spec.ts:316:48
+    314|     expect((await boiteDeLangue(m, m.jar, devis.id, { locale: "ar", na…
+    315|     const lignes = [...(await lignesDe(id)), ...(await lignesDe(autre)…
+    316|     expect(lignes.map((l) => l.action).sort()).toEqual(["client_record…
+       |                                                ^
+    317|     for (const l of lignes) {
+    318|       expect(l.actor_member_id, `${l.action} : le membre qui agit`).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/int/client-record-audit.int-spec.ts > ⛔ R-2 — l'ÉCHEC FORCÉ dans la transaction (MD-ADM-6, patron de D349) : l'action ET sa trace vivent ou meurent ensemble > K-5 — le journal refuse l'insertion : 500, la fiche ET la copie du devis sont INCHANGÉES (la copie est dans la même transaction que la fiche)
+AssertionError: {"id":"01a1f70e-9838-716d-8d79-b849560dfff3","venueId":"01a1f70e-9775-7282-ae81-137efeb5237b","clientId":null,"status":"DRAFT","isOfficial":true,"version":1,"reference":"DEVIS-2026-0001-0001 v1","chainId":"01a1f70e-9838-716d-8d79-b849560dfff3","parentQuoteId":null,"eventDate":"2027-03-20","slotTemplateId":"01a1f70e-9787-74b2-9ef2-eaefcb160827","guests":250,"basePriceCents":20000000,"servicesTotalCents":0,"totalCents":20000000,"depositCents":6000000,"lines":[],"sentAt":null,"sentVia":null,"acceptedAt":null,"createdAt":"2026-11-20T03:44:51.254Z","bookingId":null,"clientRecordId":"01a1f70e-9822-7979-8f02-e9ebf7db6fe9","clientNameAr":"آمنة بن سالم","clientNameLatin":"Amina Bensalem"}: expected 201 to be 500 // Object.is equality
+
+- Expected
++ Received
+
+- 500
++ 201
+
+ ❯ test/int/client-record-audit.int-spec.ts:386:54
+    384|     await forcerEchecDuJournal("client_record.complete_names");
+    385|     const echec = await boiteDeLangue(m, undefined, devis.id, { locale…
+    386|     expect(echec.status, JSON.stringify(echec.body)).toBe(500);
+       |                                                      ^
+    387|     expect((await ficheEnBase(id))?.name_ar).toBeNull();
+    388|     expect((await copieEnBase(devis.id))?.client_name_ar, "la copie du…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

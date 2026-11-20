@@ -1,0 +1,125 @@
+⛔ PIÈCE MASQUÉE — decouverte-unit.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 13054 octets, sha256 31b3db4f62d08463adee281a354f1c57e70d48bf37d764200ae8cb9269d9e568. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+empreinte du harnais (sha256) : c3c99782ea71b63a2bbfe29be9d9c51814cffd24a7f4f48bb7bf6bfbbc2ad66e  (neutralize-r57.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 56 déclarées · 17 jouées · 39 non jouée(s) (sans --int) · 4 mesure(s) distincte(s) · 5 fichier(s) muté(s)
+  pré-vol audit-pur : code 0 · passés 13 · en échec 0
+  pré-vol course-magasin : code 0 · passés 66 · en échec 0
+  pré-vol course-service : code 0 · passés 41 · en échec 0
+  pré-vol ecritures : code 0 · passés 12 · en échec 0
+■ A-5. ⛔ R-1 — le refus d'ouverture change de nom de motif (`memberChanged` devient `memberInactive`) : le contrat du port se désaccorde de sa définition
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-magasin] code 1 · ROUGE — passés 64 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ le CAS du membre est la PREMIÈRE instruction (`status 
+         ↳ AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+      FAIL  src/staff/staff-store.prisma.spec.ts > openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse > ⛔ R-1 (D355) — le CAS refusé ne laisse AUCUNE écriture :
+         ↳ AssertionError: expected { ok: false, reason: 'memberInactive' } to deeply equal { ok: false, reason: 'memberChanged' }
+■ S-2. ⛔ R-1 / S-253 — un refus d'ouverture est consigné comme un échec de mot de passe (une ligne d'échec pour un mot de passe qui était JUSTE)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [course-service] code 1 · ROUGE — passés 40 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse 
+         ↳ AssertionError: S-253 : un refus d'ouverture n'est pas un échec de mot de passe — rien n'est consigné: expected "spy" to not be called at all, but act
+■ P-1. ⛔ R-2 — `before` est écrit (la valeur d'avant d'un champ est une donnée personnelle)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 0 · VERT — passés 12 · en échec 0
+   [audit-pur] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > création : le compte commun ET le membre, l'action, l'entité, les champs — et RIEN d
+         ↳ AssertionError: expected { …(8) } to deeply equal { …(7) }
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `before` n'est JAMAIS écrit : pas de copie de l'état d'avant (la valeur d'un champ
+         ↳ AssertionError: client_record.create: expected true to be false // Object.is equality
+■ P-2. ⛔ R-2 — `champsEcrits` rend les VALEURS au lieu des noms (le journal recopie un numéro, un e-mail, un nom)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 10 · en échec 3
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > rend les champs NON nuls dans l'ordre FIXE (phone, email, nameAr, nameLatin), 
+         ↳ AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > un champ ABSENT (`undefined`) ou NUL (`null`) n'est pas un champ écrit : K-2 r
+         ↳ AssertionError: expected [ '+213555123456', 'Amina' ] to deeply equal [ 'phone', 'nameLatin' ]
+      FAIL  src/clients/client-record-audit.spec.ts > champsEcrits — les NOMS des champs d'une écriture, jamais leurs valeurs > ⛔ la sortie ne porte JAMAIS une valeur : un numéro, un e-mail et deux noms dis
+         ↳ AssertionError: expected '["+213555123456","amina.bensalem@exam…' to be '["phone","email","nameAr","nameLatin"]' // Object.is equality
+■ P-3. ⛔ R-2 — l'ordre des champs n'est plus fixe (l'ordre de l'appelant fait foi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > l'ordre des champs est FIXE : l'ordre dans lequel l'appelant les donne ne change pas
+         ↳ AssertionError: expected [ 'nameLatin', 'phone', 'nameAr' ] to deeply equal [ 'phone', 'nameAr', 'nameLatin' ]
+■ P-7. ⛔ R-2 — une ligne SANS champ écrit est acceptée (un journal qui se tait sur ce qu'il n'a pas compris)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-8. ⛔ R-2 — un champ INCONNU (un secret, une colonne qui n'existe pas) est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-9. ⛔ R-2 — un champ RÉPÉTÉ est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une ligne SANS champ, avec un champ INCONNU (un secret, un nom de colonne qui n'ex
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-10. ⛔ R-2 — `quoteId` est accepté pour une création ou une modification (il n'a de place que pour K-5)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'
+         ↳ AssertionError: client_record.create: expected [Function] to throw an error
+■ P-11. ⛔ R-2 — une action qui n'est pas l'une des trois est acceptée (la liste du journal n'est plus fermée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ une action qui n'est pas l'une des trois est refusée : la liste des actions du jou
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-13. ⛔ R-2 — la clé `quoteId` est toujours présente (même pour K-3, même `undefined`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > ficheAuditEntry — la ligne d'`audit_logs` d'une écriture de fiche > ⛔ `quoteId` — la complétion par la boîte de langue d'un devis (K-5) le porte ; il n'
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ P-16. ⛔ R-2 — le module pur importe une dépendance (il n'est plus sans dépendance, D187)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [audit-pur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/clients/client-record-audit.spec.ts > le module est PUR (D187) : aucune dépendance — ni Nest, ni Prisma, ni un autre module du dépôt > la source ne contient aucun `import` ni aucun `require`
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ G-1. ⛔ R-2 — un CINQUIÈME fichier écrit la table des fiches (le service des devis, par exemple : la conversion écrirait une fiche)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 10 · en échec 2
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ni un fichier de plus, ni un de moins — et la
+         ↳ AssertionError: expected [ …(3) ] to deeply equal [ …(2) ]
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ⛔ (d) la conversion d'un devis n'écrit AUCUNE
+         ↳ AssertionError: expected 1 to be +0 // Object.is equality
+■ G-2. ⛔ R-2 — une écriture de PLUS dans un fichier de la carte (un quatrième site dans le magasin des fiches)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > clients/pro-c
+         ↳ AssertionError: expected 4 to be 3 // Object.is equality
+■ G-3. ⛔ R-2 — la LIGNE du journal est bâtie à la main dans un magasin (une entité écrite sur place, hors du module pur)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` n'écrit `e
+         ↳ AssertionError: expected [ …(2) ] to deeply equal [ 'clients/client-record-audit.ts' ]
+■ G-4. ⛔ R-2 — la charge utile de la ligne ne vient plus DIRECTEMENT du constructeur du module pur (une enveloppe autour de l'appel : le comportement est le même, la forme n'est plus la garantie)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-clie
+         ↳ AssertionError: modifier : la charge utile de la ligne vient du constructeur du module pur, jamais d'un objet écrit sur place: expected 'async modifie
+■ G-5. ⛔ R-2 — la ligne est CONSTRUITE avant l'écriture qu'elle consigne (K-3 : la ligne ne peut pas précéder l'écriture)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [ecritures] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-clie
+         ↳ AssertionError: completerNoms journalise APRÈS avoir écrit (la ligne ne précède pas l'écriture qu'elle consigne): expected 291 to be greater than 434
+  empreintes : 9 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 17 cible(s) jouée(s) sur 56, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+exit decouverte unit = 0

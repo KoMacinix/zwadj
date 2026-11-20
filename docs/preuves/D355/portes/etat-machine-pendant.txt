@@ -1,0 +1,53 @@
+⛔ PIÈCE MASQUÉE — portes/etat-machine-pendant.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3783 octets, sha256 390a424efe9294bb061f78fd628f255929e9a42facbd93c2d89e4c8c52224f7a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+15:20:51 | SECTEUR | RAM libre 2,869 Mo | chrome 9 | headless_shell 0 | node 0
+15:21:22 | SECTEUR | RAM libre 2,622 Mo | chrome 9 | headless_shell 0 | node 6
+15:21:53 | SECTEUR | RAM libre 2,299 Mo | chrome 9 | headless_shell 0 | node 15
+15:22:24 | SECTEUR | RAM libre 1,956 Mo | chrome 9 | headless_shell 0 | node 15
+15:22:55 | SECTEUR | RAM libre 2,052 Mo | chrome 9 | headless_shell 0 | node 8
+15:23:26 | SECTEUR | RAM libre 2,066 Mo | chrome 9 | headless_shell 0 | node 8
+15:23:57 | SECTEUR | RAM libre 2,972 Mo | chrome 9 | headless_shell 0 | node 1
+15:24:28 | SECTEUR | RAM libre 2,130 Mo | chrome 9 | headless_shell 0 | node 15
+15:24:59 | SECTEUR | RAM libre 2,349 Mo | chrome 9 | headless_shell 0 | node 5
+15:25:30 | SECTEUR | RAM libre 2,355 Mo | chrome 9 | headless_shell 0 | node 5
+15:26:01 | SECTEUR | RAM libre 2,464 Mo | chrome 9 | headless_shell 0 | node 5
+15:26:31 | SECTEUR | RAM libre 2,313 Mo | chrome 9 | headless_shell 0 | node 5
+15:27:02 | SECTEUR | RAM libre 2,319 Mo | chrome 9 | headless_shell 0 | node 5
+15:27:33 | SECTEUR | RAM libre 2,318 Mo | chrome 9 | headless_shell 0 | node 5
+15:28:04 | SECTEUR | RAM libre 2,281 Mo | chrome 9 | headless_shell 0 | node 5
+15:28:35 | SECTEUR | RAM libre 2,140 Mo | chrome 9 | headless_shell 0 | node 5
+15:29:05 | SECTEUR | RAM libre 2,216 Mo | chrome 9 | headless_shell 0 | node 5
+15:29:36 | SECTEUR | RAM libre 2,108 Mo | chrome 9 | headless_shell 0 | node 5
+15:30:07 | SECTEUR | RAM libre 2,069 Mo | chrome 9 | headless_shell 0 | node 5
+15:30:38 | SECTEUR | RAM libre 2,227 Mo | chrome 9 | headless_shell 0 | node 5
+15:31:09 | SECTEUR | RAM libre 2,554 Mo | chrome 9 | headless_shell 0 | node 5
+15:31:39 | SECTEUR | RAM libre 2,358 Mo | chrome 9 | headless_shell 0 | node 5
+15:32:10 | SECTEUR | RAM libre 2,402 Mo | chrome 9 | headless_shell 0 | node 5
+15:32:41 | SECTEUR | RAM libre 2,202 Mo | chrome 9 | headless_shell 0 | node 5
+15:33:12 | SECTEUR | RAM libre 2,305 Mo | chrome 9 | headless_shell 0 | node 5
+15:33:42 | SECTEUR | RAM libre 2,345 Mo | chrome 9 | headless_shell 4 | node 5
+15:34:13 | SECTEUR | RAM libre 2,191 Mo | chrome 9 | headless_shell 0 | node 5
+15:34:44 | SECTEUR | RAM libre 2,182 Mo | chrome 9 | headless_shell 0 | node 5
+15:35:15 | SECTEUR | RAM libre 2,045 Mo | chrome 9 | headless_shell 0 | node 5
+15:35:45 | SECTEUR | RAM libre 2,186 Mo | chrome 9 | headless_shell 0 | node 5
+15:36:16 | SECTEUR | RAM libre 2,114 Mo | chrome 9 | headless_shell 0 | node 5
+15:36:47 | SECTEUR | RAM libre 2,304 Mo | chrome 9 | headless_shell 0 | node 5
+15:37:18 | SECTEUR | RAM libre 1,739 Mo | chrome 9 | headless_shell 0 | node 6
+15:37:48 | SECTEUR | RAM libre 979 Mo | chrome 9 | headless_shell 0 | node 14
+15:38:19 | SECTEUR | RAM libre 465 Mo | chrome 9 | headless_shell 4 | node 13
+15:38:50 | SECTEUR | RAM libre 831 Mo | chrome 9 | headless_shell 8 | node 14
+15:39:21 | SECTEUR | RAM libre 617 Mo | chrome 9 | headless_shell 9 | node 14
+15:39:52 | SECTEUR | RAM libre 918 Mo | chrome 9 | headless_shell 8 | node 14
+15:40:23 | SECTEUR | RAM libre 878 Mo | chrome 9 | headless_shell 8 | node 15
+15:40:55 | SECTEUR | RAM libre 541 Mo | chrome 9 | headless_shell 14 | node 14
+15:41:26 | SECTEUR | RAM libre 977 Mo | chrome 9 | headless_shell 9 | node 14
+15:41:57 | SECTEUR | RAM libre 904 Mo | chrome 9 | headless_shell 8 | node 16
+15:42:28 | SECTEUR | RAM libre 613 Mo | chrome 9 | headless_shell 9 | node 15
+15:42:59 | SECTEUR | RAM libre 981 Mo | chrome 9 | headless_shell 8 | node 16
+15:43:30 | SECTEUR | RAM libre 673 Mo | chrome 9 | headless_shell 4 | node 14
+15:44:01 | SECTEUR | RAM libre 805 Mo | chrome 9 | headless_shell 4 | node 13
+15:44:32 | SECTEUR | RAM libre 978 Mo | chrome 9 | headless_shell 4 | node 13
+15:45:03 | SECTEUR | RAM libre 1,495 Mo | chrome 9 | headless_shell 4 | node 13

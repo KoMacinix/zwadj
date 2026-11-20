@@ -1,0 +1,29 @@
+⛔ PIÈCE MASQUÉE — touchees/bilan-rejeu.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 1789 octets, sha256 47016b9a2e24f16b4092d759d3ad385be81518289eb48ab8bb0d115bbf03d14d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+[r41 --int] départ 13:31:14 …
+    code 0 · 1846 s · 70 garde(s) mordue(s) sur 70 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 70 sur 70, 0, 0, 0)
+
+[r43 --int] départ 14:02:01 …
+    code 0 · 3744 s · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0, 0)
+
+[r42 --int] départ 15:04:26 …
+    code 0 · 818 s · 28 garde(s) mordue(s) sur 28 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 28 sur 28, 0, 0, 0)
+
+[s10b ] départ 15:18:04 …
+    code 0 · 111 s · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+
+[booking-status ] départ 15:19:55 …
+    code 0 · 16 s · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+
+== BILAN : 5 campagne(s) jouée(s), durée 6538 s ==
+  r41            --int  code 0 · 1846 s · 70 garde(s) mordue(s) sur 70 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 70 sur 70, 0, 0, 0)
+  r43            --int  code 0 · 3744 s · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0, 0)
+  r42            --int  code 0 · 818 s · 28 garde(s) mordue(s) sur 28 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 28 sur 28, 0, 0, 0)
+  s10b                  code 0 · 111 s · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+  booking-status        code 0 · 16 s · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+codes : 0 = 5 · autre = 0 (attendu : 0 partout)
+code de sortie du pilote : 0

@@ -1,0 +1,242 @@
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+(node:16068) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ❯ test/int/quotes.int-spec.ts (87 tests | 7 failed) 42722ms
+   ✓ Création et chaîne de versions > un devis naît en DRAFT, v1, sa propre racine de chaîne  838ms
+   ✓ Création et chaîne de versions > ⚠ `validUntil` n'est PLUS accepté : le schéma est strict (D160)  368ms
+   ✓ Création et chaîne de versions > le devis existe SANS client : le pro le tape pour quelqu'un qui hésite 296ms
+   ✓ Création et chaîne de versions > une révision crée la v2 de la MÊME chaîne, en DRAFT, sans rien remplacer  401ms
+   ✓ Remise du devis (D160) > enregistre le canal et l'horodatage SANS changer le statut  358ms
+   ✓ Remise du devis (D160) > est RÉPÉTABLE : imprimer puis envoyer par SMS sont deux remises  399ms
+   ✓ Remise du devis (D160) > refuse un canal HORS LISTE — le jeu de valeurs a une seule autorité  339ms
+   ✓ Remise du devis (D160) > ⚠ un devis REFUSÉ ne se remet plus au client  367ms
+   ✓ Remise du devis (D160) > deux remises SIMULTANÉES ne rendent jamais 500  445ms
+   ✓ Q2 — les statuts LEGACY ne sont plus écrits > le parcours complet ne laisse aucun SENT ni SUPERSEDED en base  509ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > l'index partiel des SENT est TOUJOURS EN BASE, et mord encore  368ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > un devis LEGACY en SENT reste LISIBLE et manipulable  404ms
+   ✓ Statuts hérités — lisibles, jamais réécrits > SUPERSEDED reste distinct de CANCELLED, et le versionnement est CONSERVÉ  345ms
+   ✓ Concurrence (D121) > D121 — deux REFUS simultanés du même devis : un seul aboutit, jamais 500  376ms
+   ✓ Concurrence (D121) > D121 — deux CONVERSIONS simultanées du même devis : une seule demande créée, jamais 500  385ms
+   ✓ Concurrence (D121) > deux RÉVISIONS simultanées de la même chaîne : aucun doublon de version  341ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ un BROUILLON SE CONVERTIT, sans remise préalable (D160)  442ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ D135 — un client SANS e-mail se convertit : la borne Zod était plus stricte que la base  445ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-2 — un client avec un E-MAIL SEUL se convertit : la réservation née a `contact_phone` NULL et garde l'e-mail  439ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-1 — NI numéro NI e-mail : 400 avec la clé du message neuf, aucune réservation n'est créée, le devis reste convertible  478ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⛔ L36-1, ML-8 et ML-9 — un numéro SAISI reste exigé valide, même avec un e-mail valide : invalide, vide ou null ⇒ 400, aucune réservation  359ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ML-16 — un devis SANS fiche (tous ceux d'avant le rang 41) se convertit avec un numéro comme avant : les deux colonnes sont écrites  395ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > convertir crée une demande PENDING, et le devis NE BOUGE PAS  361ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une PENDING ne verrouille rien : deux devis peuvent viser la MÊME date  455ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > un devis ne se convertit qu'UNE fois : réviser, pas reconvertir  350ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > les LIGNES du devis deviennent les lignes de la demande  377ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une CLÔTURE n'est pas une supersession  342ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > ⚠ l'entonnoir compte les DEUX statuts perdus, CANCELLED et l'hérité DECLINED  402ms
+   ✓ Conversion — la chaîne complète, dans l'ordre > une chaîne CLOSE ne se révise plus  351ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ `valid_until` n'existe plus dans la table 43ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > ⚠ les DEUX index partiels, eux, sont TOUJOURS là 40ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > le DTO ne porte ni `isExpired` ni `validUntil`  358ms
+   ✓ Expiration — la colonne a été SUPPRIMÉE (Q4) > une conversion aboutit, sans qu'aucune date de validité n'intervienne  329ms
+   ✓ Taux de transformation — la raison d'être de la table > compte des CHAÎNES, pas des versions : trois révisions sont UNE affaire  582ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis qui n'aboutit PAS existe quand même — c'était impossible avant  440ms
+   ✓ Taux de transformation — la raison d'être de la table > un devis jamais REMIS ne compte pas  382ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ un devis converti SANS remise n'entre PAS dans l'entonnoir  396ms
+   ✓ Taux de transformation — la raison d'être de la table > ⚠ une ligne HÉRITÉE (sentAt posé, sentVia nul) sort du dénominateur  302ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ DB-15 — `clientId` est RETIRÉ du contrat : le schéma strict le refuse (400) et n'écrit aucun devis 272ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > un devis SANS fiche se crée comme aujourd'hui : la fiche et les deux copies sont nulles  308ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > le devis porte la fiche et la copie du nom TELLE QUE SAISIE pour ce devis (DB-17), rognée — dans la réponse ET en base  323ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-15 — des noms SANS fiche, une fiche SANS nom, un nom invalide : 400, aucun devis écrit  344ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-11 — la fiche d'un AUTRE pro : 404 CLIENT_RECORD_NOT_FOUND, indistinct d'une fiche inexistante, et aucun devis écrit  537ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-6 — une fiche LIÉE : un nom DIFFÉRENT de la fiche est refusé (409 CLIENT_RECORD_LINKED) ; les noms de la fiche passent  427ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-16 — une RÉVISION porte la copie FOURNIE (celle du devis précédent), jamais la fiche vivante — et la v1 garde la sienne  408ms
+   ✓ ⛔ D336 — K-4 : le devis porte la fiche et la COPIE du nom (DB-15, DB-17, R8) > ⛔ MD-7 (R8) — MODIFIER la fiche (K-3b) ne touche AUCUNE copie déjà faite : le devis garde son nom  434ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > complète la copie MANQUANTE de la langue demandée : « ar » écrit le nom arabe, « fr » le nom latin — 201 et le devis rendu la porte  471ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 (M-6) — une copie PRÉSENTE n'est JAMAIS remplacée : 409 QUOTE_CLIENT_NAME_ALREADY_SET, la copie intacte  329ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-7 — deux compléments SIMULTANÉS de la même langue : un seul gagne, l'autre est refusé, et la base porte le nom du gagnant  353ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 1 — le nom de l'AUTRE écriture est le MÊME sur le devis et sur la fiche : la fiche est complétée AUSSI  385ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 (C-C3), branche 2 — il DIFFÈRE (deux personnes, un numéro : M-24) : la fiche reste INTACTE, seule la copie est complétée  328ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-8 — la fiche a DÉJÀ un nom dans cette langue : la copie se complète, la fiche n'est jamais remplacée  329ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > ⛔ MD-6 — une fiche LIÉE n'est jamais complétée par la boîte : seule la copie du devis l'est  438ms
+   ✓ ⛔ D336 — K-5 : la boîte de langue COMPLÈTE la copie du nom, jamais ne la remplace ; la fiche seulement sous C-C3 > le devis d'un AUTRE pro, ou inexistant : 404 QUOTE_NOT_FOUND ; un corps invalide : 400  595ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > un brouillon naît en DRAFT, v1, `isOfficial: false`, référence `BROUILLON-…`, sans fiche ni nom, jamais remis — et la ligne en base le dit  473ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > ⛔ D-13 — SANS le champ le devis est OFFICIEL, comme avant (`isOfficial: true`, `DEVIS-…`), fiche facultative : l'API garde le devis officiel sans fiche (Q4 (a))  449ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > ⛔ D-13 — `isOfficial: true` est REFUSÉ (400) : il n'y a qu'une façon de dire « officiel », omettre le champ — et rien n'est écrit  402ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > ⛔ D-16 (R-2) — un brouillon AVEC une fiche, ou AVEC un nom : 400 `draftHasNoClient`, et rien n'est écrit  409ms
+   ✓ ⛔ Q1, Q2 — la CRÉATION d'un brouillon : `isOfficial: false`, sans fiche ni nom > ⛔ D-8 — UN SEUL compteur : brouillon, officiel, brouillon ⇒ 0001, 0002, 0003 ; annuler le premier et promouvoir le troisième ne sautent ni ne réutilisent aucun numéro  955ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > ⛔ D-1 — la REMISE d'un brouillon : 409 `QUOTE_NOT_OFFICIAL`, et `sent_via` et `sent_at` restent NULL  627ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > ⛔ D-2 — la CONVERSION d'un brouillon : 409 `QUOTE_NOT_OFFICIAL`, et AUCUNE ligne `bookings`  675ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > ⛔ L'ORDRE, sur un cas doublement fautif : un brouillon ANNULÉ répond « statut » (clos), pas « pas officiel » — à la remise comme à la conversion  704ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > ⛔ D-12 — l'ANNULATION d'un brouillon est permise ; le brouillon n'entre JAMAIS dans l'entonnoir (`sent_via` reste NULL)  563ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > D-14 — le PDF d'un brouillon annulé est refusé comme celui de tout devis clos (non-régression), celui d'un brouillon ouvert est servi  3886ms
+   ✓ ⛔ D-1, D-2, D-12 — un brouillon n'est NI remis, NI converti ; il s'annule, et il ne compte pas dans l'entonnoir > la liste des devis d'une salle rend le drapeau de CHAQUE ligne  507ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ v1 brouillon ⇒ v2 BROUILLON, même numéro, même chaîne : `BROUILLON-…-0001 v2`  465ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ la révision ne choisit PAS son drapeau : `isOfficial` (vrai ou faux) est une clé inconnue — 400 — et aucune version n'est écrite  485ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ une révision d'un brouillon qui porte une FICHE ou un NOM : 409 `QUOTE_DRAFT_HAS_NO_CLIENT` et AUCUNE ligne écrite (le geste est la promotion)  503ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > ⛔ v1 brouillon, v2 PROMUE : réviser la v1 (une ANCIENNE version) HÉRITE de la v2 — la v3 est OFFICIELLE (le drapeau est lu sur la plus haute version, pas sur la parente)  591ms
+   ✓ ⛔ D-15 (R-1, Q3) — la RÉVISION d'un brouillon reste un brouillon ; elle ne choisit pas son drapeau et ne porte ni fiche ni nom > D-15 en base — un brouillon qui porterait une fiche, un nom arabe ou un nom latin est refusé par la CHECK (SQLSTATE 23514), CHAQUE colonne seule  534ms
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ la promotion rend le devis OFFICIEL : même identifiant, même numéro (`DEVIS-…` à la place de `BROUILLON-…`), la fiche et les DEUX copies du nom inscrites, les montants INCHANGÉS, rien remis  557ms
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-11 — UNE ligne d'audit : `quote.promote`, l'entité, l'identifiant, l'acteur ET son rôle, le drapeau et l'identifiant de fiche — et AUCUN nom, AUCUN numéro, AUCUN e-mail 555ms
+     → expected [ { …(10) }, { …(10) } ] to have a length of 1 but got 2
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — deux promotions : la seconde est un 409 `QUOTE_ALREADY_OFFICIAL`, et il n'y a TOUJOURS qu'une ligne d'audit 591ms
+     → expected 2 to be 1 // Object.is equality
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — CINQ promotions SIMULTANÉES de la même demande : EXACTEMENT un 201, quatre 409 `QUOTE_ALREADY_OFFICIAL`, EXACTEMENT une ligne d'audit 704ms
+     → expected 2 to be 1 // Object.is equality
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut 724ms
+     → expected 1 to be +0 // Object.is equality
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promotion ‖ révision SIMULTANÉES : le verrou de la chaîne les sérialise ; l'issue est toujours cohérente (la chaîne n'a jamais deux têtes de nature différente)  704ms
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promouvoir un brouillon ANNULÉ : 409 « statut » (clos) ; promouvoir un devis OFFICIEL annulé : 409 « déjà officiel » — l'ordre se mesure sur des cas doublement fautifs 532ms
+     → expected 1 to be +0 // Object.is equality
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture 808ms
+     → expected 2 to be +0 // Object.is equality
+   × ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 `CLIENT_RECORD_LINKED`, et le brouillon reste un brouillon 470ms
+     → expected 1 to be +0 // Object.is equality
+   ✓ ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ après la promotion, le devis est REMIS puis CONVERTI comme tout devis officiel (la chaîne complète du comptoir : brouillon, refusé à la remise, promu, puis remis)  553ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 409, AUCUNE copie écrite ; sur le devis promu il fonctionne comme avant > ⛔ la boîte de langue ne pose pas de nom sur un brouillon : 409 `QUOTE_DRAFT_HAS_NO_CLIENT`, les deux colonnes restent NULL  397ms
+   ✓ ⛔ D-17 (R-3) — K-5 sur un brouillon : 409, AUCUNE copie écrite ; sur le devis promu il fonctionne comme avant > ⚠ une fois promu avec UN nom, K-5 complète l'AUTRE écriture (la copie présente n'est jamais remplacée)  371ms
+   ✓ ⛔ D-1, D-3 en base — la CHECK `quotes_unofficial_inert` : un brouillon n'est ni remis, ni accepté ; un devis OFFICIEL n'est pas gêné > ⛔ `sent_via`, `sent_at`, le statut ACCEPTED (avec `accepted_at`) et les statuts hérités sont REFUSÉS sur un brouillon (SQLSTATE 23514, `quotes_unofficial_inert`)  350ms
+   ✓ ⛔ D-1, D-3 en base — la CHECK `quotes_unofficial_inert` : un brouillon n'est ni remis, ni accepté ; un devis OFFICIEL n'est pas gêné > ⚠ ce que la CHECK AUTORISE : annuler un brouillon (CANCELLED), et un devis OFFICIEL peut tout porter (canal, fiche, noms)  602ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⛔ un INSERT direct sur un brouillon est REFUSÉ (23514, `bookings_quote_must_be_official`), et aucune ligne n'est écrite  366ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⛔ R-4 — un UPDATE de `quote_id` vers un brouillon est REFUSÉ aussi, et la réservation est INCHANGÉE  408ms
+   ✓ ⛔ D-18 (Q5 (b), R-4) — le DÉCLENCHEUR : aucune réservation n'est rattachée à un brouillon, ni à l'INSERT ni par un UPDATE de `quote_id` > ⚠ ce que le déclencheur LAISSE PASSER : une réservation SANS devis, une réservation sur un devis OFFICIEL, et un UPDATE d'une AUTRE colonne  408ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-11 — UNE ligne d'audit : `quote.promote`, l'entité, l'identifiant, l'acteur ET son rôle, le drapeau et l'identifiant de fiche — et AUCUN nom, AUCUN numéro, AUCUN e-mail
+AssertionError: expected [ { …(10) }, { …(10) } ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/int/quotes.int-spec.ts:1227:20
+    1225|     await promouvoir(f, b.id, { clientRecordId: fiche.id, ...NOM }).ex…
+    1226|     const lignes = await ctx.prisma.auditLog.findMany();
+    1227|     expect(lignes).toHaveLength(1);
+       |                    ^
+    1228|     const a = lignes[0]!;
+    1229|     const pro = await ctx.prisma.user.findFirstOrThrow({ where: { emai…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — deux promotions : la seconde est un 409 `QUOTE_ALREADY_OFFICIAL`, et il n'y a TOUJOURS qu'une ligne d'audit
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/int/quotes.int-spec.ts:1251:40
+    1249|     expect(encore.status).toBe(409);
+    1250|     expect(encore.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    1251|     expect(await compte("audit_logs")).toBe(1);
+       |                                        ^
+    1252|   });
+    1253| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-5 — CINQ promotions SIMULTANÉES de la même demande : EXACTEMENT un 201, quatre 409 `QUOTE_ALREADY_OFFICIAL`, EXACTEMENT une ligne d'audit
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/int/quotes.int-spec.ts:1261:40
+    1259|     expect(reponses.map((r) => r.status).sort()).toEqual([201, 409, 40…
+    1260|     for (const r of reponses.filter((x) => x.status === 409)) expect(r…
+    1261|     expect(await compte("audit_logs")).toBe(1);
+       |                                        ^
+    1262|   });
+    1263| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — v1 et v2 brouillons : promouvoir la v1 (ancienne) ⇒ 409 `QUOTE_VERSION_NOT_ACTIVE` avec `latestVersion`, et RIEN n'est écrit ; la v2 se promeut
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1273:40
+    1271|     expect(refus.body.message.code).toBe("QUOTE_VERSION_NOT_ACTIVE");
+    1272|     expect(refus.body.message.latestVersion).toBe(2);
+    1273|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1274|     const ok = (await promouvoir(f, v2.id, { clientRecordId: fiche.id,…
+    1275|     expect(ok.reference).toMatch(/^DEVIS-\d{4}-\d{4,}-0001 v2$/u);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-6 — promouvoir un brouillon ANNULÉ : 409 « statut » (clos) ; promouvoir un devis OFFICIEL annulé : 409 « déjà officiel » — l'ordre se mesure sur des cas doublement fautifs
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1316:40
+    1314|     expect(b.status).toBe(409);
+    1315|     expect(b.body.message.code).toBe("QUOTE_ALREADY_OFFICIAL");
+    1316|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1317|   });
+    1318| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ D-4 — la fiche d'un AUTRE pro : 404 `CLIENT_RECORD_NOT_FOUND` indistinct ; le devis d'un autre pro : 404 `QUOTE_NOT_FOUND` ; sans fiche ou sans nom : 400 — jamais d'écriture
+AssertionError: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/int/quotes.int-spec.ts:1338:40
+    1336|     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id }))…
+    1337|     expect((await promouvoir(f, b.id, { clientRecordId: maFiche.id, ..…
+    1338|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1339|     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_officia…
+    1340|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/int/quotes.int-spec.ts > ⛔ D-4, D-5, D-6, D-11 — la PROMOTION : la même ligne, le même numéro, UNE ligne d'audit > ⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 `CLIENT_RECORD_LINKED`, et le brouillon reste un brouillon
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/quotes.int-spec.ts:1355:40
+    1353|     expect(res.body.message.code).toBe("CLIENT_RECORD_LINKED");
+    1354|     expect((await sqlBrut<{ is_official: boolean }>(`SELECT is_officia…
+    1355|     expect(await compte("audit_logs")).toBe(0);
+       |                                        ^
+    1356|   });
+    1357| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 80 passed (87)
+   Start at  13:14:12
+   Duration  52.40s (transform 2.79s, setup 33ms, collect 8.40s, tests 42.72s, environment 0ms, prepare 211ms)
+

@@ -1,0 +1,19 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/prevol-int-fiches.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 736 octets, sha256 45a05e1f6bc1142dd6555855fd93bc7343ebca62b3a98d4cdef33cb95ec608a9. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/client-record-audit.int-spec.ts (19 tests) 3298ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  22:38:40
+   Duration  8.88s (transform 1.44s, setup 35ms, collect 4.68s, tests 3.30s, environment 0ms, prepare 178ms)
+
+
+(node:29652) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

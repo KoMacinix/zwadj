@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/prevol-audit-pur.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 435 octets, sha256 ad90aed2926c31548b212e7c33b9ede722fdf848ad139c18632e2ae9639f8614. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/clients/client-record-audit.spec.ts (13 tests) 9ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  22:38:11
+   Duration  676ms (transform 55ms, setup 0ms, collect 72ms, tests 9ms, environment 0ms, prepare 205ms)
+
+

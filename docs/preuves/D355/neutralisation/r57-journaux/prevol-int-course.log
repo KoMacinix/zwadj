@@ -1,0 +1,25 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/prevol-int-course.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3105 octets, sha256 bcae12406014b5971a39b51813a8097bd43f84d5395d3f3dbcdda9f740723839. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-login-race.int-spec.ts (8 tests) 7334ms
+   ✓ ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la pièce de D354, PROMUE : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le hachage lu : REFUSÉE, aucune session vivante, aucune ligne `staff.login`, `last_login_at` intact  1022ms
+   ✓ ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > la même séquence avec un CHANGEMENT de mot de passe par le membre (K-18, vraie route) à la place de la réinitialisation : ouverture REFUSÉE, aucune session de plus  946ms
+   ✓ ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le hachage est remplacé par une transaction tenue hors du service ; l'ouverture part, ATTEND derrière le verrou de la ligne, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)  766ms
+   ✓ ⛔ R-1 — « connexion ‖ réinitialisation » : un mot de passe vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ PAR LA ROUTE — `POST /pro/staff/login` dont la vérification de l'argon2 est interrompue par une réinitialisation : 401 STAFF_INVALID_CREDENTIALS, aucun cookie de session, aucune session vivante, le MÊME corps qu'un mauvais mot de passe, UN seul argon2 réel  1381ms
+   ✓ ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE, aucune session de plus, le membre reste désactivé  746ms
+   ✓ ⛔ R-1 — « connexion ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération  739ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le hachage lu : acceptée, UNE session de plus, une ligne `staff.login` pour ce membre  713ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > par la route : un mot de passe juste, rien d'intercalé : 200, un cookie de session, une session vivante de plus  778ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  22:38:25
+   Duration  12.96s (transform 1.46s, setup 33ms, collect 4.74s, tests 7.33s, environment 0ms, prepare 170ms)
+
+

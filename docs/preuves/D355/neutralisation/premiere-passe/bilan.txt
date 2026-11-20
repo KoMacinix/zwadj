@@ -1,0 +1,45 @@
+⛔ PIÈCE MASQUÉE — premiere-passe/bilan.txt. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2671 octets, sha256 1f7e8204b206a588ece4ed56c7e024fbd39ae6d5a58e0b63b5dd5576df73a093. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+
+[r57 --int] départ 22:38:10 …
+    code 0 · 569 s · 56 garde(s) mordue(s) sur 56 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 56 sur 56, 0, 0, 0)
+
+[r44 --int] départ 22:47:39 …
+    code 0 · 1423 s · 236 garde(s) mordue(s) sur 236 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 236 sur 236, 0, 0, 0)
+
+[r56 --int] départ 23:11:23 …
+    code 0 · 1597 s · 117 garde(s) mordue(s) sur 117 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 117 sur 117, 0, 0, 0)
+
+[r41 --int] départ 23:38:00 …
+    code 2 · 52 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[r43 --int] départ 23:38:53 …
+    code 2 · 52 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[r39 --int] départ 23:39:46 …
+    code 0 · 771 s · 51 garde(s) mordue(s) sur 51 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 51 sur 51, 0, 0, 0)
+
+[r42 --int] départ 23:52:37 …
+    code 2 · 48 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[s10b ] départ 23:53:25 …
+    code 0 · 93 s · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+
+[booking-status ] départ 23:54:58 …
+    code 0 · 15 s · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+
+== BILAN : 9 campagne(s) jouée(s), durée 4624 s ==
+  r57            --int  code 0 · 569 s · 56 garde(s) mordue(s) sur 56 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 56 sur 56, 0, 0, 0)
+  r44            --int  code 0 · 1423 s · 236 garde(s) mordue(s) sur 236 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 236 sur 236, 0, 0, 0)
+  r56            --int  code 0 · 1597 s · 117 garde(s) mordue(s) sur 117 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 117 sur 117, 0, 0, 0)
+  r41            --int  code 2 · 52 s · AUCUNE LIGNE DE RÉSUMÉ
+  r43            --int  code 2 · 52 s · AUCUNE LIGNE DE RÉSUMÉ
+  r39            --int  code 0 · 771 s · 51 garde(s) mordue(s) sur 51 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 51 sur 51, 0, 0, 0)
+  r42            --int  code 2 · 48 s · AUCUNE LIGNE DE RÉSUMÉ
+  s10b                  code 0 · 93 s · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+  booking-status        code 0 · 15 s · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+codes : 0 = 6 · autre = 3 (attendu : 0 partout)
+code de sortie du pilote des campagnes : 1

@@ -1,0 +1,86 @@
+D355 — corrections de TESTS faites APRÈS les rouges, avec l'empreinte sha256 de chaque fichier avant et après.
+
+═══ PREMIÈRE PARTIE : avant le premier commit de code (les rouges de `docs/preuves/D355/rouges/` ont joué l'état « AVANT » de chaque ligne ci-dessous ; `3dc0113` les verse, `2608255` est le premier commit de code)
+
+2386414b20723bfddb9aeca7b6c85af77e166b54de900558590256d2e0a93cb9  AVANT  apps/api/src/clients/client-record-writes.spec.ts
+bf4cc933f4b801ec80c86bc840eab7a54ddac004a598ed5d3bc280ae262daa74  APRÈS  apps/api/src/clients/client-record-writes.spec.ts
+6e0e94ac586963b646fdf3d02981bf6501cbc92eb84eeda999181bc9f051960a  AVANT  apps/api/src/staff/staff-store.prisma.spec.ts
+c607850193158f6cbf29b86b0a7c1a0cd6456e5d7530d773c45d212e2c0b4d9d  APRÈS  apps/api/src/staff/staff-store.prisma.spec.ts
+
+Douze fichiers de test ont été joués aux rouges (`rouges/rouge-unit.txt`, `rouges/rouge-int.txt` : l'empreinte de chacun) ; DEUX ont changé ensuite, avant le premier commit de code ; les dix autres sont IDENTIQUES à leur empreinte des rouges (comparaison refaite à la production de cette pièce).
+L'état « avant » n'est pas conservé sur le disque : il a été RETROUVÉ dans le journal de la session (création et modifications de chaque fichier), et la reconstitution n'est crue que parce que son empreinte est celle des rouges ; l'état « après » reconstitué est OCTET POUR OCTET le fichier du dépôt (second fichier : le fichier du dépôt dont l'inverse du remplacement redonne l'AVANT). Script : `reconstituer-chaine.py`, joint.
+⚠ Ce que cette chaîne ne dit PAS : qu'un test corrigé après les rouges MORD toujours — c'est ce que mesure la campagne de neutralisation du lot (`neutralisation/neutralize-r57.py`), jouée sur les fichiers d'AUJOURD'HUI.
+
+======================================================================================================================
+FICHIER : apps/api/src/clients/client-record-writes.spec.ts
+  MOTIF : garde (e) re-spécifiée : « quatre sites écrivent la ligne par le constructeur » ne pouvait pas se lire en cherchant les littéraux d'action — les magasins PASSENT l'action au constructeur du module pur
+  DIFFÉRENCE :
+
+--- AVANT apps/api/src/clients/client-record-writes.spec.ts
++++ APRÈS apps/api/src/clients/client-record-writes.spec.ts
+@@ -6,5 +6,5 @@
+ // ⛔ CE QUE LA GARDE EXIGE : (a) l'ensemble des fichiers de production qui écrivent la table égale exactement les deux de la carte ; (b) chacune des quatre méthodes d'écriture est DANS une transaction, écrit,
+ // PUIS journalise (la ligne ne peut pas précéder l'écriture qu'elle consigne) ; (c) le nombre d'écritures de chaque fichier est celui de la carte (3 et 1) ; (d) la conversion d'un devis n'écrit aucune fiche ;
+-// (e) les trois actions du journal ne sont construites QUE par le module pur — aucun magasin n'écrit un nom d'action à la main.
++// (e) la LIGNE du journal n'est construite QUE par le module pur — aucun magasin n'écrit `entityType: "client_record"` à la main, et chaque `auditLog.create` d'une méthode d'écriture reçoit `data: ficheAuditEntry(…)`.
+ //
+ // ⛔ CHAQUE DÉTECTEUR SE CALIBRE SUR DEUX BRAS avant de servir (D286) : un échantillon fautif connu doit être VU, un échantillon sain connu ne doit PAS l'être ; et chaque garde dit CE QU'ELLE A PARCOURU (un zéro
+@@ -143,4 +143,5 @@
+         expect(journal, `${methode} journalise APRÈS avoir écrit (la ligne ne précède pas l'écriture qu'elle consigne)`).toBeGreaterThan(ecrit);
+         expect(c, `${methode} écrit la ligne par \`auditLog.create\`, dans la même transaction`).toMatch(/\bauditLog\s*\.\s*create\s*\(/);
++        expect(c, `${methode} : la charge utile de la ligne vient du constructeur du module pur, jamais d'un objet écrit sur place`).toMatch(/\bauditLog\s*\.\s*create\s*\(\s*\{\s*data\s*:\s*ficheAuditEntry\s*\(/);
+       });
+     }
+@@ -148,9 +149,17 @@
+ });
+ 
+-describe("⛔ (e) les actions du journal des fiches ne sont construites QUE par le module pur", () => {
+-  it("aucun fichier de production autre que `client-record-audit.ts` ne porte un nom d'action `client_record.…` — aucun magasin ne l'écrit à la main", () => {
++describe("⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur", () => {
++  /** Une ligne écrite à la main porte son entité : `entityType: "client_record"`. Le module pur est le SEUL à l'écrire ; les magasins lui PASSENT l'action (un littéral typé contre sa liste fermée), ils ne bâtissent pas la ligne. */
++  const ENTITE_A_LA_MAIN = /\bentityType\s*:\s*["'`]client_record["'`]/;
++
++  it("calibration : une entité écrite à la main est VUE ; un nom d'action passé au constructeur ne l'est pas", () => {
++    expect(ENTITE_A_LA_MAIN.test(sansCommentaires('await tx.auditLog.create({ data: { action: "client_record.update", entityType: "client_record", entityId: id } });'))).toBe(true);
++    expect(ENTITE_A_LA_MAIN.test(sansCommentaires('await tx.auditLog.create({ data: ficheAuditEntry({ auteur, action: "client_record.update", ficheId: id, champs }) });'))).toBe(false);
++  });
++
++  it('aucun fichier de production autre que `client-record-audit.ts` n\'écrit `entityType: "client_record"` — aucun magasin ne bâtit la ligne à la main', () => {
+     const sources = sourcesDeProduction();
+-    const porteurs = sources.filter((s) => /client_record\./.test(s.code)).map((s) => s.chemin);
+     expect(sources.length).toBeGreaterThan(100);
++    const porteurs = sources.filter((s) => ENTITE_A_LA_MAIN.test(s.code)).map((s) => s.chemin);
+     expect(porteurs).toEqual(["clients/client-record-audit.ts"]);
+   });
+
+======================================================================================================================
+FICHIER : apps/api/src/staff/staff-store.prisma.spec.ts
+  MOTIF : `tsc` a refusé le deuxième appel de `openSession` de la spec du magasin : le port exige désormais `expectedPasswordHash` (la valeur lue par la réservation)
+  DIFFÉRENCE :
+
+--- AVANT apps/api/src/staff/staff-store.prisma.spec.ts
++++ APRÈS apps/api/src/staff/staff-store.prisma.spec.ts
+@@ -499,5 +499,5 @@
+     {
+       const f = faux([[LIGNE_MEMBRE], [], [{ id: "d1" }], [{ id: "s1" }]]);
+-      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
++      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, expectedPasswordHash: "SECRET-HASH-LU", sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
+     }
+     {
+
+======================================================================================================================
+CONTRÔLES DE LA RECONSTITUTION (tous passés, sinon aucune pièce n'est écrite) :
+  - l'état AVANT reconstitué de chaque fichier a l'empreinte citée par les pièces des rouges : 2 sur 2 ;
+  - l'état APRÈS reconstitué est le fichier du dépôt (octet pour octet pour `client-record-writes.spec.ts` ; pour `staff-store.prisma.spec.ts`, l'inverse du remplacement redonne l'AVANT) ;
+  - chaque remplacement a été compté AVANT d'écrire : exactement une occurrence (trois remplacements pour le premier fichier, un pour le second).
+
+═══ SECONDE PARTIE : APRÈS le premier commit de code (`2608255`, puis `3595435`) — UN fichier de test EXISTANT corrigé, que le journal des fiches rend faux ; aucun code de production n'est touché ═══
+
+AVANT = le fichier à `3595435` (le dernier commit de code) ; APRÈS = le fichier à `4d671cc` (le commit de la correction). Les empreintes sont celles des OCTETS DU DISQUE (fins de ligne comprises : le fichier est en CRLF dans l'arbre de travail), comme celles des rouges.
+
+03a9f19ce0d9868e0e47b97c239c4d681bf92363de2a16267523b3bd344231bf  AVANT  apps/api/test/int/quotes.int-spec.ts
+fe2fbf8e0ac95f9abb5b7eb5768cd9a1c1beacc8a5140755ff3fe33f6e843343  APRÈS  apps/api/test/int/quotes.int-spec.ts
+
+— `quotes.int-spec.ts` (famille « la PROMOTION » : D-4, D-5, D-6, D-11) : sept assertions comptaient TOUTES les lignes de `audit_logs` (« une seule ligne » ou « aucune »). Le setup de ces tests crée une fiche par la route K-2, qui écrit désormais sa ligne `client_record.create` (R-2) : **sept tests rouges sur 87** contre le code du lot (`quotes-int-avec-journal.txt` : « Tests 7 failed | 80 passed (87) »), trouvés par le PRÉ-VOL des campagnes `r41`, `r42` et `r43` (code 2, aucune garde jouée). **Ce n'est pas un trou de garde** (la garde existait et mordait) : c'est un test existant dont la mesure dépendait d'un état que le lot change. La correction écarte les lignes de FICHE (`client_record.%`, la seule classe que le setup écrit légitimement), **toute AUTRE ligne d'audit reste comptée** : une aide `compteHorsFiches`, quatre assertions « aucune », deux « une », une lecture des lignes (`findMany` avec `NOT: { action: { startsWith: "client_record." } }`). ⚠ Ce que ces assertions ne voient plus : une promotion qui écrirait une ligne `client_record.*` — c'est la garde de SOURCE de `client-record-writes.spec.ts` qui l'interdit.
+Rejoué : le fichier seul **87 sur 87** ; l'intégration complète de l'API, en diagnostic (pas une porte) : **58 fichiers, 934 tests, tous verts** ; l'unitaire de l'API en diagnostic : **93 fichiers, 1 634 tests, tous verts**. Procédure : `corriger-quotes-int.py` (jointe, archivée comme PIÈCE) : chaque remplacement compte ses occurrences avant d'écrire, la fin de ligne est conservée.
+⚠ **Limite de la lecture adverse, écrite à l'extension 4 de la table** : elle n'avait pas cherché, dans les tests EXISTANTS, ceux qui comptent toutes les lignes d'`audit_logs`. Les autres (`admin-audit`, `admin-moderation`, `migration-non-empty`, `first-admin`, `staff-activation`) ne créent aucune fiche : l'intégration complète le confirme.

@@ -1,0 +1,48 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/F-1-ecritures.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4443 octets, sha256 c633c14a4e0f679f83045eaa531d3880b0645c1af377f6ba8204dcf443c992be. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/client-record-writes.spec.ts (12 tests | 1 failed) 162ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'écriture de la table : un INSERT, un UPDATE, un DELETE, `create`, `updateMany`, `upsert` sont VUS ; un SELECT, un `findFirst`, un identifiant voisin et un commentaire ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'extracteur de méthode : rend le corps d'une méthode et s'arrête à la suivante ; une méthode absente rend une chaîne vide 0ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ni un fichier de plus, ni un de moins — et la garde dit combien elle a parcouru 21ms
+   ✓ ⛔ (a) les fichiers de production qui écrivent `pro_client_records` sont EXACTEMENT les deux de la carte > ⛔ (d) la conversion d'un devis n'écrit AUCUNE fiche : `quotes.service.ts` ne contient aucune écriture de la table 16ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > clients/pro-client-store.prisma.ts : 3 écriture(s), une par méthode de la carte 15ms
+   ✓ ⛔ (c) le NOMBRE d'écritures de chaque fichier est celui de la carte : une écriture de plus, dans le même fichier, est un cinquième site > venues/quote-store.prisma.ts : 1 écriture(s), une par méthode de la carte 17ms
+   × ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › creerSiAbsente 24ms
+     → creerSiAbsente construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › completerNoms 17ms
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › modifier 16ms
+   ✓ ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > venues/quote-store.prisma.ts › completerNomDuClient 15ms
+   ✓ ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > calibration : une entité écrite à la main est VUE ; un nom d'action passé au constructeur ne l'est pas 0ms
+   ✓ ⛔ (e) la LIGNE du journal des fiches n'est construite QUE par le module pur > aucun fichier de production autre que `client-record-audit.ts` n'écrit `entityType: "client_record"` — aucun magasin ne bâtit la ligne à la main 16ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  22:42:43
+   Duration  789ms (transform 55ms, setup 0ms, collect 54ms, tests 162ms, environment 0ms, prepare 207ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/client-record-writes.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/client-record-writes.spec.ts > ⛔ (b) chaque méthode d'écriture est dans une TRANSACTION, écrit, PUIS journalise — l'écriture et sa trace vivent ou meurent ensemble > clients/pro-client-store.prisma.ts › creerSiAbsente
+AssertionError: creerSiAbsente construit la ligne du journal par le module pur: expected -1 to be greater than or equal to 0
+ ❯ src/clients/client-record-writes.spec.ts:142:87
+    140|         const ecrit = premiereEcriture(c);
+    141|         const journal = c.indexOf("ficheAuditEntry(");
+    142|         expect(journal, `${methode} construit la ligne du journal par …
+       |                                                                                       ^
+    143|         expect(journal, `${methode} journalise APRÈS avoir écrit (la l…
+    144|         expect(c, `${methode} écrit la ligne par \`auditLog.create\`, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

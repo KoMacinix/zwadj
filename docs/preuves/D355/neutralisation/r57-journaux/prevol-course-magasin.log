@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/prevol-course-magasin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 436 octets, sha256 051244b9da0bb36a0d2876c6fc0b6d45b34c76e5fab7b336e7eeafdfa3029253. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-store.prisma.spec.ts (66 tests) 46ms
+
+ Test Files  1 passed (1)
+      Tests  66 passed (66)
+   Start at  22:38:14
+   Duration  2.01s (transform 413ms, setup 0ms, collect 1.33s, tests 46ms, environment 0ms, prepare 220ms)
+
+

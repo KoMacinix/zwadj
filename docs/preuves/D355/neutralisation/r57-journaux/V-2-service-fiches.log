@@ -1,0 +1,100 @@
+⛔ PIÈCE MASQUÉE — r57-journaux/V-2-service-fiches.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7156 octets, sha256 445acc5b0f9df4b7c965e0349b9726a9bc00e69626c690497d0afe7039c590d7. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 834f7aedc798a0ec0a5ac4e2bca5558af19395ddead1f14dcfed822a5ce45e70  (neutralize-r57.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/clients/pro-clients.service.spec.ts (24 tests | 1 failed) 39ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > ⛔ M-4 — sans fiche : EXACTEMENT `{ found: false }`, quel que soit l'identifiant 6ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > ⛔ M-4 — la recherche n'appelle QUE `rechercher` : jamais le contact du pro (qui lit `users`), jamais une écriture 2ms
+   ✓ K-1 — la recherche : la fiche du pro, ou `{ found: false }` — et RIEN d'autre n'est lu > une fiche trouvée : `{ found: true, record }` ; la fiche expose `linked` (un booléen), JAMAIS l'identifiant du compte ni le profil (S-53) 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-4 — le numéro, le second numéro ou l'e-mail du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > une fiche créée : `{ created: true, record }`, et le port reçoit le PROFIL du pro, les valeurs telles que le contrat les a rendues 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > rien n'a été inséré, la fiche du numéro existe : `{ created: false, record }` — la fiche EXISTANTE, telle quelle 1ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > ⛔ MD-2 — le numéro et l'e-mail sur DEUX fiches : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT 0ms
+   ✓ K-2 — créer ou RENDRE ; le contact du pro refusé AVANT toute écriture > rien inséré ET rien relu (une modification simultanée a déplacé l'identifiant) : 409 plutôt qu'une fiche inventée 0ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > un identifiant hors motif UUID : 404 SANS toucher le port 1ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > refus, fiche introuvable (absente, ou d'un autre pro) : 404 CLIENT_RECORD_NOT_FOUND 0ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-6 — refus, fiche LIÉE : 409 CLIENT_RECORD_LINKED 0ms
+   ✓ K-3 — compléter un nom : le refus du port devient le BON code > ⛔ MD-7 — refus, le nom est déjà là : 409 CLIENT_RECORD_NAME_ALREADY_SET 0ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-4 — le contact du pro : 400 CLIENT_IS_PRO_CONTACT, et le port n'écrit RIEN 0ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-2 — l'unicité refusée par la base : 409 CLIENT_RECORD_IDENTIFIERS_CONFLICT 0ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > ⛔ MD-6 — la fiche LIÉE : 409 CLIENT_RECORD_LINKED ; introuvable : 404 0ms
+   ✓ K-3b — modifier une fiche : contact du pro, unicité, fiche liée > la fiche modifiée est rendue en DTO 0ms
+   ✓ ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-2 : `creerSiAbsente` reçoit le profil, les valeurs ET l'auteur `{ userId, memberId }` — le membre est celui du garde, le compte est le Bearer 2ms
+   × ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3 : `completerNoms` reçoit l'auteur en dernier argument 14ms
+     → expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -3,9 +3,9 @@
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameAr": "آمنة",
+    },
+    {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
++     "memberId": null,
+      "userId": "018f0000-0000-7000-8000-00000000aaaa",
+    },
+  ]
+
+
+Number of calls: 1
+
+   ✓ ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3b : `modifier` reçoit l'auteur en dernier argument 1ms
+   ✓ ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > ⛔ la couche ÉTEINTE : le membre est `null` aux trois écritures — l'auteur est le compte commun seul, jamais un membre inventé 1ms
+   ✓ ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > ⛔ un refus D'AVANT l'écriture (le contact du pro) n'appelle PAS le port : aucune ligne de journal ne peut naître d'une action refusée 0ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > l'adaptateur : `rechercher` lit `proClientRecord` SEUL — la propriété par `proProfile`, sans relation au compte, sans SQL brut 1ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > la sélection que la recherche rend (`FICHE_SELECT`) : des colonnes de la fiche, aucune relation 1ms
+   ✓ ⛔ MD-10 (M-4) — GARDE DE SOURCE : le chemin de la recherche ne nomme ni le compte, ni la table `users`, ni la relation `linkedUser` > le service : `lookup` ne touche le port que par `rechercher` 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 23 passed (24)
+   Start at  22:46:14
+   Duration  1.44s (transform 266ms, setup 0ms, collect 810ms, tests 39ms, environment 0ms, prepare 185ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/clients/pro-clients.service.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/clients/pro-clients.service.spec.ts > ⛔ R-2 (D355) — l'AUTEUR de l'écriture (le compte ET le membre) est passé au port, qui écrit la ligne de journal dans la transaction > K-3 : `completerNoms` reçoit l'auteur en dernier argument
+AssertionError: expected "spy" to be called with arguments: [ …(4) ]
+
+Received: 
+
+  1st spy call:
+
+@@ -3,9 +3,9 @@
+    "018f0000-0000-7000-8000-00000000cccc",
+    {
+      "nameAr": "آمنة",
+    },
+    {
+-     "memberId": "018f0000-0000-7000-8000-00000000dddd",
++     "memberId": null,
+      "userId": "018f0000-0000-7000-8000-00000000aaaa",
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/clients/pro-clients.service.spec.ts:217:37
+    215|   it("K-3 : `completerNoms` reçoit l'auteur en dernier argument", asyn…
+    216|     await ctx.service.completeNames(USER_ID, FICHE_ID, { nameAr: "آمنة…
+    217|     expect(ctx.store.completerNoms).toHaveBeenCalledWith(USER_ID, FICH…
+       |                                     ^
+    218|   });
+    219| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
