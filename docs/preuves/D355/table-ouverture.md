@@ -134,4 +134,15 @@ Chacun n'est modifié que si **sa condition est remplie** ; le rapport de fin de
 
 *(chaque extension est un commit propre, avant le commit du fichier qu'elle couvre)*
 
-Aucune à l'ouverture.
+### Extension 1 — les pièces du premier versement que la section B ne listait pas : le script de recopie des citations, la première passe de l'instrument de lecture adverse, l'audit de secrets « a » et son tri
+
+Écrite **avant** le commit qui verse la consigne, la règle des portes, les deux cartes et la lecture adverse (et avant le commit des rouges, donc avant le premier commit de code : D334, point 5). Les fichiers déjà listés en B (`consigne.md`, `regle-portes.md`, `carte-fiches.md`, `carte-journal-dr5.md`, `lecture-adverse/confronter-consigne.py`, `lecture-adverse/confronter-sortie.txt`, `lecture-adverse/lecture-adverse.md`) entrent dans ce même commit. **Chemins COMPLETS des quatre fichiers que B ne listait pas** :
+
+```
+docs/preuves/D355/recopier-citations.py
+docs/preuves/D355/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D355/audit-secrets-d355a.txt
+docs/preuves/D355/tri-audit-d355a.txt
+```
+
+**Pourquoi `recopier-citations.py`** : la table d'ouverture dit (§ E) que ses citations sont recopiées PAR SCRIPT, et que le script est versé au commit suivant — c'est celui-ci, **copie octet pour octet** de l'outil qui a écrit les six lignes de la table (sha256 `6d41dfd3ff38163a75f511559d69e6ec789dc4589a2236d512765d962b7da478`) ; une PIÈCE, jamais promue en instrument (D291). **Pourquoi `confronter-sortie-passe-1.txt`** : la première passe de l'instrument de lecture adverse a rendu un ✗ (contrôle 2.h) qui était un défaut DE L'INSTRUMENT (la recherche des décisions S-2nn portait sur tout le fichier), confronté à la source avant d'être cru (D275) ; cette sortie est gardée, non retouchée ; la sortie finale vient de l'instrument réparé et rejoué EN ENTIER. **`audit-secrets-d355a.txt` et `tri-audit-d355a.txt`** : le premier audit de secrets (D298) et son tri différentiel (D299), joués sur ces pièces avant leur versement.
