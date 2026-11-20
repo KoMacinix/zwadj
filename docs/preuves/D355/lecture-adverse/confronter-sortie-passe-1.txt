@@ -1,0 +1,91 @@
+CALIBRATION (deux bras, D286)
+  motif dans un fichier d'un SHA : vrai connu → True (attendu True) ; faux connu → False (attendu False)
+  comptage : lignes MP-nn du cadrage → 44 (attendu 44) ; motif impossible → 0 (attendu 0)
+  filiation : SHA_BASE ancêtre de HEAD → True (attendu True) ; HEAD ancêtre de SHA_BASE → False (attendu False, HEAD = 57fc15e ≠ SHA_BASE cc653dd)
+  calibration : tous les cas ont rendu leur verdict attendu.
+
+1. LA REPRISE (consigne § 0)
+[1.a] ✓  HEAD descend de SHA_BASE ; origin/main = cc653dd au départ
+      SHA_BASE ancêtre de HEAD : True ; `git rev-parse origin/main` = cc653dd (attendu cc653dd). « vérifié par le relecteur le 19/11/2026 » : ? — un fait sur la vérification d'un tiers, pas contre le dépôt.
+[1.b] ✓  rang 56 CLOS (D354)
+      « ⇒ RANG 56 : CLOS SUR LE CODE (D354, 19/11/2026) » dans l'ordre des rangs de ZWADJ_CONTINUITE.md à SHA_BASE : True (3640302 caractères aplatis parcourus)
+[1.c] ✓  compteur POUR MÉMOIRE TRENTE-SIX
+      50 ligne(s) « | compteur | » examinée(s) ; 1 portent « POUR MÉMOIRE » et « TRENTE-SIX » (attendu ≥ 1)
+[1.d] ✓  « RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR », candidat L36-3b, le PIN
+      ligne de l'ordre : True ; « L36-3b, le PIN » présent : True
+[1.e] ✓  arbre propre (hors les pièces de ce lot), sans stash
+      3 ligne(s) de `git status` examinée(s) ; hors `docs/preuves/D355/` : 0 (attendu 0) ; stash : 0 (attendu 0)
+
+2. LES CITATIONS DE LA CONSIGNE CONTRE LEURS SOURCES
+[2.a] ✓  DR5 : « Journal : audit_logs.actor_member_id sur toute action de personnel (…, création et modification de fiche) »
+      1 ligne(s) « - Journal : audit_logs.actor_member_id… » (attendu 1) ; les deux fragments cités s'y trouvent : True ; la ligne liste : connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation, recherche d'annuaire, création et modification de fiche
+[2.b] ✓  DR5 « décision de Ko, ratifiée »
+      « Proposées par le relecteur, adoptées par Ko tel quel le 22/10/2026 » présent dans le bloc DR1-DR8 : True — la décision est de Ko par ADOPTION, proposée par le relecteur : la consigne l'écrit « de Ko, ratifiée » (exact en substance)
+[2.c] ✓  R-8 de D341 a rangé ce point dans L36-3a-2
+      1 ligne(s) « - R-8. L'audit « création et modification de fiche » (DR5) et S-107 appartiennent à L36-3a-2, pas à ce lot » (attendu 1)
+[2.d] ✓  la consigne du rang 56 (R-6) a écrit « L'audit des fiches » puis décrit des actions du personnel
+      1 ligne(s) « - R-6. » dans docs/preuves/D354/consigne.md ; « L'audit des fiches (DR5, S-108) » ET « création, réinitialisation et désactivation » dans la même ligne : True — « l'a mal lu en fiches du personnel » est une lecture que le texte porte
+[2.e] ✓  cadrage § 4 — MP-33 : une ligne par action de personnel, `actor_member_id`, aucune donnée secrète, même transaction
+      44 lignes MP-nn parcourues ; MP-33 trouvée 1 fois ; `actor_member_id` et « même transaction » dans la ligne : True
+[2.f] ✓  cadrage § 5.5 (ligne « 2 » : pro-clients.service.ts) et § 9 (point 4)
+      § 5.5 : 1 ligne (attendu 1), dit « c'est du code du rang 41, déjà livré — à ratifier comme périmètre » : True ; § 9 : 1 ligne (attendu 1), dit « hors de L36-3 » pour l'annuaire : True
+[2.g] ✓  S-248 « rapporté, pas corrigé »
+      1 ligne S-248 (attendu 1), « MESURÉ et RAPPORTÉ, pas corrigé » dans le texte : True (la consigne cite en minuscules : même sens)
+[2.h] ✗  S-239 à S-251 (les décisions de D354)
+      lignes « - **S-2nn** — » du § 5 de D354 : 22 numéros distincts, de 230 à 251 (attendu 13 : 239 à 251)
+[2.i] ✓  l'entrée [API][IDENTITÉ] du backlog (le défaut croisé de D354)
+      5879 lignes du backlog parcourues ; entrée trouvée 1 fois (attendu 1)
+
+3. LE DÉFAUT CROISÉ (R-1)
+[3.a] ✓  la pièce de D354 et sa sortie : « openSession après la réinitialisation → ok=true ; sessions vivantes après = 1 »
+      pièce : 60 lignes ; sortie : 20 lignes ; la ligne de sortie porte « ok=true ; sessions vivantes après = 1 » : True
+[3.b] ✓  le CAS d'`openSession` ne conditionne PAS le hachage ; celui de `changePassword` si
+      corps d'`openSession` : 45 lignes, occurrences de `password_hash` : 0 (attendu 0) ; corps de `changePassword` : 24 lignes, `password_hash = ${input.expectedPasswordHash}` : 1 (attendu 1)
+[3.c] ✓  `OpenSessionInput` ne porte aucun hachage ; `ChangePasswordInput` porte `expectedPasswordHash`
+      OpenSessionInput : 11 lignes, « PasswordHash » : 0 (attendu 0) ; ChangePasswordInput : « expectedPasswordHash » : 1 (attendu 1)
+[3.d] ≈  `password_changed_at` existe — le « par exemple » de la consigne
+      colonne `password_changed_at timestamptz(6) NOT NULL` dans la migration de la tranche : True (132 lignes parcourues). TENSION écrite : la colonne a la résolution de la MICROSECONDE et un `Date` de Node celle de la milliseconde — comparer l'égalité d'un `Date` lu à une colonne relue perdrait les microsecondes ; le hachage lu par la réservation (`reservePasswordAttempt` le rend déjà) est exact. La consigne dit « par exemple » : le choix est libre, il s'écrit en décision.
+[3.e] ✓  l'ordre des verrous (S-101) dans `openSession` : membre (L2) < appareil (L3) < session (L4)
+      positions dans le corps de la méthode : `UPDATE pro_staff_members` 218 < `pro_staff_devices` 1081 < `INSERT INTO pro_staff_sessions` 2023 : True
+[3.f] ≈  « connexion ‖ désactivation » : le CAS d'`openSession` porte DÉJÀ `status = 'ACTIVE'`
+      occurrences de `status = 'ACTIVE'` dans le corps d'`openSession` : 1 (attendu ≥ 1). ÉCRIT : la propriété que la consigne veut « mesurée aussi » TIENT peut-être déjà — ce qui manque est sa mesure SOUS COURSE ; ce n'est pas un défaut à corriger mais une garde à poser et à neutraliser.
+[3.g] ≈  « le même coût qu'un mauvais mot de passe (R-3 de D341 : aucune fuite d'état) »
+      le service cite « R-3 (D341) » : True ; le texte de R-3 (D341) trouvé 1 fois : il dit « Pendant la pause de 15 minutes, la réponse est la même que pour un mauvais mot de passe ou un compte inconnu, au même coût (argon2 factice, D5) » — il porte sur la PAUSE (S-103 refusée), pas sur l'ouverture. TENSION écrite : la consigne l'applique par ANALOGIE (même famille : aucun refus ne dit pourquoi) ; le code l'invoque déjà pour ses trois autres refus. Le « coût » est UN `argon2` : le refus d'ouverture en a déjà payé un (la vérification du vrai hachage).
+[3.h] ≈  patron S-243 : l'entrelacement forcé par un verrou de ligne tenu hors du service
+      `row-lock.ts` : 64 lignes ; `type LockableTable = "account_deletion_requests" | "pro_profiles" | "venues"` — `pro_staff_members` n'y est PAS : l'aide doit être étendue d'une valeur d'union pour tenir le verrou du MEMBRE (fichier de code de test, déclaré dans la table d'ouverture).
+
+4. LE JOURNAL DES FICHES (R-2)
+[4.a] ✓  les écritures de la table des fiches : QUATRE sites, DEUX fichiers
+      151 fichiers .ts (hors specs et code généré) parcourus, 4 motifs d'écriture cherchés ; sites trouvés : 4 dans 2 fichier(s) : pro-client-store.prisma.ts=3; quote-store.prisma.ts=1 (attendu : pro-client-store.prisma.ts=3, quote-store.prisma.ts=1)
+[4.b] ≈  la conversion d'un devis N'écrit AUCUNE fiche (la consigne la nomme parmi les chemins)
+      quotes.service.ts : 688 lignes, écritures de fiche : 0 (attendu 0) ; `convert` : 97 lignes, elle écrit une réservation (`convertirEnDemande`) et recopie le contact de son CORPS ; quote-store.prisma.ts avant `completerNomDuClient` : 0 écriture de fiche (attendu 0). IMPRÉCISION de la consigne, écrite : la conversion n'a donc PAS de ligne de journal de fiche à porter, et R-4 (« la conversion n'est touchée que pour sa ligne de journal ») ne s'applique pas — elle n'est PAS touchée.
+[4.c] ≈  le parcours sur place n'écrit aucune fiche côté serveur : il n'existe que par K-1 à K-5
+      27 contrôleurs parcourus, route dont le chemin contient « walk » ou « sur-place » : 0 (attendu 0) ; `WALK_IN` n'est que la valeur de `source` d'une réservation (`convert`). La consigne le nomme parmi les chemins : ce n'est pas un chemin d'écriture de fiche DISTINCT.
+[4.d] ✓  `audit_logs.actor_member_id` existe ; le contexte du membre est lisible par un contrôleur
+      colonne `actorMemberId String? @map("actor_member_id")` dans le modèle AuditLog : True ; `export const CurrentStaff` dans staff-decorators.ts : True
+[4.e] ≈  K-2 (`creerSiAbsente`) n'est PAS dans une transaction aujourd'hui — « dans la MÊME transaction que l'écriture » l'exige
+      corps de `creerSiAbsente` : 18 lignes ; `$transaction` : 0 (attendu 0 aujourd'hui) ; `$queryRaw` : 1. ÉCRIT : envelopper l'INSERT dans une transaction est un changement du CHEMIN d'écriture que la consigne exige (R-2), pas un changement de comportement ; il s'écrit en décision et se mesure (dix créations simultanées : une fiche, une ligne).
+[4.f] ≈  le patron de D349 (échec forcé) : un déclencheur d'insertion, puis un déclencheur DIFFÉRÉ
+      `forceAuditFailure` présent : True ; `forceCommitFailure(table: "venues" | "account_deletion_requests")` : ne connaît pas `pro_client_records` ni `quotes` — le patron se REPRODUIT dans un fichier neuf, il ne se réutilise pas tel quel (329 lignes parcourues).
+[4.g] ≈  les autres lignes d'audit écrites par une route Pro ne portent pas `actorMemberId` (`quote.promote`)
+      `action: "quote.promote"` dans quote-store.prisma.ts : True ; `actorMemberId` dans ce fichier : 0 (attendu 0) — HORS de la liste de DR5 (la promotion n'y figure pas) : relevé dans la carte du journal, RAPPORTÉ au backlog, non corrigé ici.
+
+5. LA FORME (consigne § 3)
+[5.a] ✓  `neutralisation/neutralize-r57.py` est libre, au motif `neutralize-<lot>.py` (D272)
+      79 fichiers de `neutralisation/` parcourus ; `neutralize-r57.py` présent : False (attendu False) ; le dernier harnais de rang : neutralisation/neutralize-r56.py
+[5.b] ≈  « lancer-touchees.py » et « masquer-jetons.py » : des PIÈCES versées, pas des fichiers de `neutralisation/`
+      dans `neutralisation/` : lancer-touchees.py False, masquer-jetons.py False (attendu False, False) ; pièces versées de D354 : lancer-touchees.py True, masquer-jetons.py True (attendu True, True). Nom court de la consigne = les copies de D354.
+[5.c] ✓  R-15 de D343 : deux passes e2e vertes de suite
+      20 ligne(s) du fichier de continuité citent « R-15 » et « D343 » (attendu ≥ 1)
+[5.d] ✓  les instruments de l'audit de secrets (D298, D299) et du contrôle de fin de lot (D288, D328)
+      neutralisation/audit-secrets.py : True ; docs/preuves/D299/outils/alertes-nouvelles.py : True ; docs/preuves/D354/controle-fin-de-lot.py : True
+[5.e] ≈  campagnes « AVANT les six portes ou après elles, mais sur le MÊME arbre, dit » (consigne § 3) contre la règle de D354 (« après les portes »)
+      la règle de D354 (regle-portes.md § 4.1) dit « Après les portes, jamais en parallèle d'une porte » : True ; la consigne du rang 57 LÈVE cette contrainte d'ordre (S-251 de D354 l'avait relevée comme écart) à condition que l'arbre soit le MÊME — la règle des portes de D355 le reprend telle que la consigne l'écrit.
+
+6. LA FIN (consigne § 4) ET LES NUMÉROS
+[6.a] ✓  la forme « EN ATTENTE DE CADRAGE DU RELECTEUR » existe (D340) : elle servira pour le rang 58
+      « RANG 45 : EN ATTENTE DE CADRAGE DU RELECTEUR » dans le texte aplati de ZWADJ_CONTINUITE.md : True
+[6.b] ✓  D355 et S-252 sont libres ; le registre s'arrête à D354
+      309 lignes `| Dnnn |` du registre parcourues, dernier = D354 (attendu 354) ; « D355 » dans les quatre fichiers : [0, 0, 0, 0] (attendu 0,0,0,0) ; « S-252 » : [0, 0, 0, 0] (attendu 0,0,0,0) ; 4685461 caractères aplatis examinés
+
+BILAN : 36 contrôles — ✓ 24 · ≈ 11 · ✗ 1 · ? 0 (calibrés sur 3 sortes de contrôle à deux bras, 0 manqué)
