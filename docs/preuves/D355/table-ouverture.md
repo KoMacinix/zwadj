@@ -177,3 +177,15 @@ docs/preuves/D355/rouges/rouge-int-passe-1.txt
 docs/preuves/D355/rouges/lecture-rouge-unit-passe-1.txt
 docs/preuves/D355/rouges/lecture-rouge-int-passe-1.txt
 ```
+
+### Extension 4 — une correction de TEST que le journal des fiches impose (`quotes.int-spec.ts`) et la chaîne des tests corrigés après les rouges
+
+Écrite **avant** le commit qui corrige le test. **Ce que la table d'ouverture ne déclarait pas, et pourquoi** : `apps/api/test/int/quotes.int-spec.ts` n'y figurait pas. La lecture adverse de la consigne n'avait pas cherché, dans les tests EXISTANTS, ceux qui comptent TOUTES les lignes d'`audit_logs` : c'est une **limite de cette lecture**, trouvée par les campagnes. À la préparation des campagnes `r41`, `r42` et `r43` (leur pré-vol, « chaque mesure passe sur le code NON muté », a rendu rouge : code 2, aucune garde jouée), **sept assertions** de ce spec — celles de la famille « la PROMOTION » (D-4, D-5, D-6, D-11) — comptaient toutes les lignes d'audit pour dire « une seule » ou « aucune » ; le setup de ces tests crée une fiche par la route K-2, qui écrit désormais sa ligne `client_record.create` (R-2). **La correction conserve l'intention** : les lignes de FICHE (`client_record.%`) — la seule classe de lignes que le setup écrit légitimement — sont écartées, **toute AUTRE ligne d'audit reste comptée** : une promotion refusée qui écrirait n'importe quelle autre ligne rougit toujours (une aide, quatre assertions « aucune », deux « une », une lecture des lignes). ⚠ Ce qui n'est plus vu par ces assertions : une promotion qui écrirait une ligne `client_record.*` — c'est la garde de SOURCE de `client-record-writes.spec.ts` qui l'interdit (la conversion et le service des devis n'écrivent aucune fiche).
+
+La chaîne d'empreintes AVANT → APRÈS des fichiers de test corrigés après les rouges est déclarée dans `corrections-tests-apres-rouges.txt` (première partie : les deux corrections faites avant le premier commit de code, reconstituées par `reconstituer-chaine.py` ; seconde partie : ce fichier-ci, corrigé après le premier commit de code). Ces deux pièces sont déclarées ici pour que la table les couvre AVANT leur commit.
+
+```
+apps/api/test/int/quotes.int-spec.ts
+docs/preuves/D355/corrections-tests-apres-rouges.txt
+docs/preuves/D355/reconstituer-chaine.py
+```
