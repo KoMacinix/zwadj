@@ -368,3 +368,13 @@ docs/preuves/D355/tri-audit-d355d.txt
 ```
 docs/preuves/D355/attestations-arbre.txt
 ```
+
+### Extension 7 — les procédures d'écriture des fichiers d'autorité
+
+Écrite **avant** le commit qui verse ces pièces. Les `.md` d'autorité ont été écrits PAR SCRIPT (les blocs sont des fichiers, jamais une chaîne qui traverse un interpréteur, D289 ; chaque ancre est comptée avant d'écrire, le résultat est RELU dans le fichier, les fins de ligne CRLF sont conservées) : `ecrire-autorite.py` (l'arbitrage de Ko, la clôture, `AGENTS.md`, le backlog) et les deux scripts des annotations de la passe D277. **Procédures archivées comme PIÈCES (D291), jamais promues en instruments.** L'extension 5 ne les déclarait pas : la passe D277 (`passe-d277.md`) les cite.
+
+```
+docs/preuves/D355/ecrire-autorite.py
+docs/preuves/D355/annoter-d277.py
+docs/preuves/D355/annoter-d277-agents.py
+```
