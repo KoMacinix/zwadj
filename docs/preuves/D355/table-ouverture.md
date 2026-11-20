@@ -360,3 +360,11 @@ docs/preuves/D355/tri-audit-d355c.txt
 docs/preuves/D355/audit-secrets-d355d.txt
 docs/preuves/D355/tri-audit-d355d.txt
 ```
+
+### Extension 6 — les attestations de « le même arbre »
+
+Écrite **avant** le commit qui verse cette pièce. L'extension 5 déclarait les pièces des campagnes et des portes, mais **oubliait** celle qui prouve la phrase de la consigne (§ 3) — « sur le MÊME arbre, dit » : les attestations que `attester-arbre.py` a imprimées à la console, avant la campagne du lot, avant le rejeu des cinq campagnes et avant les six portes, et l'état machine au départ de chaque série. Elles sont recopiées telles que lues dans `attestations-arbre.txt` (la sortie n'avait pas été redirigée vers un fichier au moment où elle a été produite : le fichier le dit).
+
+```
+docs/preuves/D355/attestations-arbre.txt
+```
