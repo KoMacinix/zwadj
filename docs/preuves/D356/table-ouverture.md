@@ -258,3 +258,20 @@ docs/preuves/D356/rouges/lecture-des-rouges.md
 docs/preuves/D356/audit-secrets-d356b.txt
 docs/preuves/D356/tri-audit-d356b.txt
 ```
+
+**Extension 3 — avant le commit du CODE et des pièces de sa construction** (le code et les tests du lot sont déjà tous déclarés ci-dessus, aux chemins complets de la section B ; cette extension déclare les **pièces** qui les accompagnent) : la déclaration des corrections apportées aux tests APRÈS leur rouge (empreinte avant / après de chaque fichier, ce qui a changé, pourquoi aucune assertion n'est affaiblie) ; le geste de Ko pour le secret du PIN, pas à pas ; et les pièces qui fabriquent et préparent la campagne `neutralize-r58.py` — le constructeur (qui LIT le moteur de `neutralize-r57.py`, aucune ligne retapée), la liste des cibles, le vérificateur d'ancres sur l'arbre (lecture seule), la copie de l'outil qui écrit les titres relevés par la découverte, et ses deux sorties brutes de découverte, le dictionnaire de titres qui en résulte, la sortie de la campagne. Chemins complets :
+
+```
+docs/preuves/D356/corrections-tests-apres-rouges.txt
+docs/preuves/D356/secret-pin-ko.md
+docs/preuves/D356/neutralisation/construire-r58.py
+docs/preuves/D356/neutralisation/cibles-r58.txt
+docs/preuves/D356/neutralisation/verifier-arbre.py
+docs/preuves/D356/neutralisation/remplir-titres.py
+docs/preuves/D356/neutralisation/decouverte-unit.txt
+docs/preuves/D356/neutralisation/decouverte-int.txt
+docs/preuves/D356/neutralisation/titres.json
+docs/preuves/D356/neutralisation/campagne-r58.txt
+```
+
+⚠ Les journaux de campagne MASQUÉS, les journaux des portes MASQUÉS, la campagne des harnais touchés, la passe D277, les audits « c » et « d » et leurs tris, le contrôle de fin de lot et les copies des instruments rejoués (`lancer-touchees.py`, `masquer-jetons.py`) sont déclarés par des extensions ULTÉRIEURES, en chemins complets, avant les commits qui les versent.
