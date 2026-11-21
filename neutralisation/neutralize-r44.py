@@ -382,7 +382,7 @@ cible("A-29. ⛔ D305 — le CAS de la connexion n'exige plus un membre ACTIF", 
 cible("A-30. ⛔ MP-18 — le CAS de la connexion n'exige plus la salle du Bearer", MAGASIN,
       "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'\n           AND password_hash", "WHERE id = ${input.memberId}::uuid AND pro_profile_id IS NOT NULL AND status = 'ACTIVE'\n           AND password_hash", ["magasin"])
 cible("A-31. ⛔ D305 — un CAS refusé (compte 0) n'arrête plus la connexion", MAGASIN,
-      '      if (ligne === undefined) return { ok: false, reason: "memberChanged" };', '      if (false) return { ok: false, reason: "memberChanged" };', ["magasin"])
+      '      if (ligne === undefined) return { ok: false, reason: "memberChanged" };', '      if (ligne === undefined) return { ok: true, member: { id: input.memberId, accountName: "", role: "EMPLOYEE", mustChangePassword: false }, sessionId: "x", deviceReused: false, pinIssued: false };', ["magasin"])
 cible("A-32. ⛔ MP-3 — n'importe quel appareil présenté est réutilisé (la politique n'est plus consultée)", MAGASIN,
       "      const reutilisable = pickReusableDevice(candidats, membre.id, input.proProfileId);", "      const reutilisable = candidats[0] ?? null;", ["magasin", "int-connexion"])
 cible("A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé", MAGASIN,

@@ -1,0 +1,482 @@
+⛔ PIÈCE MASQUÉE — D356 int r56. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 50145 octets, sha256 64b2cb35fe65666e5d0c19243e82ce86f78a6e907f0ef705decbf7054f856448. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 3860ba7b1cf04c3966fabb66f118c8d928fb43c89e98d437c4d96248c79ca5fd  (neutralize-r56.py)
+empreinte du harnais (sha256) : 3860ba7b1cf04c3966fabb66f118c8d928fb43c89e98d437c4d96248c79ca5fd  (neutralize-r56.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 117 déclarées · 117 jouées · 0 non jouée(s) (sans --int) · 18 mesure(s) distincte(s) · 17 fichier(s) muté(s)
+  pré-vol acces : code 0 · passés 10 · en échec 0
+  pré-vol capacites : code 0 · passés 8 · en échec 0
+  pré-vol client-api : code 0 · passés 12 · en échec 0
+  pré-vol contrat : code 0 · passés 39 · en échec 0
+  pré-vol etat : code 0 · passés 19 · en échec 0
+  pré-vol garde : code 0 · passés 32 · en échec 0
+  pré-vol int-capacites : code 0 · passés 47 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+  pré-vol int-dernier-manager : code 0 · passés 7 · en échec 0
+  pré-vol int-expiration : code 0 · passés 9 · en échec 0
+  pré-vol int-journal : code 0 · passés 3 · en échec 0
+  pré-vol int-membres : code 0 · passés 33 · en échec 0
+  pré-vol magasin : code 0 · passés 98 · en échec 0
+  pré-vol membres-politique : code 0 · passés 5 · en échec 0
+  pré-vol service : code 0 · passés 61 · en échec 0
+  pré-vol service-membres : code 0 · passés 16 · en échec 0
+  pré-vol sources : code 0 · passés 35 · en échec 0
+  pré-vol temporaire : code 0 · passés 11 · en échec 0
+✓ E-1. ⛔ D55 — l'échéance n'est plus INCLUSE dans l'expiré (`<=` devient `<`) : un mot de passe qui expire à l'instant exact reste valable
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 16 · en échec 3 · AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+   [garde] code 1 · passés 30 · en échec 2 · AssertionError: le garde devait refuser (403)
+   [service] code 1 · passés 57 · en échec 4 · AssertionError: un refus était attendu
+✓ E-2. ⛔ un membre DÉSACTIVÉ n'est plus désactivé pour la règle (son mot de passe décide seul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 18 · en échec 1 · AssertionError: must=false échéance=2027-02-17T10:00:00.000Z: expected 'ACTIVE' to be 'DISABLED' // Object.is equality
+✓ E-3. ⛔ S-104 — un TEMPORAIRE expiré n'est plus refusé (il redevient « à changer » : la connexion l'admet)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 17 · en échec 2 · AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'TEMPORARY_EXPIRED' // Object.is equality
+   [service] code 1 · passés 56 · en échec 5 · AssertionError: un refus était attendu
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: le garde devait refuser
+   [int-expiration] code 1 · passés 5 · en échec 4 · AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+✓ E-4. ⛔ S-104 — un mot de passe ORDINAIRE expiré redevient ACTIF (le défaut que D341 avait écrit : « un mot de passe expiré ouvre une session »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 16 · en échec 3 · AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+   [service] code 1 · passés 58 · en échec 3 · AssertionError: expected false to be true // Object.is equality
+   [garde] code 1 · passés 29 · en échec 3 · AssertionError: le garde devait refuser (403)
+   [int-expiration] code 1 · passés 5 · en échec 4 · AssertionError: expected false to be true // Object.is equality
+✓ E-5. ⛔ le marqueur « temporaire » (`must_change_password`) n'est plus lu : un temporaire valable passe pour un mot de passe ordinaire
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 16 · en échec 3 · AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+   [service] code 1 · passés 54 · en échec 7 · AssertionError: expected false to be true // Object.is equality
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: le garde devait refuser (403)
+   [int-expiration] code 1 · passés 4 · en échec 5 · AssertionError: expected false to be true // Object.is equality
+✓ E-6. ⛔ MP-41 — l'heure vient de l'horloge de l'API (`Date.now()`) et non du paramètre : le temps n'est plus celui de la base
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 16 · en échec 3 · AssertionError: expected 'MUST_CHANGE_PASSWORD' to be 'ACTIVE' // Object.is equality
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: fichiers qui lisent l'horloge de l'API : staff-account-state.ts: expected [ 'staff-account-state.ts' ] to deeply equal []
+✓ V-1. ⛔ un compte DÉSACTIVÉ ou au TEMPORAIRE EXPIRÉ n'est plus un refus de session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: DISABLED MANAGER GET own=false: expected 'allow' to be 'refuseSession' // Object.is equality
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: le garde devait refuser
+✓ V-2. ⛔ MOT DE PASSE À CHANGER : toute route passe (le changement n'est plus la SEULE route admise)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: MANAGER GET agenda: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · passés 27 · en échec 5 · AssertionError: le garde devait refuser (403)
+✓ V-3. ⛔ MOT DE PASSE À CHANGER : même la route du membre est refusée (impossible de changer son mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: MANAGER sur sa propre session: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · passés 30 · en échec 2 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+✓ V-4. ⛔ la route du membre sur sa propre session n'est plus admise pour un compte actif (un employé ne peut plus se déconnecter)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+✓ V-5. ⛔ toute méthode est une ÉCRITURE (un employé ne LIT plus ce qu'il a le droit de lire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 7 · en échec 3 · AssertionError: GET salle: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · passés 29 · en échec 3 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+✓ V-6. ⛔ toute méthode est une LECTURE (un employé écrit où il ne le peut pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 7 · en échec 3 · AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: le garde devait refuser (403)
+✓ V-7. ⛔ S-107 — une route SANS déclaration est ouverte à tous en écriture (une route oubliée devient plus ouverte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: employé POST: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: le garde devait refuser (403)
+✓ V-8. ⛔ S-107 — le MANAGER n'écrit plus sur une route sans déclaration
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: manager POST: expected 'refuseCapability' to be 'allow' // Object.is equality
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+✓ V-9. ⛔ la capacité déclarée est jugée en LECTURE quelle que soit la méthode (une écriture sur `salle` passe pour un employé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 8 · en échec 2 · AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+   [garde] code 1 · passés 29 · en échec 3 · AssertionError: le garde devait refuser (403)
+   [int-capacites] code 1 · passés 36 · en échec 11 · AssertionError: routes mal gardées :
+✓ V-10. ⛔ la méthode se lit AVEC la casse (« get » n'est plus une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 9 · en échec 1 · AssertionError: expected 'refuseCapability' to be 'allow' // Object.is equality
+✓ V-11. ⛔ HEAD et OPTIONS ne sont plus des lectures
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [acces] code 1 · passés 8 · en échec 2 · AssertionError: HEAD salle: expected 'refuseCapability' to be 'allow' // Object.is equality
+✓ C-1. ⛔ l'employé ÉCRIT sur la salle (la table n'est plus « lecture seule » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 4 · en échec 4 · AssertionError: EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+   [int-capacites] code 1 · passés 40 · en échec 7 · AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ C-2. ⛔ l'employé LIT le personnel (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 6 · en échec 2 · AssertionError: EMPLOYEE sur personnel: expected { lire: true, ecrire: false } to deeply equal { lire: false, ecrire: false }
+   [int-capacites] code 1 · passés 46 · en échec 1 · AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ C-3. ⛔ l'employé ÉCRIT sur le compte commun (la table ne dit plus « — » pour lui)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 6 · en échec 2 · AssertionError: EMPLOYEE sur compte: expected { lire: true, ecrire: true } to deeply equal { lire: false, ecrire: false }
+   [int-capacites] code 1 · passés 43 · en échec 4 · AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ C-4. ⛔ l'employé n'écrit plus sur l'agenda (la table le met en « lecture seule »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 5 · en échec 3 · AssertionError: EMPLOYEE sur agenda: expected { lire: true, ecrire: false } to deeply equal { lire: true, ecrire: true }
+   [int-capacites] code 1 · passés 45 · en échec 2 · AssertionError: POST /api/v1/venues/00000000-0000-7000-8000-00000000000a/availability-blocks → 403 STAFF_CAPABILITY_DENIED: expected true to
+✓ C-5. ⛔ le MANAGER n'écrit plus sur les prix
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 7 · en échec 1 · AssertionError: MANAGER sur prix: expected { lire: true, ecrire: false } to deeply equal { lire: true, ecrire: true }
+✓ C-6. ⛔ FERMÉ PAR DÉFAUT — une capacité INCONNUE est acceptée (une faute de frappe d'une déclaration ouvre la route)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-7. ⛔ S-239 — `peut(role, capacité)` sans acte répond « lire » au lieu d'« écrire »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ C-8. ⛔ les lignes de la table ne sont plus figées (un appelant pourrait la modifier à l'exécution)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 7 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ C-9. ⛔ « lecture seule » et « — » ne se distinguent plus : tout niveau non nul permet d'ÉCRIRE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 4 · en échec 4 · AssertionError: EMPLOYEE sur salle: expected { lire: true, ecrire: true } to deeply equal { lire: true, ecrire: false }
+   [acces] code 1 · passés 8 · en échec 2 · AssertionError: POST salle: expected 'allow' to be 'refuseCapability' // Object.is equality
+✓ C-10. ⛔ FERMÉ PAR DÉFAUT — un rôle INCONNU est accepté
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [capacites] code 1 · passés 7 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ M-1. ⛔ une désactivation RÉPÉTÉE n'est plus reconnue (patron de D349 : elle devrait être un succès sans écriture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · passés 4 · en échec 1 · AssertionError: MANAGER 0: expected 'lastManager' to be 'alreadyDisabled' // Object.is equality
+✓ M-2. ⛔ le DERNIER Manager actif peut être désactivé (le seuil passe de 1 à 0)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · passés 4 · en échec 1 · AssertionError: expected 'disable' to be 'lastManager' // Object.is equality
+✓ M-3. ⛔ un EMPLOYÉ est bloqué par la règle quand il n'y a qu'un Manager (le rôle de la cible n'est plus lu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · passés 4 · en échec 1 · AssertionError: 0 Manager(s) actif(s): expected 'lastManager' to be 'disable' // Object.is equality
+✓ M-4. ⛔ un Manager est bloqué alors qu'il en reste UN AUTRE (le seuil passe de 1 à 2)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [membres-politique] code 1 · passés 4 · en échec 1 · AssertionError: expected 'lastManager' to be 'disable' // Object.is equality
+✓ T-1. ⛔ le REJET des octets ≥ 248 est retiré (le biais modulo favorise les huit premiers symboles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 8 · en échec 3 · AssertionError: expected null to be 'RHFHH3A4XMFN' // Object.is equality
+✓ T-2. ⛔ le seuil de rejet passe à 256 (plus aucun octet n'est rejeté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 8 · en échec 3 · AssertionError: expected null to be 'RHFHH3A4XMFN' // Object.is equality
+✓ T-3. ⛔ un mot de passe PLUS COURT que douze caractères est rendu au lieu d'un re-tirage
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 10 · en échec 1 · AssertionError: onze caractères valables mais PLUS COURTS que douze : null: expected 'A2A2A2A2A2A' to be null
+✓ T-4. ⛔ un mot de passe SANS chiffre ou SANS lettre est rendu (le contrat `passwordSchema` le refuserait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 9 · en échec 2 · AssertionError: expected 'AAAAAAAAAAAA' to be null
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected "spy" to be called 3 times, but got 2 times
+✓ T-5. ⛔ l'alphabet gagne un caractère AMBIGU (le « I » qui se confond avec « 1 » et « l »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 8 · en échec 3 · AssertionError: expected 32 to be 31 // Object.is equality
+✓ T-6. ⛔ la distribution n'est plus uniforme (le dernier symbole n'est jamais tiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [temporaire] code 1 · passés 8 · en échec 3 · AssertionError: expected 'H' to be '9' // Object.is equality
+✓ T-7. ⛔ S-109 — l'aléa vient de `Math.random` (prévisible) au lieu des octets passés en paramètre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: fichiers qui tirent un hasard prévisible : staff-temporary-password.ts: expected [ 'staff-temporary-password.ts' ] to deeply
+   [temporaire] code 1 · passés 7 · en échec 4 · AssertionError: expected 'F8W2RSVM4526' to be 'GDP8QXR3NXSC' // Object.is equality
+✓ G-1. ⛔ MP-41 — le garde juge l'état avec `new Date()` (l'horloge de l'API) et non l'heure de la base rendue avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 30 · en échec 2 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.guard.ts: expected [ 'staff-session.guard.ts' ] to deeply equal []
+✓ G-2. ⛔ un refus de SESSION (désactivé, temporaire expiré) n'est plus levé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: le garde devait refuser
+   [int-expiration] code 1 · passés 8 · en échec 1 · AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+✓ G-3. ⛔ un refus de CAPACITÉ n'est plus levé (l'employé écrit partout, le mot de passe à changer n'ouvre plus rien de moins)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 24 · en échec 8 · AssertionError: le garde devait refuser (403)
+   [int-capacites] code 1 · passés 26 · en échec 21 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ G-4. ⛔ la MÉTHODE de la requête n'est plus lue (toute requête est une lecture)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: le garde devait refuser (403)
+   [int-capacites] code 1 · passés 36 · en échec 11 · AssertionError: routes mal gardées :
+✓ G-5. ⛔ la capacité DÉCLARÉE par la route n'est plus lue (S-107 s'applique à toutes les routes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 31 · en échec 1 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   [int-capacites] code 1 · passés 35 · en échec 12 · AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ G-6. ⛔ la route du MEMBRE sur sa propre session n'est plus reconnue (se déconnecter et changer son mot de passe tombent sous la règle commune)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 29 · en échec 3 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   [int-expiration] code 1 · passés 4 · en échec 5 · AssertionError: expected 403 to be 200 // Object.is equality
+✓ G-7. ⛔ MP-21 — le rôle jugé est « MANAGER » quel que soit le membre (le rôle de la SESSION n'est plus lu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: le garde devait refuser (403)
+   [int-capacites] code 1 · passés 27 · en échec 20 · AssertionError: expected [] to deeply equal [ Array(1) ]
+✓ G-8. ⛔ le contexte posé ne dit plus « mot de passe à changer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 30 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ G-9. ⛔ le refus de capacité porte le code d'une SESSION requise (le client le rejouerait)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 25 · en échec 7 · AssertionError: POST: expected { Object (code, message) } to deeply equal { …(2) }
+   [int-capacites] code 1 · passés 27 · en échec 20 · AssertionError: routes mal gardées :
+✓ S-1. ⛔ S-104 — la connexion juge « actif » (le statut seul) : un TEMPORAIRE EXPIRÉ se connecte
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 58 · en échec 3 · AssertionError: un refus était attendu
+   [int-expiration] code 1 · passés 6 · en échec 3 · AssertionError: expected [ 200, undefined ] to deeply equal [ 401, 'STAFF_INVALID_CREDENTIALS' ]
+✓ S-2. ⛔ S-104 — la connexion refuse un mot de passe À CHANGER (un temporaire valable ne se connecte plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 59 · en échec 2 · AssertionError: la connexion est ADMISE (un 401 ne doit pas remonter comme une exception que R1 lirait en plantage): expected false to be tr
+   [int-expiration] code 1 · passés 1 · en échec 8 · AssertionError: expected 401 to be 200 // Object.is equality
+✓ S-3. ⛔ S-104 — la connexion rend la colonne brute `mustChangePassword` (un mot de passe de 90 jours expiré ne le dit pas)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 59 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+   [int-expiration] code 1 · passés 7 · en échec 2 · AssertionError: expected false to be true // Object.is equality
+✓ S-4. ⛔ S-104 — l'état rend un membre même au TEMPORAIRE EXPIRÉ (un membre « connecté » qu'aucune route n'accepte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected { Object (id, accountName, ...) } to be null
+   [int-expiration] code 1 · passés 8 · en échec 1 · AssertionError: expected { …(4) } to be null
+✓ S-5. ⛔ S-104 — l'état copie la colonne brute au lieu de juger
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+   [int-expiration] code 1 · passés 8 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ S-6. ⛔ MP-41 — la connexion juge l'état avec `new Date()` et non l'heure de la base rendue avec le membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: un refus était attendu
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: fichiers qui lisent l'horloge de l'API : staff-session.service.ts: expected [ 'staff-session.service.ts' ] to deeply equal [
+✓ B-1. ⛔ R-5 — K-20 transmet le mot de passe en CLAIR au magasin (il ne doit recevoir que le hachage)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: le clair a atteint le magasin: expected true to be false // Object.is equality
+✓ B-2. ⛔ R-5 — K-21 transmet le mot de passe en CLAIR au magasin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ B-3. ⛔ R-6 — l'acteur de l'audit est l'identifiant de SESSION et non celui du Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 13 · en échec 3 · AssertionError: expected '22222222-2222-4222-8222-222222222222' to be '33333333-3333-4333-8333-333333333333' // Object.is equality
+   [int-membres] code 1 · passés 2 · en échec 11 · AssertionError: expected 500 to be 201 // Object.is equality
+✓ B-4. ⛔ la salle de l'action est l'identifiant du compte commun, non celle du PROFIL du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 13 · en échec 3 · AssertionError: expected '11111111-1111-4111-8111-111111111111' to be '44444444-4444-4444-8444-444444444444' // Object.is equality
+   [int-membres] code 1 · passés 2 · en échec 11 · AssertionError: expected 500 to be 201 // Object.is equality
+✓ B-5. ⛔ la liste est demandée pour l'identifiant du MEMBRE et non pour la salle du garde
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ Array(1) ]
+   [int-membres] code 1 · passés 30 · en échec 3 · AssertionError: expected [] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+✓ B-6. ⛔ l'état d'un membre n'est plus JUGÉ (la liste copie le statut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 14 · en échec 2 · AssertionError: expected [ [ 'Actif', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Actif', 'ACTIVE' ], …(4) ]
+   [int-membres] code 1 · passés 30 · en échec 3 · AssertionError: expected { …(6) } to match object { …(5) }
+✓ B-7. ⛔ MP-11 — la liste rend l'échéance du mot de passe (un champ de plus que les six permis)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected [ 'accountName', 'createdAt', …(5) ] to deeply equal [ 'accountName', 'createdAt', …(4) ]
+   [int-membres] code 1 · passés 31 · en échec 2 · AssertionError: expected [ 'accountName', 'createdAt', …(5) ] to deeply equal [ 'accountName', 'createdAt', …(4) ]
+✓ B-8. ⛔ un membre DÉSACTIVÉ est traité comme introuvable à la réinitialisation (404 au lieu de 409)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 409, 'STAFF_MEMBER_DISABLED' ]
+✓ B-9. ⛔ le DERNIER Manager est traité comme introuvable (404 au lieu de 409 `STAFF_LAST_MANAGER`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+   [int-dernier-manager] code 1 · passés 2 · en échec 5 · AssertionError: expected [ 404, 'STAFF_MEMBER_NOT_FOUND' ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+✓ B-10. ⛔ un nom déjà pris rend le code d'une activation déjà faite
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { …(2) }
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: KARIM: expected 'STAFF_ALREADY_ACTIVATED' to be 'STAFF_ACCOUNT_NAME_TAKEN' // Object.is equality
+✓ B-11. ⛔ un tirage qui ne fait pas un mot de passe valable n'est plus REFAIT : un mot de passe fixe est rendu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected "spy" to be called 3 times, but got 1 times
+✓ B-12. ⛔ l'échéance rendue avec le temporaire est la date de création du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected '2026-11-01T08:00:00.000Z' to be '2026-11-26T10:00:00.000Z' // Object.is equality
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected '2026-11-21T07:36:39.069Z' to be '2026-11-28T07:36:39.069Z' // Object.is equality
+✓ B-13. ⛔ le hachage stocké n'est pas celui du temporaire rendu (un autre mot de passe est haché)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ 'DMU3AHRY7ENV' ]
+   [int-membres] code 1 · passés 8 · en échec 5 · AssertionError: expected false to be true // Object.is equality
+✓ B-14. ⛔ la clé d'unicité du nom n'est plus normalisée (« KARIM » et « karim » sont deux comptes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-membres] code 1 · passés 15 · en échec 1 · AssertionError: expected '  Amine  Éric ' to be 'amine eric' // Object.is equality
+   [int-membres] code 1 · passés 8 · en échec 5 · AssertionError: KARIM: expected 201 to be 409 // Object.is equality
+✓ A-1. ⛔ `findMember` ne lit plus l'heure de la base sous son nom (la connexion ne peut plus juger l'état)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'now() AS "now"'
+   [int-expiration] code 1 · passés 0 · en échec 9 · AssertionError: expected 500 to be 200 // Object.is equality
+✓ A-2. ⛔ le garde ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions s SET last_…' to contain 'now() AS "now"'
+   [int-expiration] code 1 · passés 0 · en échec 9 · AssertionError: expected [ 500, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ A-3. ⛔ l'état de session ne reçoit plus l'heure de la base avec la session
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT s.id::text AS "sessionId", m.i…' to contain 'now() AS "now"'
+   [int-expiration] code 1 · passés 7 · en échec 2 · AssertionError: expected 500 to be 200 // Object.is equality
+✓ A-4. ⛔ la liste n'est plus dans l'ordre de CRÉATION (elle suit l'ordre alphabétique)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, account_name A…' to match /ORDER BY created_at, id/
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(4) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+✓ A-5. ⛔ MP-11 — la liste SÉLECTIONNE le hachage du mot de passe
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, account_name A…' not to match /password_hash|pin_hash|pin_|password_…/
+✓ A-6. ⛔ la liste n'est plus filtrée par la salle (les membres de TOUTES les salles)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'pro_profile_id ='
+   [int-membres] code 1 · passés 31 · en échec 2 · AssertionError: expected [ [ 'Amine', 'ACTIVE' ], …(6) ] to deeply equal [ [ 'Amine', 'ACTIVE' ], …(4) ]
+✓ A-7. ⛔ le temporaire créé vaut 90 jours (le levier des mots de passe ordinaires) et non sept
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected [ …(7) ] to include 7
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ A-8. ⛔ le temporaire créé n'est plus « à changer » (`must_change_password` faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'INSERT INTO pro_staff_members (pro_pr…' to match /\btrue\b/
+   [int-membres] code 1 · passés 30 · en échec 3 · AssertionError: expected { …(6) } to match object { …(5) }
+✓ A-9. ⛔ le créateur du membre n'est plus enregistré (`created_by_member_id` nul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected [ …(6) ] to deeply equal ArrayContaining{…}
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected null to be '01a1fd0b-d01f-7498-9262-d0b371b2e088' // Object.is equality
+✓ A-10. ⛔ un nom déjà pris n'est plus refusé par la base (le conflit met à jour la ligne existante au lieu de ne rien insérer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: KARIM: expected 201 to be 409 // Object.is equality
+✓ A-11. ⛔ R-6 — la création n'écrit AUCUNE ligne d'audit (une action sans trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected [] to have a length of 1 but got +0
+   [int-membres] code 1 · passés 31 · en échec 2 · AssertionError: expected [] to have a length of 1 but got +0
+✓ A-12. ⛔ la réinitialisation ne VERROUILLE plus le membre (`FOR UPDATE` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, status::text A…' to contain 'FOR UPDATE'
+✓ A-13. ⛔ la réinitialisation ne filtre plus par la salle (un membre d'une AUTRE salle est réinitialisé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, status::text A…' to contain 'pro_profile_id ='
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 200, undefined ] to deeply equal [ 404, 'STAFF_MEMBER_NOT_FOUND' ]
+✓ A-14. ⛔ S-105 — les sessions réinitialisées prennent la fin LOGOUT et non PASSWORD_CHANGED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'end_reason = \'PASSWORD_CHANGED\''
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ true, 'LOGOUT' ] to deeply equal [ true, 'PASSWORD_CHANGED' ]
+✓ A-15. ⛔ S-105 — les APPAREILS du membre ne sont plus révoqués par la réinitialisation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_devices SET revoked_…' to contain 'revoked_at = now()'
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected null not to be null
+✓ A-16. ⛔ MP-29 — la réinitialisation ne remet plus « mot de passe à changer »
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'must_change_password = true'
+   [int-membres] code 1 · passés 30 · en échec 3 · AssertionError: expected 'ACTIVE' to be 'MUST_CHANGE_PASSWORD' // Object.is equality
+✓ A-17. ⛔ la réinitialisation ne remet plus les compteurs d'échecs ni la pause à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET password…' to contain 'password_failed_count = 0'
+   [int-membres] code 1 · passés 31 · en échec 2 · AssertionError: expected 3 to be +0 // Object.is equality
+✓ A-18. ⛔ R-6 — la charge utile de l'audit de réinitialisation intervertit sessions et appareils
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+✓ A-19. ⛔ un membre désactivé n'est plus refusé à la réinitialisation (l'UPDATE conditionné échoue ensuite : une 500)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET password_hash = ?, password_changed_at = now(), password_expires_at =
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 500, undefined ] to deeply equal [ 409, 'STAFF_MEMBER_DISABLED' ]
+✓ A-20. ⛔ R-4 — la désactivation ne prend plus le verrou du PROFIL (L1) : deux désactivations ne se sérialisent plus
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 90 · en échec 8 · AssertionError: expected { ok: true, member: { n: 2 }, …(2) } to deeply equal { ok: true, member: { …(9) }, …(2) }
+   [int-dernier-manager] code 1 · passés 3 · en échec 4 · AssertionError: expected [ 200, 500 ] to deeply equal [ 200, 409 ]
+✓ A-21. ⛔ R-4 — le comptage des Managers compte aussi les DÉSACTIVÉS (un Manager éteint empêche la règle de jouer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT count(*)::int AS n FROM pro_st…' to contain 'status = \'ACTIVE\''
+   [int-dernier-manager] code 1 · passés 3 · en échec 4 · AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+✓ A-22. ⛔ R-4 — le nombre de Managers actifs rendu à la décision est fixe (99) : le dernier Manager n'est plus reconnu
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), pin_hash = NULL, pin_genera
+   [int-dernier-manager] code 1 · passés 2 · en échec 5 · AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+✓ A-23. ⛔ D305 — le CAS du statut est retiré à la désactivation (l'UPDATE n'est plus conditionné à `status = 'ACTIVE'`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET status =…' to match /WHERE id = \?::uuid AND status = 'ACT…/
+✓ A-24. ⛔ MP-30 — les sessions d'un membre désactivé prennent la fin LOGOUT et non DISABLED
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'end_reason = \'DISABLED\''
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ true, 'LOGOUT' ] to deeply equal [ true, 'DISABLED' ]
+✓ A-25. ⛔ MP-30 — les sessions d'un membre désactivé ne sont plus terminées (le filtre est inversé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'ended_at IS NULL'
+   [int-membres] code 1 · passés 31 · en échec 2 · AssertionError: expected [ false, null ] to deeply equal [ true, 'DISABLED' ]
+✓ A-26. ⛔ R-4 — le verdict « dernier Manager » n'est plus appliqué
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), pin_hash = NULL, pin_genera
+   [int-dernier-manager] code 1 · passés 2 · en échec 5 · AssertionError: expected [ 200, undefined ] to deeply equal [ 409, 'STAFF_LAST_MANAGER' ]
+✓ A-27. ⛔ patron de D349 — une désactivation répétée n'est plus un succès sans écriture
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: réponse non prévue pour : UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), pin_hash = NULL, pin_genera
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 500, undefined ] to deeply equal [ 200, 'DISABLED' ]
+✓ A-28. ⛔ la désactivation ne filtre plus par la salle (un membre d'une AUTRE salle est désactivé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 200, undefined ] to deeply equal [ 404, 'STAFF_MEMBER_NOT_FOUND' ]
+✓ A-29. ⛔ R-6 — la désactivation n'écrit AUCUNE ligne d'audit
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 30 · en échec 3 · AssertionError: expected [] to have a length of 1 but got +0
+✓ A-30. ⛔ la désactivation ne VERROUILLE plus le membre visé (`FOR UPDATE` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT id::text AS id, account_name A…' to contain 'FOR UPDATE'
+✓ A-31. ⛔ R-6 — l'acteur de l'audit de création est le membre CRÉÉ et non le Manager
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected { …(7) } to deeply equal { …(7) }
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected { action: 'staff.member_create', …(7) } to match object { …(6) }
+✓ D-1. ⛔ R-2 — le contrôleur du personnel déclare `salle` à la place de `personnel` (l'employé LIT la liste du personnel)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: staff/staff-members.controller.ts déclare: expected [ 'salle' ] to deeply equal [ 'personnel' ]
+   [int-capacites] code 1 · passés 46 · en échec 1 · AssertionError: expected [ 200, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ D-2. ⛔ R-2 — le contrôleur des salles déclare `agenda` au lieu de `salle` (l'employé écrit sur la salle)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: venues/venues.controller.ts déclare: expected [ 'agenda' ] to deeply equal [ 'salle' ]
+   [int-capacites] code 1 · passés 43 · en échec 4 · AssertionError: expected [ 400, undefined ] to deeply equal [ 403, 'STAFF_CAPABILITY_DENIED' ]
+✓ D-3. ⛔ R-5 — K-20 ne pose plus `Cache-Control: no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected 1 to be 2 // Object.is equality
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected undefined to be 'no-store' // Object.is equality
+✓ D-4. ⛔ S-104 — le changement de mot de passe n'est plus la route du membre (un membre « à changer » ne peut plus le faire)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 33 · en échec 2 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+   [int-expiration] code 1 · passés 4 · en échec 5 · AssertionError: expected 401 to be 200 // Object.is equality
+✓ D-5. ⛔ l'identifiant de K-22 n'est plus validé comme UUID (un texte libre part au SQL)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected 1 to be 2 // Object.is equality
+✓ D-6. ⛔ K-20 n'exige plus le contexte du garde (couche éteinte : une 500 au lieu du 401 `STAFF_SESSION_REQUIRED`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected [ 500, undefined ] to deeply equal [ 401, 'STAFF_SESSION_REQUIRED' ]
+✓ D-7. ⛔ `@RequiresStaffCapability` ne pose plus la capacité (toutes les routes tombent sous la règle par défaut)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 30 · en échec 2 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+   [int-capacites] code 1 · passés 35 · en échec 12 · AssertionError: expected 0 to be greater than or equal to 14
+✓ D-8. ⛔ le contrôleur du personnel n'est plus enregistré (les quatre routes n'existent plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 0 · en échec 13 · AssertionError: expected 404 to be 201 // Object.is equality
+✓ D-9. ⛔ `@StaffAnyMember()` ne pose plus la marque (la route du membre n'est plus reconnue)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [garde] code 1 · passés 28 · en échec 4 · AssertionError: promise rejected "ForbiddenException: staff.errors.capabili… { …(3) }" instead of resolving
+✓ D-10. ⛔ R-5 — K-20 pose `no-cache` à la place de `no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected 'no-cache' to be 'no-store' // Object.is equality
+   [int-journal] code 1 · passés 2 · en échec 1 · AssertionError: BRAS DE CONTRÔLE 1 — les en-têtes de RÉPONSE sont journalisés : `no-store` y figure: expected 'no-cache' to be 'no-store' //
+✓ K-1. ⛔ MP-43 — le temporaire vaut 90 jours au levier (et non sept)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 38 · en échec 1 · AssertionError: expected 90 to be 7 // Object.is equality
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: expected 90 to be 7 // Object.is equality
+✓ K-2. ⛔ K-20 accepte une clé de plus (le Manager pourrait CHOISIR le mot de passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 37 · en échec 2 · AssertionError: création de membre, mot de passe choisi: expected true to be false // Object.is equality
+   [int-membres] code 1 · passés 32 · en échec 1 · AssertionError: {"accountName":"Zed","role":"EMPLOYEE","password":"Motdepasse1"}: expected 201 to be 400 // Object.is equality
+✓ K-3. ⛔ K-20 n'admet plus le rôle EMPLOYEE
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 37 · en échec 2 · AssertionError: EMPLOYEE: expected false to be true // Object.is equality
+   [int-membres] code 1 · passés 2 · en échec 11 · AssertionError: expected 400 to be 201 // Object.is equality
+✓ K-4. ⛔ le message du dernier Manager est celui d'un membre désactivé (deux codes, un message)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 36 · en échec 3 · AssertionError: expected 11 to be 12 // Object.is equality
+✓ K-5. ⛔ le code du refus de capacité change de valeur (le client ne le reconnaît plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 35 · en échec 4 · AssertionError: expected [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ] to deeply equal [ 'STAFF_ACCOUNT_NAME_TAKEN', …(11) ]
+   [garde] code 1 · passés 25 · en échec 7 · AssertionError: POST: expected { …(2) } to deeply equal { …(2) }
+✓ L-1. ⛔ R-5 — le champ `set-cookie` de réponse n'est plus masqué au journal (les cookies du personnel y entreraient)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-journal] code 1 · passés 2 · en échec 1 · AssertionError: le cookie de session est dans le journal: expected true to be false // Object.is equality
+✓ I-1. ⛔ K-21 : le chemin du client perd `-password` (il ne vise plus la route)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 11 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+✓ I-2. ⛔ K-22 : le client désactive en GET et non en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 11 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+✓ I-3. ⛔ K-19 : le client LIT la liste en POST
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 11 · en échec 1 · AssertionError: expected [ Array(1) ] to deeply equal [ Array(1) ]
+  empreintes : 17 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+117 garde(s) mordue(s) sur 117 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 117 sur 117, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+code=0

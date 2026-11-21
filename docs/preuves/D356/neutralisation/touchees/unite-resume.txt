@@ -1,0 +1,99 @@
+282 fichier(s) modifié(s) depuis b54e383 → 14 campagne(s) concernée(s) sur 73 ; campagnes sans fichier détecté : 0 []
+  · neutralize-adm2.py  (1 fichier(s) en commun)  (à part, mode complet)
+      packages/i18n/messages/ar.json
+  · neutralize-booking-status.py  (1 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+  · neutralize-r29.py  (1 fichier(s) en commun)
+      e2e/playwright.config.ts
+  · neutralize-r33.py  (2 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+      packages/i18n/messages/fr.json
+  · neutralize-r38.py  (1 fichier(s) en commun)
+      packages/i18n/messages/ar.json
+  · neutralize-r39.py  (3 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+      apps/api/src/venues/quotes.service.ts
+      packages/i18n/messages/ar.json
+  · neutralize-r41.py  (2 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+      apps/api/src/venues/quotes.service.ts
+  · neutralize-r42.py  (1 fichier(s) en commun)
+      apps/api/src/venues/quotes.service.ts
+  · neutralize-r43.py  (4 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+      apps/api/src/venues/quote-store.types.ts
+      apps/api/src/venues/quotes.controller.ts
+  · neutralize-r44.py  (6 fichier(s) en commun)
+      apps/api/src/auth/auth.throttle.ts
+      apps/api/src/staff/staff-session.controller.ts
+      apps/api/src/staff/staff-session.service.ts
+  · neutralize-r56.py  (8 fichier(s) en commun)
+      apps/api/src/staff/staff-account-state.ts
+      apps/api/src/staff/staff-decorators.ts
+      apps/api/src/staff/staff-session.controller.ts
+  · neutralize-r57.py  (5 fichier(s) en commun)
+      apps/api/src/staff/staff-session.service.ts
+      apps/api/src/staff/staff-store.prisma.ts
+      apps/api/src/venues/quote-store.prisma.ts
+  · neutralize-r58.py  (14 fichier(s) en commun)  (à part, mode complet)
+      apps/api/src/auth/auth.throttle.ts
+      apps/api/src/config/env.ts
+      apps/api/src/staff/staff-account-state.ts
+  · neutralize-s10b.py  (4 fichier(s) en commun)
+      apps/api/src/venues/quote-store.prisma.ts
+      apps/api/src/venues/quote-store.types.ts
+      apps/api/src/venues/quotes.service.spec.ts
+
+12 campagne(s) jouée(s) ici, en série (jamais en parallèle : chacune MUTE des fichiers sources) ; 2 jouée(s) à part.
+
+[1/12] neutralisation\neutralize-booking-status.py …
+    code 0 · 16 s · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+
+[2/12] neutralisation\neutralize-r29.py …
+    code 0 · 153 s · 15 garde(s) mordue(s) sur 15 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 15 sur 15)
+
+[3/12] neutralisation\neutralize-r33.py …
+    code 0 · 1196 s · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 8 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0)
+
+[4/12] neutralisation\neutralize-r38.py …
+    code 0 · 705 s · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+
+[5/12] neutralisation\neutralize-r39.py …
+    code 0 · 443 s · 35 garde(s) mordue(s) sur 35 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 16 non jouée(s) (sans --int) (attendu : 35 sur 35, 0, 0, 16)
+
+[6/12] neutralisation\neutralize-r41.py …
+    code 0 · 931 s · 54 garde(s) mordue(s) sur 54 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 16 non jouée(s) (sans --int) (attendu : 54 sur 54, 0, 0, 16)
+
+[7/12] neutralisation\neutralize-r42.py …
+    code 0 · 271 s · 22 garde(s) mordue(s) sur 22 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 6 non jouée(s) (sans --int) (attendu : 22 sur 22, 0, 0, 6)
+
+[8/12] neutralisation\neutralize-r43.py …
+    code 0 · 1394 s · 52 garde(s) mordue(s) sur 52 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 35 non jouée(s) (sans --int) (attendu : 52 sur 52, 0, 0, 35)
+
+[9/12] neutralisation\neutralize-r44.py …
+    code 2 · 0 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[10/12] neutralisation\neutralize-r56.py …
+    code 2 · 0 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[11/12] neutralisation\neutralize-r57.py …
+    code 2 · 0 s · AUCUNE LIGNE DE RÉSUMÉ
+
+[12/12] neutralisation\neutralize-s10b.py …
+    code 0 · 94 s · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+
+== BILAN : 12 campagne(s) examinée(s), durée 5207 s ==
+  neutralize-booking-status.py             code 0 · 3 garde(s) mordue(s) sur 3 cible(s) RÉELLEMENT MESURÉE(S).
+  neutralize-r29.py                        code 0 · 15 garde(s) mordue(s) sur 15 cible(s) jouée(s) · 0 non mesurée(s) (attendu : 15 sur 15)
+  neutralize-r33.py                        code 0 · 87 garde(s) mordue(s) sur 87 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 8 non jouée(s) (sans --int) (attendu : 87 sur 87, 0, 0)
+  neutralize-r38.py                        code 0 · 46 garde(s) mordue(s) sur 46 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) (attendu : 46 sur 46, 0, 0)
+  neutralize-r39.py                        code 0 · 35 garde(s) mordue(s) sur 35 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 16 non jouée(s) (sans --int) (attendu : 35 sur 35, 0, 0, 16)
+  neutralize-r41.py                        code 0 · 54 garde(s) mordue(s) sur 54 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 16 non jouée(s) (sans --int) (attendu : 54 sur 54, 0, 0, 16)
+  neutralize-r42.py                        code 0 · 22 garde(s) mordue(s) sur 22 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 6 non jouée(s) (sans --int) (attendu : 22 sur 22, 0, 0, 6)
+  neutralize-r43.py                        code 0 · 52 garde(s) mordue(s) sur 52 cible(s) jouée(s) · 0 muette(s) · 0 non mesurée(s) · 35 non jouée(s) (sans --int) (attendu : 52 sur 52, 0, 0, 35)
+  neutralize-r44.py                        code 2 · AUCUNE LIGNE DE RÉSUMÉ
+  neutralize-r56.py                        code 2 · AUCUNE LIGNE DE RÉSUMÉ
+  neutralize-r57.py                        code 2 · AUCUNE LIGNE DE RÉSUMÉ
+  neutralize-s10b.py                       code 0 · 20 garde(s) mordue(s) sur 20 cible(s) RÉELLEMENT MESURÉE(S).
+codes : 0 = 9 · 1 (muette) = 0 · 2 (pré-vol / erreur de script) = 3 · 3 (incomplète, cibles hors exécution) = 0 · autre = 0
+code=0
