@@ -2806,7 +2806,560 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif. *(Aucune �
 
 ⇒ **RANG 57 : CLOS SUR LE CODE (D355, 20/11/2026) — les restes de L36-3a-2 : une connexion ne survit plus à une réinitialisation ni à un changement de mot de passe (le hachage lu à la réservation conditionne l'ouverture, dans le check-and-set), et les QUATRE écritures d'une fiche client écrivent chacune UNE ligne `audit_logs` dans leur transaction** : lot de **CODE** (il compte, D283), **sans migration, sans écran, sans contrat d'API neuf**, méthode RENFORCÉE sous la pause (DR1 de D336 : ni session adverse B ni certification) ; **les rouges précèdent le code** (pièces des rouges `3dc0113` < premier commit de code `2608255`) ; **le défaut croisé est mesuré rouge d'abord par QUATRE chemins dont la route** (200 là où 401), puis vert, par un entrelacement forcé sur PostgreSQL réel ; `neutralize-r57.py` : **56 gardes mordues sur 56, 0 muette, 0 non mesurée, 0 non jouée, toutes lues, empreinte `834f7aed…ce45e70`** ; campagnes touchées : `r39` 51/51, `r41` 70/70, `r42` 28/28, `r43` 87/87, **`r44` 236/236**, `r56` 117/117, `s10b` 20/20, `booking-status` 3/3 (modes complets ; **six ancres révisées**, campagnes rejouées en entier ; `r41`, `r42`, `r43`, `s10b` et `booking-status` rejouées après la correction du test) ; **les six portes : `typecheck` 0 · `lint` 0 · `test` 1 à la première passe (UN test de `apps/client`, la garde des sorties console, hors du lot) puis 0 au rejeu unique · `build` 0 · `test:int` 0 (58 fichiers / 934 tests) · `test:e2e` 0, deux passes vertes de suite (109 passés + 1 ignoré chacune)** ; **UN test existant corrigé** (`quotes.int-spec.ts`, sept assertions, trouvé par le pré-vol de trois campagnes : S-264) ; **une intermittence de l'injection de `Reflector` à l'amorçage de l'application d'intégration, cause NON élucidée, rapportée et non corrigée** ; décisions prises seule **S-252 à S-268, à ratifier** ; compteur POUR MÉMOIRE **TRENTE-SIX → TRENTE-SEPT** ; section D355 de ce fichier, pièces : `docs/preuves/D355/`.
 
-⇒ **RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 57, § 4) : **L36-3b, le PIN** (secret HMAC et refus au démarrage, générateur et liste des PIN triviaux, compteur atomique de trois essais, verrouillage et déblocage, expiration, route K-23 ; amendement des réponses de K-14, K-15 et K-18 : le PIN rendu une fois ; **il ouvrira ses sessions par l'appel d'`openSession` que ce lot a conditionné, et y ajoutera SA preuve**). **Pas arbitré** : le rang 58 n'est **pas** nommé par la session ; L36-4 (les écrans du personnel) dépend de L36-3 et n'a pas de rang. ⚠ **Ce qui attend Ko avant** : la ratification de **S-252 à S-268** (section D355, § 5) ; **la question du rapport** (traiter l'intermittence de l'injection de `Reflector`, cause non élucidée, dans un petit lot de configuration d'intégration ?) ; **la relecture humaine des six messages arabes du personnel** (D354) et des 29 clés arabes du bloc `map` (D351) ; ses gestes restants (`docs/preuves/D353/scenarios-ko.md`, puis ceux de D352, D351 et D350 s'ils ne sont pas faits) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+⇒ ~~**RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D356 : PÉRIMÉ, voir juste dessous.)* *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 57, § 4) : **L36-3b, le PIN** (secret HMAC et refus au démarrage, générateur et liste des PIN triviaux, compteur atomique de trois essais, verrouillage et déblocage, expiration, route K-23 ; amendement des réponses de K-14, K-15 et K-18 : le PIN rendu une fois ; **il ouvrira ses sessions par l'appel d'`openSession` que ce lot a conditionné, et y ajoutera SA preuve**). **Pas arbitré** : le rang 58 n'est **pas** nommé par la session ; L36-4 (les écrans du personnel) dépend de L36-3 et n'a pas de rang. ⚠ **Ce qui attend Ko avant** : la ratification de **S-252 à S-268** (section D355, § 5) ; **la question du rapport** (traiter l'intermittence de l'injection de `Reflector`, cause non élucidée, dans un petit lot de configuration d'intégration ?) ; **la relecture humaine des six messages arabes du personnel** (D354) et des 29 clés arabes du bloc `map` (D351) ; ses gestes restants (`docs/preuves/D353/scenarios-ko.md`, puis ceux de D352, D351 et D350 s'ils ne sont pas faits) ; ⛔ **le fournisseur des fonds de carte de production et la relecture juridique de la note « ce qui part vers le tiers » (BLOQUENT LE LANCEMENT)** ; ⛔ la MFA et la relecture du rôle en base (BLOQUENT TOUT DÉPLOIEMENT, D321).
+
+⛔ **ARBITRÉ LE 20/11/2026 PAR KO — LE RANG 58 (D356)** : adoption, tel quel, de la consigne du relecteur du 20/11/2026 « RANG 58 — L36-3b : LE PIN, CÔTÉ SERVEUR (TIRÉ, HACHÉ AVEC UN SECRET, TROIS ESSAIS, VERROUILLAGE, DÉBLOCAGE, EXPIRATION, CONNEXION PAR PIN) » — **texte verbatim versé : `docs/preuves/D356/consigne.md`** (première écriture des arbitrages, D295). Ce que la consigne décide, en une lecture :
+- **[1 a] Le rang 58 = L36-3b, le PIN, côté serveur** : lot de **CODE** (il compte, D283 : compteur POUR MÉMOIRE TRENTE-SEPT → TRENTE-HUIT à la clôture), **chemin d'identité : méthode RENFORCÉE** sous la pause de certification (DR1 de D336 : ni session adverse B ni certification). **Numéro D356**, pris en LISANT le registre (dernier : D355).
+- **[1 b] Les seuls contrats d'API autorisés** : **K-23** `POST /pro/staff/pin-login` `{memberId, pin}` (cookie d'appareil, le cookie de session posé) ; le PIN rendu **UNE fois** (`Cache-Control: no-store`) par K-14, K-15 et K-18 ; K-21 et K-22 **effacent** le PIN ; chacun dans `packages/api-client` avec son chemin LITTÉRAL (D182). **Aucune migration** (une colonne qui manque : ARRÊT, DR8), aucun écran, aucun code d'erreur neuf, rien du chemin de l'argent.
+- **[1 c] S-252 à S-268 (D355) sont RATIFIÉES par adoption** ; le rejeu unique de `test` est accepté.
+- **[1 d] Réponse de Ko (journal)** : la liste de DR5 est **limitative pour ce qui S'AJOUTE** (aucune action neuve hors les quatre du PIN), mais **toute ligne d'audit EXISTANTE écrite par une action de personnel porte `actor_member_id`** ⇒ `quote.promote` (**R-6**).
+- **[1 e] Réponse de Ko (l'intermittence de l'amorçage, `Reflector`)** : elle **dort** ; si elle revient, la session verse la trace complète, essaie l'externalisation de `@nestjs/*` sur une COPIE hors du dépôt, ne commite rien dans la configuration, annote le backlog **de façon additive**.
+- **[R-1] Pas de migration** ; **[R-2] le secret HMAC est OBLIGATOIRE PARTOUT** (`min(32)`, sans valeur par défaut, dans `PROD_REQUIRED_EXPLICIT`, refus de démarrage qui NOMME la variable ; `.env.example` ne porte que le NOM, D200 ; les tests posent leur propre valeur jetable ; **jamais le `.env` de Ko lu : seulement le NOMBRE de lignes portant le NOM**, forme de D330) ; **[R-3] la connexion par PIN réutilise le contrôle de D355** (sous le verrou : le haché de PIN lu, `pin_locked_at` nul, membre actif, appareil vivant — encore ceux de la vérification), **quatre courses mesurées sur PostgreSQL réel par entrelacement FORCÉ** (PIN ‖ PIN : vingt requêtes parallèles = TROIS comptées ; PIN ‖ réinitialisation ; PIN ‖ désactivation ; PIN ‖ déblocage), refus de même forme et de même coût ; **[R-4/R-5] l'état du PIN est UNE règle** (`etatDuCompte` le porte) et **le journal des actions du PIN** (connexion, échec, verrouillage, déblocage) s'écrit dans la transaction, avec `actor_member_id`, sans PIN ni haché, mesuré sur le journal RÉEL ; la carte de D355 est complétée **additivement** ; **[R-6] `quote.promote` porte `actor_member_id`** (la promotion elle-même ne change pas, sinon ARRÊT) ; **[R-7] aucun écran, aucun montant, aucun code d'erreur neuf** ; **[R-8] HORS lot** : les écrans (L36-4), le recours d'un Manager seul, la réactivation et le changement de rôle, l'intermittence.
+- **[3, 4] La forme et la fin** : premier commit = la table d'ouverture SEULE ; extension = commit seul avant son fichier ; lecture adverse de la consigne ET du cadrage contre le dépôt avant tout `.md` d'autorité ; les rouges AVANT le code ; `neutralize-r58.py` pour chaque garde neuve ; les campagnes touchées sur le MÊME arbre que les portes ; journaux masqués ; audits de secrets avant chaque versement ; règle des portes commitée avant ; six portes après la dernière modification ; **deux passes e2e vertes de suite** ; contrôle de fin de lot ; push puis fetch ; **le geste de Ko écrit pas à pas** (`docs/preuves/D356/secret-pin-ko.md`) et **dit en tête du rapport**.
+
+⇒ ~~**RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR.**~~ ⛔ *(D356, 21/11/2026 : **PÉRIMÉ** — le rang 58 est arbitré par Ko (adoption de la consigne du 20/11/2026) et CLOS SUR LE CODE, voir juste dessous. Barré avec son motif, pas effacé, D276.)*
+
+⇒ **RANG 58 : CLOS SUR LE CODE (D356, 21/11/2026) — L36-3b, le PIN du personnel côté serveur : tiré (quatre chiffres, liste fermée de 210 PIN triviaux, aléa du système), haché en HMAC-SHA-256 avec un secret HORS base (`STAFF_PIN_HMAC_SECRET`, obligatoire partout), rendu UNE fois (`no-store`) par K-14, K-15 et K-18, effacé par K-21 et K-22 ; K-23 `POST /pro/staff/pin-login` : un refus, un corps, un coût ; la tentative se RÉSERVE en une instruction avant d'être vérifiée (vingt requêtes parallèles = trois comptées) ; le verrou se pose au troisième ÉCHEC, sur CE PIN ; l'ouverture est CONDITIONNÉE sous verrou (haché lu, verrou nul, échéance, appareil re-vérifié, tout annulé sinon) ; quatre lignes de journal (`staff.pin_login`, `staff.pin_login_failed`, `staff.pin_lock`, `staff.pin_unlock`) et `quote.promote` qui porte le membre** : lot de **CODE** (il compte, D283), **sans migration, sans écran, sans code d'erreur neuf**, méthode RENFORCÉE sous la pause (DR1 de D336) ; **les rouges précèdent le code** (pièces des rouges `107547b` < premier commit de code `4f18431`) ; `neutralize-r58.py` **106 gardes mordues sur 106**, 0 muette, 0 non mesurée, toutes lues en `AssertionError` ; les six portes à 0 dès la première passe sur secteur ; l'e2e : deux passes vertes de suite (109 passés + 1 ignoré chacune) ; compteur POUR MÉMOIRE **TRENTE-SEPT → TRENTE-HUIT** (la limite de cinq reste SUSPENDUE par Ko ; **aucune certification, aucune marque**) ; **S-252 à S-268 (D355) ratifiées par adoption ; S-269 à S-282 sont à ratifier** ; **le geste de Ko est NÉCESSAIRE : sans `STAFF_PIN_HMAC_SECRET` dans `apps/api/.env`, l'API refuse de démarrer sur son poste** (`docs/preuves/D356/secret-pin-ko.md`) ; la pause du paiement en ligne (E3 et R1) est **inchangée** ; ⛔ la MFA et la relecture du rôle en base **bloquent toujours tout déploiement** ; `ZWADJ_CONTINUITE.md`, « ÉTAT À LA CLÔTURE DU RANG 58 (D356) » et section D356.
+
+⇒ **RANG 59 : EN ATTENTE DE CADRAGE DU RELECTEUR.** *(Forme de la délégation de Ko du 02/11/2026 : voir le bloc d'arbitrage du rang 44.)* Candidat **proposé** (consigne du rang 58, § 4) : **L36-4, les écrans du personnel** (le verrouillage, la saisie masquée du PIN, le choix du membre, la gestion des membres) — **pas arbitré** : le rang 59 n'est **pas** nommé par la session. Ce que L36-4 devra mesurer, hérité de D345 et de D356 : le brouillon du parcours « Nouvelle réservation » à l'écran de verrouillage et au changement de membre, « si une AUTRE personne se connecte », et le PIN rendu UNE fois à l'écran (jamais affiché deux fois, jamais en cache).
+
+⛔ **TABLE D'OUVERTURE DU RANG 58 (D356), recopiée à l'IDENTIQUE de `docs/preuves/D356/table-ouverture.md`** (premier commit du lot, `0ac8556`, SEUL ; extension 1 `dc51096`, extension 2 `dcaedf6`, extension 3 `db587ad`, extension 4 `69590a7`, extension 5 `f38c5af`, extension 6 `d441a97`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SIX extensions, la sixième déclarant à l'avance les pièces des portes, la passe D277, l'audit « c » et le contrôle de fin de lot) :
+
+~~~~markdown
+# D356 — rang 58 — table d'ouverture
+
+Lot : **L36-3b, le PIN, côté serveur — le PIN tiré par un générateur cryptographique, haché par HMAC-SHA-256 avec un secret HORS base, rendu UNE fois ; trois essais par un compteur ATOMIQUE réservé avant la vérification ; verrouillage au troisième ÉCHEC ; déblocage seulement par nom de compte et mot de passe, qui génère un PIN neuf ; expiration à 90 jours ; connexion par PIN (K-23) ; le PIN effacé par la réinitialisation et la désactivation ; le journal des actions du PIN ; la ligne `quote.promote` qui porte le membre** — consigne du relecteur « RANG 58 — L36-3b : LE PIN, CÔTÉ SERVEUR » du 20/11/2026, adoptée par Ko telle quelle (`docs/preuves/D356/consigne.md`, versée dans le commit suivant). Lot de **CODE**, **chemin d'identité**, méthode **RENFORCÉE** (R-3 de D340), sous la pause de certification (Ko, 22/10/2026) ; il **compte** (D283) : compteur POUR MÉMOIRE TRENTE-SEPT → TRENTE-HUIT à la clôture.
+
+- **SHA de départ** : `b54e383d31e763adbdbb4bf46fff4250c992af65` (clôture de D355). `HEAD` = `origin/main` après `git fetch` (les deux sur ce SHA), arbre propre (`git status --porcelain` : 0 ligne), aucun stash (0 ligne), branche `main`. Branches distantes gardées, relevées : `origin/front-client`, `origin/integration-45`, `origin/par-carte`.
+- **Numéro** : D356 — pris en lisant le registre de `ZWADJ_CONTINUITE.md` : 310 lignes `| Dnnn |` (expression `^\| D(\d+) \|`), dernier numéro **355** ; `D356` ne figure dans aucun des quatre fichiers d'autorité (compte 0 sur le texte APLATI : 0, 0, 0, 0 ; caractères aplatis examinés : 4 783 269 ; calibré sur `D355`, qui rend 253, 14, 15 et 0). **S-269** est le premier numéro de décision de la session (le plus grand `S-nnn` relevé est S-268, 1 272 occurrences examinées ; S-269 : 0 occurrence ; calibré sur `S-268`, qui rend 8, 0, 1 et 0). S-252 à S-268 (D355) sont ratifiées par adoption (consigne, § 1 c).
+- **Reprise (consigne, § 0), relevée avant toute écriture** : rang 57 CLOS (D355) ; compteur POUR MÉMOIRE TRENTE-SEPT ; « RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : L36-3b, le PIN) ; `origin/main` = `b54e383` ; arbre propre, sans stash, sur `main` ; **aucun écart**. Lus : `CLAUDE.md` et `AGENTS.md` (importés, en entier), `ZWADJ_CONTINUITE.md` (le bloc « ÉTAT À LA CLÔTURE DU RANG 57 », la section D355, l'ordre des rangs, le registre, le bloc DR1 à DR8 — DR5 en entier —, le bloc d'arbitrage du rang 44 avec R-1 à R-10 de D341), `docs/preuves/D340/cadrage.md` EN ENTIER (§ 4 : MP-1, MP-2, MP-3, MP-10, MP-11, MP-12, MP-15, MP-26, MP-27, MP-28, MP-33, MP-36, MP-39, MP-41, MP-43 ; § 5.1 : K-14, K-15, K-18, K-23 ; § 5.5 : les fichiers « P » ; § 6.3 ; § 9 points 7 et 8).
+- **Poste à l'ouverture** (20/11/2026, 18:56) : **sur secteur** (`BatteryStatus` = 2, `PowerLineStatus` = Online, charge 100 %), RAM libre 3 749 Mo sur 16 095 Mo, `chrome` 9 (le navigateur de Ko), `headless_shell` 0, `node` 0, Docker 29.8.0 lancé (`zwadj-db` « Up 6 hours », port 5432), ports 3100, 3101, 5273 et 5274 libres. ⚠ La barre de RAM de D273 (4 579 Mo) est un critère de **certification**, en pause : elle n'est pas appliquée à des portes ordinaires, et ce relevé est noté pour que personne ne le lise comme tel. Sur batterie au moment d'une porte de clôture : aucune porte ne se lance (R-9 de D340).
+- **Ce que la consigne décide** (texte complet dans `consigne.md`) : **1 a** — rang 58 = L36-3b, méthode RENFORCÉE, la certification immédiate reste suspendue par la pause de Ko ; **1 b** — les contrats d'API autorisés par l'adoption de ce message, et eux seuls : K-23 (`POST /pro/staff/pin-login`, `{ memberId, pin }` + cookie d'appareil) ; les réponses de K-14, K-15 et K-18 (« si le cadrage le dit ») amendées pour rendre le PIN UNE fois (`Cache-Control: no-store`) ; K-21 et K-22 amendées pour effacer le PIN ; chacun dans `packages/api-client`, chemin en toutes lettres (D182) ; **1 c** — S-252 à S-268 ratifiées par adoption, le rejeu unique de la porte `test` accepté ; **1 d** — la liste du « Journal » de DR5 est limitative pour ce qui s'AJOUTE, mais toute ligne d'audit QUI EXISTE DÉJÀ et qu'une action de personnel écrit porte `actor_member_id` : `quote.promote` le reçoit dans ce lot (R-6) ; **1 e** — l'intermittence d'amorçage des tests d'intégration dort, avec son piège (si elle revient : trace complète versée, piste essayée sur une COPIE hors du dépôt, rien commité dans la configuration). **R-1** aucune migration, une colonne qui manque ⇒ ARRÊT (DR8) ; **R-2** le secret HMAC suit le précédent du secret JWT (variable OBLIGATOIRE partout, `min(32)`, sans défaut, dans `PROD_REQUIRED_EXPLICIT`, démarrage refusé avec un message qui NOMME la variable ; `.env.example` reçoit le NOM seul ; les tests posent leur valeur jetable ; **aucun `.env` n'est lu**, la présence du NOM seul est comptée) ; **R-3** la connexion par PIN réutilise le contrôle de D355 (la session ne s'ouvre que si, sous verrou, le PIN haché, `pin_locked_at` nul, le membre actif et l'appareil vivant sont toujours ceux de la vérification), quatre courses mesurées sur PostgreSQL réel par entrelacement forcé (PIN ‖ PIN, PIN ‖ réinitialisation, PIN ‖ désactivation, PIN ‖ déblocage par mot de passe), le refus à la même forme et au même coût quelle qu'en soit la cause ; **R-4** `etatDuCompte` porte aussi l'état du PIN (absent, valide, expiré, verrouillé), UNE copie de la règle ; **R-5** le journal du PIN (connexion, échec, verrouillage, déblocage) dans la transaction, `actor_member_id` renseigné, aucun PIN ni haché dans la ligne, mesuré sur le journal réel ; la carte du journal de DR5 de D355 mise à jour additivement ; **R-6** `quote.promote` porte `actor_member_id`, la promotion ne change pas (sinon ARRÊT) ; **R-7** aucun écran, rien dans `apps/pro` ni `apps/client`, aucun montant, aucun code d'erreur neuf sauf si le cadrage en nomme un pour le PIN (alors FR ET AR sous la parité) ; **R-8** hors lot : les écrans (L36-4), le recours d'un Manager seul, la réactivation et le changement de rôle, l'intermittence.
+- **Relevé du code, par lecture, avant d'écrire** : **(a) aucun PIN n'existe dans le code** — dans `apps/api/src/staff/`, hors specs et hors la liste des mots de passe courants, le mot `pin` n'apparaît que dans des commentaires et dans `PIN_VALIDITY_DAYS` ; `STAFF_PIN` et `HMAC` n'apparaissent dans aucun fichier TypeScript, JSON ou `.env*` de `apps/`, `packages/` et `e2e/`. **(b) les colonnes existent** : la migration `20261104170000_staff_layer` porte `pin_hash`, `pin_generated_at`, `pin_expires_at`, `pin_failed_count` (`NOT NULL DEFAULT 0`, `CHECK … BETWEEN 0 AND 3`), `pin_locked_at`, et `pro_staff_members_pin_triple_coherent` (les trois premières nulles ou toutes non nulles) : **aucune migration n'est nécessaire** (R-1). **(c) le point d'entrée du PIN existe déjà** : `OpenSessionInput.expectedPasswordHash` et le check-and-set d'`openSession` (`apps/api/src/staff/staff-store.prisma.ts`, ligne 221 et suivantes) sont écrits pour que le PIN « ouvre ses sessions par ce même appel et y ajoute SA preuve » (D355, R-1) ; `etatDuCompte` (`staff-account-state.ts`) ne dit rien du PIN. **(d) le précédent d'un secret** : `JWT_ACCESS_SECRET: z.string().min(32, …)` sans défaut (`apps/api/src/config/env.ts`, ligne 21), `PROD_REQUIRED_EXPLICIT` (ligne 150) ; les tests d'intégration lisent `apps/api/.env` par `import "dotenv/config"` (`test/int/setup-env.ts`) — c'est pourquoi la valeur jetable du secret s'y pose en toutes lettres ; le serveur d'API de l'e2e reçoit son environnement de `e2e/playwright.config.ts` (ligne 167). **(e) quatre routes exemptées** du garde (`@StaffExempt()` : `auth.controller.ts:132` et `staff-session.controller.ts:58, 74, 91`) : `pin-login` sera la **cinquième**, et la liste fermée est confrontée au routeur par `staff-session-guard.int-spec.ts` et comptée dans les sources par `staff-source-guards.spec.ts` — deux tests EXISTANTS qui changent (leçon de S-264 : la lecture adverse CHERCHE les tests existants qui comptent ce que le lot change). **(f) `quote.promote`** : `quote-store.prisma.ts` (ligne 323) écrit `auditLog.create` SANS `actorMemberId` (S-260) ; la chaîne contrôleur → service → port n'a pas de membre. **(g) fins de ligne**, relevées en OCTETS : `apps/api/src/staff/*`, `packages/types/src/staff.ts`, `packages/api-client/src/staff-client.ts`, `apps/api/src/common/staff-contract.spec.ts`, `apps/api/test/int/staff-*.int-spec.ts` et `staff-helpers.ts` sont en LF ; `apps/api/src/venues/*`, `config/env.ts`, `config/env.spec.ts`, `auth/auth.throttle.ts`, `apps/api/test/int/setup-env.ts`, `throttle.int-spec.ts`, `row-lock.ts`, `e2e/playwright.config.ts`, `apps/api/.env.example`, `packages/i18n/messages/*.json` et les trois `.md` d'autorité sont en CRLF ; chaque fichier garde la sienne (vérifiée en octets après chaque édition).
+- **Ordre des commits de ce lot** (règle de `AGENTS.md`, D328 et D334 ; consigne, § 3) : (1) **ce fichier, SEUL** ; (2) la consigne en pièce, la règle des portes (écrite et commitée AVANT les passes), la sortie de la lecture adverse de la consigne ET du cadrage contre le dépôt, la carte du journal de DR5 mise à jour et le premier audit de secrets avec son tri — **avant tout `.md` d'autorité et avant tout code** ; (3) **les pièces des rouges** (sorties lues contre l'état d'avant, avec l'empreinte sha256 de chaque fichier de test joué) dans un commit **ANTÉRIEUR au premier commit de code** (D334, item 5) ; (4) le code et ses tests ; (5) le harnais, les campagnes, les portes ; (6) les trois `.md` d'autorité, **l'arbitrage de Ko en première écriture** ; (7) le contrôle de fin de lot, push puis fetch. Toute extension de cette table : un commit propre, **avant** le commit du fichier qu'elle couvre.
+- **Règle d'arrêt** (consigne, § 0, R-1, R-6) : un écart à la reprise ⇒ arrêt, et le dire. Une colonne qui manquerait ⇒ ARRÊT, rapport (DR8). La promotion d'un devis qui devrait changer autrement que par sa ligne d'audit ⇒ ARRÊT (D316, par la fonction).
+- **Écrit pour ne pas se lire comme tenu** : cette table dit ce que le lot **prévoit** de toucher. Elle ne dit pas qu'un PIN existe, qu'une garde mord ou qu'une course est tenue : chacun se **mesure** (rouge d'abord, neutralisation ensuite) et se rapporte avec ses chiffres. ⚠ Plusieurs choix que la consigne et le cadrage ne fixent pas — où le verrou se pose, ce que K-18 rend, comment le secret se lie au membre, les noms des actions du journal, la forme des messages de validation — sont des **propositions de la session** : elles s'écriront en décisions S-269 et suivantes, **à ratifier**, avec ce qu'elles changent pour Ko.
+
+## A. Le départ
+
+Voir les puces ci-dessus (SHA, numéro, reprise, poste, relevé du code). Aucun fichier n'est modifié à l'ouverture : ce fichier est le premier commit du lot.
+
+## B. Les fichiers de CE lot — chemins COMPLETS
+
+**Le contrat** (`@zwadj/types`, le client d'API, les catalogues) — le levier (longueur et nombre d'essais), l'état du PIN, le schéma de K-23, les réponses de K-14, K-15 et K-18, K-23 dans le client :
+
+```
+packages/types/src/staff.ts
+packages/api-client/src/staff-client.ts
+packages/api-client/src/staff-client.test.ts
+packages/i18n/messages/fr.json
+packages/i18n/messages/ar.json
+apps/api/src/common/staff-contract.spec.ts
+```
+
+**Les modules purs et leurs specs** (D187 : une garde du chemin d'identité vit dans un module sans dépendance) — le générateur et la liste fermée des PIN triviaux ; l'état du PIN, ajouté à la règle de l'état du compte ; le hacheur (le seul fichier qui connaît le secret) :
+
+```
+apps/api/src/staff/staff-pin.ts
+apps/api/src/staff/staff-pin.spec.ts
+apps/api/src/staff/staff-pin-hasher.ts
+apps/api/src/staff/staff-pin-hasher.spec.ts
+apps/api/src/staff/staff-account-state.ts
+apps/api/src/staff/staff-account-state.spec.ts
+```
+
+**Le port, l'adaptateur, le service, le contrôleur, le module** — la réservation atomique, l'échec et le verrouillage, l'ouverture par PIN, l'émission du PIN (activation, connexion, changement de mot de passe), l'effacement (réinitialisation, désactivation), K-23, le câblage :
+
+```
+apps/api/src/staff/staff-store.types.ts
+apps/api/src/staff/staff-store.prisma.ts
+apps/api/src/staff/staff-store.prisma.spec.ts
+apps/api/src/staff/staff-session.service.ts
+apps/api/src/staff/staff-session.service.spec.ts
+apps/api/src/staff/staff-session.controller.ts
+apps/api/src/staff/staff-decorators.ts
+apps/api/src/staff/staff.module.ts
+apps/api/src/staff/staff-source-guards.spec.ts
+```
+
+**Le secret, la limite de débit** — la variable (obligatoire, sans défaut, nommée au refus), son exemple (le NOM seul), le levier de débit de K-23 (le MÊME que les autres, D128) :
+
+```
+apps/api/src/config/env.ts
+apps/api/src/config/env.spec.ts
+apps/api/.env.example
+apps/api/src/auth/auth.throttle.ts
+```
+
+**La ligne d'audit de la promotion d'un devis** (R-6) — le port, l'adaptateur, le service, le contrôleur et leurs specs ; la promotion elle-même ne change pas :
+
+```
+apps/api/src/venues/quote-store.types.ts
+apps/api/src/venues/quote-store.prisma.ts
+apps/api/src/venues/quote-store.prisma.spec.ts
+apps/api/src/venues/quotes.service.ts
+apps/api/src/venues/quotes.service.spec.ts
+apps/api/src/venues/quotes.controller.ts
+```
+
+**Les tests d'intégration** (PostgreSQL réel) — l'environnement des tests (la valeur jetable du secret, le levier de débit), les aides, les suites neuves du PIN (la connexion et les mesures MP, l'émission et l'effacement, les quatre courses de R-3, le journal de R-5), la ligne de la promotion, le test de débit étendu, la liste fermée des routes exemptées :
+
+```
+apps/api/test/int/setup-env.ts
+apps/api/test/int/staff-helpers.ts
+apps/api/test/int/staff-pin.int-spec.ts
+apps/api/test/int/staff-pin-issue.int-spec.ts
+apps/api/test/int/staff-pin-race.int-spec.ts
+apps/api/test/int/staff-pin-audit.int-spec.ts
+apps/api/test/int/quote-promote-actor.int-spec.ts
+apps/api/test/int/throttle.int-spec.ts
+apps/api/test/int/staff-session-guard.int-spec.ts
+```
+
+**L'e2e** — le serveur d'API de l'e2e reçoit sa valeur jetable du secret (sans elle il refuse de démarrer) :
+
+```
+e2e/playwright.config.ts
+```
+
+**Le harnais de neutralisation du lot** (chaque garde neuve est neutralisée, son échec LU) :
+
+```
+neutralisation/neutralize-r58.py
+```
+
+**Les pièces du premier versement** (la table elle-même, la consigne, la règle des portes écrite avant les passes, la carte du journal de DR5 mise à jour, l'annotation additive de la carte de D355, la lecture adverse de la consigne et du cadrage et sa sortie) :
+
+```
+docs/preuves/D356/table-ouverture.md
+docs/preuves/D356/consigne.md
+docs/preuves/D356/regle-portes.md
+docs/preuves/D356/carte-journal-dr5.md
+docs/preuves/D355/carte-journal-dr5.md
+docs/preuves/D356/lecture-adverse/confronter-consigne.py
+docs/preuves/D356/lecture-adverse/confronter-sortie.txt
+docs/preuves/D356/lecture-adverse/lecture-adverse.md
+```
+
+Les autres pièces — audits de secrets et leurs tris, les sorties des rouges, la neutralisation, les campagnes touchées, les portes, la passe D277, le contrôle de fin de lot, **la procédure du geste de Ko (`secret-pin-ko.md`)** — sont déclarées par des **extensions**, en chemins COMPLETS, **avant** le commit qui les verse (aucun préfixe : une table par préfixe rendrait « 0 fichier non déclaré » vrai par construction).
+
+## C. Les fichiers d'autorité — écrits en dernier, les arbitrages de Ko en première écriture
+
+```
+ZWADJ_CONTINUITE.md
+ZWADJ_BACKLOG.md
+AGENTS.md
+```
+
+`AGENTS.md` : annotations seules (le compteur de la chaîne « AUCUN LOT NE PART DANS `main` SOUS UNE PORTE ROUGE… » ; l'invariant de la couche du personnel de D354 et celui de D355, dont les phrases « le PIN (3b) … n'existe pas » et « `quote.promote` n'écrit pas `actor_member_id` » que ce lot périme ; un invariant neuf pour le PIN, son secret et ses courses). Aucune phrase n'est réécrite : barrée avec son motif, annotée (D276, D277). `ZWADJ_BACKLOG.md` : l'annotation additive de l'entrée de l'intermittence (1 e) et les reports neufs.
+
+## D. Ce que cette table NE déclare PAS (et pourquoi)
+
+- **Aucune migration** (R-1 : aucune colonne ne manque ; si l'une manque à la mesure, ARRÊT et rapport), **aucun écran** (rien dans `apps/pro` ni `apps/client`), **aucun montant**, **aucun code d'erreur neuf** (R-7) : `STAFF_INVALID_CREDENTIALS` est le code de tout refus de K-23, comme celui de K-15 ; seules des clés de MESSAGE DE VALIDATION de K-23 (le corps mal formé) s'ajoutent aux catalogues, FR et AR, sous la parité — si la mesure montre qu'elles ne sont pas nécessaires, elles ne sont pas écrites.
+- **`apps/api/src/staff/staff-members.service.ts` et `staff-members.controller.ts` ne sont PAS déclarés** : l'effacement du PIN par K-21 et K-22 est écrit par les instructions du magasin, dans leur transaction ; le service de K-20 à K-22 n'a rien à changer. Si la mesure disait autrement : extension.
+- **`apps/api/src/staff/staff-session.guard.ts` n'est PAS déclaré** : le garde ne décide rien sur le PIN (une session ne se refuse pas parce qu'un PIN a expiré ; le verrouillage met fin aux sessions du membre à la base). La règle de l'état du PIN est UNE copie (R-4), lue par la connexion par mot de passe, par le changement de mot de passe et par la connexion par PIN ; **cette lecture de R-4 — « lue par le garde » n'est pas prise à la lettre — est une décision de la session, à ratifier** (S-269 et suivantes).
+- **La promotion d'un devis n'est PAS touchée dans ce qu'elle décide** : ni un statut, ni un montant, ni un compteur, ni la copie du nom ; seule la clé `actorMemberId` de sa ligne d'audit s'ajoute (R-6). Si la mesure disait autrement : ARRÊT (D316).
+- **Rien du chemin de l'argent** (D316, par la fonction : aucun montant, aucune transition de réservation ou de devis).
+- **Hors lot** (consigne, R-8) : les écrans du personnel et de verrouillage (L36-4 — où il faudra mesurer le brouillon de D345 au changement de membre, la saisie masquée de l'écran de verrouillage et « si une AUTRE personne déverrouille, la saisie est effacée »), le recours d'un Manager seul, la réactivation et le changement de rôle, l'intermittence de l'amorçage (1 e), la recherche d'annuaire (L36-5).
+- **`neutralisation/lancer-campagnes.py`** n'est pas modifié ; les campagnes que le lot touche sont **rejouées**, et ne sont modifiées que si une ancre est périmée (conditionnel ci-dessous).
+
+## E. Les citations — recopiées PAR SCRIPT depuis les fichiers (jamais depuis la consigne ni de mémoire)
+
+⛔ Chaque ligne ci-dessous est celle du fichier cité, à l'identique : le script `docs/preuves/D356/recopier-citations.py` (une PIÈCE, jamais promue en instrument ; **versée au commit suivant, par l'extension 1** — le premier commit du lot est la table SEULE) cherche la ligne par son début, abandonne si elle n'est pas trouvée exactement une fois, et l'insère ; le contrôle d'après la retrouve dans le fichier cible, relu.
+
+**DR5, les lignes du PIN — `ZWADJ_CONTINUITE.md`, bloc DR1 à DR8 :**
+
+- PIN : 4 chiffres tirés par un générateur cryptographique ; PIN triviaux refusés ; longueur = paramètre ; stocké en HMAC-SHA-256 avec un secret serveur HORS base (variable d'environnement à ajouter à PROD_REQUIRED_EXPLICIT) ; jamais en clair, jamais dans un journal ni dans l'audit ; montré UNE fois, Cache-Control: no-store. (10 000 valeurs se cassent hors ligne en une seconde sans secret.)
+- Le PIN ne vaut qu'avec le jeton d'APPAREIL (cookie HttpOnly posé après une connexion nom de compte + mot de passe sur ce poste). (Sans lui, un PIN seul est un mot de passe de 4 chiffres ; NIST SP 800-63B-4 §3.2.10 : secret d'activation d'un authentifieur lié à l'appareil, 4 caractères minimum, 10 essais au plus. Même raisonnement, pas la lettre : ne pas écrire « conforme NIST ».)
+- 3 essais : compteur ATOMIQUE en base (UPDATE … RETURNING), jamais lecture puis écriture ; test à 20 essais parallèles = exactement 3 comptés. Au 3ᵉ : pin_locked_at ; déblocage seulement par nom de compte + mot de passe, qui génère un nouveau PIN.
+- Expiration : mot de passe 90 jours et PIN 90 jours (paramètres, pas des colonnes figées ; la norme NIST déconseille l'expiration périodique, c'est la règle de la salle) ; mot de passe temporaire (création ou réinitialisation) : généré par défaut, 7 jours, changement obligatoire ; une réinitialisation par le Manager révoque sessions, appareils et PIN.
+- Journal : audit_logs.actor_member_id sur toute action de personnel (connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation, recherche d'annuaire, création et modification de fiche).
+
+**R-6 de D341 — l'échéance d'un appareil, que ce lot ramène sous `pin_expires_at` :**
+
+- R-6. Avant qu'un PIN existe (ce lot), l'échéance d'un appareil est la durée du PIN (90 jours, même paramètre) ; L36-3b la ramène sous pin_expires_at. Motif : la tranche dit « jamais au-delà de pin_expires_at », et pin_expires_at est NULL tant qu'aucun PIN n'existe.
+
+**Cadrage D340, § 4 — les modes de défaillance « P » (`docs/preuves/D340/cadrage.md`) :**
+
+| MP-1 | 20 essais de PIN parallèles = **exactement 3 comptés** | compteur atomique **réservé AVANT la vérification** (`UPDATE … SET pin_failed_count + 1 … WHERE pin_locked_at IS NULL AND pin_failed_count < 3 RETURNING`) : seuls les 3 premiers vérifient ; ⚠ un compteur incrémenté APRÈS vérification laisserait N requêtes parallèles faire N vérifications | `CHECK pin_failed_count BETWEEN 0 AND 3` (dans la tranche) | int-spec : 20 requêtes concurrentes, 3 `pin_failed_count`, 3 vérifications HMAC (espion), 17 refus « verrouillé » non comptés | P |
+| MP-2 | un PIN sans jeton d'appareil | la route refuse sans cookie `zwadj_dv_*` reconnu ; le PIN seul n'est jamais lu | `token_hash UNIQUE` | int-spec : PIN correct sans cookie → refus, compteur inchangé | P |
+| MP-3 | le jeton d'appareil d'un **autre membre** / d'**une autre salle** | l'appareil trouvé doit avoir `member_id` = le membre visé **et** ce membre `pro_profile_id` = celui du compte commun (JWT) | FK `member_id`, FK `pro_profile_id` | int-spec à deux salles, deux membres : quatre croisements, tous refusés | 1 (salle) · P (membre) |
+| MP-10 | PIN trivial refusé | le générateur re-tire tant que le tirage est trivial (liste fermée : répétés, suites, `1234`…) | — | unit : tirage borné, aucun trivial sur 100 000 tirages | P |
+| MP-11 | PIN / mot de passe / jeton **jamais en clair** hors de son unique affichage | une seule route rend le PIN (`Cache-Control: no-store`) ; le journal n'en porte aucun ; les journaux de requête rédigent `req.headers.authorization` et `req.headers.cookie` (`app.module.ts:30`) **mais PAS le `Set-Cookie` sortant : mesuré (M27), il est journalisé en clair** — c'est un défaut **existant** pour `zwadj_rt`, que les deux cookies neufs hériteraient (S-112, SIG-1) | — | int-spec : tout le corps des lignes `audit_logs` et **la sortie réelle du journal des requêtes** testés contre les valeurs posées en cookie ; garde de **source** : aucun `logger.*` ne reçoit un champ secret | 1 · 2 · P |
+| MP-12 | secret HMAC **absent en production** : démarrage refusé | `PROD_REQUIRED_EXPLICIT` + `min(32)` | — | `env.spec.ts` : production sans la variable → exception qui nomme la variable | P |
+| MP-15 | verrouillage au 3ᵉ échec ; déblocage **par nom de compte + mot de passe seulement**, avec un **nouveau PIN** | `pin_locked_at` posé par la réservation n° 3 ; seule la connexion par mot de passe l'efface et génère le PIN ; les sessions du membre prennent `PIN_LOCKED` | — | int-spec : verrou, PIN correct refusé, mot de passe → PIN neuf, ancien PIN mort | P |
+| MP-26 | PIN **expiré** (90 j) | `pin_expires_at < now()` → connexion par PIN refusée, PIN neuf seulement par mot de passe | — | int-spec | P |
+| MP-27 | appareil **expiré ou révoqué** | `expires_at`, `revoked_at` testés dans la même requête que `token_hash` | `expires_at ≤ pin_expires_at` : **inexprimable en SQL entre deux tables** → applicatif | int-spec | P |
+| MP-28 | **cookies d'appareil en excès** (plus de 8) | borne dure de lecture (§ 2.2) | — | unit + int-spec | P |
+| MP-33 | **audit** : une ligne par action de personnel, `actor_member_id` renseigné, **aucune donnée secrète** | écrite dans la **même transaction** que l'action (comme la promotion de D339) | FK `actor_member_id` `ON DELETE SET NULL` (dans la tranche) | int-spec : une ligne par action ; garde de source : `before`/`after` ne reçoivent que des objets listés | 1 · 2 · P |
+| MP-36 | **débit** des routes neuves | clés `AUTH_THROTTLE` neuves (`staffLogin`, `staffPin`, `staffActivate`) — **le même levier** (D128) | — | `throttle.int-spec.ts` étendu | 1 · P |
+
+**Cadrage D340, § 5.1 — les contrats K-14, K-15, K-18 (amendées) et K-23 :**
+
+| **K-14** | `POST /pro/staff/activate` | propriétaire (compte commun, e-mail vérifié), exemptée | crée le Manager, pose `staff_layer_enabled_at`, un appareil et une session ; rend le membre (et, en 3b, le PIN **une fois**) | 1 |
+| **K-15** | `POST /pro/staff/login` | un membre, exemptée | nom de compte + mot de passe → appareil (si nouveau sur ce poste) + session ; `mustChangePassword` ; (3b : PIN neuf si absent, expiré ou verrouillé) | 1 |
+| **K-18** | `POST /pro/staff/password` | le membre (admis même en « changement obligatoire ») | change son mot de passe ; fin des AUTRES sessions | 1 |
+| **K-23** | `POST /pro/staff/pin-login` | un membre reconnu, exemptée | `{ memberId, pin }` + cookie d'appareil → session ; compteur atomique | P |
+
+**Cadrage D340, § 6.3 — la ligne du lot 3b :**
+
+| **L36-3b · « le PIN »** | secret HMAC et refus au démarrage, générateur, compteur atomique de 3 essais, verrouillage et déblocage, expiration, route de connexion par PIN ; amendement des réponses de K-14, K-15, K-18 (le PIN rendu une fois) | K-23 (1) + 3 amendées | ≈ 400 | ≈ 1 300 | ≈ 0,6 × |
+
+**Cadrage D340, § 9 — les limites 7 et 8 :**
+
+7. **Une limite de débit par IP sur le PIN** pénalise les foyers qui partagent une adresse (CGNAT, `auth.throttle.ts` le dit déjà) : la protection du PIN est le compteur **par membre**, pas l'IP.
+8. **Faire tourner le secret HMAC invalide tous les PINs** (chaque membre se reconnecte par mot de passe) — c'est voulu, et à écrire dans la procédure de mise en service.
+
+**D355, § 5 — S-260, que la réponse de Ko (1 d) transforme en R-6 :**
+
+- **S-260** — **`quote.promote` n'écrit pas `actorMemberId` : relevé, rapporté, NON corrigé.** Hors de la liste de DR5 (la promotion n'y figure pas) ; « un défaut croisé se rapporte ». *Pour Ko : une question possible — DR5 dit « toute action de personnel » : la liste entre parenthèses est-elle limitative ? Entrée de backlog, à ordonner.*
+
+## Fichiers CONDITIONNELS (leur existence ou leur modification dépend d'un résultat)
+
+Le rapport dit lesquels existent.
+
+- **Les suites d'intégration EXISTANTES qui comptent ce que le lot change** — condition : une assertion existante porte sur la forme de la réponse de K-14, K-15 ou K-18 (le corps gagne la clé `pin`), sur le nombre de lignes d'`audit_logs`, sur la liste des routes ou des clés de débit, ou sur la liste des colonnes de `pro_staff_members` ; la porte `test:int` et la découverte des campagnes le disent, leur lecture AVANT n'a pas pu les épuiser (S-264) :
+
+```
+apps/api/test/int/staff-activation.int-spec.ts
+apps/api/test/int/staff-login.int-spec.ts
+apps/api/test/int/staff-password.int-spec.ts
+apps/api/test/int/staff-members.int-spec.ts
+apps/api/test/int/staff-capabilities.int-spec.ts
+apps/api/test/int/staff-last-manager.int-spec.ts
+apps/api/test/int/staff-password-expiry.int-spec.ts
+apps/api/test/int/staff-schema.int-spec.ts
+apps/api/test/int/contract-api-client.int-spec.ts
+apps/api/test/int/log-temporary-password.int-spec.ts
+apps/api/test/int/log-set-cookie.int-spec.ts
+apps/api/test/int/rbac-all-routes.int-spec.ts
+apps/api/test/int/staff-login-race.int-spec.ts
+apps/api/test/int/row-lock.ts
+```
+
+- **Les specs unitaires EXISTANTES dont un double de port ou une attente de forme change** — condition : le port `StaffStore` gagne des méthodes (un double écrit avec `satisfies` ne compile plus) ou une réponse gagne une clé :
+
+```
+apps/api/src/staff/staff-session.guard.spec.ts
+apps/api/src/staff/staff-members.service.spec.ts
+apps/api/src/staff/staff-session-policy.spec.ts
+apps/api/src/staff/staff-cookies.spec.ts
+```
+
+- **Les harnais de campagnes EXISTANTES dont une ancre se périme** — condition : le texte visé a changé de forme (le magasin, le service et le port du personnel, le fichier des devis) ; chaque ancre révisée compte son fragment avant d'écrire, et la campagne est rejouée EN ENTIER :
+
+```
+neutralisation/neutralize-r44.py
+neutralisation/neutralize-r56.py
+neutralisation/neutralize-r57.py
+neutralisation/neutralize-r41.py
+neutralisation/neutralize-r43.py
+```
+
+- **Les pièces d'un lot précédent annotées** — condition : le tri de la passe D277 trouve une affirmation périmée dans une pièce versée (annotation additive, jamais une réécriture) : aucune à l'ouverture.
+
+## Extensions de la table
+
+**Extension 1 — avant le commit des pièces du premier versement** (la lecture adverse de la consigne ET du cadrage, la carte, la règle des portes, le premier audit de secrets) : le script de recopie des citations (la section E ci-dessus), la première passe de l'instrument de la lecture adverse (gardée à côté de la seconde : elle portait trois défauts d'instrument, confrontés à la source brute avant d'être crus, D275), l'audit de secrets « a » et son tri. Chemins complets :
+
+```
+docs/preuves/D356/recopier-citations.py
+docs/preuves/D356/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D356/audit-secrets-d356a.txt
+docs/preuves/D356/tri-audit-d356a.txt
+```
+
+**Extension 2 — avant le commit des pièces des ROUGES** (D334, item 5 : le commit des pièces de rouge PRÉCÈDE le premier commit de code). Les sorties lues contre l'état d'avant, avec l'empreinte sha256 de chaque fichier de test joué ; les deux outils qui les ont jouées et lues (copies adaptées des pièces de D355, jamais promues en instruments) ; la lecture des rouges ; les deux passes de la famille « intégration » antérieures à la finale (la première tombait à la collecte par une faute de mes tests, la seconde portait onze `TypeError` de matcher : gardées, corrigées, rejouées) ; l'audit de secrets « b » et son tri. Chemins complets :
+
+```
+docs/preuves/D356/rouges/jouer-rouges.py
+docs/preuves/D356/rouges/lire-rouges.py
+docs/preuves/D356/rouges/rouge-unit.txt
+docs/preuves/D356/rouges/rouge-client.txt
+docs/preuves/D356/rouges/rouge-int.txt
+docs/preuves/D356/rouges/passe-1/rouge-int.txt
+docs/preuves/D356/rouges/passe-2/rouge-int.txt
+docs/preuves/D356/rouges/lecture-rouge-unit.txt
+docs/preuves/D356/rouges/lecture-rouge-client.txt
+docs/preuves/D356/rouges/lecture-rouge-int.txt
+docs/preuves/D356/rouges/lecture-des-rouges.md
+docs/preuves/D356/audit-secrets-d356b.txt
+docs/preuves/D356/tri-audit-d356b.txt
+```
+
+**Extension 3 — avant le commit du CODE et des pièces de sa construction** (le code et les tests du lot sont déjà tous déclarés ci-dessus, aux chemins complets de la section B ; cette extension déclare les **pièces** qui les accompagnent) : la déclaration des corrections apportées aux tests APRÈS leur rouge (empreinte avant / après de chaque fichier, ce qui a changé, pourquoi aucune assertion n'est affaiblie) ; le geste de Ko pour le secret du PIN, pas à pas ; et les pièces qui fabriquent et préparent la campagne `neutralize-r58.py` — le constructeur (qui LIT le moteur de `neutralize-r57.py`, aucune ligne retapée), la liste des cibles, le vérificateur d'ancres sur l'arbre (lecture seule), la copie de l'outil qui écrit les titres relevés par la découverte, et ses deux sorties brutes de découverte, le dictionnaire de titres qui en résulte, la sortie de la campagne. Chemins complets :
+
+```
+docs/preuves/D356/corrections-tests-apres-rouges.txt
+docs/preuves/D356/secret-pin-ko.md
+docs/preuves/D356/neutralisation/construire-r58.py
+docs/preuves/D356/neutralisation/cibles-r58.txt
+docs/preuves/D356/neutralisation/verifier-arbre.py
+docs/preuves/D356/neutralisation/remplir-titres.py
+docs/preuves/D356/neutralisation/decouverte-unit.txt
+docs/preuves/D356/neutralisation/decouverte-int.txt
+docs/preuves/D356/neutralisation/titres.json
+docs/preuves/D356/neutralisation/campagne-r58.txt
+```
+
+⚠ Les journaux de campagne MASQUÉS, les journaux des portes MASQUÉS, la campagne des harnais touchés, la passe D277, les audits « c » et « d » et leurs tris, le contrôle de fin de lot et les copies des instruments rejoués (`lancer-touchees.py`, `masquer-jetons.py`) sont déclarés par des extensions ULTÉRIEURES, en chemins complets, avant les commits qui les versent.
+
+**Extension 4 — avant le commit de la campagne `r58`** : le harnais lui-même (déjà déclaré, section B) ne change pas de chemin ; sont déclarés ici, en chemins COMPLETS, la première passe de découverte (unitaire seule : elle n'a joué que 38 cibles sur 107, les autres exigeant `--int`), la découverte complète, la redécouverte de la seule cible S-5 (mesure d'abord muette : un test dont l'assertion d'arguments était masquée par une exception, réparé), la première passe de la campagne (**105 mordues sur 106, UNE muette : M-9**, dont la mesure unitaire ne rougissait que par un `TypeError`), la campagne rejouée EN ENTIER après le retrait de cette mesure, et les **198 journaux de mesure MASQUÉS** de la campagne finale. ⚠ `decouverte-int.txt`, déclaré à l'extension 3, n'existera pas : la découverte complète l'a remplacé (écrit ici, pas tu).
+
+```
+docs/preuves/D356/neutralisation/decouverte-complete.txt
+docs/preuves/D356/neutralisation/decouverte-s5.txt
+docs/preuves/D356/neutralisation/campagne-r58-passe-1.txt
+docs/preuves/D356/neutralisation/r58-journaux/C-1-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/C-2-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/C-3-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/C-4-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/C-4-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/C-5-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/C-5-parite.log
+docs/preuves/D356/neutralisation/r58-journaux/E-1-etat.log
+docs/preuves/D356/neutralisation/r58-journaux/E-1-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/E-2-etat.log
+docs/preuves/D356/neutralisation/r58-journaux/E-3-etat.log
+docs/preuves/D356/neutralisation/r58-journaux/E-4-etat.log
+docs/preuves/D356/neutralisation/r58-journaux/F-1-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-1-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-2-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/F-2-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-3-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/F-3-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-4-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-4-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-4-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-5-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-5-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-5-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-6-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-6-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-7-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-7-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-8-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-8-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/F-9-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/F-9-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/G-1-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/G-2-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/G-3-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/G-4-int-garde.log
+docs/preuves/D356/neutralisation/r58-journaux/G-4-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/G-5-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/H-1-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/H-1-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/H-2-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/H-3-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/H-4-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/H-5-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/H-6-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/K-1-client-api.log
+docs/preuves/D356/neutralisation/r58-journaux/K-1-int-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/K-2-client-api.log
+docs/preuves/D356/neutralisation/r58-journaux/M-1-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-10-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-10-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-2-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-3-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/M-3-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-3-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-4-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/M-4-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-5-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-5-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-6-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-6-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-7-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-7-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-8-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-8-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/M-9-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/M-9-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-1-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-10-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-10-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-11-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/O-11-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-12-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/O-12-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-13-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-13-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-2-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-2-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-3-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-3-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-4-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-4-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-5-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-5-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-6-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-6-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-7-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-7-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-8-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-8-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/O-9-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/O-9-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-1-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-2-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-3-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-4-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-5-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-6-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-7-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-8-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/P-9-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/Q-1-int-promote.log
+docs/preuves/D356/neutralisation/r58-journaux/Q-1-magasin-devis.log
+docs/preuves/D356/neutralisation/r58-journaux/Q-2-int-promote.log
+docs/preuves/D356/neutralisation/r58-journaux/Q-2-service-devis.log
+docs/preuves/D356/neutralisation/r58-journaux/Q-3-int-promote.log
+docs/preuves/D356/neutralisation/r58-journaux/R-1-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/R-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-10-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-10-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-11-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-2-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/R-2-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-2-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-3-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/R-3-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-3-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-4-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-4-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-5-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-5-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-6-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-6-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-7-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-7-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-8-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-8-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-9-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/R-9-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/S-1-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-10-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/S-10-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-11-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-12-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/S-12-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-13-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/S-13-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-14-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/S-14-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-15-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/S-15-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-16-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/S-16-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-2-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/S-2-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-3-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/S-3-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-4-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-5-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-6-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/S-6-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-7-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-8-service.log
+docs/preuves/D356/neutralisation/r58-journaux/S-9-service.log
+docs/preuves/D356/neutralisation/r58-journaux/T-1-int-debit.log
+docs/preuves/D356/neutralisation/r58-journaux/T-2-int-debit.log
+docs/preuves/D356/neutralisation/r58-journaux/V-1-env.log
+docs/preuves/D356/neutralisation/r58-journaux/V-2-env.log
+docs/preuves/D356/neutralisation/r58-journaux/V-3-env.log
+docs/preuves/D356/neutralisation/r58-journaux/W-1-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/W-2-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/W-3-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/W-4-int-garde.log
+docs/preuves/D356/neutralisation/r58-journaux/W-4-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/W-4-sources.log
+docs/preuves/D356/neutralisation/r58-journaux/W-5-int-debit.log
+docs/preuves/D356/neutralisation/r58-journaux/X-1-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/X-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-1-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-1-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-1-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-2-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-2-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-3-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/Z-3-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-client-api.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-env.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-etat.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-hacheur.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-audit.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-contrat.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-course.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-debit.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-emission.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-garde.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-int-promote.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-magasin-devis.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-magasin.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-parite.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-pin.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-service-devis.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-service.log
+docs/preuves/D356/neutralisation/r58-journaux/prevol-sources.log
+```
+
+**Extension 5 — avant le commit des campagnes TOUCHÉES** : les sorties (masquées) des campagnes que le lot touche, jouées par `docs/preuves/D354/neutralisation/lancer-touchees.py b54e383` (copie non modifiée, pas recopiée ici : l'original de D354 est la pièce) puis, pour celles que leur ancre ou leur mesure d'intégration exigeaient, en `--int` : la première passe unitaire (12 campagnes ; `r44`, `r56`, `r57` arrêtées au départ par des ancres périmées, comme prédit), la première passe `--int`, et la seconde passe (après la révision des ancres : 20 au total, dont 11 dans `r44`, 5 dans `r56`, 4 dans `r57`, puis A-5 de `r57` et A-31 de `r44`, deux mutations réparées). Chemins complets :
+
+```
+docs/preuves/D356/neutralisation/touchees/int-adm2-passe-2.txt
+docs/preuves/D356/neutralisation/touchees/int-r33-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r39-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r41-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r42-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r43-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r44-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r44-passe-2.txt
+docs/preuves/D356/neutralisation/touchees/int-r44b-passe-2.txt
+docs/preuves/D356/neutralisation/touchees/int-r56-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r57-passe-1.txt
+docs/preuves/D356/neutralisation/touchees/int-r57-passe-2.txt
+docs/preuves/D356/neutralisation/touchees/int-r58-passe-2.txt
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-booking-status.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r29.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r33.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r38.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r39.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r41.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r42.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r43.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r44.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r56.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-r57.py.log
+docs/preuves/D356/neutralisation/touchees/unite-neutralize-s10b.py.log
+docs/preuves/D356/neutralisation/touchees/unite-resume.txt
+```
+
+**Extension 6 — avant le commit des pièces des PORTES, de la passe D277, du dernier audit de secrets et du contrôle de fin de lot** : les journaux bruts des six portes MASQUÉS par `masquer-jetons.py` (la copie de D354, non modifiée) — dont la seconde passe e2e —, l'index et l'état machine relevés par le pilote de D340 (non modifié), la passe D277 dans les deux sens, l'audit de secrets « c » (le dernier versement : portes, campagnes, harnais, geste de Ko, corrections) et son tri, et la sortie du contrôle de fin de lot (écrite APRÈS la poussée, D288 ; elle entre dans un commit propre, poussé à son tour). Chemins complets :
+
+```
+docs/preuves/D356/portes/_index.txt
+docs/preuves/D356/portes/FIN
+docs/preuves/D356/portes/etat-machine-pendant.txt
+docs/preuves/D356/portes/typecheck.txt
+docs/preuves/D356/portes/lint.txt
+docs/preuves/D356/portes/test.txt
+docs/preuves/D356/portes/build.txt
+docs/preuves/D356/portes/test-int.txt
+docs/preuves/D356/portes/test-e2e.txt
+docs/preuves/D356/portes/test-e2e-passe-2.txt
+docs/preuves/D356/passe-d277.txt
+docs/preuves/D356/audit-secrets-d356c.txt
+docs/preuves/D356/tri-audit-d356c.txt
+docs/preuves/D356/controle-fin-de-lot.txt
+```
+~~~~
 
 ⛔ **TABLE D'OUVERTURE DU RANG 57 (D355), recopiée à l'IDENTIQUE de `docs/preuves/D355/table-ouverture.md`** (premier commit du lot, `57fc15e`, SEUL ; extension 1 `d397176`, extension 2 `30f166a`, extension 3 `02bf30c`, extension 4 `1f7e223`, extension 5 `8aae2aa`, extension 6 `e1c1d9b`, extension 7 `ce28757`, chacune en commit propre AVANT le fichier qu'elle couvre ; **la copie ci-dessous est celle de la CLÔTURE** — elle porte les SEPT extensions, la cinquième déclarant à l'avance les pièces de la passe D277, du contrôle de fin de lot et de l'audit « d », la sixième les attestations de « le même arbre », la septième les procédures d'écriture des fichiers d'autorité) :
 
@@ -4387,9 +4940,35 @@ session cherchera la cause dans le code. ⚠ **Premier geste du lot : un RELEVÉ
 un correctif** — rien ne dit que `walkin-journey.test.tsx` soit le seul fichier
 concerné, et corriger le seul cas connu laisserait les autres armés.
 
-## PROCHAIN LOT — rang 57 · `[CODE]` **les restes de L36-3a-2 : une connexion ne survit plus à une réinitialisation, et le journal des écritures d'une fiche client (DR5)** ⛔ **CLOS SUR LE CODE LE 20/11/2026 (D355)** *(ouvert le 19/11/2026 : la table d'ouverture, la lecture adverse, les cartes, les rouges et l'arbitrage de Ko écrits avant le code)*
+## PROCHAIN LOT — rang 58 · `[CODE]` **L36-3b : le PIN du personnel, côté serveur (secret HMAC, générateur et liste des PIN triviaux, compteur atomique de trois essais, verrouillage et déblocage, expiration, K-23)** ⛔ **CLOS SUR LE CODE LE 21/11/2026 (D356)** *(ouvert le 20/11/2026 : la table d'ouverture, la lecture adverse de la consigne et du cadrage, la carte du journal, les rouges et l'arbitrage de Ko écrits avant le code)*
 
-### ⛔ ÉTAT À LA CLÔTURE DU RANG 57 (D355, 20/11/2026) — À LIRE EN PREMIER
+### ⛔ ÉTAT À LA CLÔTURE DU RANG 58 (D356, 21/11/2026) — À LIRE EN PREMIER
+
+⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
+
+⛔ **LE GESTE DE KO EST NÉCESSAIRE : sans `STAFF_PIN_HMAC_SECRET` dans `apps/api/.env`, l'API REFUSE DE DÉMARRER sur son poste** — relevé du 20/11/2026 à 20:04 : 0 ligne portant ce nom sur 39. Pas à pas : `docs/preuves/D356/secret-pin-ko.md`.
+
+| question | réponse | lue où |
+|---|---|---|
+| rang | **58 : CLOS SUR LE CODE** — L36-3b, le PIN côté serveur ; arbitré par Ko par adoption de la consigne du relecteur du 20/11/2026 ; **aucune migration, aucun écran, aucun code d'erreur neuf** ; contrats d'API : K-23 neuf, le PIN rendu une fois par K-14, K-15, K-18 | ordre des rangs |
+| rang suivant | **« RANG 59 : EN ATTENTE DE CADRAGE DU RELECTEUR »** — candidat proposé (consigne du rang 58, § 4) : **L36-4, les écrans du personnel** — **pas arbitré** | ordre des rangs |
+| numéros | **D356 est au registre** ; dernier numéro attribué : **D356**. Un numéro se prend en LISANT le registre | registre |
+| compteur | POUR MÉMOIRE **TRENTE-HUIT** (TRENTE-SEPT + ce lot de code) ; limite de cinq SUSPENDUE par Ko ; **aucune certification, aucune marque** | `AGENTS.md` |
+| ce que le lot livre | **le PIN** : générateur et liste fermée de 210 PIN triviaux (`staff-pin.ts`), hacheur HMAC-SHA-256 à temps constant (`staff-pin-hasher.ts`, le SEUL fichier qui calcule un HMAC), secret obligatoire partout et exigé en production (`env.ts`), état du PIN (`staff-account-state.ts`) ; **K-23** (`POST /pro/staff/pin-login`) ; la **réservation** d'un essai en UNE instruction, le **verrou** au troisième échec sur CE PIN, l'**ouverture conditionnée** sous verrou, l'**émission** par le mot de passe (activation, connexion, changement) sous le verrou du membre, l'**effacement** par K-21 et K-22 ; **quatre lignes de journal** et `quote.promote` qui porte le membre ; `neutralize-r58.py` (106 cibles) ; **trois tests d'intégration existants et quatre tests unitaires corrigés ou ajoutés, tous déclarés** | section D356 |
+| ce que le lot NE livre PAS | les écrans (L36-4) ; le recours d'un Manager seul ; la réactivation et le changement de rôle ; la recherche d'annuaire (L36-5) ; **la réémission des PIN après une rotation du secret** ; **qui LIT le journal** ; la correction de l'intermittence de `Reflector` | `ZWADJ_BACKLOG.md`, « Reports du 21/11/2026 — rang 58 » |
+| rouges | unitaire **75 en échec · 305 passés** (30 `AssertionError` · 45 `TypeError` · 2 fichiers tombés à la collecte), client d'API **2 en échec · 10 passés**, intégration **64 en échec · 33 passés** (48 `AssertionError` · 12 `TypeError`), versés AVANT le premier commit de code, empreinte de chaque fichier de test jouée ; **deux fautes de MES tests relevées et gardées** (l'aide qui importait le hacheur, onze `TypeError` de matcher) ; **un rouge pour la mauvaise raison, nommé** (la garde « temps constant » rougissait sur son propre calibrage) | `docs/preuves/D356/rouges/` |
+| portes | **`typecheck` 0 (17 s) · `lint` 0 (15 s) · `test` 0 (117 s) · `build` 0 (33 s) · `test:int` 0 (591 s : 63 fichiers / 1 003 tests) · `test:e2e` 0 (385 s)**, **première passe, aucun rejeu** ; `test` : api-client 9 / 82, api **95 / 1 745**, client 47 / 583, pro 58 / 862 ; sur `HEAD` `eae8d78`, secteur (0 échantillon sur batterie sur 38), arbre propre ; **`chrome` à 9 processus (le navigateur de Ko) pendant la passe** : non certifiant, relevé | `docs/preuves/D356/portes/` |
+| e2e | **deux passes vertes de suite**, 109 passés + 1 ignoré chacune (6,4 puis 5,9 minutes) | `docs/preuves/D356/portes/` |
+| campagnes | **`r58 --int` ENTIER : 106 sur 106**, 0 muette, 0 non mesurée, 0 non jouée, toutes lues en `AssertionError`, empreinte en tête de chaque journal versé (198 journaux masqués) ; **première passe : 105 sur 106, UNE muette (M-9), rejouée en entier après le retrait de sa mesure unitaire** ; touchées : `booking-status` 3/3, `r29` 15/15, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r41` 70/70, `r42` 28/28, `r43` 87/87, **`r44` 236/236**, **`r56` 117/117**, **`r57` 56/56**, `s10b` 20/20, `adm2` 69/69 (15 non jouées sans `--int` ni `--e2e`) ; **vingt ancres révisées (r44 : 11, r56 : 5, r57 : 4), deux mutations réparées (A-5 de r57, A-31 de r44), campagnes rejouées en entier** ; `--tout` NON joué | `docs/preuves/D356/neutralisation/` |
+| décisions prises seule | **S-269 à S-282**, à ratifier | section D356, § 6 |
+| ce que l'arbre garde | commits locaux puis POUSSÉS (`origin/main`) — voir le contrôle de fin de lot | `docs/preuves/D356/controle-fin-de-lot.txt` |
+| écritures sur la machine de Ko | **aucune sur la base de développement, aucun `.env` modifié** (le NOM de la variable du secret a été COMPTÉ dans `apps/api/.env`, deux fois, sans qu'aucune valeur soit lue) ; sur le serveur PostgreSQL de Docker : `zwadj_test`, `zwadj_e2e` et `zwadj_migration_test` (jetables, recréées à chaque lancement) | section D356, § 7 |
+| gestes de Ko | **UN : le secret du PIN** (trois commandes PowerShell, `docs/preuves/D356/secret-pin-ko.md`) ; aucun écran, rien à regarder | section D356, § 8 |
+| ce qui RESTE | (1) **le geste de Ko** ; (2) le rang 59, à cadrer ; (3) la ratification de S-269 à S-282 ; (4) **la rotation du secret ne réémet pas les PIN** (écrit, non mesuré) ; (5) ⛔ le fournisseur des fonds de carte de production et la relecture juridique : BLOQUENT LE LANCEMENT ; (6) ⛔ la MFA et la relecture du rôle en base : BLOQUENT TOUT DÉPLOIEMENT ; (7) les entrées de backlog neuves (« Reports du 21/11/2026 — rang 58 ») | backlog |
+
+## ~~PROCHAIN LOT — rang 57~~ ⛔ *(D356 : l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 58 » juste au-dessus ; le bloc du rang 57 qui suit garde sa date. Barré avec son motif, pas effacé.)* · `[CODE]` **les restes de L36-3a-2 : une connexion ne survit plus à une réinitialisation, et le journal des écritures d'une fiche client (DR5)** ⛔ **CLOS SUR LE CODE LE 20/11/2026 (D355)** *(ouvert le 19/11/2026 : la table d'ouverture, la lecture adverse, les cartes, les rouges et l'arbitrage de Ko écrits avant le code)*
+
+### ~~⛔ ÉTAT À LA CLÔTURE DU RANG 57 (D355, 20/11/2026) — À LIRE EN PREMIER~~ ⛔ *(D356, 21/11/2026 : **PÉRIMÉ** sur « rang suivant : RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR », « compteur TRENTE-SEPT », « le PIN (3b) et ses journaux … ne sont PAS livrés » et « `quote.promote` sans `actor_member_id` (S-260) » ; le reste est daté.)*
 
 ⛔ **Écrit à la CLÔTURE (D294).** Si `git log` et ce bloc se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et ce bloc qui se corrige.
 
@@ -5794,7 +6373,7 @@ Chaque extension s'ajoute ici, dans un commit propre, avec son motif, **AVANT** 
 | mesure | le garde coûte **+1,851 ms par requête Pro** (+11,8 %), couche éteinte ; la couche ACTIVÉE n'est pas mesurée | `docs/preuves/D341/mesure/LISEZ-MOI.md` |
 | écriture sur la base de développement de Ko | **aucune** (la sonde de dérive COPIE la base par `TEMPLATE`, une lecture, et supprime la copie) ; la migration n'y est pas appliquée (S-129) | `docs/preuves/D341/derive-prisma.txt` |
 | clôture | commitée ET poussée ; local et `origin/main` sur le même SHA, rapportés | `docs/preuves/D341/controle-fin-de-lot.txt` |
-| ce qui reste OUVERT | **(1) le rang 45** (le relecteur cadre) ; **(2) S-113 à S-129 à ratifier** — dont **S-116 : MP-17 ne promettait pas ce que la consigne lui faisait dire** ; **(3) K-19 à K-23** non ratifiés ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ; **(4)** le recours d'un Manager seul (MP-44), MP-14 / MP-25 (S-104 non codée) ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)*, l'angle mort du tri de campagnes, la garde des sorties console, NB-6 : backlog, sans rang ; **(5)** la contrainte de mise en service de `SameSite=Strict` (Pro et API sur le même site) ; la pause du paiement en ligne (E3 et R1) est **inchangée** | section D341, §§ 9 et 11 |
+| ce qui reste OUVERT | **(1) le rang 45** (le relecteur cadre) ; **(2) S-113 à S-129 à ratifier** — dont **S-116 : MP-17 ne promettait pas ce que la consigne lui faisait dire** ; **(3) K-19 à K-23** non ratifiés ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ; **(4)** le recours d'un Manager seul (MP-44), MP-14 / MP-25 (S-104 non codée) ⛔ *(D354, 19/11/2026 : **S-104 EST CODÉE** — rang 56 : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; l'état est jugé par `etatDuCompte`, pas copié de la colonne, et K-20 et K-21 posent `must_change_password` : « rien ne l'écrit à `true` » et « un mot de passe expiré ouvre une session » sont **PÉRIMÉS**. Annoté, pas réécrit.)*, l'angle mort du tri de campagnes, la garde des sorties console, NB-6 : backlog, sans rang ; **(5)** la contrainte de mise en service de `SameSite=Strict` (Pro et API sur le même site) ; la pause du paiement en ligne (E3 et R1) est **inchangée** | section D341, §§ 9 et 11 | ⛔ *(D356, 21/11/2026 : **K-23 est CODÉ** — autorisé par la consigne du rang 58, § 1 b (adoptée par Ko) ; le rang 58 est clos sur le code. Annoté, pas réécrit.)*
 | ce que le lot ne fait PAS | créer, lister, réinitialiser ou désactiver un membre ; les capacités d'un EMPLOYÉ ; le PIN ; un écran ; la réinitialisation d'un Manager par un ADMIN ; tout envoi réel | section D341 |
 
 ⛔ **Ce que cet état rend permis, dit pour que la passe D277 le retrouve** : **un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9) ; la limite de cinq est suspendue, le compteur à QUATRE n'est pas ce qui retient. **Ce qu'il NE rend PAS permis** : ouvrir L36-3a-2 ou L36-3b sans consigne collée ; coder K-19 à K-23 avant leur ratification ; coder S-104 hors de L36-3a-2.
@@ -6072,7 +6651,7 @@ Ordre des audits de la clôture, qui suit l'ordre des commits : « d » (déclar
 
 ⛔ **MISE À JOUR DU 04/11/2026 (note de Ko, R-7 à R-10 ; D340)** : **la passe sur SECTEUR (R-8) est VERTE** — `typecheck` 0 · `lint` 0 · `build` 0 · `test` 0 (**148 fichiers, 2 194 tests**) · `test:int` 0 (**40 fichiers, 619 tests**) · `test:e2e` 0 (**63 passés, 1 ignoré, 0 échec**), 29 relevés sur 29 « secteur », sur `b939301` ; **les passes du 03/11 sont NON CERTIFIANTES (R-7)** et ne décident rien, ni rouge ni vert ; **la clôture est POUSSÉE** (`docs/preuves/D340/controle-fin-de-lot-secteur.txt` le vérifie). Le rang 44 reste **OUVERT, CADRAGE POUSSÉ, RÈGLE D'ARRÊT JOUÉE** ; le compteur reste TROIS ; ce qui reste ouvert est la ligne « ce qui reste OUVERT » du tableau ci-dessus **sans son point (0)**, levé. Le relecteur donne la découpe, S-98 à S-112, la nullabilité et les garanties de base dans la consigne du code de L36-3a-1, **après** la poussée de D340 (point 3 de la note). `docs/preuves/D340/portes/regle-passe-secteur.md`, § 6.
 
-⛔ **Ce que cet état NE rend PAS permis** : **aucune ligne de code de L36-3 ne s'ouvre** avant que le relecteur ait répondu à la question du cadrage **et** que le schéma (DR8) ait été ratifié par Ko ; un lot de L36-3 qui s'ouvre sans rang que le relecteur a cadré (délégation) ou que Ko a arbitré viole « aucun lot hors de l'ordre des rangs » (D302). Le compteur est à TROIS et la limite de cinq est SUSPENDUE : ce n'est pas elle qui retient. ⛔ *(D341, 04/11/2026 : **LEVÉ POUR L36-3a-1 SEUL** — le relecteur a répondu à la question du cadrage (trois lots : L36-3a-1, L36-3a-2, L36-3b) et Ko a adopté, par la consigne de L36-3a-1, la nullabilité du § 5.2 et les six garanties du § 5.3 (DR8) et la ligne « K-14 à K-18 » ; du code de L36-3 PEUT donc s'écrire pour **L36-3a-1 seul**. L36-3a-2 et L36-3b n'ont pas de rang et attendent chacun une consigne collée (R-9 (D341)) ; K-19 à K-23 ne sont pas ratifiés. Annoté, pas réécrit.)* ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ⛔ *(D341, clôture, 06/11/2026 : **CONSOMMÉ POUR L36-3a-1** — le code est écrit et clos ; « du code de L36-3 PEUT donc s'écrire pour L36-3a-1 seul » n'ouvre plus rien. **Un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9 (D341)) ; K-19 à K-23 restent non ratifiés. Annoté, pas réécrit.)*
+⛔ **Ce que cet état NE rend PAS permis** : **aucune ligne de code de L36-3 ne s'ouvre** avant que le relecteur ait répondu à la question du cadrage **et** que le schéma (DR8) ait été ratifié par Ko ; un lot de L36-3 qui s'ouvre sans rang que le relecteur a cadré (délégation) ou que Ko a arbitré viole « aucun lot hors de l'ordre des rangs » (D302). Le compteur est à TROIS et la limite de cinq est SUSPENDUE : ce n'est pas elle qui retient. ⛔ *(D341, 04/11/2026 : **LEVÉ POUR L36-3a-1 SEUL** — le relecteur a répondu à la question du cadrage (trois lots : L36-3a-1, L36-3a-2, L36-3b) et Ko a adopté, par la consigne de L36-3a-1, la nullabilité du § 5.2 et les six garanties du § 5.3 (DR8) et la ligne « K-14 à K-18 » ; du code de L36-3 PEUT donc s'écrire pour **L36-3a-1 seul**. L36-3a-2 et L36-3b n'ont pas de rang et attendent chacun une consigne collée (R-9 (D341)) ; K-19 à K-23 ne sont pas ratifiés. Annoté, pas réécrit.)* ⛔ *(D354, 19/11/2026 : **K-19 à K-22 sont ADOPTÉS par Ko** (consigne du rang 56, § 1 b) **et CODÉS** ; K-23 (la connexion par PIN, lot 3b) reste non ratifié. Annoté, pas réécrit.)* ⛔ *(D341, clôture, 06/11/2026 : **CONSOMMÉ POUR L36-3a-1** — le code est écrit et clos ; « du code de L36-3 PEUT donc s'écrire pour L36-3a-1 seul » n'ouvre plus rien. **Un lot de code de L36-3 PEUT s'ouvrir quand le relecteur cadre le rang 45 et que Ko colle la consigne** (R-9 (D341)) ; K-19 à K-23 restent non ratifiés. Annoté, pas réécrit.)* ⛔ *(D356, 21/11/2026 : **K-23 est CODÉ** — autorisé par la consigne du rang 58, § 1 b (adoptée par Ko) ; le rang 58 est clos sur le code. Annoté, pas réécrit.)*
 
 ⛔ **La reprise se fait par ce fichier seul.** Lire dans l'ordre : le bloc « ARBITRÉ LE 03/11/2026 PAR KO — LE RANG 44 » (ordre des rangs), la section D340, puis `docs/preuves/D340/cadrage.md` — **§ 0 (le verdict), § 6 (la découpe), § 8 (la question)**.
 
@@ -8587,6 +9166,67 @@ reflété en arabe. V-b · il efface les réponses. **Nouveau devis (Q)** — Q-
 vide pas tout. **Fenêtre (F)** — F-a · elle s'ouvre **avant** la réponse du serveur. F-b · elle s'ouvre sur un échec. F-c · elle ne
 nomme pas la date, l'action, ou le client. **Assistant de salle (U)** — U-a · « Enregistrer » à l'étape 7 : ni requête ni message. U-b ·
 le message dit « enregistré » alors qu'**aucune requête n'est partie**. U-c · la valeur enregistrée n'est pas celle saisie.
+
+## Session des 20 et 21/11/2026 — D356 · rang 58 CLOS SUR LE CODE, lot de CODE : L36-3b — le PIN du personnel côté serveur (tiré, haché en HMAC avec un secret hors base, trois essais atomiques, verrou sur CE PIN, déblocage par le mot de passe, expiration, K-23, quatre lignes de journal, `quote.promote` qui porte le membre)
+
+⛔ **Écrit à la CLÔTURE.** Si `git log` et cette section se contredisent, c'est `git` qui fait foi sur l'ÉTAT (D276) et cette section qui se corrige. Les chiffres de portes et de campagnes sont **ceux des pièces versées** (`docs/preuves/D356/`), jamais recopiés de mémoire. **Une seule session a écrit ce lot** (reprise à froid par `ZWADJ_CONTINUITE.md` ; la consigne attendait « rang 57 CLOS, compteur TRENTE-SEPT, `origin/main` = `b54e383`, arbre propre » : les quatre étaient exacts).
+
+### 1. Ce que le lot livre, et où
+
+- **Le PIN** : `staff-pin.ts` (module PUR : `generatePin(nextInt, length)` tire jusqu'à un PIN non trivial, borné à 1 000 tirages ; `isTrivialPin` : la liste FERMÉE — un chiffre, suite montante ou descendante, abab, aabb — soit **210 PIN sur 10 000** pour quatre chiffres) ; `staff-pin-hasher.ts` (`StaffPinHasher` : **le SEUL fichier qui calcule un HMAC** — `digest` est l'unique appel ; `verify` à temps constant, un haché mal formé rend `false` ; `verifyAgainstDummy` paie le MÊME calcul ; `generate` par `randomInt`) ; `STAFF_LIMITS.PIN_LENGTH` et `PIN_MAX_FAILURES` (le plafond est celui de la `CHECK` de la migration de D341 : l'autorité est la migration, D186).
+- **Le secret** : `STAFF_PIN_HMAC_SECRET` — `min(32)`, **sans valeur par défaut**, obligatoire partout, dans `PROD_REQUIRED_EXPLICIT`, lu **à un seul endroit** (le fournisseur de `staff.module.ts`) ; `.env.example` ne porte que le NOM (D200) ; les tests posent leur valeur jetable (`apps/api/test/int/setup-env.ts`, `e2e/playwright.config.ts`).
+- **K-23** `POST /pro/staff/pin-login` `{ memberId, pin }` → `{ member }` (jamais un PIN) : `@StaffExempt()` (la **cinquième** route exemptée, liste fermée), limite de débit propre (`staffPin`, 60 par 15 minutes par IP, le MÊME levier de test que les autres, D128). **L'ordre est la règle** : la salle du Bearer → le membre et son état (`etatDuCompte`, à l'heure de la base) → les cookies d'appareil (sans eux la réservation n'est PAS demandée : aucun essai consommé, MP-2) → la **réservation** atomique → la vérification du PIN (le vrai haché n'est vérifié que si l'essai est réservé) → l'**ouverture conditionnée**. **UN refus, UN corps, UN coût** : le même 401 `STAFF_INVALID_CREDENTIALS` (aucun code neuf) et UN calcul de HMAC (le vrai ou le factice), compté par espion, jamais par chronomètre.
+- **Le magasin** (`staff-store.prisma.ts`) : `reservePinAttempt` (UNE instruction : un CTE `FOR UPDATE OF m` puis l'`UPDATE … RETURNING`, TOUTES les conditions — salle, actif, PIN présent, non expiré, non verrouillé, sous le plafond, **un appareil vivant du membre présenté** — : vingt requêtes parallèles = **trois comptées**) ; `recordPinFailure` (la ligne d'échec ; au troisième échec le verrou se pose SOUS CONDITION du haché lu, les sessions du membre prennent fin `PIN_LOCKED`, la ligne de verrouillage) ; `openSessionByPin` (le CAS du membre : salle, `status = 'ACTIVE'`, **haché lu**, `pin_locked_at` nul, échéance ; puis l'appareil re-vérifié sous `FOR UPDATE` : s'il n'est plus vivant la transaction est **ANNULÉE ENTIÈRE** ; la session ; la ligne `staff.pin_login`) ; `emettreLePin` (**l'émission**, sous le verrou que le CAS ou le `FOR UPDATE` vient de prendre : un PIN non valable — absent, expiré, verrouillé — est remplacé par le haché candidat ; verrouillé, il écrit aussi `staff.pin_unlock` ; **aucune ligne pour l'émission elle-même**, réponse de Ko 1 d) ; l'échéance d'un appareil neuf est `LEAST(durée de l'appareil, échéance du PIN)` ; K-21 et K-22 **effacent les cinq colonnes `pin_*`** dans leur UPDATE.
+- **Les réponses** : K-14, K-15 et K-18 rendent le PIN **UNE fois** (`Cache-Control: no-store`), `null` quand le membre en a déjà un valable ; `packages/api-client` : `pinLogin`, chemin LITTÉRAL (D182). `etatDuPin` (module pur, jumelle d'`etatDuCompte`, S-270).
+- **Le journal** (R-5) : `staff.pin_login`, `staff.pin_login_failed`, `staff.pin_lock`, `staff.pin_unlock` — dans la transaction, `actor_member_id` renseigné, charge utile FERMÉE (jamais un PIN, jamais un haché), **mesuré sur le journal RÉEL des requêtes** de l'application démarrée ; **`quote.promote` porte le membre** (R-6). La carte de D355 est complétée **additivement** : `docs/preuves/D356/carte-journal-dr5.md` (numéros de ligne et titres de test relevés dans le code livré).
+
+### 2. Les rouges (AVANT le code) et ce qu'ils disent
+
+Contre l'arbre d'avant le lot : **unitaire 75 en échec · 305 passés** (30 `AssertionError`, 45 `TypeError`, 2 fichiers tombés à la collecte : les deux modules n'existent pas), **client d'API 2 en échec · 10 passés**, **intégration 64 en échec · 33 passés** (48 `AssertionError`, 12 `TypeError`, 1 erreur Prisma, 3 « import introuvable »). **La majorité sont des rouges d'ABSENCE** (collecte, `TypeError`, 404) : ils prouvent que les tests ne passent pas à vide, **pas** qu'une garde mord — la morsure est celle de `neutralize-r58.py`. Les rouges de DÉFAUT (une assertion sur ce que des routes EXISTANTES ne font pas encore) : le corps de K-14, K-15 et K-18 sans `pin`, les colonnes `pin_*` encore posées après une réinitialisation, les lignes du journal non écrites, `actor_member_id` nul sur `quote.promote`, le secret absent qui ne refuse pas le démarrage. **Deux fautes de MES tests** (versées, corrigées, rejouées) : l'aide d'intégration importait le hacheur (six fichiers tombaient à la collecte et masquaient les assertions — l'oracle du haché est maintenant calculé par `node:crypto` dans l'aide) ; onze `TypeError` venaient d'un matcher appelé sur un PIN `null`. **Un rouge pour la MAUVAISE raison** : la garde « la comparaison des hachés est à temps constant » rougissait sur son propre calibrage (un échantillon fautif que son expression ne voyait pas), avant même de chercher le hacheur absent — nommé dans `corrections-tests-apres-rouges.txt`, et la garde est mordue pour de bon par la cible H-4. **La prédiction de `regle-portes.md` contredite en partie** : deux tests de K-23 par la route ne PEUVENT pas rougir par assertion contre un code qui n'a ni le module ni la méthode (`lecture-des-rouges.md`, § 3).
+
+### 3. Les portes, l'e2e, les campagnes
+
+- **Portes** (première et unique passe du pilote de D340, aucun rejeu, sur `HEAD` `eae8d78`, secteur, 0 échantillon sur batterie sur 38, arbre propre) : `typecheck` 0 (17 s) · `lint` 0 (15 s) · `test` 0 (117 s : api-client 9 / 82, api 95 / 1 745, client 47 / 583, pro 58 / 862) · `build` 0 (33 s) · `test:int` 0 (591 s : 63 fichiers / 1 003 tests) · `test:e2e` 0 (385 s : 109 passés + 1 ignoré) ; **seconde passe e2e** (`pnpm test:e2e` seul, juste après) : 109 passés + 1 ignoré (5,9 minutes) — **deux passes vertes de suite** (R-15 de D343). Ce que l'e2e ne MESURE pas : le PIN (aucun écran) — elle garde le démarrage de l'API avec le secret jetable et le parcours existant. **`chrome` : 9 processus (le navigateur de Ko) pendant toute la passe** — non certifiant ; `headless_shell` 0 ; RAM libre 2,7 à 4,0 Go.
+- **Le développement a rendu rouge, avant les portes, UN fichier d'intégration hors du lot** : `migration-non-empty.int-spec.ts` — `DROP DATABASE "zwadj_migration_test" refusé ou expiré (statement_timeout 20 s)` pendant que l'audit de secrets tournait en parallèle (la suite avait duré 13 min 36 s) ; rejoué seul : vert (31 tests) ; **aux portes : vert** (63 / 1 003). Non attribué au code ; la charge de la machine est l'hypothèse, non mesurée.
+- **`neutralize-r58.py --int` ENTIER : 106 sur 106** (P 8, H 6, E 4, V 3, T 2, C 5, K 2, S 16, R 11, F 9, O 13, M 10, X 1, Z 3, W 5, Q 3, G 5), chaque morsure lue en `AssertionError` ; **première passe : 105 sur 106, UNE muette (M-9)** — la mesure unitaire `magasin` ne rougissait que par un `TypeError` (les réponses prévues d'un double décalées) : retirée de la cible (`int-emission` mord par assertion), campagne rejouée **EN ENTIER**. **La découverte a trouvé QUATRE trous de garde, tous fermés par une garde ou un retrait écrit** : **E-3** (l'absence l'emporte sur le verrou : aucune assertion — un test ajouté à `staff-account-state.spec.ts`) ; **P-9** (« un seul chiffre » : mutation ÉQUIVALENTE à quatre chiffres, « 0000 » étant aussi `abab` et `aabb` — retirée par écrit avec sa mesure verte) ; **S-5** (l'assertion d'arguments de `verify` était masquée par l'exception du service muté — l'appel est maintenant attendu d'abord) ; et un **test existant devenu aveugle par MON lot** : l'assertion `toContain(PASSWORD_VALIDITY_DAYS)` de l'activation ne distinguait plus la durée du mot de passe de celle du PIN (90 jours chacune) — rendue positionnelle.
+- **Les campagnes que le lot touche** (`lancer-touchees.py b54e383`, copie non modifiée de D354, 14 campagnes) : `booking-status` 3/3, `r29` 15/15, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r41` 70/70, `r42` 28/28, `r43` 87/87, `r44` 236/236, `r56` 117/117, `r57` 56/56, `s10b` 20/20, `adm2` 69/69 (15 non jouées sans `--int` ni `--e2e`), `r58` 106/106. **Comme la règle des portes le prédisait, des ancres étaient périmées** : r44 (11), r56 (5), r57 (4) arrêtées au départ (« ARBRE NON CONFORME ») ; révisées (le texte visé avait changé de forme : le magasin, le service, le contrôleur) ; **deux mutations réparées** : A-5 de r57 et A-31 de r44 (la variable `membre` du CAS s'appelle maintenant `ligne` : l'ancre visait l'autre site) ; **toutes rejouées en entier**. `r44` a rendu 232/236 (quatre muettes : deux assertions d'arguments rendues aveugles, deux titres de test changés par mon lot), puis 235/236 (A-31), puis 236/236 ; `r57` 55/56 (A-5) puis 56/56. `--tout` **NON joué** (livraison, pas ce lot).
+
+### 4. La lecture adverse d'ouverture (avant tout `.md` d'autorité)
+
+`docs/preuves/D356/lecture-adverse/` : la consigne ET le cadrage confrontés au dépôt par un script qui imprime les citations qu'il cherche ; **29 contrôles, 0 erreur** ; sa première passe (trois défauts d'instrument : la ligne « réservation n° 3 » que MP-1 ne dit pas, un message d'erreur de l'authentification choisi à la place de celui du personnel, les lignes de `ficheAuditEntry`) est **gardée à côté de la seconde**.
+
+### 5. Les décisions de la consigne, appliquées
+
+R-1 : aucune migration (la `CHECK` de `pin_failed_count` et les colonnes `pin_*` existent depuis D341). R-2 : le secret partout, jamais le `.env` de Ko lu — le NOM compté : **0 ligne sur 39** (relevé du 20/11/2026 à 20:04). R-3 : les quatre courses, par entrelacement FORCÉ sur PostgreSQL réel (un verrou de ligne tenu hors du service, `row-lock.ts`), **dont une qui part de la VRAIE route** ; PIN ‖ PIN : vingt requêtes parallèles = trois comptées, trois vérifications de HMAC, dix-sept refus non comptés. R-4 : l'émission. R-5 : le journal. R-6 : `quote.promote`. R-7/R-8 : respectés (rien dans `apps/pro` ni `apps/client`).
+
+### 6. Les décisions prises SEULE par la session (S-269 à S-282, à ratifier)
+
+- **S-269** — le verrou se pose au **TROISIÈME ÉCHEC**, sur CE PIN, et non à la troisième réservation : la consigne demandait à la fois MP-15 (le verrou au troisième essai) et R-3 (`pin_locked_at` nul exigé sous verrou) ; un verrou posé à la réservation aurait fait refuser le PIN JUSTE du troisième essai. **Ce que cela change pour Ko** : un membre qui se trompe deux fois puis tape le bon PIN entre.
+- **S-270** — `etatDuPin` est une fonction **JUMELLE** d'`etatDuCompte` dans le MÊME module (`staff-account-state.ts`), pas une branche d'`etatDuCompte` : **écart à la lettre de R-5** (« `etatDuCompte` porte l'état du PIN ») — une règle, un module, un jugement à l'heure de la base, mais deux fonctions (le compte et le PIN ont deux sujets). Rien n'est recopié.
+- **S-271** — le HMAC porte sur le **PIN seul**, pas sur l'identifiant du membre (à l'activation le membre n'existe pas encore quand le PIN est haché) : deux membres de même PIN auraient le même haché, visible de qui lit la base — qui n'a pas le secret.
+- **S-272** — un compte **au plafond sans verrou posé** (un arrêt entre la troisième réservation et l'écriture du verrou) se lit VERROUILLÉ (`pin_failed_count >= plafond`) ; le déblocage par le mot de passe le traite comme tel et écrit sa ligne.
+- **S-273** — la limite de débit de K-23 est **large** (60 par 15 minutes par IP) : un foyer ou un CGNAT partage une adresse ; la protection du PIN est le compteur PAR MEMBRE, pas l'IP.
+- **S-274** — la liste fermée des PIN triviaux est refusée au **tirage** seulement ; le schéma de K-23 n'en dit rien (un refus « PIN trivial » à la connexion dirait quelles valeurs sont exclues).
+- **S-275** — K-23 rend `{ member }`, pose le cookie de **session**, **jamais un cookie d'appareil neuf** (l'appareil est celui du poste).
+- **S-276** — l'oracle du haché des tests d'intégration (`hacherPin`, `node:crypto`) est indépendant du hacheur testé.
+- **S-277** — **la rotation du secret n'invalide que la VÉRIFICATION et ne réémet pas** : la connexion par mot de passe n'émet un PIN que s'il est absent, expiré ou verrouillé (un PIN non expiré est « valable » pour la base) ; la réinitialisation par un Manager (K-21) l'efface. **Écrit, non mesuré** ; le commentaire de `env.ts` qui disait l'inverse a été corrigé avant le commit.
+- **S-278** — **trois tests d'intégration existants corrigés** (`staff-activation`, `staff-login`, `staff-password` : le corps gagne `pin: null`, `pin_hash` est posé) et **quatre tests unitaires** (`staff-session.service.spec`, `staff-source-guards.spec`, `staff-store.prisma.spec`, `quotes.service.spec`) : **déclarés** avec l'empreinte avant / après dans `docs/preuves/D356/corrections-tests-apres-rouges.txt` ; aucune assertion affaiblie.
+- **S-279** — P-9 retirée (équivalente), M-9 allégée, E-3 comblée, S-5 réparée, **vingt ancres et deux mutations des harnais existants révisées** : chacune est une décision de forme sur un harnais, déclarée à la table (extension 5).
+- **S-280** — `migration-non-empty.int-spec.ts` rouge une fois pendant une suite concurrente de l'audit : **non corrigé**, rejoué seul (vert) et aux portes (vert) — l'hypothèse « charge » n'est pas mesurée.
+- **S-281** — la ligne d'échec d'un PIN est écrite **après** la réservation (qui a commité seule) : un arrêt entre les deux perd une ligne, le compteur est juste — **la même limite que le mot de passe**, écrite.
+- **S-282** — les portes ont tourné **avec `chrome` à 9 processus** (le navigateur de Ko) : non certifiant (la certification est suspendue) ; relevé, pas écarté.
+
+### 7. Ce que le lot a écrit sur la machine de Ko (règle de D337)
+
+**Base de développement : ni lue ni écrite**, aucune migration. **`apps/api/.env` : jamais lu pour ses valeurs ni modifié** — le NOM `STAFF_PIN_HMAC_SECRET` a été COMPTÉ par un script qui n'imprime que des nombres (**20/11/2026 20:04 : 39 lignes, 0 portant le nom** ; le second relevé est dans le rapport). Sur le serveur PostgreSQL de `zwadj-db` : `zwadj_test`, `zwadj_e2e`, `zwadj_migration_test` (jetables, recréées par les suites). Aucun fichier de sonde n'a été créé dans `apps/`.
+
+### 8. Le geste de Ko
+
+`docs/preuves/D356/secret-pin-ko.md` : trois commandes PowerShell (compter, ajouter une valeur tirée au hasard sans l'afficher, vérifier par deux nombres), puis `pnpm --filter @zwadj/api dev`. **Sans lui l'API refuse de démarrer** (message « Variables d'environnement invalides : … STAFF_PIN_HMAC_SECRET »).
+
+### 9. Limites écrites (pour ne pas se lire comme tenu)
+
+(1) **Aucun écran ne consomme le PIN** (L36-4) : rien n'a été regardé dans un navigateur. (2) **La rotation du secret ne réémet pas les PIN** (S-277). (3) **Le coût** d'un calcul de HMAC et d'une transaction de plus par connexion n'est pas mesuré. (4) **Personne ne LIT le journal** du PIN. (5) **La valeur du secret en production** et sa rotation ne sont pas traitées. (6) **Un PIN faible hors de la liste fermée** n'est pas évalué (210 valeurs sur 10 000). (7) Le recours d'un Manager seul (SQL manuel), la réactivation, le changement de rôle : au backlog. (8) **L'audit de secrets « b » : un fichier de plus parcouru que le disque n'en porte** (écart de −1 non élucidé, `tri-audit-d356b.txt` ; **le même à l'audit « c »**, `tri-audit-d356c.txt` : il persiste). (9) L'intermittence de `Reflector` **n'est pas revenue** pendant ce lot (aucune trace à verser) ; elle dort. (10) ⛔ **La MFA et la relecture du rôle en base sur les routes ADMIN bloquent toujours tout déploiement** (D321).
 
 ## Session des 19 et 20/11/2026 — D355 · rang 57 CLOS SUR LE CODE, lot de CODE : les restes de L36-3a-2 — une connexion ne survit plus à une réinitialisation ni à un changement de mot de passe (le hachage lu à la réservation conditionne l'ouverture de la session, dans le même check-and-set) ; le journal des écritures d'une FICHE CLIENT (création, complétion d'un nom, modification, boîte de langue d'un devis), dans la transaction de l'écriture — sans migration, sans écran, sans contrat d'API neuf ; compteur POUR MÉMOIRE TRENTE-SIX → TRENTE-SEPT
 
@@ -29645,3 +30285,4 @@ Où lire — **A** `ZWADJ_CONTINUITE.md` · **F** `docs/history/CONTINUITE-flux-
 | D353 | A | D353 — rang 55 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 55 — LA MÉMOIRE DU SITE CLIENT : CE QU'IL GARDE ET CE QU'IL NE DOIT PAS GARDER (LISTES DE RÉFÉRENCE, CARTE) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration** : **une réponse VIDE d'un référentiel n'est plus jamais crue** (`lireReferentiel`, `apps/client/src/lib/api.ts` : `getWilayas`, `getAmenities`, `getVenueStyles` lisent une liste PLEINE une fois, gardée une heure, et **relisent SANS cache une réponse vide**, dont la relecture est rendue ; un échec rend `[]` ; trois fonctions publiques inchangées ; mesuré sur un build de production : la réponse 200 vide est gardée toute la fenêtre, un 500 ou une API arrêtée ne le sont pas, une liste pleine survit à la panne ; sur `next dev`, 34 sondes sur 37, plus de 75 s) ; **le `no-store` de la carte est gardé** (rouge : la mutation de D351 sous le test neuf) ; **« sans créneau actif, avec une date » est joué sur la carte et la carte NE DIVERGE PAS de la liste** ; **`r48` n'a plus de tolérance** (attendu dérivé de la base) ; **la prédiction de la consigne sur la forme du rouge e2e est CONTREDITE** (la suite complète depuis un cache neuf est verte ; le rouge est celui de `r48` seule) et **la correction e2e à trois gestes est mesurée et NON LIVRÉE** (nécessaire avant la relecture, redondante après : S-232) ; `neutralize-r55.py` (10 gardes mordues sur 10, empreinte `94bea8a2…be75c`) ; campagnes touchées `available-on` 10, `ca2` 42/42, `horizon` 6, `r48 --e2e` 12/12, `ca1 --int` 24/24, `pub1 --e2e` 20/20 ; les six portes à 0 dès la première passe (client 583, intégration 808, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-231 à S-238 à ratifier ⛔ *(D354, 19/11/2026 : **RATIFIÉES par adoption** — consigne du rang 56, § 1 d.)* ; compteur POUR MÉMOIRE TRENTE-QUATRE → TRENTE-CINQ ; **« RANG 56 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ⛔ *(D354, 19/11/2026 : **PÉRIMÉ** — le rang 56 est CLOS (D354) ; l'état courant est le bloc « ÉTAT À LA CLÔTURE DU RANG 56 » ; « RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR ». Annoté, pas réécrit.)* ; section D353 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D353/`. |
 | D354 | A | D354 — rang 56 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 56 — L36-3a-2 : LE PERSONNEL ET SES CAPACITÉS, CÔTÉ SERVEUR (CRÉER, LISTER, RÉINITIALISER, DÉSACTIVER ; CE QU'UN EMPLOYÉ PEUT FAIRE ; LE MOT DE PASSE EXPIRÉ) ») et **CLOS SUR LE CODE le 19/11/2026**, lot de **CODE** (il compte, D283), **sans migration, sans écran** : **K-19 à K-22** (lister, créer, réinitialiser, désactiver un membre ; Manager seul ; le mot de passe temporaire est généré, haché, rendu UNE fois, `no-store`, jamais journalisé) ; **la table des capacités** (`STAFF_CAPABILITIES`, `peut`) déclarée au niveau de la classe sur quatorze contrôleurs et lue par le garde global (S-107 : sans déclaration, lectures à tous, écritures au Manager seul) ; **S-104 codée** (`etatDuCompte`, UNE copie lue par le garde et par la connexion : un mot de passe de 90 jours expiré n'ouvre que le changement de mot de passe, un temporaire de 7 jours expiré est refusé ; mesurée rouge d'abord, 12 tests par assertion) ; **« jamais zéro Manager » tenu sous course** (verrous L1 puis L2, comptage sous verrou, entrelacement forcé sur PostgreSQL réel, aucun déclencheur) ; l'audit des trois actions dans leur transaction ; **un défaut croisé mesuré et rapporté, non corrigé** (connexion ‖ réinitialisation) ⛔ *(D355, 20/11/2026 : corrigé au rang 57)* ; `neutralize-r56.py` (117 gardes mordues sur 117, empreinte `b4dd015b…53344`, trois trous de garde corrigés dans les tests) ; campagnes touchées `adm1` 72/72, `adm2` 84/84, `r25` 11/11, `r33` 95/95, `r38` 46/46, `r39` 51/51, `r43` 87/87, `r44` 236/236 ; les six portes à 0 dès la première passe (api 1 593, intégration 907, e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-239 à S-251 à ratifier ⛔ *(D355, 20/11/2026 : ratifiées par adoption)* ; compteur POUR MÉMOIRE TRENTE-CINQ → TRENTE-SIX ; ~~**« RANG 57 : EN ATTENTE DE CADRAGE DU RELECTEUR »**~~ ⛔ *(D355, 20/11/2026 : périmé : le rang 57 est arbitré et clos, voir la ligne D355)* ; section D354 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D354/`. |
 | D355 | A | D355 — rang 57 ARBITRÉ PAR KO le 19/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 57 — LES RESTES DE L36-3a-2 : UNE CONNEXION NE SURVIT PLUS À UNE RÉINITIALISATION, ET LE JOURNAL DES FICHES CLIENT QUE DR5 DEMANDE ») et **CLOS SUR LE CODE le 20/11/2026**, lot de **CODE** (il compte, D283), **sans migration, sans écran, sans contrat d'API neuf** : **une connexion ne survit plus à une réinitialisation ni à un changement de mot de passe** (le check-and-set d'`openSession` porte le hachage lu à la réservation, à UN endroit que le PIN réutilisera ; mesuré rouge d'abord par quatre chemins dont la route, puis vert par un entrelacement forcé sur PostgreSQL réel, aussi pour la désactivation) ; **le journal des fiches client** (les QUATRE écritures de `pro_client_records` — K-2, K-3, K-3b et la boîte de langue d'un devis K-5 — écrivent chacune UNE ligne `audit_logs` dans leur transaction, les noms des champs et jamais une valeur, le membre de la session ; un module pur ; une garde de source qui tient la carte ; l'échec forcé dans la transaction) ; la carte du journal de DR5, élément par élément ; **un test existant corrigé** (`quotes.int-spec.ts`, sept assertions, trouvé par le pré-vol de trois campagnes) ; **une intermittence de l'injection de `Reflector` à l'amorçage de l'application d'intégration, cause NON élucidée, rapportée** ; `neutralize-r57.py` (56 gardes mordues sur 56, empreinte `834f7aed…ce45e70`, aucun trou de garde) ; campagnes touchées `r39` 51/51, `r41` 70/70, `r42` 28/28, `r43` 87/87, `r44` 236/236, `r56` 117/117, `s10b` 20/20, `booking-status` 3/3 (six ancres révisées, campagnes rejouées en entier) ; les six portes (`test` rouge à la première passe sur un test de `apps/client` hors du lot, vert au rejeu unique ; intégration 934 ; e2e 109 + 1 ignoré, deux passes vertes de suite) ; décisions prises seule S-252 à S-268 à ratifier ; S-239 à S-251 ratifiées par adoption ; compteur POUR MÉMOIRE TRENTE-SIX → TRENTE-SEPT ; **« RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR »** ; section D355 de `ZWADJ_CONTINUITE.md`, pièces : `docs/preuves/D355/`. |
+| D356 | A | D356 — rang 58 ARBITRÉ PAR KO le 20/11/2026 (adoption, en collant le message, de la consigne du relecteur « RANG 58 — L36-3b : LE PIN, CÔTÉ SERVEUR (TIRÉ, HACHÉ AVEC UN SECRET, TROIS ESSAIS, VERROUILLAGE, DÉBLOCAGE, EXPIRATION, CONNEXION PAR PIN) », verbatim : `docs/preuves/D356/consigne.md`) et **CLOS SUR LE CODE le 21/11/2026**, lot de **CODE** (il compte, D283), **sans migration, sans écran, sans code d'erreur neuf** : **le PIN du personnel côté serveur** — tiré (quatre chiffres, liste fermée de 210 PIN triviaux, aléa du système), **haché en HMAC-SHA-256 avec un secret HORS base** (`STAFF_PIN_HMAC_SECRET`, obligatoire partout, `min(32)`, sans défaut, exigé en production), rendu UNE fois (`no-store`) par K-14, K-15 et K-18, effacé par K-21 et K-22 ; **K-23** (`POST /pro/staff/pin-login`) : un refus, un corps, un coût ; la tentative se RÉSERVE en UNE instruction avant d'être vérifiée (vingt requêtes parallèles = trois comptées) ; le verrou se pose au troisième ÉCHEC sur CE PIN ; l'ouverture est CONDITIONNÉE sous verrou et tout est annulé si l'appareil n'est plus vivant ; **quatre lignes de journal** (`staff.pin_login`, `staff.pin_login_failed`, `staff.pin_lock`, `staff.pin_unlock`) dans la transaction, sans PIN ni haché, mesurées sur le journal RÉEL ; **`quote.promote` porte `actor_member_id`** (R-6) ; les **rouges précèdent le code** (`107547b` < `4f18431`) ; **`neutralize-r58.py` : 106 gardes mordues sur 106**, 0 muette (première passe : 105 sur 106, une muette rejouée) ; **vingt ancres et deux mutations de r44, r56 et r57 révisées** ; **les six portes à 0 dès la première passe** (`test:int` 63 / 1 003, `test` api 95 / 1 745) ; l'e2e : deux passes vertes de suite ; **UN geste de Ko, NÉCESSAIRE** (sans `STAFF_PIN_HMAC_SECRET` dans `apps/api/.env`, l'API refuse de démarrer : `docs/preuves/D356/secret-pin-ko.md`) ; **S-252 à S-268 (D355) ratifiées par adoption ; S-269 à S-282 prises seule, à ratifier** ; compteur POUR MÉMOIRE TRENTE-SEPT → TRENTE-HUIT (limite de cinq SUSPENDUE, aucune certification) ; « RANG 59 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat : L36-4, pas arbitré). Détail : `ZWADJ_CONTINUITE.md`, « ÉTAT À LA CLÔTURE DU RANG 58 (D356) » et section D356. |
