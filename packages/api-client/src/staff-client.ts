@@ -1,5 +1,6 @@
 // Le PERSONNEL d'une salle — rang 44, L36-3a-1 (D341) : K-14 (activer), K-15 (se connecter), K-16 (se déconnecter), K-17 (l'état), K-18 (changer son mot de passe) ;
-// rang 56, L36-3a-2 (D354) : K-19 (lister les membres), K-20 (créer un membre), K-21 (réinitialiser un mot de passe), K-22 (désactiver un membre).
+// rang 56, L36-3a-2 (D354) : K-19 (lister les membres), K-20 (créer un membre), K-21 (réinitialiser un mot de passe), K-22 (désactiver un membre) ;
+// rang 58, L36-3b (D356) : K-23 (se connecter par PIN) — et les réponses de K-14, K-15 et K-18 rendent le PIN UNE fois.
 //
 // ⚠ CHEMINS ÉCRITS EN TOUTES LETTRES DANS CHAQUE APPEL À `request(...)` (D182) : `contract-api-client.int-spec.ts` relève les chemins dans les SOURCES et les
 // confronte aux routes de l'API — un chemin construit hors de l'appel lui serait invisible.
@@ -16,6 +17,8 @@ import type {
   StaffMembersListDTO,
   StaffPasswordChangeDTO,
   StaffPasswordChangeInput,
+  StaffPinLoginDTO,
+  StaffPinLoginInput,
   StaffSessionStateDTO,
   StaffTemporaryPasswordDTO
 } from "@zwadj/types";
@@ -40,6 +43,8 @@ export interface StaffClient {
   resetMemberPassword(memberId: string): Promise<StaffTemporaryPasswordDTO>;
   /** K-22 — désactive un membre ; jamais le dernier Manager actif (409 `STAFF_LAST_MANAGER`) (Manager seul). */
   disableMember(memberId: string): Promise<StaffMemberDisabledDTO>;
+  /** K-23 (rang 58) — ouvre une session de personnel par PIN, sur un poste dont le cookie d'appareil est reconnu ; TOUS les refus sont le même 401 (R-3 (D341)). Ne rend jamais un PIN. */
+  pinLogin(input: StaffPinLoginInput): Promise<StaffPinLoginDTO>;
 }
 
 export function createStaffClient(request: AuthedRequest): StaffClient {
@@ -52,6 +57,7 @@ export function createStaffClient(request: AuthedRequest): StaffClient {
     listMembers: () => request<StaffMembersListDTO>("/pro/staff/members"),
     createMember: (input) => request<StaffTemporaryPasswordDTO>("/pro/staff/members", { method: "POST", body: input }),
     resetMemberPassword: (memberId) => request<StaffTemporaryPasswordDTO>(`/pro/staff/members/${memberId}/reset-password`, { method: "POST" }),
-    disableMember: (memberId) => request<StaffMemberDisabledDTO>(`/pro/staff/members/${memberId}/disable`, { method: "POST" })
+    disableMember: (memberId) => request<StaffMemberDisabledDTO>(`/pro/staff/members/${memberId}/disable`, { method: "POST" }),
+    pinLogin: (input) => request<StaffPinLoginDTO>("/pro/staff/pin-login", { method: "POST", body: input })
   };
 }

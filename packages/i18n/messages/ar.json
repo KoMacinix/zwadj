@@ -694,7 +694,10 @@
       "currentPasswordRequired": "كلمة المرور الحالية إلزامية.",
       "unknownKey": "حقل غير معروف.",
       "roleRequired": "الدور مطلوب.",
-      "roleInvalid": "يجب أن يكون الدور مديراً أو موظفاً."
+      "roleInvalid": "يجب أن يكون الدور مديراً أو موظفاً.",
+      "memberRequired": "العضو مطلوب.",
+      "pinRequired": "رمز PIN إلزامي.",
+      "pinInvalid": "أدخل أرقام رمز PIN الخاص بك."
     }
   },
   "venue": {

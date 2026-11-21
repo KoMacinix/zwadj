@@ -11,7 +11,9 @@ import type { PrismaService } from "../../src/prisma/prisma.service";
 // sérialisent ; un comptage des Managers fait AVANT ce verrou les laisserait réussir toutes les deux.
 // D355 (rang 57, R-1) : `pro_staff_members` — le verrou L2 de « connexion ‖ réinitialisation » et de « connexion ‖ désactivation ». Tenu hors du service avec le changement (un hachage remplacé, un statut éteint) écrit mais NON
 // validé, il fait ATTENDRE l'ouverture d'une session à l'endroit exact où elle doit relire la ligne : un contrôle fait AVANT la transaction la laisserait passer, celui qui est DANS le CAS la refuse.
-type LockableTable = "account_deletion_requests" | "pro_profiles" | "pro_staff_members" | "venues";
+// D356 (rang 58, R-3) : `pro_staff_devices` — le verrou L3 de « PIN ‖ appareil révoqué ». Tenu hors du service avec la révocation écrite mais NON validée, il fait ATTENDRE l'ouverture d'une session par PIN à l'endroit exact
+// où elle re-vérifie l'appareil (après le CAS du membre) : le refus doit ANNULER toute la transaction, pas seulement ne pas écrire la session.
+type LockableTable = "account_deletion_requests" | "pro_profiles" | "pro_staff_devices" | "pro_staff_members" | "venues";
 type Tx = Parameters<Parameters<PrismaService["$transaction"]>[0]>[0];
 
 export interface RowLock {

@@ -40,7 +40,8 @@ describe("K-18 — le changement nominal", () => {
     const avant = await etatMembre(membreId);
     const res = await changer(pro.token, jar, MOT_DE_PASSE_STAFF, NOUVEAU);
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ member: { id: membreId, accountName: "Amine", role: "MANAGER", mustChangePassword: false } });
+    // Rang 58 (D356) : la réponse porte maintenant `pin` — `null` ici, le Manager activé par `proActive` ayant déjà un PIN valable (`staff-pin-issue.int-spec.ts` mesure l'émission).
+    expect(res.body).toEqual({ member: { id: membreId, accountName: "Amine", role: "MANAGER", mustChangePassword: false }, pin: null });
     const apres = await etatMembre(membreId);
     expect(apres.h).not.toBe(avant.h);
     expect(apres.h.startsWith("$argon2id$")).toBe(true);

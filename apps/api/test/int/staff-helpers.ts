@@ -1,6 +1,8 @@
 // Les AIDES des specs d'intégration du personnel — rang 44, L36-3a-1 (D341). Rien ici ne décide : un compte PRO vérifié et connecté, un pot de cookies qui respecte le `Path` comme un navigateur, et
 // le VIEILLISSEMENT PAR SQL — `vi.setSystemTime` n'agit pas sur l'horloge de la base, et c'est la base qui décide du temps (S-101, MP-41).
-import { createHash } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
+import { expect } from "vitest";
+import { STAFF_LIMITS } from "@zwadj/types";
 import request, { type Response } from "supertest";
 import { PrismaService } from "../../src/prisma/prisma.service";
 import { createTestApp, loginAs, registerUser, verifyLastRegistered, type TestContext } from "./helpers";
@@ -293,6 +295,100 @@ export async function appareilsDuMembre(prisma: PrismaService, memberId: string)
 export async function rearmerMembre(prisma: PrismaService, memberId: string): Promise<void> {
   await prisma.$executeRaw`UPDATE pro_staff_members SET status = 'ACTIVE', disabled_at = NULL WHERE id = ${memberId}::uuid`;
   await prisma.$executeRaw`UPDATE pro_staff_sessions SET ended_at = NULL, end_reason = NULL, last_activity_at = now(), expires_at = now() + interval '12 hours' WHERE member_id = ${memberId}::uuid`;
+}
+
+// ── RANG 58, L36-3b (D356) : le PIN ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+/** Un PIN de test : quatre chiffres qui n'est pas dans la liste fermée des PIN triviaux (`staff-pin.spec.ts`). Une valeur de TEST, jamais un secret. */
+export const PIN_DE_TEST = "4821";
+export const AUTRE_PIN_DE_TEST = "9136";
+
+/**
+ * Le HMAC-SHA-256 hexadécimal d'un PIN avec le secret de TEST (celui que `setup-env.ts` pose) — calculé ICI, par `node:crypto`, à la main : l'ORACLE d'un test n'est PAS le hacheur de l'application (D241 : un oracle
+ * qui recopierait le code qu'il mesure serait vert par construction). Si le hacheur change de secret, de fonction ou d'encodage, les tests qui comparent le haché STOCKÉ à celui-ci rougissent.
+ */
+export const hacherPin = (pin: string): string => createHmac("sha256", process.env.STAFF_PIN_HMAC_SECRET ?? "").update(pin).digest("hex");
+
+/** L'oracle INDÉPENDANT des PIN triviaux de quatre chiffres (le même que celui de `staff-pin.spec.ts`, écrit autrement que le module) : « jamais un PIN trivial n'est rendu ». */
+const MONTANTES = ["0123", "1234", "2345", "3456", "4567", "5678", "6789", "7890", "8901", "9012"];
+const DESCENDANTES = ["3210", "4321", "5432", "6543", "7654", "8765", "9876", "0987", "1098", "2109"];
+export const estTrivial = (pin: string): boolean =>
+  /^(\d)\1{3}$/.test(pin) || /^(\d)(\d)\1\2$/.test(pin) || /^(\d)\1(\d)\2$/.test(pin) || MONTANTES.includes(pin) || DESCENDANTES.includes(pin);
+
+export interface LignePin {
+  pin_hash: string | null;
+  pin_generated_at: Date | null;
+  pin_expires_at: Date | null;
+  pin_failed_count: number;
+  pin_locked_at: Date | null;
+}
+
+/** Les CINQ colonnes du PIN d'un membre, telles que la base les porte. */
+export async function pinDuMembre(prisma: PrismaService, memberId: string): Promise<LignePin> {
+  const lignes = await prisma.$queryRaw<LignePin[]>`SELECT pin_hash, pin_generated_at, pin_expires_at, pin_failed_count, pin_locked_at FROM pro_staff_members WHERE id = ${memberId}::uuid`;
+  if (lignes.length !== 1) throw new Error(`membre introuvable (${lignes.length} ligne(s))`);
+  return lignes[0]!;
+}
+
+export interface OptionsDePin {
+  /** Validité À PARTIR D'AUJOURD'HUI SELON LA BASE, en secondes ; négatif = déjà expiré. Défaut : 30 jours. */
+  valideSecondes?: number;
+  /** Le compte d'essais déjà consommés. */
+  echecs?: number;
+  /** Le verrou est posé (le troisième échec a eu lieu). */
+  verrouille?: boolean;
+}
+
+/**
+ * INSTALLE un PIN CONNU pour un membre : haché à la main avec le secret de test (`hacherPin`, l'oracle), les trois colonnes cohérentes (`pin_triple_coherent`), l'échéance et le compte
+ * d'essais demandés. Le PIN d'un test se POSE : il ne se devine pas, le vrai générateur est aléatoire.
+ */
+export async function poserPin(ctx: TestContext, memberId: string, pin: string = PIN_DE_TEST, options: OptionsDePin = {}): Promise<void> {
+  void ctx;
+  const hache = hacherPin(pin);
+  const secondes = options.valideSecondes ?? 30 * 86_400;
+  const echecs = options.echecs ?? (options.verrouille === true ? 3 : 0);
+  const verrouille = options.verrouille === true;
+  await ctx.prisma.$executeRaw`
+    UPDATE pro_staff_members
+       SET pin_hash = ${hache}, pin_generated_at = now() - interval '1 day', pin_expires_at = now() + make_interval(secs => ${secondes}::int),
+           pin_failed_count = ${echecs}::int, pin_locked_at = CASE WHEN ${verrouille} THEN now() ELSE NULL END
+     WHERE id = ${memberId}::uuid`;
+}
+
+/** Efface le PIN d'un membre (les cinq colonnes), comme le fait une réinitialisation. */
+export async function effacerPin(prisma: PrismaService, memberId: string): Promise<void> {
+  await prisma.$executeRaw`UPDATE pro_staff_members SET pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL WHERE id = ${memberId}::uuid`;
+}
+
+/** Le POSTE tel que l'écran de verrouillage le voit : les cookies d'appareil, SANS le cookie de session (la session est finie ou n'a jamais été ouverte ici). */
+export function posteDe(jar: Jar): Jar {
+  const poste = jar.copie();
+  poste.retirer("zwadj_ss");
+  return poste;
+}
+
+/** K-23 par la VRAIE route. */
+export async function connecterParPin(ctx: TestContext, pro: ProFixture, jar: Jar | undefined, memberId: string, pin: string): Promise<Response> {
+  return appeler(ctx, pro.token, jar, "post", "/api/v1/pro/staff/pin-login", { memberId, pin });
+}
+
+/** Le PIN rendu par une réponse de K-14, K-15 ou K-18 (`null` s'il n'y en a pas). */
+export const pinDe = (res: Response): string | null => (res.body as { pin?: string | null }).pin ?? null;
+
+/**
+ * Le PIN rendu par une réponse, dont on EXIGE qu'il y soit : une ASSERTION NATIVE d'abord (`toBeTypeOf("string")` : un PIN absent échoue en `AssertionError`, jamais en `TypeError` d'un matcher appelé sur `null`), puis sa
+ * forme (autant de chiffres que le levier le dit). Rend le PIN.
+ */
+export function pinRendu(res: Response): string {
+  const pin = pinDe(res);
+  expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTypeOf("string");
+  expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LENGTH}}$`));
+  return pin as string;
+}
+
+/** Les appareils d'un membre, avec leurs échéances : de quoi mesurer « jamais au-delà de `pin_expires_at` ». */
+export async function appareilsAvecEcheance(prisma: PrismaService, memberId: string): Promise<Array<{ id: string; expires_at: Date; revoked_at: Date | null }>> {
+  return prisma.$queryRaw<Array<{ id: string; expires_at: Date; revoked_at: Date | null }>>`SELECT id::text AS id, expires_at, revoked_at FROM pro_staff_devices WHERE member_id = ${memberId}::uuid ORDER BY created_at, id`;
 }
 
 /** Le texte de TOUTES les lignes d'audit (colonnes JSON comprises) : ce que « nulle part dans l'audit » doit chercher. */

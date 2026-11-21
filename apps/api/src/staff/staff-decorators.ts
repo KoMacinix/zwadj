@@ -1,7 +1,7 @@
 // Les DÉCORATEURS de la couche du personnel — rang 44, L36-3a-1 (D341). Le quatrième garde global est FERMÉ PAR DÉFAUT (D6, D119) : toute route authentifiée atteignable par un PRO exige une session de
 // personnel dès que la couche est activée, SAUF celles qui portent `@StaffExempt()`. Une route neuve est donc couverte le jour où elle apparaît ; l'exemption est un CHOIX ÉCRIT, jamais un oubli.
 //
-// ⛔ LA LISTE DES ROUTES EXEMPTÉES EST FERMÉE : quatre aujourd'hui (l'état du compte commun `GET /auth/me`, l'activation, la connexion, l'état de session) ; `pin-login` sera la cinquième au lot 3b. Elle est
+// ⛔ LA LISTE DES ROUTES EXEMPTÉES EST FERMÉE : CINQ (l'état du compte commun `GET /auth/me`, l'activation, la connexion, la connexion par PIN — la cinquième, rang 58 (D356) —, l'état de session). Elle est
 // confrontée au routeur par `test/int/staff-session-guard.int-spec.ts` et comptée dans les sources par `staff-source-guards.spec.ts`.
 import { createParamDecorator, SetMetadata, type ExecutionContext } from "@nestjs/common";
 import type { StaffCapability as StaffCapabilityName, StaffRole } from "@zwadj/types";

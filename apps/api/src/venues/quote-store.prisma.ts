@@ -324,6 +324,7 @@ export class PrismaQuoteStore implements QuoteStore {
         data: {
           actorId: donnees.acteur.userId,
           actorRole: donnees.acteur.role,
+          actorMemberId: donnees.memberId,
           action: "quote.promote",
           entityType: "quote",
           entityId: donnees.quoteId,

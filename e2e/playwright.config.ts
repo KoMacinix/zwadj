@@ -171,6 +171,9 @@ export default defineConfig({
         CORS_ORIGINS: `${CLIENT},${PRO}`,
         CLIENT_URL: CLIENT,
         PRO_URL: PRO,
+        // Rang 58 (D356, R-2) — le secret du HMAC du PIN : une valeur JETABLE posée par la configuration de l'e2e elle-même (jamais lue d'un `.env`, jamais la valeur d'un poste). L'API REFUSE de démarrer sans
+        // elle (variable obligatoire partout, ≥ 32 caractères, sans défaut) : c'est la seule chose neuve que cette porte voit du PIN.
+        STAFF_PIN_HMAC_SECRET: "secret-jetable-de-le2e-sans-valeur-0123456789-abcdefghij",
         // Les uploads e2e écriraient de VRAIS fichiers : racine jetable hors
         // du dépôt, jamais le `var/media` du poste de dev (même règle qu'en
         // intégration).

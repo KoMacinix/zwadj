@@ -533,7 +533,7 @@ describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'
   it("⛔ le succès rend le DTO de la LIGNE que le port renvoie (officielle, `DEVIS-…`, même numéro) — pas un objet bâti avec ce que l'appelant a envoyé", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true, clientRecordId: FICHE_ID, clientNameLatin: "Nom Du Serveur" }) });
-    const dto = await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    const dto = await service.promote(ACTEUR, QUOTE_ID, CORPS, null);
     expect(dto.isOfficial).toBe(true);
     expect(dto.reference).toBe("DEVIS-2026-0007-0089 v1");
     expect(dto.clientNameLatin, "le nom rendu est celui de la ligne").toBe("Nom Du Serveur");
@@ -542,39 +542,47 @@ describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'
   it("⛔ le port reçoit l'ACTEUR (identifiant ET rôle — ils vont dans la ligne d'audit), le devis, les statuts source de la MACHINE À ÉTATS, et la copie décidée par la politique", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
-    await service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" });
+    await service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" }, MEMBRE);
     expect(devis.promouvoir).toHaveBeenCalledTimes(1);
-    const args = devis.promouvoir.mock.calls[0]![0] as { acteur: unknown; quoteId: string; statutsAdmis: readonly string[]; copie: unknown };
+    const args = devis.promouvoir.mock.calls[0]![0] as { acteur: unknown; memberId: unknown; quoteId: string; statutsAdmis: readonly string[]; copie: unknown };
     expect(args.acteur).toEqual({ userId: USER_ID, role: UserRole.PRO });
+    expect(args.memberId, "R-6 (D356) : le MEMBRE du garde est passé au port, qui l'écrit dans la ligne d'audit").toBe(MEMBRE);
     expect(args.quoteId).toBe(QUOTE_ID);
     // ⚠ Égalité avec l'AUTORITÉ, jamais une liste écrite ici (leçon de S10b).
     expect(args.statutsAdmis).toEqual([...quoteAllowedFrom(QuoteCommand.PROMOTE)]);
     expect(args.copie).toEqual({ clientRecordId: FICHE_ID, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" });
   });
 
+  it("⛔ R-6 (D356) — la couche ÉTEINTE : `memberId` vaut `null` au port (aucun membre n'agit) ; la promotion ne change pas pour autant", async () => {
+    const { service, devis } = preparer();
+    devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
+    await service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Amina Bensalem", clientNameAr: "آمنة بن سالم" }, null);
+    expect((devis.promouvoir.mock.calls[0]![0] as { memberId: unknown }).memberId).toBeNull();
+  });
+
   it("⛔ un nom absent de la saisie est NULL dans la copie (jamais une chaîne vide, jamais le nom de la fiche en repli sur une fiche non liée)", async () => {
     const { service, devis } = preparer();
     devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameAr: "اسم الفيشة" });
     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
-    await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    await service.promote(ACTEUR, QUOTE_ID, CORPS, null);
     expect((devis.promouvoir.mock.calls[0]![0] as { copie: unknown }).copie).toEqual({ clientRecordId: FICHE_ID, clientNameAr: null, clientNameLatin: "Amina Bensalem" });
   });
 
   it("⛔ le devis n'est pas au pro (le port le rend `null`) : 404 QUOTE_NOT_FOUND AVANT la fiche, et rien n'est écrit ; un identifiant hors motif : 404 sans toucher le port", async () => {
     const { service, devis } = build();
     devis.trouverDuPro.mockResolvedValue(null);
-    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS, null)), NotFoundException, "QUOTE_NOT_FOUND");
     expect(devis.ficheDuPro).not.toHaveBeenCalled();
     expect(devis.promouvoir).not.toHaveBeenCalled();
     devis.trouverDuPro.mockClear();
-    estRefus(await refus(service.promote(ACTEUR, "pas-un-uuid", CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.promote(ACTEUR, "pas-un-uuid", CORPS, null)), NotFoundException, "QUOTE_NOT_FOUND");
     expect(devis.trouverDuPro).not.toHaveBeenCalled();
   });
 
   it("⛔ la fiche d'un AUTRE pro (le port rend `null`) : 404 CLIENT_RECORD_NOT_FOUND indistinct, et rien n'est écrit", async () => {
     const { service, devis } = preparer();
     devis.ficheDuPro.mockResolvedValue(null);
-    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS, null)), NotFoundException, "CLIENT_RECORD_NOT_FOUND");
     expect(devis.ficheDuPro).toHaveBeenCalledWith(USER_ID, FICHE_ID);
     expect(devis.promouvoir).not.toHaveBeenCalled();
   });
@@ -582,20 +590,20 @@ describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'
   it("⛔ une fiche LIÉE à un compte et un nom DIFFÉRENT : 409 CLIENT_RECORD_LINKED, rien n'est écrit", async () => {
     const { service, devis } = preparer();
     devis.ficheDuPro.mockResolvedValue({ ...FICHE, nameLatin: "Amina Bensalem", linkedUserId: "018f0000-0000-7000-8000-0000000000ee" });
-    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" })), ConflictException, "CLIENT_RECORD_LINKED");
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, { clientRecordId: FICHE_ID, clientNameLatin: "Autre Nom" }, null)), ConflictException, "CLIENT_RECORD_LINKED");
     expect(devis.promouvoir).not.toHaveBeenCalled();
   });
 
   it("⛔ le port refuse « introuvable » : 404 QUOTE_NOT_FOUND", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: false, raison: "introuvable" });
-    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS)), NotFoundException, "QUOTE_NOT_FOUND");
+    estRefus(await refus(service.promote(ACTEUR, QUOTE_ID, CORPS, null)), NotFoundException, "QUOTE_NOT_FOUND");
   });
 
   it("⛔ D-5 — le port refuse « déjà officiel » : 409 QUOTE_ALREADY_OFFICIAL, le message du catalogue", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: false, raison: "dejaOfficiel" });
-    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS, null));
     estRefus(e, ConflictException, "QUOTE_ALREADY_OFFICIAL");
     expect(((e as ConflictException).getResponse() as { message?: string }).message).toBe("quote.errors.alreadyOfficial");
   });
@@ -603,7 +611,7 @@ describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'
   it("⛔ D-6 — le port refuse « version non active » : 409 QUOTE_VERSION_NOT_ACTIVE PORTANT `latestVersion` (l'écran sait laquelle est active)", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: false, raison: "versionNonActive", versionActive: 3 });
-    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS));
+    const e = await refus(service.promote(ACTEUR, QUOTE_ID, CORPS, null));
     estRefus(e, ConflictException, "QUOTE_VERSION_NOT_ACTIVE");
     expect(((e as ConflictException).getResponse() as { latestVersion?: number }).latestVersion).toBe(3);
   });
@@ -611,13 +619,13 @@ describe("⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'
   it("⛔ le port refuse « statut » : 409 QUOTE_STATUS_CONFLICT avec le statut RELU (un brouillon annulé est CLOS)", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: false, raison: "statutConflit", statutActuel: "CANCELLED" });
-    await expect(service.promote(ACTEUR, QUOTE_ID, CORPS)).rejects.toSatisfy((e) => estConflitStatut(e, "CANCELLED"));
+    await expect(service.promote(ACTEUR, QUOTE_ID, CORPS, null)).rejects.toSatisfy((e) => estConflitStatut(e, "CANCELLED"));
   });
 
   it("⚠ la promotion ne touche ni la remise, ni le statut, ni la conversion : elle ne change aucun montant", async () => {
     const { service, devis } = preparer();
     devis.promouvoir.mockResolvedValue({ ok: true, devis: devisRow({ isOfficial: true }) });
-    await service.promote(ACTEUR, QUOTE_ID, CORPS);
+    await service.promote(ACTEUR, QUOTE_ID, CORPS, null);
     expect(devis.marquerRemis).not.toHaveBeenCalled();
     expect(devis.changerStatut).not.toHaveBeenCalled();
     expect(devis.convertirEnDemande).not.toHaveBeenCalled();

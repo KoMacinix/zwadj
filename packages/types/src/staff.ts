@@ -40,6 +40,18 @@ export const StaffAccountState = {
 } as const;
 export type StaffAccountState = (typeof StaffAccountState)[keyof typeof StaffAccountState];
 
+/**
+ * L'ÉTAT d'un PIN (rang 58, D356, R-4) — ce que `etatDuPin` (`apps/api/src/staff/staff-account-state.ts`, la fonction jumelle de `etatDuCompte`) rend : `ABSENT` (aucun PIN), `VALID` (il peut servir), `EXPIRED` (son échéance
+ * est passée), `LOCKED` (le verrou est posé, ou le compte d'échecs est au plafond). Ce n'est PAS une énumération de la base : c'est le JUGEMENT de la règle, à l'heure de la base.
+ */
+export const StaffPinState = {
+  ABSENT: "ABSENT",
+  VALID: "VALID",
+  EXPIRED: "EXPIRED",
+  LOCKED: "LOCKED"
+} as const;
+export type StaffPinState = (typeof StaffPinState)[keyof typeof StaffPinState];
+
 // ── Le levier des durées ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 export const STAFF_LIMITS = Object.freeze({
   /** Inactivité d'une session, CÔTÉ SERVEUR (`last_activity_at`) — DR5. */
@@ -56,7 +68,16 @@ export const STAFF_LIMITS = Object.freeze({
   /** Validité d'un mot de passe TEMPORAIRE (création ou réinitialisation par un Manager, DR5) : SEPT jours, changement obligatoire. Rang 56 (D354) — UN paramètre, jamais un littéral ailleurs (MP-43). */
   TEMPORARY_PASSWORD_DAYS: 7,
   /** Borne dure du nombre de cookies d'appareil lus par requête (cadrage D340, § 2.2). */
-  DEVICE_COOKIES_MAX: 8
+  DEVICE_COOKIES_MAX: 8,
+  /**
+   * Rang 58 (D356, DR5 « longueur = paramètre ») — le nombre de CHIFFRES d'un PIN. UN paramètre : le générateur, le schéma de la connexion par PIN et les écrans le lisent ici, jamais un 4 écrit ailleurs.
+   */
+  PIN_LENGTH: 4,
+  /**
+   * Rang 58 (D356, DR5 « 3 essais ») — le plafond d'essais d'un PIN avant le verrou. ⚠ La base porte la MÊME valeur dans sa `CHECK` (`pin_failed_count BETWEEN 0 AND 3`, migration `staff_layer`) : la constante ne peut pas
+   * dépasser ce que la base accepte sans une migration — `staff-contract.spec.ts` la confronte à la migration, qui est l'autorité (D186).
+   */
+  PIN_MAX_FAILURES: 3
 } as const);
 
 /** Le libellé d'un appareil : une CONSTANTE (aucun texte du navigateur n'est jamais reflété). Une décision de la session de D341, à ratifier. */
@@ -171,6 +192,25 @@ export const staffMemberCreateSchema = z
   .strict("staff.validation.unknownKey");
 export type StaffMemberCreateInput = z.infer<typeof staffMemberCreateSchema>;
 
+/** Le PIN d'un corps : `PIN_LENGTH` chiffres, EN TEXTE (un PIN qui commence par zéro n'est pas un nombre). ⚠ Le schéma ne dit RIEN de la liste des PIN triviaux : « 1234 » est accepté ici et refusé à la vérification comme tout PIN faux. */
+const PIN_PATTERN = new RegExp(`^[0-9]{${STAFF_LIMITS.PIN_LENGTH}}$`);
+
+/**
+ * K-23 (rang 58, D356) — `POST /pro/staff/pin-login` : le membre (son identifiant, tel que l'état K-17 le rend à l'écran de verrouillage) et son PIN. ⛔ Le jeton d'appareil voyage par COOKIE, jamais par le corps : une clé
+ * inconnue est REFUSÉE, pas ignorée. Les messages sont TROIS clés : membre (absent ou qui n'est pas un identifiant), PIN absent, PIN mal formé.
+ */
+export const staffPinLoginSchema = z
+  .object({
+    memberId: z
+      .string({ required_error: "staff.validation.memberRequired", invalid_type_error: "staff.validation.memberRequired" })
+      .uuid("staff.validation.memberRequired"),
+    pin: z
+      .string({ required_error: "staff.validation.pinRequired", invalid_type_error: "staff.validation.pinInvalid" })
+      .regex(PIN_PATTERN, "staff.validation.pinInvalid")
+  })
+  .strict("staff.validation.unknownKey");
+export type StaffPinLoginInput = z.infer<typeof staffPinLoginSchema>;
+
 // ── Les réponses ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 /** Un membre, tel que les routes le rendent. ⛔ Jamais un hachage, un compteur, une date de connexion : l'écran n'en a pas besoin. */
 export interface StaffMemberDTO {
@@ -194,17 +234,27 @@ export interface StaffSessionStateDTO {
   knownMembers: StaffKnownMemberDTO[];
 }
 
+/** K-14 — le Manager créé ET son PIN, rendu UNE fois (`Cache-Control: no-store`) : il n'est stocké qu'en HMAC, jamais relisible (rang 58, D356). */
 export interface StaffActivationDTO {
   member: StaffMemberDTO;
+  pin: string;
 }
+/** K-15 — le membre ET le PIN NEUF quand il n'en avait pas de valable (absent, expiré, verrouillé), sinon `null` (rang 58, D356). Rendu UNE fois, `Cache-Control: no-store`. */
 export interface StaffLoginDTO {
+  member: StaffMemberDTO;
+  pin: string | null;
+}
+/** K-23 — le membre dont la session s'ouvre. ⛔ AUCUN PIN : la connexion par PIN ne rend jamais un PIN (rang 58, D356). */
+export interface StaffPinLoginDTO {
   member: StaffMemberDTO;
 }
 export interface StaffLogoutDTO {
   status: "ok";
 }
+/** K-18 — le membre ET le PIN NEUF quand il n'en avait pas de valable, sinon `null` : la MÊME règle d'émission que K-15 (rang 58, D356). */
 export interface StaffPasswordChangeDTO {
   member: StaffMemberDTO;
+  pin: string | null;
 }
 
 // ── K-19 à K-22 (rang 56, D354) ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

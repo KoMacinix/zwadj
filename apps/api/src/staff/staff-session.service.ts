@@ -1,4 +1,4 @@
-// Le SERVICE de la couche du personnel — rang 44, L36-3a-1 (D341) ; rang 56 (D354) : S-104, l'état du compte. CHEMIN D'IDENTITÉ : méthode RENFORCÉE, revue humaine requise. Il ORCHESTRE : il lit, il appelle le magasin, il hache, il traduit les refus en erreurs
+// Le SERVICE de la couche du personnel — rang 44, L36-3a-1 (D341) ; rang 56 (D354) : S-104, l'état du compte ; rang 58, L36-3b (D356) : le PIN. CHEMIN D'IDENTITÉ : méthode RENFORCÉE, revue humaine requise. Il ORCHESTRE : il lit, il appelle le magasin, il hache, il traduit les refus en erreurs
 // métier. Ce qu'il DÉCIDE vit dans des modules purs (`staff-session-policy.ts`, `staff-password-policy.ts`) et dans SQL (`staff-store.prisma.ts`) — jamais ici.
 //
 // ⛔ CE QUE CE FICHIER TIENT :
@@ -7,6 +7,8 @@
 //   · UN MOT DE PASSE COURANT SE REFUSE AVANT TOUT COÛT (MP-24) : avant le hachage, avant la réservation — un refus qui ne dit rien de l'actuel ne consomme pas d'essai.
 //   · LES JETONS NE VOYAGENT QU'HACHÉS : le magasin ne reçoit jamais la valeur d'un cookie (MP-11).
 //   · AUCUNE HORLOGE (MP-41), AUCUN JOURNAL (MP-11) : le temps se décide dans la base, et un module qui n'écrit rien dans le journal ne peut y écrire aucun secret.
+//   · RANG 58 (D356) — LE PIN : il se tire et se HACHE ICI, le magasin ne reçoit que des hachés ; le PIN en clair ne sort que dans la réponse d'une route qui l'a vu INSTALLER (K-14, K-15, K-18), jamais ailleurs ;
+//     la connexion par PIN (K-23) rend UN refus, UN corps, UN calcul de HMAC quelle qu'en soit la cause (R-3) — la vérification du VRAI haché n'a lieu que si l'essai a été RÉSERVÉ par le magasin (MP-1).
 import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import {
   AuthErrorCode,
@@ -22,6 +24,8 @@ import {
   type StaffLogoutDTO,
   type StaffPasswordChangeDTO,
   type StaffPasswordChangeInput,
+  type StaffPinLoginDTO,
+  type StaffPinLoginInput,
   type StaffSessionStateDTO
 } from "@zwadj/types";
 import { PasswordService } from "../auth/password.service";
@@ -29,6 +33,7 @@ import { TokenService } from "../auth/token.service";
 import type { CookieAppareil } from "./staff-cookies";
 import type { StaffContext } from "./staff-decorators";
 import { etatDuCompte } from "./staff-account-state";
+import { StaffPinHasher } from "./staff-pin-hasher";
 import { isCommonPassword, passwordViolation, type PasswordViolation } from "./staff-password-policy";
 import { loginVerification } from "./staff-session-policy";
 import { STAFF_STORE, type ActivateResult, type StaffActor, type StaffStore } from "./staff-store.types";
@@ -78,7 +83,8 @@ export class StaffSessionService {
   constructor(
     @Inject(STAFF_STORE) private readonly store: StaffStore,
     @Inject(PasswordService) private readonly passwords: Pick<PasswordService, "hash" | "verify" | "verifyAgainstDummy">,
-    @Inject(TokenService) private readonly tokens: Pick<TokenService, "generate" | "hash">
+    @Inject(TokenService) private readonly tokens: Pick<TokenService, "generate" | "hash">,
+    @Inject(StaffPinHasher) private readonly pins: Pick<StaffPinHasher, "generate" | "hash" | "verify" | "verifyAgainstDummy">
   ) {}
 
   // ⛔ K-14 — le propriétaire crée le Manager. Le mot de passe courant se refuse AVANT le hachage (qui coûte 64 Mio) et avant toute lecture ; le magasin fait le reste dans UNE transaction (MP-40).
@@ -87,6 +93,8 @@ export class StaffSessionService {
     if (violation !== null) throw violationDeMotDePasse(violation);
 
     const passwordHash = await this.passwords.hash(input.password);
+    // Rang 58 : le PIN du Manager se tire et se HACHE ici ; le magasin ne reçoit que le haché, la réponse porte le PIN UNE fois.
+    const pin = this.pins.generate();
     const sessionToken = this.tokens.generate();
     const deviceToken = this.tokens.generate();
     const suffix = this.tokens.generate().slice(0, 8);
@@ -96,12 +104,13 @@ export class StaffSessionService {
       accountName: input.accountName,
       accountNameKey: normalizeStaffAccountName(input.accountName),
       passwordHash,
+      pinHash: this.pins.hash(pin),
       sessionTokenHash: this.tokens.hash(sessionToken),
       deviceTokenHash: this.tokens.hash(deviceToken),
       deviceLabel: STAFF_DEVICE_DEFAULT_LABEL
     });
     if (!result.ok) throw refusDActivation(result.reason);
-    return { body: { member: result.member }, cookies: { session: sessionToken, device: { suffix, token: deviceToken } } };
+    return { body: { member: result.member, pin }, cookies: { session: sessionToken, device: { suffix, token: deviceToken } } };
   }
 
   // ⛔ K-15 — la connexion. L'ORDRE EST LA RÈGLE : chercher le membre, RÉSERVER la tentative, ENSUITE seulement vérifier (le vrai hachage si réservée, le factice sinon), puis ouvrir la session — SOUS CONDITION du
@@ -133,11 +142,14 @@ export class StaffSessionService {
     const sessionToken = this.tokens.generate();
     const deviceToken = this.tokens.generate();
     const suffix = this.tokens.generate().slice(0, 8);
+    // Rang 58 : un PIN CANDIDAT, tiré et haché ici ; le magasin l'installe SI le PIN du membre n'est pas valable (sous son verrou) et le dit.
+    const pin = this.pins.generate();
     const opened = await this.store.openSession({
       actor: user,
       proProfileId: layer.proProfileId,
       memberId: member.id,
       expectedPasswordHash: reservation.passwordHash,
+      newPinHash: this.pins.hash(pin),
       sessionTokenHash: this.tokens.hash(sessionToken),
       candidateDeviceHashes: cookies.devices.map((d) => this.tokens.hash(d.value)),
       newDeviceTokenHash: this.tokens.hash(deviceToken),
@@ -147,9 +159,55 @@ export class StaffSessionService {
     // Le vrai hachage a déjà été vérifié : le coût est UN argon2, celui d'un mauvais mot de passe ; rien n'est consigné comme échec (le compteur de la réservation reste, comme pour un mauvais mot de passe).
     if (!opened.ok) throw identifiantsRefuses();
     return {
-      body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD } },
+      // Le PIN n'est montré QUE si le magasin l'a installé : un PIN montré qui n'est pas celui qui est stocké est pire qu'un PIN non montré.
+      body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD }, pin: opened.pinIssued ? pin : null },
       cookies: { session: sessionToken, device: opened.deviceReused ? undefined : { suffix, token: deviceToken } }
     };
+  }
+
+  // ⛔ K-23 (rang 58, D356, R-3) — la connexion par PIN. UN refus, UN corps, UN COÛT : la couche éteinte, le membre inconnu ou d'une autre salle, désactivé, au temporaire expiré, sans appareil reconnu, l'essai non réservé
+  // (épuisé, verrouillé, expiré, absent), le PIN faux et l'ouverture refusée rendent le MÊME 401 `STAFF_INVALID_CREDENTIALS` et paient UN calcul de HMAC (le vrai ou le factice) — aucune fuite d'état (R-3 de D341).
+  // L'ORDRE EST LA RÈGLE : la salle du BEARER, le membre (son état de compte, `etatDuCompte`), les cookies d'appareil (sans eux la réservation n'est PAS demandée : aucun essai n'est consommé, MP-2), la RÉSERVATION
+  // atomique de l'essai (qui rend le haché lu et vérifie l'appareil), ENSUITE la vérification du PIN (le VRAI haché n'est vérifié que si l'essai est réservé : trois vérifications au plus, MP-1), puis l'ouverture,
+  // CONDITIONNÉE au haché lu (R-3). Un PIN faux est CONSIGNÉ avec le compte de la réservation (au troisième, le verrou se pose, sur CE PIN) ; un refus d'ouverture n'est PAS un échec de PIN : rien n'est consigné.
+  async pinLogin(user: StaffActor, input: StaffPinLoginInput, cookies: StaffCookiesIn): Promise<StaffReply<StaffPinLoginDTO>> {
+    const layer = await this.store.readLayer(user.userId);
+    if (layer === null || layer.enabledAt === null) return this.refuserLePin(input.pin);
+
+    const member = await this.store.findMemberById(layer.proProfileId, input.memberId);
+    // Le MÊME jugement que la connexion par mot de passe (UNE règle, `etatDuCompte`, à l'heure de la base) : un désactivé et un temporaire expiré sont des comptes inconnus ; un mot de passe à changer SE CONNECTE (la
+    // session n'ouvrira que le changement).
+    const etat = member === null ? null : etatDuCompte(member, member.now);
+    const admis = etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD;
+    if (member === null || !admis || cookies.devices.length === 0) return this.refuserLePin(input.pin);
+
+    const empreintesDAppareil = cookies.devices.map((d) => this.tokens.hash(d.value));
+    const reservation = await this.store.reservePinAttempt({ proProfileId: layer.proProfileId, memberId: input.memberId, deviceTokenHashes: empreintesDAppareil });
+    if (!reservation.reserved) return this.refuserLePin(input.pin);
+
+    if (!this.pins.verify(input.pin, reservation.pinHash)) {
+      await this.store.recordPinFailure({ actor: user, memberId: input.memberId, failedCount: reservation.failedCount, expectedPinHash: reservation.pinHash });
+      throw identifiantsRefuses();
+    }
+
+    const sessionToken = this.tokens.generate();
+    const opened = await this.store.openSessionByPin({
+      actor: user,
+      proProfileId: layer.proProfileId,
+      memberId: input.memberId,
+      expectedPinHash: reservation.pinHash,
+      sessionTokenHash: this.tokens.hash(sessionToken),
+      candidateDeviceHashes: empreintesDAppareil
+    });
+    // Le PIN remplacé, le verrou posé, le membre désactivé ou l'appareil révoqué ENTRE la vérification et l'ouverture : le même refus, aucun cookie, aucune ligne d'échec (le calcul de HMAC a déjà été payé).
+    if (!opened.ok) throw identifiantsRefuses();
+    return { body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD } }, cookies: { session: sessionToken } };
+  }
+
+  /** Le refus d'un PIN dont l'essai n'a PAS été réservé : le calcul de HMAC FACTICE (le même coût qu'une vérification), puis le même 401. Ne rend jamais. */
+  private refuserLePin(pin: string): never {
+    this.pins.verifyAgainstDummy(pin);
+    throw identifiantsRefuses();
   }
 
   // K-16 — termine la session COURANTE (celle que le garde a posée sur la requête). L'appareil reste : c'est le poste qui est reconnu, pas la session.
@@ -204,15 +262,18 @@ export class StaffSessionService {
     }
 
     const newPasswordHash = await this.passwords.hash(input.newPassword);
+    // Rang 58 : la MÊME règle d'émission que la connexion — un PIN candidat, installé par le magasin sous le verrou du membre s'il n'en a pas de valable.
+    const pin = this.pins.generate();
     const changed = await this.store.changePassword({
       actor: user,
       memberId: staff.memberId,
       currentSessionId: staff.sessionId,
       expectedPasswordHash: reservation.passwordHash,
-      newPasswordHash
+      newPasswordHash,
+      newPinHash: this.pins.hash(pin)
     });
     // Un remplacement concurrent a gagné (le hachage lu n'est plus le courant) : le même refus que le mot de passe actuel faux.
     if (!changed.ok) throw motDePasseActuelRefuse();
-    return { body: { member: changed.member }, cookies: {} };
+    return { body: { member: changed.member, pin: changed.pinIssued ? pin : null }, cookies: {} };
   }
 }

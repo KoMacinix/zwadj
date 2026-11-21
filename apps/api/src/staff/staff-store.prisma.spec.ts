@@ -58,6 +58,20 @@ function faux(reponses: unknown[] = [], extra: { profil?: unknown; membre?: unkn
 
 const LIGNE_MEMBRE = { id: MEMBRE, accountName: "Amine", role: "MANAGER", mustChangePassword: false };
 
+// ⛔ Rang 58 (D356) — ce que le CAS d'`openSession` et le verrou de `changePassword` rendent maintenant du PIN du membre (sa PRÉSENCE, son échéance, son verrou, son compteur) et l'heure de la BASE : de quoi appliquer
+// `etatDuPin`, la SEULE règle. Les cinq états sont déclarés ici une fois ; aucun test ne recopie la règle.
+const INSTANT_BASE = new Date("2026-11-19T10:00:00.000Z");
+const PIN_VALABLE = { hasPin: true, pinExpiresAt: new Date("2027-01-01T00:00:00.000Z"), pinLockedAt: null, pinFailedCount: 0, now: INSTANT_BASE };
+const PIN_ABSENT = { hasPin: false, pinExpiresAt: null, pinLockedAt: null, pinFailedCount: 0, now: INSTANT_BASE };
+const PIN_EXPIRE = { ...PIN_VALABLE, pinExpiresAt: new Date("2026-11-18T10:00:00.000Z") };
+const PIN_VERROUILLE = { ...PIN_VALABLE, pinLockedAt: new Date("2026-11-19T09:00:00.000Z"), pinFailedCount: STAFF_LIMITS.PIN_MAX_FAILURES };
+const PIN_AU_PLAFOND_SANS_VERROU = { ...PIN_VALABLE, pinFailedCount: STAFF_LIMITS.PIN_MAX_FAILURES };
+const LIGNE_PIN_VALABLE = { ...LIGNE_MEMBRE, ...PIN_VALABLE };
+const LIGNE_PIN_ABSENT = { ...LIGNE_MEMBRE, ...PIN_ABSENT };
+const LIGNE_PIN_EXPIRE = { ...LIGNE_MEMBRE, ...PIN_EXPIRE };
+const LIGNE_PIN_VERROUILLE = { ...LIGNE_MEMBRE, ...PIN_VERROUILLE };
+const LIGNE_PIN_AU_PLAFOND = { ...LIGNE_MEMBRE, ...PIN_AU_PLAFOND_SANS_VERROU };
+
 describe("readLayer — UNE lecture du drapeau, par le compte commun (limite 6 du cadrage)", () => {
   it("lit le profil du compte (id et drapeau) et ne fait aucune requête brute", async () => {
     const date = new Date("2026-11-01T10:00:00Z");
@@ -242,6 +256,7 @@ describe("activate — K-14 : une transaction, le drapeau d'abord (L1), puis Man
     accountName: "Amine",
     accountNameKey: "amine",
     passwordHash: "HASH",
+    pinHash: "PIN-HASH-ACTIVATION",
     sessionTokenHash: "hs",
     deviceTokenHash: "hd",
     deviceLabel: "Poste"
@@ -307,6 +322,18 @@ describe("activate — K-14 : une transaction, le drapeau d'abord (L1), puis Man
     expect(f.audits[0]!.data).toMatchObject({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MEMBRE, action: "staff.activate", entityType: "staff_member", entityId: MEMBRE });
     expect(f.audits[0]!.data.after).toEqual({ role: "MANAGER" });
   });
+
+  it("⛔ rang 58 (R-4, MP-12) — le PIN du Manager s'INSTALLE dans l'INSERT du membre, UNE instruction : le haché CANDIDAT en paramètre, son échéance par le levier (`PIN_VALIDITY_DAYS`) ; aucune instruction de plus, et le haché n'entre jamais dans la ligne d'audit", async () => {
+    const f = faux([1, [LIGNE_MEMBRE], [{ id: "d1" }], [{ id: "s1" }]], { profil });
+    await f.store.activate(entree);
+    const insertion = f.appels[1]!;
+    expect(insertion.sql).toContain("pin_hash, pin_generated_at, pin_expires_at)");
+    expect(insertion.sql).toMatch(/pin_expires_at\) VALUES/);
+    expect(insertion.sql).toMatch(/pin_expires_at\) VALUES .* now\(\) \+ make_interval\(days => \?::int\)\) ON CONFLICT/);
+    expect(insertion.valeurs, "le profil, le nom, sa clé, le hachage du mot de passe, SA durée, le haché du PIN, SA durée").toEqual([SALLE, "Amine", "amine", "HASH", STAFF_LIMITS.PASSWORD_VALIDITY_DAYS, "PIN-HASH-ACTIVATION", STAFF_LIMITS.PIN_VALIDITY_DAYS]);
+    expect(f.appels).toHaveLength(4);
+    expect(JSON.stringify(f.audits[0]!.data)).not.toContain("PIN-HASH-ACTIVATION");
+  });
 });
 
 describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la session (L4) — jamais l'inverse", () => {
@@ -319,7 +346,8 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
     candidateDeviceHashes: ["h-candidat"],
     newDeviceTokenHash: "hd",
     deviceLabel: "Poste",
-    expectedPasswordHash: "HASH-LU-A-LA-RESERVATION"
+    expectedPasswordHash: "HASH-LU-A-LA-RESERVATION",
+    newPinHash: "PIN-CANDIDAT"
   };
   const appareil = (surcharge: Record<string, unknown> = {}) => ({ id: "d0", memberId: MEMBRE, proProfileId: SALLE, revoked: false, expired: false, ...surcharge });
 
@@ -356,8 +384,8 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
   });
 
   it("⛔ un appareil reconnu (lui-même, sa salle, ni révoqué ni expiré) est RÉUTILISÉ : on le marque utilisé, on n'en crée pas", async () => {
-    const f = faux([[LIGNE_MEMBRE], [appareil()], 1, [{ id: "s1" }]]);
-    expect(await f.store.openSession(entree)).toEqual({ ok: true, member: LIGNE_MEMBRE, sessionId: "s1", deviceReused: true });
+    const f = faux([[LIGNE_PIN_VALABLE], [appareil()], 1, [{ id: "s1" }]]);
+    expect(await f.store.openSession(entree)).toEqual({ ok: true, member: LIGNE_MEMBRE, sessionId: "s1", deviceReused: true, pinIssued: false });
     const sqls = f.appels.map((a) => a.sql);
     expect(sqls[1]).toMatch(/FROM pro_staff_devices/);
     expect(sqls[1]).toContain("revoked_at IS NOT NULL");
@@ -369,7 +397,7 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
   });
 
   it("⛔ MP-3 — l'appareil d'un AUTRE membre ou d'une AUTRE salle n'est pas réutilisé : un appareil neuf est créé", async () => {
-    const f = faux([[LIGNE_MEMBRE], [appareil({ memberId: "autre" }), appareil({ id: "d2", proProfileId: "autre-salle" })], [{ id: "dn" }], [{ id: "s1" }]]);
+    const f = faux([[LIGNE_PIN_VALABLE], [appareil({ memberId: "autre" }), appareil({ id: "d2", proProfileId: "autre-salle" })], [{ id: "dn" }], [{ id: "s1" }]]);
     const r = await f.store.openSession(entree);
     expect(r).toMatchObject({ ok: true, deviceReused: false });
     const sqls = f.appels.map((a) => a.sql);
@@ -378,13 +406,13 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
   });
 
   it("sans cookie d'appareil présenté : AUCUNE lecture d'appareils, un appareil neuf directement", async () => {
-    const f = faux([[LIGNE_MEMBRE], [{ id: "dn" }], [{ id: "s1" }]]);
+    const f = faux([[LIGNE_PIN_VALABLE], [{ id: "dn" }], [{ id: "s1" }]]);
     await f.store.openSession({ ...entree, candidateDeviceHashes: [] });
     expect(f.appels.map((a) => a.sql).some((s) => /^SELECT .* FROM pro_staff_devices/.test(s))).toBe(false);
   });
 
   it("⛔ MP-43 / R-6 (D341) — l'échéance d'un appareil neuf est la durée du PIN, la session le plafond : des paramètres du levier", async () => {
-    const f = faux([[LIGNE_MEMBRE], [], [{ id: "dn" }], [{ id: "s1" }]]);
+    const f = faux([[LIGNE_PIN_VALABLE], [], [{ id: "dn" }], [{ id: "s1" }]]);
     await f.store.openSession(entree);
     const insertionAppareil = f.appels.find((a) => /^INSERT INTO pro_staff_devices/.test(a.sql))!;
     const insertionSession = f.appels.find((a) => /^INSERT INTO pro_staff_sessions/.test(a.sql))!;
@@ -393,7 +421,7 @@ describe("openSession — K-15 : le membre d'abord (L2), l'appareil (L3), la ses
   });
 
   it("l'audit `staff.login` est écrit dans la transaction, sans secret : le membre et si l'appareil était déjà reconnu", async () => {
-    const f = faux([[LIGNE_MEMBRE], [appareil()], 1, [{ id: "s1" }]]);
+    const f = faux([[LIGNE_PIN_VALABLE], [appareil()], 1, [{ id: "s1" }]]);
     await f.store.openSession(entree);
     expect(f.audits[0]!.data).toMatchObject({ actorId: UTILISATEUR, actorMemberId: MEMBRE, action: "staff.login", entityType: "staff_session", entityId: "s1" });
     expect(f.audits[0]!.data.after).toEqual({ memberId: MEMBRE, deviceReused: true });
@@ -414,9 +442,9 @@ describe("closeSession, changePassword, listKnownMembers, resetPasswordAttempts"
   });
 
   it("⛔ changePassword — verrou du membre d'abord (L2), remplacement CONDITIONNÉ au hachage lu, puis fin des AUTRES sessions (`id <> courante`), audit : MP-5", async () => {
-    const f = faux([[{ id: MEMBRE }], [LIGNE_MEMBRE], 2]);
-    const r = await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF" });
-    expect(r).toEqual({ ok: true, member: LIGNE_MEMBRE, otherSessionsEnded: 2 });
+    const f = faux([[PIN_VALABLE], [LIGNE_MEMBRE], 2]);
+    const r = await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF", newPinHash: "PIN-CANDIDAT" });
+    expect(r).toEqual({ ok: true, member: LIGNE_MEMBRE, otherSessionsEnded: 2, pinIssued: false });
     const sqls = f.appels.map((a) => a.sql);
     expect(sqls[0]).toMatch(/FOR UPDATE/);
     expect(sqls[1]).toMatch(/^UPDATE pro_staff_members SET password_hash =/);
@@ -433,15 +461,15 @@ describe("closeSession, changePassword, listKnownMembers, resetPasswordAttempts"
   });
 
   it("changePassword : le hachage lu n'est plus le courant ⇒ `changedConcurrently`, RIEN n'est écrit de plus (ni sessions terminées, ni audit)", async () => {
-    const f = faux([[{ id: MEMBRE }], []]);
-    expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF" })).toEqual({ ok: false, reason: "changedConcurrently" });
+    const f = faux([[PIN_VALABLE], []]);
+    expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF", newPinHash: "PIN-CANDIDAT" })).toEqual({ ok: false, reason: "changedConcurrently" });
     expect(f.appels).toHaveLength(2);
     expect(f.audits).toHaveLength(0);
   });
 
   it("⛔ changePassword : le membre introuvable ou éteint (le verrou ne rend AUCUNE ligne) ⇒ `changedConcurrently`, aucun remplacement ne part", async () => {
     const f = faux([[]]);
-    expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF" })).toEqual({ ok: false, reason: "changedConcurrently" });
+    expect(await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF", newPinHash: "PIN-CANDIDAT" })).toEqual({ ok: false, reason: "changedConcurrently" });
     expect(f.appels).toHaveLength(1);
     expect(f.audits).toHaveLength(0);
   });
@@ -494,15 +522,15 @@ describe("l'AUDIT — un seul site d'écriture, une charge utile FERMÉE (MP-33,
     const entrees: Array<() => Promise<unknown>> = [];
     {
       const f = faux([1, [LIGNE_MEMBRE], [{ id: "d1" }], [{ id: "s1" }]], { profil });
-      entrees.push(async () => { await f.store.activate({ actor: acteur, accountName: "SECRET-NOM", accountNameKey: "secret-nom", passwordHash: "SECRET-HASH", sessionTokenHash: "SECRET-JETON-S", deviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
+      entrees.push(async () => { await f.store.activate({ actor: acteur, accountName: "SECRET-NOM", accountNameKey: "secret-nom", passwordHash: "SECRET-HASH", pinHash: "SECRET-PIN-ACTIVATION", sessionTokenHash: "SECRET-JETON-S", deviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
     }
     {
-      const f = faux([[LIGNE_MEMBRE], [], [{ id: "d1" }], [{ id: "s1" }]]);
-      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, expectedPasswordHash: "SECRET-HASH-LU", sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste" }); lignes.push(...f.audits.map((a) => a.data)); });
+      const f = faux([[LIGNE_PIN_VALABLE], [], [{ id: "d1" }], [{ id: "s1" }]]);
+      entrees.push(async () => { await f.store.openSession({ actor: acteur, proProfileId: SALLE, memberId: MEMBRE, expectedPasswordHash: "SECRET-HASH-LU", sessionTokenHash: "SECRET-JETON-S", candidateDeviceHashes: ["SECRET-JETON-C"], newDeviceTokenHash: "SECRET-JETON-D", deviceLabel: "Poste", newPinHash: "SECRET-PIN-CANDIDAT" }); lignes.push(...f.audits.map((a) => a.data)); });
     }
     {
-      const f = faux([[{ id: MEMBRE }], [LIGNE_MEMBRE], 1]);
-      entrees.push(async () => { await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "SECRET-HASH-ANCIEN", newPasswordHash: "SECRET-HASH-NEUF" }); lignes.push(...f.audits.map((a) => a.data)); });
+      const f = faux([[PIN_VALABLE], [LIGNE_MEMBRE], 1]);
+      entrees.push(async () => { await f.store.changePassword({ actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "SECRET-HASH-ANCIEN", newPasswordHash: "SECRET-HASH-NEUF", newPinHash: "SECRET-PIN-CANDIDAT" }); lignes.push(...f.audits.map((a) => a.data)); });
     }
     {
       const f = faux();
@@ -675,7 +703,7 @@ describe("resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (
     expect(f.issues).toEqual(["validée"]);
   });
 
-  it("⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et ne touche AUCUNE colonne de PIN (il n'existe pas encore, 3b)", async () => {
+  it("⛔ le remplacement pose le hachage, `must_change_password = true`, l'échéance TEMPORAIRE par paramètre, remet les compteurs et la pause à zéro — et EFFACE le PIN (les cinq colonnes `pin_*`) : il se réémettra à la prochaine connexion par mot de passe (K-21, rang 58)", async () => {
     const f = faux([[{ id: CIBLE, status: "ACTIVE" }], [LIGNE_LISTE], 0, 0]);
     await f.store.resetMemberPassword(entree);
     const { sql, valeurs } = f.appels[1]!;
@@ -685,7 +713,7 @@ describe("resetMemberPassword — K-21 : membre (L2), appareils (L3), sessions (
     expect(sql).toMatch(/password_expires_at = now\(\) \+ make_interval\(days => \?/);
     expect(sql).toContain("password_failed_count = 0");
     expect(sql).toContain("password_locked_until = NULL");
-    expect(sql).not.toMatch(/pin_/);
+    for (const colonne of ["pin_hash = NULL", "pin_generated_at = NULL", "pin_expires_at = NULL", "pin_failed_count = 0", "pin_locked_at = NULL"]) expect(sql, colonne).toContain(colonne);
     expect(sql).not.toMatch(/interval\s*'/i);
     expect(valeurs).toEqual(expect.arrayContaining(["SECRET-HASH", STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS, CIBLE]));
   });
@@ -804,5 +832,334 @@ describe("disableMember — K-22 : « jamais zéro Manager » — le profil (L1)
     g.client.auditLog.create.mockRejectedValueOnce(new Error("audit refusé"));
     await expect(g.store.disableMember(entree)).rejects.toThrow("audit refusé");
     expect(g.issues).toEqual(["annulée"]);
+  });
+
+  it("⛔ rang 58 (K-22) — la désactivation EFFACE le PIN dans le MÊME UPDATE que le statut (les cinq colonnes `pin_*`) : un membre éteint ne garde aucun haché de PIN", async () => {
+    const f = faux([[{ id: SALLE }], [LIGNE_LISTE], [{ n: 2 }], [DESACTIVE], 0]);
+    await f.store.disableMember(entree);
+    const cas = f.appels[3]!.sql;
+    for (const colonne of ["pin_hash = NULL", "pin_generated_at = NULL", "pin_expires_at = NULL", "pin_failed_count = 0", "pin_locked_at = NULL"]) expect(cas, colonne).toContain(colonne);
+  });
+});
+
+// ══ RANG 58, L36-3b (D356) — le PIN dans l'adaptateur : la RÉSERVATION atomique, l'ÉCHEC et le VERROU, l'OUVERTURE par PIN, la recherche d'un membre ════════════════════════════════════════════════════════════
+// ⛔ Ce spec mesure ce que l'intégration ne dit pas aussi vite : que la réservation d'un essai est UNE instruction (jamais lire puis écrire : vingt requêtes parallèles feraient vingt vérifications), qu'elle porte
+// TOUTES ses conditions (le verrou de ligne, le plafond, le verrou du PIN, l'échéance, l'APPAREIL vivant — la condition de MP-2), que le verrou ne se pose qu'au plafond ET sur CE PIN, que l'ouverture porte ses
+// quatre conditions dans le CAS (R-3) et que le refus de l'appareil ANNULE la transaction. La base réelle tranche les comportements dans `test/int/staff-pin*.int-spec.ts`.
+const HACHE_LU = "PIN-HASH-LU";
+const HACHES_D_APPAREIL = ["sha-appareil-1", "sha-appareil-2"];
+
+describe("findMemberById — K-23 : le membre par son identifiant, DANS la salle du Bearer, avec l'heure de la base, sans aucun secret", () => {
+  it("UNE lecture ; l'identifiant ET la salle sont des paramètres (jamais un texte concaténé) ; le statut, l'échéance du mot de passe et `now()` de la BASE sont rendus ; ni haché de mot de passe, ni haché de PIN n'est sélectionné", async () => {
+    const ligne = { id: MEMBRE, accountName: "Amine", role: "MANAGER", status: "ACTIVE", mustChangePassword: false, passwordExpiresAt: new Date("2027-01-01T00:00:00Z"), now: new Date("2026-11-19T10:00:00Z") };
+    const f = faux([[ligne]]);
+    expect(await f.store.findMemberById(SALLE, MEMBRE)).toEqual(ligne);
+    expect(f.appels).toHaveLength(1);
+    const a = f.appels[0]!;
+    expect(a.type).toBe("query");
+    expect(a.sql).toContain("FROM pro_staff_members");
+    expect(a.sql).toMatch(/WHERE id = \?::uuid AND pro_profile_id = \?::uuid/);
+    expect(a.valeurs).toEqual([MEMBRE, SALLE]);
+    expect(a.sql).toContain('now() AS "now"');
+    expect(a.sql).toContain('password_expires_at AS "passwordExpiresAt"');
+    expect(a.sql).not.toContain("password_hash");
+    expect(a.sql).not.toContain("pin_hash");
+    expect(a.sql).not.toMatch(/FOR UPDATE/);
+  });
+
+  it("aucun membre ⇒ null", async () => {
+    expect(await faux([[]]).store.findMemberById(SALLE, MEMBRE)).toBeNull();
+  });
+});
+
+describe("reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification", () => {
+  const entree = { proProfileId: SALLE, memberId: MEMBRE, deviceTokenHashes: HACHES_D_APPAREIL };
+
+  it("⛔ UNE seule instruction (un `WITH … FOR UPDATE` puis `UPDATE … RETURNING`) : jamais lire puis écrire — le compteur est incrémenté DANS la réservation, avant toute vérification du PIN", async () => {
+    const f = faux([[{ pinHash: HACHE_LU, failedCount: 1 }]]);
+    expect(await f.store.reservePinAttempt(entree)).toEqual({ reserved: true, pinHash: HACHE_LU, failedCount: 1 });
+    expect(f.appels).toHaveLength(1);
+    const sql = f.appels[0]!.sql;
+    expect(sql).toMatch(/^WITH cur AS \(/);
+    expect(sql).toContain("FOR UPDATE OF m");
+    expect(sql).toContain("UPDATE pro_staff_members m SET pin_failed_count = m.pin_failed_count + 1");
+    expect(sql).toMatch(/RETURNING m\.pin_hash AS "pinHash", m\.pin_failed_count AS "failedCount"/);
+  });
+
+  it("⛔ le PLAFOND est un PARAMÈTRE du levier (`pin_failed_count < ?`), jamais un 3 écrit : les vingt requêtes parallèles ne passent pas le plafond", async () => {
+    const f = faux([[{ pinHash: HACHE_LU, failedCount: 1 }]]);
+    await f.store.reservePinAttempt(entree);
+    const a = f.appels[0]!;
+    expect(a.sql).toMatch(/m\.pin_failed_count < \?::int/);
+    expect(a.valeurs).toContain(STAFF_LIMITS.PIN_MAX_FAILURES);
+    expect(a.sql).not.toMatch(/pin_failed_count < \d/);
+  });
+
+  it("⛔ toutes les conditions sont DANS la même instruction : le membre de CETTE salle, ACTIF, un PIN, non expiré (heure de la base), non verrouillé, sous le plafond", async () => {
+    const f = faux([[]]);
+    await f.store.reservePinAttempt(entree);
+    const sql = f.appels[0]!.sql;
+    for (const condition of [
+      "m.id = ?::uuid",
+      "m.pro_profile_id = ?::uuid",
+      "m.status = 'ACTIVE'",
+      "m.pin_hash IS NOT NULL",
+      "m.pin_expires_at > now()",
+      "m.pin_locked_at IS NULL"
+    ]) {
+      expect(sql, condition).toContain(condition);
+    }
+  });
+
+  it("⛔ MP-2 — la condition de l'APPAREIL est dans la réservation : un appareil de CE membre, présenté (par le HACHAGE du cookie), ni révoqué ni expiré (heure de la base) — sinon aucun essai n'est compté", async () => {
+    const f = faux([[]]);
+    await f.store.reservePinAttempt(entree);
+    const a = f.appels[0]!;
+    expect(a.sql).toContain("EXISTS (SELECT 1 FROM pro_staff_devices d");
+    expect(a.sql).toContain("d.member_id = m.id");
+    expect(a.sql).toMatch(/d\.token_hash = ANY\(\?::text\[\]\)/);
+    expect(a.sql).toContain("d.revoked_at IS NULL");
+    expect(a.sql).toContain("d.expires_at > now()");
+    expect(a.valeurs).toContainEqual(HACHES_D_APPAREIL);
+  });
+
+  it("les paramètres sont l'identifiant du membre et la salle du Bearer (jamais un texte concaténé), dans l'ordre du texte", async () => {
+    const f = faux([[]]);
+    await f.store.reservePinAttempt(entree);
+    expect(f.appels[0]!.valeurs).toEqual([MEMBRE, SALLE, STAFF_LIMITS.PIN_MAX_FAILURES, HACHES_D_APPAREIL]);
+  });
+
+  it("⛔ aucune ligne rendue ⇒ `reserved: false` (essais épuisés, PIN verrouillé, expiré ou absent, appareil non reconnu : le service ne distingue pas)", async () => {
+    expect(await faux([[]]).store.reservePinAttempt(entree)).toEqual({ reserved: false });
+  });
+
+  it("aucune écriture hors de l'instruction : ni audit, ni transaction (un essai refusé n'écrit rien)", async () => {
+    const f = faux([[]]);
+    await f.store.reservePinAttempt(entree);
+    expect(f.audits).toHaveLength(0);
+    expect(f.client.$transaction).not.toHaveBeenCalled();
+  });
+});
+
+describe("recordPinFailure — le verrou se pose au TROISIÈME ÉCHEC, sur CE PIN, et met fin aux sessions du membre", () => {
+  const base = { actor: acteur, memberId: MEMBRE, expectedPinHash: HACHE_LU };
+
+  it("⛔ SOUS le plafond (1 ou 2) : UNE ligne `staff.pin_login_failed` avec le compte, AUCUNE instruction SQL — ni verrou, ni fin de session", async () => {
+    for (const compte of [1, STAFF_LIMITS.PIN_MAX_FAILURES - 1]) {
+      const f = faux();
+      expect(await f.store.recordPinFailure({ ...base, failedCount: compte })).toEqual({ locked: false, sessionsEnded: 0 });
+      expect(f.appels, `compte ${compte}`).toHaveLength(0);
+      expect(f.audits.map((a) => a.data.action)).toEqual(["staff.pin_login_failed"]);
+      expect(f.audits[0]!.data).toMatchObject({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MEMBRE, entityType: "staff_member", entityId: MEMBRE, after: { failedCount: compte } });
+    }
+  });
+
+  it("⛔ AU plafond : la ligne d'échec, puis le VERROU posé SOUS CONDITION (le PIN lu, non déjà verrouillé, le compte au plafond — le plafond est un paramètre), puis les sessions du membre terminées `PIN_LOCKED`, puis la ligne `staff.pin_lock`", async () => {
+    const f = faux([1, 2]);
+    const compte = STAFF_LIMITS.PIN_MAX_FAILURES;
+    expect(await f.store.recordPinFailure({ ...base, failedCount: compte })).toEqual({ locked: true, sessionsEnded: 2 });
+    expect(f.appels.map((a) => a.type)).toEqual(["execute", "execute"]);
+    const verrou = f.appels[0]!;
+    expect(verrou.sql).toMatch(/^UPDATE pro_staff_members SET pin_locked_at = now\(\)/);
+    expect(verrou.sql).toContain("WHERE id = ?::uuid AND pin_hash = ? AND pin_locked_at IS NULL AND pin_failed_count >= ?::int");
+    expect(verrou.valeurs).toEqual([MEMBRE, HACHE_LU, STAFF_LIMITS.PIN_MAX_FAILURES]);
+    const fins = f.appels[1]!;
+    expect(fins.sql).toContain("SET ended_at = now(), end_reason = 'PIN_LOCKED'");
+    expect(fins.sql).toContain("WHERE member_id = ?::uuid AND ended_at IS NULL");
+    expect(fins.valeurs).toEqual([MEMBRE]);
+    expect(f.audits.map((a) => a.data.action)).toEqual(["staff.pin_login_failed", "staff.pin_lock"]);
+    expect(f.audits[1]!.data).toMatchObject({ actorMemberId: MEMBRE, entityType: "staff_member", entityId: MEMBRE, after: { failedCount: compte, sessionsEnded: 2 } });
+  });
+
+  it("⛔ le verrou posé par un AUTRE (compte 0 ligne : déjà verrouillé, ou le PIN a été remplacé entre-temps) : AUCUNE fin de session, AUCUNE ligne de verrouillage — on ne verrouille pas le PIN NEUF", async () => {
+    const f = faux([0]);
+    expect(await f.store.recordPinFailure({ ...base, failedCount: STAFF_LIMITS.PIN_MAX_FAILURES })).toEqual({ locked: false, sessionsEnded: 0 });
+    expect(f.appels).toHaveLength(1);
+    expect(f.audits.map((a) => a.data.action)).toEqual(["staff.pin_login_failed"]);
+  });
+
+  it("tout est dans UNE transaction : la ligne d'échec, le verrou, les fins de session et la ligne de verrouillage se valident ou s'annulent ENSEMBLE", async () => {
+    const f = faux([1, 0]);
+    await f.store.recordPinFailure({ ...base, failedCount: STAFF_LIMITS.PIN_MAX_FAILURES });
+    expect(f.client.$transaction).toHaveBeenCalledTimes(1);
+    expect(f.issues).toEqual(["validée"]);
+  });
+});
+
+describe("openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DANS le CAS", () => {
+  const entree = { actor: acteur, proProfileId: SALLE, memberId: MEMBRE, expectedPinHash: HACHE_LU, sessionTokenHash: "sha-session", candidateDeviceHashes: HACHES_D_APPAREIL };
+  // Le CAS rend les QUATRE champs du membre (la forme de `StaffMemberView`), rien de plus : ni haché, ni compteur.
+  const LIGNE_PIN = LIGNE_MEMBRE;
+
+  it("⛔ R-3 — le CAS du membre porte : sa salle, `status = 'ACTIVE'`, le haché de PIN LU à la réservation, `pin_locked_at IS NULL`, l'échéance du PIN contre `now()` ; il remet le compteur à zéro et écrit `last_login_at` — et il ne touche à AUCUNE colonne du mot de passe", async () => {
+    const f = faux([[LIGNE_PIN], [{ id: "d1" }], 1, [{ id: "s1" }]]);
+    await f.store.openSessionByPin(entree);
+    const cas = f.appels[0]!;
+    expect(cas.type).toBe("query");
+    expect(cas.sql).toMatch(/^UPDATE pro_staff_members SET last_login_at = now\(\), pin_failed_count = 0/);
+    for (const condition of ["WHERE id = ?::uuid", "pro_profile_id = ?::uuid", "status = 'ACTIVE'", "pin_hash = ?", "pin_locked_at IS NULL", "pin_expires_at > now()"]) {
+      expect(cas.sql, condition).toContain(condition);
+    }
+    expect(cas.valeurs).toEqual([MEMBRE, SALLE, HACHE_LU]);
+    expect(cas.sql).not.toContain("password_");
+  });
+
+  it("⛔ le CAS ne trouve rien (PIN remplacé, verrou posé, membre désactivé, PIN expiré) : `memberChanged`, AUCUNE autre instruction, aucune ligne d'audit", async () => {
+    const f = faux([[]]);
+    expect(await f.store.openSessionByPin(entree)).toEqual({ ok: false, reason: "memberChanged" });
+    expect(f.appels).toHaveLength(1);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("⛔ L'APPAREIL se re-vérifie SOUS VERROU (`FOR UPDATE`, L3) : CE membre, un cookie présenté, ni révoqué ni expiré — et son `last_used_at` est écrit", async () => {
+    const f = faux([[LIGNE_PIN], [{ id: "d1" }], 1, [{ id: "s1" }]]);
+    await f.store.openSessionByPin(entree);
+    const appareil = f.appels[1]!;
+    expect(appareil.type).toBe("query");
+    expect(appareil.sql).toContain("FROM pro_staff_devices d");
+    expect(appareil.sql).toMatch(/d\.member_id = \?::uuid AND d\.token_hash = ANY\(\?::text\[\]\)/);
+    expect(appareil.sql).toContain("d.revoked_at IS NULL");
+    expect(appareil.sql).toContain("d.expires_at > now()");
+    expect(appareil.sql).toMatch(/FOR UPDATE$/);
+    expect(appareil.valeurs).toEqual([MEMBRE, HACHES_D_APPAREIL]);
+    const touche = f.appels[2]!;
+    expect(touche.type).toBe("execute");
+    expect(touche.sql).toContain("UPDATE pro_staff_devices SET last_used_at = now()");
+  });
+
+  it("⛔ l'appareil a disparu entre le CAS et la re-vérification : la transaction est ANNULÉE (le CAS du membre aussi : `last_login_at` et le compteur ne restent pas écrits) — `memberChanged`, aucune session, aucune ligne d'audit", async () => {
+    const f = faux([[LIGNE_PIN], []]);
+    expect(await f.store.openSessionByPin(entree)).toEqual({ ok: false, reason: "memberChanged" });
+    expect(f.issues, "la transaction est annulée, pas validée").toEqual(["annulée"]);
+    expect(f.appels).toHaveLength(2);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  it("la session naît DANS la transaction, rattachée à l'appareil retrouvé, pour la durée du plafond (paramètre du levier, jamais un littéral) ; UNE ligne `staff.pin_login` pour CE membre, l'entité est la session", async () => {
+    const f = faux([[LIGNE_PIN], [{ id: "d1" }], 1, [{ id: "s1" }]]);
+    const r = await f.store.openSessionByPin(entree);
+    expect(r).toEqual({ ok: true, member: LIGNE_MEMBRE, sessionId: "s1" });
+    const insertion = f.appels[3]!;
+    expect(insertion.sql).toContain("INSERT INTO pro_staff_sessions (member_id, device_id, token_hash, expires_at)");
+    expect(insertion.sql).toContain("make_interval(hours => ?::int)");
+    expect(insertion.valeurs).toEqual([MEMBRE, "d1", "sha-session", STAFF_LIMITS.SESSION_MAX_HOURS]);
+    expect(f.audits).toHaveLength(1);
+    expect(f.audits[0]!.data).toMatchObject({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MEMBRE, action: "staff.pin_login", entityType: "staff_session", entityId: "s1", after: { memberId: MEMBRE } });
+    expect(f.issues).toEqual(["validée"]);
+  });
+});
+
+// ══ RANG 58, L36-3b (D356) — l'ÉMISSION du PIN par le mot de passe : la connexion (K-15) et le changement de mot de passe (K-18) ═════════════════════════════════════
+// ⛔ UNE règle, `etatDuPin`, appliquée SOUS le verrou que le CAS du membre (ou le `FOR UPDATE` du changement) vient de prendre : un PIN VALABLE n'est ni remplacé ni rendu ; absent, expiré ou verrouillé, le haché
+// CANDIDAT est installé. Le DÉBLOCAGE d'un PIN verrouillé est une action de DR5 : sa ligne `staff.pin_unlock` s'écrit dans la MÊME transaction, avant la ligne de la connexion ; l'ÉMISSION elle-même n'écrit AUCUNE ligne
+// (réponse de Ko, 1 d : aucune action au-delà de la liste de DR5). Les cinq états viennent de constantes déclarées en tête de fichier, jamais d'une règle recopiée ici.
+describe("l'ÉMISSION du PIN — connexion et changement de mot de passe : UNE règle, sous le verrou, la même pour les deux", () => {
+  const entreeConnexion = {
+    actor: acteur,
+    proProfileId: SALLE,
+    memberId: MEMBRE,
+    sessionTokenHash: "hs",
+    candidateDeviceHashes: [] as string[],
+    newDeviceTokenHash: "hd",
+    deviceLabel: "Poste",
+    expectedPasswordHash: "HASH-LU",
+    newPinHash: "PIN-CANDIDAT"
+  };
+  const entreeChangement = { actor: acteur, memberId: MEMBRE, currentSessionId: "s1", expectedPasswordHash: "H-LU", newPasswordHash: "H-NEUF", newPinHash: "PIN-CANDIDAT" };
+
+  for (const [nom, ligne] of [
+    ["ABSENT", LIGNE_PIN_ABSENT],
+    ["EXPIRÉ", LIGNE_PIN_EXPIRE]
+  ] as const) {
+    it(`⛔ connexion : un PIN ${nom} est ÉMIS — le haché candidat s'installe sous le verrou (échéance par le levier, compteur à zéro, verrou levé), SANS ligne de déblocage ni ligne d'émission, et le résultat le dit`, async () => {
+      const f = faux([[ligne], 1, [{ id: "dn" }], [{ id: "s1" }]]);
+      expect(await f.store.openSession(entreeConnexion)).toEqual({ ok: true, member: LIGNE_MEMBRE, sessionId: "s1", deviceReused: false, pinIssued: true });
+      const emission = f.appels[1]!;
+      expect(emission.type).toBe("execute");
+      expect(emission.sql).toMatch(/^UPDATE pro_staff_members SET pin_hash = \?, pin_generated_at = now\(\), pin_expires_at = now\(\) \+ make_interval\(days => \?::int\),/);
+      expect(emission.sql).toContain("pin_failed_count = 0, pin_locked_at = NULL");
+      expect(emission.sql).toMatch(/WHERE id = \?::uuid$/);
+      expect(emission.valeurs).toEqual(["PIN-CANDIDAT", STAFF_LIMITS.PIN_VALIDITY_DAYS, MEMBRE]);
+      expect(f.audits.map((a) => a.data.action)).toEqual(["staff.login"]);
+    });
+  }
+
+  for (const [nom, ligne] of [
+    ["VERROUILLÉ (le verrou est posé)", LIGNE_PIN_VERROUILLE],
+    ["au PLAFOND d'échecs, verrou pas encore posé", LIGNE_PIN_AU_PLAFOND]
+  ] as const) {
+    it(`⛔ connexion : un PIN ${nom} est DÉBLOQUÉ par le mot de passe — un PIN neuf s'installe, et la ligne \`staff.pin_unlock\` (via: password) s'écrit AVANT la ligne de la connexion, dans la même transaction, sans le haché`, async () => {
+      const f = faux([[ligne], 1, [{ id: "dn" }], [{ id: "s1" }]]);
+      expect(await f.store.openSession(entreeConnexion)).toMatchObject({ ok: true, pinIssued: true });
+      expect(f.audits.map((a) => a.data.action)).toEqual(["staff.pin_unlock", "staff.login"]);
+      expect(f.audits[0]!.data).toMatchObject({ actorId: UTILISATEUR, actorRole: "PRO", actorMemberId: MEMBRE, entityType: "staff_member", entityId: MEMBRE });
+      expect(f.audits[0]!.data.after).toEqual({ via: "password" });
+      expect(JSON.stringify(f.audits.map((a) => a.data))).not.toContain("PIN-CANDIDAT");
+      expect(f.issues).toEqual(["validée"]);
+    });
+  }
+
+  it("⛔ connexion : un PIN VALABLE n'est NI remplacé NI rendu — aucune écriture sur ses colonnes, `pinIssued: false`, une seule ligne d'audit", async () => {
+    const f = faux([[LIGNE_PIN_VALABLE], [{ id: "dn" }], [{ id: "s1" }]]);
+    expect(await f.store.openSession(entreeConnexion)).toMatchObject({ ok: true, pinIssued: false });
+    expect(f.appels.some((a) => /SET pin_hash =/.test(a.sql))).toBe(false);
+    expect(f.audits.map((a) => a.data.action)).toEqual(["staff.login"]);
+  });
+
+  it("⛔ connexion — l'échéance d'un appareil NEUF ne dépasse jamais celle du PIN : `LEAST(durée de l'appareil, échéance du PIN lue sur le membre)`, lue APRÈS l'émission, dans la même transaction", async () => {
+    const f = faux([[LIGNE_PIN_ABSENT], 1, [{ id: "dn" }], [{ id: "s1" }]]);
+    await f.store.openSession(entreeConnexion);
+    const appareil = f.appels.find((a) => /^INSERT INTO pro_staff_devices/.test(a.sql))!;
+    expect(appareil.sql).toContain("LEAST(now() + make_interval(days => ?::int), (SELECT pin_expires_at FROM pro_staff_members WHERE id = ?::uuid))");
+    expect(appareil.valeurs).toEqual([MEMBRE, "hd", "Poste", STAFF_LIMITS.PIN_VALIDITY_DAYS, MEMBRE]);
+    const rangEmission = f.appels.findIndex((a) => /SET pin_hash =/.test(a.sql));
+    const rangAppareil = f.appels.findIndex((a) => /^INSERT INTO pro_staff_devices/.test(a.sql));
+    expect(rangEmission).toBeGreaterThanOrEqual(0);
+    expect(rangAppareil).toBeGreaterThan(rangEmission);
+  });
+
+  it("⛔ connexion — l'émission refusée par la base (compte ≠ 1) ANNULE la transaction : aucune session, aucune ligne d'audit", async () => {
+    const f = faux([[LIGNE_PIN_ABSENT], 0]);
+    await expect(f.store.openSession(entreeConnexion)).rejects.toThrow(/compte = 1 exigé/);
+    expect(f.issues).toEqual(["annulée"]);
+    expect(f.audits).toHaveLength(0);
+  });
+
+  for (const [nom, ligne] of [
+    ["ABSENT", PIN_ABSENT],
+    ["EXPIRÉ", PIN_EXPIRE]
+  ] as const) {
+    it(`⛔ changement de mot de passe : un PIN ${nom} est ÉMIS par la MÊME règle — après le remplacement du hachage, AVANT la fin des autres sessions ; aucune ligne d'émission`, async () => {
+      const f = faux([[ligne], [LIGNE_MEMBRE], 1, 0]);
+      expect(await f.store.changePassword(entreeChangement)).toEqual({ ok: true, member: LIGNE_MEMBRE, otherSessionsEnded: 0, pinIssued: true });
+      expect(f.appels[0]!.sql).toMatch(/FOR UPDATE$/);
+      expect(f.appels[1]!.sql).toMatch(/^UPDATE pro_staff_members SET password_hash =/);
+      expect(f.appels[2]!.sql).toMatch(/^UPDATE pro_staff_members SET pin_hash = \?, pin_generated_at = now\(\)/);
+      expect(f.appels[2]!.valeurs).toEqual(["PIN-CANDIDAT", STAFF_LIMITS.PIN_VALIDITY_DAYS, MEMBRE]);
+      expect(f.appels[3]!.sql).toMatch(/^UPDATE pro_staff_sessions SET ended_at = now\(\), end_reason = 'PASSWORD_CHANGED'/);
+      expect(f.audits.map((a) => a.data.action)).toEqual(["staff.password_change"]);
+    });
+  }
+
+  it("⛔ changement de mot de passe : un PIN VERROUILLÉ est DÉBLOQUÉ — la ligne `staff.pin_unlock` (via: password) précède la ligne du changement, sans le haché", async () => {
+    const f = faux([[PIN_VERROUILLE], [LIGNE_MEMBRE], 1, 2]);
+    expect(await f.store.changePassword(entreeChangement)).toMatchObject({ ok: true, pinIssued: true, otherSessionsEnded: 2 });
+    expect(f.audits.map((a) => a.data.action)).toEqual(["staff.pin_unlock", "staff.password_change"]);
+    expect(f.audits[0]!.data.after).toEqual({ via: "password" });
+    expect(JSON.stringify(f.audits.map((a) => a.data))).not.toContain("PIN-CANDIDAT");
+  });
+
+  it("⛔ changement de mot de passe : un PIN VALABLE n'est NI remplacé NI rendu — trois instructions seulement, `pinIssued: false`", async () => {
+    const f = faux([[PIN_VALABLE], [LIGNE_MEMBRE], 0]);
+    expect(await f.store.changePassword(entreeChangement)).toMatchObject({ ok: true, pinIssued: false });
+    expect(f.appels).toHaveLength(3);
+    expect(f.appels.some((a) => /SET pin_hash =/.test(a.sql))).toBe(false);
+  });
+
+  it("⛔ changement de mot de passe — l'émission refusée par la base (compte ≠ 1) ANNULE la transaction : ni fin de session, ni ligne d'audit", async () => {
+    const f = faux([[PIN_ABSENT], [LIGNE_MEMBRE], 0]);
+    await expect(f.store.changePassword(entreeChangement)).rejects.toThrow(/compte = 1 exigé/);
+    expect(f.issues).toEqual(["annulée"]);
+    expect(f.audits).toHaveLength(0);
   });
 });

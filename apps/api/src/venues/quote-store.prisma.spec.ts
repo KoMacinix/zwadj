@@ -775,7 +775,8 @@ describe("⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la
   const FICHE = "018f0000-0000-7000-8000-0000000000f1";
   const COPIE = { clientRecordId: FICHE, clientNameAr: "آمنة بن سالم", clientNameLatin: "Amina Bensalem" };
   const ACTEUR = { userId: "018f0000-0000-7000-8000-00000000aaaa", role: "PRO" } as const;
-  const ARGS = { acteur: ACTEUR, quoteId: QUOTE_ID, statutsAdmis: ["DRAFT", "SENT"] as const, copie: COPIE };
+  // ⛔ D356 (rang 58, R-6) : le MEMBRE dont la session a passé le garde voyage jusqu'à la ligne d'audit (`null` : la couche est éteinte).
+  const ARGS = { acteur: ACTEUR, memberId: MEMBRE as string | null, quoteId: QUOTE_ID, statutsAdmis: ["DRAFT", "SENT"] as const, copie: COPIE };
 
   it("⛔ la séquence : la propriété, le VERROU, la plus haute version, l'écriture conditionnelle, l'AUDIT, la relecture — UNE transaction, rien hors d'elle", async () => {
     const { store, prisma, journal } = build();
@@ -810,12 +811,24 @@ describe("⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la
     expect(data).toEqual({
       actorId: ACTEUR.userId,
       actorRole: "PRO",
+      actorMemberId: MEMBRE,
       action: "quote.promote",
       entityType: "quote",
       entityId: QUOTE_ID,
       before: { isOfficial: false, clientRecordId: null },
       after: { isOfficial: true, clientRecordId: FICHE }
     });
+  });
+
+  it("⛔ R-6 (D356) — le membre qui AGIT est écrit dans `actorMemberId` (celui de la session, pas le compte commun) ; la couche ÉTEINTE (`memberId: null`) l'écrit NUL — la clé est PRÉSENTE dans les deux cas", async () => {
+    const avecMembre = build();
+    await avecMembre.store.promouvoir(ARGS);
+    expect((avecMembre.tx.auditLog.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data.actorMemberId).toBe(MEMBRE);
+    const sansMembre = build();
+    await sansMembre.store.promouvoir({ ...ARGS, memberId: null });
+    const data = (sansMembre.tx.auditLog.create.mock.calls[0]![0] as { data: Record<string, unknown> }).data;
+    expect(Object.prototype.hasOwnProperty.call(data, "actorMemberId")).toBe(true);
+    expect(data.actorMemberId).toBeNull();
   });
 
   it("⛔ D-11 (S-81) — la ligne d'audit ne porte AUCUN nom, AUCUN numéro, AUCUN e-mail : on cherche leurs valeurs dans tout ce qui est écrit", async () => {

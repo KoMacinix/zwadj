@@ -694,7 +694,10 @@
       "currentPasswordRequired": "Le mot de passe actuel est obligatoire.",
       "unknownKey": "Champ inconnu.",
       "roleRequired": "Le rôle est obligatoire.",
-      "roleInvalid": "Le rôle doit être Manager ou employé."
+      "roleInvalid": "Le rôle doit être Manager ou employé.",
+      "memberRequired": "Le membre est obligatoire.",
+      "pinRequired": "Le code PIN est obligatoire.",
+      "pinInvalid": "Saisissez les chiffres de votre code PIN."
     }
   },
   "venue": {

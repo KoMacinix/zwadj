@@ -10,9 +10,13 @@
 //     `ended_at IS NULL`, le remplacement du mot de passe sous le hachage LU. Un statut qui décide une transition se lit DANS la transaction, jamais avant.
 //   · L'AUDIT N'A QU'UN SITE D'ÉCRITURE (`ecrireAudit`), à charge utile FERMÉE (`StaffAuditEntry`) : ni nom de compte, ni hachage, ni jeton, ni mot de passe, ni PIN, jamais (MP-33, MP-11).
 //   · LA RÉSERVATION D'UNE TENTATIVE EST UNE INSTRUCTION (S-102, MP-16) : lire puis écrire laisserait N requêtes parallèles faire N vérifications d'un mot de passe (64 Mio chacune).
+//   · RANG 58 (D356, L36-3b) — LE PIN : la réservation d'un essai de PIN est UNE instruction aussi (MP-1 : vingt essais parallèles, exactement trois comptés) et porte la condition de l'APPAREIL (MP-2) ; l'ouverture d'une
+//     session par PIN est CONDITIONNÉE, dans le CAS du membre, au haché lu, au verrou nul, à l'échéance et à l'appareil re-vérifié sous verrou (R-3) ; le verrou se pose à l'ÉCHEC du troisième essai, sur CE PIN ; un PIN
+//     se HACHE avant d'arriver ici (le magasin ne voit jamais un PIN en clair) et s'ÉMET sous le verrou du membre par la règle `etatDuPin` (UNE copie, R-4).
 import { Injectable } from "@nestjs/common";
-import { STAFF_LIMITS, StaffSessionEndReason, type StaffRole, type StaffStatus } from "@zwadj/types";
+import { STAFF_LIMITS, StaffPinState, StaffSessionEndReason, type StaffRole, type StaffStatus } from "@zwadj/types";
 import { PrismaService } from "../prisma/prisma.service";
+import { etatDuPin } from "./staff-account-state";
 import { disableVerdict } from "./staff-members-policy";
 import { SessionNotRefusedError, classifySessionRefusal, pickReusableDevice, type DeviceRow, type SessionProbe } from "./staff-session-policy";
 import type {
@@ -28,10 +32,16 @@ import type {
   KnownMember,
   ListKnownMembersInput,
   MemberListRow,
+  OpenPinSessionInput,
+  OpenPinSessionResult,
   OpenSessionInput,
   OpenSessionResult,
   PasswordReservation,
+  PinReservation,
+  PinReservationInput,
   RecordFailureInput,
+  RecordPinFailureInput,
+  RecordPinFailureResult,
   ResetMemberInput,
   ResetMemberResult,
   SessionTouchResult,
@@ -96,6 +106,46 @@ async function ecrireAudit(client: EcrivainAudit, acteur: StaffActor, memberId: 
   });
 }
 
+/** Une transaction Prisma : ce que `$transaction` passe à son callback. */
+type Tx = Parameters<Parameters<PrismaService["$transaction"]>[0]>[0];
+
+/** Ce que le CAS (ou le verrou) d'un membre rend de son PIN — la PRÉSENCE du haché, jamais sa valeur — et l'heure de la BASE : de quoi appliquer `etatDuPin`. */
+interface LignePin {
+  hasPin: boolean;
+  pinExpiresAt: Date | null;
+  pinLockedAt: Date | null;
+  pinFailedCount: number;
+  now: Date;
+}
+
+/**
+ * ⛔ L'ÉMISSION D'UN PIN (rang 58, D356, R-4) — UNE règle, `etatDuPin`, appliquée SOUS LE VERROU du membre (sa ligne vient d'être verrouillée par le CAS ou par le `FOR UPDATE` de la même transaction) : si son PIN n'est
+ * pas VALABLE (absent, expiré, verrouillé), le haché CANDIDAT est INSTALLÉ — génération, échéance (`PIN_VALIDITY_DAYS`), compteur à zéro, verrou levé — et, s'il était VERROUILLÉ, la ligne `staff.pin_unlock` s'écrit dans
+ * la MÊME transaction (le déblocage par le mot de passe est une action de DR5). Rend `true` quand le candidat a été installé : c'est alors, et alors seulement, que le service montre le PIN en clair.
+ * ⚠ Aucune ligne n'est écrite pour l'ÉMISSION elle-même (réponse de Ko, 1 d : aucune action au-delà de la liste de DR5).
+ */
+async function emettreLePin(tx: Tx, acteur: StaffActor, memberId: string, lignePin: LignePin, candidatHache: string): Promise<boolean> {
+  const etat = etatDuPin(lignePin, lignePin.now);
+  if (etat === StaffPinState.VALID) return false;
+  const ecrit = await tx.$executeRaw`
+    UPDATE pro_staff_members
+       SET pin_hash = ${candidatHache}, pin_generated_at = now(), pin_expires_at = now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int),
+           pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()
+     WHERE id = ${memberId}::uuid`;
+  if (ecrit !== 1) throw new Error("émission du PIN : le membre verrouillé n'a pas pu recevoir son PIN (compte = 1 exigé)");
+  if (etat === StaffPinState.LOCKED) {
+    await ecrireAudit(tx, acteur, memberId, { action: "staff.pin_unlock", entityType: "staff_member", entityId: memberId, after: { via: "password" } });
+  }
+  return true;
+}
+
+/** Lancée DANS la transaction d'ouverture par PIN pour l'ANNULER : l'appareil n'est plus vivant, et le CAS du membre (déjà écrit) ne doit pas survivre à ce refus — ni `last_login_at`, ni le compteur remis à zéro. */
+class OuvertureParPinAbandonnee extends Error {
+  constructor() {
+    super("ouverture par PIN abandonnée : l'appareil n'est plus vivant");
+  }
+}
+
 /** Lancée DANS la transaction d'activation pour l'ANNULER : le drapeau a déjà été posé une instruction plus tôt, et il ne doit pas survivre à un échec qui suit. */
 class ActivationAbandonnee extends Error {
   constructor(readonly reason: "accountNameTaken") {
@@ -128,9 +178,10 @@ export class PrismaStaffStore implements StaffStore {
         if (pose !== 1) return { ok: false, reason: "alreadyActivated" };
 
         const membres = await tx.$queryRaw<LigneMembre[]>`
-          INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash, password_changed_at, password_expires_at)
+          INSERT INTO pro_staff_members (pro_profile_id, account_name, account_name_key, role, password_hash, password_changed_at, password_expires_at, pin_hash, pin_generated_at, pin_expires_at)
           VALUES (${profil.id}::uuid, ${input.accountName}, ${input.accountNameKey}, 'MANAGER'::"StaffRole", ${input.passwordHash}, now(),
-                  now() + make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int))
+                  now() + make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int),
+                  ${input.pinHash}, now(), now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int))
           ON CONFLICT (pro_profile_id, account_name_key) DO NOTHING
           RETURNING id::text AS id, account_name AS "accountName", role::text AS role, must_change_password AS "mustChangePassword"`;
         const membre = membres[0];
@@ -220,14 +271,18 @@ export class PrismaStaffStore implements StaffStore {
   // endroit : le PIN (lot 3b) ouvrira ses sessions par cet appel et y ajoutera SA preuve.
   async openSession(input: OpenSessionInput): Promise<OpenSessionResult> {
     return this.prisma.$transaction(async (tx): Promise<OpenSessionResult> => {
-      const membres = await tx.$queryRaw<LigneMembre[]>`
+      const membres = await tx.$queryRaw<Array<LigneMembre & LignePin>>`
         UPDATE pro_staff_members
            SET last_login_at = now(), password_failed_count = 0, password_locked_until = NULL, updated_at = now()
          WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'
            AND password_hash = ${input.expectedPasswordHash}
-        RETURNING id::text AS id, account_name AS "accountName", role::text AS role, must_change_password AS "mustChangePassword"`;
-      const membre = membres[0];
-      if (membre === undefined) return { ok: false, reason: "memberChanged" };
+        RETURNING id::text AS id, account_name AS "accountName", role::text AS role, must_change_password AS "mustChangePassword",
+                  (pin_hash IS NOT NULL) AS "hasPin", pin_expires_at AS "pinExpiresAt", pin_locked_at AS "pinLockedAt", pin_failed_count AS "pinFailedCount", now() AS "now"`;
+      const ligne = membres[0];
+      if (ligne === undefined) return { ok: false, reason: "memberChanged" };
+      const membre: StaffMemberView = { id: ligne.id, accountName: ligne.accountName, role: ligne.role, mustChangePassword: ligne.mustChangePassword };
+      // ⛔ Le PIN s'ÉMET ICI, sous le verrou que le CAS vient de prendre, AVANT l'appareil : l'échéance de l'appareil se lit sur le PIN d'après l'émission.
+      const pinIssued = await emettreLePin(tx, input.actor, membre.id, ligne, input.newPinHash);
 
       const candidats =
         input.candidateDeviceHashes.length === 0
@@ -246,7 +301,8 @@ export class PrismaStaffStore implements StaffStore {
       } else {
         const crees = await tx.$queryRaw<Array<{ id: string }>>`
           INSERT INTO pro_staff_devices (member_id, token_hash, label, expires_at)
-          VALUES (${membre.id}::uuid, ${input.newDeviceTokenHash}, ${input.deviceLabel}, now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int))
+          VALUES (${membre.id}::uuid, ${input.newDeviceTokenHash}, ${input.deviceLabel},
+                  LEAST(now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int), (SELECT pin_expires_at FROM pro_staff_members WHERE id = ${membre.id}::uuid)))
           RETURNING id::text AS id`;
         appareilId = crees[0]!.id;
       }
@@ -259,8 +315,103 @@ export class PrismaStaffStore implements StaffStore {
       const deviceReused = reutilisable !== null;
 
       await ecrireAudit(tx, input.actor, membre.id, { action: "staff.login", entityType: "staff_session", entityId: sessionId, after: { memberId: membre.id, deviceReused } });
-      return { ok: true, member: membre, sessionId, deviceReused };
+      return { ok: true, member: membre, sessionId, deviceReused, pinIssued };
     });
+  }
+
+  // ══ RANG 58, L36-3b (D356) — K-23 : la connexion par PIN ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+  // K-23 — le membre de CETTE salle par son identifiant : aucun secret (ni haché de mot de passe, ni haché de PIN), l'heure de la BASE dans la même instruction (S-241).
+  async findMemberById(proProfileId: string, memberId: string): Promise<StaffMemberRow | null> {
+    const lignes = await this.prisma.$queryRaw<StaffMemberRow[]>`
+      SELECT id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
+             password_expires_at AS "passwordExpiresAt", now() AS "now"
+        FROM pro_staff_members
+       WHERE id = ${memberId}::uuid AND pro_profile_id = ${proProfileId}::uuid`;
+    return lignes[0] ?? null;
+  }
+
+  // ⛔ MP-1, MP-2 — LA RÉSERVATION D'UN ESSAI DE PIN, UNE INSTRUCTION. Le `FOR UPDATE OF m` du CTE verrouille la ligne du membre (L2) : une requête concurrente ATTEND, puis réévalue les conditions sur la ligne à jour.
+  // Les trois premières réservent (le compteur monte jusqu'au plafond, un paramètre du levier) ; les suivantes ne trouvent plus de ligne et rendent `reserved: false` — vingt requêtes parallèles ne font pas vingt
+  // vérifications. TOUTES les conditions sont ICI : le membre de CETTE salle, actif, un PIN non expiré (heure de la base), non verrouillé, sous le plafond, ET un appareil de ce membre présenté, ni révoqué ni
+  // expiré — un PIN sans appareil ne consomme AUCUN essai (MP-2 : sinon un porteur du seul Bearer verrouillerait un membre). Le verrou `pin_locked_at` n'est PAS posé ici : il se pose à l'ÉCHEC du troisième essai
+  // (`recordPinFailure`), pour qu'un PIN juste au troisième essai soit accepté.
+  async reservePinAttempt(input: PinReservationInput): Promise<PinReservation> {
+    const lignes = await this.prisma.$queryRaw<Array<{ pinHash: string; failedCount: number }>>`
+      WITH cur AS (
+        SELECT m.id FROM pro_staff_members m
+         WHERE m.id = ${input.memberId}::uuid AND m.pro_profile_id = ${input.proProfileId}::uuid
+           AND m.status = 'ACTIVE'
+           AND m.pin_hash IS NOT NULL AND m.pin_expires_at > now()
+           AND m.pin_locked_at IS NULL AND m.pin_failed_count < ${STAFF_LIMITS.PIN_MAX_FAILURES}::int
+           AND EXISTS (SELECT 1 FROM pro_staff_devices d WHERE d.member_id = m.id AND d.token_hash = ANY(${[...input.deviceTokenHashes]}::text[]) AND d.revoked_at IS NULL AND d.expires_at > now())
+           FOR UPDATE OF m
+      )
+      UPDATE pro_staff_members m SET pin_failed_count = m.pin_failed_count + 1, updated_at = now()
+        FROM cur WHERE m.id = cur.id
+      RETURNING m.pin_hash AS "pinHash", m.pin_failed_count AS "failedCount"`;
+    const ligne = lignes[0];
+    return ligne === undefined ? { reserved: false } : { reserved: true, pinHash: ligne.pinHash, failedCount: ligne.failedCount };
+  }
+
+  // ⛔ MP-15, MP-33 — UN PIN FAUX : UNE transaction. La ligne d'échec s'écrit toujours (le compte de la réservation, jamais le PIN). Au TROISIÈME échec (le compte de CET essai au plafond) le VERROU se pose SOUS
+  // CONDITION — sur CE PIN (le haché lu : un PIN neuf posé entre-temps par un déblocage n'est pas verrouillé), pas déjà verrouillé, le compte encore au plafond —, puis les sessions du membre prennent fin `PIN_LOCKED`
+  // (L4, après le membre L2), puis la ligne de verrouillage. Un verrou posé par un autre (compte 0) n'écrit ni fin de session ni ligne de plus. Une ligne en échec annule TOUT : pas de verrou sans sa trace.
+  async recordPinFailure(input: RecordPinFailureInput): Promise<RecordPinFailureResult> {
+    return this.prisma.$transaction(async (tx): Promise<RecordPinFailureResult> => {
+      await ecrireAudit(tx, input.actor, input.memberId, { action: "staff.pin_login_failed", entityType: "staff_member", entityId: input.memberId, after: { failedCount: input.failedCount } });
+      if (input.failedCount < STAFF_LIMITS.PIN_MAX_FAILURES) return { locked: false, sessionsEnded: 0 };
+      const verrouille = await tx.$executeRaw`
+        UPDATE pro_staff_members SET pin_locked_at = now(), updated_at = now()
+         WHERE id = ${input.memberId}::uuid AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_failed_count >= ${STAFF_LIMITS.PIN_MAX_FAILURES}::int`;
+      if (verrouille !== 1) return { locked: false, sessionsEnded: 0 };
+      const fins = await tx.$executeRaw`UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'PIN_LOCKED' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL`;
+      await ecrireAudit(tx, input.actor, input.memberId, {
+        action: "staff.pin_lock",
+        entityType: "staff_member",
+        entityId: input.memberId,
+        after: { failedCount: input.failedCount, sessionsEnded: fins }
+      });
+      return { locked: true, sessionsEnded: fins };
+    });
+  }
+
+  // ⛔ R-3 — L'OUVERTURE PAR PIN, CONDITIONNÉE (patron de D355). Le CAS du membre (L2) est la PREMIÈRE instruction et porte : sa salle, `status = 'ACTIVE'`, le haché de PIN LU à la réservation, `pin_locked_at` nul, le PIN non
+  // expiré (heure de la base) — il remet le compteur à zéro et écrit `last_login_at`, sans toucher une colonne du mot de passe. Puis l'APPAREIL (L3) se RE-VÉRIFIE sous verrou (`FOR UPDATE` : ce membre, un cookie présenté,
+  // ni révoqué ni expiré) : s'il n'est plus vivant la transaction est ANNULÉE ENTIÈRE (le CAS déjà écrit aussi). Puis la session (L4) et la ligne `staff.pin_login`. Ce qui tombe entre la vérification et ici — une
+  // réinitialisation, une désactivation, un déblocage, un verrou, une révocation — fait REFUSER l'ouverture.
+  async openSessionByPin(input: OpenPinSessionInput): Promise<OpenPinSessionResult> {
+    try {
+      return await this.prisma.$transaction(async (tx): Promise<OpenPinSessionResult> => {
+        const membres = await tx.$queryRaw<LigneMembre[]>`
+          UPDATE pro_staff_members
+             SET last_login_at = now(), pin_failed_count = 0, updated_at = now()
+           WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'
+             AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_expires_at > now()
+          RETURNING id::text AS id, account_name AS "accountName", role::text AS role, must_change_password AS "mustChangePassword"`;
+        const membre = membres[0];
+        if (membre === undefined) return { ok: false, reason: "memberChanged" };
+
+        const appareils = await tx.$queryRaw<Array<{ id: string }>>`
+          SELECT d.id::text AS id FROM pro_staff_devices d
+           WHERE d.member_id = ${membre.id}::uuid AND d.token_hash = ANY(${[...input.candidateDeviceHashes]}::text[]) AND d.revoked_at IS NULL AND d.expires_at > now()
+           ORDER BY d.created_at LIMIT 1 FOR UPDATE`;
+        const appareil = appareils[0];
+        if (appareil === undefined) throw new OuvertureParPinAbandonnee();
+        await tx.$executeRaw`UPDATE pro_staff_devices SET last_used_at = now() WHERE id = ${appareil.id}::uuid`;
+
+        const sessions = await tx.$queryRaw<Array<{ id: string }>>`
+          INSERT INTO pro_staff_sessions (member_id, device_id, token_hash, expires_at)
+          VALUES (${membre.id}::uuid, ${appareil.id}::uuid, ${input.sessionTokenHash}, now() + make_interval(hours => ${STAFF_LIMITS.SESSION_MAX_HOURS}::int))
+          RETURNING id::text AS id`;
+        const sessionId = sessions[0]!.id;
+
+        await ecrireAudit(tx, input.actor, membre.id, { action: "staff.pin_login", entityType: "staff_session", entityId: sessionId, after: { memberId: membre.id } });
+        return { ok: true, member: membre, sessionId };
+      });
+    } catch (e) {
+      if (e instanceof OuvertureParPinAbandonnee) return { ok: false, reason: "memberChanged" };
+      throw e;
+    }
   }
 
   // ⛔ LE GARDE (MP-13, MP-18, MP-4) — UN `UPDATE … RETURNING` qui joint le membre SANS le verrouiller (jamais L2 : le garde ne prend que L4). Les prédicats : le jeton, la MÊME salle que le Bearer, le membre ACTIF,
@@ -337,7 +488,9 @@ export class PrismaStaffStore implements StaffStore {
   // sessions du membre (L4) — la courante RESTE —, puis l'audit. Le hachage est remplacé en une instruction qui remet aussi les compteurs à zéro et les dates à neuf.
   async changePassword(input: ChangePasswordInput): Promise<ChangePasswordResult> {
     return this.prisma.$transaction(async (tx): Promise<ChangePasswordResult> => {
-      const verrou = await tx.$queryRaw<Array<{ id: string }>>`SELECT id::text AS id FROM pro_staff_members WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE' FOR UPDATE`;
+      const verrou = await tx.$queryRaw<LignePin[]>`
+        SELECT (pin_hash IS NOT NULL) AS "hasPin", pin_expires_at AS "pinExpiresAt", pin_locked_at AS "pinLockedAt", pin_failed_count AS "pinFailedCount", now() AS "now"
+          FROM pro_staff_members WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE' FOR UPDATE`;
       if (verrou.length !== 1) return { ok: false, reason: "changedConcurrently" };
 
       const membres = await tx.$queryRaw<LigneMembre[]>`
@@ -349,12 +502,15 @@ export class PrismaStaffStore implements StaffStore {
       const membre = membres[0];
       if (membre === undefined) return { ok: false, reason: "changedConcurrently" };
 
+      // Rang 58 : la MÊME règle d'émission que la connexion, sous le verrou pris plus haut.
+      const pinIssued = await emettreLePin(tx, input.actor, input.memberId, verrou[0]!, input.newPinHash);
+
       const autres = await tx.$executeRaw`
         UPDATE pro_staff_sessions SET ended_at = now(), end_reason = 'PASSWORD_CHANGED'
          WHERE member_id = ${input.memberId}::uuid AND id <> ${input.currentSessionId}::uuid AND ended_at IS NULL`;
 
       await ecrireAudit(tx, input.actor, input.memberId, { action: "staff.password_change", entityType: "staff_member", entityId: input.memberId, after: { otherSessionsEnded: autres } });
-      return { ok: true, member: membre satisfies StaffMemberView, otherSessionsEnded: autres };
+      return { ok: true, member: membre satisfies StaffMemberView, otherSessionsEnded: autres, pinIssued };
     });
   }
 
@@ -406,8 +562,8 @@ export class PrismaStaffStore implements StaffStore {
   }
 
   // K-21 — le membre d'abord (L2, `FOR UPDATE`, dans SA salle : celui d'une autre salle est introuvable), puis son mot de passe remplacé (un temporaire de sept jours, les compteurs et la pause remis à zéro), puis TOUS
-  // ses appareils révoqués (L3) et TOUTES ses sessions terminées `PASSWORD_CHANGED` (L4 — l'énumération ratifiée n'a pas de valeur « RESET », DR8), puis l'audit. ⛔ Aucune colonne de PIN n'est touchée : il
-  // n'existe pas encore (lot 3b), qui devra l'ajouter ici. Compte = 1 exigé : le membre est verrouillé et actif, l'UPDATE ne peut pas ne rien trouver — s'il ne trouve rien, on ANNULE bruyamment.
+  // ses appareils révoqués (L3) et TOUTES ses sessions terminées `PASSWORD_CHANGED` (L4 — l'énumération ratifiée n'a pas de valeur « RESET », DR8), puis l'audit. ⛔ Rang 58 (D356, S-105, DR5) : le PIN est EFFACÉ avec le
+  // reste, dans la MÊME instruction (les cinq colonnes `pin_*` — `pin_triple_coherent` : toutes nulles). Compte = 1 exigé : le membre est verrouillé et actif, l'UPDATE ne peut pas ne rien trouver — s'il ne trouve rien, on ANNULE bruyamment.
   async resetMemberPassword(input: ResetMemberInput): Promise<ResetMemberResult> {
     return this.prisma.$transaction(async (tx): Promise<ResetMemberResult> => {
       const verrou = await tx.$queryRaw<Array<{ id: string; status: StaffStatus }>>`
@@ -421,7 +577,8 @@ export class PrismaStaffStore implements StaffStore {
       const membres = await tx.$queryRaw<MemberListRow[]>`
         UPDATE pro_staff_members
            SET password_hash = ${input.passwordHash}, password_changed_at = now(), password_expires_at = now() + make_interval(days => ${STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS}::int),
-               must_change_password = true, password_failed_count = 0, password_locked_until = NULL, updated_at = now()
+               must_change_password = true, password_failed_count = 0, password_locked_until = NULL,
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()
          WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'
         RETURNING id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
                   password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"`;
@@ -464,7 +621,8 @@ export class PrismaStaffStore implements StaffStore {
       if (verdict === "alreadyDisabled") return { ok: true, member: cible, sessionsEnded: 0, alreadyDisabled: true };
 
       const membres = await tx.$queryRaw<MemberListRow[]>`
-        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now()
+        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(),
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()
          WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'
         RETURNING id::text AS id, account_name AS "accountName", role::text AS role, status::text AS status, must_change_password AS "mustChangePassword",
                   password_expires_at AS "passwordExpiresAt", last_login_at AS "lastLoginAt", created_at AS "createdAt", now() AS "now"`;

@@ -19,6 +19,12 @@ export const envSchema = z.object({
   // ── Auth (Lot 0) ───────────────────────────────────────────────────────────
   /** Secret HS256 du JWT d'accès — ≥ 32 caractères. Générer : openssl rand -base64 48 */
   JWT_ACCESS_SECRET: z.string().min(32, "JWT_ACCESS_SECRET doit faire au moins 32 caractères"),
+  /**
+   * Rang 58 (D356, R-2, MP-12) — le secret du HMAC-SHA-256 qui STOCKE les PIN du personnel (« 10 000 valeurs se cassent hors ligne en une seconde sans secret », DR5) : ≥ 32 caractères, SANS valeur par défaut,
+   * OBLIGATOIRE PARTOUT (le schéma refuse de booter sans lui) ET dans `PROD_REQUIRED_EXPLICIT`. Générer : `openssl rand -base64 48`, ou la commande PowerShell de `docs/preuves/D356/secret-pin-ko.md` — JAMAIS une valeur
+   * écrite dans le dépôt, dans un fichier d'exemple ni dans un rapport. ⚠ Faire TOURNER ce secret invalide tous les PIN stockés (ils ne se vérifient plus) et ne les RÉÉMET PAS : la connexion par mot de passe n'émet un PIN que si celui du membre est absent, expiré ou verrouillé (un PIN non expiré est « valable » pour la base) — la réinitialisation du mot de passe par un Manager (K-21) efface le PIN, le suivant s'émet à la connexion suivante. Non mesuré ; à traiter avant une rotation en production.
+   */
+  STAFF_PIN_HMAC_SECRET: z.string().min(32, "STAFF_PIN_HMAC_SECRET doit faire au moins 32 caractères"),
   /** Durée de vie du JWT d'accès (format @nestjs/jwt : 900s, 15m, 1h…) */
   JWT_ACCESS_TTL: z
     .string()
@@ -157,7 +163,10 @@ const PROD_REQUIRED_EXPLICIT = [
   // l'inverse — croire les paiements actifs alors que la variable a été oubliée
   // au déploiement. Sur le chemin de l'argent, les deux erreurs coûtent, et
   // aucune ne doit pouvoir se produire en silence.
-  "PAYMENTS_ENABLED"
+  "PAYMENTS_ENABLED",
+  // Rang 58 (D356, R-2, MP-12) — le secret du HMAC du PIN : le schéma l'exige déjà partout (`min(32)`, sans défaut) ; cette liste fait NOMMER la variable par le refus de démarrage de la PRODUCTION comme les
+  // autres variables explicites, avec toutes les manquantes d'un coup.
+  "STAFF_PIN_HMAC_SECRET"
 ] as const;
 
 export function validateEnv(config: Record<string, unknown>): Env {

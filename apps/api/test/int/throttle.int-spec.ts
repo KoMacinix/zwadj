@@ -10,6 +10,7 @@ process.env.THROTTLE_RESET_LIMIT = "10";
 process.env.THROTTLE_GOOGLE_LIMIT = "5"; // Lot 8
 process.env.THROTTLE_STAFF_ACTIVATE_LIMIT = "5"; // Rang 44 (D341, MP-36) — budget register
 process.env.THROTTLE_STAFF_LOGIN_LIMIT = "10"; // Rang 44 (D341, MP-36) — budget login
+process.env.THROTTLE_STAFF_PIN_LIMIT = "60"; // Rang 58 (D356, MP-36, cadrage § 9 limite 7) — la connexion par PIN : un budget LARGE par IP (un foyer, un CGNAT), car la protection du PIN est le compteur PAR MEMBRE, pas l'IP
 process.env.THROTTLE_AUTH_TTL_MS = "900000";
 
 import request from "supertest";
@@ -127,8 +128,19 @@ describe("Rate limiting /auth (limites réelles)", () => {
     expect(blocked.headers["retry-after"]).toBeDefined();
   });
 
-  it("⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune variable définie, D128) : activation 5, connexion 10 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code", async () => {
-    const noms = ["THROTTLE_STAFF_ACTIVATE_LIMIT", "THROTTLE_STAFF_LOGIN_LIMIT"] as const;
+  it("staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée", async () => {
+    const server = ctx.app.getHttpServer();
+    const payload = { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "4821" };
+    for (let i = 1; i <= 60; i++) {
+      expect((await request(server).post("/api/v1/pro/staff/pin-login").send(payload)).status, `requête ${i}`).toBe(401);
+    }
+    const blocked = await request(server).post("/api/v1/pro/staff/pin-login").send(payload);
+    expect(blocked.status).toBe(429);
+    expect(blocked.headers["retry-after"]).toBeDefined();
+  });
+
+  it("⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code", async () => {
+    const noms = ["THROTTLE_STAFF_ACTIVATE_LIMIT", "THROTTLE_STAFF_LOGIN_LIMIT", "THROTTLE_STAFF_PIN_LIMIT"] as const;
     const sauvegarde = noms.map((n) => [n, process.env[n]] as const);
     for (const n of noms) delete process.env[n];
     try {
@@ -136,6 +148,7 @@ describe("Rate limiting /auth (limites réelles)", () => {
       const { AUTH_THROTTLE } = await import("../../src/auth/auth.throttle");
       expect(AUTH_THROTTLE.staffActivate.limit).toBe(5);
       expect(AUTH_THROTTLE.staffLogin.limit).toBe(10);
+      expect(AUTH_THROTTLE.staffPin.limit).toBe(60);
     } finally {
       for (const [n, v] of sauvegarde) if (v !== undefined) process.env[n] = v;
       vi.resetModules();

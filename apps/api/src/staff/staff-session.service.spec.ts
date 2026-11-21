@@ -6,7 +6,7 @@
 // la tentative a été RÉSERVÉE par le magasin.
 import { ConflictException, ForbiddenException } from "@nestjs/common";
 import { describe, expect, it, vi } from "vitest";
-import { passwordSchema, StaffErrorCode, STAFF_DEVICE_DEFAULT_LABEL, type StaffLoginInput } from "@zwadj/types";
+import { passwordSchema, StaffErrorCode, STAFF_DEVICE_DEFAULT_LABEL, type StaffLoginInput, type StaffPinLoginInput } from "@zwadj/types";
 import { STAFF_COMMON_PASSWORDS } from "./staff-common-passwords";
 import { StaffSessionService } from "./staff-session.service";
 import type { StaffStore } from "./staff-store.types";
@@ -21,7 +21,7 @@ const ACTIF = { ...MEMBRE, status: "ACTIVE", passwordExpiresAt: new Date("2027-0
 const ms = (n: number): Date => new Date(HEURE_BASE.getTime() + n);
 const staff = { sessionId: "s1", memberId: "m1", role: "MANAGER", accountName: "Amine", mustChangePassword: false, proProfileId: SALLE } as const;
 
-function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: string, clair: string) => boolean } = {}) {
+function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: string, clair: string) => boolean } = {}, empreinte: { verify?: (pin: string, hash: string) => boolean } = {}) {
   let n = 0;
   const jeton = () => `jeton-${String((n += 1)).padStart(36, "0")}`; // 42 + ... : une forme de jeton déterministe
   const defauts = {
@@ -31,12 +31,17 @@ function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: s
     reservePasswordAttempt: vi.fn(async () => ({ reserved: true as const, passwordHash: "HASH-ACTUEL", failedCount: 1, pausedNow: false })),
     recordPasswordFailure: vi.fn(async () => undefined),
     resetPasswordAttempts: vi.fn(async () => undefined),
-    openSession: vi.fn<StaffStore["openSession"]>(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false })),
+    openSession: vi.fn<StaffStore["openSession"]>(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false, pinIssued: false })),
     touchSession: vi.fn(async () => ({ ok: false as const })),
     peekSession: vi.fn(async () => ({ ok: false as const })),
     closeSession: vi.fn(async () => undefined),
-    changePassword: vi.fn<StaffStore["changePassword"]>(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 2 })),
+    changePassword: vi.fn<StaffStore["changePassword"]>(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 2, pinIssued: false })),
     listKnownMembers: vi.fn(async () => []),
+    // Rang 58 (D356, L36-3b) : la connexion par PIN — le membre retrouvé par son identifiant, la RÉSERVATION atomique d'un essai (qui rend le haché lu), l'échec (qui pose le verrou au plafond), l'ouverture CONDITIONNÉE au haché lu.
+    findMemberById: vi.fn(async () => ACTIF),
+    reservePinAttempt: vi.fn<StaffStore["reservePinAttempt"]>(async () => ({ reserved: true as const, pinHash: "PIN-HASH-ACTUEL", failedCount: 1 })),
+    recordPinFailure: vi.fn<StaffStore["recordPinFailure"]>(async () => ({ locked: false, sessionsEnded: 0 })),
+    openSessionByPin: vi.fn<StaffStore["openSessionByPin"]>(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1" })),
     // Rang 56 (D354) : les quatre méthodes de gestion du personnel — le service de SESSION n'en appelle aucune ; le double doit seulement satisfaire le port.
     listMembers: vi.fn(async () => []),
     createMember: vi.fn<StaffStore["createMember"]>(async () => ({ ok: false as const, reason: "accountNameTaken" as const })),
@@ -51,7 +56,14 @@ function monde(surcharge: Partial<StaffStore> = {}, hachage: { verify?: (hash: s
     verifyAgainstDummy: vi.fn(async (): Promise<false> => false)
   };
   const jetons = { generate: vi.fn(jeton), hash: vi.fn((t: string) => `sha(${t})`) };
-  return { service: new StaffSessionService(magasin, mots, jetons), magasin: magasin as typeof defauts, mots, jetons };
+  // Le HACHEUR DU PIN : le tirage est fixe (« 4821 »), le haché est lisible (`PIN(4821)`), la vérification est celle que le test choisit — et le FACTICE est un espion (le coût d'un refus se COMPTE, D290).
+  const pins = {
+    generate: vi.fn(() => "4821"),
+    hash: vi.fn((pin: string) => `PIN(${pin})`),
+    verify: vi.fn((pin: string, hash: string) => empreinte.verify?.(pin, hash) ?? false),
+    verifyAgainstDummy: vi.fn((): void => undefined)
+  };
+  return { service: new StaffSessionService(magasin, mots, jetons, pins), magasin: magasin as typeof defauts, mots, jetons, pins };
 }
 
 const CORPS_CONNEXION: StaffLoginInput = { accountName: "Amine", password: "Motdepasse1" };
@@ -76,7 +88,7 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
     expect(m.mots.verify).toHaveBeenCalledTimes(1);
     expect(m.mots.verify).toHaveBeenCalledWith("HASH-ACTUEL", "Motdepasse1");
     expect(m.mots.verifyAgainstDummy).not.toHaveBeenCalled();
-    expect(r.body).toEqual({ member: MEMBRE });
+    expect(r.body).toEqual({ member: MEMBRE, pin: null });
     expect(r.cookies.session).toBeTypeOf("string");
     expect(m.magasin.openSession).toHaveBeenCalledTimes(1);
   });
@@ -207,7 +219,7 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
       {
         findMember: vi.fn(async () => { ordre.push("findMember"); return ACTIF; }),
         reservePasswordAttempt: vi.fn(async () => { ordre.push("reserve"); return { reserved: true as const, passwordHash: "H", failedCount: 1, pausedNow: false }; }),
-        openSession: vi.fn(async () => { ordre.push("openSession"); return { ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false }; })
+        openSession: vi.fn(async () => { ordre.push("openSession"); return { ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false, pinIssued: false }; })
       },
       { verify: () => { ordre.push("verify"); return true; } }
     );
@@ -279,7 +291,7 @@ describe("login — la connexion par nom de compte et mot de passe (K-15)", () =
   });
 
   it("⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et quand le magasin RÉUTILISE un appareil reconnu, aucun cookie d'appareil neuf n'est posé", async () => {
-    const m = monde({ openSession: vi.fn(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: true })) }, { verify: () => true });
+    const m = monde({ openSession: vi.fn(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: true, pinIssued: false })) }, { verify: () => true });
     const r = await m.service.login(user, CORPS_CONNEXION, { session: undefined, devices: [{ name: "zwadj_dv_abcd1234", value: "valeur-claire-1" }, { name: "zwadj_dv_wxyz9876", value: "valeur-claire-2" }] });
     const entree = m.magasin.openSession.mock.calls[0]![0];
     expect(entree.candidateDeviceHashes).toEqual(["sha(valeur-claire-1)", "sha(valeur-claire-2)"]);
@@ -314,11 +326,32 @@ describe("activate — K-14 : le propriétaire crée le Manager", () => {
       accountName: "Émilie B.",
       accountNameKey: "emilie b.",
       passwordHash: "HACHE(Zq7!xvn3-Pk2)",
+      pinHash: "PIN(4821)",
       deviceLabel: STAFF_DEVICE_DEFAULT_LABEL
     });
     expect(entree.sessionTokenHash).toBe(`sha(${r.cookies.session as string})`);
     expect(entree.deviceTokenHash).toBe(`sha(${r.cookies.device!.token})`);
-    expect(r.body).toEqual({ member: MEMBRE });
+    expect(r.body, "K-14 rend le PIN UNE fois, avec le membre").toEqual({ member: MEMBRE, pin: "4821" });
+  });
+
+  it("⛔ rang 58 — le PIN tiré est HACHÉ avant d'atteindre le magasin : le magasin reçoit `PIN(4821)`, JAMAIS « 4821 » (R-2, MP-11) ; UN tirage, UN hachage", async () => {
+    const m = monde();
+    await m.service.activate(user, corps);
+    const entree = m.magasin.activate.mock.calls[0]![0];
+    expect(m.pins.generate).toHaveBeenCalledTimes(1);
+    expect(m.pins.hash).toHaveBeenCalledTimes(1);
+    expect(m.pins.hash).toHaveBeenCalledWith("4821");
+    expect(JSON.stringify(entree).includes('"4821"'), "le PIN en clair n'est nulle part dans ce que reçoit le magasin").toBe(false);
+  });
+
+  it("⛔ rang 58 — un refus du magasin (déjà activée, nom pris…) ne rend AUCUN PIN : l'exception remonte, aucune réponse", async () => {
+    const m = monde({ activate: vi.fn(async () => ({ ok: false as const, reason: "alreadyActivated" as const })) });
+    const issue = await m.service.activate(user, corps).then(
+      (reponse) => ({ refusee: false as const, reponse }),
+      () => ({ refusee: true as const, reponse: null })
+    );
+    expect(issue.refusee).toBe(true);
+    expect(issue.reponse).toBeNull();
   });
 
   it("⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tout appel au magasin — la valeur est DÉRIVÉE de la liste (une entrée qui passe déjà le schéma), jamais écrite de mémoire", async () => {
@@ -368,9 +401,10 @@ describe("changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (
       memberId: "m1",
       currentSessionId: "s1",
       expectedPasswordHash: "HASH-ACTUEL",
-      newPasswordHash: "HACHE(Zq7!xvn3-Pk2)"
+      newPasswordHash: "HACHE(Zq7!xvn3-Pk2)",
+      newPinHash: "PIN(4821)"
     });
-    expect(r.body).toEqual({ member: MEMBRE });
+    expect(r.body).toEqual({ member: MEMBRE, pin: null });
   });
 
   it("⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci", async () => {
@@ -482,5 +516,200 @@ describe("state — K-17 : exemptée, jamais un refus", () => {
   it("sans profil : couche éteinte, sans erreur", async () => {
     const m = monde({ readLayer: vi.fn(async () => null) });
     expect(await m.service.state(user, SANS_COOKIE)).toEqual({ enabled: false, member: null, knownMembers: [] });
+  });
+});
+
+// ══ RANG 58, L36-3b (D356) — l'ÉMISSION du PIN par la connexion (K-15) et le changement de mot de passe (K-18) : UNE règle, celle du magasin sous verrou ════════════════════════════════════════════════════════
+// Le service tire TOUJOURS un PIN candidat et le hache (un tirage ne coûte rien) ; c'est le MAGASIN, sous le verrou du membre, qui décide s'il l'installe (le PIN n'est pas valable : absent, expiré, verrouillé) et
+// qui le dit (`pinIssued`). Le service ne rend le PIN en clair QUE si le magasin l'a installé : un PIN montré qui n'est pas celui qui est stocké est pire qu'un PIN non montré.
+describe("rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé", () => {
+  it("⛔ la connexion : le PIN candidat est tiré et HACHÉ, le haché est passé à l'ouverture (`newPinHash`), le clair n'y est PAS", async () => {
+    const m = monde({}, { verify: () => true });
+    await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    expect(m.pins.generate).toHaveBeenCalledTimes(1);
+    expect(m.magasin.openSession).toHaveBeenCalledWith(expect.objectContaining({ newPinHash: "PIN(4821)" }));
+    expect(JSON.stringify(m.magasin.openSession.mock.calls[0]![0]).includes('"4821"')).toBe(false);
+  });
+
+  it("⛔ la connexion, PIN INSTALLÉ par le magasin (`pinIssued: true`) : le corps porte le PIN en clair, une fois", async () => {
+    const m = monde({ openSession: vi.fn(async () => ({ ok: true as const, member: MEMBRE, sessionId: "s1", deviceReused: false, pinIssued: true })) }, { verify: () => true });
+    const r = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE);
+    expect(r.body).toEqual({ member: MEMBRE, pin: "4821" });
+  });
+
+  it("⛔ la connexion, PIN DÉJÀ VALABLE (`pinIssued: false`) : `pin: null` — le PIN n'est jamais relisible, aucune route ne le rend une seconde fois", async () => {
+    const m = monde({}, { verify: () => true });
+    expect((await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE)).body.pin).toBeNull();
+  });
+
+  it("⛔ une connexion REFUSÉE ne rend aucun PIN : un mauvais mot de passe n'ouvre ni session ni PIN (le candidat tiré n'est jamais montré)", async () => {
+    const m = monde({}, { verify: () => false });
+    const issue = await m.service.login(user, CORPS_CONNEXION, SANS_COOKIE).then(
+      (r) => ({ refusee: false as const, r }),
+      () => ({ refusee: true as const, r: null })
+    );
+    expect(issue.refusee).toBe(true);
+    expect(issue.r).toBeNull();
+  });
+
+  it("⛔ le changement de mot de passe : le candidat haché est passé au magasin (`newPinHash`) ; PIN installé → il est rendu, sinon `pin: null`", async () => {
+    const entree = { currentPassword: "Ancien1motdepasse", newPassword: "Zq7!xvn3-Pk2" };
+    const verifie = { verify: (hash: string, clair: string) => hash === "HASH-ACTUEL" && clair === "Ancien1motdepasse" };
+    const installe = monde({ changePassword: vi.fn(async () => ({ ok: true as const, member: MEMBRE, otherSessionsEnded: 0, pinIssued: true })) }, verifie);
+    expect((await installe.service.changePassword(user, staff, entree)).body).toEqual({ member: MEMBRE, pin: "4821" });
+    expect(installe.magasin.changePassword).toHaveBeenCalledWith(expect.objectContaining({ newPinHash: "PIN(4821)" }));
+    const valable = monde({}, verifie);
+    expect((await valable.service.changePassword(user, staff, entree)).body.pin).toBeNull();
+  });
+});
+
+// ══ RANG 58, L36-3b (D356, K-23, R-3) — LA CONNEXION PAR PIN ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// ⛔ UN REFUS, UN CORPS, UN COÛT (R-3) : membre inconnu, couche éteinte, membre désactivé, temporaire expiré, appareil absent ou PIN non valable (la réservation refusée), PIN faux, ouverture refusée sous verrou
+// rendent le MÊME 401 `STAFF_INVALID_CREDENTIALS` et paient UN calcul de HMAC chacun — compté par espion (D290), jamais par chronomètre.
+const CORPS_PIN: StaffPinLoginInput = { memberId: "018f0000-0000-7000-8000-0000000000a1", pin: "4821" };
+const AVEC_APPAREIL = { session: undefined, devices: [{ name: "zwadj_dv_abcd1234", value: "cookie-appareil-clair" }] } as const;
+
+describe("pinLogin — la connexion par PIN (K-23)", () => {
+  it("⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché RENDU par la réservation), AUCUN factice, une session s'ouvre, le cookie de session est posé et AUCUN cookie d'appareil neuf (l'appareil est celui du poste)", async () => {
+    const m = monde({}, {}, { verify: (pin, hash) => pin === "4821" && hash === "PIN-HASH-ACTUEL" });
+    const r = await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(m.pins.verify).toHaveBeenCalledTimes(1);
+    expect(m.pins.verify).toHaveBeenCalledWith("4821", "PIN-HASH-ACTUEL");
+    expect(m.pins.verifyAgainstDummy).not.toHaveBeenCalled();
+    expect(r.body).toEqual({ member: MEMBRE });
+    expect(r.cookies.session).toBeTypeOf("string");
+    expect(r.cookies.device, "aucun cookie d'appareil neuf : le poste est déjà reconnu").toBeUndefined();
+    expect(m.magasin.openSessionByPin).toHaveBeenCalledTimes(1);
+    expect(m.mots.verify, "le PIN ne passe jamais par argon2").not.toHaveBeenCalled();
+  });
+
+  it("⛔ l'ORDRE est la règle : la salle, le membre, la RÉSERVATION de l'essai, ENSUITE la vérification du PIN, puis l'ouverture", async () => {
+    const ordre: string[] = [];
+    const m = monde(
+      {
+        readLayer: vi.fn(async () => { ordre.push("readLayer"); return { proProfileId: SALLE, enabledAt: new Date("2026-11-01T10:00:00Z") }; }),
+        findMemberById: vi.fn(async () => { ordre.push("findMemberById"); return ACTIF; }),
+        reservePinAttempt: vi.fn(async () => { ordre.push("reserve"); return { reserved: true as const, pinHash: "H", failedCount: 1 }; }),
+        openSessionByPin: vi.fn(async () => { ordre.push("openSessionByPin"); return { ok: true as const, member: MEMBRE, sessionId: "s1" }; })
+      },
+      {},
+      { verify: () => { ordre.push("verify"); return true; } }
+    );
+    await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(ordre).toEqual(["readLayer", "findMemberById", "reserve", "verify", "openSessionByPin"]);
+  });
+
+  it("⛔ MP-2 — la réservation reçoit la salle du BEARER, le membre visé et les cookies d'appareil HACHÉS (jamais en clair)", async () => {
+    const m = monde({}, {}, { verify: () => true });
+    await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(m.magasin.reservePinAttempt).toHaveBeenCalledWith({ proProfileId: SALLE, memberId: CORPS_PIN.memberId, deviceTokenHashes: ["sha(cookie-appareil-clair)"] });
+    expect(m.magasin.reservePinAttempt.mock.calls[0]![0].deviceTokenHashes, "la valeur claire du cookie n'est AUCUN des éléments transmis (le double `sha` enveloppe la valeur : on compare les éléments, pas une sous-chaîne)").not.toContain("cookie-appareil-clair");
+  });
+
+  it("⛔ MP-2 — SANS cookie d'appareil, la réservation n'est PAS demandée : aucun essai n'est consommé (un porteur du seul Bearer ne verrouille pas un membre) — refus, UN calcul de HMAC factice", async () => {
+    const m = monde({}, {}, { verify: () => true });
+    const { status } = await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, SANS_COOKIE));
+    expect(status).toBe(401);
+    expect(m.magasin.reservePinAttempt).not.toHaveBeenCalled();
+    expect(m.pins.verifyAgainstDummy).toHaveBeenCalledTimes(1);
+    expect(m.pins.verify).not.toHaveBeenCalled();
+  });
+
+  it("⛔ le jeton de session posé est celui dont le HACHAGE a été donné à l'ouverture ; l'ouverture est CONDITIONNÉE au haché lu par la réservation (R-3, patron de D355), pour CE membre, dans CETTE salle", async () => {
+    const m = monde({ reservePinAttempt: vi.fn(async () => ({ reserved: true as const, pinHash: "PIN-HASH-LU", failedCount: 2 })) }, {}, { verify: () => true });
+    const r = await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(m.magasin.openSessionByPin).toHaveBeenCalledWith({
+      actor: user,
+      proProfileId: SALLE,
+      memberId: CORPS_PIN.memberId,
+      expectedPinHash: "PIN-HASH-LU",
+      sessionTokenHash: `sha(${r.cookies.session as string})`,
+      candidateDeviceHashes: ["sha(cookie-appareil-clair)"]
+    });
+  });
+
+  it("⛔ un PIN FAUX : UN calcul de HMAC réel, l'échec est consigné avec le compte de la réservation ET le haché lu (le verrou ne se pose que sur CE PIN), aucune session — même refus", async () => {
+    const m = monde({ reservePinAttempt: vi.fn(async () => ({ reserved: true as const, pinHash: "PIN-HASH-LU", failedCount: 2 })) }, {}, { verify: () => false });
+    const { status, corps } = await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL));
+    expect(status).toBe(401);
+    expect(corps).toEqual({ code: "STAFF_INVALID_CREDENTIALS", message: "staff.errors.invalidCredentials" });
+    expect(m.pins.verify).toHaveBeenCalledTimes(1);
+    expect(m.pins.verifyAgainstDummy).not.toHaveBeenCalled();
+    expect(m.magasin.recordPinFailure).toHaveBeenCalledWith({ actor: user, memberId: CORPS_PIN.memberId, failedCount: 2, expectedPinHash: "PIN-HASH-LU" });
+    expect(m.magasin.openSessionByPin).not.toHaveBeenCalled();
+  });
+
+  it("⛔ la réservation REFUSÉE (essais épuisés, PIN verrouillé, expiré ou absent, appareil non reconnu) : le FACTICE, JAMAIS la vraie vérification (même avec le bon PIN), AUCUN échec consigné", async () => {
+    const m = monde({ reservePinAttempt: vi.fn(async () => ({ reserved: false as const })) }, {}, { verify: () => true });
+    const { status } = await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL));
+    expect(status).toBe(401);
+    expect(m.pins.verifyAgainstDummy).toHaveBeenCalledTimes(1);
+    expect(m.pins.verify, "le bon PIN n'est PAS vérifié quand l'essai n'a pas été réservé : trois vérifications au plus").not.toHaveBeenCalled();
+    expect(m.magasin.recordPinFailure).not.toHaveBeenCalled();
+    expect(m.magasin.openSessionByPin).not.toHaveBeenCalled();
+  });
+
+  it("⛔ le membre DÉSACTIVÉ et le TEMPORAIRE EXPIRÉ sont des comptes inconnus pour la connexion par PIN : aucune réservation (rien à compter), le factice, aucune session", async () => {
+    for (const membre of [{ ...ACTIF, status: "DISABLED" as const }, { ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(0) }]) {
+      const m = monde({ findMemberById: vi.fn(async () => membre) }, {}, { verify: () => true });
+      const { status } = await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL));
+      expect(status).toBe(401);
+      expect(m.magasin.reservePinAttempt).not.toHaveBeenCalled();
+      expect(m.pins.verifyAgainstDummy).toHaveBeenCalledTimes(1);
+      expect(m.magasin.openSessionByPin).not.toHaveBeenCalled();
+    }
+  });
+
+  it("un membre dont le mot de passe est À CHANGER (un temporaire valable, ou un mot de passe de 90 jours expiré) SE CONNECTE par PIN : la session n'ouvrira que le changement de mot de passe, et le corps le dit (`mustChangePassword: true`)", async () => {
+    const m = monde({ findMemberById: vi.fn(async () => ({ ...ACTIF, passwordExpiresAt: ms(-1) })) }, {}, { verify: () => true });
+    const r = await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(r.body.member.mustChangePassword).toBe(true);
+    expect(m.magasin.openSessionByPin).toHaveBeenCalledTimes(1);
+  });
+
+  it("⛔ R-3 — une ouverture REFUSÉE sous verrou (PIN remplacé, verrou posé, membre désactivé, appareil révoqué entre la vérification et l'ouverture) : le MÊME refus, UN calcul de HMAC, aucun cookie, aucune ligne d'échec", async () => {
+    const m = monde({ openSessionByPin: vi.fn(async () => ({ ok: false as const, reason: "memberChanged" as const })) }, {}, { verify: () => true });
+    const issue = await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL).then(
+      (r) => ({ refusee: false as const, r }),
+      () => ({ refusee: true as const, r: null })
+    );
+    expect(issue.refusee).toBe(true);
+    expect(m.pins.verify).toHaveBeenCalledTimes(1);
+    expect(m.magasin.recordPinFailure, "un refus d'ouverture n'est pas un échec de PIN : rien n'est consigné").not.toHaveBeenCalled();
+  });
+
+  it("⛔ R-3 — la couche ÉTEINTE, le membre inconnu, la salle sans profil, le membre désactivé, le temporaire expiré, l'appareil absent, la réservation refusée, le PIN faux et l'ouverture refusée : NEUF refus, UN SEUL corps, à l'octet — et UN calcul de HMAC chacun", async () => {
+    const mauvais = { verify: () => false };
+    const cas: Array<[string, Partial<StaffStore>, typeof AVEC_APPAREIL | typeof SANS_COOKIE, { verify: () => boolean }]> = [
+      ["couche éteinte", { readLayer: vi.fn(async () => ({ proProfileId: SALLE, enabledAt: null })) }, AVEC_APPAREIL, mauvais],
+      ["membre inconnu", { findMemberById: vi.fn(async () => null) }, AVEC_APPAREIL, mauvais],
+      ["salle sans profil", { readLayer: vi.fn(async () => null) }, AVEC_APPAREIL, mauvais],
+      ["membre désactivé", { findMemberById: vi.fn(async () => ({ ...ACTIF, status: "DISABLED" as const })) }, AVEC_APPAREIL, mauvais],
+      ["temporaire expiré", { findMemberById: vi.fn(async () => ({ ...ACTIF, mustChangePassword: true, passwordExpiresAt: ms(-1) })) }, AVEC_APPAREIL, mauvais],
+      ["appareil absent", {}, SANS_COOKIE, mauvais],
+      ["réservation refusée", { reservePinAttempt: vi.fn(async () => ({ reserved: false as const })) }, AVEC_APPAREIL, { verify: () => true }],
+      ["PIN faux", {}, AVEC_APPAREIL, mauvais],
+      ["ouverture refusée", { openSessionByPin: vi.fn(async () => ({ ok: false as const, reason: "memberChanged" as const })) }, AVEC_APPAREIL, { verify: () => true }]
+    ];
+    const rendus = new Set<string>();
+    for (const [nom, surcharge, cookies, empreinte] of cas) {
+      const m = monde(surcharge, {}, empreinte);
+      rendus.add(JSON.stringify(await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, cookies))));
+      expect(m.pins.verify.mock.calls.length + m.pins.verifyAgainstDummy.mock.calls.length, `${nom} : un calcul de HMAC, ni plus ni moins`).toBe(1);
+    }
+    expect(rendus.size, "tous les refus sont identiques à l'octet").toBe(1);
+  });
+
+  it("⛔ la couche ÉTEINTE n'ouvre aucune autre lecture : ni membre, ni réservation (la route sert à rouvrir une session, pas à sonder)", async () => {
+    const m = monde({ readLayer: vi.fn(async () => ({ proProfileId: SALLE, enabledAt: null })) });
+    await corpsDuRefus(m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL));
+    expect(m.magasin.findMemberById).not.toHaveBeenCalled();
+    expect(m.magasin.reservePinAttempt).not.toHaveBeenCalled();
+  });
+
+  it("le membre est cherché dans la salle du BEARER, par l'identifiant du corps (jamais une salle venue du corps)", async () => {
+    const m = monde({}, {}, { verify: () => true });
+    await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    expect(m.magasin.findMemberById).toHaveBeenCalledWith(SALLE, CORPS_PIN.memberId);
   });
 });

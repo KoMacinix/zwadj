@@ -63,14 +63,14 @@ describe("le collecteur — garde-fou du garde-fou", () => {
   it("l'extraction trouve la matrice attendue : au moins 55 routes atteignables par un PRO, dont les cinq routes du lot ; sans cela, tous les cas ci-dessous passeraient sur une liste vide", () => {
     expect(routesPro.length).toBeGreaterThanOrEqual(55);
     const sigs = routesPro.map(signature);
-    for (const attendue of ["POST /api/v1/pro/staff/activate", "POST /api/v1/pro/staff/login", "POST /api/v1/pro/staff/logout", "GET /api/v1/pro/staff/session", "POST /api/v1/pro/staff/password"]) {
+    for (const attendue of ["POST /api/v1/pro/staff/activate", "POST /api/v1/pro/staff/login", "POST /api/v1/pro/staff/logout", "GET /api/v1/pro/staff/session", "POST /api/v1/pro/staff/password", "POST /api/v1/pro/staff/pin-login"]) {
       expect(sigs, attendue).toContain(attendue);
     }
   });
 
-  it("⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement quatre (état du compte commun, activer, se connecter, lire l'état) — une route neuve exemptée sans décision fait rougir ce test", () => {
+  it("⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement CINQ (état du compte commun, activer, se connecter, lire l'état, et — rang 58 — se connecter par PIN) — une route neuve exemptée sans décision fait rougir ce test", () => {
     const exemptees = routes.filter((r) => r.staffExempt).map(signature).sort();
-    expect(exemptees).toEqual(["GET /api/v1/auth/me", "GET /api/v1/pro/staff/session", "POST /api/v1/pro/staff/activate", "POST /api/v1/pro/staff/login"].sort());
+    expect(exemptees).toEqual(["GET /api/v1/auth/me", "GET /api/v1/pro/staff/session", "POST /api/v1/pro/staff/activate", "POST /api/v1/pro/staff/login", "POST /api/v1/pro/staff/pin-login"].sort());
   });
 
   it("aucune route PUBLIQUE n'est exemptée par erreur (une route publique n'a pas besoin de l'être : le garde l'ignore)", () => {

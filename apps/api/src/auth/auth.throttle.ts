@@ -74,5 +74,8 @@ export const AUTH_THROTTLE = {
   staffActivate: { limit: num("THROTTLE_STAFF_ACTIVATE_LIMIT", 5), ttl: TTL },
   /** Connexion du personnel (rang 44, D341, MP-36) : 10 / 15 min / IP — budget `login`. Complète la pause par
    *  membre (5 échecs / 15 min, jamais définitive) : l'une borne une IP, l'autre un compte. */
-  staffLogin: { limit: num("THROTTLE_STAFF_LOGIN_LIMIT", 10), ttl: TTL }
+  staffLogin: { limit: num("THROTTLE_STAFF_LOGIN_LIMIT", 10), ttl: TTL },
+  /** Connexion du personnel PAR PIN (rang 58, D356, MP-36, cadrage § 9 limite 7) : 60 / 15 min / IP — un budget LARGE, parce qu'une limite par IP pénalise les foyers et les CGNAT qui partagent une adresse (un poste de salle
+   *  déverrouillé six fois par heure par huit personnes) ; la protection du PIN est le compteur PAR MEMBRE (trois essais, atomique), pas l'IP. Le MÊME levier de test que les autres (D128). */
+  staffPin: { limit: num("THROTTLE_STAFF_PIN_LIMIT", 60), ttl: TTL }
 } as const;

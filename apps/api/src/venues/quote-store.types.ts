@@ -105,6 +105,8 @@ export interface ActeurAuditable {
 /** Ce que la promotion écrit sur la ligne du devis : la fiche et les DEUX copies du nom (celles que la politique `copieDuNomPourDevis` a décidées — le port ne les décide pas). */
 export interface DonneesPromotion {
   readonly acteur: ActeurAuditable;
+  /** ⛔ D356 (rang 58, R-6, réponse de Ko 1 d) — le MEMBRE dont la session de personnel a passé le garde, écrit dans `audit_logs.actor_member_id` de la ligne `quote.promote` ; `null` quand la couche est éteinte. La promotion ne change pas : seule la ligne d'audit porte une clé de plus. */
+  readonly memberId: string | null;
   readonly quoteId: string;
   /** Les statuts source de la commande (`quoteAllowedFrom(PROMOTE)`) : la machine à états les fournit, le port ne la connaît pas. */
   readonly statutsAdmis: readonly QuoteStatus[];

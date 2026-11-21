@@ -430,13 +430,14 @@ export class QuotesService {
    * (409 `QUOTE_VERSION_NOT_ACTIVE`), « déjà officiel » (409), le statut (409). Le service décide la fiche et la copie du nom (la politique pure) ; le port écrit, et écrit la ligne d'audit.
    * ⚠ Il prend l'ACTEUR authentifié, pas seulement son identifiant : l'identifiant ET le rôle vont dans la ligne d'audit.
    */
-  async promote(acteur: AuthenticatedUser, quoteId: string, input: QuotePromoteInput): Promise<QuoteDTO> {
+  async promote(acteur: AuthenticatedUser, quoteId: string, input: QuotePromoteInput, memberId: string | null): Promise<QuoteDTO> {
     await this.ownedQuote(acteur.userId, quoteId);
     const copie = await this.copieDuClient(acteur.userId, input);
     // Une promotion exige une fiche (le contrat la rend obligatoire) : `null` ici serait une erreur de programmation, bruyante.
     if (copie.clientRecordId === null) throw new Error("promote : le contrat exige une fiche, la copie n'en porte aucune");
     const resultat = await this.devis.promouvoir({
       acteur: { userId: acteur.userId, role: acteur.role },
+      memberId,
       quoteId,
       statutsAdmis: quoteAllowedFrom(QuoteCommand.PROMOTE),
       copie: { clientRecordId: copie.clientRecordId, clientNameAr: copie.clientNameAr, clientNameLatin: copie.clientNameLatin }

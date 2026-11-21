@@ -76,7 +76,7 @@ describe("les sources du personnel", () => {
 
   it("le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée", () => {
     expect(sources.length, sources.map((s) => s.nom).join(", ")).toBeGreaterThanOrEqual(9);
-    for (const attendu of ["staff.module.ts", "staff-session.controller.ts", "staff-session.service.ts", "staff-session.guard.ts", "staff-decorators.ts", "staff-cookies.ts", "staff-store.types.ts", "staff-store.prisma.ts", "staff-session-policy.ts", "staff-members.controller.ts", "staff-members.service.ts", "staff-account-state.ts", "staff-access-policy.ts", "staff-members-policy.ts", "staff-temporary-password.ts", "staff-password-policy.ts"]) {
+    for (const attendu of ["staff.module.ts", "staff-session.controller.ts", "staff-session.service.ts", "staff-session.guard.ts", "staff-decorators.ts", "staff-cookies.ts", "staff-store.types.ts", "staff-store.prisma.ts", "staff-session-policy.ts", "staff-members.controller.ts", "staff-members.service.ts", "staff-account-state.ts", "staff-access-policy.ts", "staff-members-policy.ts", "staff-temporary-password.ts", "staff-password-policy.ts", "staff-pin.ts", "staff-pin-hasher.ts"]) {
       expect(sources.map((s) => s.nom), attendu).toContain(attendu);
     }
   });
@@ -119,7 +119,7 @@ describe("les sources du personnel", () => {
   });
 
   it("⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage", () => {
-    for (const nom of ["staff-session-policy.ts", "staff-password-policy.ts", "staff-cookies.ts", "staff-account-state.ts", "staff-access-policy.ts", "staff-members-policy.ts", "staff-temporary-password.ts"]) {
+    for (const nom of ["staff-session-policy.ts", "staff-password-policy.ts", "staff-cookies.ts", "staff-account-state.ts", "staff-access-policy.ts", "staff-members-policy.ts", "staff-temporary-password.ts", "staff-pin.ts"]) {
       const fichier = sources.find((s) => s.nom === nom);
       expect(fichier, `le module pur ${nom} existe`).toBeDefined();
       const source = fichier!.code;
@@ -160,7 +160,7 @@ describe("le câblage", () => {
     expect(module).toMatch(/redact:\s*\[[^\]]*req\.headers\.authorization[^\]]*req\.headers\.cookie[^\]]*res\.headers\["set-cookie"\][^\]]*\]/);
   });
 
-  it("⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement quatre handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état ; `pin-login` sera le cinquième au lot 3b)", () => {
+  it("⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement CINQ handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état, et — rang 58 — `pin-login`, la cinquième)", () => {
     const comptes: Record<string, number> = {};
     const parcourir = (dossier: string): void => {
       for (const e of readdirSync(dossier, { withFileTypes: true })) {
@@ -174,7 +174,85 @@ describe("le câblage", () => {
       }
     };
     parcourir(SRC);
-    expect(comptes).toEqual({ "auth/auth.controller.ts": 1, "staff/staff-session.controller.ts": 3 });
+    expect(comptes).toEqual({ "auth/auth.controller.ts": 1, "staff/staff-session.controller.ts": 4 });
+  });
+});
+
+// ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// LE PIN ET SON SECRET — rang 58, L36-3b (D356, R-2, MP-10, MP-11, MP-12). Ce qu'aucun test de comportement ne voit : le secret lu hors du seul endroit prévu, un HMAC calculé ailleurs que dans le hacheur, une
+// comparaison de hachés qui n'est pas à temps constant, un PIN en clair dans le magasin, une valeur réelle dans le fichier d'exemple. Mêmes règles : commentaires retirés avant de chercher, deux bras de calibration, ce que
+// chaque garde a parcouru.
+// ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+describe("rang 58 — le PIN et son secret : les gardes de SOURCE", () => {
+  /** Tous les fichiers `.ts` de `apps/api/src` hors specs et hors code généré, commentaires retirés. */
+  function toutesLesSources(): Array<{ chemin: string; code: string }> {
+    const out: Array<{ chemin: string; code: string }> = [];
+    const parcourir = (dossier: string): void => {
+      for (const e of readdirSync(dossier, { withFileTypes: true })) {
+        const chemin = join(dossier, e.name);
+        if (e.isDirectory()) {
+          if (e.name !== "generated") parcourir(chemin);
+        } else if (e.name.endsWith(".ts") && !e.name.endsWith(".spec.ts")) {
+          out.push({ chemin: chemin.slice(SRC.length + 1).replace(/\\/g, "/"), code: sansCommentaires(readFileSync(chemin, "utf8")) });
+        }
+      }
+    };
+    parcourir(SRC);
+    return out;
+  }
+  const sources = toutesLesSources();
+
+  it("⛔ R-2 — le NOM du secret n'est écrit que dans `config/env.ts` (le schéma) et `staff/staff.module.ts` (le fournisseur qui le lit) : aucun service, aucun contrôleur ne lit la variable", () => {
+    expect(sources.length, "zéro fichier parcouru ne prouve rien (D290)").toBeGreaterThan(100);
+    const lecteurs = sources.filter((s) => s.code.includes("STAFF_PIN_HMAC_SECRET")).map((s) => s.chemin).sort();
+    expect(lecteurs).toEqual(["config/env.ts", "staff/staff.module.ts"]);
+  });
+
+  it("⛔ MP-11 — `createHmac` n'est appelé que dans le hacheur du PIN : un HMAC calculé ailleurs serait un second endroit où se tromper de secret", () => {
+    const calculs = sources.filter((s) => /\bcreateHmac\s*\(/.test(s.code)).map((s) => s.chemin);
+    expect(calculs).toEqual(["staff/staff-pin-hasher.ts"]);
+  });
+
+  it("⛔ la comparaison des hachés est À TEMPS CONSTANT : `timingSafeEqual` est employé, et aucun haché n'est comparé par `===` ou `==` (calibré : un échantillon fautif est VU, un sain ne l'est pas)", () => {
+    const comparaisonNaive = /(\bstored|\bhash|\bdigest|\bexpected)\w*\s*[!=]==?\s*\w|[\w)\]]\s*[!=]==?\s*(stored|hash|digest|expected)\w*\b/;
+    for (const fautif of ["return stored === hash;", "if (digest == stored) {}", "a.toString('hex') === stored"]) expect(comparaisonNaive.test(fautif), fautif).toBe(true);
+    for (const sain of ["return timingSafeEqual(a, b);", "if (b.length !== a.length) return false;", "const n = hashes.length === 0;"]) expect(comparaisonNaive.test(sain), sain).toBe(false);
+    const hacheur = sources.find((s) => s.chemin === "staff/staff-pin-hasher.ts");
+    expect(hacheur, "le hacheur existe").toBeDefined();
+    expect(/\btimingSafeEqual\s*\(/.test(hacheur!.code), "le hacheur compare à temps constant").toBe(true);
+    expect(comparaisonNaive.test(hacheur!.code), "aucune comparaison naïve de hachés dans le hacheur").toBe(false);
+  });
+
+  it("⛔ MP-11 — le MAGASIN ne voit JAMAIS le PIN en clair : ni `staff-store.types.ts` ni `staff-store.prisma.ts` ne nomment `pin` comme mot entier (ils ne connaissent que `pinHash`, `newPinHash`, `expectedPinHash`, `pin_…`) — calibré sur deux bras", () => {
+    const motPin = /\bpin\b/;
+    for (const fautif of ["const pin = x;", "pin: string;", "input.pin"]) expect(motPin.test(fautif), fautif).toBe(true);
+    for (const sain of ["pinHash: string", "newPinHash", "expectedPinHash", "pin_hash", '"staff.pin_login"', "pinIssued"]) expect(motPin.test(sain), sain).toBe(false);
+    const magasin = sources.filter((s) => s.chemin.startsWith("staff/staff-store."));
+    expect(magasin.map((s) => s.chemin).sort()).toEqual(["staff/staff-store.prisma.ts", "staff/staff-store.types.ts"]);
+    for (const s of magasin) expect(motPin.test(s.code), s.chemin).toBe(false);
+  });
+
+  it("⛔ D200 — `apps/api/.env.example` porte le NOM du secret du PIN, SANS valeur : une ligne `STAFF_PIN_HMAC_SECRET=` et rien après le signe égal (un fichier d'exemple est suivi, poussé et recopié par chaque poste)", () => {
+    const nomSeul = /^STAFF_PIN_HMAC_SECRET=[ \t]*\r?$/m;
+    expect(nomSeul.test("STAFF_PIN_HMAC_SECRET=\n"), "calibration : le nom seul est VU").toBe(true);
+    expect(nomSeul.test("STAFF_PIN_HMAC_SECRET=une-valeur-quelconque\n"), "calibration : une valeur n'est PAS vue").toBe(false);
+    const exemple = readFileSync(join(process.cwd(), ".env.example"), "utf8");
+    expect(exemple.split(/\r?\n/).filter((l) => l.startsWith("STAFF_PIN_HMAC_SECRET=")).length, "exactement une ligne du nom").toBe(1);
+    expect(nomSeul.test(exemple), "la ligne du nom ne porte aucune valeur").toBe(true);
+  });
+
+  it("⛔ MP-10 — l'aléa du PIN vient du système (`randomInt`), jamais de `Math.random` : le hacheur tire par `node:crypto`", () => {
+    const hacheur = sources.find((s) => s.chemin === "staff/staff-pin-hasher.ts");
+    expect(hacheur, "le hacheur existe").toBeDefined();
+    expect(/\brandomInt\b/.test(hacheur!.code)).toBe(true);
+    expect(ALEA.test(hacheur!.code)).toBe(false);
+  });
+
+  it("⛔ R-5 — l'union fermée des lignes d'audit nomme les QUATRE actions du PIN, et rien de plus qu'elles : `staff.pin_login`, `staff.pin_login_failed`, `staff.pin_lock`, `staff.pin_unlock` (la réponse de Ko, 1 d : aucune action n'est ajoutée au-delà de la liste de DR5)", () => {
+    const port = sources.find((s) => s.chemin === "staff/staff-store.types.ts");
+    expect(port, "le port existe").toBeDefined();
+    const actions = [...port!.code.matchAll(/action:\s*"(staff\.pin_[a-z_]+)"/g)].map((m) => m[1]).sort();
+    expect(actions).toEqual(["staff.pin_lock", "staff.pin_login", "staff.pin_login_failed", "staff.pin_unlock"]);
   });
 });
 

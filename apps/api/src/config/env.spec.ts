@@ -2,7 +2,9 @@ import { validateEnv } from "./env";
 
 const baseEnv = {
   DATABASE_URL: "postgresql://u:p@localhost:5432/db",
-  JWT_ACCESS_SECRET: "s".repeat(40)
+  JWT_ACCESS_SECRET: "s".repeat(40),
+  // Rang 58 (D356, R-2, MP-12) : le secret du HMAC du PIN suit le précédent du secret JWT — OBLIGATOIRE partout, ≥ 32 caractères, SANS défaut. Une valeur JETABLE de test : jamais une valeur réelle.
+  STAFF_PIN_HMAC_SECRET: "p".repeat(40)
 };
 
 // ⚠ E3b : allumer les paiements EXIGE désormais une configuration Chargily.
@@ -33,6 +35,35 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
 
   it("refuse l'absence totale de JWT_ACCESS_SECRET (l'API ne boote pas sans)", () => {
     expect(() => validateEnv({ DATABASE_URL: baseEnv.DATABASE_URL })).toThrow(/JWT_ACCESS_SECRET/);
+  });
+
+  // ── Rang 58 (D356, R-2, MP-12) — le secret du HMAC du PIN : obligatoire PARTOUT, ≥ 32 caractères, sans défaut, nommé au refus ──
+  describe("STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN)", () => {
+    it("⛔ MP-12 — ABSENT, même hors production : le boot est REFUSÉ en nommant la variable (aucun défaut : un secret par défaut serait le même chez tous)", () => {
+      const { STAFF_PIN_HMAC_SECRET: _retiree, ...sansSecret } = baseEnv;
+      void _retiree;
+      expect(() => validateEnv(sansSecret)).toThrow(/STAFF_PIN_HMAC_SECRET/);
+    });
+
+    it("⛔ trop COURT (31 caractères) : refusé en nommant la variable ; la borne réelle — 32 caractères — est ACCEPTÉE (D55 : la borne se dérive du cas réel)", () => {
+      expect(() => validateEnv({ ...baseEnv, STAFF_PIN_HMAC_SECRET: "p".repeat(31) })).toThrow(/STAFF_PIN_HMAC_SECRET/);
+      expect(validateEnv({ ...baseEnv, STAFF_PIN_HMAC_SECRET: "p".repeat(32) }).STAFF_PIN_HMAC_SECRET).toBe("p".repeat(32));
+    });
+
+    it("la valeur fournie est celle que la config rend (rien ne la transforme, rien ne la remplace par un défaut)", () => {
+      expect(validateEnv(baseEnv).STAFF_PIN_HMAC_SECRET).toBe("p".repeat(40));
+    });
+
+    it("le message du refus ne recopie PAS la valeur fournie (un secret trop court qu'on a tapé ne se retrouve pas dans un journal de démarrage)", () => {
+      let message = "";
+      try {
+        validateEnv({ ...baseEnv, STAFF_PIN_HMAC_SECRET: "valeur-secrete-trop-courte" });
+      } catch (e) {
+        message = (e as Error).message;
+      }
+      expect(message).toMatch(/STAFF_PIN_HMAC_SECRET/);
+      expect(message.includes("valeur-secrete-trop-courte")).toBe(false);
+    });
   });
 
   it("parse CORS_ORIGINS en liste et AUTH_COOKIE_SECURE en booléen", () => {
@@ -99,6 +130,10 @@ describe("validateEnv (schéma Zod des variables d'environnement)", () => {
     it("GOOGLE_CLIENT_ID hors prod : ABSENTE = toléré (undefined), l'API boote — /auth/google répondra 503 (Lot 8)", () => {
       const env = validateEnv({ ...baseEnv, NODE_ENV: "development" });
       expect(env.GOOGLE_CLIENT_ID).toBeUndefined();
+    });
+
+    it("⛔ MP-12 — STAFF_PIN_HMAC_SECRET est EXPLICITE en production : l'oublier fait REFUSER le boot par la LISTE des variables explicites (pas seulement par le schéma), en nommant la variable", () => {
+      expect(() => validateEnv(omit(prodEnv, "STAFF_PIN_HMAC_SECRET"))).toThrow(/EXPLICITEMENT[\s\S]*STAFF_PIN_HMAC_SECRET/);
     });
 
     it("JWT_ACCESS_SECRET : comportement inchangé (déjà requis partout, jamais de défaut)", () => {

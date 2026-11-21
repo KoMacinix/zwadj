@@ -17,7 +17,8 @@ import {
   staffActivateSchema,
   staffLoginSchema,
   staffMemberCreateSchema,
-  staffPasswordChangeSchema
+  staffPasswordChangeSchema,
+  staffPinLoginSchema
 } from "@zwadj/types";
 
 const MESSAGES_DIR = join(process.cwd(), "..", "..", "packages", "i18n", "messages");
@@ -48,9 +49,32 @@ describe("STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5)", () =
     expect(STAFF_LIMITS.TEMPORARY_PASSWORD_DAYS).toBe(7);
   });
 
+  it("⛔ rang 58 (D356, DR5) — le PIN : QUATRE chiffres et TROIS essais, DEUX paramètres du levier (« longueur = paramètre »), jamais un littéral ailleurs", () => {
+    expect(STAFF_LIMITS.PIN_LENGTH).toBe(4);
+    expect(STAFF_LIMITS.PIN_MAX_FAILURES).toBe(3);
+  });
+
+  it("⛔ le plafond d'essais est CONFRONTÉ à la CHECK de la base (l'autorité est la MIGRATION, D186) : `pin_failed_count BETWEEN 0 AND <plafond>` — la constante ne peut pas dépasser ce que la base accepte sans une migration", () => {
+    const sql = readFileSync(join(process.cwd(), "prisma", "migrations", "20261104170000_staff_layer", "migration.sql"), "utf8");
+    const m = /"pin_failed_count" BETWEEN 0 AND (\d+)/.exec(sql);
+    expect(m, "la CHECK de la migration est introuvable").not.toBeNull();
+    expect(Number(m![1])).toBe(STAFF_LIMITS.PIN_MAX_FAILURES);
+  });
+
   it("R-6 (D341) — l'échéance d'un appareil est la durée du PIN, « même paramètre » : il n'existe AUCUN second paramètre de durée d'appareil (elle ne pourrait que dériver)", () => {
     expect(Object.keys(STAFF_LIMITS).sort()).toEqual(
-      ["DEVICE_COOKIES_MAX", "IDLE_TIMEOUT_MINUTES", "PASSWORD_MAX_FAILURES", "PASSWORD_PAUSE_MINUTES", "PASSWORD_VALIDITY_DAYS", "PIN_VALIDITY_DAYS", "SESSION_MAX_HOURS", "TEMPORARY_PASSWORD_DAYS"].sort()
+      [
+        "DEVICE_COOKIES_MAX",
+        "IDLE_TIMEOUT_MINUTES",
+        "PASSWORD_MAX_FAILURES",
+        "PASSWORD_PAUSE_MINUTES",
+        "PASSWORD_VALIDITY_DAYS",
+        "PIN_LENGTH",
+        "PIN_MAX_FAILURES",
+        "PIN_VALIDITY_DAYS",
+        "SESSION_MAX_HOURS",
+        "TEMPORARY_PASSWORD_DAYS"
+      ].sort()
     );
   });
 
@@ -168,7 +192,17 @@ describe("les clés `staff.validation.*` employées par les schémas existent da
     ["création de membre, nom invalide", staffMemberCreateSchema, { accountName: "<b>", role: "EMPLOYEE" }],
     ["création de membre, rôle absent", staffMemberCreateSchema, { accountName: "Karim" }],
     ["création de membre, rôle inconnu", staffMemberCreateSchema, { accountName: "Karim", role: "ADMIN" }],
-    ["création de membre, mot de passe choisi", staffMemberCreateSchema, { accountName: "Karim", role: "EMPLOYEE", password: "Motdepasse1" }]
+    ["création de membre, mot de passe choisi", staffMemberCreateSchema, { accountName: "Karim", role: "EMPLOYEE", password: "Motdepasse1" }],
+    // Rang 58 (D356, K-23) : la connexion par PIN — un corps vide, un membre qui n'est pas un identifiant, un PIN de la mauvaise longueur ou qui n'est pas fait de chiffres, un PIN qui n'est pas du TEXTE, une clé inconnue.
+    ["connexion par PIN, corps vide", staffPinLoginSchema, {}],
+    ["connexion par PIN, membre absent", staffPinLoginSchema, { pin: "4821" }],
+    ["connexion par PIN, membre qui n'est pas un identifiant", staffPinLoginSchema, { memberId: "pas-un-uuid", pin: "4821" }],
+    ["connexion par PIN, PIN absent", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1" }],
+    ["connexion par PIN, PIN trop court", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "482" }],
+    ["connexion par PIN, PIN trop long", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "48211" }],
+    ["connexion par PIN, PIN qui n'est pas fait de chiffres", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "48a1" }],
+    ["connexion par PIN, PIN numérique et non du texte", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: 4821 }],
+    ["connexion par PIN, clé inconnue", staffPinLoginSchema, { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "4821", deviceId: "x" }]
   ];
 
   it("chaque entrée fautive est refusée ET chaque message est une clé présente en FR et en AR", () => {
@@ -178,7 +212,7 @@ describe("les clés `staff.validation.*` employées par les schémas existent da
       expect(r.success, nom).toBe(false);
       for (const issue of r.error?.issues ?? []) cles.add(issue.message);
     }
-    expect(cles.size, "les entrées fautives doivent produire des clés (sinon ce test ne mesure rien)").toBeGreaterThanOrEqual(9);
+    expect(cles.size, "les entrées fautives doivent produire des clés (sinon ce test ne mesure rien)").toBeGreaterThanOrEqual(12);
     for (const cle of cles) {
       expect(lire(FR, cle)?.trim(), `${cle} (fr)`).toBeTruthy();
       expect(lire(AR, cle)?.trim(), `${cle} (ar)`).toBeTruthy();
@@ -288,5 +322,72 @@ describe("staffMemberCreateSchema — K-20 : le nom de compte et le rôle, RIEN 
     expect(staffMemberCreateSchema.safeParse({ accountName: "<b>", role: "EMPLOYEE" }).success).toBe(false);
     expect(staffMemberCreateSchema.safeParse({ accountName: "caisse 2", role: "EMPLOYEE" }).success).toBe(true);
     expect(staffMemberCreateSchema.safeParse({ accountName: "أمين", role: "EMPLOYEE" }).success).toBe(true);
+  });
+});
+
+// ══ RANG 58, L36-3b (D356, K-23) — le corps de la connexion par PIN ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+describe("staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre", () => {
+  const MEMBRE = "018f0000-0000-7000-8000-0000000000b1";
+
+  it("⛔ le cas RÉEL : un PIN qui commence par ZÉRO (« 0482 ») est ACCEPTÉ — c'est un texte de quatre chiffres, pas un nombre", () => {
+    const r = staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "0482" });
+    expect(r.success).toBe(true);
+    expect(r.success && r.data).toEqual({ memberId: MEMBRE, pin: "0482" });
+  });
+
+  it("un PIN de la longueur du levier est accepté, un de plus ou de moins refusé (la longueur est un PARAMÈTRE : le schéma la lit du levier)", () => {
+    expect(staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "9".repeat(STAFF_LIMITS.PIN_LENGTH) }).success).toBe(true);
+    expect(staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "9".repeat(STAFF_LIMITS.PIN_LENGTH - 1) }).success).toBe(false);
+    expect(staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "9".repeat(STAFF_LIMITS.PIN_LENGTH + 1) }).success).toBe(false);
+  });
+
+  it("⛔ le schéma NE REFUSE PAS un PIN trivial : il ne révèle RIEN de la liste (un « PIN trivial » à la connexion dirait quelles valeurs sont exclues) — « 1234 » est accepté ici et refusé à la vérification comme tout PIN faux", () => {
+    expect(staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "1234" }).success).toBe(true);
+    expect(staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "0000" }).success).toBe(true);
+  });
+
+  it("les messages de refus sont TROIS clés : membre (absent ou qui n'est pas un identifiant), PIN absent, PIN mal formé", () => {
+    const messages = (entree: unknown): string[] => {
+      const r = staffPinLoginSchema.safeParse(entree);
+      return r.success ? [] : r.error.issues.map((i) => i.message);
+    };
+    expect(messages({ pin: "4821" })).toEqual(["staff.validation.memberRequired"]);
+    expect(messages({ memberId: "pas-un-uuid", pin: "4821" })).toEqual(["staff.validation.memberRequired"]);
+    expect(messages({ memberId: MEMBRE })).toEqual(["staff.validation.pinRequired"]);
+    expect(messages({ memberId: MEMBRE, pin: "48a1" })).toEqual(["staff.validation.pinInvalid"]);
+    expect(messages({ memberId: MEMBRE, pin: "482" })).toEqual(["staff.validation.pinInvalid"]);
+  });
+
+  it("⛔ une CLÉ INCONNUE est refusée, pas ignorée (le jeton d'appareil voyage par COOKIE, jamais par le corps)", () => {
+    const r = staffPinLoginSchema.safeParse({ memberId: MEMBRE, pin: "4821", deviceToken: "x" });
+    expect(r.success).toBe(false);
+    expect(r.success ? [] : r.error.issues.map((i) => i.message)).toEqual(["staff.validation.unknownKey"]);
+  });
+
+  it("les trois clés de message neuves existent en FRANÇAIS et en ARABE, non vides, distinctes d'une langue à l'autre", () => {
+    for (const cle of ["staff.validation.memberRequired", "staff.validation.pinRequired", "staff.validation.pinInvalid"]) {
+      expect(lire(FR, cle)?.trim(), `${cle} (fr)`).toBeTruthy();
+      expect(lire(AR, cle)?.trim(), `${cle} (ar)`).toBeTruthy();
+      expect(lire(FR, cle), `${cle} : le texte arabe n'est pas une copie du français`).not.toBe(lire(AR, cle));
+    }
+  });
+
+  it("⛔ R-7 : AUCUN code d'erreur neuf — le refus de K-23 est `STAFF_INVALID_CREDENTIALS`, comme K-15 ; la liste des codes est celle d'avant le lot", () => {
+    expect(Object.keys(StaffErrorCode).sort()).toEqual(
+      [
+        "STAFF_SESSION_REQUIRED",
+        "STAFF_INVALID_CREDENTIALS",
+        "STAFF_ALREADY_ACTIVATED",
+        "STAFF_EMAIL_NOT_VERIFIED",
+        "STAFF_ACCOUNT_NAME_TAKEN",
+        "STAFF_PASSWORD_COMMON",
+        "STAFF_PASSWORD_REUSED",
+        "STAFF_CURRENT_PASSWORD_INVALID",
+        "STAFF_CAPABILITY_DENIED",
+        "STAFF_MEMBER_NOT_FOUND",
+        "STAFF_MEMBER_DISABLED",
+        "STAFF_LAST_MANAGER"
+      ].sort()
+    );
   });
 });

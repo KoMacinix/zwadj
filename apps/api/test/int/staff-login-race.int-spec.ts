@@ -75,7 +75,9 @@ async function monde() {
       candidateDeviceHashes: [],
       newDeviceTokenHash: sha256(`${jeton}-appareil`),
       deviceLabel: "Poste",
-      expectedPasswordHash: hachageLu
+      expectedPasswordHash: hachageLu,
+      // Rang 58 (D356) : le haché CANDIDAT du PIN que l'ouverture émet quand le membre n'en a pas de valable — un haché de test, jamais une valeur réelle.
+      newPinHash: sha256(`${jeton}-pin`)
     });
   return { m, e, magasin, vivantes, lignesDeSession, connexionsEcrites, reserver, ouvrir };
 }

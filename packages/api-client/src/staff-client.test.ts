@@ -85,8 +85,14 @@ describe("le client du personnel — méthode, adresse et corps de chaque contra
     expect(appels).toEqual([{ path: "/pro/staff/members/m2/disable", init: { method: "POST" } }]);
   });
 
-  it("le client n'expose que les NEUF contrats (K-14 à K-22) : rien du PIN ni de la connexion par PIN (lot 3b)", () => {
+  it("⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et rien d'autre : le jeton d'appareil voyage par COOKIE, jamais par le corps", async () => {
+    const { request, appels } = double({ member: { id: "m1" } });
+    await createStaffClient(request).pinLogin({ memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "0482" });
+    expect(appels).toEqual([{ path: "/pro/staff/pin-login", init: { method: "POST", body: { memberId: "018f0000-0000-7000-8000-0000000000b1", pin: "0482" } } }]);
+  });
+
+  it("⛔ le client n'expose que les DIX contrats (K-14 à K-23) : la connexion par PIN est la dixième, rien d'autre ne s'est ajouté", () => {
     const { request } = double();
-    expect(Object.keys(createStaffClient(request)).sort()).toEqual(["activate", "changePassword", "createMember", "disableMember", "listMembers", "login", "logout", "resetMemberPassword", "session"]);
+    expect(Object.keys(createStaffClient(request)).sort()).toEqual(["activate", "changePassword", "createMember", "disableMember", "listMembers", "login", "logout", "pinLogin", "resetMemberPassword", "session"]);
   });
 });

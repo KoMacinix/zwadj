@@ -39,7 +39,9 @@ describe("K-14 — l'activation nominale", () => {
     const membres = await ctx.prisma.$queryRaw<Array<{ role: string; status: string; account_name_key: string; password_hash: string; disabled_at: Date | null; must_change_password: boolean; pin_hash: string | null }>>`
       SELECT role::text AS role, status::text AS status, account_name_key, password_hash, disabled_at, must_change_password, pin_hash FROM pro_staff_members`;
     expect(membres).toHaveLength(1);
-    expect(membres[0]).toMatchObject({ role: "MANAGER", status: "ACTIVE", account_name_key: "amine", disabled_at: null, must_change_password: false, pin_hash: null });
+    expect(membres[0]).toMatchObject({ role: "MANAGER", status: "ACTIVE", account_name_key: "amine", disabled_at: null, must_change_password: false });
+    // Rang 58 (D356) : l'activation INSTALLE le PIN du Manager (un haché HMAC de 64 hexadécimaux) — le test d'avant figeait `pin_hash: null`, l'état d'AVANT le lot ; ce que dit ce PIN est mesuré par `staff-pin-issue.int-spec.ts`.
+    expect(membres[0]!.pin_hash).toMatch(/^[0-9a-f]{64}$/);
     expect(membres[0]!.password_hash.startsWith("$argon2id$")).toBe(true);
     expect(await compterLignes(ctx.prisma, "pro_staff_devices")).toBe(1);
     expect(await compterLignes(ctx.prisma, "pro_staff_sessions")).toBe(1);

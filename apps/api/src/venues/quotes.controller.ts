@@ -186,9 +186,11 @@ export class QuotesController {
   promote(
     @CurrentUser() user: AuthenticatedUser,
     @Param("id") id: string,
-    @Body(new ZodValidationPipe(quotePromoteSchema)) body: QuotePromoteInput
+    @Body(new ZodValidationPipe(quotePromoteSchema)) body: QuotePromoteInput,
+    @CurrentStaff() staff: StaffContext | undefined
   ): Promise<QuoteDTO> {
-    return this.quotes.promote(user, id, body);
+    // ⛔ D356 (R-6) : le membre dont la session a passé le garde voyage jusqu'à la ligne d'audit (`null` : couche éteinte).
+    return this.quotes.promote(user, id, body, staff?.memberId ?? null);
   }
 
   @Post("quotes/:id/client-name")

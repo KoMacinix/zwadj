@@ -59,7 +59,8 @@ describe("K-15 — la connexion nominale", () => {
     const { pro, membreId } = await proActive(ctx);
     const res = await connecter(ctx, pro, new Jar());
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ member: { id: membreId, accountName: "Amine", role: "MANAGER", mustChangePassword: false } });
+    // Rang 58 (D356) : la réponse porte maintenant `pin` — `null` ici, parce que le Manager activé par `proActive` a DÉJÀ un PIN valable (la connexion n'en émet un que s'il est absent, expiré ou verrouillé : `staff-pin-issue.int-spec.ts`).
+    expect(res.body).toEqual({ member: { id: membreId, accountName: "Amine", role: "MANAGER", mustChangePassword: false }, pin: null });
     const session = lireCookies(res).find((c) => c.name === "zwadj_ss");
     expect(session?.value).toMatch(/^[A-Za-z0-9_-]{43}$/);
     expect(session!.attributs.get("samesite")).toBe("Strict");
