@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-client-api.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 431 octets, sha256 5a67858de9fa8d2d352501f26b210fc67d826a2fedbaa357bf3d44b989399177. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ✓ src/staff-client.test.ts (12 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  00:17:12
+   Duration  612ms (transform 49ms, setup 0ms, collect 53ms, tests 6ms, environment 0ms, prepare 193ms)
+
+

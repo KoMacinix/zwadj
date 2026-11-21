@@ -1,0 +1,28 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-int-course.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3864 octets, sha256 d7f349b6d4276c17a2b3721aab04944677e7c07ed04c30517ef031e56c25ca72. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-pin-race.int-spec.ts (11 tests) 8341ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro  896ms
+   ✓ ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées  809ms
+   ✓ ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro  773ms
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séquentiel : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le haché lu : REFUSÉE, aucune session de plus, aucune ligne `staff.pin_login`  748ms
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le PIN est effacé par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)  660ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE  681ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND, puis est REFUSÉE  692ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un PIN NEUF remplace le haché (le déblocage par mot de passe) pendant que l'ouverture attend : REFUSÉE — l'ancien PIN est mort, même vérifié avant  705ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3)  709ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le PIN EXPIRE pendant que l'ouverture attend : REFUSÉE (l'échéance est relue sous verrou, avec l'heure de la base)  725ms
+   ✓ ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ ENTRELACEMENT FORCÉ — l'appareil est révoqué par une transaction tenue hors du service ; l'ouverture (qui a déjà passé le CAS du membre) ATTEND sur l'appareil, puis est REFUSÉE ; RIEN n'est écrit : ni session, ni `last_login_at`, ni remise à zéro du compteur, ni ligne `staff.pin_login`  711ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  00:17:50
+   Duration  13.72s (transform 1.54s, setup 34ms, collect 4.58s, tests 8.34s, environment 0ms, prepare 154ms)
+
+

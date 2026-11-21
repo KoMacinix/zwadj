@@ -1,0 +1,101 @@
+⛔ PIÈCE MASQUÉE — D356 r58 M-4-int-audit.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7671 octets, sha256 c833eaa148c8ac0528bd2d2170c9719463443fab2ab79e28b4f9fe776721434b. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin-audit.int-spec.ts (12 tests | 3 failed) 8364ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > la connexion par PIN : UNE ligne `staff.pin_login` — le compte commun et son rôle, le MEMBRE, l'entité est la SESSION, la charge utile ne porte que le membre, jamais `before`  908ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un échec : UNE ligne `staff.pin_login_failed` par essai compté, avec le compte d'échecs de la réservation (1, 2) — jamais le PIN tenté  682ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le TROISIÈME échec : la ligne d'échec ET UNE ligne `staff.pin_lock` (le compte et le nombre de sessions terminées — celui des sessions qui ont réellement pris la fin `PIN_LOCKED`)  698ms
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.pin_unlock` (« par le mot de passe »), le membre pour acteur ; ni un PIN absent, ni un PIN expiré n'en écrivent 746ms
+     → expected { via: 'password', …(1) } to deeply equal { via: 'password' }
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un refus AVANT la réservation (aucun appareil, membre inconnu, PIN verrouillé) n'écrit AUCUNE ligne du PIN : on ne journalise pas un essai qui n'a pas eu lieu  669ms
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : pour chacune des quatre actions, `after` ne porte QUE les clés listées, `before` est nul, l'acteur est renseigné (une clé de plus serait un secret en puissance) 791ms
+     → staff.pin_unlock: expected [ 'pinHash', 'via' ] to deeply equal [ 'via' ]
+   ✓ ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > BRAS DE CONTRÔLE — le détecteur VOIT un PIN, un haché et un secret plantés (un détecteur qui répond « rien » à tout passerait la garde) 2ms
+   × ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lignes d'audit (toutes colonnes, JSON compris) d'un parcours COMPLET — activation, connexion, échecs, verrouillage, déblocage, PIN juste — ne portent ni le PIN posé, ni le PIN rendu, ni leurs hachés, ni le secret 809ms
+     → PIN neuf dans l'audit: expected [ 'le haché' ] to deeply equal []
+   ✓ ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ le JOURNAL RÉEL de l'application démarrée : ni le PIN posé, ni le PIN rendu par K-14 et K-15, ni leurs hachés, ni le secret — sur la connexion par PIN (juste et fausse), l'activation, le déblocage  764ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_login` refusée par la base : la connexion échoue (≥ 500), AUCUNE session n'est ouverte, `last_login_at` n'est pas écrit  696ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lock` refusée : le VERROU n'est pas posé et les sessions ne sont pas terminées (pas de verrou sans sa ligne) — et l'échec du même essai est annulé avec lui (pas de ligne sans action)  696ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > ⛔ AU COMMIT — la session insérée refusée par un déclencheur DIFFÉRÉ : la ligne `staff.pin_login`, écrite dans la même transaction, DISPARAÎT avec elle (une ligne écrite hors transaction y survivrait)  673ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 9 passed (12)
+   Start at  00:37:58
+   Duration  13.53s (transform 1.41s, setup 36ms, collect 4.33s, tests 8.36s, environment 0ms, prepare 161ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin-audit.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.pin_unlock` (« par le mot de passe »), le membre pour acteur ; ni un PIN absent, ni un PIN expiré n'en écrivent
+AssertionError: expected { via: 'password', …(1) } to deeply equal { via: 'password' }
+
+- Expected
++ Received
+
+  {
++   "pinHash": "6881ff97e700647a78b120d9921f071d82a3c5445d1441bf6830e82a85731da9",
+    "via": "password",
+  }
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:119:30
+    117|     const lignes = await lignesAudit(ctx.prisma, "staff.pin_unlock");
+    118|     expect(lignes).toHaveLength(1);
+    119|     expect(lignes[0]!.after).toEqual({ via: "password" });
+       |                              ^
+    120|     expect(lignes[0]!.actor_member_id).toBe(w.e.id);
+    121|     expect(lignes[0]!.entity_id).toBe(w.e.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : pour chacune des quatre actions, `after` ne porte QUE les clés listées, `before` est nul, l'acteur est renseigné (une clé de plus serait un secret en puissance)
+AssertionError: staff.pin_unlock: expected [ 'pinHash', 'via' ] to deeply equal [ 'via' ]
+
+- Expected
++ Received
+
+  [
++   "pinHash",
+    "via",
+  ]
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:149:63
+    147|     for (const l of await lignesDuPin()) {
+    148|       vues.add(l.action);
+    149|       expect(Object.keys(l.after as object).sort(), l.action).toEqual(…
+       |                                                               ^
+    150|       expect(l.before, l.action).toBeNull();
+    151|       expect(l.actor_member_id, l.action).toBe(w.e.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lignes d'audit (toutes colonnes, JSON compris) d'un parcours COMPLET — activation, connexion, échecs, verrouillage, déblocage, PIN juste — ne portent ni le PIN posé, ni le PIN rendu, ni leurs hachés, ni le secret
+AssertionError: PIN neuf dans l'audit: expected [ 'le haché' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "le haché",
++ ]
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:193:82
+    191|     expect(texte.length, "des lignes ont bien été parcourues").toBeGre…
+    192|     for (const [pin, nom] of [[PIN_DE_TEST, "posé"], [pinDuManager, "d…
+    193|       expect(secretsDans(texte, pin, hacherPin(pin)), `PIN ${nom} dans…
+       |                                                                                  ^
+    194|     }
+    195|     expect(managerId.length).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

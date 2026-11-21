@@ -1,0 +1,66 @@
+⛔ PIÈCE MASQUÉE — D356 r58 F-5-int-pin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7954 octets, sha256 06a9eb7ee48a796c1c2882dd1c79d0912ed36c6636cdc9f457a88a40341e2721. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin.int-spec.ts (23 tests | 1 failed) 17394ms
+   ✓ ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de plus, `last_login_at` écrit, le compteur à zéro ; le cookie de session est posé (HttpOnly, Strict, chemin /api/v1, sans échéance) et AUCUN cookie d'appareil neuf  890ms
+   ✓ ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : l'état (K-17) la rend, le membre y est  689ms
+   ✓ ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `device_id` est celui du cookie présenté, et son `last_used_at` est écrit  678ms
+   ✓ ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un temporaire valable) SE CONNECTE par PIN : le corps dit `mustChangePassword: true`  449ms
+   ✓ ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `STAFF_INVALID_CREDENTIALS`, aucun cookie posé, aucune session, le compteur INCHANGÉ  658ms
+   ✓ ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > un PIN FAUX sans appareil, dix fois : le compteur ne bouge pas et le membre n'est JAMAIS verrouillé (le DoS par le seul Bearer n'existe pas)  710ms
+   ✓ ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) l'appareil d'un AUTRE membre de la même salle ; (ii) l'appareil de CE membre sous le Bearer d'une AUTRE salle ; (iii) l'identifiant d'un membre d'une autre salle, sous le Bearer de la nôtre ; (iv) l'appareil d'une autre salle  1287ms
+   ✓ ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > un PIN faux compte UN essai : 401, le compteur monte à un, le verrou n'est pas posé  658ms
+   ✓ ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : 200 (« trois essais » ne devient pas deux), le compteur revient à ZÉRO, aucun verrou  689ms
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise 694ms
+     → aucune session vivante : le verrouillage les a toutes terminées: expected 1 to be +0 // Object.is equality
+   ✓ ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ VERROUILLÉ, le BON PIN est refusé (401) et ne compte pas : le compteur reste à trois, aucune session  671ms
+   ✓ ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le DÉBLOCAGE est le mot de passe : la connexion par nom de compte et mot de passe d'un membre verrouillé rend un PIN NEUF, remet le compteur à zéro et lève le verrou ; l'ANCIEN PIN est mort, le NEUF sert  768ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — un PIN EXPIRÉ : 401, aucun essai consommé ; le bon PIN d'un membre dont le PIN a expiré ne passe pas  664ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire dans UNE seconde SERT encore (D55 : la borne se dérive du cas réel)  668ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil EXPIRÉ : 401, aucun essai consommé  685ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil RÉVOQUÉ : 401, aucun essai consommé  667ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTURE est huit cookies d'appareil : le bon est le HUITIÈME → 200 ; le NEUVIÈME → 401 (au-delà de la borne, il n'est même pas lu)  667ms
+   ✓ ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, verrouillé, expiré, appareil absent, membre désactivé, membre d'une autre salle, temporaire expiré, couche éteinte) : UN corps à l'octet, aucun cookie, UN calcul de HMAC chacune  1656ms
+   ✓ ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN juste n'en consomme aucun ; les trois essais sont comptés par la RÉSERVATION, avant la vérification (la vérité est la base)  671ms
+   ✓ la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, aucun essai consommé, aucune ligne d'audit d'échec  671ms
+   ✓ la validation du corps ne consomme rien > sans Bearer : 401 `UNAUTHENTICATED` (la route est derrière `JwtAuthGuard`), jamais une réponse du personnel  641ms
+   ✓ ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > six états : la base réserve un essai SI ET SEULEMENT SI la règle pure dit VALID (c'est ce qui rend « UNE copie de la règle » vrai quand la décision atomique est en SQL)  670ms
+   ✓ ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉRENT posé par `poserPin` n'est pas celui d'un autre : « 4821 » et « 9136 » ne se vérifient pas l'un pour l'autre (le haché est celui du PIN, avec le secret)  664ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 passed (23)
+   Start at  00:31:21
+   Duration  22.44s (transform 1.37s, setup 31ms, collect 4.24s, tests 17.39s, environment 0ms, prepare 149ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise
+AssertionError: aucune session vivante : le verrouillage les a toutes terminées: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/int/staff-pin.int-spec.ts:213:99
+    211|     expect(pin.pin_failed_count).toBe(3);
+    212|     expect(pin.pin_locked_at, "le verrou est posé au troisième échec")…
+    213|     expect(await w.vivantes(), "aucune session vivante : le verrouilla…
+       |                                                                                                   ^
+    214|     const fins = (await sessionsDuMembre(ctx.prisma, w.e.id)).map((s) …
+    215|     expect(fins, "la fin est PIN_LOCKED").toContain("PIN_LOCKED");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

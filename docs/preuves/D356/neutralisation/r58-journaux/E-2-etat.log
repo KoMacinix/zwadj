@@ -1,0 +1,76 @@
+⛔ PIÈCE MASQUÉE — D356 r58 E-2-etat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6775 octets, sha256 a54f090570b4b8ce52b75994e67570ffc9d20a4d7ff0af31456224c531ef1be4. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-account-state.spec.ts (19 tests | 2 failed) 28ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > encore valable → ACTIVE 2ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > ⛔ le cas RÉEL : il expire à l'instant exact où l'on se connecte — l'échéance est INCLUSE dans l'expiré (`<=`, comme `expires_at <= now()` du garde) → MUST_CHANGE_PASSWORD 0ms
+   ✓ etatDuCompte — un mot de passe ORDINAIRE (must_change_password faux) > expiré depuis une milliseconde, un jour, un an → MUST_CHANGE_PASSWORD : la connexion est ADMISE, vers le seul changement (S-104) 0ms
+   ✓ etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > non expiré → MUST_CHANGE_PASSWORD (changement obligatoire, la connexion est admise) 0ms
+   ✓ etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > ⛔ le cas RÉEL : il lui reste UNE milliseconde → encore MUST_CHANGE_PASSWORD ; à l'instant exact de l'échéance → TEMPORARY_EXPIRED (refusé) 0ms
+   ✓ etatDuCompte — un mot de passe TEMPORAIRE (must_change_password vrai : le SEUL marqueur, aucune colonne « temporaire ») > expiré depuis une milliseconde, sept jours, un an → TEMPORARY_EXPIRED : « le Manager doit en refaire un » 0ms
+   ✓ etatDuCompte — un membre DÉSACTIVÉ l'est quoi qu'il en soit du mot de passe > désactivé : DISABLED, que le mot de passe soit valable, expiré, ordinaire ou temporaire 2ms
+   ✓ etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > la même échéance se juge AVANT, À et APRÈS `maintenant` : la fonction ne lit aucune horloge (une horloge cachée donnerait la même réponse trois fois) 0ms
+   ✓ etatDuCompte — PURETÉ : le temps est un PARAMÈTRE (S-101, S-109), l'entrée n'est pas modifiée, la réponse ne dépend de rien d'autre > une entrée GELÉE passe (la fonction ne l'écrit pas) et la valeur rendue est l'une des QUATRE constantes exportées 2ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ aucun PIN (`pin_hash` nul) → ABSENT, quoi qu'il en soit des autres colonnes (elles sont nulles par la CHECK de la base) 0ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ l'ABSENCE l'emporte sur TOUT (écrit en tête de la règle) : un PIN absent dont le verrou ou le compteur seraient posés se lit ABSENT, jamais VERROUILLÉ — ajouté APRÈS la découverte de r58 (la cible E-3 était muette : aucune assertion ne portait cette précédence) 0ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ un PIN valable, avec zéro, un ou deux échecs comptés (le plafond moins un) → VALID 0ms
+   × etatDuPin — absent, valide, expiré, verrouillé > ⛔ le cas RÉEL : il lui reste UNE milliseconde → VALID ; à l'instant exact de l'échéance → EXPIRED (l'échéance est INCLUSE dans l'expiré, comme `pin_expires_at <= now()`) 12ms
+     → expected 'VALID' to be 'EXPIRED' // Object.is equality
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > expiré depuis une milliseconde, un jour, un an → EXPIRED 0ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ le verrou posé (`pin_locked_at` non nul) → LOCKED, quel que soit le compte d'échecs 0ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ le compte au PLAFOND sans verrou (un arrêt entre la 3ᵉ réservation et l'écriture du verrou) → LOCKED : aucune autre réservation n'est possible, l'état le dit 0ms
+   ✓ etatDuPin — absent, valide, expiré, verrouillé > ⛔ le verrou l'emporte sur l'expiration : un PIN verrouillé ET expiré est LOCKED (c'est le déblocage qui se joue, et il écrit sa ligne de journal) 0ms
+   × etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > la même échéance se juge AVANT, À et APRÈS `maintenant` : la fonction ne lit aucune horloge 2ms
+     → expected 'VALID' to be 'EXPIRED' // Object.is equality
+   ✓ etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > une entrée GELÉE passe et la valeur rendue est l'une des QUATRE constantes exportées 1ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  00:21:14
+   Duration  1.00s (transform 241ms, setup 0ms, collect 373ms, tests 28ms, environment 0ms, prepare 212ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-account-state.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le cas RÉEL : il lui reste UNE milliseconde → VALID ; à l'instant exact de l'échéance → EXPIRED (l'échéance est INCLUSE dans l'expiré, comme `pin_expires_at <= now()`)
+AssertionError: expected 'VALID' to be 'EXPIRED' // Object.is equality
+
+Expected: "EXPIRED"
+Received: "VALID"
+
+ ❯ src/staff/staff-account-state.spec.ts:113:65
+    111|   it("⛔ le cas RÉEL : il lui reste UNE milliseconde → VALID ; à l'inst…
+    112|     expect(etatDuPin(pin({ pinExpiresAt: ms(1) }), MAINTENANT)).toBe(S…
+    113|     expect(etatDuPin(pin({ pinExpiresAt: ms(0) }), MAINTENANT)).toBe(S…
+       |                                                                 ^
+    114|   });
+    115| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/staff/staff-account-state.spec.ts > etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > la même échéance se juge AVANT, À et APRÈS `maintenant` : la fonction ne lit aucune horloge
+AssertionError: expected 'VALID' to be 'EXPIRED' // Object.is equality
+
+Expected: "EXPIRED"
+Received: "VALID"
+
+ ❯ src/staff/staff-account-state.spec.ts:141:63
+    139|     const echeance = ms(0);
+    140|     expect(etatDuPin(pin({ pinExpiresAt: echeance }), ms(-1))).toBe(St…
+    141|     expect(etatDuPin(pin({ pinExpiresAt: echeance }), ms(0))).toBe(Sta…
+       |                                                               ^
+    142|     expect(etatDuPin(pin({ pinExpiresAt: echeance }), ms(1))).toBe(Sta…
+    143|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

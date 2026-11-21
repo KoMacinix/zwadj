@@ -1,0 +1,31 @@
+⛔ PIÈCE MASQUÉE — D356 r58 Z-3-int-emission.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3688 octets, sha256 18ecc765a726d0b9b818ee64f996d098d07cf2de43806d052e15ec7474cdbf20. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 27659eb72649104fba390d5b633d23824fff3d68f52710c3db765f615b3bf720  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-pin-issue.int-spec.ts (18 tests) 11212ms
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > 201 : un PIN de quatre chiffres non trivial dans la réponse, `Cache-Control: no-store`, rien d'autre ne change de forme (le membre est rendu comme avant)  485ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE connexion d'un membre (aucun PIN) rend un PIN, `no-store`, stocké en HMAC, valable 90 jours ; la SECONDE (PIN valable) rend `pin: null` et ne touche à aucune colonne  545ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN EXPIRÉ est remplacé par un PIN NEUF (l'ancien ne sert plus, l'échéance repart pour 90 jours) — et ce n'est PAS un déblocage : aucune ligne `staff.pin_unlock`  759ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN VERROUILLÉ est remplacé : compteur à zéro, verrou levé, et UNE ligne `staff.pin_unlock` pour ce membre — le déblocage par le mot de passe  732ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > le compte au PLAFOND sans verrou posé (un arrêt entre la 3ᵉ réservation et l'écriture du verrou) est aussi un PIN verrouillé : la connexion le remplace et écrit le déblocage  722ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un mot de passe FAUX ne rend AUCUN PIN et ne touche à aucune colonne du PIN  717ms
+   ✓ ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `no-store` ; PIN ABSENT : un PIN neuf est rendu et installé, `no-store`  1058ms
+   ✓ ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > un changement REFUSÉ (mot de passe actuel faux) ne rend aucun PIN  714ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 — la réinitialisation efface les CINQ colonnes (haché, génération, échéance, compteur, verrou), révoque les appareils, termine les sessions : l'ancien PIN ne sert plus  728ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 sur un PIN VERROUILLÉ : le verrou est levé avec le PIN (le membre se reconnecte par son temporaire et reçoit un PIN neuf)  829ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-22 — la désactivation efface les CINQ colonnes du PIN  697ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > une désactivation RÉPÉTÉE (déjà désactivé) n'écrit rien : le PIN posé APRÈS la première désactivation n'est pas effacé par la seconde (aucune écriture)  675ms
+   ✓ ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se connecte depuis un poste NEUF : l'appareil créé expire AVEC le PIN, pas 90 jours plus tard  728ms
+   ✓ ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre SANS PIN valable : le PIN neuf et l'appareil neuf naissent dans la même transaction, avec la même échéance  442ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  23:45:56
+   Duration  16.57s (transform 1.48s, setup 42ms, collect 4.46s, tests 11.21s, environment 0ms, prepare 182ms)
+
+

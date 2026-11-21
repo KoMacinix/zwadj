@@ -1,0 +1,87 @@
+⛔ PIÈCE MASQUÉE — D356 r58 R-2-int-course.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7666 octets, sha256 8fdb328f2627166a56541aa861701028581c33c299f48d12081ecd3788fc96a7. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin-race.int-spec.ts (11 tests | 3 failed) 8525ms
+   × ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro 883ms
+     → la réservation a compté l'essai: expected +0 to be 1 // Object.is equality
+   × ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées 814ms
+     → exactement TROIS essais comptés (le plafond), pas vingt: expected +0 to be 3 // Object.is equality
+   × ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro 902ms
+     → au plus TROIS vérifications: expected 20 to be less than or equal to 3
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séquentiel : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le haché lu : REFUSÉE, aucune session de plus, aucune ligne `staff.pin_login`  745ms
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le PIN est effacé par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)  699ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE  680ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND, puis est REFUSÉE  691ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un PIN NEUF remplace le haché (le déblocage par mot de passe) pendant que l'ouverture attend : REFUSÉE — l'ancien PIN est mort, même vérifié avant  709ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3)  737ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le PIN EXPIRE pendant que l'ouverture attend : REFUSÉE (l'échéance est relue sous verrou, avec l'heure de la base)  715ms
+   ✓ ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ ENTRELACEMENT FORCÉ — l'appareil est révoqué par une transaction tenue hors du service ; l'ouverture (qui a déjà passé le CAS du membre) ATTEND sur l'appareil, puis est REFUSÉE ; RIEN n'est écrit : ni session, ni `last_login_at`, ni remise à zéro du compteur, ni ligne `staff.pin_login`  711ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 8 passed (11)
+   Start at  00:26:12
+   Duration  13.54s (transform 1.32s, setup 32ms, collect 4.17s, tests 8.53s, environment 0ms, prepare 148ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin-race.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro
+AssertionError: la réservation a compté l'essai: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin-race.int-spec.ts:100:105
+     98|     const w = await monde();
+     99|     const lu = await w.reserver();
+    100|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count, "…
+       |                                                                                                         ^
+    101|     const avant = await w.lignesDeSession();
+    102|     const ecrites = await w.connexionsEcrites();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées
+AssertionError: exactement TROIS essais comptés (le plafond), pas vingt: expected +0 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ test/int/staff-pin-race.int-spec.ts:123:93
+    121|     expect(statuts.filter((s) => s === 401).length, `statuts : ${statu…
+    122|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    123|     expect(pin.pin_failed_count, "exactement TROIS essais comptés (le …
+       |                                                                                             ^
+    124|     expect(reel.mock.calls.length, "TROIS vérifications du vrai haché …
+    125|     expect(factice.mock.calls.length, "les dix-sept autres paient le f…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro
+AssertionError: au plus TROIS vérifications: expected 20 to be less than or equal to 3
+ ❯ test/int/staff-pin-race.int-spec.ts:142:67
+    140|     const reussites = reponses.filter((r) => r.status === 200).length;
+    141|     expect(reponses.every((r) => r.status === 200 || r.status === 401)…
+    142|     expect(reel.mock.calls.length, "au plus TROIS vérifications").toBe…
+       |                                                                   ^
+    143|     expect(reussites, "au moins un succès (le PIN est juste)").toBeGre…
+    144|     expect((await w.vivantes()) - vivantesAvant, "autant de sessions n…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

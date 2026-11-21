@@ -1,0 +1,285 @@
+empreinte du harnais (sha256) : 0cce94171f12136155d26f5454e82a94c9d4ab735f4051632e46a036deebb8ea  (neutralize-r58.py)
+empreinte du harnais (sha256) : 0cce94171f12136155d26f5454e82a94c9d4ab735f4051632e46a036deebb8ea  (neutralize-r58.py)
+empreinte du harnais (sha256) : 0cce94171f12136155d26f5454e82a94c9d4ab735f4051632e46a036deebb8ea  (neutralize-r58.py)
+empreinte du harnais (sha256) : 0cce94171f12136155d26f5454e82a94c9d4ab735f4051632e46a036deebb8ea  (neutralize-r58.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 107 déclarées · 38 jouées · 69 non jouée(s) (sans --int) · 10 mesure(s) distincte(s) · 10 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 12 · en échec 0
+  pré-vol contrat : code 0 · passés 39 · en échec 0
+  pré-vol env : code 0 · passés 30 · en échec 0
+  pré-vol etat : code 0 · passés 18 · en échec 0
+  pré-vol hacheur : code 0 · passés 13 · en échec 0
+  pré-vol magasin : code 0 · passés 98 · en échec 0
+  pré-vol parite : code 0 · passés 5 · en échec 0
+  pré-vol pin : code 0 · passés 13 · en échec 0
+  pré-vol service : code 0 · passés 61 · en échec 0
+  pré-vol sources : code 0 · passés 35 · en échec 0
+■ P-1. ⛔ MP-10 — les zéros de tête sont rendus à DROITE au lieu de GAUCHE (« 0482 » devient « 4820 ») : le PIN tiré n'est plus celui que le générateur a tiré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 11 · en échec 2
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ les ZÉROS DE TÊTE sont rendus : le tirage 482 donne « 0482 », pas « 482 »
+         ↳ AssertionError: expected '4820' to be '0482' // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: des PIN qui commencent par 0 : le remplissage à gauche est exercé: expected 0 to be greater than 0
+■ P-2. ⛔ MP-10 — un PIN TRIVIAL n'est plus re-tiré (le générateur rend « 0000 », « 1234 »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 10 · en échec 3
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ un PIN trivial est RE-TIRÉ, pas rendu : 1111, puis 1234, puis 4821 → « 4821 » après exactement TROI
+         ↳ AssertionError: expected '1111' to be '4821' // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ la boucle est BORNÉE : un générateur qui ne rend que des PIN triviaux fait LEVER après exactement P
+         ↳ AssertionError: expected [Function] to throw an error
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal []
+■ P-3. ⛔ MP-10 — la boucle bornée ne LÈVE plus après `PIN_MAX_DRAWS` tirages triviaux : elle rend un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ la boucle est BORNÉE : un générateur qui ne rend que des PIN triviaux fait LEVER après exactement P
+         ↳ AssertionError: expected [Function] to throw an error
+■ P-4. ⛔ MP-10 — un tirage HORS de l'intervalle n'est plus refusé en haut (un PIN de cinq chiffres est rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ une valeur HORS de l'intervalle (10000, −1, 4.5) est refusée : un PIN de cinq chiffres ou un entier
+         ↳ AssertionError: tirage 10000: expected [Function] to throw an error
+■ P-5. ⛔ MP-10 — la suite DESCENDANTE (« 4321 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > ⛔ sur les DIX MILLE PIN de quatre chiffres, le module et l'oracle écrit autre
+         ↳ AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ Array(10) ] to deeply equal []
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > les cas qu'un humain reconnaît sont refusés : 0000, 1111, 9999, 1234, 4321, 7
+         ↳ AssertionError: 4321: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > le nombre de PIN refusés est celui de l'oracle (210) : la liste est FERMÉE, e
+         ↳ AssertionError: expected 200 to be 210 // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > la règle suit la LONGUEUR (paramètre) : six chiffres — 121212, 112233, 123456
+         ↳ AssertionError: 654321: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal []
+■ P-6. ⛔ MP-10 — la suite MONTANTE (« 1234 », « 7890 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 7 · en échec 6
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > ⛔ sur les DIX MILLE PIN de quatre chiffres, le module et l'oracle écrit autre
+         ↳ AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ Array(10) ] to deeply equal []
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > les cas qu'un humain reconnaît sont refusés : 0000, 1111, 9999, 1234, 4321, 7
+         ↳ AssertionError: 1234: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > le nombre de PIN refusés est celui de l'oracle (210) : la liste est FERMÉE, e
+         ↳ AssertionError: expected 200 to be 210 // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > la règle suit la LONGUEUR (paramètre) : six chiffres — 121212, 112233, 123456
+         ↳ AssertionError: 123456: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ un PIN trivial est RE-TIRÉ, pas rendu : 1111, puis 1234, puis 4821 → « 4821 » après exactement TROI
+         ↳ AssertionError: expected '1234' to be '4821' // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal []
+■ P-7. ⛔ MP-10 — la répétition de deux chiffres (« 1212 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > ⛔ sur les DIX MILLE PIN de quatre chiffres, le module et l'oracle écrit autre
+         ↳ AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ '0101', '0202', '0303', …(87) ] to deeply equal []
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > les cas qu'un humain reconnaît sont refusés : 0000, 1111, 9999, 1234, 4321, 7
+         ↳ AssertionError: 1212: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > le nombre de PIN refusés est celui de l'oracle (210) : la liste est FERMÉE, e
+         ↳ AssertionError: expected 120 to be 210 // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > la règle suit la LONGUEUR (paramètre) : six chiffres — 121212, 112233, 123456
+         ↳ AssertionError: 121212: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal []
+■ P-8. ⛔ MP-10 — les PAIRES (« 1122 », « 6677 ») ne sont plus des PIN triviaux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · ROUGE — passés 8 · en échec 5
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > ⛔ sur les DIX MILLE PIN de quatre chiffres, le module et l'oracle écrit autre
+         ↳ AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ '0011', '0022', '0033', …(87) ] to deeply equal []
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > les cas qu'un humain reconnaît sont refusés : 0000, 1111, 9999, 1234, 4321, 7
+         ↳ AssertionError: 1122: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > le nombre de PIN refusés est celui de l'oracle (210) : la liste est FERMÉE, e
+         ↳ AssertionError: expected 120 to be 210 // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > isTrivialPin — la liste FERMÉE (MP-10) : des répétitions et des suites, rien d'autre > la règle suit la LONGUEUR (paramètre) : six chiffres — 121212, 112233, 123456
+         ↳ AssertionError: 112233: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin.spec.ts > generatePin — tire jusqu'à obtenir un PIN non trivial, borné > ⛔ « aucun PIN trivial sur 100 000 tirages » (MP-10) : 100 000 tirages d'un générateur congruentiel, t
+         ↳ AssertionError: expected [ Array(5) ] to deeply equal []
+■ P-9. ⛔ MP-10 — un chiffre répété (« 0000 », « 7777 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 0 · VERT — passés 13 · en échec 0
+■ H-2. ⛔ MP-11 — le haché stocké est rendu en base64 au lieu de l'hexadécimal (la base et le magasin ne parlent plus le même format)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · ROUGE — passés 10 · en échec 3
+      FAIL  src/staff/staff-pin-hasher.spec.ts > hash — HMAC-SHA-256 du PIN avec le secret > ⛔ la valeur est celle de la NORME : le HMAC-SHA-256 hexadécimal du PIN, recalculé par `node:crypto`
+         ↳ AssertionError: expected 'BfP3fdQHVCXrqcoxotNYGB5BPi4TMtqvJ1ZRl…' to be '05f3f77dd4075425eba9ca31a2d358181e413…' // Object.is equality
+      FAIL  src/staff/staff-pin-hasher.spec.ts > hash — HMAC-SHA-256 du PIN avec le secret > 64 caractères hexadécimaux en minuscules, qui ne contiennent pas le PIN en clair
+         ↳ AssertionError: expected false to be true // Object.is equality
+      FAIL  src/staff/staff-pin-hasher.spec.ts > verify — compare le PIN présenté au hachage stocké > le bon PIN contre son hachage : vrai
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ H-3. ⛔ MP-11 — un haché MAL FORMÉ (longueur différente) est ACCEPTÉ au lieu d'être refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/staff/staff-pin-hasher.spec.ts > verify — compare le PIN présenté au hachage stocké > ⛔ un hachage MAL FORMÉ (vide, trop court, non hexadécimal, trop long) rend faux et ne lève PAS : la base
+         ↳ AssertionError: "": expected true to be false // Object.is equality
+■ H-4. ⛔ MP-11 — la comparaison des hachés n'est plus À TEMPS CONSTANT (`===` sur des chaînes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 34 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ la comparaison des hachés est À TEMPS CONSTANT : `timingSafeEqual` est employé, et aucun haché n
+         ↳ AssertionError: aucune comparaison naïve de hachés dans le hacheur: expected true to be false // Object.is equality
+■ H-5. ⛔ R-3 — le chemin FACTICE ne calcule plus de HMAC (un refus de la connexion par PIN ne coûte plus la même chose qu'une vérification)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/staff/staff-pin-hasher.spec.ts > même COÛT : un calcul de HMAC par chemin, mesuré par espion > ⛔ vérifier contre le FACTICE : un calcul, et RIEN n'est rendu (jamais un vrai) — c'est ce qui r
+         ↳ AssertionError: expected +0 to be 1 // Object.is equality
+■ H-6. ⛔ MP-11 — la vérification compare le haché du PIN présenté à un AUTRE PIN (le PIN est retourné)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · ROUGE — passés 12 · en échec 1
+      FAIL  src/staff/staff-pin-hasher.spec.ts > verify — compare le PIN présenté au hachage stocké > le bon PIN contre son hachage : vrai
+         ↳ AssertionError: expected false to be true // Object.is equality
+■ E-2. ⛔ R-4 — l'échéance À L'INSTANT n'expire plus le PIN (`<=` devient `<`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 16 · en échec 2
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le cas RÉEL : il lui reste UNE milliseconde → VALID ; à l'instant exact de l'échéance → EXPIRED (l'éché
+         ↳ AssertionError: expected 'VALID' to be 'EXPIRED' // Object.is equality
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > la même échéance se juge AVANT, À et APRÈS `maintenant` : la fonction ne lit
+         ↳ AssertionError: expected 'VALID' to be 'EXPIRED' // Object.is equality
+■ E-3. ⛔ R-4 — l'ABSENCE ne l'emporte plus sur le verrou (un PIN absent et verrouillé se lit VERROUILLÉ)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 0 · VERT — passés 18 · en échec 0
+■ E-4. ⛔ R-4 — l'ÉCHÉANCE l'emporte sur le verrou : un PIN verrouillé ET expiré se lit EXPIRÉ (le déblocage n'écrit plus sa ligne `staff.pin_unlock`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · ROUGE — passés 17 · en échec 1
+      FAIL  src/staff/staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le verrou l'emporte sur l'expiration : un PIN verrouillé ET expiré est LOCKED (c'est le déblocage qui s
+         ↳ AssertionError: expected 'EXPIRED' to be 'LOCKED' // Object.is equality
+■ V-1. ⛔ MP-12 — le secret n'a plus de LONGUEUR minimale (un secret de trente et un caractères, ou d'un seul, démarre l'API)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · ROUGE — passés 28 · en échec 2
+      FAIL  src/config/env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > ⛔ trop COURT (31 caractères) : refusé en n
+         ↳ AssertionError: expected [Function] to throw an error
+      FAIL  src/config/env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > le message du refus ne recopie PAS la vale
+         ↳ AssertionError: expected '' to match /STAFF_PIN_HMAC_SECRET/
+■ V-2. ⛔ MP-12 — le secret reçoit une valeur PAR DÉFAUT (l'API démarre sans lui, avec un secret connu de tous)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · ROUGE — passés 29 · en échec 1
+      FAIL  src/config/env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > ⛔ MP-12 — ABSENT, même hors production : l
+         ↳ AssertionError: expected [Function] to throw an error
+■ V-3. ⛔ MP-12 — la production n'EXIGE plus la variable explicitement (la liste `PROD_REQUIRED_EXPLICIT` ne la nomme plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · ROUGE — passés 29 · en échec 1
+      FAIL  src/config/env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > ⛔ MP-12 — STAFF_PIN_HMAC_SECRET
+         ↳ AssertionError: expected [Function] to throw error matching /EXPLICITEMENT[\s\S]*STAFF_PIN_HMAC_SE…/ but got 'Variables d\'environnement invalides …'
+■ C-1. ⛔ K-23 — le schéma n'impose plus la LONGUEUR du PIN (un PIN de cinq chiffres ou plus est accepté par le contrat)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 36 · en échec 3
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: connexion par PIN, PIN trop court: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > un PIN de la longueur du levier est accepté, un de plus ou de moins refusé (la longueur est u
+         ↳ AssertionError: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > les messages de refus sont TROIS clés : membre (absent ou qui n'est pas un identifiant), PIN 
+         ↳ AssertionError: expected [] to deeply equal [ 'staff.validation.pinInvalid' ]
+■ C-2. ⛔ K-23 — le schéma accepte une CLÉ INCONNUE (le corps n'est plus fermé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 37 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: connexion par PIN, clé inconnue: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > ⛔ une CLÉ INCONNUE est refusée, pas ignorée (le jeton d'appareil voyage par COOKIE, jamais pa
+         ↳ AssertionError: expected true to be false // Object.is equality
+■ C-3. ⛔ K-23 — l'identifiant du membre n'est plus vérifié (un texte quelconque est accepté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 37 · en échec 2
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: connexion par PIN, membre qui n'est pas un identifiant: expected true to be false // Object.is equality
+      FAIL  src/common/staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > les messages de refus sont TROIS clés : membre (absent ou qui n'est pas un identifiant), PIN 
+         ↳ AssertionError: expected [] to deeply equal [ 'staff.validation.memberRequired' ]
+■ C-5. ⛔ MP-39 — la clé de message `pinInvalid` de l'arabe change de nom : la PARITÉ FR = AR est rompue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · ROUGE — passés 36 · en échec 3
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > chaque entrée fautive est
+         ↳ AssertionError: staff.validation.pinInvalid (ar): expected undefined to be truthy
+      FAIL  src/common/staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais recopiées) > TOUTES les clés `staff.*`
+         ↳ AssertionError: expected [ …(24) ] to deeply equal [ …(24) ]
+      FAIL  src/common/staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > les trois clés de message neuves existent en FRANÇAIS et en ARABE, non vides, distinctes d'un
+         ↳ AssertionError: staff.validation.pinInvalid (ar): expected undefined to be truthy
+   [parite] code 1 · ROUGE — passés 4 · en échec 1
+      FAIL  src/common/i18n-parity.spec.ts > Parité i18n FR/AR (invariant produit) > les DEUX ensembles de clés sont identiques — toute clé orpheline est nommée dans l'échec
+         ↳ AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+■ K-2. ⛔ K-23 — le client d'API envoie la connexion par PIN en `PUT`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · ROUGE — passés 11 · en échec 1
+      FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et r
+         ↳ AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+■ S-1. ⛔ R-3 — la couche ÉTEINTE refuse SANS le calcul de HMAC factice (le coût diffère de celui d'un PIN faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — la couche ÉTEINTE, le membre inconnu, la salle sans profil, le membre désactivé, le temporaire expiré, 
+         ↳ AssertionError: couche éteinte : un calcul de HMAC, ni plus ni moins: expected +0 to be 1 // Object.is equality
+■ S-4. ⛔ R-3 — un essai NON réservé refuse SANS le calcul de HMAC factice
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 59 · en échec 2
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ la réservation REFUSÉE (essais épuisés, PIN verrouillé, expiré ou absent, appareil non reconnu) : le FACTICE,
+         ↳ AssertionError: expected "spy" to be called 1 times, but got 0 times
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — la couche ÉTEINTE, le membre inconnu, la salle sans profil, le membre désactivé, le temporaire expiré, 
+         ↳ AssertionError: réservation refusée : un calcul de HMAC, ni plus ni moins: expected +0 to be 1 // Object.is equality
+■ S-5. ⛔ MP-1 — le service vérifie le PIN contre un autre argument (le PIN et le haché lu s'échangent)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché RENDU par la réservation), AUCUN fac
+         ↳ UnauthorizedException: staff.errors.invalidCredentials
+■ S-7. ⛔ MP-15 — l'échec consigné porte le PIN TENTÉ au lieu du haché lu (le verrou se poserait sur la saisie, et le journal verrait le PIN)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ un PIN FAUX : UN calcul de HMAC réel, l'échec est consigné avec le compte de la réservation ET le haché lu (l
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(3) } ]
+■ S-8. ⛔ R-3 — l'ouverture n'est plus CONDITIONNÉE au haché lu par la réservation (le PIN tenté la remplace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ le jeton de session posé est celui dont le HACHAGE a été donné à l'ouverture ; l'ouverture est CONDITIONNÉE a
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(5) } ]
+■ S-9. ⛔ MP-2 — l'ouverture reçoit les cookies d'appareil EN CLAIR (jamais leurs empreintes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ le jeton de session posé est celui dont le HACHAGE a été donné à l'ouverture ; l'ouverture est CONDITIONNÉE a
+         ↳ AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(5) } ]
+■ S-11. ⛔ K-23 — la réponse de la connexion par PIN pose un cookie d'APPAREIL (l'appareil est celui du poste : la route n'en pose jamais)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · ROUGE — passés 60 · en échec 1
+      FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché RENDU par la réservation), AUCUN fac
+         ↳ AssertionError: aucun cookie d'appareil neuf : le poste est déjà reconnu: expected { suffix: 'x', …(1) } to be undefined
+■ R-11. ⛔ MP-1 — une réservation SANS ligne est rendue « réservée » (le service vérifie un haché vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 97 · en échec 1
+      FAIL  src/staff/staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ aucune ligne rendue ⇒ `reserved: false
+         ↳ AssertionError: expected { reserved: true, pinHash: '', …(1) } to deeply equal { reserved: false }
+■ M-2. ⛔ R-4 — l'émission acceptée avec un compte de ZÉRO ligne (un PIN rendu qui n'a jamais été installé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · ROUGE — passés 96 · en échec 2
+      FAIL  src/staff/staff-store.prisma.spec.ts > l'ÉMISSION du PIN — connexion et changement de mot de passe : UNE règle, sous le verrou, la même pour les deux > ⛔ connexion — l'émission refusée par la ba
+         ↳ AssertionError: expected [Function] to throw error matching /compte = 1 exigé/ but got 'réponse non prévue pour : INSERT INTO…'
+      FAIL  src/staff/staff-store.prisma.spec.ts > l'ÉMISSION du PIN — connexion et changement de mot de passe : UNE règle, sous le verrou, la même pour les deux > ⛔ changement de mot de passe — l'émission 
+         ↳ AssertionError: expected [Function] to throw error matching /compte = 1 exigé/ but got 'réponse non prévue pour : UPDATE pro_…'
+■ G-1. ⛔ R-2 — un SERVICE lit le NOM du secret (la variable n'est plus lue que par le schéma et le fournisseur)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 34 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ R-2 — le NOM du secret n'est écrit que dans `config/env.ts` (le schéma) et `staff/staff.module.t
+         ↳ AssertionError: expected [ 'config/env.ts', …(2) ] to deeply equal [ 'config/env.ts', …(1) ]
+■ G-2. ⛔ MP-11 — un SECOND `createHmac` apparaît hors du hacheur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 34 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-11 — `createHmac` n'est appelé que dans le hacheur du PIN : un HMAC calculé ailleurs serait u
+         ↳ AssertionError: expected [ 'staff/staff-pin-hasher.ts', …(1) ] to deeply equal [ 'staff/staff-pin-hasher.ts' ]
+■ G-3. ⛔ MP-11 — le MAGASIN nomme un `pin` en clair (un mot entier)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · ROUGE — passés 34 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-11 — le MAGASIN ne voit JAMAIS le PIN en clair : ni `staff-store.types.ts` ni `staff-store.pr
+         ↳ AssertionError: staff/staff-store.prisma.ts: expected true to be false // Object.is equality
+■ G-5. ⛔ D200 — le fichier d'EXEMPLE porte une valeur pour le secret du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · ROUGE — passés 34 · en échec 1
+      FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ D200 — `apps/api/.env.example` porte le NOM du secret du PIN, SANS valeur : une ligne `STAFF_PIN
+         ↳ AssertionError: la ligne du nom ne porte aucune valeur: expected false to be true // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+DÉCOUVERTE : 38 cible(s) jouée(s) sur 107, aucun verdict écrit.
+arbre rendu à son état de départ : vérifié.
+code=0
+20:22:49

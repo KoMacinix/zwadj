@@ -1,0 +1,93 @@
+⛔ PIÈCE MASQUÉE — D356 r58 H-2-hacheur.log. La sortie brute porte 1 occurrence(s) de 1 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5232 octets, sha256 748b32983ca1798995283036d6112d169ebd4ee13dfcf7fa95e04a58f99211b5. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-pin-hasher.spec.ts (13 tests | 3 failed) 19ms
+   × hash — HMAC-SHA-256 du PIN avec le secret > ⛔ la valeur est celle de la NORME : le HMAC-SHA-256 hexadécimal du PIN, recalculé par `node:crypto` 10ms
+     → expected 'BfP3fdQHVCXrqcoxotNYGB5BPi4TMtqvJ1ZRl…' to be '05f3f77dd4075425eba9ca31a2d358181e413…' // Object.is equality
+   × hash — HMAC-SHA-256 du PIN avec le secret > 64 caractères hexadécimaux en minuscules, qui ne contiennent pas le PIN en clair 2ms
+     → expected false to be true // Object.is equality
+   ✓ hash — HMAC-SHA-256 du PIN avec le secret > déterministe : le même PIN et le même secret donnent le même hachage (sans quoi on ne pourrait pas vérifier) 0ms
+   ✓ hash — HMAC-SHA-256 du PIN avec le secret > ⛔ le SECRET compte : le même PIN avec un autre secret donne un autre hachage (les dix mille valeurs ne se cassent pas sans lui) 0ms
+   ✓ hash — HMAC-SHA-256 du PIN avec le secret > le PIN compte : deux PIN différents, deux hachages différents 0ms
+   × verify — compare le PIN présenté au hachage stocké > le bon PIN contre son hachage : vrai 1ms
+     → expected false to be true // Object.is equality
+   ✓ verify — compare le PIN présenté au hachage stocké > ⛔ un MAUVAIS PIN contre le hachage : faux 0ms
+   ✓ verify — compare le PIN présenté au hachage stocké > ⛔ le hachage fait avec un AUTRE secret ne vérifie pas (un hachage volé à une autre installation ne sert à rien) 0ms
+   ✓ verify — compare le PIN présenté au hachage stocké > ⛔ un hachage MAL FORMÉ (vide, trop court, non hexadécimal, trop long) rend faux et ne lève PAS : la base peut contenir n'importe quoi, la connexion n'en fait pas une panne 1ms
+   ✓ même COÛT : un calcul de HMAC par chemin, mesuré par espion > ⛔ hacher : un calcul 1ms
+   ✓ même COÛT : un calcul de HMAC par chemin, mesuré par espion > ⛔ vérifier (vrai comme faux) : un calcul 0ms
+   ✓ même COÛT : un calcul de HMAC par chemin, mesuré par espion > ⛔ vérifier contre le FACTICE : un calcul, et RIEN n'est rendu (jamais un vrai) — c'est ce qui rend le refus d'un compte inconnu aussi coûteux que celui d'un mauvais PIN 0ms
+   ✓ generate — un PIN tiré par l'aléa du système, jamais trivial > ⛔ 300 PIN : tous de la bonne forme (quatre chiffres), aucun trivial, et pas toujours le même 2ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 10 passed (13)
+   Start at  00:20:37
+   Duration  1.35s (transform 225ms, setup 0ms, collect 765ms, tests 19ms, environment 0ms, prepare 185ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-pin-hasher.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-pin-hasher.spec.ts > hash — HMAC-SHA-256 du PIN avec le secret > ⛔ la valeur est celle de la NORME : le HMAC-SHA-256 hexadécimal du PIN, recalculé par `node:crypto`
+AssertionError: expected 'BfP3fdQHVCXrqcoxotNYGB5BPi4TMtqvJ1ZRl…' to be '05f3f77dd4075425eba9ca31a2d358181e413…' // Object.is equality
+
+Expected: "05f3f77dd4075425eba9ca31a2d358181e413e2e1332daaf2756519583e276e7"
+Received: "<jeton masqué #1 (43 car.)>="
+
+ ❯ src/staff/staff-pin-hasher.spec.ts:19:28
+     17|   it("⛔ la valeur est celle de la NORME : le HMAC-SHA-256 hexadécimal …
+     18|     const h = new StaffPinHasher(SECRET);
+     19|     expect(h.hash("4821")).toBe(hmac(SECRET, "4821"));
+       |                            ^
+     20|   });
+     21| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/staff/staff-pin-hasher.spec.ts > hash — HMAC-SHA-256 du PIN avec le secret > 64 caractères hexadécimaux en minuscules, qui ne contiennent pas le PIN en clair
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-pin-hasher.spec.ts:24:38
+     22|   it("64 caractères hexadécimaux en minuscules, qui ne contiennent pas…
+     23|     const h = new StaffPinHasher(SECRET).hash("4821");
+     24|     expect(/^[0-9a-f]{64}$/.test(h)).toBe(true);
+       |                                      ^
+     25|   });
+     26| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/staff/staff-pin-hasher.spec.ts > verify — compare le PIN présenté au hachage stocké > le bon PIN contre son hachage : vrai
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-pin-hasher.spec.ts:46:46
+     44| 
+     45|   it("le bon PIN contre son hachage : vrai", () => {
+     46|     expect(h.verify("4821", h.hash("4821"))).toBe(true);
+       |                                              ^
+     47|   });
+     48| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

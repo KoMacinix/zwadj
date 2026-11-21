@@ -1,0 +1,54 @@
+⛔ PIÈCE MASQUÉE — D356 r58 T-2-int-debit.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3826 octets, sha256 7e3be0d149a0cca99e1f893d63eafd2504b032ff2915147f0cd2904367c75749. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/throttle.int-spec.ts (11 tests | 1 failed) 5741ms
+   ✓ Rate limiting /auth (limites réelles) > resend-verification : 3 requêtes passent, la 4e est rejetée en 429 avec Retry-After 128ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  815ms
+   ✓ Rate limiting /auth (limites réelles) > refresh (D13) : 30 requêtes passent (401 sans cookie), la 31e est rejetée en 429 96ms
+   ✓ Rate limiting /auth (limites réelles) > logout (D13) : 10 requêtes passent (200 idempotent), la 11e est rejetée en 429 34ms
+   ✓ Rate limiting /auth (limites réelles) > forgot-password (Lot 4) : 3 demandes passent (202 constant), la 4e est rejetée en 429 18ms
+   ✓ Rate limiting /auth (limites réelles) > reset-password (Lot 4) : 10 tentatives passent (ici 400), la 11e est rejetée en 429 73ms
+   ✓ Rate limiting /auth (limites réelles) > google (Lot 8) : 5 tentatives passent (ici 401, table vide), la 6e est rejetée en 429 — budget register 22ms
+   ✓ Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register 22ms
+   ✓ Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion 34ms
+   ✓ Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée 183ms
+   × Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code 10ms
+     → expected 6 to be 60 // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  00:21:39
+   Duration  6.72s (transform 1.38s, setup 32ms, collect 193ms, tests 5.74s, environment 0ms, prepare 152ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/throttle.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code
+AssertionError: expected 6 to be 60 // Object.is equality
+
+- Expected
++ Received
+
+- 60
++ 6
+
+ ❯ test/int/throttle.int-spec.ts:151:44
+    149|       expect(AUTH_THROTTLE.staffActivate.limit).toBe(5);
+    150|       expect(AUTH_THROTTLE.staffLogin.limit).toBe(10);
+    151|       expect(AUTH_THROTTLE.staffPin.limit).toBe(60);
+       |                                            ^
+    152|     } finally {
+    153|       for (const [n, v] of sauvegarde) if (v !== undefined) process.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

@@ -1,0 +1,101 @@
+⛔ PIÈCE MASQUÉE — D356 r58 M-1-int-emission.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 8255 octets, sha256 b139c025c9ee38f83121a57cd5790d2409c7186adc9bc04e844a343a5289dc27. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin-issue.int-spec.ts (18 tests | 3 failed) 11115ms
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > 201 : un PIN de quatre chiffres non trivial dans la réponse, `Cache-Control: no-store`, rien d'autre ne change de forme (le membre est rendu comme avant)  482ms
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ le PIN est STOCKÉ en HMAC avec le secret (le haché que le hacheur de l'application calcule), jamais en clair : 64 hexadécimaux, la durée de 90 jours, le compteur à zéro, aucun verrou — et le PIN n'est NULLE PART dans les tables du personnel ni dans l'audit  323ms
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ l'appareil créé à l'activation n'est jamais valable au-delà du PIN : leurs échéances sont ÉGALES (même transaction, même `now()`)  320ms
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > l'état (K-17) ne rend JAMAIS le PIN : sa forme est celle d'avant (`enabled`, `member`, `knownMembers`)  327ms
+   × ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE connexion d'un membre (aucun PIN) rend un PIN, `no-store`, stocké en HMAC, valable 90 jours ; la SECONDE (PIN valable) rend `pin: null` et ne touche à aucune colonne 537ms
+     → la clé `pin` est PRÉSENTE et nulle : le PIN n'est jamais relisible: expected '9991' to be null
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN EXPIRÉ est remplacé par un PIN NEUF (l'ancien ne sert plus, l'échéance repart pour 90 jours) — et ce n'est PAS un déblocage : aucune ligne `staff.pin_unlock`  738ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN VERROUILLÉ est remplacé : compteur à zéro, verrou levé, et UNE ligne `staff.pin_unlock` pour ce membre — le déblocage par le mot de passe  730ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > le compte au PLAFOND sans verrou posé (un arrêt entre la 3ᵉ réservation et l'écriture du verrou) est aussi un PIN verrouillé : la connexion le remplace et écrit le déblocage  742ms
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un mot de passe FAUX ne rend AUCUN PIN et ne touche à aucune colonne du PIN  727ms
+   × ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `no-store` ; PIN ABSENT : un PIN neuf est rendu et installé, `no-store` 847ms
+     → expected '4160' to be null
+   ✓ ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > un changement REFUSÉ (mot de passe actuel faux) ne rend aucun PIN  746ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 — la réinitialisation efface les CINQ colonnes (haché, génération, échéance, compteur, verrou), révoque les appareils, termine les sessions : l'ancien PIN ne sert plus  736ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 sur un PIN VERROUILLÉ : le verrou est levé avec le PIN (le membre se reconnecte par son temporaire et reçoit un PIN neuf)  811ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-22 — la désactivation efface les CINQ colonnes du PIN  663ms
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > une désactivation RÉPÉTÉE (déjà désactivé) n'écrit rien : le PIN posé APRÈS la première désactivation n'est pas effacé par la seconde (aucune écriture)  674ms
+   × ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se connecte depuis un poste NEUF : l'appareil créé expire AVEC le PIN, pas 90 jours plus tard 717ms
+     → le PIN est valable : aucun PIN neuf: expected '7583' to be null
+   ✓ ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre SANS PIN valable : le PIN neuf et l'appareil neuf naissent dans la même transaction, avec la même échéance  439ms
+   ✓ ⛔ le plafond d'essais est celui de la CHECK de la base (l'autorité est la migration, D186) > `pin_failed_count = PIN_MAX_FAILURES` est ACCEPTÉ ; `PIN_MAX_FAILURES + 1` est REFUSÉ par la base (SQLSTATE 23514, `pro_staff_members_pin_failed_count_range`) 296ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 15 passed (18)
+   Start at  00:36:55
+   Duration  16.40s (transform 1.46s, setup 31ms, collect 4.44s, tests 11.12s, environment 0ms, prepare 164ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin-issue.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE connexion d'un membre (aucun PIN) rend un PIN, `no-store`, stocké en HMAC, valable 90 jours ; la SECONDE (PIN valable) rend `pin: null` et ne touche à aucune colonne
+AssertionError: la clé `pin` est PRÉSENTE et nulle : le PIN n'est jamais relisible: expected '9991' to be null
+
+- Expected: 
+null
+
++ Received: 
+"9991"
+
+ ❯ test/int/staff-pin-issue.int-spec.ts:127:122
+    125|     const seconde = await connecter(ctx, m.pro, new Jar(), "Karim", cr…
+    126|     expect(seconde.status).toBe(200);
+    127|     expect((seconde.body as { pin: unknown }).pin, "la clé `pin` est P…
+       |                                                                                                                          ^
+    128|     expect(Object.prototype.hasOwnProperty.call(seconde.body, "pin")).…
+    129|     expect(seconde.headers["cache-control"], "`no-store` même quand au…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `no-store` ; PIN ABSENT : un PIN neuf est rendu et installé, `no-store`
+AssertionError: expected '4160' to be null
+
+- Expected: 
+null
+
++ Received: 
+"4160"
+
+ ❯ test/int/staff-pin-issue.int-spec.ts:199:28
+    197|     const valable = await changerMotDePasse(ctx, m.pro, e.jar, e.passw…
+    198|     expect(valable.status, JSON.stringify(valable.body)).toBe(200);
+    199|     expect(pinDe(valable)).toBeNull();
+       |                            ^
+    200|     expect(Object.prototype.hasOwnProperty.call(valable.body, "pin")).…
+    201|     expect(valable.headers["cache-control"]).toBe("no-store");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se connecte depuis un poste NEUF : l'appareil créé expire AVEC le PIN, pas 90 jours plus tard
+AssertionError: le PIN est valable : aucun PIN neuf: expected '7583' to be null
+
+- Expected: 
+null
+
++ Received: 
+"7583"
+
+ ❯ test/int/staff-pin-issue.int-spec.ts:279:63
+    277|     const res = await connecter(ctx, m.pro, new Jar(), "Karim", e.pass…
+    278|     expect(res.status).toBe(200);
+    279|     expect(pinDe(res), "le PIN est valable : aucun PIN neuf").toBeNull…
+       |                                                               ^
+    280|     const appareils = await appareilsAvecEcheance(ctx.prisma, e.id);
+    281|     const echeanceDuPin = (await pinDuMembre(ctx.prisma, e.id)).pin_ex…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+

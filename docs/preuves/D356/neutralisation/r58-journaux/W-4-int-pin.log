@@ -1,0 +1,365 @@
+⛔ PIÈCE MASQUÉE — D356 r58 W-4-int-pin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 24392 octets, sha256 98b26c0a68d9bbffd74b040606a4ace1a77e2b9cb90dfb99631b067613b5a485. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin.int-spec.ts (23 tests | 17 failed) 17211ms
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de plus, `last_login_at` écrit, le compteur à zéro ; le cookie de session est posé (HttpOnly, Strict, chemin /api/v1, sans échéance) et AUCUN cookie d'appareil neuf 890ms
+     → {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T05:42:34.338Z"}: expected 401 to be 200 // Object.is equality
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : l'état (K-17) la rend, le membre y est 665ms
+     → expected 401 to be 200 // Object.is equality
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `device_id` est celui du cookie présenté, et son `last_used_at` est écrit 665ms
+     → `last_used_at` de l'appareil est écrit à la connexion: expected null not to be null
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un temporaire valable) SE CONNECTE par PIN : le corps dit `mustChangePassword: true` 460ms
+     → {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T05:42:36.138Z"}: expected 401 to be 200 // Object.is equality
+   × ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `STAFF_INVALID_CREDENTIALS`, aucun cookie posé, aucune session, le compteur INCHANGÉ 711ms
+     → expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+   ✓ ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > un PIN FAUX sans appareil, dix fois : le compteur ne bouge pas et le membre n'est JAMAIS verrouillé (le DoS par le seul Bearer n'existe pas)  710ms
+   × ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) l'appareil d'un AUTRE membre de la même salle ; (ii) l'appareil de CE membre sous le Bearer d'une AUTRE salle ; (iii) l'identifiant d'un membre d'une autre salle, sous le Bearer de la nôtre ; (iv) l'appareil d'une autre salle 1283ms
+     → (i): expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > un PIN faux compte UN essai : 401, le compteur monte à un, le verrou n'est pas posé 678ms
+     → expected +0 to be 1 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : 200 (« trois essais » ne devient pas deux), le compteur revient à ZÉRO, aucun verrou 657ms
+     → expected +0 to be 2 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise 658ms
+     → expected +0 to be 3 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ VERROUILLÉ, le BON PIN est refusé (401) et ne compte pas : le compteur reste à trois, aucune session 669ms
+     → expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le DÉBLOCAGE est le mot de passe : la connexion par nom de compte et mot de passe d'un membre verrouillé rend un PIN NEUF, remet le compteur à zéro et lève le verrou ; l'ANCIEN PIN est mort, le NEUF sert 749ms
+     → le PIN NEUF sert: expected 401 to be 200 // Object.is equality
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — un PIN EXPIRÉ : 401, aucun essai consommé ; le bon PIN d'un membre dont le PIN a expiré ne passe pas  646ms
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire dans UNE seconde SERT encore (D55 : la borne se dérive du cas réel) 646ms
+     → expected 401 to be 200 // Object.is equality
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil EXPIRÉ : 401, aucun essai consommé  658ms
+   ✓ ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil RÉVOQUÉ : 401, aucun essai consommé  681ms
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTURE est huit cookies d'appareil : le bon est le HUITIÈME → 200 ; le NEUVIÈME → 401 (au-delà de la borne, il n'est même pas lu) 676ms
+     → le bon cookie est le huitième : lu: expected 401 to be 200 // Object.is equality
+   × ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, verrouillé, expiré, appareil absent, membre désactivé, membre d'une autre salle, temporaire expiré, couche éteinte) : UN corps à l'octet, aucun cookie, UN calcul de HMAC chacune 1591ms
+     → membre inconnu : UN calcul de HMAC, ni plus ni moins (le coût ne dit pas la cause): expected +0 to be 1 // Object.is equality
+   × ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN juste n'en consomme aucun ; les trois essais sont comptés par la RÉSERVATION, avant la vérification (la vérité est la base) 647ms
+     → expected +0 to be 1 // Object.is equality
+   × la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, aucun essai consommé, aucune ligne d'audit d'échec 649ms
+     → {"memberId":"01a1fca0-f052-7d92-a4bd-4dfac93d4b20","pin":"12"}: expected 401 to be 400 // Object.is equality
+   ✓ la validation du corps ne consomme rien > sans Bearer : 401 `UNAUTHENTICATED` (la route est derrière `JwtAuthGuard`), jamais une réponse du personnel  652ms
+   ✓ ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > six états : la base réserve un essai SI ET SEULEMENT SI la règle pure dit VALID (c'est ce qui rend « UNE copie de la règle » vrai quand la décision atomique est en SQL)  681ms
+   × ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉRENT posé par `poserPin` n'est pas celui d'un autre : « 4821 » et « 9136 » ne se vérifient pas l'un pour l'autre (le haché est celui du PIN, avec le secret) 646ms
+     → expected 401 to be 200 // Object.is equality
+
+ Test Files  1 failed (1)
+      Tests  17 failed | 6 passed (23)
+   Start at  00:42:28
+   Duration  22.36s (transform 1.42s, setup 30ms, collect 4.34s, tests 17.21s, environment 0ms, prepare 151ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de plus, `last_login_at` écrit, le compteur à zéro ; le cookie de session est posé (HttpOnly, Strict, chemin /api/v1, sans échéance) et AUCUN cookie d'appareil neuf
+AssertionError: {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T05:42:34.338Z"}: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:73:50
+     71|     const avant = await w.lignesDeSession();
+     72|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+     73|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+     74|     expect(res.body).toEqual({ member: { id: w.e.id, accountName: "Kar…
+     75|     expect(Object.keys(res.body as object), "aucune clé `pin` dans la …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : l'état (K-17) la rend, le membre y est
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:94:24
+     92|     const poste = w.poste();
+     93|     const res = await connecterParPin(ctx, w.m.pro, poste, w.e.id, PIN…
+     94|     expect(res.status).toBe(200);
+       |                        ^
+     95|     const etat = await appeler(ctx, w.m.pro.token, poste, "get", "/api…
+     96|     expect(etat.status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `device_id` est celui du cookie présenté, et son `last_used_at` est écrit
+AssertionError: `last_used_at` de l'appareil est écrit à la connexion: expected null not to be null
+ ❯ test/int/staff-pin.int-spec.ts:108:100
+    106|       SELECT d.token_hash, d.last_used_at FROM pro_staff_sessions s JO…
+    107|     expect(derniere[0]!.token_hash).toBe(sha256(appareil.value));
+    108|     expect(derniere[0]!.last_used_at, "`last_used_at` de l'appareil es…
+       |                                                                                                    ^
+    109|   });
+    110| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un temporaire valable) SE CONNECTE par PIN : le corps dit `mustChangePassword: true`
+AssertionError: {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T05:42:36.138Z"}: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:120:50
+    118|     await poserPin(ctx, cree.id);
+    119|     const res = await connecterParPin(ctx, m.pro, posteDe(jar), cree.i…
+    120|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    121|     expect((res.body as { member: { mustChangePassword: boolean } }).m…
+    122|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `STAFF_INVALID_CREDENTIALS`, aucun cookie posé, aucune session, le compteur INCHANGÉ
+AssertionError: expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+
+Expected: "STAFF_INVALID_CREDENTIALS"
+Received: "STAFF_SESSION_REQUIRED"
+
+ ❯ test/int/staff-pin.int-spec.ts:131:25
+    129|     const res = await connecterParPin(ctx, w.m.pro, new Jar(), w.e.id,…
+    130|     expect(res.status).toBe(401);
+    131|     expect(codeDe(res)).toBe("STAFF_INVALID_CREDENTIALS");
+       |                         ^
+    132|     expect(lireCookies(res)).toEqual([]);
+    133|     expect(await w.lignesDeSession()).toBe(avant);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) l'appareil d'un AUTRE membre de la même salle ; (ii) l'appareil de CE membre sous le Bearer d'une AUTRE salle ; (iii) l'identifiant d'un membre d'une autre salle, sous le Bearer de la nôtre ; (iv) l'appareil d'une autre salle
+AssertionError: (i): expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+
+Expected: "STAFF_INVALID_CREDENTIALS"
+Received: "STAFF_SESSION_REQUIRED"
+
+ ❯ test/int/staff-pin.int-spec.ts:176:32
+    174|     for (const [nom, res] of [["(i)", i], ["(ii)", ii], ["(iii)", iii]…
+    175|       expect(res.status, `${nom} : ${JSON.stringify(res.body)}`).toBe(…
+    176|       expect(codeDe(res), nom).toBe("STAFF_INVALID_CREDENTIALS");
+       |                                ^
+    177|       expect(lireCookies(res), `${nom} : aucun cookie`).toEqual([]);
+    178|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > un PIN faux compte UN essai : 401, le compteur monte à un, le verrou n'est pas posé
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:190:34
+    188|     expect(res.status).toBe(401);
+    189|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    190|     expect(pin.pin_failed_count).toBe(1);
+       |                                  ^
+    191|     expect(pin.pin_locked_at).toBeNull();
+    192|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : 200 (« trois essais » ne devient pas deux), le compteur revient à ZÉRO, aucun verrou
+AssertionError: expected +0 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:198:70
+    196|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "04…
+    197|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "04…
+    198|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+       |                                                                      ^
+    199|     const bon = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    200|     expect(bon.status, JSON.stringify(bon.body)).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise
+AssertionError: expected +0 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:211:34
+    209|     for (const faux of ["0482", "0483", "0484"]) expect((await connect…
+    210|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    211|     expect(pin.pin_failed_count).toBe(3);
+       |                                  ^
+    212|     expect(pin.pin_locked_at, "le verrou est posé au troisième échec")…
+    213|     expect(await w.vivantes(), "aucune session vivante : le verrouilla…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ VERROUILLÉ, le BON PIN est refusé (401) et ne compte pas : le compteur reste à trois, aucune session
+AssertionError: expected 'STAFF_SESSION_REQUIRED' to be 'STAFF_INVALID_CREDENTIALS' // Object.is equality
+
+Expected: "STAFF_INVALID_CREDENTIALS"
+Received: "STAFF_SESSION_REQUIRED"
+
+ ❯ test/int/staff-pin.int-spec.ts:224:25
+    222|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    223|     expect(res.status).toBe(401);
+    224|     expect(codeDe(res)).toBe("STAFF_INVALID_CREDENTIALS");
+       |                         ^
+    225|     expect(await w.lignesDeSession()).toBe(avant);
+    226|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count, "…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le DÉBLOCAGE est le mot de passe : la connexion par nom de compte et mot de passe d'un membre verrouillé rend un PIN NEUF, remet le compteur à zéro et lève le verrou ; l'ANCIEN PIN est mort, le NEUF sert
+AssertionError: le PIN NEUF sert: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:239:103
+    237|     expect(pin.pin_failed_count).toBe(0);
+    238|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN…
+    239|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, neu…
+       |                                                                                                       ^
+    240|   });
+    241| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire dans UNE seconde SERT encore (D55 : la borne se dérive du cas réel)
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:255:90
+    253|     const w = await monde();
+    254|     await poserPin(ctx, w.e.id, PIN_DE_TEST, { valideSecondes: 60 });
+    255|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN…
+       |                                                                                          ^
+    256|   });
+    257| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTURE est huit cookies d'appareil : le bon est le HUITIÈME → 200 ; le NEUVIÈME → 401 (au-delà de la borne, il n'est même pas lu)
+AssertionError: le bon cookie est le huitième : lu: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:284:67
+    282|     };
+    283|     const huitieme = await connecterParPin(ctx, w.m.pro, poste(7), w.e…
+    284|     expect(huitieme.status, "le bon cookie est le huitième : lu").toBe…
+       |                                                                   ^
+    285|     // la session de la tentative précédente ne gêne pas : on rejoue s…
+    286|     const neuvieme = await connecterParPin(ctx, w.m.pro, poste(8), w.e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, verrouillé, expiré, appareil absent, membre désactivé, membre d'une autre salle, temporaire expiré, couche éteinte) : UN corps à l'octet, aucun cookie, UN calcul de HMAC chacune
+AssertionError: membre inconnu : UN calcul de HMAC, ni plus ni moins (le coût ne dit pas la cause): expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:331:144
+    329|       expect(res.status, `${nom} : ${JSON.stringify(res.body)}`).toBe(…
+    330|       expect(lireCookies(res), `${nom} : aucun cookie`).toEqual([]);
+    331|       expect(reel.mock.calls.length + factice.mock.calls.length, `${no…
+       |                                                                                                                                                ^
+    332|       rendus.add(corpsStable(res));
+    333|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN juste n'en consomme aucun ; les trois essais sont comptés par la RÉSERVATION, avant la vérification (la vérité est la base)
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:340:70
+    338|     const w = await monde();
+    339|     await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "0482");
+    340|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+       |                                                                      ^
+    341|     await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN_DE_TEST…
+    342|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, aucun essai consommé, aucune ligne d'audit d'échec
+AssertionError: {"memberId":"01a1fca0-f052-7d92-a4bd-4dfac93d4b20","pin":"12"}: expected 401 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:351:49
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉRENT posé par `poserPin` n'est pas celui d'un autre : « 4821 » et « 9136 » ne se vérifient pas l'un pour l'autre (le haché est celui du PIN, avec le secret)
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ test/int/staff-pin.int-spec.ts:396:96
+    394|     await poserPin(ctx, w.e.id, AUTRE_PIN_DE_TEST);
+    395|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN…
+    396|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, AUT…
+       |                                                                                                ^
+    397|   });
+    398| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/17]⎯
+

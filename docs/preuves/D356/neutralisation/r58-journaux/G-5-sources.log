@@ -1,0 +1,78 @@
+⛔ PIÈCE MASQUÉE — D356 r58 G-5-sources.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 10581 octets, sha256 28affe3bf2549d9d70fa0cc0e56fa87ab530679d64216e70c9c0dcf7724087e6. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-source-guards.spec.ts (35 tests | 1 failed) 47ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'horloge : `new Date()`, `Date.now()` et leurs voisins sont VUS ; `Date` comme type et `date.toISOString()` ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > les durées en dur : un littéral dans un intervalle SQL, un produit « 15 * 60_000 », une valeur dérivée (900) sont VUS ; un paramètre, une constante et un facteur de conversion ne le sont pas 2ms
+   ✓ calibration des détecteurs (deux bras chacun) > le journal : un appel à `logger.`, `console.` ou `new Logger(` est VU ; un identifiant qui contient seulement le mot ne l'est pas 1ms
+   ✓ calibration des détecteurs (deux bras chacun) > l'aléa : `Math.random()` (et ses variantes d'espacement) est VU ; `randomBytes`, `generate()` et `random` comme simple mot ne le sont pas 0ms
+   ✓ calibration des détecteurs (deux bras chacun) > le retrait des commentaires ne mange pas du code : une URL dans une chaîne reste, un commentaire de fin de ligne part 0ms
+   ✓ les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290) — au moins neuf sources hors specs et hors liste générée 2ms
+   ✓ les sources du personnel > ⛔ MP-41 — AUCUNE horloge côté API dans les sources du personnel : tout ce qui se décide dans le temps se décide dans la base (`now()`) 1ms
+   ✓ les sources du personnel > ⛔ MP-43 — AUCUNE durée en dur dans les sources du personnel : toutes viennent de `STAFF_LIMITS` (un levier ; changer 10 minutes en 11 se fait à UN endroit) 1ms
+   ✓ les sources du personnel > ⛔ MP-11 — le module du personnel NE JOURNALISE RIEN (ni `console`, ni `Logger`) : un journal qui ne reçoit aucun appel ne peut recevoir aucun secret (mot de passe, jeton, PIN) 1ms
+   ✓ les sources du personnel > ⛔ S-109 (D354) — AUCUN `Math.random` dans les sources du personnel : le mot de passe temporaire se tire d'un jeton cryptographique (`TokenService`) et l'aléa se PASSE en paramètre aux modules purs 0ms
+   ✓ les sources du personnel > ⛔ R-5 (D354) — le MAGASIN ne voit JAMAIS le mot de passe temporaire en clair : ni `staff-store.types.ts` ni `staff-store.prisma.ts` ne nomment `temporaryPassword` (il ne reçoit que le hachage) 0ms
+   ✓ les sources du personnel > ⛔ MP-33 — l'audit n'a QU'UN site d'écriture dans le module : `auditLog.create` apparaît UNE fois, dans l'adaptateur, et aucune autre source du module ne touche `audit_logs` 0ms
+   ✓ les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : un module sans dépendance se rejoue en millisecondes et se neutralise à chaque passage 1ms
+   ✓ le câblage > ⛔ S-98 — le garde du personnel est le QUATRIÈME garde global, après `ThrottlerGuard`, `JwtAuthGuard` et `RolesGuard` (l'ordre d'enregistrement EST l'ordre d'exécution, D6) 0ms
+   ✓ le câblage > l'application importe le module du personnel (leçon R1 : un contrôleur écrit mais non enregistré ne répond à rien, et les portes passent quand même) 0ms
+   ✓ le câblage > ⛔ MP-37 — `Secure` des cookies du personnel suit le levier EXISTANT `AUTH_COOKIE_SECURE`, lu par le contrôleur : ni littéral `secure = true|false`, ni second levier (aucun test d'intégration ne démarre l'application avec ce levier allumé) 1ms
+   ✓ le câblage > ⛔ R-7 (D341) / SIG-1 — le journal des requêtes masque le `Set-Cookie` de RÉPONSE, en plus de l'`Authorization` et du `Cookie` entrants (la garde qui lit la sortie réelle est `test/int/log-set-cookie.int-spec.ts`) 0ms
+   ✓ le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement CINQ handlers dans tout `apps/api/src` (GET /auth/me, activer, se connecter, lire l'état, et — rang 58 — `pin-login`, la cinquième) 17ms
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ R-2 — le NOM du secret n'est écrit que dans `config/env.ts` (le schéma) et `staff/staff.module.ts` (le fournisseur qui le lit) : aucun service, aucun contrôleur ne lit la variable 0ms
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-11 — `createHmac` n'est appelé que dans le hacheur du PIN : un HMAC calculé ailleurs serait un second endroit où se tromper de secret 1ms
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ la comparaison des hachés est À TEMPS CONSTANT : `timingSafeEqual` est employé, et aucun haché n'est comparé par `===` ou `==` (calibré : un échantillon fautif est VU, un sain ne l'est pas) 1ms
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-11 — le MAGASIN ne voit JAMAIS le PIN en clair : ni `staff-store.types.ts` ni `staff-store.prisma.ts` ne nomment `pin` comme mot entier (ils ne connaissent que `pinHash`, `newPinHash`, `expectedPinHash`, `pin_…`) — calibré sur deux bras 1ms
+   × rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ D200 — `apps/api/.env.example` porte le NOM du secret du PIN, SANS valeur : une ligne `STAFF_PIN_HMAC_SECRET=` et rien après le signe égal (un fichier d'exemple est suivi, poussé et recopié par chaque poste) 9ms
+     → la ligne du nom ne porte aucune valeur: expected false to be true // Object.is equality
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-10 — l'aléa du PIN vient du système (`randomInt`), jamais de `Math.random` : le hacheur tire par `node:crypto` 0ms
+   ✓ rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ R-5 — l'union fermée des lignes d'audit nomme les QUATRE actions du PIN, et rien de plus qu'elles : `staff.pin_login`, `staff.pin_login_failed`, `staff.pin_lock`, `staff.pin_unlock` (la réponse de Ko, 1 d : aucune action n'est ajoutée au-delà de la liste de DR5) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ — calibration (deux bras) > un contrôleur `@Roles(UserRole.PRO)` est VU, un `@Roles(UserRole.CLIENT)` ou un commentaire ne l'est pas ; une déclaration est lue, une déclaration COMMENTÉE ne l'est pas 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le détecteur a parcouru les contrôleurs de l'application (un zéro sur zéro fichier ne prouve rien, D290) : au moins 25, dont les seize de la table 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ TOUT contrôleur `@Roles(UserRole.PRO)` de l'application figure dans la table : un contrôleur Pro NEUF ne passe pas sans qu'on décide ce qu'il déclare 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ chaque contrôleur de la table déclare EXACTEMENT ce que la table écrit, UNE fois, et la valeur est une capacité de la TABLE DES CAPACITÉS (jamais une faute de frappe que le garde refuserait pour tout le monde) 1ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ aucun contrôleur HORS de la table ne déclare une capacité (une déclaration orpheline serait une décision que personne n'a écrite ici) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > `availability.controller.ts` porte DEUX classes : la déclaration `agenda` est sur celle de `pro/venues` (la publique, `@Public()`, n'a rien à déclarer) — elle précède immédiatement son `@Controller` 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ la route du MEMBRE sur sa propre session est une liste FERMÉE : `@StaffAnyMember()` n'apparaît que dans `staff-session.controller.ts`, sur exactement DEUX handlers (se déconnecter, changer son mot de passe) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > ⛔ K-20 et K-21 (R-5) — `Cache-Control: no-store` est posé sur EXACTEMENT deux handlers du contrôleur du personnel : ceux qui rendent le mot de passe temporaire 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > les deux routes à `:id` du contrôleur du personnel valident l'identifiant (`ParseUUIDPipe`) : un identifiant qui n'est pas un UUID est refusé en 400, jamais transmis au SQL (`::uuid` lèverait une 500) 0ms
+   ✓ les DÉCLARATIONS DE CAPACITÉ des contrôleurs (R-2, D354) — chaque contrôleur Pro dit ce qu'il déclare > le contrôleur du personnel est sous `@Roles(UserRole.PRO)` ET sous `@Controller("pro/staff/members")` : le chemin des quatre routes est celui du contrat (K-19 à K-22) 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 34 passed (35)
+   Start at  00:44:03
+   Duration  1.01s (transform 245ms, setup 0ms, collect 393ms, tests 47ms, environment 0ms, prepare 200ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-source-guards.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ D200 — `apps/api/.env.example` porte le NOM du secret du PIN, SANS valeur : une ligne `STAFF_PIN_HMAC_SECRET=` et rien après le signe égal (un fichier d'exemple est suivi, poussé et recopié par chaque poste)
+AssertionError: la ligne du nom ne porte aucune valeur: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/staff/staff-source-guards.spec.ts:241:77
+    239|     const exemple = readFileSync(join(process.cwd(), ".env.example"), …
+    240|     expect(exemple.split(/\r?\n/).filter((l) => l.startsWith("STAFF_PI…
+    241|     expect(nomSeul.test(exemple), "la ligne du nom ne porte aucune val…
+       |                                                                             ^
+    242|   });
+    243| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

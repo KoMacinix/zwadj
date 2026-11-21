@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — D356 r58 O-12-magasin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 436 octets, sha256 64eea1f061c7e3814dcdbc2ca8cf07041dabc5848e6c4635cd90a5b494c400d5. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 27659eb72649104fba390d5b633d23824fff3d68f52710c3db765f615b3bf720  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-store.prisma.spec.ts (98 tests) 58ms
+
+ Test Files  1 passed (1)
+      Tests  98 passed (98)
+   Start at  23:39:58
+   Duration  1.92s (transform 425ms, setup 0ms, collect 1.28s, tests 58ms, environment 0ms, prepare 158ms)
+
+

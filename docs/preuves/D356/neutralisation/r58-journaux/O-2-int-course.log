@@ -1,0 +1,54 @@
+⛔ PIÈCE MASQUÉE — D356 r58 O-2-int-course.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 5251 octets, sha256 a63e50f733a79406f08db631cf16322d4219e2fc46ed24853a56659c50ffca2e. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin-race.int-spec.ts (11 tests | 1 failed) 8488ms
+   ✓ ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro  900ms
+   ✓ ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées  794ms
+   ✓ ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro  781ms
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séquentiel : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le haché lu : REFUSÉE, aucune session de plus, aucune ligne `staff.pin_login`  767ms
+   ✓ ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le PIN est effacé par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)  698ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE  711ms
+   ✓ ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND, puis est REFUSÉE  703ms
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un PIN NEUF remplace le haché (le déblocage par mot de passe) pendant que l'ouverture attend : REFUSÉE — l'ancien PIN est mort, même vérifié avant  721ms
+   × ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3) 742ms
+     → verrouillé entre la vérification et l'ouverture : le bon PIN ne passe plus: expected true to be false // Object.is equality
+   ✓ ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le PIN EXPIRE pendant que l'ouverture attend : REFUSÉE (l'échéance est relue sous verrou, avec l'heure de la base)  711ms
+   ✓ ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ ENTRELACEMENT FORCÉ — l'appareil est révoqué par une transaction tenue hors du service ; l'ouverture (qui a déjà passé le CAS du membre) ATTEND sur l'appareil, puis est REFUSÉE ; RIEN n'est écrit : ni session, ni `last_login_at`, ni remise à zéro du compteur, ni ligne `staff.pin_login`  730ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  00:33:18
+   Duration  13.75s (transform 1.42s, setup 35ms, collect 4.33s, tests 8.49s, environment 0ms, prepare 160ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin-race.int-spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3)
+AssertionError: verrouillé entre la vérification et l'ouverture : le bon PIN ne passe plus: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/int/staff-pin-race.int-spec.ts:255:103
+    253|       "jeton-entrelace-verrou"
+    254|     );
+    255|     expect(resultat.ok, "verrouillé entre la vérification et l'ouvertu…
+       |                                                                                                       ^
+    256|     expect(await w.lignesDeSession()).toBe(avant);
+    257|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

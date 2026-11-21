@@ -1,0 +1,28 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-int-audit.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3742 octets, sha256 5ceb6d9c81593bc85059efdf766e72ccbbcff26021ae8afa54d7c2f404bb9d27. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-pin-audit.int-spec.ts (12 tests) 8493ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > la connexion par PIN : UNE ligne `staff.pin_login` — le compte commun et son rôle, le MEMBRE, l'entité est la SESSION, la charge utile ne porte que le membre, jamais `before`  978ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un échec : UNE ligne `staff.pin_login_failed` par essai compté, avec le compte d'échecs de la réservation (1, 2) — jamais le PIN tenté  696ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le TROISIÈME échec : la ligne d'échec ET UNE ligne `staff.pin_lock` (le compte et le nombre de sessions terminées — celui des sessions qui ont réellement pris la fin `PIN_LOCKED`)  710ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.pin_unlock` (« par le mot de passe »), le membre pour acteur ; ni un PIN absent, ni un PIN expiré n'en écrivent  751ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un refus AVANT la réservation (aucun appareil, membre inconnu, PIN verrouillé) n'écrit AUCUNE ligne du PIN : on ne journalise pas un essai qui n'a pas eu lieu  674ms
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : pour chacune des quatre actions, `after` ne porte QUE les clés listées, `before` est nul, l'acteur est renseigné (une clé de plus serait un secret en puissance)  809ms
+   ✓ ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lignes d'audit (toutes colonnes, JSON compris) d'un parcours COMPLET — activation, connexion, échecs, verrouillage, déblocage, PIN juste — ne portent ni le PIN posé, ni le PIN rendu, ni leurs hachés, ni le secret  801ms
+   ✓ ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ le JOURNAL RÉEL de l'application démarrée : ni le PIN posé, ni le PIN rendu par K-14 et K-15, ni leurs hachés, ni le secret — sur la connexion par PIN (juste et fausse), l'activation, le déblocage  758ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_login` refusée par la base : la connexion échoue (≥ 500), AUCUNE session n'est ouverte, `last_login_at` n'est pas écrit  701ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lock` refusée : le VERROU n'est pas posé et les sessions ne sont pas terminées (pas de verrou sans sa ligne) — et l'échec du même essai est annulé avec lui (pas de ligne sans action)  713ms
+   ✓ ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > ⛔ AU COMMIT — la session insérée refusée par un déclencheur DIFFÉRÉ : la ligne `staff.pin_login`, écrite dans la même transaction, DISPARAÎT avec elle (une ligne écrite hors transaction y survivrait)  673ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  00:17:27
+   Duration  13.54s (transform 1.34s, setup 30ms, collect 4.20s, tests 8.49s, environment 0ms, prepare 156ms)
+
+

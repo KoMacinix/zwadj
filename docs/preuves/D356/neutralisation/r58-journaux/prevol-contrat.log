@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-contrat.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 433 octets, sha256 65e30c48a3576f9d4f3162a9d2db1ae9e979b9540de5a06f8653d33de08ef370. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/common/staff-contract.spec.ts (39 tests) 22ms
+
+ Test Files  1 passed (1)
+      Tests  39 passed (39)
+   Start at  00:17:15
+   Duration  1.00s (transform 235ms, setup 0ms, collect 350ms, tests 22ms, environment 0ms, prepare 206ms)
+
+

@@ -1,0 +1,412 @@
+empreinte du harnais (sha256) : ef2aeea39d44a11c07b6d54862456b5984dd135dea62d1ebbf12493dd15a6dc9  (neutralize-r58.py)
+empreinte du harnais (sha256) : ef2aeea39d44a11c07b6d54862456b5984dd135dea62d1ebbf12493dd15a6dc9  (neutralize-r58.py)
+empreinte du harnais (sha256) : ef2aeea39d44a11c07b6d54862456b5984dd135dea62d1ebbf12493dd15a6dc9  (neutralize-r58.py)
+empreinte du harnais (sha256) : ef2aeea39d44a11c07b6d54862456b5984dd135dea62d1ebbf12493dd15a6dc9  (neutralize-r58.py)
+  calibration ✓ en-têtes REGROUPÉS puis AssertionError : MORD (attendu MORD)
+  calibration ✓ plantage (TypeError) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ erreur de REQUÊTE Testing Library (pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ rien d'exécuté sous filtre : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ autre version : VERSION (attendu VERSION)
+  calibration ✓ crochet en échec (bloc de FICHIER, 1 skipped) : NON-DÉMARRÉE (attendu NON-DÉMARRÉE)
+  calibration ✓ le titre attendu n'échoue pas (un autre, si) : SANS-TITRE (attendu SANS-TITRE)
+  calibration ✓ délai dépassé (jamais une morsure) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ plafond de console (Error de test-setup, pas une assertion) : PAS-ASSERTION (attendu PAS-ASSERTION)
+  calibration ✓ découverte : 3 échec(s) lu(s) (attendu 3)
+  calibration : 10 bras · 0 manqué(s) (attendu 0)
+cibles : 106 déclarées · 106 jouées · 0 non jouée(s) (sans --int) · 20 mesure(s) distincte(s) · 15 fichier(s) muté(s)
+  pré-vol client-api : code 0 · passés 12 · en échec 0
+  pré-vol contrat : code 0 · passés 39 · en échec 0
+  pré-vol env : code 0 · passés 30 · en échec 0
+  pré-vol etat : code 0 · passés 19 · en échec 0
+  pré-vol hacheur : code 0 · passés 13 · en échec 0
+  pré-vol int-audit : code 0 · passés 12 · en échec 0
+  pré-vol int-contrat : code 0 · passés 6 · en échec 0
+  pré-vol int-course : code 0 · passés 11 · en échec 0
+  pré-vol int-debit : code 0 · passés 11 · en échec 0
+  pré-vol int-emission : code 0 · passés 18 · en échec 0
+  pré-vol int-garde : code 0 · passés 18 · en échec 0
+  pré-vol int-pin : code 0 · passés 23 · en échec 0
+  pré-vol int-promote : code 0 · passés 4 · en échec 0
+  pré-vol magasin : code 0 · passés 98 · en échec 0
+  pré-vol magasin-devis : code 0 · passés 64 · en échec 0
+  pré-vol parite : code 0 · passés 5 · en échec 0
+  pré-vol pin : code 0 · passés 13 · en échec 0
+  pré-vol service : code 0 · passés 61 · en échec 0
+  pré-vol service-devis : code 0 · passés 49 · en échec 0
+  pré-vol sources : code 0 · passés 35 · en échec 0
+✓ P-1. ⛔ MP-10 — les zéros de tête sont rendus à DROITE au lieu de GAUCHE (« 0482 » devient « 4820 ») : le PIN tiré n'est plus celui que le générateur a tiré
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 11 · en échec 2 · AssertionError: expected '4820' to be '0482' // Object.is equality
+✓ P-2. ⛔ MP-10 — un PIN TRIVIAL n'est plus re-tiré (le générateur rend « 0000 », « 1234 »)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 10 · en échec 3 · AssertionError: expected '1111' to be '4821' // Object.is equality
+✓ P-3. ⛔ MP-10 — la boucle bornée ne LÈVE plus après `PIN_MAX_DRAWS` tirages triviaux : elle rend un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 12 · en échec 1 · AssertionError: expected [Function] to throw an error
+✓ P-4. ⛔ MP-10 — un tirage HORS de l'intervalle n'est plus refusé en haut (un PIN de cinq chiffres est rendu)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 12 · en échec 1 · AssertionError: tirage 10000: expected [Function] to throw an error
+✓ P-5. ⛔ MP-10 — la suite DESCENDANTE (« 4321 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 8 · en échec 5 · AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ Array(10) ] to deeply equal []
+✓ P-6. ⛔ MP-10 — la suite MONTANTE (« 1234 », « 7890 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 7 · en échec 6 · AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ Array(10) ] to deeply equal []
+✓ P-7. ⛔ MP-10 — la répétition de deux chiffres (« 1212 ») n'est plus un PIN trivial
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 8 · en échec 5 · AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ '0101', '0202', '0303', …(87) ] to deeply equal []
+✓ P-8. ⛔ MP-10 — les PAIRES (« 1122 », « 6677 ») ne sont plus des PIN triviaux
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [pin] code 1 · passés 8 · en échec 5 · AssertionError: PIN sur lesquels le module et l'oracle divergent: expected [ '0011', '0022', '0033', …(87) ] to deeply equal []
+✓ H-1. ⛔ MP-11 — le HMAC n'emploie plus le SECRET (une clé fixe) : tous les PIN se cassent hors ligne en une seconde, et le haché ne dépend plus du secret
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · passés 10 · en échec 3 · AssertionError: expected 'f96a267ca138e57324dd8cc40a369f08091d9…' to be '05f3f77dd4075425eba9ca31a2d358181e413…' // Object.is equality
+   [int-pin] code 1 · passés 14 · en échec 9 · AssertionError: {"statusCode":401,"message":{"code":"STAFF_INVALID_CREDENTIALS","message":"staff.errors.invalidCredentials"},"path":"/api/v1
+✓ H-2. ⛔ MP-11 — le haché stocké est rendu en base64 au lieu de l'hexadécimal (la base et le magasin ne parlent plus le même format)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · passés 10 · en échec 3 · AssertionError: expected 'BfP3fdQHVCXrqcoxotNYGB5BPi4TMtqvJ1ZRl…' to be '05f3f77dd4075425eba9ca31a2d358181e413…' // Object.is equality
+✓ H-3. ⛔ MP-11 — un haché MAL FORMÉ (longueur différente) est ACCEPTÉ au lieu d'être refusé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · passés 12 · en échec 1 · AssertionError: "": expected true to be false // Object.is equality
+✓ H-4. ⛔ MP-11 — la comparaison des hachés n'est plus À TEMPS CONSTANT (`===` sur des chaînes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: aucune comparaison naïve de hachés dans le hacheur: expected true to be false // Object.is equality
+✓ H-5. ⛔ R-3 — le chemin FACTICE ne calcule plus de HMAC (un refus de la connexion par PIN ne coûte plus la même chose qu'une vérification)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · passés 12 · en échec 1 · AssertionError: expected +0 to be 1 // Object.is equality
+✓ H-6. ⛔ MP-11 — la vérification compare le haché du PIN présenté à un AUTRE PIN (le PIN est retourné)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [hacheur] code 1 · passés 12 · en échec 1 · AssertionError: expected false to be true // Object.is equality
+✓ E-1. ⛔ R-4 — le compteur AU PLAFOND ne verrouille plus le PIN (seul le verrou posé compte)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 18 · en échec 1 · AssertionError: expected 'VALID' to be 'LOCKED' // Object.is equality
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: un PIN est rendu — {"member":{"id":"01a1fc73-f228-7e5e-80f1-51b90d439370","accountName":"Karim","role":"EMPLOYEE","mustChang
+✓ E-2. ⛔ R-4 — l'échéance À L'INSTANT n'expire plus le PIN (`<=` devient `<`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 17 · en échec 2 · AssertionError: expected 'VALID' to be 'EXPIRED' // Object.is equality
+✓ E-3. ⛔ R-4 — l'ABSENCE ne l'emporte plus sur le verrou (un PIN absent et verrouillé se lit VERROUILLÉ)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 18 · en échec 1 · AssertionError: expected 'LOCKED' to be 'ABSENT' // Object.is equality
+✓ E-4. ⛔ R-4 — l'ÉCHÉANCE l'emporte sur le verrou : un PIN verrouillé ET expiré se lit EXPIRÉ (le déblocage n'écrit plus sa ligne `staff.pin_unlock`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [etat] code 1 · passés 18 · en échec 1 · AssertionError: expected 'EXPIRED' to be 'LOCKED' // Object.is equality
+✓ V-1. ⛔ MP-12 — le secret n'a plus de LONGUEUR minimale (un secret de trente et un caractères, ou d'un seul, démarre l'API)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · passés 28 · en échec 2 · AssertionError: expected [Function] to throw an error
+✓ V-2. ⛔ MP-12 — le secret reçoit une valeur PAR DÉFAUT (l'API démarre sans lui, avec un secret connu de tous)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · passés 29 · en échec 1 · AssertionError: expected [Function] to throw an error
+✓ V-3. ⛔ MP-12 — la production n'EXIGE plus la variable explicitement (la liste `PROD_REQUIRED_EXPLICIT` ne la nomme plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [env] code 1 · passés 29 · en échec 1 · AssertionError: expected [Function] to throw error matching /EXPLICITEMENT[\s\S]*STAFF_PIN_HMAC_SE…/ but got 'Variables d\'environnement inv
+✓ T-1. ⛔ D128 — la connexion par PIN lit un SECOND levier (`THROTTLE_STAFF_LOGIN_LIMIT` au lieu de `THROTTLE_STAFF_PIN_LIMIT`)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · passés 10 · en échec 1 · AssertionError: requête 11: expected 429 to be 401 // Object.is equality
+✓ T-2. ⛔ MP-36 — la limite par IP de la connexion par PIN tombe à SIX (un foyer ou un CGNAT est bloqué avant que le compteur par membre ne protège)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-debit] code 1 · passés 10 · en échec 1 · AssertionError: expected 6 to be 60 // Object.is equality
+✓ C-1. ⛔ K-23 — le schéma n'impose plus la LONGUEUR du PIN (un PIN de cinq chiffres ou plus est accepté par le contrat)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 36 · en échec 3 · AssertionError: connexion par PIN, PIN trop court: expected true to be false // Object.is equality
+✓ C-2. ⛔ K-23 — le schéma accepte une CLÉ INCONNUE (le corps n'est plus fermé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 37 · en échec 2 · AssertionError: connexion par PIN, clé inconnue: expected true to be false // Object.is equality
+✓ C-3. ⛔ K-23 — l'identifiant du membre n'est plus vérifié (un texte quelconque est accepté)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 37 · en échec 2 · AssertionError: connexion par PIN, membre qui n'est pas un identifiant: expected true to be false // Object.is equality
+✓ C-4. ⛔ MP-15 — le plafond d'essais passe à QUATRE (la CHECK de la base, jamais le levier, dit TROIS : l'autorité est la migration, D186)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-pin] code 1 · passés 21 · en échec 2 · AssertionError: le verrou est posé au troisième échec: expected null not to be null
+✓ C-5. ⛔ MP-39 — la clé de message `pinInvalid` de l'arabe change de nom : la PARITÉ FR = AR est rompue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [contrat] code 1 · passés 36 · en échec 3 · AssertionError: staff.validation.pinInvalid (ar): expected undefined to be truthy
+   [parite] code 1 · passés 4 · en échec 1 · AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+✓ K-1. ⛔ D182 — le client d'API appelle un autre chemin que la route K-23
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 11 · en échec 1 · AssertionError: expected [ { path: '/pro/staff/pin', …(1) } ] to deeply equal [ { …(2) } ]
+   [int-contrat] code 1 · passés 5 · en échec 1 · AssertionError: Le client appelle des routes que l'API n'expose pas :
+✓ K-2. ⛔ K-23 — le client d'API envoie la connexion par PIN en `PUT`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [client-api] code 1 · passés 11 · en échec 1 · AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+✓ S-1. ⛔ R-3 — la couche ÉTEINTE refuse SANS le calcul de HMAC factice (le coût diffère de celui d'un PIN faux)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: couche éteinte : un calcul de HMAC, ni plus ni moins: expected +0 to be 1 // Object.is equality
+✓ S-2. ⛔ MP-2 — SANS cookie d'appareil, la réservation est DEMANDÉE quand même (un porteur du seul Bearer consomme les essais d'un membre)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: un refus était attendu
+✓ S-3. ⛔ R-3 — un membre DÉSACTIVÉ ou au temporaire expiré n'est plus refusé par `etatDuCompte` (tout membre existant passe)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: un refus était attendu
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: temporaire expiré : {"member":{"id":"01a1fc75-e26c-7c2b-99b7-bc8e5d5c7c26","accountName":"Samir","role":"EMPLOYEE","mustChan
+✓ S-4. ⛔ R-3 — un essai NON réservé refuse SANS le calcul de HMAC factice
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 59 · en échec 2 · AssertionError: expected "spy" to be called 1 times, but got 0 times
+✓ S-5. ⛔ MP-1 — le service vérifie le PIN contre un autre argument (le PIN et le haché lu s'échangent)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ '4821', 'PIN-HASH-ACTUEL' ]
+✓ S-6. ⛔ MP-15 — un PIN FAUX n'est plus CONSIGNÉ (ni compte d'échecs, ni verrou au troisième)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(3) } ]
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: le verrou est posé au troisième échec: expected null not to be null
+✓ S-7. ⛔ MP-15 — l'échec consigné porte le PIN TENTÉ au lieu du haché lu (le verrou se poserait sur la saisie, et le journal verrait le PIN)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(3) } ]
+✓ S-8. ⛔ R-3 — l'ouverture n'est plus CONDITIONNÉE au haché lu par la réservation (le PIN tenté la remplace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(5) } ]
+✓ S-9. ⛔ MP-2 — l'ouverture reçoit les cookies d'appareil EN CLAIR (jamais leurs empreintes)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called with arguments: [ { actor: { …(2) }, …(5) } ]
+✓ S-10. ⛔ R-3 — un refus d'ouverture est CONSIGNÉ comme un échec de PIN (une ligne d'échec pour un PIN qui était JUSTE)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: un refus d'ouverture n'est pas un échec de PIN : rien n'est consigné: expected "spy" to not be called at all, but actually b
+✓ S-11. ⛔ K-23 — la réponse de la connexion par PIN pose un cookie d'APPAREIL (l'appareil est celui du poste : la route n'en pose jamais)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: aucun cookie d'appareil neuf : le poste est déjà reconnu: expected { suffix: 'x', …(1) } to be undefined
+✓ S-12. ⛔ K-14 — l'activation rend le PIN d'un AUTRE tirage que celui dont le haché est stocké
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 2 times
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected '379194684075e71610792415bd48dd4e29ed5…' to be '787bb05b319f9aefc19ac764984b9b6f424b2…' // Object.is equality
+✓ S-13. ⛔ K-15 — la connexion rend le PIN même quand le magasin n'en a PAS installé de neuf (un PIN montré qui n'est pas celui qui est stocké)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [service] code 1 · passés 59 · en échec 2 · AssertionError: expected { member: { id: 'm1', …(3) }, …(1) } to deeply equal { member: { id: 'm1', …(3) }, …(1) }
+   [int-emission] code 1 · passés 16 · en échec 2 · AssertionError: la clé `pin` est PRÉSENTE et nulle : le PIN n'est jamais relisible: expected '5189' to be null
+✓ S-14. ⛔ K-15 — la connexion installe le haché d'un AUTRE tirage que le PIN qu'elle rend
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 60 · en échec 1 · AssertionError: expected "spy" to be called 1 times, but got 2 times
+   [int-emission] code 1 · passés 16 · en échec 2 · AssertionError: expected 'a88df2f78b64de52d1c2ffcba0fcfabbb24c4…' to be '01db99ed3e366751cf0dd039561760d80b413…' // Object.is equality
+✓ S-15. ⛔ K-18 — le changement de mot de passe rend le PIN même quand le magasin n'en a PAS installé de neuf
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service] code 1 · passés 59 · en échec 2 · AssertionError: expected { member: { id: 'm1', …(3) }, …(1) } to deeply equal { member: { id: 'm1', …(3) }, …(1) }
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected '3301' to be null
+✓ S-16. ⛔ K-18 — le changement de mot de passe installe le haché d'un AUTRE tirage que le PIN qu'il rend
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected '171ef92230e0a6340c3df29abd5c59726d04c…' to be 'cbd7704f8869e5bbe2975c4f86fc75cf58c71…' // Object.is equality
+✓ R-1. ⛔ MP-1 — la réservation ne verrouille plus la ligne (`FOR UPDATE OF m` retiré) : vingt requêtes parallèles comptent plus de trois essais
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-course] code 1 · passés 9 · en échec 2 · AssertionError: statuts : 401,401,401,401,401,401,401,401,401,401,401,401,500,500,500,401,401,401,401,401: expected 17 to be 20 // Object.is
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'FOR UPDATE OF m'
+✓ R-2. ⛔ MP-1 — le compteur ne MONTE plus à la réservation (un essai n'est jamais consommé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'UPDATE pro_staff_members m SET pin_fa…'
+   [int-pin] code 1 · passés 19 · en échec 4 · AssertionError: expected +0 to be 1 // Object.is equality
+   [int-course] code 1 · passés 8 · en échec 3 · AssertionError: la réservation a compté l'essai: expected +0 to be 1 // Object.is equality
+✓ R-3. ⛔ MP-1 — le PLAFOND n'est plus conditionné (la réservation continue après trois essais)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to match /m\.pin_failed_count < \?::int/
+   [int-course] code 1 · passés 9 · en échec 2 · AssertionError: statuts : 401,500,500,500,500,500,500,500,500,500,401,401,500,500,500,500,500,500,500,500: expected 3 to be 20 // Object.is 
+✓ R-4. ⛔ MP-15 — un PIN VERROUILLÉ se réserve encore (`pin_locked_at` n'est plus exigé nul)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: m.pin_locked_at IS NULL: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'm.pin_locked_at IS NULL'
+✓ R-5. ⛔ MP-2 — la réservation ne vérifie plus qu'un APPAREIL du membre est présenté (un porteur du seul Bearer consomme les essais)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'EXISTS (SELECT 1 FROM pro_staff_devic…'
+   [int-pin] code 1 · passés 19 · en échec 4 · AssertionError: aucun essai consommé nulle part : les quatre refus sont AVANT la réservation: expected { karim: 2, lina: +0, brahim: +0 } to
+✓ R-6. ⛔ MP-2 — un appareil RÉVOQUÉ suffit à réserver
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'd.revoked_at IS NULL'
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ R-7. ⛔ MP-2 — un appareil EXPIRÉ suffit à réserver
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'd.expires_at > now()'
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ R-8. ⛔ MP-26 — la réservation ne vérifie plus la SALLE du membre (un membre d'une autre salle se réserve)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: m.pro_profile_id = ?::uuid: expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'm.pro_profile_id = ?::uuid'
+✓ R-9. ⛔ R-3 — la réservation n'exige plus un membre ACTIF (un désactivé se réserve)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: m.status = 'ACTIVE': expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'm.status = \'ACTIVE\''
+✓ R-10. ⛔ MP-3 — la réservation n'exige plus un PIN NON EXPIRÉ (un PIN expiré se réserve)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: m.pin_expires_at > now(): expected 'WITH cur AS ( SELECT m.id FROM pro_st…' to contain 'm.pin_expires_at > now()'
+   [int-pin] code 1 · passés 21 · en échec 2 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ R-11. ⛔ MP-1 — une réservation SANS ligne est rendue « réservée » (le service vérifie un haché vide)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected { reserved: true, pinHash: '', …(1) } to deeply equal { reserved: false }
+✓ F-1. ⛔ MP-15 — le verrou ne se pose plus AU plafond (il faudrait un échec de plus)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected { locked: false, sessionsEnded: +0 } to deeply equal { locked: true, sessionsEnded: 2 }
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: le verrou est posé au troisième échec: expected null not to be null
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected [] to have a length of 1 but got +0
+✓ F-2. ⛔ R-3 — le verrou se pose sur N'IMPORTE QUEL PIN (le haché lu n'est plus conditionné : un PIN neuf posé entre-temps serait verrouillé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET pin_lock…' to contain 'WHERE id = ?::uuid AND pin_hash = ? A…'
+✓ F-3. ⛔ MP-15 — le verrou n'est plus conditionné à « pas déjà verrouillé » (un verrou déjà posé est réécrit, et sa ligne aussi)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET pin_lock…' to contain 'WHERE id = ?::uuid AND pin_hash = ? A…'
+✓ F-4. ⛔ MP-15 — les sessions du membre prennent fin avec un AUTRE motif (`PASSWORD_CHANGED` au lieu de `PIN_LOCKED`)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'SET ended_at = now(), end_reason = \'…'
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: la fin est PIN_LOCKED: expected [ 'PASSWORD_CHANGED' ] to include 'PIN_LOCKED'
+   [int-audit] code 1 · passés 11 · en échec 1 · AssertionError: (précondition) au moins une session terminée par le verrou: expected 0 to be greater than or equal to 1
+✓ F-5. ⛔ MP-15 — le verrouillage ne met plus fin aux SESSIONS du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_sessions SET ended_a…' to contain 'WHERE member_id = ?::uuid AND ended_a…'
+   [int-pin] code 1 · passés 22 · en échec 1 · AssertionError: aucune session vivante : le verrouillage les a toutes terminées: expected 1 to be +0 // Object.is equality
+   [int-audit] code 1 · passés 11 · en échec 1 · AssertionError: (précondition) au moins une session terminée par le verrou: expected 0 to be greater than or equal to 1
+✓ F-6. ⛔ MP-33 — la ligne d'ÉCHEC n'est plus écrite (un PIN faux n'a pas de trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 95 · en échec 3 · AssertionError: expected [] to deeply equal [ 'staff.pin_login_failed' ]
+   [int-audit] code 1 · passés 8 · en échec 4 · AssertionError: expected [] to deeply equal [ { failedCount: 1 }, …(1) ]
+✓ F-7. ⛔ MP-11 — la ligne d'échec porte le HACHÉ du PIN (la charge utile n'est plus fermée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected [ { …(2) }, { …(2) } ] to deeply equal [ { failedCount: 1 }, …(1) ]
+✓ F-8. ⛔ MP-33 — la ligne de VERROUILLAGE n'est plus écrite (un verrou sans sa trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected [ 'staff.pin_login_failed' ] to deeply equal [ 'staff.pin_login_failed', …(1) ]
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected [] to have a length of 1 but got +0
+✓ F-9. ⛔ MP-33 — la ligne de verrouillage dit zéro session terminée (le compte réel n'est plus écrit)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected { …(7) } to match object { …(4) }
+   [int-audit] code 1 · passés 11 · en échec 1 · AssertionError: expected { failedCount: 3, sessionsEnded: +0 } to deeply equal { failedCount: 3, sessionsEnded: 1 }
+✓ O-1. ⛔ R-3 — « PIN ‖ réinitialisation / déblocage » : le CAS d'ouverture ne compare plus le haché de PIN lu à la réservation
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_hash = ?: expected 'UPDATE pro_staff_members SET last_log…' to contain 'pin_hash = ?'
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ O-2. ⛔ R-3 — « PIN ‖ verrouillage par un autre échec » : le CAS d'ouverture n'exige plus `pin_locked_at` nul
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_locked_at IS NULL: expected 'UPDATE pro_staff_members SET last_log…' to contain 'pin_locked_at IS NULL'
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: verrouillé entre la vérification et l'ouverture : le bon PIN ne passe plus: expected true to be false // Object.is equality
+✓ O-3. ⛔ R-3 — « PIN ‖ expiration » : le CAS d'ouverture n'exige plus un PIN non expiré (heure de la base)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_expires_at > now(): expected 'UPDATE pro_staff_members SET last_log…' to contain 'pin_expires_at > now()'
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ O-4. ⛔ R-3 — « PIN ‖ désactivation » : le CAS d'ouverture ne conditionne plus le STATUT (un membre désactivé entre la réservation et l'ouverture ouvre une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: status = 'ACTIVE': expected 'UPDATE pro_staff_members SET last_log…' to contain 'status = \'ACTIVE\''
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: expected true to be false // Object.is equality
+✓ O-5. ⛔ MP-26 — le CAS d'ouverture ne conditionne plus la SALLE du membre
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pro_profile_id = ?::uuid: expected 'UPDATE pro_staff_members SET last_log…' to contain 'pro_profile_id = ?::uuid'
+✓ O-6. ⛔ MP-1 — un PIN JUSTE ne remet plus le compteur à zéro
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'UPDATE pro_staff_members SET last_log…' to match /^UPDATE pro_staff_members SET last_lo…/
+   [int-pin] code 1 · passés 19 · en échec 4 · AssertionError: expected 1 to be +0 // Object.is equality
+✓ O-7. ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie sans `revoked_at IS NULL` (un appareil révoqué ouvre une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT d.id::text AS id FROM pro_staf…' to contain 'd.revoked_at IS NULL'
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: l'appareil a été révoqué entre la vérification et l'ouverture : refusée: expected true to be false // Object.is equality
+✓ O-8. ⛔ R-3 — l'appareil se re-vérifie sans son ÉCHÉANCE (un appareil expiré ouvre une session)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT d.id::text AS id FROM pro_staf…' to contain 'd.expires_at > now()'
+✓ O-9. ⛔ R-3 — « PIN ‖ appareil révoqué » : la lecture de l'appareil ne le VERROUILLE plus (`FOR UPDATE` retiré) : une révocation en cours n'est plus attendue
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'SELECT d.id::text AS id FROM pro_staf…' to match /FOR UPDATE$/
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: l'appareil a été révoqué entre la vérification et l'ouverture : refusée: expected true to be false // Object.is equality
+✓ O-10. ⛔ R-3 — le refus de l'appareil n'ANNULE plus la transaction (le CAS déjà écrit survit : `last_login_at` et le compteur remis à zéro)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: la transaction est annulée, pas validée: expected [ 'validée' ] to deeply equal [ 'annulée' ]
+   [int-course] code 1 · passés 10 · en échec 1 · AssertionError: la transaction est ANNULÉE : `last_login_at` n'est pas écrit: expected 1795237713989 to be 1795237713757 // Object.is equali
+✓ O-11. ⛔ MP-33 — la ligne `staff.pin_login` n'est plus écrite (une connexion sans sa trace)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected [] to have a length of 1 but got +0
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected [] to have a length of 1 but got +0
+✓ O-12. ⛔ MP-11 — la ligne `staff.pin_login` porte le HACHÉ du PIN (la charge utile n'est plus fermée)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected { …(2) } to deeply equal { Object (memberId) }
+✓ O-13. ⛔ K-23 — la session ouverte par PIN est rattachée à un AUTRE appareil que celui retrouvé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected [ …(4) ] to deeply equal [ …(4) ]
+   [int-pin] code 1 · passés 13 · en échec 10 · AssertionError: {"statusCode":500,"message":"Internal server error","path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T05:09:20.93
+✓ M-1. ⛔ R-4 — un PIN VALABLE est REMPLACÉ à chaque connexion par mot de passe (l'émission ne tient plus compte de l'état)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-emission] code 1 · passés 15 · en échec 3 · AssertionError: la clé `pin` est PRÉSENTE et nulle : le PIN n'est jamais relisible: expected '2554' to be null
+✓ M-2. ⛔ R-4 — l'émission acceptée avec un compte de ZÉRO ligne (un PIN rendu qui n'a jamais été installé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected [Function] to throw error matching /compte = 1 exigé/ but got 'réponse non prévue pour : INSERT INTO…'
+✓ M-3. ⛔ R-4 — la ligne `staff.pin_unlock` s'écrit pour un PIN EXPIRÉ au lieu d'un PIN verrouillé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 93 · en échec 5 · AssertionError: expected [ 'staff.pin_unlock', 'staff.login' ] to deeply equal [ 'staff.login' ]
+   [int-emission] code 1 · passés 15 · en échec 3 · AssertionError: un PIN expiré n'est pas un PIN verrouillé : pas de ligne de déblocage: expected 1 to be +0 // Object.is equality
+   [int-audit] code 1 · passés 10 · en échec 2 · AssertionError: expected [] to have a length of 1 but got +0
+✓ M-4. ⛔ MP-11 — la ligne `staff.pin_unlock` porte le HACHÉ du PIN candidat
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 95 · en échec 3 · AssertionError: expected { via: 'password', …(1) } to deeply equal { via: 'password' }
+   [int-audit] code 1 · passés 9 · en échec 3 · AssertionError: expected { via: 'password', …(1) } to deeply equal { via: 'password' }
+✓ M-5. ⛔ R-4 — l'émission ne LÈVE plus le verrou (`pin_locked_at` reste posé : un PIN neuf déjà verrouillé)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected 'UPDATE pro_staff_members SET pin_hash…' to contain 'pin_failed_count = 0, pin_locked_at =…'
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected 2026-11-21T05:11:10.334Z to be null
+✓ M-6. ⛔ R-4 — l'émission ne remet plus le COMPTEUR à zéro (un PIN neuf démarre aux essais de l'ancien)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 96 · en échec 2 · AssertionError: expected 'UPDATE pro_staff_members SET pin_hash…' to contain 'pin_failed_count = 0, pin_locked_at =…'
+   [int-emission] code 1 · passés 16 · en échec 2 · AssertionError: expected 3 to be +0 // Object.is equality
+✓ M-7. ⛔ MP-27 — l'échéance d'un appareil NEUF ne dépasse plus à elle seule celle du PIN (`LEAST` retiré)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: expected 'INSERT INTO pro_staff_devices (member…' to contain 'LEAST(now() + make_interval(days => ?…'
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: l'appareil neuf expire AU PLUS TARD avec le PIN: expected 1803013921743 to be less than or equal to 1796101921671
+✓ M-8. ⛔ K-18 — le changement de mot de passe n'ÉMET plus de PIN (la règle d'émission n'est plus la même que celle de la connexion)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 94 · en échec 4 · AssertionError: expected { ok: true, member: { …(4) }, …(2) } to deeply equal { ok: true, member: { …(4) }, …(2) }
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: un PIN est rendu — {"member":{"id":"01a1fc85-0600-7230-a361-0217d46370bd","accountName":"Karim","role":"EMPLOYEE","mustChang
+✗ M-9. ⛔ K-15 — la connexion par mot de passe n'ÉMET plus de PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · PAS-ASSERTION — première ligne du bloc : TypeError: Cannot read properties of undefined (reading 'id')
+   [int-emission] code 1 · MORD — passés 12 · en échec 6 · AssertionError: un PIN est rendu — {"member":{"id":"01a1fc85-4f6c-7a7b-824c-1f7805cb596c","accountName":"Karim","role":"EMPLOYEE","mustChang
+✓ M-10. ⛔ K-18 — le verrou du membre (`FOR UPDATE`) n'est plus pris avant l'émission du PIN (le changement lit un état qui peut changer)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 95 · en échec 3 · AssertionError: expected 'SELECT (pin_hash IS NOT NULL) AS "has…' to match /FOR UPDATE/
+✓ X-1. ⛔ K-14 — l'activation installe le haché du MOT DE PASSE dans la colonne du PIN (le PIN rendu n'est plus celui qui est stocké)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: le profil, le nom, sa clé, le hachage du mot de passe, SA durée, le haché du PIN, SA durée: expected [ …(7) ] to deeply equa
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected '$argon2id$v=19$m=65536,t=3,p=4$CxGfPU…' to be '1b563261a1643271f4695b185cfa9cab6051b…' // Object.is equality
+✓ Z-1. ⛔ DR5, S-105 — la réinitialisation du mot de passe n'EFFACE plus le PIN (l'ancien PIN reste valable)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_hash = NULL: expected 'UPDATE pro_staff_members SET password…' to contain 'pin_hash = NULL'
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+✓ Z-2. ⛔ DR5 — la désactivation n'EFFACE plus le PIN (un membre éteint garde un haché de PIN)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_hash = NULL: expected 'UPDATE pro_staff_members SET status =…' to contain 'pin_hash = NULL'
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+✓ Z-3. ⛔ DR5 — la réinitialisation efface le PIN mais LAISSE le verrou posé
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin] code 1 · passés 97 · en échec 1 · AssertionError: pin_locked_at = NULL: expected 'UPDATE pro_staff_members SET password…' to contain 'pin_locked_at = NULL'
+✓ W-1. ⛔ K-14 — la réponse de l'activation (qui porte le PIN) n'est plus `no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: le PIN se rend UNE fois, jamais mis en cache: expected 'max-age=60' to be 'no-store' // Object.is equality
+✓ W-2. ⛔ K-15 — la réponse de la connexion par mot de passe (qui peut porter un PIN) n'est plus `no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected 'max-age=60' to be 'no-store' // Object.is equality
+✓ W-3. ⛔ K-18 — la réponse du changement de mot de passe (qui peut porter un PIN) n'est plus `no-store`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-emission] code 1 · passés 17 · en échec 1 · AssertionError: expected 'max-age=60' to be 'no-store' // Object.is equality
+✓ W-4. ⛔ K-23 — la route de la connexion par PIN n'est plus EXEMPTÉE du garde (elle exigerait une session de personnel pour en ouvrir une)
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-garde] code 1 · passés 17 · en échec 1 · AssertionError: expected [ 'GET /api/v1/auth/me', …(3) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+   [int-pin] code 1 · passés 6 · en échec 17 · AssertionError: {"statusCode":401,"message":{"code":"STAFF_SESSION_REQUIRED","message":"staff.errors.sessionRequired"},"path":"/api/v1/pro/s
+✓ W-5. ⛔ MP-36 — la route de la connexion par PIN n'a plus sa limite de débit propre (le limiteur par défaut la couvre)
+   ancre 1→0 · marqueur 1→2 · genre substitution
+   [int-debit] code 1 · passés 10 · en échec 1 · AssertionError: requête 11: expected 429 to be 401 // Object.is equality
+✓ Q-1. ⛔ R-6 — le magasin des devis n'écrit plus `actor_member_id` dans la ligne `quote.promote`
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [magasin-devis] code 1 · passés 62 · en échec 2 · AssertionError: expected { …(8) } to deeply equal { …(8) }
+   [int-promote] code 1 · passés 2 · en échec 2 · AssertionError: expected { …(5) } to deeply equal { …(5) }
+✓ Q-2. ⛔ R-6 — le service des devis ne transmet plus le MEMBRE au magasin
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [service-devis] code 1 · passés 48 · en échec 1 · AssertionError: R-6 (D356) : le MEMBRE du garde est passé au port, qui l'écrit dans la ligne d'audit: expected null to be '018f0000-0000-700
+   [int-promote] code 1 · passés 2 · en échec 2 · AssertionError: expected { …(5) } to deeply equal { …(5) }
+✓ Q-3. ⛔ R-6 — le contrôleur des devis ne transmet plus le membre du garde au service
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [int-promote] code 1 · passés 2 · en échec 2 · AssertionError: expected { …(5) } to deeply equal { …(5) }
+✓ G-1. ⛔ R-2 — un SERVICE lit le NOM du secret (la variable n'est plus lue que par le schéma et le fournisseur)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected [ 'config/env.ts', …(2) ] to deeply equal [ 'config/env.ts', …(1) ]
+✓ G-2. ⛔ MP-11 — un SECOND `createHmac` apparaît hors du hacheur
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected [ 'staff/staff-pin-hasher.ts', …(1) ] to deeply equal [ 'staff/staff-pin-hasher.ts' ]
+✓ G-3. ⛔ MP-11 — le MAGASIN nomme un `pin` en clair (un mot entier)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: staff/staff-store.prisma.ts: expected true to be false // Object.is equality
+✓ G-4. ⛔ K-23 — une SIXIÈME route est exemptée du garde (la liste fermée des exemptions grossit)
+   ancre 1→1 · marqueur 0→1 · genre insertion
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: expected { 'auth/auth.controller.ts': 1, …(1) } to deeply equal { 'auth/auth.controller.ts': 1, …(1) }
+   [int-garde] code 1 · passés 16 · en échec 2 · AssertionError: expected [ 'GET /api/v1/auth/me', …(5) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+✓ G-5. ⛔ D200 — le fichier d'EXEMPLE porte une valeur pour le secret du PIN
+   ancre 1→0 · marqueur 0→1 · genre substitution
+   [sources] code 1 · passés 34 · en échec 1 · AssertionError: la ligne du nom ne porte aucune valeur: expected false to be true // Object.is equality
+  empreintes : 15 fichier(s) ciblé(s) comparé(s) au départ · 0 différent(s) (attendu 0)
+
+105 garde(s) mordue(s) sur 106 cible(s) jouée(s) · 1 muette(s) · 0 non mesurée(s) · 0 non jouée(s) (sans --int) (attendu : 106 sur 106, 0, 0, 0)
+arbre rendu à son état de départ : vérifié.
+code=1

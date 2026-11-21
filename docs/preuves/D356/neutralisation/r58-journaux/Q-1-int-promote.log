@@ -1,0 +1,75 @@
+⛔ PIÈCE MASQUÉE — D356 r58 Q-1-int-promote.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4496 octets, sha256 330ee7b02bd93bf4e3f05ec34e3c625073842e1c67998db8bf0c4506ea5e8f3a. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/quote-promote-actor.int-spec.ts (4 tests | 2 failed) 2402ms
+   × ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > le MANAGER promeut : la ligne porte son identifiant dans `actor_member_id` ; le compte commun et son rôle sont ceux d'avant ; `before` et `after` sont inchangés 723ms
+     → expected { …(5) } to deeply equal { …(5) }
+   × ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ un EMPLOYÉ promeut : la ligne porte l'EMPLOYÉ, pas le Manager ni le propriétaire — c'est le membre dont la session a passé le garde, celui qui AGIT 779ms
+     → expected null to be '01a1fca1-3a90-7e27-bbb8-614c23202ef6' // Object.is equality
+   ✓ ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > la couche ÉTEINTE : `actor_member_id` reste NUL, la ligne est celle d'avant (le témoin déjà vert : une garde posée sur un comportement tenu) 288ms
+   ✓ ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ la PROMOTION ne change pas (D316) : le devis promu est officiel, au même numéro, au même statut ; la ligne reste UNE seule ; AUCUN nom, AUCUN numéro de téléphone ne figure dans la ligne  382ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  00:43:00
+   Duration  7.43s (transform 1.34s, setup 33ms, collect 4.22s, tests 2.40s, environment 0ms, prepare 149ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/quote-promote-actor.int-spec.ts
+
+(node:16128) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > le MANAGER promeut : la ligne porte son identifiant dans `actor_member_id` ; le compte commun et son rôle sont ceux d'avant ; `before` et `after` sont inchangés
+AssertionError: expected { …(5) } to deeply equal { …(5) }
+
+- Expected
++ Received
+
+  {
+    "actor_id": "01a1fca1-3706-7a3d-9dbe-1ec0f25c559d",
+-   "actor_member_id": "01a1fca1-37fe-7347-8ac8-a668ed42a1e3",
++   "actor_member_id": null,
+    "actor_role": "PRO",
+    "entity_id": "01a1fca1-388b-7553-b5f6-ff37241dd278",
+    "entity_type": "quote",
+  }
+
+ ❯ test/int/quote-promote-actor.int-spec.ts:63:152
+     61|     expect(lignes).toHaveLength(1);
+     62|     const l = lignes[0]!;
+     63|     expect({ actor_id: l.actor_id, actor_role: l.actor_role, actor_mem…
+       |                                                                                                                                                        ^
+     64|       actor_id: m.pro.userId,
+     65|       actor_role: "PRO",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/int/quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ un EMPLOYÉ promeut : la ligne porte l'EMPLOYÉ, pas le Manager ni le propriétaire — c'est le membre dont la session a passé le garde, celui qui AGIT
+AssertionError: expected null to be '01a1fca1-3a90-7e27-bbb8-614c23202ef6' // Object.is equality
+
+- Expected: 
+"01a1fca1-3a90-7e27-bbb8-614c23202ef6"
+
++ Received: 
+null
+
+ ❯ test/int/quote-promote-actor.int-spec.ts:83:40
+     81|     const lignes = await lignesAudit(ctx.prisma, "quote.promote");
+     82|     expect(lignes).toHaveLength(1);
+     83|     expect(lignes[0]!.actor_member_id).toBe(e.id);
+       |                                        ^
+     84|     expect(lignes[0]!.actor_member_id).not.toBe(m.membreId);
+     85|     expect(lignes[0]!.actor_id, "le compte commun reste celui du Beare…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

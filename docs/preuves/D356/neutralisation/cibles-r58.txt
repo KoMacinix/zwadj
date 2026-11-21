@@ -1,0 +1,361 @@
+# ── P — MP-10 : le GÉNÉRATEUR du PIN et la LISTE FERMÉE des PIN triviaux (module pur `staff-pin.ts`).
+cible("P-1. ⛔ MP-10 — les zéros de tête sont rendus à DROITE au lieu de GAUCHE (« 0482 » devient « 4820 ») : le PIN tiré n'est plus celui que le générateur a tiré", PIN,
+      r'''    const pin = String(n).padStart(length, "0");''', r'''    const pin = String(n).padEnd(length, "0");''', ["pin"])
+cible("P-2. ⛔ MP-10 — un PIN TRIVIAL n'est plus re-tiré (le générateur rend « 0000 », « 1234 »)", PIN,
+      r'''    if (!isTrivialPin(pin)) return pin;''', r'''    if (!isTrivialPin(pin) || true) return pin;''', ["pin"])
+cible("P-3. ⛔ MP-10 — la boucle bornée ne LÈVE plus après `PIN_MAX_DRAWS` tirages triviaux : elle rend un PIN trivial", PIN,
+      r'''  throw new Error(`PIN : ${PIN_MAX_DRAWS} tirages triviaux de suite — le générateur d'aléa est défectueux`);''', r'''  return "1234";''', ["pin"])
+cible("P-4. ⛔ MP-10 — un tirage HORS de l'intervalle n'est plus refusé en haut (un PIN de cinq chiffres est rendu)", PIN,
+      r'''    if (!Number.isInteger(n) || n < 0 || n >= max) throw new Error(''', r'''    if (!Number.isInteger(n) || n < 0) throw new Error(''', ["pin"])
+cible("P-5. ⛔ MP-10 — la suite DESCENDANTE (« 4321 ») n'est plus un PIN trivial", PIN,
+      r'''  if (c.slice(0, -1).every((_, i) => pas(i) === 9)) return true;''', r'''  if (c.slice(0, -1).every((_, i) => pas(i) === 99)) return true;''', ["pin"])
+cible("P-6. ⛔ MP-10 — la suite MONTANTE (« 1234 », « 7890 ») n'est plus un PIN trivial", PIN,
+      r'''  if (c.slice(0, -1).every((_, i) => pas(i) === 1)) return true;''', r'''  if (c.slice(0, -1).every((_, i) => pas(i) === 11)) return true;''', ["pin"])
+cible("P-7. ⛔ MP-10 — la répétition de deux chiffres (« 1212 ») n'est plus un PIN trivial", PIN,
+      r'''  if (n >= 4 && c.every((x, i) => i < 2 || x === c[i - 2])) return true;''', r'''  if (n >= 400 && c.every((x, i) => i < 2 || x === c[i - 2])) return true;''', ["pin"])
+cible("P-8. ⛔ MP-10 — les PAIRES (« 1122 », « 6677 ») ne sont plus des PIN triviaux", PIN,
+      r'''  if (n >= 4 && n % 2 === 0 && c.every((x, i) => x === c[i - (i % 2)])) return true;''', r'''  if (n >= 400 && n % 2 === 0 && c.every((x, i) => x === c[i - (i % 2)])) return true;''', ["pin"])
+# P-9 RETIRÉE (mutation ÉQUIVALENTE, mesurée VERTE à la découverte : « passés 13 · en échec 0 ») : au PIN de QUATRE chiffres, « 0000 » est aussi une répétition de deux chiffres (abab) et des paires (aabb) — la règle « un seul chiffre » ne peut être neutralisée sans que les deux autres rougissent la même valeur.
+
+# ── H — MP-11, R-2 : le HACHEUR (HMAC-SHA-256 avec un secret HORS base, à temps constant, un calcul par chemin).
+cible("H-1. ⛔ MP-11 — le HMAC n'emploie plus le SECRET (une clé fixe) : tous les PIN se cassent hors ligne en une seconde, et le haché ne dépend plus du secret", HACHEUR,
+      r'''    return createHmac("sha256", this.secret).update(pin).digest();''', r'''    return createHmac("sha256", "cle-fixe").update(pin).digest();''', ["hacheur", "int-pin"])
+cible("H-2. ⛔ MP-11 — le haché stocké est rendu en base64 au lieu de l'hexadécimal (la base et le magasin ne parlent plus le même format)", HACHEUR,
+      r'''    return this.digest(pin).toString("hex");''', r'''    return this.digest(pin).toString("base64");''', ["hacheur"])
+cible("H-3. ⛔ MP-11 — un haché MAL FORMÉ (longueur différente) est ACCEPTÉ au lieu d'être refusé", HACHEUR,
+      r'''    if (lu.length !== calcule.length) return false;''', r'''    if (lu.length !== calcule.length) return true;''', ["hacheur"])
+cible("H-4. ⛔ MP-11 — la comparaison des hachés n'est plus À TEMPS CONSTANT (`===` sur des chaînes)", HACHEUR,
+      r'''    return timingSafeEqual(calcule, lu);''', r'''    return calcule.toString("hex") === stored;''', ["sources"])
+cible("H-5. ⛔ R-3 — le chemin FACTICE ne calcule plus de HMAC (un refus de la connexion par PIN ne coûte plus la même chose qu'une vérification)", HACHEUR,
+      r'''    timingSafeEqual(this.digest(pin), FACTICE);''', r'''    timingSafeEqual(FACTICE, FACTICE);''', ["hacheur"])
+cible("H-6. ⛔ MP-11 — la vérification compare le haché du PIN présenté à un AUTRE PIN (le PIN est retourné)", HACHEUR,
+      r'''    const calcule = this.digest(pin);''', r'''    const calcule = this.digest([...pin].reverse().join(""));''', ["hacheur"])
+
+# ── E — R-4 : l'ÉTAT du PIN (UNE règle, `etatDuPin`).
+cible("E-1. ⛔ R-4 — le compteur AU PLAFOND ne verrouille plus le PIN (seul le verrou posé compte)", ETAT,
+      r'''  if (pin.pinLockedAt !== null || pin.pinFailedCount >= STAFF_LIMITS.PIN_MAX_FAILURES) return StaffPinState.LOCKED;''',
+      r'''  if (pin.pinLockedAt !== null) return StaffPinState.LOCKED;''', ["etat", "int-emission"])
+cible("E-2. ⛔ R-4 — l'échéance À L'INSTANT n'expire plus le PIN (`<=` devient `<`)", ETAT,
+      r'''pin.pinExpiresAt.getTime() <= maintenant.getTime()''', r'''pin.pinExpiresAt.getTime() < maintenant.getTime()''', ["etat"])
+cible("E-3. ⛔ R-4 — l'ABSENCE ne l'emporte plus sur le verrou (un PIN absent et verrouillé se lit VERROUILLÉ)", ETAT,
+      r'''  if (!pin.hasPin) return StaffPinState.ABSENT;''', r'''  if (!pin.hasPin && pin.pinLockedAt === null) return StaffPinState.ABSENT;''', ["etat"])
+cible("E-4. ⛔ R-4 — l'ÉCHÉANCE l'emporte sur le verrou : un PIN verrouillé ET expiré se lit EXPIRÉ (le déblocage n'écrit plus sa ligne `staff.pin_unlock`)", ETAT,
+      r'''  if (pin.pinLockedAt !== null || pin.pinFailedCount >= STAFF_LIMITS.PIN_MAX_FAILURES) return StaffPinState.LOCKED;
+  if (pin.pinExpiresAt === null || pin.pinExpiresAt.getTime() <= maintenant.getTime()) return StaffPinState.EXPIRED;''',
+      r'''  if (pin.pinExpiresAt === null || pin.pinExpiresAt.getTime() <= maintenant.getTime()) return StaffPinState.EXPIRED;
+  if (pin.pinLockedAt !== null || pin.pinFailedCount >= STAFF_LIMITS.PIN_MAX_FAILURES) return StaffPinState.LOCKED;''', ["etat"])
+
+# ── V — R-2, MP-12 : le SECRET du HMAC est obligatoire PARTOUT et exigé en production.
+cible("V-1. ⛔ MP-12 — le secret n'a plus de LONGUEUR minimale (un secret de trente et un caractères, ou d'un seul, démarre l'API)", ENV,
+      r'''  STAFF_PIN_HMAC_SECRET: z.string().min(32, "STAFF_PIN_HMAC_SECRET doit faire au moins 32 caractères"),''',
+      r'''  STAFF_PIN_HMAC_SECRET: z.string().min(1, "STAFF_PIN_HMAC_SECRET doit faire au moins 32 caractères"),''', ["env"])
+cible("V-2. ⛔ MP-12 — le secret reçoit une valeur PAR DÉFAUT (l'API démarre sans lui, avec un secret connu de tous)", ENV,
+      r'''  STAFF_PIN_HMAC_SECRET: z.string().min(32, "STAFF_PIN_HMAC_SECRET doit faire au moins 32 caractères"),''',
+      r'''  STAFF_PIN_HMAC_SECRET: z.string().min(32, "STAFF_PIN_HMAC_SECRET doit faire au moins 32 caractères").default("d".repeat(40)),''', ["env"])
+cible("V-3. ⛔ MP-12 — la production n'EXIGE plus la variable explicitement (la liste `PROD_REQUIRED_EXPLICIT` ne la nomme plus)", ENV,
+      r'''  "STAFF_PIN_HMAC_SECRET"
+] as const;''', r'''  "PAYMENTS_ENABLED"
+] as const;''', ["env"])
+
+# ── T — le LEVIER de limite de débit (D128) pour la connexion par PIN.
+cible("T-1. ⛔ D128 — la connexion par PIN lit un SECOND levier (`THROTTLE_STAFF_LOGIN_LIMIT` au lieu de `THROTTLE_STAFF_PIN_LIMIT`)", THROTTLE,
+      r'''  staffPin: { limit: num("THROTTLE_STAFF_PIN_LIMIT", 60), ttl: TTL }''', r'''  staffPin: { limit: num("THROTTLE_STAFF_LOGIN_LIMIT", 60), ttl: TTL }''', ["int-debit"])
+cible("T-2. ⛔ MP-36 — la limite par IP de la connexion par PIN tombe à SIX (un foyer ou un CGNAT est bloqué avant que le compteur par membre ne protège)", THROTTLE,
+      r'''  staffPin: { limit: num("THROTTLE_STAFF_PIN_LIMIT", 60), ttl: TTL }''', r'''  staffPin: { limit: num("THROTTLE_STAFF_PIN_LIMIT", 6), ttl: TTL }''', ["int-debit"])
+
+# ── C — le CONTRAT de K-23 (le schéma du corps) et ses limites.
+cible("C-1. ⛔ K-23 — le schéma n'impose plus la LONGUEUR du PIN (un PIN de cinq chiffres ou plus est accepté par le contrat)", TYPES,
+      r'''const PIN_PATTERN = new RegExp(`^[0-9]{${STAFF_LIMITS.PIN_LENGTH}}$`);''', r'''const PIN_PATTERN = new RegExp(`^[0-9]+$`);''', ["contrat"])
+cible("C-2. ⛔ K-23 — le schéma accepte une CLÉ INCONNUE (le corps n'est plus fermé)", TYPES,
+      r'''  .strict("staff.validation.unknownKey");
+export type StaffPinLoginInput''', r'''  ;
+export type StaffPinLoginInput''', ["contrat"])
+cible("C-3. ⛔ K-23 — l'identifiant du membre n'est plus vérifié (un texte quelconque est accepté)", TYPES,
+      r'''      .uuid("staff.validation.memberRequired"),
+    pin: z''', r'''      .min(1, "staff.validation.memberRequired"),
+    pin: z''', ["contrat"])
+cible("C-4. ⛔ MP-15 — le plafond d'essais passe à QUATRE (la CHECK de la base, jamais le levier, dit TROIS : l'autorité est la migration, D186)", TYPES,
+      r'''  PIN_MAX_FAILURES: 3''', r'''  PIN_MAX_FAILURES: 4''', ["int-emission", "int-pin"])
+cible("C-5. ⛔ MP-39 — la clé de message `pinInvalid` de l'arabe change de nom : la PARITÉ FR = AR est rompue", ARJSON,
+      r'''      "pinInvalid": "أدخل أرقام رمز PIN الخاص بك."''', r'''      "pinInvalidX": "أدخل أرقام رمز PIN الخاص بك."''', ["contrat", "parite"])
+
+# ── K — le CLIENT d'API : le littéral du chemin (D182).
+cible("K-1. ⛔ D182 — le client d'API appelle un autre chemin que la route K-23", CLIENT,
+      r'''request<StaffPinLoginDTO>("/pro/staff/pin-login", { method: "POST", body: input })''', r'''request<StaffPinLoginDTO>("/pro/staff/pin", { method: "POST", body: input })''', ["client-api", "int-contrat"])
+cible("K-2. ⛔ K-23 — le client d'API envoie la connexion par PIN en `PUT`", CLIENT,
+      r'''request<StaffPinLoginDTO>("/pro/staff/pin-login", { method: "POST", body: input })''', r'''request<StaffPinLoginDTO>("/pro/staff/pin-login", { method: "PUT", body: input })''', ["client-api"])
+
+# ── S — K-23 : le SERVICE de la connexion par PIN (l'ordre est la règle ; UN refus, UN corps, UN coût).
+cible("S-1. ⛔ R-3 — la couche ÉTEINTE refuse SANS le calcul de HMAC factice (le coût diffère de celui d'un PIN faux)", SERVICE,
+      r'''    if (layer === null || layer.enabledAt === null) return this.refuserLePin(input.pin);''', r'''    if (layer === null || layer.enabledAt === null) throw identifiantsRefuses();''', ["service"])
+cible("S-2. ⛔ MP-2 — SANS cookie d'appareil, la réservation est DEMANDÉE quand même (un porteur du seul Bearer consomme les essais d'un membre)", SERVICE,
+      r'''    if (member === null || !admis || cookies.devices.length === 0) return this.refuserLePin(input.pin);''', r'''    if (member === null || !admis) return this.refuserLePin(input.pin);''', ["service", "int-pin"])
+cible("S-3. ⛔ R-3 — un membre DÉSACTIVÉ ou au temporaire expiré n'est plus refusé par `etatDuCompte` (tout membre existant passe)", SERVICE,
+      r'''    const admis = etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD;
+    if (member === null''', r'''    const admis = etat !== null;
+    if (member === null''', ["service", "int-pin"])
+cible("S-4. ⛔ R-3 — un essai NON réservé refuse SANS le calcul de HMAC factice", SERVICE,
+      r'''    if (!reservation.reserved) return this.refuserLePin(input.pin);''', r'''    if (!reservation.reserved) throw identifiantsRefuses();''', ["service"])
+cible("S-5. ⛔ MP-1 — le service vérifie le PIN contre un autre argument (le PIN et le haché lu s'échangent)", SERVICE,
+      r'''    if (!this.pins.verify(input.pin, reservation.pinHash)) {''', r'''    if (!this.pins.verify(reservation.pinHash, input.pin)) {''', ["service"])
+cible("S-6. ⛔ MP-15 — un PIN FAUX n'est plus CONSIGNÉ (ni compte d'échecs, ni verrou au troisième)", SERVICE,
+      r'''      await this.store.recordPinFailure({ actor: user, memberId: input.memberId, failedCount: reservation.failedCount, expectedPinHash: reservation.pinHash });''',
+      r'''      void reservation.failedCount;''', ["service", "int-pin"])
+cible("S-7. ⛔ MP-15 — l'échec consigné porte le PIN TENTÉ au lieu du haché lu (le verrou se poserait sur la saisie, et le journal verrait le PIN)", SERVICE,
+      r'''failedCount: reservation.failedCount, expectedPinHash: reservation.pinHash });''', r'''failedCount: reservation.failedCount, expectedPinHash: input.pin });''', ["service"])
+cible("S-8. ⛔ R-3 — l'ouverture n'est plus CONDITIONNÉE au haché lu par la réservation (le PIN tenté la remplace)", SERVICE,
+      r'''      memberId: input.memberId,
+      expectedPinHash: reservation.pinHash,
+      sessionTokenHash''', r'''      memberId: input.memberId,
+      expectedPinHash: input.pin,
+      sessionTokenHash''', ["service"])
+cible("S-9. ⛔ MP-2 — l'ouverture reçoit les cookies d'appareil EN CLAIR (jamais leurs empreintes)", SERVICE,
+      r'''      candidateDeviceHashes: empreintesDAppareil
+    });''', r'''      candidateDeviceHashes: cookies.devices.map((d) => d.value)
+    });''', ["service"])
+cible("S-10. ⛔ R-3 — un refus d'ouverture est CONSIGNÉ comme un échec de PIN (une ligne d'échec pour un PIN qui était JUSTE)", SERVICE,
+      r'''le même refus, aucun cookie, aucune ligne d'échec (le calcul de HMAC a déjà été payé).
+    if (!opened.ok) throw identifiantsRefuses();''', r'''le même refus, aucun cookie, aucune ligne d'échec (le calcul de HMAC a déjà été payé).
+    if (!opened.ok) { await this.store.recordPinFailure({ actor: user, memberId: input.memberId, failedCount: reservation.failedCount, expectedPinHash: reservation.pinHash }); throw identifiantsRefuses(); }''', ["service", "int-course"])
+cible("S-11. ⛔ K-23 — la réponse de la connexion par PIN pose un cookie d'APPAREIL (l'appareil est celui du poste : la route n'en pose jamais)", SERVICE,
+      r'''cookies: { session: sessionToken } };
+  }
+
+  /** Le refus d'un PIN''', r'''cookies: { session: sessionToken, device: { suffix: "x", token: sessionToken } } };
+  }
+
+  /** Le refus d'un PIN''', ["service"])
+cible("S-12. ⛔ K-14 — l'activation rend le PIN d'un AUTRE tirage que celui dont le haché est stocké", SERVICE,
+      r'''      pinHash: this.pins.hash(pin),
+      sessionTokenHash: this.tokens.hash(sessionToken),
+      deviceTokenHash''', r'''      pinHash: this.pins.hash(this.pins.generate()),
+      sessionTokenHash: this.tokens.hash(sessionToken),
+      deviceTokenHash''', ["service", "int-emission"])
+cible("S-13. ⛔ K-15 — la connexion rend le PIN même quand le magasin n'en a PAS installé de neuf (un PIN montré qui n'est pas celui qui est stocké)", SERVICE,
+      r'''pin: opened.pinIssued ? pin : null },''', r'''pin },''', ["service", "int-emission"])
+cible("S-14. ⛔ K-15 — la connexion installe le haché d'un AUTRE tirage que le PIN qu'elle rend", SERVICE,
+      r'''      expectedPasswordHash: reservation.passwordHash,
+      newPinHash: this.pins.hash(pin),''', r'''      expectedPasswordHash: reservation.passwordHash,
+      newPinHash: this.pins.hash(this.pins.generate()),''', ["service", "int-emission"])
+
+cible("S-15. ⛔ K-18 — le changement de mot de passe rend le PIN même quand le magasin n'en a PAS installé de neuf", SERVICE,
+      r'''pin: changed.pinIssued ? pin : null }, cookies: {} };''', r'''pin }, cookies: {} };''', ["service", "int-emission"])
+cible("S-16. ⛔ K-18 — le changement de mot de passe installe le haché d'un AUTRE tirage que le PIN qu'il rend", SERVICE,
+      r'''      newPasswordHash,
+      newPinHash: this.pins.hash(pin)''', r'''      newPasswordHash,
+      newPinHash: this.pins.hash(this.pins.generate())''', ["service", "int-emission"])
+
+# ── R — MP-1, MP-2 : la RÉSERVATION d'un essai (UNE instruction, toutes ses conditions).
+cible("R-1. ⛔ MP-1 — la réservation ne verrouille plus la ligne (`FOR UPDATE OF m` retiré) : vingt requêtes parallèles comptent plus de trois essais", MAGASIN,
+      r'''           FOR UPDATE OF m
+      )''', r'''           /* sans verrou de ligne */
+      )''', ["int-course", "magasin"])
+cible("R-2. ⛔ MP-1 — le compteur ne MONTE plus à la réservation (un essai n'est jamais consommé)", MAGASIN,
+      r'''SET pin_failed_count = m.pin_failed_count + 1, updated_at = now()''', r'''SET pin_failed_count = m.pin_failed_count, updated_at = now()''', ["magasin", "int-pin", "int-course"])
+cible("R-3. ⛔ MP-1 — le PLAFOND n'est plus conditionné (la réservation continue après trois essais)", MAGASIN,
+      r'''AND m.pin_locked_at IS NULL AND m.pin_failed_count < ${STAFF_LIMITS.PIN_MAX_FAILURES}::int''', r'''AND m.pin_locked_at IS NULL AND true''', ["magasin", "int-pin", "int-course"])
+cible("R-4. ⛔ MP-15 — un PIN VERROUILLÉ se réserve encore (`pin_locked_at` n'est plus exigé nul)", MAGASIN,
+      r'''AND m.pin_locked_at IS NULL AND m.pin_failed_count <''', r'''AND true AND m.pin_failed_count <''', ["magasin", "int-pin"])
+cible("R-5. ⛔ MP-2 — la réservation ne vérifie plus qu'un APPAREIL du membre est présenté (un porteur du seul Bearer consomme les essais)", MAGASIN,
+      r'''           AND EXISTS (SELECT 1 FROM pro_staff_devices d WHERE d.member_id = m.id AND d.token_hash = ANY(${[...input.deviceTokenHashes]}::text[]) AND d.revoked_at IS NULL AND d.expires_at > now())''',
+      r'''           AND true''', ["magasin", "int-pin"])
+cible("R-6. ⛔ MP-2 — un appareil RÉVOQUÉ suffit à réserver", MAGASIN,
+      r'''d.token_hash = ANY(${[...input.deviceTokenHashes]}::text[]) AND d.revoked_at IS NULL''', r'''d.token_hash = ANY(${[...input.deviceTokenHashes]}::text[]) AND true''', ["magasin", "int-pin"])
+cible("R-7. ⛔ MP-2 — un appareil EXPIRÉ suffit à réserver", MAGASIN,
+      r'''AND d.expires_at > now())
+           FOR UPDATE OF m''', r'''AND true)
+           FOR UPDATE OF m''', ["magasin", "int-pin"])
+cible("R-8. ⛔ MP-26 — la réservation ne vérifie plus la SALLE du membre (un membre d'une autre salle se réserve)", MAGASIN,
+      r'''m.id = ${input.memberId}::uuid AND m.pro_profile_id = ${input.proProfileId}::uuid
+           AND m.status''', r'''m.id = ${input.memberId}::uuid AND true
+           AND m.status''', ["magasin", "int-pin"])
+cible("R-9. ⛔ R-3 — la réservation n'exige plus un membre ACTIF (un désactivé se réserve)", MAGASIN,
+      r'''           AND m.status = 'ACTIVE'
+           AND m.pin_hash IS NOT NULL''', r'''           AND true
+           AND m.pin_hash IS NOT NULL''', ["magasin", "int-pin"])
+cible("R-10. ⛔ MP-3 — la réservation n'exige plus un PIN NON EXPIRÉ (un PIN expiré se réserve)", MAGASIN,
+      r'''AND m.pin_hash IS NOT NULL AND m.pin_expires_at > now()''', r'''AND m.pin_hash IS NOT NULL AND true''', ["magasin", "int-pin"])
+cible("R-11. ⛔ MP-1 — une réservation SANS ligne est rendue « réservée » (le service vérifie un haché vide)", MAGASIN,
+      r'''    return ligne === undefined ? { reserved: false } : { reserved: true, pinHash: ligne.pinHash, failedCount: ligne.failedCount };''',
+      r'''    return ligne === undefined ? { reserved: true, pinHash: "", failedCount: 0 } : { reserved: true, pinHash: ligne.pinHash, failedCount: ligne.failedCount };''', ["magasin"])
+
+# ── F — MP-15, MP-33 : l'ÉCHEC d'un PIN et le VERROU (au TROISIÈME échec, sur CE PIN).
+cible("F-1. ⛔ MP-15 — le verrou ne se pose plus AU plafond (il faudrait un échec de plus)", MAGASIN,
+      r'''      if (input.failedCount < STAFF_LIMITS.PIN_MAX_FAILURES) return { locked: false, sessionsEnded: 0 };''', r'''      if (input.failedCount <= STAFF_LIMITS.PIN_MAX_FAILURES) return { locked: false, sessionsEnded: 0 };''', ["magasin", "int-pin", "int-audit"])
+cible("F-2. ⛔ R-3 — le verrou se pose sur N'IMPORTE QUEL PIN (le haché lu n'est plus conditionné : un PIN neuf posé entre-temps serait verrouillé)", MAGASIN,
+      r'''WHERE id = ${input.memberId}::uuid AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_failed_count >=''', r'''WHERE id = ${input.memberId}::uuid AND true AND pin_locked_at IS NULL AND pin_failed_count >=''', ["magasin", "int-course"])
+cible("F-3. ⛔ MP-15 — le verrou n'est plus conditionné à « pas déjà verrouillé » (un verrou déjà posé est réécrit, et sa ligne aussi)", MAGASIN,
+      r'''AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_failed_count >=''', r'''AND pin_hash = ${input.expectedPinHash} AND true AND pin_failed_count >=''', ["magasin", "int-course"])
+cible("F-4. ⛔ MP-15 — les sessions du membre prennent fin avec un AUTRE motif (`PASSWORD_CHANGED` au lieu de `PIN_LOCKED`)", MAGASIN,
+      r'''end_reason = 'PIN_LOCKED' WHERE member_id''', r'''end_reason = 'PASSWORD_CHANGED' WHERE member_id''', ["magasin", "int-pin", "int-audit"])
+cible("F-5. ⛔ MP-15 — le verrouillage ne met plus fin aux SESSIONS du membre", MAGASIN,
+      r'''end_reason = 'PIN_LOCKED' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL`''', r'''end_reason = 'PIN_LOCKED' WHERE member_id = ${input.memberId}::uuid AND false`''', ["magasin", "int-pin", "int-audit"])
+cible("F-6. ⛔ MP-33 — la ligne d'ÉCHEC n'est plus écrite (un PIN faux n'a pas de trace)", MAGASIN,
+      r'''      await ecrireAudit(tx, input.actor, input.memberId, { action: "staff.pin_login_failed", entityType: "staff_member", entityId: input.memberId, after: { failedCount: input.failedCount } });''',
+      r'''      void input.failedCount;''', ["magasin", "int-audit"])
+cible("F-7. ⛔ MP-11 — la ligne d'échec porte le HACHÉ du PIN (la charge utile n'est plus fermée)", MAGASIN,
+      r'''action: "staff.pin_login_failed", entityType: "staff_member", entityId: input.memberId, after: { failedCount: input.failedCount } });''', r'''action: "staff.pin_login_failed", entityType: "staff_member", entityId: input.memberId, after: { failedCount: input.failedCount, pinHash: input.expectedPinHash } });''', ["magasin", "int-audit"])
+cible("F-8. ⛔ MP-33 — la ligne de VERROUILLAGE n'est plus écrite (un verrou sans sa trace)", MAGASIN,
+      r'''      await ecrireAudit(tx, input.actor, input.memberId, {
+        action: "staff.pin_lock",
+        entityType: "staff_member",
+        entityId: input.memberId,
+        after: { failedCount: input.failedCount, sessionsEnded: fins }
+      });''', r'''      void fins;''', ["magasin", "int-audit"])
+cible("F-9. ⛔ MP-33 — la ligne de verrouillage dit zéro session terminée (le compte réel n'est plus écrit)", MAGASIN,
+      r'''after: { failedCount: input.failedCount, sessionsEnded: fins }''', r'''after: { failedCount: input.failedCount, sessionsEnded: 0 }''', ["magasin", "int-audit"])
+
+# ── O — R-3 : l'OUVERTURE par PIN, CONDITIONNÉE (les quatre conditions, l'appareil re-vérifié sous verrou).
+cible("O-1. ⛔ R-3 — « PIN ‖ réinitialisation / déblocage » : le CAS d'ouverture ne compare plus le haché de PIN lu à la réservation", MAGASIN,
+      r'''AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_expires_at > now()
+          RETURNING''', r'''AND true AND pin_locked_at IS NULL AND pin_expires_at > now()
+          RETURNING''', ["magasin", "int-course"])
+cible("O-2. ⛔ R-3 — « PIN ‖ verrouillage par un autre échec » : le CAS d'ouverture n'exige plus `pin_locked_at` nul", MAGASIN,
+      r'''AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_expires_at > now()
+          RETURNING''', r'''AND pin_hash = ${input.expectedPinHash} AND true AND pin_expires_at > now()
+          RETURNING''', ["magasin", "int-course"])
+cible("O-3. ⛔ R-3 — « PIN ‖ expiration » : le CAS d'ouverture n'exige plus un PIN non expiré (heure de la base)", MAGASIN,
+      r'''AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND pin_expires_at > now()
+          RETURNING''', r'''AND pin_hash = ${input.expectedPinHash} AND pin_locked_at IS NULL AND true
+          RETURNING''', ["magasin", "int-course"])
+cible("O-4. ⛔ R-3 — « PIN ‖ désactivation » : le CAS d'ouverture ne conditionne plus le STATUT (un membre désactivé entre la réservation et l'ouverture ouvre une session)", MAGASIN,
+      r'''AND status = 'ACTIVE'
+             AND pin_hash = ${input.expectedPinHash}''', r'''AND true
+             AND pin_hash = ${input.expectedPinHash}''', ["magasin", "int-course"])
+cible("O-5. ⛔ MP-26 — le CAS d'ouverture ne conditionne plus la SALLE du membre", MAGASIN,
+      r'''WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'
+             AND pin_hash''', r'''WHERE id = ${input.memberId}::uuid AND true AND status = 'ACTIVE'
+             AND pin_hash''', ["magasin", "int-pin"])
+cible("O-6. ⛔ MP-1 — un PIN JUSTE ne remet plus le compteur à zéro", MAGASIN,
+      r'''SET last_login_at = now(), pin_failed_count = 0, updated_at = now()''', r'''SET last_login_at = now(), updated_at = now()''', ["magasin", "int-pin"])
+cible("O-7. ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie sans `revoked_at IS NULL` (un appareil révoqué ouvre une session)", MAGASIN,
+      r'''AND d.token_hash = ANY(${[...input.candidateDeviceHashes]}::text[]) AND d.revoked_at IS NULL AND d.expires_at > now()
+           ORDER BY''', r'''AND d.token_hash = ANY(${[...input.candidateDeviceHashes]}::text[]) AND true AND d.expires_at > now()
+           ORDER BY''', ["magasin", "int-course"])
+cible("O-8. ⛔ R-3 — l'appareil se re-vérifie sans son ÉCHÉANCE (un appareil expiré ouvre une session)", MAGASIN,
+      r'''AND d.revoked_at IS NULL AND d.expires_at > now()
+           ORDER BY d.created_at LIMIT 1 FOR UPDATE`;''', r'''AND d.revoked_at IS NULL AND true
+           ORDER BY d.created_at LIMIT 1 FOR UPDATE`;''', ["magasin", "int-pin"])
+cible("O-9. ⛔ R-3 — « PIN ‖ appareil révoqué » : la lecture de l'appareil ne le VERROUILLE plus (`FOR UPDATE` retiré) : une révocation en cours n'est plus attendue", MAGASIN,
+      r'''ORDER BY d.created_at LIMIT 1 FOR UPDATE`;''', r'''ORDER BY d.created_at LIMIT 1`;''', ["magasin", "int-course"])
+cible("O-10. ⛔ R-3 — le refus de l'appareil n'ANNULE plus la transaction (le CAS déjà écrit survit : `last_login_at` et le compteur remis à zéro)", MAGASIN,
+      r'''        if (appareil === undefined) throw new OuvertureParPinAbandonnee();''', r'''        if (appareil === undefined) return { ok: false, reason: "memberChanged" };''', ["magasin", "int-course"])
+cible("O-11. ⛔ MP-33 — la ligne `staff.pin_login` n'est plus écrite (une connexion sans sa trace)", MAGASIN,
+      r'''        await ecrireAudit(tx, input.actor, membre.id, { action: "staff.pin_login", entityType: "staff_session", entityId: sessionId, after: { memberId: membre.id } });''',
+      r'''        void sessionId;''', ["magasin", "int-audit"])
+cible("O-12. ⛔ MP-11 — la ligne `staff.pin_login` porte le HACHÉ du PIN (la charge utile n'est plus fermée)", MAGASIN,
+      r'''entityType: "staff_session", entityId: sessionId, after: { memberId: membre.id } });
+        return { ok: true, member: membre, sessionId };''', r'''entityType: "staff_session", entityId: sessionId, after: { memberId: membre.id, pinHash: input.expectedPinHash } });
+        return { ok: true, member: membre, sessionId };''', ["magasin", "int-audit"])
+cible("O-13. ⛔ K-23 — la session ouverte par PIN est rattachée à un AUTRE appareil que celui retrouvé", MAGASIN,
+      r'''VALUES (${membre.id}::uuid, ${appareil.id}::uuid, ${input.sessionTokenHash}''', r'''VALUES (${membre.id}::uuid, ${membre.id}::uuid, ${input.sessionTokenHash}''', ["magasin", "int-pin"])
+
+# ── M — R-4 : l'ÉMISSION du PIN (connexion, changement de mot de passe), sous le verrou, par UNE règle.
+cible("M-1. ⛔ R-4 — un PIN VALABLE est REMPLACÉ à chaque connexion par mot de passe (l'émission ne tient plus compte de l'état)", MAGASIN,
+      r'''  if (etat === StaffPinState.VALID) return false;''', r'''  if (etat === StaffPinState.VALID && false) return false;''', ["magasin", "int-emission"])
+cible("M-2. ⛔ R-4 — l'émission acceptée avec un compte de ZÉRO ligne (un PIN rendu qui n'a jamais été installé)", MAGASIN,
+      r'''  if (ecrit !== 1) throw new Error("émission du PIN''', r'''  if (ecrit > 1) throw new Error("émission du PIN''', ["magasin"])
+cible("M-3. ⛔ R-4 — la ligne `staff.pin_unlock` s'écrit pour un PIN EXPIRÉ au lieu d'un PIN verrouillé", MAGASIN,
+      r'''  if (etat === StaffPinState.LOCKED) {''', r'''  if (etat === StaffPinState.EXPIRED) {''', ["magasin", "int-emission", "int-audit"])
+cible("M-4. ⛔ MP-11 — la ligne `staff.pin_unlock` porte le HACHÉ du PIN candidat", MAGASIN,
+      r'''after: { via: "password" } });''', r'''after: { via: "password", pinHash: candidatHache } });''', ["magasin", "int-audit"])
+cible("M-5. ⛔ R-4 — l'émission ne LÈVE plus le verrou (`pin_locked_at` reste posé : un PIN neuf déjà verrouillé)", MAGASIN,
+      r'''           pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()
+     WHERE id = ${memberId}::uuid`;''', r'''           pin_failed_count = 0, updated_at = now()
+     WHERE id = ${memberId}::uuid`;''', ["magasin", "int-emission"])
+cible("M-6. ⛔ R-4 — l'émission ne remet plus le COMPTEUR à zéro (un PIN neuf démarre aux essais de l'ancien)", MAGASIN,
+      r'''           pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()
+     WHERE id = ${memberId}::uuid`;''', r'''           pin_locked_at = NULL, updated_at = now()
+     WHERE id = ${memberId}::uuid`;''', ["magasin", "int-emission"])
+cible("M-7. ⛔ MP-27 — l'échéance d'un appareil NEUF ne dépasse plus à elle seule celle du PIN (`LEAST` retiré)", MAGASIN,
+      r'''                  LEAST(now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int), (SELECT pin_expires_at FROM pro_staff_members WHERE id = ${membre.id}::uuid)))''',
+      r'''                  now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int))''', ["magasin", "int-emission"])
+cible("M-8. ⛔ K-18 — le changement de mot de passe n'ÉMET plus de PIN (la règle d'émission n'est plus la même que celle de la connexion)", MAGASIN,
+      r'''      const pinIssued = await emettreLePin(tx, input.actor, input.memberId, verrou[0]!, input.newPinHash);''', r'''      const pinIssued = false;''', ["magasin", "int-emission"])
+cible("M-9. ⛔ K-15 — la connexion par mot de passe n'ÉMET plus de PIN", MAGASIN,
+      r'''      const pinIssued = await emettreLePin(tx, input.actor, membre.id, ligne, input.newPinHash);''', r'''      const pinIssued = false;''', ["int-emission"])
+cible("M-10. ⛔ K-18 — le verrou du membre (`FOR UPDATE`) n'est plus pris avant l'émission du PIN (le changement lit un état qui peut changer)", MAGASIN,
+      r'''WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE' FOR UPDATE`;''', r'''WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'`;''', ["magasin", "int-emission"])
+
+# ── X — K-14 : le PIN du Manager s'installe à l'ACTIVATION.
+cible("X-1. ⛔ K-14 — l'activation installe le haché du MOT DE PASSE dans la colonne du PIN (le PIN rendu n'est plus celui qui est stocké)", MAGASIN,
+      r'''                  ${input.pinHash}, now(), now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int))''', r'''                  ${input.passwordHash}, now(), now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int))''', ["magasin", "int-emission"])
+
+# ── Z — K-21, K-22 : la réinitialisation et la désactivation EFFACENT le PIN.
+cible("Z-1. ⛔ DR5, S-105 — la réinitialisation du mot de passe n'EFFACE plus le PIN (l'ancien PIN reste valable)", MAGASIN,
+      r'''password_locked_until = NULL,
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()''',
+      r'''password_locked_until = NULL,
+               updated_at = now()''', ["magasin", "int-emission", "int-pin"])
+cible("Z-2. ⛔ DR5 — la désactivation n'EFFACE plus le PIN (un membre éteint garde un haché de PIN)", MAGASIN,
+      r'''disabled_at = now(),
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()''',
+      r'''disabled_at = now(),
+               updated_at = now()''', ["magasin", "int-emission"])
+cible("Z-3. ⛔ DR5 — la réinitialisation efface le PIN mais LAISSE le verrou posé", MAGASIN,
+      r'''password_locked_until = NULL,
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()''',
+      r'''password_locked_until = NULL,
+               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, updated_at = now()''', ["magasin", "int-emission"])
+
+# ── W — le CONTRÔLEUR : `no-store`, la route exemptée.
+cible("W-1. ⛔ K-14 — la réponse de l'activation (qui porte le PIN) n'est plus `no-store`", CONTROLEUR,
+      r'''  @HttpCode(HttpStatus.CREATED)
+  @Header("Cache-Control", "no-store")''', r'''  @HttpCode(HttpStatus.CREATED)
+  @Header("Cache-Control", "max-age=60")''', ["int-emission"])
+cible("W-2. ⛔ K-15 — la réponse de la connexion par mot de passe (qui peut porter un PIN) n'est plus `no-store`", CONTROLEUR,
+      r'''  @Post("login")
+  @HttpCode(HttpStatus.OK)
+  @Header("Cache-Control", "no-store")''', r'''  @Post("login")
+  @HttpCode(HttpStatus.OK)
+  @Header("Cache-Control", "max-age=60")''', ["int-emission"])
+cible("W-3. ⛔ K-18 — la réponse du changement de mot de passe (qui peut porter un PIN) n'est plus `no-store`", CONTROLEUR,
+      r'''  @Post("password")
+  @HttpCode(HttpStatus.OK)
+  @Header("Cache-Control", "no-store")''', r'''  @Post("password")
+  @HttpCode(HttpStatus.OK)
+  @Header("Cache-Control", "max-age=60")''', ["int-emission"])
+cible("W-4. ⛔ K-23 — la route de la connexion par PIN n'est plus EXEMPTÉE du garde (elle exigerait une session de personnel pour en ouvrir une)", CONTROLEUR,
+      r'''  @StaffExempt()
+  @Post("pin-login")''', r'''  @Post("pin-login")
+  @Header("X-Neutralise", "r58")''', ["int-garde", "sources", "int-pin"])
+cible("W-5. ⛔ MP-36 — la route de la connexion par PIN n'a plus sa limite de débit propre (le limiteur par défaut la couvre)", CONTROLEUR,
+      r'''  @Throttle({ default: AUTH_THROTTLE.staffPin })''', r'''  @Throttle({ default: AUTH_THROTTLE.staffLogin })''', ["int-debit"])
+
+# ── Q — R-6 : `quote.promote` porte le MEMBRE qui agit.
+cible("Q-1. ⛔ R-6 — le magasin des devis n'écrit plus `actor_member_id` dans la ligne `quote.promote`", QSTORE,
+      r'''          actorMemberId: donnees.memberId,''', r'''          actorMemberId: null,''', ["magasin-devis", "int-promote"])
+cible("Q-2. ⛔ R-6 — le service des devis ne transmet plus le MEMBRE au magasin", QSVC,
+      r'''      acteur: { userId: acteur.userId, role: acteur.role },
+      memberId,
+      quoteId,''', r'''      acteur: { userId: acteur.userId, role: acteur.role },
+      memberId: null,
+      quoteId,''', ["service-devis", "int-promote"])
+cible("Q-3. ⛔ R-6 — le contrôleur des devis ne transmet plus le membre du garde au service", QCTRL,
+      r'''    return this.quotes.promote(user, id, body, staff?.memberId ?? null);''', r'''    return this.quotes.promote(user, id, body, null);''', ["int-promote"])
+
+# ── G — les gardes de SOURCE (un défaut introduit dans le code doit les faire rougir).
+cible("G-1. ⛔ R-2 — un SERVICE lit le NOM du secret (la variable n'est plus lue que par le schéma et le fournisseur)", SERVICE,
+      r'''@Injectable()
+export class StaffSessionService {''', r'''const NOM_DU_SECRET = "STAFF_PIN_HMAC_SECRET";
+
+@Injectable()
+export class StaffSessionService {''', ["sources"], "insertion")
+cible("G-2. ⛔ MP-11 — un SECOND `createHmac` apparaît hors du hacheur", SERVICE,
+      r'''@Injectable()
+export class StaffSessionService {''', r'''const AUTRE_HMAC = (): unknown => createHmac("sha256", "x");
+
+@Injectable()
+export class StaffSessionService {''', ["sources"], "insertion")
+cible("G-3. ⛔ MP-11 — le MAGASIN nomme un `pin` en clair (un mot entier)", MAGASIN,
+      r'''type Tx = Parameters<Parameters<PrismaService["$transaction"]>[0]>[0];''', r'''type Tx = Parameters<Parameters<PrismaService["$transaction"]>[0]>[0];
+const pin = "1234";''', ["sources"], "insertion")
+cible("G-4. ⛔ K-23 — une SIXIÈME route est exemptée du garde (la liste fermée des exemptions grossit)", CONTROLEUR,
+      r'''  @StaffAnyMember()
+  @Post("logout")''', r'''  @StaffExempt()
+  @StaffAnyMember()
+  @Post("logout")''', ["sources", "int-garde"], "insertion")
+cible("G-5. ⛔ D200 — le fichier d'EXEMPLE porte une valeur pour le secret du PIN", ENVEX,
+      r'''STAFF_PIN_HMAC_SECRET=
+''', r'''STAFF_PIN_HMAC_SECRET=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+''', ["sources"])

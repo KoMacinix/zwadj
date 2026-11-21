@@ -1,0 +1,73 @@
+⛔ PIÈCE MASQUÉE — D356 r58 V-2-env.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 7895 octets, sha256 7a31ef8f3d32f9800bc5c8947410bc1760a2d3ea3a42a3a7b2f67c90e364b99d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/config/env.spec.ts (30 tests | 1 failed) 25ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > accepte une config minimale et applique les défauts auth 3ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > refuse un JWT_ACCESS_SECRET trop court (< 32) en nommant la variable 1ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > refuse un JWT_ACCESS_TTL mal formé 1ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > refuse l'absence totale de JWT_ACCESS_SECRET (l'API ne boote pas sans) 1ms
+   × validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > ⛔ MP-12 — ABSENT, même hors production : le boot est REFUSÉ en nommant la variable (aucun défaut : un secret par défaut serait le même chez tous) 9ms
+     → expected [Function] to throw an error
+   ✓ validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > ⛔ trop COURT (31 caractères) : refusé en nommant la variable ; la borne réelle — 32 caractères — est ACCEPTÉE (D55 : la borne se dérive du cas réel) 1ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > la valeur fournie est celle que la config rend (rien ne la transforme, rien ne la remplace par un défaut) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > le message du refus ne recopie PAS la valeur fournie (un secret trop court qu'on a tapé ne se retrouve pas dans un journal de démarrage) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > parse CORS_ORIGINS en liste et AUTH_COOKIE_SECURE en booléen 1ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > boote quand les quatre sont fournies 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > refuse de booter sans CLIENT_URL en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > refuse de booter sans PRO_URL en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > refuse de booter sans AUTH_COOKIE_SECURE en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > refuse de booter sans GOOGLE_CLIENT_ID en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > refuse une valeur vide (une chaîne vide n'est pas « définie ») 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > liste TOUTES les manquantes d'un coup (pas une découverte au compte-gouttes) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > hors prod, les défauts dev restent intacts (aucune friction ajoutée) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > GOOGLE_CLIENT_ID hors prod : ABSENTE = toléré (undefined), l'API boote — /auth/google répondra 503 (Lot 8) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > ⛔ MP-12 — STAFF_PIN_HMAC_SECRET est EXPLICITE en production : l'oublier fait REFUSER le boot par la LISTE des variables explicites (pas seulement par le schéma), en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > JWT_ACCESS_SECRET : comportement inchangé (déjà requis partout, jamais de défaut) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a en ajoute une) > ⚠ PAYMENTS_ENABLED est EXPLICITE en production : l'oublier fait REFUSER le boot 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > PAYMENTS_ENABLED (E3a) > ⚠ ABSENT ⇒ ÉTEINT. Le seul défaut acceptable sur le chemin de l'argent 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > PAYMENTS_ENABLED (E3a) > ⚠ la chaîne "false" vaut FAUX — `Boolean("false")` vaut vrai 1ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > PAYMENTS_ENABLED (E3a) > ⚠ une valeur INATTENDUE n'allume pas — « oui », « yes », « on » restent éteints 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > ⚠ drapeau ALLUMÉ sans clé ⇒ le boot ÉCHOUE, en nommant la variable 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > ⚠ drapeau ALLUMÉ sans URL ⇒ le boot ÉCHOUE aussi 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > drapeau ÉTEINT ⇒ ni l'une ni l'autre n'est exigée (poste de dev inchangé) 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > ⚠ le contrôle NE DÉPEND PAS de NODE_ENV : une recette allumée sans clé est aussi cassée 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > refuse une URL Chargily qui n'en est pas une 0ms
+   ✓ validateEnv (schéma Zod des variables d'environnement) > Chargily : la clé et l'URL sont exigées DÈS QUE le drapeau est allumé > délai d'attente : défaut appliqué, bornes tenues 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  00:21:25
+   Duration  656ms (transform 60ms, setup 0ms, collect 78ms, tests 25ms, environment 0ms, prepare 187ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/config/env.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/config/env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du PIN) > ⛔ MP-12 — ABSENT, même hors production : le boot est REFUSÉ en nommant la variable (aucun défaut : un secret par défaut serait le même chez tous)
+AssertionError: expected [Function] to throw an error
+
+- Expected: 
+null
+
++ Received: 
+undefined
+
+ ❯ src/config/env.spec.ts:45:45
+     43|       const { STAFF_PIN_HMAC_SECRET: _retiree, ...sansSecret } = baseE…
+     44|       void _retiree;
+     45|       expect(() => validateEnv(sansSecret)).toThrow(/STAFF_PIN_HMAC_SE…
+       |                                             ^
+     46|     });
+     47| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

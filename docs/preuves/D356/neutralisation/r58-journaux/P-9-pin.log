@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — D356 r58 P-9-pin.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 429 octets, sha256 b4378680877cb986171baeefacc3e4d2a331bc39730eaea3850569c0bbb94151. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 0cce94171f12136155d26f5454e82a94c9d4ab735f4051632e46a036deebb8ea  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/staff/staff-pin.spec.ts (13 tests) 115ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  20:21:14
+   Duration  1.02s (transform 218ms, setup 0ms, collect 329ms, tests 115ms, environment 0ms, prepare 204ms)
+
+

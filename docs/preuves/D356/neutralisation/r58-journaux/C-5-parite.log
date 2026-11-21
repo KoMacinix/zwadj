@@ -1,0 +1,56 @@
+⛔ PIÈCE MASQUÉE — D356 r58 C-5-parite.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 2372 octets, sha256 2ac98d0fdee709c546f0c2d83accce5d0f5935fa4031ac20ef89d4cde1c44614. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/common/i18n-parity.spec.ts (5 tests | 1 failed) 16ms
+   × Parité i18n FR/AR (invariant produit) > les DEUX ensembles de clés sont identiques — toute clé orpheline est nommée dans l'échec 11ms
+     → expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+   ✓ Parité i18n FR/AR (invariant produit) > aucune valeur vide ou d'espaces (une clé « réservée » n'est pas une traduction) 1ms
+   ✓ Parité i18n FR/AR (invariant produit) > les namespaces attendus existent des deux côtés (dont account.*, Lot A10) 1ms
+   ✓ Parité i18n FR/AR (invariant produit) > le TOTAL ne RECULE pas — une suppression symétrique laisse la parité verte 0ms
+   ✓ Parité i18n FR/AR (invariant produit) > les surfaces C5/C5b sont COMPLÈTES — elles ont déjà été effacées une fois 1ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  00:22:24
+   Duration  589ms (transform 44ms, setup 0ms, collect 52ms, tests 16ms, environment 0ms, prepare 208ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/common/i18n-parity.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/common/i18n-parity.spec.ts > Parité i18n FR/AR (invariant produit) > les DEUX ensembles de clés sont identiques — toute clé orpheline est nommée dans l'échec
+AssertionError: expected { …(2) } to deeply equal { frOnly: [], arOnly: [] }
+
+- Expected
++ Received
+
+  {
+-   "arOnly": [],
+-   "frOnly": [],
++   "arOnly": [
++     "staff.validation.pinInvalidX",
++   ],
++   "frOnly": [
++     "staff.validation.pinInvalid",
++   ],
+  }
+
+ ❯ src/common/i18n-parity.spec.ts:38:32
+     36|     const frOnly = [...fr.keys()].filter((k) => !ar.has(k)).sort();
+     37|     const arOnly = [...ar.keys()].filter((k) => !fr.has(k)).sort();
+     38|     expect({ frOnly, arOnly }).toEqual({ frOnly: [], arOnly: [] });
+       |                                ^
+     39|     expect(fr.size).toBe(ar.size);
+     40|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

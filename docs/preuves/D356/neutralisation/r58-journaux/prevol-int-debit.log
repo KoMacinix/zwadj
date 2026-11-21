@@ -1,0 +1,18 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-int-debit.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 598 octets, sha256 c4491f853d81a0395dffaea4ea57b7878bc6e5ca5c4da9c83731ba8cf6f03b4b. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/throttle.int-spec.ts (11 tests) 5781ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  820ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  00:18:06
+   Duration  6.81s (transform 1.41s, setup 31ms, collect 183ms, tests 5.78s, environment 0ms, prepare 154ms)
+
+

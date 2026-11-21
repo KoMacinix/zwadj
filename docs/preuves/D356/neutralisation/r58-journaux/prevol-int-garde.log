@@ -1,0 +1,28 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-int-garde.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 3053 octets, sha256 c6874a61d4031047cae2ffc8213663767ecb405c5eaeaade4cad8fa7ff806549. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ test/int/staff-session-guard.int-spec.ts (18 tests) 8117ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`  888ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint  515ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas  364ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)  363ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)  677ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)  476ms
+   ✓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`  1866ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée  537ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)  517ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  00:18:33
+   Duration  13.14s (transform 1.31s, setup 30ms, collect 4.16s, tests 8.12s, environment 0ms, prepare 167ms)
+
+
+(node:11668) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

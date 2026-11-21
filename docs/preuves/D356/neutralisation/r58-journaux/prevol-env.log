@@ -1,0 +1,17 @@
+⛔ PIÈCE MASQUÉE — D356 r58 prevol-env.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 420 octets, sha256 4816448d2eb2630ccceca5de4f9603a4ae899454cbc610062dd3bd9bc4a462fa. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ✓ src/config/env.spec.ts (30 tests) 17ms
+
+ Test Files  1 passed (1)
+      Tests  30 passed (30)
+   Start at  00:17:18
+   Duration  677ms (transform 63ms, setup 0ms, collect 86ms, tests 17ms, environment 0ms, prepare 165ms)
+
+

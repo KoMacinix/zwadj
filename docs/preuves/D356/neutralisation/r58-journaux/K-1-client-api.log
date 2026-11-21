@@ -1,0 +1,63 @@
+⛔ PIÈCE MASQUÉE — D356 r58 K-1-client-api.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 4067 octets, sha256 db37089dc13bb47440275f1e70b0fd03c03a30a34ff37bedd432a2ebb5d58968. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/staff-client.test.ts (12 tests | 1 failed) 15ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-14 : `activate` POSTE le nom de compte et le mot de passe sur `/pro/staff/activate` 2ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-18 : `changePassword` POSTE l'actuel et le nouveau sur `/pro/staff/password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > le client rend EXACTEMENT ce que la requête rend (aucune transformation, aucune règle) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable` 0ms
+   × le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et rien d'autre : le jeton d'appareil voyage par COOKIE, jamais par le corps 9ms
+     → expected [ { path: '/pro/staff/pin', …(1) } ] to deeply equal [ { …(2) } ]
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ le client n'expose que les DIX contrats (K-14 à K-23) : la connexion par PIN est la dixième, rien d'autre ne s'est ajouté 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  00:22:26
+   Duration  594ms (transform 51ms, setup 0ms, collect 55ms, tests 15ms, environment 0ms, prepare 179ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff-client.test.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et rien d'autre : le jeton d'appareil voyage par COOKIE, jamais par le corps
+AssertionError: expected [ { path: '/pro/staff/pin', …(1) } ] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+@@ -5,8 +5,8 @@
+          "memberId": "018f0000-0000-7000-8000-0000000000b1",
+          "pin": "0482",
+        },
+        "method": "POST",
+      },
+-     "path": "/pro/staff/pin-login",
++     "path": "/pro/staff/pin",
+    },
+  ]
+
+ ❯ src/staff-client.test.ts:91:20
+     89|     const { request, appels } = double({ member: { id: "m1" } });
+     90|     await createStaffClient(request).pinLogin({ memberId: "018f0000-00…
+     91|     expect(appels).toEqual([{ path: "/pro/staff/pin-login", init: { me…
+       |                    ^
+     92|   });
+     93| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

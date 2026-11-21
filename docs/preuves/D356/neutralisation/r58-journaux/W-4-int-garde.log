@@ -1,0 +1,63 @@
+⛔ PIÈCE MASQUÉE — D356 r58 W-4-int-garde.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 6239 octets, sha256 0a7ed410ce402d28349e50d506fe55d79d294125fc606122a03ec865e018dfdb. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-session-guard.int-spec.ts (18 tests | 1 failed) 8068ms
+   ✓ le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 55 routes atteignables par un PRO, dont les cinq routes du lot ; sans cela, tous les cas ci-dessous passeraient sur une liste vide 2ms
+   × le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement CINQ (état du compte commun, activer, se connecter, lire l'état, et — rang 58 — se connecter par PIN) — une route neuve exemptée sans décision fait rougir ce test 10ms
+     → expected [ 'GET /api/v1/auth/me', …(3) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+   ✓ le collecteur — garde-fou du garde-fou > aucune route PUBLIQUE n'est exemptée par erreur (une route publique n'a pas besoin de l'être : le garde l'ignore) 0ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`  875ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint  471ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas  359ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)  352ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)  700ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)  505ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > le cookie de session n'est lu que sous SON nom : la même valeur posée sous le nom du cookie de rafraîchissement n'ouvre rien 5ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > un cookie qui n'a pas la forme d'un jeton : le MÊME 401 que l'absence de cookie 19ms
+   ✓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`  1865ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > ⛔ le MÊME Bearer : la requête d'avant passe, la requête d'APRÈS l'activation est refusée (le drapeau est relu à chaque requête, jamais mis dans le jeton)  301ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > le jeton d'accès NE PORTE PAS le drapeau : ses claims sont toujours { sub, role } (D4) — un jeton émis avant l'activation reste valable après 209ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session terminée par SQL (fin `LOGOUT` posée à la main) est refusée à la requête suivante, sans attendre 278ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée  531ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)  524ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > le hachage SHA-256 du cookie est ce qui est cherché : un cookie dont le hachage a été retiré de la base est refusé 284ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  00:42:10
+   Duration  13.12s (transform 1.34s, setup 34ms, collect 4.23s, tests 8.07s, environment 0ms, prepare 156ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-session-guard.int-spec.ts
+
+(node:11348) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/staff-session-guard.int-spec.ts > le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement CINQ (état du compte commun, activer, se connecter, lire l'état, et — rang 58 — se connecter par PIN) — une route neuve exemptée sans décision fait rougir ce test
+AssertionError: expected [ 'GET /api/v1/auth/me', …(3) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+
+- Expected
++ Received
+
+  [
+    "GET /api/v1/auth/me",
+    "GET /api/v1/pro/staff/session",
+    "POST /api/v1/pro/staff/activate",
+    "POST /api/v1/pro/staff/login",
+-   "POST /api/v1/pro/staff/pin-login",
+  ]
+
+ ❯ test/int/staff-session-guard.int-spec.ts:73:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

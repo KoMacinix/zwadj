@@ -1,0 +1,93 @@
+⛔ PIÈCE MASQUÉE — D356 r58 S-2-service.log. La sortie brute porte 0 occurrence(s) de 0 suite(s) DISTINCTE(S) de 43 caractères base64url mêlant minuscules, majuscules et chiffres : des jetons d'une base jetable
+(`zwadj_e2e`, recréée à chaque lancement) mais de la forme exacte de jetons réels, remplacés ci-dessous par `<jeton masqué #N (43 car.)>` (la même suite reçoit le même numéro). Le reste est la sortie telle quelle.
+BRUT (gardé HORS dépôt) : 15257 octets, sha256 59284ce1c12066c47dc7e84c653d664c3c4359c8fe8ed5f02f454fabe2c9178d. Procédure : `masquer-jetons.py` (archivée à côté, jamais promue en instrument, D291).
+Après masquage : 0 suite(s) de forme jeton restante(s) (attendu 0).
+═══ DÉBUT DE LA SORTIE ═══
+empreinte du harnais (sha256) : 36467907930000cc4b3d511eab889187e979ec3b6303fc57bf835021e243511a  (neutralize-r58.py)
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ src/staff/staff-session.service.spec.ts (61 tests | 1 failed) 80ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, AUCUN factice ; le membre est rendu, une session s'ouvre, le jeton de session est posé 6ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la recherche du membre se fait par la CLÉ normalisée du nom, dans la salle du Bearer (jamais par le nom tel que tapé) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un compte INCONNU : un seul hachage FACTICE, JAMAIS le réel, aucune réservation, aucune ligne d'échec — et le refus est `STAFF_INVALID_CREDENTIALS` (401) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > un PRO sans profil (aucune salle) est traité comme un compte inconnu : factice, même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un membre DÉSACTIVÉ est un compte inconnu pour la connexion : factice, AUCUNE réservation (on ne compte pas d'échec sur un compte éteint), même refus 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un MAUVAIS mot de passe : un seul hachage réel (contre le hachage RENDU par la réservation), l'échec est consigné avec son compte, le refus est le même 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-16 — l'échec qui FRANCHIT le seuil est consigné tel que la réservation le rend : le compte d'échecs ET `pausedNow: true` (c'est ce booléen qui fait écrire la ligne de pause) 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-3 (D341) — PENDANT LA PAUSE (réservation refusée) : le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUN échec consigné — et le MÊME corps que le mauvais mot de passe 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 / R-3 — inconnu, désactivé, en pause et mauvais mot de passe : QUATRE refus au corps IDENTIQUE à l'octet et au statut identique 5ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ un mot de passe juste mais un membre devenu inactif entre la réservation et l'ouverture (désactivation concurrente) : le MÊME refus, aucune session 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — l'ouverture est CONDITIONNÉE au hachage LU PAR LA RÉSERVATION : `openSession` reçoit `expectedPasswordHash`, et c'est CE hachage-là qui a été vérifié 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — un mot de passe REMPLACÉ entre la réservation et l'ouverture (le magasin refuse l'ouverture) : le MÊME refus qu'un mauvais mot de passe, à l'octet — UN seul hachage réel, AUCUN factice, AUCUNE ligne d'échec, aucun cookie 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ R-1 — le refus d'ouverture ne pose AUCUN cookie : l'exception remonte avant tout jeton rendu au contrôleur 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > la clé de la tentative est réservée AVANT toute vérification : l'ordre des appels est findMember, reservePasswordAttempt, verify, openSession 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe ORDINAIRE de 90 jours EXPIRÉ : la connexion est ADMISE (vrai hachage vérifié, session ouverte), et le membre rendu dit `mustChangePassword: true` 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE non expiré (must_change_password) : la connexion est admise, et le membre rendu dit `mustChangePassword: true` 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un mot de passe valable : `mustChangePassword: false` (l'état est jugé, il n'est pas copié de la colonne) 0ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — un TEMPORAIRE EXPIRÉ : la connexion est REFUSÉE comme un compte inconnu — le FACTICE, JAMAIS le vrai hachage (même avec le bon mot de passe), AUCUNE réservation (rien à compter), aucune session — et le MÊME corps 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ S-104 — le temporaire expiré rend EXACTEMENT le corps d'un compte inconnu, d'un désactivé et d'un mauvais mot de passe (aucun refus ne dit pourquoi) 2ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-41 — l'état est jugé à l'HEURE DE LA BASE rendue avec le membre : une échéance future de l'horloge réelle mais passée de la base est expirée 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > l'appareil : sans cookie d'appareil, un jeton neuf est offert (le magasin le crée) et le cookie d'appareil est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-3 — les cookies d'appareil présentés sont transmis HACHÉS (jamais en clair), et quand le magasin RÉUTILISE un appareil reconnu, aucun cookie d'appareil neuf n'est posé 1ms
+   ✓ login — la connexion par nom de compte et mot de passe (K-15) > les jetons de session et d'appareil sont transmis HACHÉS, et le jeton de session posé en cookie est le jeton en clair dont le hachage a été donné 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, session ET appareil dans la même demande au magasin, libellé d'appareil constant 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ rang 58 — le PIN tiré est HACHÉ avant d'atteindre le magasin : le magasin reçoit `PIN(4821)`, JAMAIS « 4821 » (R-2, MP-11) ; UN tirage, UN hachage 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ rang 58 — un refus du magasin (déjà activée, nom pris…) ne rend AUCUN PIN : l'exception remonte, aucune réponse 1ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > ⛔ MP-24 — un mot de passe COURANT est refusé (400 `STAFF_PASSWORD_COMMON`) AVANT tout hachage et tout appel au magasin — la valeur est DÉRIVÉE de la liste (une entrée qui passe déjà le schéma), jamais écrite de mémoire 2ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les quatre refus du magasin sont traduits en erreurs MÉTIER : 409 déjà activée, 403 e-mail non vérifié, 403 `FORBIDDEN` sans profil, 409 nom déjà pris 3ms
+   ✓ activate — K-14 : le propriétaire crée le Manager > les erreurs sont du bon type Nest (BadRequest / Conflict / Forbidden) : la couche HTTP ne traduit rien d'autre 2ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, vérifie le réel, compare à l'actuel pour la réutilisation, hache le nouveau, remplace SOUS la condition du hachage lu, et rend le membre 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-5 — la session COURANTE est transmise : le magasin termine les AUTRES, pas celle-ci 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ un mot de passe actuel FAUX : 400 `STAFF_CURRENT_PASSWORD_INVALID`, l'échec est consigné et compté, rien n'est remplacé 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ PENDANT LA PAUSE : le factice, jamais le vrai hachage, le MÊME refus, aucun échec consigné 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe IDENTIQUE à l'actuel : 400 `STAFF_PASSWORD_REUSED`, le compteur est remis à zéro (le bon mot de passe actuel n'est pas un échec), rien n'est remplacé 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > ⛔ MP-24 — un nouveau mot de passe COURANT est refusé AVANT toute réservation : un refus qui ne dit rien de l'actuel ne consomme pas d'essai 1ms
+   ✓ changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un remplacement qui a perdu une course (le hachage lu n'est plus le courant) : le même refus que le mot de passe actuel faux 1ms
+   ✓ logout — K-16 > termine la session COURANTE (celle du contexte posé par le garde) et demande l'effacement du cookie de session ; l'appareil reste 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche éteinte : `enabled: false`, aucun membre, et AUCUNE autre lecture 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > couche activée, sans cookie de session : `member: null` (jamais un 401), les membres reconnus sur ce poste sont listés par le hachage de leurs cookies d'appareil 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ la lecture de l'état ne PROLONGE JAMAIS la session : elle passe par `peekSession` (lecture seule), jamais par `touchSession` 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — l'état d'un membre dont le mot de passe est À CHANGER (temporaire, ou ordinaire expiré) dit `mustChangePassword: true` — jugé par `etatDuCompte`, pas copié de la colonne 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > ⛔ S-104 — un TEMPORAIRE EXPIRÉ n'a pas de session : l'état rend `member: null` (comme le garde le refuse), jamais un membre « connecté » qu'aucune route n'acceptera 1ms
+   ✓ state — K-17 : exemptée, jamais un refus > sans profil : couche éteinte, sans erreur 0ms
+   ✓ rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion : le PIN candidat est tiré et HACHÉ, le haché est passé à l'ouverture (`newPinHash`), le clair n'y est PAS 1ms
+   ✓ rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion, PIN INSTALLÉ par le magasin (`pinIssued: true`) : le corps porte le PIN en clair, une fois 1ms
+   ✓ rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion, PIN DÉJÀ VALABLE (`pinIssued: false`) : `pin: null` — le PIN n'est jamais relisible, aucune route ne le rend une seconde fois 0ms
+   ✓ rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ une connexion REFUSÉE ne rend aucun PIN : un mauvais mot de passe n'ouvre ni session ni PIN (le candidat tiré n'est jamais montré) 4ms
+   ✓ rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ le changement de mot de passe : le candidat haché est passé au magasin (`newPinHash`) ; PIN installé → il est rendu, sinon `pin: null` 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché RENDU par la réservation), AUCUN factice, une session s'ouvre, le cookie de session est posé et AUCUN cookie d'appareil neuf (l'appareil est celui du poste) 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ l'ORDRE est la règle : la salle, le membre, la RÉSERVATION de l'essai, ENSUITE la vérification du PIN, puis l'ouverture 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ MP-2 — la réservation reçoit la salle du BEARER, le membre visé et les cookies d'appareil HACHÉS (jamais en clair) 1ms
+   × pinLogin — la connexion par PIN (K-23) > ⛔ MP-2 — SANS cookie d'appareil, la réservation n'est PAS demandée : aucun essai n'est consommé (un porteur du seul Bearer ne verrouille pas un membre) — refus, UN calcul de HMAC factice 8ms
+     → un refus était attendu
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ le jeton de session posé est celui dont le HACHAGE a été donné à l'ouverture ; l'ouverture est CONDITIONNÉE au haché lu par la réservation (R-3, patron de D355), pour CE membre, dans CETTE salle 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ un PIN FAUX : UN calcul de HMAC réel, l'échec est consigné avec le compte de la réservation ET le haché lu (le verrou ne se pose que sur CE PIN), aucune session — même refus 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ la réservation REFUSÉE (essais épuisés, PIN verrouillé, expiré ou absent, appareil non reconnu) : le FACTICE, JAMAIS la vraie vérification (même avec le bon PIN), AUCUN échec consigné 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ le membre DÉSACTIVÉ et le TEMPORAIRE EXPIRÉ sont des comptes inconnus pour la connexion par PIN : aucune réservation (rien à compter), le factice, aucune session 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > un membre dont le mot de passe est À CHANGER (un temporaire valable, ou un mot de passe de 90 jours expiré) SE CONNECTE par PIN : la session n'ouvrira que le changement de mot de passe, et le corps le dit (`mustChangePassword: true`) 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — une ouverture REFUSÉE sous verrou (PIN remplacé, verrou posé, membre désactivé, appareil révoqué entre la vérification et l'ouverture) : le MÊME refus, UN calcul de HMAC, aucun cookie, aucune ligne d'échec 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — la couche ÉTEINTE, le membre inconnu, la salle sans profil, le membre désactivé, le temporaire expiré, l'appareil absent, la réservation refusée, le PIN faux et l'ouverture refusée : NEUF refus, UN SEUL corps, à l'octet — et UN calcul de HMAC chacun 4ms
+   ✓ pinLogin — la connexion par PIN (K-23) > ⛔ la couche ÉTEINTE n'ouvre aucune autre lecture : ni membre, ni réservation (la route sert à rouvrir une session, pas à sonder) 1ms
+   ✓ pinLogin — la connexion par PIN (K-23) > le membre est cherché dans la salle du BEARER, par l'identifiant du corps (jamais une salle venue du corps) 0ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 60 passed (61)
+   Start at  00:22:43
+   Duration  1.60s (transform 364ms, setup 0ms, collect 932ms, tests 80ms, environment 0ms, prepare 177ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff/staff-session.service.spec.ts
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff/staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ MP-2 — SANS cookie d'appareil, la réservation n'est PAS demandée : aucun essai n'est consommé (un porteur du seul Bearer ne verrouille pas un membre) — refus, UN calcul de HMAC factice
+AssertionError: un refus était attendu
+ ❯ corpsDuRefus src/staff/staff-session.service.spec.ts:81:17
+
+ ❯ src/staff/staff-session.service.spec.ts:614:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
