@@ -97,6 +97,11 @@ describe("etatDuPin — absent, valide, expiré, verrouillé", () => {
     expect(etatDuPin(pin({ hasPin: false, pinExpiresAt: ms(-JOUR) }), MAINTENANT)).toBe(StaffPinState.ABSENT);
   });
 
+  it("⛔ l'ABSENCE l'emporte sur TOUT (écrit en tête de la règle) : un PIN absent dont le verrou ou le compteur seraient posés se lit ABSENT, jamais VERROUILLÉ — ajouté APRÈS la découverte de r58 (la cible E-3 était muette : aucune assertion ne portait cette précédence)", () => {
+    expect(etatDuPin(pin({ hasPin: false, pinExpiresAt: null, pinLockedAt: ms(-MINUTE) }), MAINTENANT)).toBe(StaffPinState.ABSENT);
+    expect(etatDuPin(pin({ hasPin: false, pinExpiresAt: null, pinFailedCount: STAFF_LIMITS.PIN_MAX_FAILURES }), MAINTENANT)).toBe(StaffPinState.ABSENT);
+  });
+
   it("⛔ un PIN valable, avec zéro, un ou deux échecs comptés (le plafond moins un) → VALID", () => {
     for (let echecs = 0; echecs < STAFF_LIMITS.PIN_MAX_FAILURES; echecs += 1) {
       expect(etatDuPin(pin({ pinFailedCount: echecs }), MAINTENANT), `${echecs} échec(s)`).toBe(StaffPinState.VALID);

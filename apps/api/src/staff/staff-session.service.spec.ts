@@ -572,9 +572,12 @@ const AVEC_APPAREIL = { session: undefined, devices: [{ name: "zwadj_dv_abcd1234
 describe("pinLogin — la connexion par PIN (K-23)", () => {
   it("⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché RENDU par la réservation), AUCUN factice, une session s'ouvre, le cookie de session est posé et AUCUN cookie d'appareil neuf (l'appareil est celui du poste)", async () => {
     const m = monde({}, {}, { verify: (pin, hash) => pin === "4821" && hash === "PIN-HASH-ACTUEL" });
-    const r = await m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    // Les arguments de `verify` se lisent AVANT le résultat : un service qui les échange rend un 401 (la vérification échoue) — l'assertion d'arguments doit être atteinte, pas masquée par l'exception (cible S-5 de r58, muette sinon).
+    const appel = m.service.pinLogin(user, CORPS_PIN, AVEC_APPAREIL);
+    await appel.catch(() => undefined);
     expect(m.pins.verify).toHaveBeenCalledTimes(1);
     expect(m.pins.verify).toHaveBeenCalledWith("4821", "PIN-HASH-ACTUEL");
+    const r = await appel;
     expect(m.pins.verifyAgainstDummy).not.toHaveBeenCalled();
     expect(r.body).toEqual({ member: MEMBRE });
     expect(r.cookies.session).toBeTypeOf("string");
