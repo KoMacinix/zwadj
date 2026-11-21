@@ -135,6 +135,57 @@ AGENTS.md
 - **Hors lot** (consigne, R-8) : les écrans du personnel et de verrouillage (L36-4 — où il faudra mesurer le brouillon de D345 au changement de membre, la saisie masquée de l'écran de verrouillage et « si une AUTRE personne déverrouille, la saisie est effacée »), le recours d'un Manager seul, la réactivation et le changement de rôle, l'intermittence de l'amorçage (1 e), la recherche d'annuaire (L36-5).
 - **`neutralisation/lancer-campagnes.py`** n'est pas modifié ; les campagnes que le lot touche sont **rejouées**, et ne sont modifiées que si une ancre est périmée (conditionnel ci-dessous).
 
+## E. Les citations — recopiées PAR SCRIPT depuis les fichiers (jamais depuis la consigne ni de mémoire)
+
+⛔ Chaque ligne ci-dessous est celle du fichier cité, à l'identique : le script `docs/preuves/D356/recopier-citations.py` (une PIÈCE, jamais promue en instrument ; **versée au commit suivant, par l'extension 1** — le premier commit du lot est la table SEULE) cherche la ligne par son début, abandonne si elle n'est pas trouvée exactement une fois, et l'insère ; le contrôle d'après la retrouve dans le fichier cible, relu.
+
+**DR5, les lignes du PIN — `ZWADJ_CONTINUITE.md`, bloc DR1 à DR8 :**
+
+- PIN : 4 chiffres tirés par un générateur cryptographique ; PIN triviaux refusés ; longueur = paramètre ; stocké en HMAC-SHA-256 avec un secret serveur HORS base (variable d'environnement à ajouter à PROD_REQUIRED_EXPLICIT) ; jamais en clair, jamais dans un journal ni dans l'audit ; montré UNE fois, Cache-Control: no-store. (10 000 valeurs se cassent hors ligne en une seconde sans secret.)
+- Le PIN ne vaut qu'avec le jeton d'APPAREIL (cookie HttpOnly posé après une connexion nom de compte + mot de passe sur ce poste). (Sans lui, un PIN seul est un mot de passe de 4 chiffres ; NIST SP 800-63B-4 §3.2.10 : secret d'activation d'un authentifieur lié à l'appareil, 4 caractères minimum, 10 essais au plus. Même raisonnement, pas la lettre : ne pas écrire « conforme NIST ».)
+- 3 essais : compteur ATOMIQUE en base (UPDATE … RETURNING), jamais lecture puis écriture ; test à 20 essais parallèles = exactement 3 comptés. Au 3ᵉ : pin_locked_at ; déblocage seulement par nom de compte + mot de passe, qui génère un nouveau PIN.
+- Expiration : mot de passe 90 jours et PIN 90 jours (paramètres, pas des colonnes figées ; la norme NIST déconseille l'expiration périodique, c'est la règle de la salle) ; mot de passe temporaire (création ou réinitialisation) : généré par défaut, 7 jours, changement obligatoire ; une réinitialisation par le Manager révoque sessions, appareils et PIN.
+- Journal : audit_logs.actor_member_id sur toute action de personnel (connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation, recherche d'annuaire, création et modification de fiche).
+
+**R-6 de D341 — l'échéance d'un appareil, que ce lot ramène sous `pin_expires_at` :**
+
+- R-6. Avant qu'un PIN existe (ce lot), l'échéance d'un appareil est la durée du PIN (90 jours, même paramètre) ; L36-3b la ramène sous pin_expires_at. Motif : la tranche dit « jamais au-delà de pin_expires_at », et pin_expires_at est NULL tant qu'aucun PIN n'existe.
+
+**Cadrage D340, § 4 — les modes de défaillance « P » (`docs/preuves/D340/cadrage.md`) :**
+
+| MP-1 | 20 essais de PIN parallèles = **exactement 3 comptés** | compteur atomique **réservé AVANT la vérification** (`UPDATE … SET pin_failed_count + 1 … WHERE pin_locked_at IS NULL AND pin_failed_count < 3 RETURNING`) : seuls les 3 premiers vérifient ; ⚠ un compteur incrémenté APRÈS vérification laisserait N requêtes parallèles faire N vérifications | `CHECK pin_failed_count BETWEEN 0 AND 3` (dans la tranche) | int-spec : 20 requêtes concurrentes, 3 `pin_failed_count`, 3 vérifications HMAC (espion), 17 refus « verrouillé » non comptés | P |
+| MP-2 | un PIN sans jeton d'appareil | la route refuse sans cookie `zwadj_dv_*` reconnu ; le PIN seul n'est jamais lu | `token_hash UNIQUE` | int-spec : PIN correct sans cookie → refus, compteur inchangé | P |
+| MP-3 | le jeton d'appareil d'un **autre membre** / d'**une autre salle** | l'appareil trouvé doit avoir `member_id` = le membre visé **et** ce membre `pro_profile_id` = celui du compte commun (JWT) | FK `member_id`, FK `pro_profile_id` | int-spec à deux salles, deux membres : quatre croisements, tous refusés | 1 (salle) · P (membre) |
+| MP-10 | PIN trivial refusé | le générateur re-tire tant que le tirage est trivial (liste fermée : répétés, suites, `1234`…) | — | unit : tirage borné, aucun trivial sur 100 000 tirages | P |
+| MP-11 | PIN / mot de passe / jeton **jamais en clair** hors de son unique affichage | une seule route rend le PIN (`Cache-Control: no-store`) ; le journal n'en porte aucun ; les journaux de requête rédigent `req.headers.authorization` et `req.headers.cookie` (`app.module.ts:30`) **mais PAS le `Set-Cookie` sortant : mesuré (M27), il est journalisé en clair** — c'est un défaut **existant** pour `zwadj_rt`, que les deux cookies neufs hériteraient (S-112, SIG-1) | — | int-spec : tout le corps des lignes `audit_logs` et **la sortie réelle du journal des requêtes** testés contre les valeurs posées en cookie ; garde de **source** : aucun `logger.*` ne reçoit un champ secret | 1 · 2 · P |
+| MP-12 | secret HMAC **absent en production** : démarrage refusé | `PROD_REQUIRED_EXPLICIT` + `min(32)` | — | `env.spec.ts` : production sans la variable → exception qui nomme la variable | P |
+| MP-15 | verrouillage au 3ᵉ échec ; déblocage **par nom de compte + mot de passe seulement**, avec un **nouveau PIN** | `pin_locked_at` posé par la réservation n° 3 ; seule la connexion par mot de passe l'efface et génère le PIN ; les sessions du membre prennent `PIN_LOCKED` | — | int-spec : verrou, PIN correct refusé, mot de passe → PIN neuf, ancien PIN mort | P |
+| MP-26 | PIN **expiré** (90 j) | `pin_expires_at < now()` → connexion par PIN refusée, PIN neuf seulement par mot de passe | — | int-spec | P |
+| MP-27 | appareil **expiré ou révoqué** | `expires_at`, `revoked_at` testés dans la même requête que `token_hash` | `expires_at ≤ pin_expires_at` : **inexprimable en SQL entre deux tables** → applicatif | int-spec | P |
+| MP-28 | **cookies d'appareil en excès** (plus de 8) | borne dure de lecture (§ 2.2) | — | unit + int-spec | P |
+| MP-33 | **audit** : une ligne par action de personnel, `actor_member_id` renseigné, **aucune donnée secrète** | écrite dans la **même transaction** que l'action (comme la promotion de D339) | FK `actor_member_id` `ON DELETE SET NULL` (dans la tranche) | int-spec : une ligne par action ; garde de source : `before`/`after` ne reçoivent que des objets listés | 1 · 2 · P |
+| MP-36 | **débit** des routes neuves | clés `AUTH_THROTTLE` neuves (`staffLogin`, `staffPin`, `staffActivate`) — **le même levier** (D128) | — | `throttle.int-spec.ts` étendu | 1 · P |
+
+**Cadrage D340, § 5.1 — les contrats K-14, K-15, K-18 (amendées) et K-23 :**
+
+| **K-14** | `POST /pro/staff/activate` | propriétaire (compte commun, e-mail vérifié), exemptée | crée le Manager, pose `staff_layer_enabled_at`, un appareil et une session ; rend le membre (et, en 3b, le PIN **une fois**) | 1 |
+| **K-15** | `POST /pro/staff/login` | un membre, exemptée | nom de compte + mot de passe → appareil (si nouveau sur ce poste) + session ; `mustChangePassword` ; (3b : PIN neuf si absent, expiré ou verrouillé) | 1 |
+| **K-18** | `POST /pro/staff/password` | le membre (admis même en « changement obligatoire ») | change son mot de passe ; fin des AUTRES sessions | 1 |
+| **K-23** | `POST /pro/staff/pin-login` | un membre reconnu, exemptée | `{ memberId, pin }` + cookie d'appareil → session ; compteur atomique | P |
+
+**Cadrage D340, § 6.3 — la ligne du lot 3b :**
+
+| **L36-3b · « le PIN »** | secret HMAC et refus au démarrage, générateur, compteur atomique de 3 essais, verrouillage et déblocage, expiration, route de connexion par PIN ; amendement des réponses de K-14, K-15, K-18 (le PIN rendu une fois) | K-23 (1) + 3 amendées | ≈ 400 | ≈ 1 300 | ≈ 0,6 × |
+
+**Cadrage D340, § 9 — les limites 7 et 8 :**
+
+7. **Une limite de débit par IP sur le PIN** pénalise les foyers qui partagent une adresse (CGNAT, `auth.throttle.ts` le dit déjà) : la protection du PIN est le compteur **par membre**, pas l'IP.
+8. **Faire tourner le secret HMAC invalide tous les PINs** (chaque membre se reconnecte par mot de passe) — c'est voulu, et à écrire dans la procédure de mise en service.
+
+**D355, § 5 — S-260, que la réponse de Ko (1 d) transforme en R-6 :**
+
+- **S-260** — **`quote.promote` n'écrit pas `actorMemberId` : relevé, rapporté, NON corrigé.** Hors de la liste de DR5 (la promotion n'y figure pas) ; « un défaut croisé se rapporte ». *Pour Ko : une question possible — DR5 dit « toute action de personnel » : la liste entre parenthèses est-elle limitative ? Entrée de backlog, à ordonner.*
+
 ## Fichiers CONDITIONNELS (leur existence ou leur modification dépend d'un résultat)
 
 Le rapport dit lesquels existent.
@@ -181,4 +232,11 @@ neutralisation/neutralize-r43.py
 
 ## Extensions de la table
 
-Aucune à l'ouverture.
+**Extension 1 — avant le commit des pièces du premier versement** (la lecture adverse de la consigne ET du cadrage, la carte, la règle des portes, le premier audit de secrets) : le script de recopie des citations (la section E ci-dessus), la première passe de l'instrument de la lecture adverse (gardée à côté de la seconde : elle portait trois défauts d'instrument, confrontés à la source brute avant d'être crus, D275), l'audit de secrets « a » et son tri. Chemins complets :
+
+```
+docs/preuves/D356/recopier-citations.py
+docs/preuves/D356/lecture-adverse/confronter-sortie-passe-1.txt
+docs/preuves/D356/audit-secrets-d356a.txt
+docs/preuves/D356/tri-audit-d356a.txt
+```
