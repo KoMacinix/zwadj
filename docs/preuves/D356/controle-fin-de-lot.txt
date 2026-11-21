@@ -1,0 +1,18 @@
+D356 — contrôle de fin de lot (D288, D328, D334 item 5), écrit APRÈS la poussée ; SHA de départ b54e383
+HEAD e8e3acdf1c23cd30c2bb27be35569b29fc61b123 · origin/main e8e3acdf1c23cd30c2bb27be35569b29fc61b123
+commits du lot (--first-parent) : 16
+1) premier commit 0ac8556 fichiers : ['docs/preuves/D356/table-ouverture.md'] → TABLE SEULE
+2) fichiers du diff 327 · déclarés par la table (chemins complets, extensions comprises) 344 · NON déclarés 0 (attendu 0) []
+3) sortie de la lecture adverse versée par 1c4dc4f ; premier commit d'un .md d'autorité e8e3acd → AVANT (1 commit(s) d'autorité)
+4) pièces des rouges 107547b · premier commit de code 4f18431 → LES ROUGES PRÉCÈDENT
+    rouge-unit empreintes sha256 : 10
+    rouge-client empreintes sha256 : 1
+    rouge-int empreintes sha256 : 12
+6) 0ac8556 docs(rang-58): D356 - table d'ouverture de L36-3b (le PIN, cot → table seule
+6) dc51096 docs(rang-58): D356 - extension 1 de la table d'ouverture, SEU → table seule
+6) dcaedf6 docs(rang-58): D356 - extension 2 de la table d'ouverture, SEU → table seule
+6) db587ad docs(rang-58): D356 - extension 3 de la table d'ouverture, SEU → table seule
+6) 69590a7 docs(rang-58): D356 - extension 4 de la table d'ouverture, SEU → table seule
+6) f38c5af docs(rang-58): D356 - extension 5 de la table d'ouverture, SEU → table seule
+6) d441a97 docs(rang-58): D356 - extension 6 de la table d'ouverture, SEU → table seule
+7) relevé de CLÔTURE de apps/api/.env (nombres seulement, aucune valeur lue à l'écran) : lignes parcourues 39 · lignes qui commencent par STAFF_PIN_HMAC_SECRET= : 0 (à l'ouverture : 39 · 0) — 21/11/2026 07:47
