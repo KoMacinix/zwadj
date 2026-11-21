@@ -240,3 +240,21 @@ docs/preuves/D356/lecture-adverse/confronter-sortie-passe-1.txt
 docs/preuves/D356/audit-secrets-d356a.txt
 docs/preuves/D356/tri-audit-d356a.txt
 ```
+
+**Extension 2 — avant le commit des pièces des ROUGES** (D334, item 5 : le commit des pièces de rouge PRÉCÈDE le premier commit de code). Les sorties lues contre l'état d'avant, avec l'empreinte sha256 de chaque fichier de test joué ; les deux outils qui les ont jouées et lues (copies adaptées des pièces de D355, jamais promues en instruments) ; la lecture des rouges ; les deux passes de la famille « intégration » antérieures à la finale (la première tombait à la collecte par une faute de mes tests, la seconde portait onze `TypeError` de matcher : gardées, corrigées, rejouées) ; l'audit de secrets « b » et son tri. Chemins complets :
+
+```
+docs/preuves/D356/rouges/jouer-rouges.py
+docs/preuves/D356/rouges/lire-rouges.py
+docs/preuves/D356/rouges/rouge-unit.txt
+docs/preuves/D356/rouges/rouge-client.txt
+docs/preuves/D356/rouges/rouge-int.txt
+docs/preuves/D356/rouges/passe-1/rouge-int.txt
+docs/preuves/D356/rouges/passe-2/rouge-int.txt
+docs/preuves/D356/rouges/lecture-rouge-unit.txt
+docs/preuves/D356/rouges/lecture-rouge-client.txt
+docs/preuves/D356/rouges/lecture-rouge-int.txt
+docs/preuves/D356/rouges/lecture-des-rouges.md
+docs/preuves/D356/audit-secrets-d356b.txt
+docs/preuves/D356/tri-audit-d356b.txt
+```
