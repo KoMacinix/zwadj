@@ -1,0 +1,83 @@
+docs/preuves/D355/rouges/rouge-unit.txt — 845 lignes parcourues
+   Test Files  7 failed (7)
+   Tests  19 failed | 234 passed (253)
+   tests en échec lus : 19 · par classe de première ligne : {'AssertionError': 19}
+   fichiers tombés (collecte ou crochet) : 1 · par classe : {'import introuvable (collecte)': 1}
+      · src/clients/client-record-audit.spec.ts — import introuvable (collecte)
+docs/preuves/D355/rouges/rouge-int.txt — 470 lignes parcourues
+   Test Files  2 failed (2)
+   Tests  20 failed | 7 passed (27)
+   tests en échec lus : 20 · par classe de première ligne : {'AssertionError': 20}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+CALIBRATION : rouge-unit de D355 → 19 AssertionError + 1 fichier tombé : True ; rouge-int de D355 → 20 AssertionError, aucun fichier tombé : True
+calibration : les deux cas ont rendu leur verdict attendu.
+
+docs/preuves/D356/rouges/rouge-int.txt — 1277 lignes parcourues
+   Test Files  7 failed (7)
+   Tests  64 failed | 33 passed (97)
+   tests en échec lus : 64 · par classe de première ligne : {'AssertionError': 48, 'TypeError': 12, 'PrismaClientKnownRequestError': 1, 'import introuvable (collecte)': 3}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+      ✗ [AssertionError] quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > le MANAGER promeut : la ligne p
+      ✗ [AssertionError] quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ un EMPLOYÉ promeut : la ligne
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > la connexion par PIN : UNE ligne
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un échec : UNE ligne `staff.pin_
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le TROISIÈME échec : la ligne d'
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : p
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lign
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ le JOURN
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lo
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lo
+      ✗ [AssertionError] staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > ⛔ AU COMMIT — la sessi
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > 201 : un PIN de quatre chiffres non trivial dans la 
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ le PIN est STOCKÉ en HMAC avec le secret (le haché
+      ✗ [TypeError] staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ l'appareil créé à l'activation n'est jamais valabl
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE conne
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN EXPIRÉ e
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN VERROUIL
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > le compte au PLAF
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 — la réinitialisation efface les CINQ colonnes (haché, génération, éc
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 sur un PIN VERROUILLÉ : le verrou est levé avec le PIN (le membre se 
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-22 — la désactivation efface les CINQ colonnes du PIN
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se
+      ✗ [AssertionError] staff-pin-issue.int-spec.ts > ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre SANS PIN valable : le PIN neuf et l'
+      ✗ [PrismaClientKnownRequestError] staff-pin-issue.int-spec.ts > ⛔ le plafond d'essais est celui de la CHECK de la base (l'autorité est la migration, D186) > `pin_failed_count = PIN_MAX
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait le
+      ✗ [import introuvable (collecte)] staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés 
+      ✗ [import introuvable (collecte)] staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés 
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séque
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENT
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séque
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENT
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un P
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un A
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le P
+      ✗ [TypeError] staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ E
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de 
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : 
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `d
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un te
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `S
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > un PIN FAUX sans appareil, dix fois : le compteu
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) 
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — un PIN EXPIRÉ : 401
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire d
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil EXPIRÉ 
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil RÉVOQUÉ
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTU
+      ✗ [import introuvable (collecte)] staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, ve
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN ju
+      ✗ [AssertionError] staff-pin.int-spec.ts > la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, 
+      ✗ [AssertionError] staff-pin.int-spec.ts > la validation du corps ne consomme rien > sans Bearer : 401 `UNAUTHENTICATED` (la route est derrière `JwtAuthGuard`), ja
+      ✗ [TypeError] staff-pin.int-spec.ts > ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > six états : l
+      ✗ [AssertionError] staff-pin.int-spec.ts > ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉR
+      ✗ [AssertionError] staff-session-guard.int-spec.ts > le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 55 routes atteignables par u
+      ✗ [AssertionError] staff-session-guard.int-spec.ts > le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE :
+      ✗ [AssertionError] throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le thr
+      ✗ [TypeError] throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable défin

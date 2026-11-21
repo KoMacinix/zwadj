@@ -1,0 +1,1276 @@
+# D356 — rouge — famille « int »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts test/int/staff-pin-issue.int-spec.ts test/int/staff-pin-race.int-spec.ts test/int/staff-pin-audit.int-spec.ts test/int/quote-promote-actor.int-spec.ts test/int/throttle.int-spec.ts test/int/staff-session-guard.int-spec.ts
+# code de sortie : 1 ; durée : 171 s
+# empreintes sha256 des fichiers de test joués et de leurs aides (octets de l'arbre de travail au moment du jeu)
+#   c8572aa33ebcc43448b516dc0c8b55f47430bc00a04623041ee24f8fc3780f10  apps/api/test/int/helpers.ts
+#   7882a5dafa207426c7740859794716576a25bd342b22c9e0a401cdfd6ffc515e  apps/api/test/int/log-capture.ts
+#   16158aae774ccc74538acdb0eb5f3dd4cde715f9311c358c475847e3e84a5d4a  apps/api/test/int/quote-promote-actor.int-spec.ts
+#   60564351f2774a4b2af62299f80fc176e2ec54f66f9abbbeb4d425157610494e  apps/api/test/int/row-lock.ts
+#   719b1eeedb2b3fff740ade81acb5a95e66a8de587cc86c8ed6344129647b268d  apps/api/test/int/setup-env.ts
+#   78a53b9e7ffa54b5e65b74ff64983749cd397a173a35ec32e81a3150b114bcb4  apps/api/test/int/staff-helpers.ts
+#   c159501ca51a14c6ecad6db526e77a6e060755ab743534bbddfa7e7a3cffd7d8  apps/api/test/int/staff-pin-audit.int-spec.ts
+#   e717aacfb82973b15cce81c1c2f7b66c75f817e5da2008bf59e847abfed4ef03  apps/api/test/int/staff-pin-issue.int-spec.ts
+#   085ad8468a7cfec61283b3647873c4a8c3ff840402261674602f975fa3bc1bab  apps/api/test/int/staff-pin-race.int-spec.ts
+#   97bd907332afe258b66db166df86f65bacb8fe856a8bb4f565c8c5a09af9175e  apps/api/test/int/staff-pin.int-spec.ts
+#   00030a82176b02f67594893cfd1f3157afcc3496f2c0c4f1587bc329718a9033  apps/api/test/int/staff-session-guard.int-spec.ts
+#   aa1831de5c410002e59418d3bbd981a0bc14ea205ce5f040e53d7b6bdd7a3075  apps/api/test/int/throttle.int-spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/staff-pin.int-spec.ts (23 tests | 23 failed) 31560ms
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de plus, `last_login_at` écrit, le compteur à zéro ; le cookie de session est posé (HttpOnly, Strict, chemin /api/v1, sans échéance) et AUCUN cookie d'appareil neuf 1781ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:00.520Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : l'état (K-17) la rend, le membre y est 1345ms
+     → expected 404 to be 200 // Object.is equality
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `device_id` est celui du cookie présenté, et son `last_used_at` est écrit 1216ms
+     → `last_used_at` de l'appareil est écrit à la connexion: expected null not to be null
+   × ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un temporaire valable) SE CONNECTE par PIN : le corps dit `mustChangePassword: true` 862ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:03.954Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `STAFF_INVALID_CREDENTIALS`, aucun cookie posé, aucune session, le compteur INCHANGÉ 1407ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > un PIN FAUX sans appareil, dix fois : le compteur ne bouge pas et le membre n'est JAMAIS verrouillé (le DoS par le seul Bearer n'existe pas) 1249ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) l'appareil d'un AUTRE membre de la même salle ; (ii) l'appareil de CE membre sous le Bearer d'une AUTRE salle ; (iii) l'identifiant d'un membre d'une autre salle, sous le Bearer de la nôtre ; (iv) l'appareil d'une autre salle 2470ms
+     → (i) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:09.070Z"}: expected 404 to be 401 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > un PIN faux compte UN essai : 401, le compteur monte à un, le verrou n'est pas posé 1276ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : 200 (« trois essais » ne devient pas deux), le compteur revient à ZÉRO, aucun verrou 1205ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise 1164ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ VERROUILLÉ, le BON PIN est refusé (401) et ne compte pas : le compteur reste à trois, aucune session 1218ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le DÉBLOCAGE est le mot de passe : la connexion par nom de compte et mot de passe d'un membre verrouillé rend un PIN NEUF, remet le compteur à zéro et lève le verrou ; l'ANCIEN PIN est mort, le NEUF sert 1479ms
+     → un PIN est rendu — {"member":{"id":"01a1fb83-b2b6-7b37-98f0-b4ea8a970838","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — un PIN EXPIRÉ : 401, aucun essai consommé ; le bon PIN d'un membre dont le PIN a expiré ne passe pas 1418ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire dans UNE seconde SERT encore (D55 : la borne se dérive du cas réel) 1283ms
+     → expected 404 to be 200 // Object.is equality
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil EXPIRÉ : 401, aucun essai consommé 1284ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil RÉVOQUÉ : 401, aucun essai consommé 1334ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTURE est huit cookies d'appareil : le bon est le HUITIÈME → 200 ; le NEUVIÈME → 401 (au-delà de la borne, il n'est même pas lu) 1264ms
+     → le bon cookie est le huitième : lu: expected 404 to be 200 // Object.is equality
+   × ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, verrouillé, expiré, appareil absent, membre désactivé, membre d'une autre salle, temporaire expiré, couche éteinte) : UN corps à l'octet, aucun cookie, UN calcul de HMAC chacune 1273ms
+     → Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts'
+   × ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN juste n'en consomme aucun ; les trois essais sont comptés par la RÉSERVATION, avant la vérification (la vérité est la base) 1192ms
+     → expected +0 to be 1 // Object.is equality
+   × la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, aucun essai consommé, aucune ligne d'audit d'échec 1430ms
+     → {"memberId":"01a1fb83-dc1d-7244-a0f5-520b3e204ddf","pin":"12"}: expected 404 to be 400 // Object.is equality
+   × la validation du corps ne consomme rien > sans Bearer : 401 `UNAUTHENTICATED` (la route est derrière `JwtAuthGuard`), jamais une réponse du personnel 1201ms
+     → expected 404 to be 401 // Object.is equality
+   × ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > six états : la base réserve un essai SI ET SEULEMENT SI la règle pure dit VALID (c'est ce qui rend « UNE copie de la règle » vrai quand la décision atomique est en SQL) 1375ms
+     → (0 , etatDuPin) is not a function
+   × ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉRENT posé par `poserPin` n'est pas celui d'un autre : « 4821 » et « 9136 » ne se vérifient pas l'un pour l'autre (le haché est celui du PIN, avec le secret) 1346ms
+     → expected 404 to be 401 // Object.is equality
+ ❯ test/int/staff-pin-issue.int-spec.ts (18 tests | 14 failed) 20668ms
+   × ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > 201 : un PIN de quatre chiffres non trivial dans la réponse, `Cache-Control: no-store`, rien d'autre ne change de forme (le membre est rendu comme avant) 928ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-15f3-7b76-9485-cf1f0c2da965","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ le PIN est STOCKÉ en HMAC avec le secret (le haché que le hacheur de l'application calcule), jamais en clair : 64 hexadécimaux, la durée de 90 jours, le compteur à zéro, aucun verrou — et le PIN n'est NULLE PART dans les tables du personnel ni dans l'audit 566ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-183d-7787-a194-1e6b49957458","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ l'appareil créé à l'activation n'est jamais valable au-delà du PIN : leurs échéances sont ÉGALES (même transaction, même `now()`) 484ms
+     → Cannot read properties of null (reading 'getTime')
+   ✓ ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > l'état (K-17) ne rend JAMAIS le PIN : sa forme est celle d'avant (`enabled`, `member`, `knownMembers`)  479ms
+   × ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE connexion d'un membre (aucun PIN) rend un PIN, `no-store`, stocké en HMAC, valable 90 jours ; la SECONDE (PIN valable) rend `pin: null` et ne touche à aucune colonne 770ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-1e81-771f-ad22-59c4c7f64e95","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+   × ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN EXPIRÉ est remplacé par un PIN NEUF (l'ancien ne sert plus, l'échéance repart pour 90 jours) — et ce n'est PAS un déblocage : aucune ligne `staff.pin_unlock` 1404ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-219c-7426-bb62-d78f7d58c0f7","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN VERROUILLÉ est remplacé : compteur à zéro, verrou levé, et UNE ligne `staff.pin_unlock` pour ce membre — le déblocage par le mot de passe 1430ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-26e9-77c8-9421-b4e2cf9648bf","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > le compte au PLAFOND sans verrou posé (un arrêt entre la 3ᵉ réservation et l'écriture du verrou) est aussi un PIN verrouillé : la connexion le remplace et écrit le déblocage 1551ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-2cf9-7a97-a8ee-60a5065a0ad9","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+   ✓ ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un mot de passe FAUX ne rend AUCUN PIN et ne touche à aucune colonne du PIN  1540ms
+   × ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `no-store` ; PIN ABSENT : un PIN neuf est rendu et installé, `no-store` 1313ms
+     → le membre a reçu son PIN à sa première connexion (précondition): expected null not to be null
+   ✓ ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > un changement REFUSÉ (mot de passe actuel faux) ne rend aucun PIN  1446ms
+   × ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 — la réinitialisation efface les CINQ colonnes (haché, génération, échéance, compteur, verrou), révoque les appareils, termine les sessions : l'ancien PIN ne sert plus 1411ms
+     → expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+   × ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 sur un PIN VERROUILLÉ : le verrou est levé avec le PIN (le membre se reconnecte par son temporaire et reçoit un PIN neuf) 1600ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-491a-7feb-8d9f-c4dbea1f8c82","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+   × ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-22 — la désactivation efface les CINQ colonnes du PIN 1485ms
+     → expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+   ✓ ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > une désactivation RÉPÉTÉE (déjà désactivé) n'écrit rien : le PIN posé APRÈS la première désactivation n'est pas effacé par la seconde (aucune écriture)  1273ms
+   × ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se connecte depuis un poste NEUF : l'appareil créé expire AVEC le PIN, pas 90 jours plus tard 1323ms
+     → l'appareil neuf expire AU PLUS TARD avec le PIN: expected 1802997118116 to be less than or equal to 1796085117980
+   × ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre SANS PIN valable : le PIN neuf et l'appareil neuf naissent dans la même transaction, avec la même échéance 791ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-5f1f-752c-828b-7ae510ef54e8","accountName":"Lina","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+   × ⛔ le plafond d'essais est celui de la CHECK de la base (l'autorité est la migration, D186) > `pin_failed_count = PIN_MAX_FAILURES` est ACCEPTÉ ; `PIN_MAX_FAILURES + 1` est REFUSÉ par la base (SQLSTATE 23514, `pro_staff_members_pin_failed_count_range`) 537ms
+     → 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `23502`. Message: `null value in column "pin_failed_count" of relation "pro_staff_members" violates not-null constraint`
+ ❯ test/int/staff-pin-audit.int-spec.ts (12 tests | 10 failed) 12564ms
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > la connexion par PIN : UNE ligne `staff.pin_login` — le compte commun et son rôle, le MEMBRE, l'entité est la SESSION, la charge utile ne porte que le membre, jamais `before` 1670ms
+     → {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:32:09.773Z"}: expected 404 to be 200 // Object.is equality
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un échec : UNE ligne `staff.pin_login_failed` par essai compté, avec le compte d'échecs de la réservation (1, 2) — jamais le PIN tenté 1261ms
+     → expected [] to deeply equal [ { failedCount: 1 }, …(1) ]
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le TROISIÈME échec : la ligne d'échec ET UNE ligne `staff.pin_lock` (le compte et le nombre de sessions terminées — celui des sessions qui ont réellement pris la fin `PIN_LOCKED`) 1207ms
+     → expected +0 to be 3 // Object.is equality
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.pin_unlock` (« par le mot de passe »), le membre pour acteur ; ni un PIN absent, ni un PIN expiré n'en écrivent 1303ms
+     → expected [] to have a length of 1 but got +0
+   ✓ ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un refus AVANT la réservation (aucun appareil, membre inconnu, PIN verrouillé) n'écrit AUCUNE ligne du PIN : on ne journalise pas un essai qui n'a pas eu lieu  1209ms
+   × ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : pour chacune des quatre actions, `after` ne porte QUE les clés listées, `before` est nul, l'acteur est renseigné (une clé de plus serait un secret en puissance) 1371ms
+     → les quatre actions ont été exercées: expected [] to deeply equal [ 'staff.pin_lock', …(3) ]
+   ✓ ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > BRAS DE CONTRÔLE — le détecteur VOIT un PIN, un haché et un secret plantés (un détecteur qui répond « rien » à tout passerait la garde) 3ms
+   × ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lignes d'audit (toutes colonnes, JSON compris) d'un parcours COMPLET — activation, connexion, échecs, verrouillage, déblocage, PIN juste — ne portent ni le PIN posé, ni le PIN rendu, ni leurs hachés, ni le secret 523ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-a502-7aa6-8bbd-a232b981bab1","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ le JOURNAL RÉEL de l'application démarrée : ni le PIN posé, ni le PIN rendu par K-14 et K-15, ni leurs hachés, ni le secret — sur la connexion par PIN (juste et fausse), l'activation, le déblocage 471ms
+     → un PIN est rendu — {"member":{"id":"01a1fb84-a6e1-789b-9739-0732d39eeb26","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+   × ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_login` refusée par la base : la connexion échoue (≥ 500), AUCUNE session n'est ouverte, `last_login_at` n'est pas écrit 1052ms
+     → un journal en échec annule l'action: expected 404 to be greater than or equal to 500
+   × ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lock` refusée : le VERROU n'est pas posé et les sessions ne sont pas terminées (pas de verrou sans sa ligne) — et l'échec du même essai est annulé avec lui (pas de ligne sans action) 1059ms
+     → le troisième échec, dont le verrouillage ne peut pas s'écrire: expected 404 to be greater than or equal to 500
+   × ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > ⛔ AU COMMIT — la session insérée refusée par un déclencheur DIFFÉRÉ : la ligne `staff.pin_login`, écrite dans la même transaction, DISPARAÎT avec elle (une ligne écrite hors transaction y survivrait) 1197ms
+     → expected 404 to be greater than or equal to 500
+ ❯ test/int/staff-pin-race.int-spec.ts (11 tests | 11 failed) 14100ms
+   × ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro 1612ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées 1137ms
+     → Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-race.int-spec.ts'
+   × ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro 1162ms
+     → Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-race.int-spec.ts'
+   × ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séquentiel : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le haché lu : REFUSÉE, aucune session de plus, aucune ligne `staff.pin_login` 1231ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le PIN est effacé par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant) 1187ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE 1337ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND, puis est REFUSÉE 1308ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un PIN NEUF remplace le haché (le déblocage par mot de passe) pendant que l'ouverture attend : REFUSÉE — l'ancien PIN est mort, même vérifié avant 1281ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3) 1294ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le PIN EXPIRE pendant que l'ouverture attend : REFUSÉE (l'échéance est relue sous verrou, avec l'heure de la base) 1161ms
+     → magasin.reservePinAttempt is not a function
+   × ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ ENTRELACEMENT FORCÉ — l'appareil est révoqué par une transaction tenue hors du service ; l'ouverture (qui a déjà passé le CAS du membre) ATTEND sur l'appareil, puis est REFUSÉE ; RIEN n'est écrit : ni session, ni `last_login_at`, ni remise à zéro du compteur, ni ligne `staff.pin_login` 1094ms
+     → magasin.reservePinAttempt is not a function
+ ❯ test/int/throttle.int-spec.ts (11 tests | 2 failed) 10180ms
+   ✓ Rate limiting /auth (limites réelles) > resend-verification : 3 requêtes passent, la 4e est rejetée en 429 avec Retry-After 270ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  1607ms
+   ✓ Rate limiting /auth (limites réelles) > refresh (D13) : 30 requêtes passent (401 sans cookie), la 31e est rejetée en 429 228ms
+   ✓ Rate limiting /auth (limites réelles) > logout (D13) : 10 requêtes passent (200 idempotent), la 11e est rejetée en 429 58ms
+   ✓ Rate limiting /auth (limites réelles) > forgot-password (Lot 4) : 3 demandes passent (202 constant), la 4e est rejetée en 429 25ms
+   ✓ Rate limiting /auth (limites réelles) > reset-password (Lot 4) : 10 tentatives passent (ici 400), la 11e est rejetée en 429 104ms
+   ✓ Rate limiting /auth (limites réelles) > google (Lot 8) : 5 tentatives passent (ici 401, table vide), la 6e est rejetée en 429 — budget register 35ms
+   ✓ Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register 67ms
+   ✓ Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion 106ms
+   × Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée 13ms
+     → requête 1: expected 404 to be 401 // Object.is equality
+   × Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code 3ms
+     → Cannot read properties of undefined (reading 'limit')
+ ❯ test/int/staff-session-guard.int-spec.ts (18 tests | 2 failed) 13955ms
+   × le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 55 routes atteignables par un PRO, dont les cinq routes du lot ; sans cela, tous les cas ci-dessous passeraient sur une liste vide 38ms
+     → POST /api/v1/pro/staff/pin-login: expected [ 'GET /api/v1/auth/me', …(64) ] to include 'POST /api/v1/pro/staff/pin-login'
+   × le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement CINQ (état du compte commun, activer, se connecter, lire l'état, et — rang 58 — se connecter par PIN) — une route neuve exemptée sans décision fait rougir ce test 8ms
+     → expected [ 'GET /api/v1/auth/me', …(3) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+   ✓ le collecteur — garde-fou du garde-fou > aucune route PUBLIQUE n'est exemptée par erreur (une route publique n'a pas besoin de l'être : le garde l'ignore) 1ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > ⛔ pour chaque route atteignable par un PRO dont la salle n'a PAS activé la couche : la réponse n'est JAMAIS `STAFF_SESSION_REQUIRED`  1437ms
+   ✓ MP-35 — AVANT l'activation, l'app Pro marche comme aujourd'hui > un cookie de session d'une autre salle présenté à une salle SANS couche ne change rien : le garde ne regarde pas les cookies quand le drapeau est éteint  828ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-20 — SANS cookie de session : TOUTES les routes atteignables par un PRO rendent 401 `STAFF_SESSION_REQUIRED`, sauf les exemptées (dérivées) — qui, elles, ne le rendent pas  471ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ les refus sont IDENTIQUES à l'octet entre routes : même statut, même code, même clé de message (aucune route ne dit pourquoi)  571ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ AVEC la session de la salle : AUCUNE route atteignable par un PRO ne rend `STAFF_SESSION_REQUIRED` (le garde laisse passer ; la déconnexion, qui termine la session, est jouée à part)  1081ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > ⛔ MP-18 — la session de la salle A présentée avec le Bearer de la salle B : TOUTES les routes non exemptées rendent 401 `STAFF_SESSION_REQUIRED` — et la session de A n'est PAS terminée par ce refus (on ne termine pas la session d'autrui)  740ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > le cookie de session n'est lu que sous SON nom : la même valeur posée sous le nom du cookie de rafraîchissement n'ouvre rien 7ms
+   ✓ la couche ACTIVÉE — sans session, avec la bonne, avec celle d'autrui > un cookie qui n'a pas la forme d'un jeton : le MÊME 401 que l'absence de cookie 32ms
+   ✓ MP-34 — ni un ADMIN ni un CLIENT ne voient JAMAIS le garde du personnel > ⛔ un ADMIN et un CLIENT, sur TOUTES les routes (couche activée chez un pro, cookie de session présenté ou non) : aucune réponse n'est `STAFF_SESSION_REQUIRED`  3417ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > ⛔ le MÊME Bearer : la requête d'avant passe, la requête d'APRÈS l'activation est refusée (le drapeau est relu à chaque requête, jamais mis dans le jeton)  545ms
+   ✓ MP-7 — la couche activée PENDANT qu'un Pro est connecté > le jeton d'accès NE PORTE PAS le drapeau : ses claims sont toujours { sub, role } (D4) — un jeton émis avant l'activation reste valable après  417ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session terminée par SQL (fin `LOGOUT` posée à la main) est refusée à la requête suivante, sans attendre  548ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ une session INACTIVE puis refusée : la fin `IDLE` est écrite ; la session de l'AUTRE salle, qui a le même âge, n'est pas touchée  982ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > ⛔ MP-18 — la session INACTIVE d'une autre salle, présentée avec le Bearer de B : 401, et la session de A n'est PAS terminée par ce refus (l'inactivité d'autrui ne s'écrit pas : la sonde doit dire « autre salle »)  955ms
+   ✓ MP-19 / MP-4 — la révocation à l'instant > le hachage SHA-256 du cookie est ce qui est cherché : un cookie dont le hachage a été retiré de la base est refusé  541ms
+ ❯ test/int/quote-promote-actor.int-spec.ts (4 tests | 2 failed) 4085ms
+   × ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > le MANAGER promeut : la ligne porte son identifiant dans `actor_member_id` ; le compte commun et son rôle sont ceux d'avant ; `before` et `after` sont inchangés 1159ms
+     → expected { …(5) } to deeply equal { …(5) }
+   × ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ un EMPLOYÉ promeut : la ligne porte l'EMPLOYÉ, pas le Manager ni le propriétaire — c'est le membre dont la session a passé le garde, celui qui AGIT 1408ms
+     → expected null to be '01a1fb85-c0c1-7426-aa1b-106921bac4f4' // Object.is equality
+   ✓ ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > la couche ÉTEINTE : `actor_member_id` reste NUL, la ligne est celle d'avant (le témoin déjà vert : une garde posée sur un comportement tenu)  527ms
+   ✓ ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ la PROMOTION ne change pas (D316) : le devis promu est officiel, au même numéro, au même statut ; la ligne reste UNE seule ; AUCUN nom, AUCUN numéro de téléphone ne figure dans la ligne  640ms
+
+ Test Files  7 failed (7)
+      Tests  64 failed | 33 passed (97)
+   Start at  19:30:44
+   Duration  166.41s (transform 3.21s, setup 242ms, collect 51.59s, tests 107.11s, environment 2ms, prepare 3.62s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts test/int/staff-pin-issue.int-spec.ts test/int/staff-pin-race.int-spec.ts test/int/staff-pin-audit.int-spec.ts test/int/quote-promote-actor.int-spec.ts test/int/throttle.int-spec.ts test/int/staff-session-guard.int-spec.ts
+
+--- stderr ---
+(node:17188) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:8916) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 64 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > le MANAGER promeut : la ligne porte son identifiant dans `actor_member_id` ; le compte commun et son rôle sont ceux d'avant ; `before` et `after` sont inchangés
+AssertionError: expected { …(5) } to deeply equal { …(5) }
+
+- Expected
++ Received
+
+  {
+    "actor_id": "01a1fb85-baca-7cdf-9d84-d8c940f0a992",
+-   "actor_member_id": "01a1fb85-bc60-79bb-a73d-42854c113f11",
++   "actor_member_id": null,
+    "actor_role": "PRO",
+    "entity_id": "01a1fb85-bd18-7f7a-8f76-d5d1daab5d85",
+    "entity_type": "quote",
+  }
+
+ ❯ test/int/quote-promote-actor.int-spec.ts:63:152
+     61|     expect(lignes).toHaveLength(1);
+     62|     const l = lignes[0]!;
+     63|     expect({ actor_id: l.actor_id, actor_role: l.actor_role, actor_mem…
+       |                                                                                                                                                        ^
+     64|       actor_id: m.pro.userId,
+     65|       actor_role: "PRO",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/64]⎯
+
+ FAIL  test/int/quote-promote-actor.int-spec.ts > ⛔ R-6 — `quote.promote` porte le MEMBRE qui agit quand une session de personnel existe > ⛔ un EMPLOYÉ promeut : la ligne porte l'EMPLOYÉ, pas le Manager ni le propriétaire — c'est le membre dont la session a passé le garde, celui qui AGIT
+AssertionError: expected null to be '01a1fb85-c0c1-7426-aa1b-106921bac4f4' // Object.is equality
+
+- Expected: 
+"01a1fb85-c0c1-7426-aa1b-106921bac4f4"
+
++ Received: 
+null
+
+ ❯ test/int/quote-promote-actor.int-spec.ts:83:40
+     81|     const lignes = await lignesAudit(ctx.prisma, "quote.promote");
+     82|     expect(lignes).toHaveLength(1);
+     83|     expect(lignes[0]!.actor_member_id).toBe(e.id);
+       |                                        ^
+     84|     expect(lignes[0]!.actor_member_id).not.toBe(m.membreId);
+     85|     expect(lignes[0]!.actor_id, "le compte commun reste celui du Beare…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > la connexion par PIN : UNE ligne `staff.pin_login` — le compte commun et son rôle, le MEMBRE, l'entité est la SESSION, la charge utile ne porte que le membre, jamais `before`
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:32:09.773Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:63:50
+     61|     const w = await monde();
+     62|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+     63|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+     64|     const lignes = await lignesAudit(ctx.prisma, "staff.pin_login");
+     65|     expect(lignes).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > un échec : UNE ligne `staff.pin_login_failed` par essai compté, avec le compte d'échecs de la réservation (1, 2) — jamais le PIN tenté
+AssertionError: expected [] to deeply equal [ { failedCount: 1 }, …(1) ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "failedCount": 1,
+-   },
+-   {
+-     "failedCount": 2,
+-   },
+- ]
++ []
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:85:40
+     83|     await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "0483");
+     84|     const lignes = await lignesAudit(ctx.prisma, "staff.pin_login_fail…
+     85|     expect(lignes.map((l) => l.after)).toEqual([{ failedCount: 1 }, { …
+       |                                        ^
+     86|     for (const l of lignes) {
+     87|       expect({ actor_id: l.actor_id, actor_role: l.actor_role, actor_m…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le TROISIÈME échec : la ligne d'échec ET UNE ligne `staff.pin_lock` (le compte et le nombre de sessions terminées — celui des sessions qui ont réellement pris la fin `PIN_LOCKED`)
+AssertionError: expected +0 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:102:78
+    100|     const w = await monde();
+    101|     for (const faux of ["0482", "0483", "0484"]) await connecterParPin…
+    102|     expect((await lignesAudit(ctx.prisma, "staff.pin_login_failed")).l…
+       |                                                                              ^
+    103|     const lock = await lignesAudit(ctx.prisma, "staff.pin_lock");
+    104|     expect(lock).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > le déblocage : UNE ligne `staff.pin_unlock` (« par le mot de passe »), le membre pour acteur ; ni un PIN absent, ni un PIN expiré n'en écrivent
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:118:20
+    116|     expect(res.status).toBe(200);
+    117|     const lignes = await lignesAudit(ctx.prisma, "staff.pin_unlock");
+    118|     expect(lignes).toHaveLength(1);
+       |                    ^
+    119|     expect(lignes[0]!.after).toEqual({ via: "password" });
+    120|     expect(lignes[0]!.actor_member_id).toBe(w.e.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ R-5 — UNE ligne par action du PIN, `actor_member_id` renseigné, charge utile FERMÉE > ⛔ la charge utile est FERMÉE : pour chacune des quatre actions, `after` ne porte QUE les clés listées, `before` est nul, l'acteur est renseigné (une clé de plus serait un secret en puissance)
+AssertionError: les quatre actions ont été exercées: expected [] to deeply equal [ 'staff.pin_lock', …(3) ]
+
+- Expected
++ Received
+
+- [
+-   "staff.pin_lock",
+-   "staff.pin_login",
+-   "staff.pin_login_failed",
+-   "staff.pin_unlock",
+- ]
++ []
+
+ ❯ test/int/staff-pin-audit.int-spec.ts:153:69
+    151|       expect(l.actor_member_id, l.action).toBe(w.e.id);
+    152|     }
+    153|     expect([...vues].sort(), "les quatre actions ont été exercées").to…
+       |                                                                     ^
+    154|   });
+    155| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ les lignes d'audit (toutes colonnes, JSON compris) d'un parcours COMPLET — activation, connexion, échecs, verrouillage, déblocage, PIN juste — ne portent ni le PIN posé, ni le PIN rendu, ni leurs hachés, ni le secret
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-a502-7aa6-8bbd-a232b981bab1","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-audit.int-spec.ts:181:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MP-11 — AUCUN PIN, AUCUN haché, AUCUN secret dans le journal d'audit ni dans le journal RÉEL des requêtes > ⛔ le JOURNAL RÉEL de l'application démarrée : ni le PIN posé, ni le PIN rendu par K-14 et K-15, ni leurs hachés, ni le secret — sur la connexion par PIN (juste et fausse), l'activation, le déblocage
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-a6e1-789b-9739-0732d39eeb26","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-audit.int-spec.ts:203:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_login` refusée par la base : la connexion échoue (≥ 500), AUCUNE session n'est ouverte, `last_login_at` n'est pas écrit
+AssertionError: un journal en échec annule l'action: expected 404 to be greater than or equal to 500
+ ❯ test/int/staff-pin-audit.int-spec.ts:249:63
+    247|     await forcerEchecDuJournal("staff.pin_login");
+    248|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    249|     expect(res.status, "un journal en échec annule l'action").toBeGrea…
+       |                                                               ^
+    250|     expect((await sessionsDuMembre(ctx.prisma, w.e.id)).length, "aucun…
+    251|     expect((await membreParId(ctx.prisma, w.e.id)).last_login_at?.getT…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > la ligne `staff.pin_lock` refusée : le VERROU n'est pas posé et les sessions ne sont pas terminées (pas de verrou sans sa ligne) — et l'échec du même essai est annulé avec lui (pas de ligne sans action)
+AssertionError: le troisième échec, dont le verrouillage ne peut pas s'écrire: expected 404 to be greater than or equal to 500
+ ❯ test/int/staff-pin-audit.int-spec.ts:261:89
+    259|     await forcerEchecDuJournal("staff.pin_lock");
+    260|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    261|     expect(res.status, "le troisième échec, dont le verrouillage ne pe…
+       |                                                                                         ^
+    262|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    263|     expect(pin.pin_locked_at, "pas de verrou sans sa ligne").toBeNull(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/64]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts > ⛔ MD-ADM-6 — une action sans trace, ou une trace sans action, ne peut pas exister (échec forcé) > ⛔ AU COMMIT — la session insérée refusée par un déclencheur DIFFÉRÉ : la ligne `staff.pin_login`, écrite dans la même transaction, DISPARAÎT avec elle (une ligne écrite hors transaction y survivrait)
+AssertionError: expected 404 to be greater than or equal to 500
+ ❯ test/int/staff-pin-audit.int-spec.ts:274:24
+    272|     await forcerEchecAuCommit();
+    273|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    274|     expect(res.status).toBeGreaterThanOrEqual(500);
+       |                        ^
+    275|     expect((await lignesAudit(ctx.prisma, "staff.pin_login")).length, …
+    276|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > 201 : un PIN de quatre chiffres non trivial dans la réponse, `Cache-Control: no-store`, rien d'autre ne change de forme (le membre est rendu comme avant)
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-15f3-7b76-9485-cf1f0c2da965","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:69:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ le PIN est STOCKÉ en HMAC avec le secret (le haché que le hacheur de l'application calcule), jamais en clair : 64 hexadécimaux, la durée de 90 jours, le compteur à zéro, aucun verrou — et le PIN n'est NULLE PART dans les tables du personnel ni dans l'audit
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-183d-7787-a194-1e6b49957458","accountName":"Amine","role":"MANAGER","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:79:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-14 — l'activation rend le PIN du Manager UNE fois, `no-store` > ⛔ l'appareil créé à l'activation n'est jamais valable au-delà du PIN : leurs échéances sont ÉGALES (même transaction, même `now()`)
+TypeError: Cannot read properties of null (reading 'getTime')
+ ❯ test/int/staff-pin-issue.int-spec.ts:99:75
+     97|     const ligne = await pinDuMembre(ctx.prisma, m.membreId);
+     98|     expect(appareils).toHaveLength(1);
+     99|     expect(appareils[0]!.expires_at.getTime()).toBe(ligne.pin_expires_…
+       |                                                                           ^
+    100|   });
+    101| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > la PREMIÈRE connexion d'un membre (aucun PIN) rend un PIN, `no-store`, stocké en HMAC, valable 90 jours ; la SECONDE (PIN valable) rend `pin: null` et ne touche à aucune colonne
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-1e81-771f-ad22-59c4c7f64e95","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:119:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN EXPIRÉ est remplacé par un PIN NEUF (l'ancien ne sert plus, l'échéance repart pour 90 jours) — et ce n'est PAS un déblocage : aucune ligne `staff.pin_unlock`
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-219c-7426-bb62-d78f7d58c0f7","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:142:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > ⛔ un PIN VERROUILLÉ est remplacé : compteur à zéro, verrou levé, et UNE ligne `staff.pin_unlock` pour ce membre — le déblocage par le mot de passe
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-26e9-77c8-9421-b4e2cf9648bf","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:156:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-15 — la connexion par mot de passe rend un PIN NEUF si le membre n'en a pas de valable, UNE fois > le compte au PLAFOND sans verrou posé (un arrêt entre la 3ᵉ réservation et l'écriture du verrou) est aussi un PIN verrouillé : la connexion le remplace et écrit le déblocage
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-2cf9-7a97-a8ee-60a5065a0ad9","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:172:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-18 — le changement de mot de passe suit la MÊME règle d'émission > PIN valable : `pin: null`, colonnes inchangées, `no-store` ; PIN ABSENT : un PIN neuf est rendu et installé, `no-store`
+AssertionError: le membre a reçu son PIN à sa première connexion (précondition): expected null not to be null
+ ❯ test/int/staff-pin-issue.int-spec.ts:196:99
+    194|     const e = await membreActif(ctx, m.pro, m.jar, "Karim");
+    195|     const avant = await pinDuMembre(ctx.prisma, e.id);
+    196|     expect(avant.pin_hash, "le membre a reçu son PIN à sa première con…
+       |                                                                                                   ^
+    197|     const valable = await changerMotDePasse(ctx, m.pro, e.jar, e.passw…
+    198|     expect(valable.status, JSON.stringify(valable.body)).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 — la réinitialisation efface les CINQ colonnes (haché, génération, échéance, compteur, verrou), révoque les appareils, termine les sessions : l'ancien PIN ne sert plus
+AssertionError: expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+
+- Expected
++ Received
+
+  {
+-   "pin_expires_at": null,
+-   "pin_failed_count": 0,
+-   "pin_generated_at": null,
+-   "pin_hash": null,
++   "pin_expires_at": 2026-12-21T00:31:52.282Z,
++   "pin_failed_count": 2,
++   "pin_generated_at": 2026-11-20T00:31:52.282Z,
++   "pin_hash": "fcf236b1dd3ce5570a931e5532173475cc0da2d0dc5da73a72521691dedc96eb",
+    "pin_locked_at": null,
+  }
+
+ ❯ test/int/staff-pin-issue.int-spec.ts:232:49
+    230|     const reset = await appeler(ctx, m.pro.token, m.jar, "post", `/api…
+    231|     expect(reset.status, JSON.stringify(reset.body)).toBe(200);
+    232|     expect(await pinDuMembre(ctx.prisma, e.id)).toEqual({ pin_hash: nu…
+       |                                                 ^
+    233|     expect((await connecterParPin(ctx, m.pro, posteDe(e.jar), e.id, PI…
+    234|     expect((await sessionsDuMembre(ctx.prisma, e.id)).every((s) => s.e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-21 sur un PIN VERROUILLÉ : le verrou est levé avec le PIN (le membre se reconnecte par son temporaire et reçoit un PIN neuf)
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-491a-7feb-8d9f-c4dbea1f8c82","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:246:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ K-21 et K-22 EFFACENT le PIN (S-105, DR5) > K-22 — la désactivation efface les CINQ colonnes du PIN
+AssertionError: expected { …(5) } to deeply equal { pin_hash: null, …(4) }
+
+- Expected
++ Received
+
+  {
+-   "pin_expires_at": null,
+-   "pin_failed_count": 0,
+-   "pin_generated_at": null,
+-   "pin_hash": null,
++   "pin_expires_at": 2026-12-21T00:31:55.491Z,
++   "pin_failed_count": 1,
++   "pin_generated_at": 2026-11-20T00:31:55.491Z,
++   "pin_hash": "fcf236b1dd3ce5570a931e5532173475cc0da2d0dc5da73a72521691dedc96eb",
+    "pin_locked_at": null,
+  }
+
+ ❯ test/int/staff-pin-issue.int-spec.ts:256:49
+    254|     const res = await appeler(ctx, m.pro.token, m.jar, "post", `/api/v…
+    255|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+    256|     expect(await pinDuMembre(ctx.prisma, e.id)).toEqual({ pin_hash: nu…
+       |                                                 ^
+    257|   });
+    258| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre dont le PIN expire dans DIX jours se connecte depuis un poste NEUF : l'appareil créé expire AVEC le PIN, pas 90 jours plus tard
+AssertionError: l'appareil neuf expire AU PLUS TARD avec le PIN: expected 1802997118116 to be less than or equal to 1796085117980
+ ❯ test/int/staff-pin-issue.int-spec.ts:284:90
+    282|     expect(appareils.length, "un second appareil a été créé (poste neu…
+    283|     const neuf = appareils[appareils.length - 1]!;
+    284|     expect(neuf.expires_at.getTime(), "l'appareil neuf expire AU PLUS …
+       |                                                                                          ^
+    285|     expect(neuf.expires_at.getTime()).toBe(echeanceDuPin);
+    286|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ MP-27 (R-6 de D341) — un appareil n'est JAMAIS valable au-delà du PIN > un membre SANS PIN valable : le PIN neuf et l'appareil neuf naissent dans la même transaction, avec la même échéance
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb84-5f1f-752c-828b-7ae510ef54e8","accountName":"Lina","role":"EMPLOYEE","mustChangePassword":true}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin-issue.int-spec.ts:293:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/64]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts > ⛔ le plafond d'essais est celui de la CHECK de la base (l'autorité est la migration, D186) > `pin_failed_count = PIN_MAX_FAILURES` est ACCEPTÉ ; `PIN_MAX_FAILURES + 1` est REFUSÉ par la base (SQLSTATE 23514, `pro_staff_members_pin_failed_count_range`)
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRaw()` invocation:
+
+
+Raw query failed. Code: `23502`. Message: `null value in column "pin_failed_count" of relation "pro_staff_members" violates not-null constraint`
+ ❯ zr.handleRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13
+ ❯ zr.handleAndLogRequestError ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12
+ ❯ zr.request ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12
+ ❯ a ../../node_modules/.pnpm/@prisma+client@7.8.0_prisma_a75360e9172bd2e651a09997de547b1a/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24
+ ❯ test/int/staff-pin-issue.int-spec.ts:305:5
+    303|     const m = await proActive(ctx);
+    304|     const au = STAFF_LIMITS.PIN_MAX_FAILURES;
+    305|     await ctx.prisma.$executeRaw`UPDATE pro_staff_members SET pin_fail…
+       |     ^
+    306|     expect((await pinDuMembre(ctx.prisma, m.membreId)).pin_failed_coun…
+    307|     let code: string | undefined;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ le TÉMOIN POSITIF — sans événement intercalé, la connexion par PIN s'ouvre (une garde qui refuserait TOUT passerait les cas négatifs) > réservation → ouverture avec le haché lu : acceptée, UNE session de plus, une ligne `staff.pin_login`, le compteur remis à zéro
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:99:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN FAUX en parallèle par la route : le compteur vaut TROIS, le HMAC réel est calculé TROIS fois et le factice DIX-SEPT, le verrou est posé UNE fois, les sessions du membre sont terminées
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ MP-1 — vingt essais PARALLÈLES : exactement TROIS comptés, exactement TROIS vérifications, dix-sept refus non comptés > vingt PIN JUSTES en parallèle : jamais plus de TROIS vérifications, jamais plus de sessions que de succès, le membre n'est PAS verrouillé, le compteur finit à zéro
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-race.int-spec.ts'
+ ❯ test/int/staff-pin-race.int-spec.ts:115:32
+    113|     const w = await monde();
+    114|     // Importé ICI (et non en tête de fichier) : le hacheur est le SEU…
+    115|     const { StaffPinHasher } = await import("../../src/staff/staff-pin…
+       |                                ^
+    116|     const hacheur = ctx.app.get(StaffPinHasher);
+    117|     const reel = vi.spyOn(hacheur, "verify");
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > séquentiel : réservation → réinitialisation par la VRAIE route K-21 → ouverture avec le haché lu : REFUSÉE, aucune session de plus, aucune ligne `staff.pin_login`
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:154:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ réinitialisation » : un PIN vérifié AVANT une réinitialisation n'ouvre AUCUNE session APRÈS elle > ⛔ ENTRELACEMENT FORCÉ — le PIN est effacé par une transaction tenue hors du service ; l'ouverture ATTEND derrière le verrou, puis est REFUSÉE à la libération (le prédicat est dans le CAS, pas avant)
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:170:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > séquentiel : réservation → désactivation par la VRAIE route K-22 → ouverture : REFUSÉE
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:190:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ désactivation » : un membre désactivé entre la réservation et l'ouverture n'ouvre AUCUNE session > ⛔ ENTRELACEMENT FORCÉ — le statut est éteint par une transaction tenue hors du service ; l'ouverture ATTEND, puis est REFUSÉE
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:202:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un PIN NEUF remplace le haché (le déblocage par mot de passe) pendant que l'ouverture attend : REFUSÉE — l'ancien PIN est mort, même vérifié avant
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:222:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — un AUTRE échec pose le VERROU pendant que l'ouverture attend : REFUSÉE (`pin_locked_at` nul exigé SOUS verrou, R-3)
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:243:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ déblocage par mot de passe » et « PIN ‖ verrouillage par un autre échec » > ⛔ ENTRELACEMENT FORCÉ — le PIN EXPIRE pendant que l'ouverture attend : REFUSÉE (l'échéance est relue sous verrou, avec l'heure de la base)
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:261:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/64]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts > ⛔ R-3 — « PIN ‖ appareil révoqué » : l'appareil se re-vérifie SOUS verrou, et le refus ANNULE toute la transaction > ⛔ ENTRELACEMENT FORCÉ — l'appareil est révoqué par une transaction tenue hors du service ; l'ouverture (qui a déjà passé le CAS du membre) ATTEND sur l'appareil, puis est REFUSÉE ; RIEN n'est écrit : ni session, ni `last_login_at`, ni remise à zéro du compteur, ni ligne `staff.pin_login`
+TypeError: magasin.reservePinAttempt is not a function
+ ❯ Object.reserver test/int/staff-pin-race.int-spec.ts:57:29
+     55|   /** La RÉSERVATION de l'essai, telle que `pinLogin` la fait : elle r…
+     56|   const reserver = async (): Promise<string> => {
+     57|     const r = await magasin.reservePinAttempt({ proProfileId: m.pro.pr…
+       |                             ^
+     58|     expect(r.reserved, "la réservation de l'essai devait être accordée…
+     59|     return r.reserved ? r.pinHash : "";
+ ❯ test/int/staff-pin-race.int-spec.ts:281:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > 200 : le membre est rendu SANS PIN, une session de plus, `last_login_at` écrit, le compteur à zéro ; le cookie de session est posé (HttpOnly, Strict, chemin /api/v1, sans échéance) et AUCUN cookie d'appareil neuf
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:00.520Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:73:50
+     71|     const avant = await w.lignesDeSession();
+     72|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+     73|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+     74|     expect(res.body).toEqual({ member: { id: w.e.id, accountName: "Kar…
+     75|     expect(Object.keys(res.body as object), "aucune clé `pin` dans la …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session ouverte par PIN est une VRAIE session : l'état (K-17) la rend, le membre y est
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:94:24
+     92|     const poste = w.poste();
+     93|     const res = await connecterParPin(ctx, w.m.pro, poste, w.e.id, PIN…
+     94|     expect(res.status).toBe(200);
+       |                        ^
+     95|     const etat = await appeler(ctx, w.m.pro.token, poste, "get", "/api…
+     96|     expect(etat.status).toBe(200);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > la session est rattachée à l'APPAREIL du poste : `device_id` est celui du cookie présenté, et son `last_used_at` est écrit
+AssertionError: `last_used_at` de l'appareil est écrit à la connexion: expected null not to be null
+ ❯ test/int/staff-pin.int-spec.ts:108:100
+    106|       SELECT d.token_hash, d.last_used_at FROM pro_staff_sessions s JO…
+    107|     expect(derniere[0]!.token_hash).toBe(sha256(appareil.value));
+    108|     expect(derniere[0]!.last_used_at, "`last_used_at` de l'appareil es…
+       |                                                                                                    ^
+    109|   });
+    110| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ K-23 — un PIN juste, sur le poste du membre : la session s'ouvre > un membre dont le mot de passe est À CHANGER (un temporaire valable) SE CONNECTE par PIN : le corps dit `mustChangePassword: true`
+AssertionError: {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:03.954Z"}: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:120:50
+    118|     await poserPin(ctx, cree.id);
+    119|     const res = await connecterParPin(ctx, m.pro, posteDe(jar), cree.i…
+    120|     expect(res.status, JSON.stringify(res.body)).toBe(200);
+       |                                                  ^
+    121|     expect((res.body as { member: { mustChangePassword: boolean } }).m…
+    122|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > le bon PIN sans AUCUN cookie d'appareil : 401 `STAFF_INVALID_CREDENTIALS`, aucun cookie posé, aucune session, le compteur INCHANGÉ
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:130:24
+    128|     const avant = await w.lignesDeSession();
+    129|     const res = await connecterParPin(ctx, w.m.pro, new Jar(), w.e.id,…
+    130|     expect(res.status).toBe(401);
+       |                        ^
+    131|     expect(codeDe(res)).toBe("STAFF_INVALID_CREDENTIALS");
+    132|     expect(lireCookies(res)).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-2 — un PIN SANS appareil ne vaut rien et ne consomme aucun essai > un PIN FAUX sans appareil, dix fois : le compteur ne bouge pas et le membre n'est JAMAIS verrouillé (le DoS par le seul Bearer n'existe pas)
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:139:117
+    137|   it("un PIN FAUX sans appareil, dix fois : le compteur ne bouge pas e…
+    138|     const w = await monde();
+    139|     for (let i = 0; i < 10; i += 1) expect((await connecterParPin(ctx,…
+       |                                                                                                                     ^
+    140|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    141|     expect(pin.pin_failed_count).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-3 — l'appareil d'un autre membre, d'une autre salle : QUATRE croisements, tous refusés, aucun essai consommé > (i) l'appareil d'un AUTRE membre de la même salle ; (ii) l'appareil de CE membre sous le Bearer d'une AUTRE salle ; (iii) l'identifiant d'un membre d'une autre salle, sous le Bearer de la nôtre ; (iv) l'appareil d'une autre salle
+AssertionError: (i) : {"statusCode":404,"message":{"code":"ROUTE_NOT_FOUND","message":"common.errors.routeNotFound"},"path":"/api/v1/pro/staff/pin-login","timestamp":"2026-11-21T00:31:09.070Z"}: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:175:66
+    173| 
+    174|     for (const [nom, res] of [["(i)", i], ["(ii)", ii], ["(iii)", iii]…
+    175|       expect(res.status, `${nom} : ${JSON.stringify(res.body)}`).toBe(…
+       |                                                                  ^
+    176|       expect(codeDe(res), nom).toBe("STAFF_INVALID_CREDENTIALS");
+    177|       expect(lireCookies(res), `${nom} : aucun cookie`).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > un PIN faux compte UN essai : 401, le compteur monte à un, le verrou n'est pas posé
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:188:24
+    186|     const w = await monde();
+    187|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    188|     expect(res.status).toBe(401);
+       |                        ^
+    189|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    190|     expect(pin.pin_failed_count).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : 200 (« trois essais » ne devient pas deux), le compteur revient à ZÉRO, aucun verrou
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:196:85
+    194|   it("⛔ le cas RÉEL — deux PIN faux, puis le BON au troisième essai : …
+    195|     const w = await monde();
+    196|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "04…
+       |                                                                                     ^
+    197|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "04…
+    198|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le TROISIÈME échec pose `pin_locked_at` ET met fin à TOUTES les sessions du membre (`PIN_LOCKED`) — celle ouverte à la création du membre comprise
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:209:128
+    207|     const w = await monde();
+    208|     expect(await w.vivantes(), "le membre a une session vivante avant …
+    209|     for (const faux of ["0482", "0483", "0484"]) expect((await connect…
+       |                                                                                                                                ^
+    210|     const pin = await pinDuMembre(ctx.prisma, w.e.id);
+    211|     expect(pin.pin_failed_count).toBe(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ VERROUILLÉ, le BON PIN est refusé (401) et ne compte pas : le compteur reste à trois, aucune session
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:223:24
+    221|     const avant = await w.lignesDeSession();
+    222|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    223|     expect(res.status).toBe(401);
+       |                        ^
+    224|     expect(codeDe(res)).toBe("STAFF_INVALID_CREDENTIALS");
+    225|     expect(await w.lignesDeSession()).toBe(avant);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-15 — trois essais : le troisième ÉCHEC pose le verrou ; le bon PIN verrouillé est refusé ; le mot de passe débloque et génère un PIN neuf > ⛔ le DÉBLOCAGE est le mot de passe : la connexion par nom de compte et mot de passe d'un membre verrouillé rend un PIN NEUF, remet le compteur à zéro et lève le verrou ; l'ANCIEN PIN est mort, le NEUF sert
+AssertionError: un PIN est rendu — {"member":{"id":"01a1fb83-b2b6-7b37-98f0-b4ea8a970838","accountName":"Karim","role":"EMPLOYEE","mustChangePassword":false}}: expected null to be type of 'string'
+
+Expected: "string"
+Received: "object"
+
+ ❯ pinRendu test/int/staff-helpers.ts:384:65
+    382| export function pinRendu(res: Response): string {
+    383|   const pin = pinDe(res);
+    384|   expect(pin, `un PIN est rendu — ${JSON.stringify(res.body)}`).toBeTy…
+       |                                                                 ^
+    385|   expect(pin as string).toMatch(new RegExp(`^\\d{${STAFF_LIMITS.PIN_LE…
+    386|   return pin as string;
+ ❯ test/int/staff-pin.int-spec.ts:234:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — un PIN EXPIRÉ : 401, aucun essai consommé ; le bon PIN d'un membre dont le PIN a expiré ne passe pas
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:248:24
+    246|     await poserPin(ctx, w.e.id, PIN_DE_TEST, { valideSecondes: -10 });
+    247|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    248|     expect(res.status).toBe(401);
+       |                        ^
+    249|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+    250|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-26 — le PIN qui expire dans UNE seconde SERT encore (D55 : la borne se dérive du cas réel)
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:255:90
+    253|     const w = await monde();
+    254|     await poserPin(ctx, w.e.id, PIN_DE_TEST, { valideSecondes: 60 });
+    255|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN…
+       |                                                                                          ^
+    256|   });
+    257| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil EXPIRÉ : 401, aucun essai consommé
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:262:24
+    260|     await ctx.prisma.$executeRaw`UPDATE pro_staff_devices SET created_…
+    261|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    262|     expect(res.status).toBe(401);
+       |                        ^
+    263|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+    264|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > MP-27 — un appareil RÉVOQUÉ : 401, aucun essai consommé
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:270:24
+    268|     await ctx.prisma.$executeRaw`UPDATE pro_staff_devices SET revoked_…
+    269|     const res = await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id,…
+    270|     expect(res.status).toBe(401);
+       |                        ^
+    271|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+    272|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ MP-26, MP-27, MP-28 — PIN expiré, appareil expiré ou révoqué, trop de cookies d'appareil > ⛔ MP-28 — la borne de LECTURE est huit cookies d'appareil : le bon est le HUITIÈME → 200 ; le NEUVIÈME → 401 (au-delà de la borne, il n'est même pas lu)
+AssertionError: le bon cookie est le huitième : lu: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:284:67
+    282|     };
+    283|     const huitieme = await connecterParPin(ctx, w.m.pro, poste(7), w.e…
+    284|     expect(huitieme.status, "le bon cookie est le huitième : lu").toBe…
+       |                                                                   ^
+    285|     // la session de la tentative précédente ne gêne pas : on rejoue s…
+    286|     const neuvieme = await connecterParPin(ctx, w.m.pro, poste(8), w.e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > neuf causes (membre inconnu, PIN faux, verrouillé, expiré, appareil absent, membre désactivé, membre d'une autre salle, temporaire expiré, couche éteinte) : UN corps à l'octet, aucun cookie, UN calcul de HMAC chacune
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts'
+ ❯ test/int/staff-pin.int-spec.ts:295:32
+
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-3 — le refus a la MÊME FORME et le MÊME COÛT, quelle qu'en soit la cause > un PIN faux consomme UN essai ; un PIN juste n'en consomme aucun ; les trois essais sont comptés par la RÉSERVATION, avant la vérification (la vérité est la base)
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/int/staff-pin.int-spec.ts:340:70
+    338|     const w = await monde();
+    339|     await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, "0482");
+    340|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+       |                                                                      ^
+    341|     await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN_DE_TEST…
+    342|     expect((await pinDuMembre(ctx.prisma, w.e.id)).pin_failed_count).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > la validation du corps ne consomme rien > un PIN mal formé, un identifiant qui n'en est pas un, une clé inconnue : 400, aucun essai consommé, aucune ligne d'audit d'échec
+AssertionError: {"memberId":"01a1fb83-dc1d-7244-a0f5-520b3e204ddf","pin":"12"}: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:351:49
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > la validation du corps ne consomme rien > sans Bearer : 401 `UNAUTHENTICATED` (la route est derrière `JwtAuthGuard`), jamais une réponse du personnel
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:361:24
+    359|     const w = await monde();
+    360|     const res = await appeler(ctx, undefined, w.poste(), "post", "/api…
+    361|     expect(res.status).toBe(401);
+       |                        ^
+    362|     expect(codeDe(res)).toBe("UNAUTHENTICATED");
+    363|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > six états : la base réserve un essai SI ET SEULEMENT SI la règle pure dit VALID (c'est ce qui rend « UNE copie de la règle » vrai quand la décision atomique est en SQL)
+TypeError: (0 , etatDuPin) is not a function
+ ❯ test/int/staff-pin.int-spec.ts:384:20
+    382|       const ligne = await pinDuMembre(ctx.prisma, w.e.id);
+    383|       const base = await ctx.prisma.$queryRaw<Array<{ now: Date }>>`SE…
+    384|       const etat = etatDuPin({ hasPin: ligne.pin_hash !== null, pinExp…
+       |                    ^
+    385|       const reservation = await magasin.reservePinAttempt({ proProfile…
+    386|       expect(reservation.reserved, `${nom} : la règle pure dit ${etat}…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/64]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts > ⛔ R-4 — l'ACCORD entre la règle pure (`etatDuPin`) et le prédicat SQL de la réservation, sur CHAQUE état > un PIN DIFFÉRENT posé par `poserPin` n'est pas celui d'un autre : « 4821 » et « 9136 » ne se vérifient pas l'un pour l'autre (le haché est celui du PIN, avec le secret)
+AssertionError: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/staff-pin.int-spec.ts:395:90
+    393|     const w = await monde();
+    394|     await poserPin(ctx, w.e.id, AUTRE_PIN_DE_TEST);
+    395|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, PIN…
+       |                                                                                          ^
+    396|     expect((await connecterParPin(ctx, w.m.pro, w.poste(), w.e.id, AUT…
+    397|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/64]⎯
+
+ FAIL  test/int/staff-session-guard.int-spec.ts > le collecteur — garde-fou du garde-fou > l'extraction trouve la matrice attendue : au moins 55 routes atteignables par un PRO, dont les cinq routes du lot ; sans cela, tous les cas ci-dessous passeraient sur une liste vide
+AssertionError: POST /api/v1/pro/staff/pin-login: expected [ 'GET /api/v1/auth/me', …(64) ] to include 'POST /api/v1/pro/staff/pin-login'
+ ❯ test/int/staff-session-guard.int-spec.ts:67:30
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/64]⎯
+
+ FAIL  test/int/staff-session-guard.int-spec.ts > le collecteur — garde-fou du garde-fou > ⛔ MP-20 — la liste des routes EXEMPTÉES est dérivée des métadonnées et FERMÉE : exactement CINQ (état du compte commun, activer, se connecter, lire l'état, et — rang 58 — se connecter par PIN) — une route neuve exemptée sans décision fait rougir ce test
+AssertionError: expected [ 'GET /api/v1/auth/me', …(3) ] to deeply equal [ 'GET /api/v1/auth/me', …(4) ]
+
+- Expected
++ Received
+
+  [
+    "GET /api/v1/auth/me",
+    "GET /api/v1/pro/staff/session",
+    "POST /api/v1/pro/staff/activate",
+    "POST /api/v1/pro/staff/login",
+-   "POST /api/v1/pro/staff/pin-login",
+  ]
+
+ ❯ test/int/staff-session-guard.int-spec.ts:73:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/64]⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée
+AssertionError: requête 1: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/throttle.int-spec.ts:135:112
+    133|     const payload = { memberId: "018f0000-0000-7000-8000-0000000000b1"…
+    134|     for (let i = 1; i <= 60; i++) {
+    135|       expect((await request(server).post("/api/v1/pro/staff/pin-login"…
+       |                                                                                                                ^
+    136|     }
+    137|     const blocked = await request(server).post("/api/v1/pro/staff/pin-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/64]⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code
+TypeError: Cannot read properties of undefined (reading 'limit')
+ ❯ test/int/throttle.int-spec.ts:151:37
+    149|       expect(AUTH_THROTTLE.staffActivate.limit).toBe(5);
+    150|       expect(AUTH_THROTTLE.staffLogin.limit).toBe(10);
+    151|       expect(AUTH_THROTTLE.staffPin.limit).toBe(60);
+       |                                     ^
+    152|     } finally {
+    153|       for (const [n, v] of sauvegarde) if (v !== undefined) process.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[63/64]⎯
+

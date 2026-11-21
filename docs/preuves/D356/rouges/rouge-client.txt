@@ -1,0 +1,72 @@
+# D356 — rouge — famille « client »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api-client exec vitest run src/staff-client.test.ts
+# code de sortie : 1 ; durée : 5 s
+# empreintes sha256 des fichiers de test joués et de leurs aides (octets de l'arbre de travail au moment du jeu)
+#   f1ad186ae0a76518d77b79a88a135928b4399c91ee5c21b6c46a91324c3852dd  packages/api-client/src/staff-client.test.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/packages/api-client
+
+ ❯ src/staff-client.test.ts (12 tests | 2 failed) 17ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-14 : `activate` POSTE le nom de compte et le mot de passe sur `/pro/staff/activate` 2ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-15 : `login` POSTE sur `/pro/staff/login` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-16 : `logout` POSTE sur `/pro/staff/logout`, sans corps 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-17 : `session` LIT `/pro/staff/session` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-18 : `changePassword` POSTE l'actuel et le nouveau sur `/pro/staff/password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > le client rend EXACTEMENT ce que la requête rend (aucune transformation, aucune règle) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-19 : `listMembers` LIT `/pro/staff/members` (GET par défaut : aucune méthode ni corps) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-20 : `createMember` POSTE le nom de compte et le rôle sur `/pro/staff/members` — et rien d'autre (le mot de passe temporaire est GÉNÉRÉ par le serveur) 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-21 : `resetMemberPassword` POSTE, sans corps, sur `/pro/staff/members/<id>/reset-password` 0ms
+   ✓ le client du personnel — méthode, adresse et corps de chaque contrat > K-22 : `disableMember` POSTE, sans corps, sur `/pro/staff/members/<id>/disable` 0ms
+   × le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et rien d'autre : le jeton d'appareil voyage par COOKIE, jamais par le corps 6ms
+     → (0 , createStaffClient)(...).pinLogin is not a function
+   × le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ le client n'expose que les DIX contrats (K-14 à K-23) : la connexion par PIN est la dixième, rien d'autre ne s'est ajouté 5ms
+     → expected [ 'activate', 'changePassword', …(7) ] to deeply equal [ 'activate', 'changePassword', …(8) ]
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  19:30:39
+   Duration  1.30s (transform 61ms, setup 0ms, collect 91ms, tests 17ms, environment 0ms, prepare 590ms)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\packages\api-client:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run src/staff-client.test.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` sur `/pro/staff/pin-login` — et rien d'autre : le jeton d'appareil voyage par COOKIE, jamais par le corps
+TypeError: (0 , createStaffClient)(...).pinLogin is not a function
+ ❯ src/staff-client.test.ts:90:38
+     88|   it("⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ memberId, pin }` s…
+     89|     const { request, appels } = double({ member: { id: "m1" } });
+     90|     await createStaffClient(request).pinLogin({ memberId: "018f0000-00…
+       |                                      ^
+     91|     expect(appels).toEqual([{ path: "/pro/staff/pin-login", init: { me…
+     92|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ le client n'expose que les DIX contrats (K-14 à K-23) : la connexion par PIN est la dixième, rien d'autre ne s'est ajouté
+AssertionError: expected [ 'activate', 'changePassword', …(7) ] to deeply equal [ 'activate', 'changePassword', …(8) ]
+
+- Expected
++ Received
+
+@@ -4,9 +4,8 @@
+    "createMember",
+    "disableMember",
+    "listMembers",
+    "login",
+    "logout",
+-   "pinLogin",
+    "resetMemberPassword",
+    "session",
+  ]
+
+ ❯ src/staff-client.test.ts:96:60
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

@@ -1,0 +1,96 @@
+docs/preuves/D355/rouges/rouge-unit.txt — 845 lignes parcourues
+   Test Files  7 failed (7)
+   Tests  19 failed | 234 passed (253)
+   tests en échec lus : 19 · par classe de première ligne : {'AssertionError': 19}
+   fichiers tombés (collecte ou crochet) : 1 · par classe : {'import introuvable (collecte)': 1}
+      · src/clients/client-record-audit.spec.ts — import introuvable (collecte)
+docs/preuves/D355/rouges/rouge-int.txt — 470 lignes parcourues
+   Test Files  2 failed (2)
+   Tests  20 failed | 7 passed (27)
+   tests en échec lus : 20 · par classe de première ligne : {'AssertionError': 20}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+CALIBRATION : rouge-unit de D355 → 19 AssertionError + 1 fichier tombé : True ; rouge-int de D355 → 20 AssertionError, aucun fichier tombé : True
+calibration : les deux cas ont rendu leur verdict attendu.
+
+docs/preuves/D356/rouges/rouge-unit.txt — 1601 lignes parcourues
+   Test Files  10 failed (10)
+   Tests  75 failed | 305 passed (380)
+   tests en échec lus : 75 · par classe de première ligne : {'AssertionError': 30, 'TypeError': 45}
+   fichiers tombés (collecte ou crochet) : 2 · par classe : {'import introuvable (collecte)': 2}
+      · src/staff/staff-pin-hasher.spec.ts — import introuvable (collecte)
+      · src/staff/staff-pin.spec.ts — import introuvable (collecte)
+      ✗ [AssertionError] staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > ⛔ rang 58 (D356, DR5) — le PIN : QUATRE chiffres et TROIS
+      ✗ [AssertionError] staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > ⛔ le plafond d'essais est CONFRONTÉ à la CHECK de la base
+      ✗ [AssertionError] staff-contract.spec.ts > STAFF_LIMITS — UN levier pour toutes les durées (MP-43, DR5) > R-6 (D341) — l'échéance d'un appareil est la durée du PIN
+      ✗ [TypeError] staff-contract.spec.ts > les clés `staff.validation.*` employées par les schémas existent dans les DEUX catalogues (dérivées des schémas, jamais 
+      ✗ [TypeError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > ⛔ le cas RÉEL : un PIN qui commence par ZÉRO (« 0482 »)
+      ✗ [TypeError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > un PIN de la longueur du levier est accepté, un de plus
+      ✗ [TypeError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > ⛔ le schéma NE REFUSE PAS un PIN trivial : il ne révèle
+      ✗ [TypeError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > les messages de refus sont TROIS clés : membre (absent 
+      ✗ [TypeError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > ⛔ une CLÉ INCONNUE est refusée, pas ignorée (le jeton d
+      ✗ [AssertionError] staff-contract.spec.ts > staffPinLoginSchema — K-23 : `{ memberId, pin }`, rien d'autre > les trois clés de message neuves existent en FRANÇAIS e
+      ✗ [AssertionError] env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du 
+      ✗ [AssertionError] env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du 
+      ✗ [AssertionError] env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du 
+      ✗ [AssertionError] env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > STAFF_PIN_HMAC_SECRET (L36-3b : le secret HORS base du HMAC du 
+      ✗ [AssertionError] env.spec.ts > validateEnv (schéma Zod des variables d'environnement) > NODE_ENV=production : CINQ variables exigées explicitement (E3a
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ aucun PIN (`pin_hash` nul) → ABSENT, quoi qu'il en soit des autres co
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le cas RÉEL : il lui reste UNE milliseconde → VALID ; à l'instant exa
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > expiré depuis une milliseconde, un jour, un an → EXPIRED
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le verrou posé (`pin_locked_at` non nul) → LOCKED, quel que soit le c
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le compte au PLAFOND sans verrou (un arrêt entre la 3ᵉ réservation et
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — absent, valide, expiré, verrouillé > ⛔ le verrou l'emporte sur l'expiration : un PIN verrouillé ET expiré es
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > la même échéance se juge AVANT, À et APRÈS
+      ✗ [TypeError] staff-account-state.spec.ts > etatDuPin — PURETÉ : le temps est un PARAMÈTRE, l'entrée n'est pas modifiée > une entrée GELÉE passe et la valeur rendue
+      ✗ [AssertionError] staff-session.service.spec.ts > login — la connexion par nom de compte et mot de passe (K-15) > ⛔ MP-8 — un mot de passe juste : UN seul hachage réel, A
+      ✗ [AssertionError] staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > crée le Manager : hachage du mot de passe, clé normalisée du nom, se
+      ✗ [AssertionError] staff-session.service.spec.ts > activate — K-14 : le propriétaire crée le Manager > ⛔ rang 58 — le PIN tiré est HACHÉ avant d'atteindre le magasin : le 
+      ✗ [AssertionError] staff-session.service.spec.ts > changePassword — K-18 : le compteur est PARTAGÉ avec la connexion (S-102) > un mot de passe actuel juste : réserve, véri
+      ✗ [AssertionError] staff-session.service.spec.ts > rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion : le PIN candidat est tir
+      ✗ [AssertionError] staff-session.service.spec.ts > rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion, PIN INSTALLÉ par le maga
+      ✗ [AssertionError] staff-session.service.spec.ts > rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ la connexion, PIN DÉJÀ VALABLE (`pinIs
+      ✗ [AssertionError] staff-session.service.spec.ts > rang 58 — K-15 et K-18 rendent le PIN UNE fois, quand le magasin l'a installé > ⛔ le changement de mot de passe : le can
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ un PIN juste : UN calcul de HMAC (la vraie vérification, contre le haché REND
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ l'ORDRE est la règle : la salle, le membre, la RÉSERVATION de l'essai, ENSUIT
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ MP-2 — la réservation reçoit la salle du BEARER, le membre visé et les cookie
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ MP-2 — SANS cookie d'appareil, la réservation n'est PAS demandée : aucun essa
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ le jeton de session posé est celui dont le HACHAGE a été donné à l'ouverture 
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ un PIN FAUX : UN calcul de HMAC réel, l'échec est consigné avec le compte de 
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ la réservation REFUSÉE (essais épuisés, PIN verrouillé, expiré ou absent, app
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ le membre DÉSACTIVÉ et le TEMPORAIRE EXPIRÉ sont des comptes inconnus pour la
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > un membre dont le mot de passe est À CHANGER (un temporaire valable, ou un mot 
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — une ouverture REFUSÉE sous verrou (PIN remplacé, verrou posé, membre dé
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ R-3 — la couche ÉTEINTE, le membre inconnu, la salle sans profil, le membre d
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > ⛔ la couche ÉTEINTE n'ouvre aucune autre lecture : ni membre, ni réservation (l
+      ✗ [TypeError] staff-session.service.spec.ts > pinLogin — la connexion par PIN (K-23) > le membre est cherché dans la salle du BEARER, par l'identifiant du corps (jama
+      ✗ [AssertionError] staff-source-guards.spec.ts > les sources du personnel > le détecteur a parcouru les fichiers attendus (un zéro sur zéro fichier ne prouve rien, D290)
+      ✗ [AssertionError] staff-source-guards.spec.ts > les sources du personnel > ⛔ D187 — les trois modules PURS n'importent ni Nest, ni Prisma, ni le système de fichiers : u
+      ✗ [AssertionError] staff-source-guards.spec.ts > le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exactement CINQ
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ R-2 — le NOM du secret n'est écrit que dans `config/env.ts` (l
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-11 — `createHmac` n'est appelé que dans le hacheur du PIN :
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ la comparaison des hachés est À TEMPS CONSTANT : `timingSafeEq
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ D200 — `apps/api/.env.example` porte le NOM du secret du PIN, 
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ MP-10 — l'aléa du PIN vient du système (`randomInt`), jamais d
+      ✗ [AssertionError] staff-source-guards.spec.ts > rang 58 — le PIN et son secret : les gardes de SOURCE > ⛔ R-5 — l'union fermée des lignes d'audit nomme les QUATRE actio
+      ✗ [TypeError] staff-store.prisma.spec.ts > findMemberById — K-23 : le membre par son identifiant, DANS la salle du Bearer, avec l'heure de la base, sans aucun secr
+      ✗ [TypeError] staff-store.prisma.spec.ts > findMemberById — K-23 : le membre par son identifiant, DANS la salle du Bearer, avec l'heure de la base, sans aucun secr
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ UNE
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ le 
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ tou
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ MP-
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > les p
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > ⛔ auc
+      ✗ [TypeError] staff-store.prisma.spec.ts > reservePinAttempt — MP-1, MP-2 : UNE instruction, toutes ses conditions, le compteur monte AVANT la vérification > aucun
+      ✗ [TypeError] staff-store.prisma.spec.ts > recordPinFailure — le verrou se pose au TROISIÈME ÉCHEC, sur CE PIN, et met fin aux sessions du membre > ⛔ SOUS le plafo
+      ✗ [TypeError] staff-store.prisma.spec.ts > recordPinFailure — le verrou se pose au TROISIÈME ÉCHEC, sur CE PIN, et met fin aux sessions du membre > ⛔ AU plafond : 
+      ✗ [TypeError] staff-store.prisma.spec.ts > recordPinFailure — le verrou se pose au TROISIÈME ÉCHEC, sur CE PIN, et met fin aux sessions du membre > ⛔ le verrou pos
+      ✗ [TypeError] staff-store.prisma.spec.ts > recordPinFailure — le verrou se pose au TROISIÈME ÉCHEC, sur CE PIN, et met fin aux sessions du membre > tout est dans U
+      ✗ [TypeError] staff-store.prisma.spec.ts > openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DA
+      ✗ [TypeError] staff-store.prisma.spec.ts > openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DA
+      ✗ [TypeError] staff-store.prisma.spec.ts > openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DA
+      ✗ [TypeError] staff-store.prisma.spec.ts > openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DA
+      ✗ [TypeError] staff-store.prisma.spec.ts > openSessionByPin — K-23 : le membre d'abord (L2), l'appareil (L3) puis la session (L4) ; les QUATRE conditions de R-3 DA
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS d
+      ✗ [AssertionError] quote-store.prisma.spec.ts > ⛔ D-5, D-6, D-11 — `promouvoir` : UNE transaction, le verrou de la chaîne, le compte = 1 exigé, UNE ligne d'audit SANS d
+      ✗ [AssertionError] quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ le port reçoit l'
+      ✗ [AssertionError] quotes.service.spec.ts > ⛔ D-4, D-5, D-6 — `promote` : la fiche et le nom DÉCIDÉS ICI, l'écriture et ses refus TRADUITS ICI > ⛔ R-6 (D356) — la c

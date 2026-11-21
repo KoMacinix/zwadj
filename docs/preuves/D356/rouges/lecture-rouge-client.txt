@@ -1,0 +1,21 @@
+docs/preuves/D355/rouges/rouge-unit.txt — 845 lignes parcourues
+   Test Files  7 failed (7)
+   Tests  19 failed | 234 passed (253)
+   tests en échec lus : 19 · par classe de première ligne : {'AssertionError': 19}
+   fichiers tombés (collecte ou crochet) : 1 · par classe : {'import introuvable (collecte)': 1}
+      · src/clients/client-record-audit.spec.ts — import introuvable (collecte)
+docs/preuves/D355/rouges/rouge-int.txt — 470 lignes parcourues
+   Test Files  2 failed (2)
+   Tests  20 failed | 7 passed (27)
+   tests en échec lus : 20 · par classe de première ligne : {'AssertionError': 20}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+CALIBRATION : rouge-unit de D355 → 19 AssertionError + 1 fichier tombé : True ; rouge-int de D355 → 20 AssertionError, aucun fichier tombé : True
+calibration : les deux cas ont rendu leur verdict attendu.
+
+docs/preuves/D356/rouges/rouge-client.txt — 73 lignes parcourues
+   Test Files  1 failed (1)
+   Tests  2 failed | 10 passed (12)
+   tests en échec lus : 2 · par classe de première ligne : {'TypeError': 1, 'AssertionError': 1}
+   fichiers tombés (collecte ou crochet) : 0 · par classe : {}
+      ✗ [TypeError] staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ rang 58 (D356) — K-23 : `pinLogin` POSTE `{ mem
+      ✗ [AssertionError] staff-client.test.ts > le client du personnel — méthode, adresse et corps de chaque contrat > ⛔ le client n'expose que les DIX contrats (K-14 à

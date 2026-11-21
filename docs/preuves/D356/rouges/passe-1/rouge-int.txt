@@ -1,0 +1,158 @@
+# D356 — rouge — famille « int »
+# commande : C:\Users\benla\AppData\Roaming\npm\pnpm.CMD --filter @zwadj/api exec vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts test/int/staff-pin-issue.int-spec.ts test/int/staff-pin-race.int-spec.ts test/int/staff-pin-audit.int-spec.ts test/int/quote-promote-actor.int-spec.ts test/int/throttle.int-spec.ts test/int/staff-session-guard.int-spec.ts
+# code de sortie : 1 ; durée : 42 s
+# empreintes sha256 des fichiers de test joués et de leurs aides (octets de l'arbre de travail au moment du jeu)
+#   c8572aa33ebcc43448b516dc0c8b55f47430bc00a04623041ee24f8fc3780f10  apps/api/test/int/helpers.ts
+#   7882a5dafa207426c7740859794716576a25bd342b22c9e0a401cdfd6ffc515e  apps/api/test/int/log-capture.ts
+#   16158aae774ccc74538acdb0eb5f3dd4cde715f9311c358c475847e3e84a5d4a  apps/api/test/int/quote-promote-actor.int-spec.ts
+#   60564351f2774a4b2af62299f80fc176e2ec54f66f9abbbeb4d425157610494e  apps/api/test/int/row-lock.ts
+#   719b1eeedb2b3fff740ade81acb5a95e66a8de587cc86c8ed6344129647b268d  apps/api/test/int/setup-env.ts
+#   5c6a71c24addce2e4e54a8ef83007964aba3220834013aa10299220ef652a70b  apps/api/test/int/staff-helpers.ts
+#   7e43ad3d10ff3b86b47a072a8bb442a6287870e1dee93c0d24d55463f9b0533c  apps/api/test/int/staff-pin-audit.int-spec.ts
+#   57dda774648347626f495f93aeebe637cd164f701d09cf3d5b093aeac8e0313f  apps/api/test/int/staff-pin-issue.int-spec.ts
+#   5cbe440ee64df36e1f1db22fb07d4e5e2973f1577f8424966aea5ee744676f60  apps/api/test/int/staff-pin-race.int-spec.ts
+#   ce96c4d5be0114fc0a500d543eee4bc43d9d5657957457a13ddbd91febd901b0  apps/api/test/int/staff-pin.int-spec.ts
+#   00030a82176b02f67594893cfd1f3157afcc3496f2c0c4f1587bc329718a9033  apps/api/test/int/staff-session-guard.int-spec.ts
+#   aa1831de5c410002e59418d3bbd981a0bc14ea205ce5f040e53d7b6bdd7a3075  apps/api/test/int/throttle.int-spec.ts
+# ---- sortie brute, sans codes ANSI ----
+
+ RUN  v3.2.7 C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api
+
+ ❯ test/int/throttle.int-spec.ts (11 tests | 2 failed) 10342ms
+   ✓ Rate limiting /auth (limites réelles) > resend-verification : 3 requêtes passent, la 4e est rejetée en 429 avec Retry-After 282ms
+   ✓ Rate limiting /auth (limites réelles) > login (D8) : 10 tentatives passent (ici en 401), la 11e est rejetée en 429 — le throttle précède l'auth  1586ms
+   ✓ Rate limiting /auth (limites réelles) > refresh (D13) : 30 requêtes passent (401 sans cookie), la 31e est rejetée en 429 201ms
+   ✓ Rate limiting /auth (limites réelles) > logout (D13) : 10 requêtes passent (200 idempotent), la 11e est rejetée en 429 58ms
+   ✓ Rate limiting /auth (limites réelles) > forgot-password (Lot 4) : 3 demandes passent (202 constant), la 4e est rejetée en 429 29ms
+   ✓ Rate limiting /auth (limites réelles) > reset-password (Lot 4) : 10 tentatives passent (ici 400), la 11e est rejetée en 429 110ms
+   ✓ Rate limiting /auth (limites réelles) > google (Lot 8) : 5 tentatives passent (ici 401, table vide), la 6e est rejetée en 429 — budget register 36ms
+   ✓ Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sans Bearer : le throttle précède l'auth), la 6e est rejetée en 429 — le MÊME levier (D128), budget register 36ms
+   ✓ Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e est rejetée en 429 — budget login ; la limite est PAR ROUTE : la limite d'activation épuisée ci-dessus ne bloque pas la connexion 55ms
+   × Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée 17ms
+     → requête 1: expected 404 to be 401 // Object.is equality
+   × Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code 8ms
+     → Cannot read properties of undefined (reading 'limit')
+
+ Test Files  7 failed (7)
+      Tests  2 failed | 9 passed (11)
+   Start at  19:24:09
+   Duration  38.13s (transform 3.08s, setup 262ms, collect 596ms, tests 10.34s, environment 8ms, prepare 3.65s)
+
+undefined
+C:\Users\benla\Desktop\MyProjct\Zwadj\apps\api:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run -c vitest.config.int.ts test/int/staff-pin.int-spec.ts test/int/staff-pin-issue.int-spec.ts test/int/staff-pin-race.int-spec.ts test/int/staff-pin-audit.int-spec.ts test/int/quote-promote-actor.int-spec.ts test/int/throttle.int-spec.ts test/int/staff-session-guard.int-spec.ts
+
+--- stderr ---
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/quote-promote-actor.int-spec.ts [ test/int/quote-promote-actor.int-spec.ts ]
+ FAIL  test/int/staff-session-guard.int-spec.ts [ test/int/staff-session-guard.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-helpers.ts'
+ ❯ test/int/staff-helpers.ts:6:1
+      4| import request, { type Response } from "supertest";
+      5| import { PrismaService } from "../../src/prisma/prisma.service";
+      6| import { StaffPinHasher } from "../../src/staff/staff-pin-hasher";
+       | ^
+      7| import { createTestApp, loginAs, registerUser, verifyLastRegistered, t…
+      8| 
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/int/staff-pin-audit.int-spec.ts [ test/int/staff-pin-audit.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-audit.int-spec.ts'
+ ❯ test/int/staff-pin-audit.int-spec.ts:11:1
+      9| // ⚠ Les verdicts passent par `expect` de vitest (assertions natives).
+     10| import { afterAll, afterEach, beforeAll, describe, expect, it } from "…
+     11| import { StaffPinHasher } from "../../src/staff/staff-pin-hasher";
+       | ^
+     12| import { truncateAll } from "./helpers";
+     13| import { creerApplicationJournalisee, type ContexteJournalise } from "…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/int/staff-pin-issue.int-spec.ts [ test/int/staff-pin-issue.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-issue.int-spec.ts'
+ ❯ test/int/staff-pin-issue.int-spec.ts:9:1
+      7| import { afterAll, beforeAll, describe, expect, it } from "vitest";
+      8| import { STAFF_LIMITS } from "@zwadj/types";
+      9| import { StaffPinHasher } from "../../src/staff/staff-pin-hasher";
+       | ^
+     10| import { isTrivialPin } from "../../src/staff/staff-pin";
+     11| import { createTestApp, truncateAll, type TestContext } from "./helper…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/int/staff-pin-race.int-spec.ts [ test/int/staff-pin-race.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin-race.int-spec.ts'
+ ❯ test/int/staff-pin-race.int-spec.ts:13:1
+     11| import { afterAll, afterEach, beforeAll, describe, expect, it, vi } fr…
+     12| import { STAFF_LIMITS } from "@zwadj/types";
+     13| import { StaffPinHasher } from "../../src/staff/staff-pin-hasher";
+       | ^
+     14| import { STAFF_STORE, type OpenPinSessionResult, type StaffStore } fro…
+     15| import { createTestApp, truncateAll, type TestContext } from "./helper…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/int/staff-pin.int-spec.ts [ test/int/staff-pin.int-spec.ts ]
+Error: Cannot find module '../../src/staff/staff-pin-hasher' imported from 'C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts'
+ ❯ test/int/staff-pin.int-spec.ts:14:1
+     12| import { afterAll, afterEach, beforeAll, describe, expect, it, vi } fr…
+     13| import { StaffPinState } from "@zwadj/types";
+     14| import { StaffPinHasher } from "../../src/staff/staff-pin-hasher";
+       | ^
+     15| import { etatDuPin } from "../../src/staff/staff-account-state";
+     16| import { STAFF_STORE, type StaffStore } from "../../src/staff/staff-st…
+
+Caused by: Error: Failed to load url ../../src/staff/staff-pin-hasher (resolved id: ../../src/staff/staff-pin-hasher) in C:/Users/benla/Desktop/MyProjct/Zwadj/apps/api/test/int/staff-pin.int-spec.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/.pnpm/vite@6.4.3_@types+node@22.2_d646538f10c8ad153ed4751b72435cb0/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:35835:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > staffPin (rang 58, D356, MP-36) : 60 requêtes passent (401, sans Bearer : le throttle précède l'auth), la 61e est rejetée en 429 — le MÊME levier (D128) ; la limite est PAR ROUTE : celle de la connexion par mot de passe n'est pas entamée
+AssertionError: requête 1: expected 404 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 404
+
+ ❯ test/int/throttle.int-spec.ts:135:112
+    133|     const payload = { memberId: "018f0000-0000-7000-8000-0000000000b1"…
+    134|     for (let i = 1; i <= 60; i++) {
+    135|       expect((await request(server).post("/api/v1/pro/staff/pin-login"…
+       |                                                                                                                ^
+    136|     }
+    137|     const blocked = await request(server).post("/api/v1/pro/staff/pin-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/int/throttle.int-spec.ts > Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune variable définie, D128) : activation 5, connexion 10, connexion par PIN 60 — ce spec fige les limites par l'environnement, donc seul un import SANS variable lit les défauts du code
+TypeError: Cannot read properties of undefined (reading 'limit')
+ ❯ test/int/throttle.int-spec.ts:151:37
+    149|       expect(AUTH_THROTTLE.staffActivate.limit).toBe(5);
+    150|       expect(AUTH_THROTTLE.staffLogin.limit).toBe(10);
+    151|       expect(AUTH_THROTTLE.staffPin.limit).toBe(60);
+       |                                     ^
+    152|     } finally {
+    153|       for (const [n, v] of sauvegarde) if (v !== undefined) process.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
