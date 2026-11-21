@@ -284,7 +284,8 @@ describe("activate — K-14 : une transaction, le drapeau d'abord (L1), puis Man
   it("⛔ MP-43 / R-6 (D341) — les échéances sont des PARAMÈTRES du levier : mot de passe 90 jours, appareil = durée du PIN, session = plafond ; aucune durée en dur", async () => {
     const f = faux([1, [LIGNE_MEMBRE], [{ id: "d1" }], [{ id: "s1" }]], { profil });
     await f.store.activate(entree);
-    expect(f.appels[1]!.valeurs).toContain(STAFF_LIMITS.PASSWORD_VALIDITY_DAYS);
+    // Rang 58 : l'INSERT porte AUSSI la durée du PIN (égale, aujourd'hui, à celle du mot de passe) — `toContain` ne distinguait plus les deux ; la position le fait (profil, nom, clé, hachage, DURÉE DU MOT DE PASSE, haché du PIN, SA durée).
+    expect(f.appels[1]!.valeurs[4]).toBe(STAFF_LIMITS.PASSWORD_VALIDITY_DAYS);
     expect(f.appels[2]!.valeurs).toContain(STAFF_LIMITS.PIN_VALIDITY_DAYS);
     expect(f.appels[3]!.valeurs).toContain(STAFF_LIMITS.SESSION_MAX_HOURS);
     for (const a of f.appels) expect(a.sql, a.sql).not.toMatch(/interval\s*'/i);

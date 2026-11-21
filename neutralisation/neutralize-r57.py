@@ -144,26 +144,26 @@ cible("A-1. ⛔ R-1 — le CAS d'ouverture ne compare plus le hachage lu à la r
 cible("A-2. ⛔ R-1 — le CAS compare le hachage à un AUTRE secret (le jeton de session) : l'ouverture n'est plus jamais acceptée", MAGASIN,
       "\n           AND password_hash = ${input.expectedPasswordHash}\n", "\n           AND password_hash = ${input.sessionTokenHash}\n", ["course-magasin", "int-course"])
 cible("A-3. ⛔ R-1 — « connexion ‖ désactivation » : le CAS d'ouverture ne conditionne plus le STATUT (un membre désactivé entre la réservation et l'ouverture ouvre une session)", MAGASIN,
-      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'",
-      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND true", ["course-magasin", "int-course"])
+      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'\n           AND password_hash",
+      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND true\n           AND password_hash", ["course-magasin", "int-course"])
 cible("A-4. ⛔ R-1 — le hachage est comparé à une LECTURE de l'instantané de l'instruction (sous-requête) et non à la ligne VERROUILLÉE : un contrôle qui ne relit pas sous le verrou", MAGASIN,
       "\n           AND password_hash = ${input.expectedPasswordHash}\n",
       "\n           AND ${input.expectedPasswordHash} = (SELECT m2.password_hash FROM pro_staff_members m2 WHERE m2.id = ${input.memberId}::uuid)\n", ["int-course"])
 cible("A-5. ⛔ R-1 — le refus d'ouverture change de nom de motif (`memberChanged` devient `memberInactive`) : le contrat du port se désaccorde de sa définition", MAGASIN,
-      '      if (membre === undefined) return { ok: false, reason: "memberChanged" };', '      if (membre === undefined) return { ok: false, reason: "memberInactive" as "memberChanged" };', ["course-magasin"])
+      '      if (ligne === undefined) return { ok: false, reason: "memberChanged" };', '      if (ligne === undefined) return { ok: false, reason: "memberInactive" as "memberChanged" };', ["course-magasin"])
 
 # ── S — R-1 : le SERVICE de connexion (le hachage transmis, le refus identique à un mauvais mot de passe).
 cible("S-1. ⛔ R-1 — le service transmet un autre secret que le hachage lu à la réservation (le mot de passe en clair)", SERVICE,
       "      memberId: member.id,\n      expectedPasswordHash: reservation.passwordHash,", "      memberId: member.id,\n      expectedPasswordHash: input.password,", ["course-service", "int-course"])
 cible("S-2. ⛔ R-1 / S-253 — un refus d'ouverture est consigné comme un échec de mot de passe (une ligne d'échec pour un mot de passe qui était JUSTE)", SERVICE,
-      "    if (!opened.ok) throw identifiantsRefuses();",
-      '    if (!opened.ok) { await this.store.recordPasswordFailure({ actor: user, memberId: member.id, failedCount: reservation.failedCount, pausedNow: reservation.pausedNow, action: "staff.login_failed" }); throw identifiantsRefuses(); }', ["course-service"])
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) throw identifiantsRefuses();",
+      'comme pour un mauvais mot de passe).\n    if (!opened.ok) { await this.store.recordPasswordFailure({ actor: user, memberId: member.id, failedCount: reservation.failedCount, pausedNow: reservation.pausedNow, action: "staff.login_failed" }); throw identifiantsRefuses(); }', ["course-service"])
 cible("S-3. ⛔ R-1 — un refus d'ouverture paie UN hachage FACTICE de plus (le coût diffère de celui d'un mauvais mot de passe)", SERVICE,
-      "    if (!opened.ok) throw identifiantsRefuses();",
-      "    if (!opened.ok) { await this.passwords.verifyAgainstDummy(input.password); throw identifiantsRefuses(); }", ["course-service", "int-course"])
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) throw identifiantsRefuses();",
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) { await this.passwords.verifyAgainstDummy(input.password); throw identifiantsRefuses(); }", ["course-service", "int-course"])
 cible("S-4. ⛔ R-1 — un refus d'ouverture n'est plus le même corps qu'un mauvais mot de passe (un 403 « interdit » : le refus dit POURQUOI)", SERVICE,
-      "    if (!opened.ok) throw identifiantsRefuses();",
-      "    if (!opened.ok) throw new ForbiddenException(erreurDe(StaffErrorCode.STAFF_INVALID_CREDENTIALS));", ["course-service", "int-course"])
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) throw identifiantsRefuses();",
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) throw new ForbiddenException(erreurDe(StaffErrorCode.STAFF_INVALID_CREDENTIALS));", ["course-service", "int-course"])
 
 # ── P — R-2 : le module PUR du journal des fiches (`client-record-audit.ts`).
 cible("P-1. ⛔ R-2 — `before` est écrit (la valeur d'avant d'un champ est une donnée personnelle)", AUDIT,

@@ -275,13 +275,13 @@ cible("S-1. ⛔ S-104 — la connexion juge « actif » (le statut seul) : un TE
 cible("S-2. ⛔ S-104 — la connexion refuse un mot de passe À CHANGER (un temporaire valable ne se connecte plus)", SERVICE,
       "    const memberActive = etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD;", "    const memberActive = etat === StaffAccountState.ACTIVE;", ["service", "int-expiration"])
 cible("S-3. ⛔ S-104 — la connexion rend la colonne brute `mustChangePassword` (un mot de passe de 90 jours expiré ne le dit pas)", SERVICE,
-      "      body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD } },", "      body: { member: opened.member },", ["service", "int-expiration"])
+      "      body: { member: { ...opened.member, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD }, pin: opened.pinIssued ? pin : null },", "      body: { member: opened.member, pin: opened.pinIssued ? pin : null },", ["service", "int-expiration"])
 cible("S-4. ⛔ S-104 — l'état rend un membre même au TEMPORAIRE EXPIRÉ (un membre « connecté » qu'aucune route n'accepte)", SERVICE,
       "        if (etat === StaffAccountState.ACTIVE || etat === StaffAccountState.MUST_CHANGE_PASSWORD) {", "        if (true) {", ["service", "int-expiration"])
 cible("S-5. ⛔ S-104 — l'état copie la colonne brute au lieu de juger", SERVICE,
       "role: peek.session.role, mustChangePassword: etat === StaffAccountState.MUST_CHANGE_PASSWORD };", "role: peek.session.role, mustChangePassword: peek.session.mustChangePassword };", ["service", "int-expiration"])
 cible("S-6. ⛔ MP-41 — la connexion juge l'état avec `new Date()` et non l'heure de la base rendue avec le membre", SERVICE,
-      "    const etat = member === null ? null : etatDuCompte(member, member.now);", "    const etat = member === null ? null : etatDuCompte(member, new Date());", ["service", "sources"])
+      "    const etat = member === null ? null : etatDuCompte(member, member.now);\n    const memberActive", "    const etat = member === null ? null : etatDuCompte(member, new Date());\n    const memberActive", ["service", "sources"])
 
 # ── B — le SERVICE DE GESTION (`staff-members.service.ts`, K-19 à K-22, R-5, R-6).
 cible("B-1. ⛔ R-5 — K-20 transmet le mot de passe en CLAIR au magasin (il ne doit recevoir que le hachage)", SERVICE_MEMBRES,
@@ -353,11 +353,11 @@ cible("A-14. ⛔ S-105 — les sessions réinitialisées prennent la fin LOGOUT 
 cible("A-15. ⛔ S-105 — les APPAREILS du membre ne sont plus révoqués par la réinitialisation", MAGASIN,
       "UPDATE pro_staff_devices SET revoked_at = now() WHERE member_id", "UPDATE pro_staff_devices SET revoked_at = revoked_at WHERE member_id", ["magasin", "int-membres"])
 cible("A-16. ⛔ MP-29 — la réinitialisation ne remet plus « mot de passe à changer »", MAGASIN,
-      "               must_change_password = true, password_failed_count = 0, password_locked_until = NULL, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'",
-      "               must_change_password = false, password_failed_count = 0, password_locked_until = NULL, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'", ["magasin", "int-membres"])
+      "               must_change_password = true, password_failed_count = 0, password_locked_until = NULL,\n               pin_hash = NULL",
+      "               must_change_password = false, password_failed_count = 0, password_locked_until = NULL,\n               pin_hash = NULL", ["magasin", "int-membres"])
 cible("A-17. ⛔ la réinitialisation ne remet plus les compteurs d'échecs ni la pause à zéro", MAGASIN,
-      "password_failed_count = 0, password_locked_until = NULL, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'",
-      "password_failed_count = password_failed_count, password_locked_until = password_locked_until, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'", ["magasin", "int-membres"])
+      "password_failed_count = 0, password_locked_until = NULL,\n               pin_hash = NULL",
+      "password_failed_count = password_failed_count, password_locked_until = password_locked_until,\n               pin_hash = NULL", ["magasin", "int-membres"])
 cible("A-18. ⛔ R-6 — la charge utile de l'audit de réinitialisation intervertit sessions et appareils", MAGASIN,
       "        after: { sessionsEnded: sessions, devicesRevoked: appareils }", "        after: { sessionsEnded: appareils, devicesRevoked: sessions }", ["magasin"])
 cible("A-19. ⛔ un membre désactivé n'est plus refusé à la réinitialisation (l'UPDATE conditionné échoue ensuite : une 500)", MAGASIN,
@@ -369,8 +369,8 @@ cible("A-21. ⛔ R-4 — le comptage des Managers compte aussi les DÉSACTIVÉS 
 cible("A-22. ⛔ R-4 — le nombre de Managers actifs rendu à la décision est fixe (99) : le dernier Manager n'est plus reconnu", MAGASIN,
       "activeManagers: compte[0]?.n ?? 0", "activeManagers: 99", ["magasin", "int-dernier-manager"])
 cible("A-23. ⛔ D305 — le CAS du statut est retiré à la désactivation (l'UPDATE n'est plus conditionné à `status = 'ACTIVE'`)", MAGASIN,
-      "        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'",
-      "        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(), updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND true", ["magasin"])
+      "        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(),\n               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND status = 'ACTIVE'",
+      "        UPDATE pro_staff_members SET status = 'DISABLED', disabled_at = now(),\n               pin_hash = NULL, pin_generated_at = NULL, pin_expires_at = NULL, pin_failed_count = 0, pin_locked_at = NULL, updated_at = now()\n         WHERE id = ${input.memberId}::uuid AND true", ["magasin"])
 cible("A-24. ⛔ MP-30 — les sessions d'un membre désactivé prennent la fin LOGOUT et non DISABLED", MAGASIN,
       "end_reason = 'DISABLED' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL", "end_reason = 'LOGOUT' WHERE member_id = ${input.memberId}::uuid AND ended_at IS NULL", ["magasin", "int-membres"])
 cible("A-25. ⛔ MP-30 — les sessions d'un membre désactivé ne sont plus terminées (le filtre est inversé)", MAGASIN,

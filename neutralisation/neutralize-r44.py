@@ -269,7 +269,7 @@ cible("S-8. ⛔ l'échec de connexion est consigné sous l'action du changement 
 cible("S-9. ⛔ MP-3 — les cookies d'appareil partent au magasin EN CLAIR", SERVICE,
       "      candidateDeviceHashes: cookies.devices.map((d) => this.tokens.hash(d.value)),", "      candidateDeviceHashes: cookies.devices.map((d) => d.value),", ["service"])
 cible("S-10. ⛔ une désactivation entre la réservation et l'ouverture ouvre quand même la session", SERVICE,
-      "    if (!opened.ok) throw identifiantsRefuses();", "    if (false) throw identifiantsRefuses();", ["service"])
+      "comme pour un mauvais mot de passe).\n    if (!opened.ok) throw identifiantsRefuses();", "comme pour un mauvais mot de passe).\n    if (false) throw identifiantsRefuses();", ["service"])
 cible("S-11. ⛔ MP-3 — un appareil réutilisé reçoit quand même un cookie d'appareil neuf", SERVICE,
       "opened.deviceReused ? undefined : { suffix, token: deviceToken }", "opened.deviceReused ? { suffix, token: deviceToken } : { suffix, token: deviceToken }", ["service", "int-connexion"])
 cible("S-12. ⛔ K-16 — la déconnexion ne demande plus l'effacement du cookie de session", SERVICE,
@@ -346,7 +346,7 @@ cible("A-11. ⛔ MP-43 — l'échéance de l'appareil de l'activation n'est plus
 cible("A-12. ⛔ MP-43 — le plafond de la session de l'activation n'est plus le plafond du levier", MAGASIN,
       "${appareils[0]!.id}::uuid, ${input.sessionTokenHash}, now() + make_interval(hours => ${STAFF_LIMITS.SESSION_MAX_HOURS}::int)", "${appareils[0]!.id}::uuid, ${input.sessionTokenHash}, now() + make_interval(hours => ${STAFF_LIMITS.IDLE_TIMEOUT_MINUTES}::int)", ["magasin", "int-activation"])
 cible("A-13. ⛔ MP-43 — l'échéance du mot de passe de l'activation n'est plus celle du levier", MAGASIN,
-      "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int))", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int))", ["magasin", "int-activation"])
+      "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int),\n                  ${input.pinHash}", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int),\n                  ${input.pinHash}", ["magasin", "int-activation"])
 cible("A-14. ⛔ MP-18 — `findMember` cherche le nom dans TOUTES les salles", MAGASIN,
       "       WHERE pro_profile_id = ${proProfileId}::uuid AND account_name_key = ${accountNameKey}", "       WHERE account_name_key = ${accountNameKey}", ["magasin", "int-connexion"])
 cible("A-15. ⛔ MP-16 / MP-17 — la ligne du membre n'est plus VERROUILLÉE par la réservation (`FOR UPDATE`)", MAGASIN,
@@ -372,17 +372,17 @@ cible("A-24. ⛔ la ligne de PAUSE n'est jamais écrite", MAGASIN,
 cible("A-25. ⛔ la ligne de pause change de nom d'action", MAGASIN,
       'action: "staff.password_pause",', 'action: "staff.password_failed",', ["magasin", "int-connexion"])
 cible("A-26. ⛔ MP-33 — la ligne d'échec porte un champ de plus que le compte d'échecs", MAGASIN,
-      "after: { failedCount: input.failedCount } });", "after: { failedCount: input.failedCount, memberId: input.memberId } });", ["magasin"])
+      "{ action: input.action, entityType: \"staff_member\", entityId: input.memberId, after: { failedCount: input.failedCount } });", "{ action: input.action, entityType: \"staff_member\", entityId: input.memberId, after: { failedCount: input.failedCount, memberId: input.memberId } });", ["magasin"])
 cible("A-27. ⛔ la remise à zéro de la pause ne lève plus la pause (seul le compteur retombe)", MAGASIN,
       "UPDATE pro_staff_members SET password_failed_count = 0, password_locked_until = NULL, updated_at = now()", "UPDATE pro_staff_members SET password_failed_count = 0, updated_at = now()", ["magasin"])
 cible("A-28. ⛔ une connexion réussie ne remet plus les compteurs à zéro", MAGASIN,
       "SET last_login_at = now(), password_failed_count = 0, password_locked_until = NULL, updated_at = now()", "SET last_login_at = now(), updated_at = now()", ["magasin", "int-connexion"])
 cible("A-29. ⛔ D305 — le CAS de la connexion n'exige plus un membre ACTIF", MAGASIN,
-      "AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'", "AND pro_profile_id = ${input.proProfileId}::uuid AND status IN ('ACTIVE', 'DISABLED')", ["magasin", "int-connexion"])
+      "AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'\n           AND password_hash", "AND pro_profile_id = ${input.proProfileId}::uuid AND status IN ('ACTIVE', 'DISABLED')\n           AND password_hash", ["magasin", "int-connexion"])
 cible("A-30. ⛔ MP-18 — le CAS de la connexion n'exige plus la salle du Bearer", MAGASIN,
-      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status", "WHERE id = ${input.memberId}::uuid AND pro_profile_id IS NOT NULL AND status", ["magasin"])
+      "WHERE id = ${input.memberId}::uuid AND pro_profile_id = ${input.proProfileId}::uuid AND status = 'ACTIVE'\n           AND password_hash", "WHERE id = ${input.memberId}::uuid AND pro_profile_id IS NOT NULL AND status = 'ACTIVE'\n           AND password_hash", ["magasin"])
 cible("A-31. ⛔ D305 — un CAS refusé (compte 0) n'arrête plus la connexion", MAGASIN,
-      '      if (membre === undefined) return { ok: false, reason: "memberChanged" };', '      if (false) return { ok: false, reason: "memberChanged" };', ["magasin"])
+      '      if (ligne === undefined) return { ok: false, reason: "memberChanged" };', '      if (false) return { ok: false, reason: "memberChanged" };', ["magasin"])
 cible("A-32. ⛔ MP-3 — n'importe quel appareil présenté est réutilisé (la politique n'est plus consultée)", MAGASIN,
       "      const reutilisable = pickReusableDevice(candidats, membre.id, input.proProfileId);", "      const reutilisable = candidats[0] ?? null;", ["magasin", "int-connexion"])
 cible("A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé", MAGASIN,
@@ -390,7 +390,7 @@ cible("A-33. ⛔ un appareil réutilisé n'est plus marqué utilisé", MAGASIN,
 cible("A-34. ⛔ la ligne d'audit de la connexion ne dit plus si l'appareil était reconnu", MAGASIN,
       "after: { memberId: membre.id, deviceReused } }", "after: { memberId: membre.id } }", ["magasin", "int-connexion"])
 cible("A-35. ⛔ MP-43 — l'échéance de l'appareil neuf de la connexion n'est plus la durée du PIN", MAGASIN,
-      "${input.newDeviceTokenHash}, ${input.deviceLabel}, now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int)", "${input.newDeviceTokenHash}, ${input.deviceLabel}, now() + make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int)", ["magasin"])
+      "${input.deviceLabel},\n                  LEAST(now() + make_interval(days => ${STAFF_LIMITS.PIN_VALIDITY_DAYS}::int)", "${input.deviceLabel},\n                  LEAST(now() + make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int)", ["magasin"])
 cible("A-36. ⛔ MP-43 — le plafond de la session de la connexion n'est plus celui du levier", MAGASIN,
       "${appareilId}::uuid, ${input.sessionTokenHash}, now() + make_interval(hours => ${STAFF_LIMITS.SESSION_MAX_HOURS}::int)", "${appareilId}::uuid, ${input.sessionTokenHash}, now() + make_interval(hours => ${STAFF_LIMITS.IDLE_TIMEOUT_MINUTES}::int)", ["magasin"])
 cible("A-37. ⛔ MP-13 — la session ne GLISSE plus (l'activité n'est pas rafraîchie par la requête)", MAGASIN,
@@ -438,7 +438,7 @@ cible("A-56. ⛔ MP-5 — le changement termine la session COURANTE et laisse le
 cible("A-57. ⛔ K-18 — le changement laisse `must_change_password` levé", MAGASIN,
       "must_change_password = false, password_failed_count = 0, password_locked_until = NULL, updated_at = now()", "must_change_password = true, password_failed_count = 0, password_locked_until = NULL, updated_at = now()", ["magasin", "int-mdp"])
 cible("A-58. ⛔ MP-43 — l'échéance du nouveau mot de passe n'est plus celle du levier", MAGASIN,
-      "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int),", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int),", ["magasin", "int-mdp"])
+      "make_interval(days => ${STAFF_LIMITS.PASSWORD_VALIDITY_DAYS}::int),\n               must_change_password = false", "make_interval(days => ${STAFF_LIMITS.PASSWORD_PAUSE_MINUTES}::int),\n               must_change_password = false", ["magasin", "int-mdp"])
 cible("A-59. ⛔ MP-33 — la ligne d'audit du changement porte un champ de plus", MAGASIN,
       "after: { otherSessionsEnded: autres } }", "after: { otherSessionsEnded: autres, memberId: input.memberId } }", ["magasin"])
 cible("A-60. ⛔ K-18 — un membre introuvable ou éteint ne refuse plus le changement", MAGASIN,
@@ -448,9 +448,9 @@ cible("A-61. ⛔ K-18 — un remplacement sans ligne (le hachage a changé) n'es
 cible("A-62. ⛔ K-17 — sans cookie d'appareil, la base est interrogée quand même", MAGASIN,
       "    if (input.deviceTokenHashes.length === 0) return [];", "    if (false) return [];", ["magasin"])
 cible("A-63. ⛔ MP-3 — un appareil RÉVOQUÉ reconnaît encore son membre", MAGASIN,
-      "AND d.revoked_at IS NULL", "AND true", ["magasin", "int-connexion"])
+      "AND d.revoked_at IS NULL\n         AND d.expires_at > now()", "AND true\n         AND d.expires_at > now()", ["magasin", "int-connexion"])
 cible("A-64. ⛔ MP-3 — un appareil EXPIRÉ reconnaît encore son membre", MAGASIN,
-      "AND d.expires_at > now()", "AND true", ["magasin", "int-connexion"])
+      "AND d.expires_at > now()\n         AND m.pro_profile_id", "AND true\n         AND m.pro_profile_id", ["magasin", "int-connexion"])
 cible("A-65. ⛔ MP-3 — les membres reconnus viennent de TOUTES les salles", MAGASIN,
       "AND m.pro_profile_id = ${input.proProfileId}::uuid\n         AND m.status = 'ACTIVE'\n       ORDER BY", "AND m.pro_profile_id IS NOT NULL\n         AND m.status = 'ACTIVE'\n       ORDER BY", ["magasin", "int-connexion"])
 cible("A-66. ⛔ MP-4 — un membre désactivé est encore « reconnu » sur ce poste", MAGASIN,
@@ -550,9 +550,9 @@ cible("L-8. ⛔ MP-34 — le contrôleur du personnel admet aussi un CLIENT", CO
 cible("L-9. ⛔ les routes de membre n'exigent plus le contexte du garde (une couche éteinte les laisse tomber en erreur 500)", CONTROLEUR,
       "    if (staff === undefined) {", "    if (false) {", ["int-connexion"])
 cible("L-10. ⛔ K-14 — l'activation répond 200 au lieu de 201", CONTROLEUR,
-      "  @HttpCode(HttpStatus.CREATED)\n  @Throttle({ default: AUTH_THROTTLE.staffActivate })", "  @HttpCode(HttpStatus.OK)\n  @Throttle({ default: AUTH_THROTTLE.staffActivate })", ["int-activation"])
+      "  @HttpCode(HttpStatus.CREATED)\n  @Header(\"Cache-Control\", \"no-store\")\n  @Throttle({ default: AUTH_THROTTLE.staffActivate })", "  @HttpCode(HttpStatus.OK)\n  @Header(\"Cache-Control\", \"no-store\")\n  @Throttle({ default: AUTH_THROTTLE.staffActivate })", ["int-activation"])
 cible("L-11. ⛔ K-15 — la connexion répond 201 au lieu de 200", CONTROLEUR,
-      "  @HttpCode(HttpStatus.OK)\n  @Throttle({ default: AUTH_THROTTLE.staffLogin })", "  @HttpCode(HttpStatus.CREATED)\n  @Throttle({ default: AUTH_THROTTLE.staffLogin })", ["int-connexion"])
+      "  @HttpCode(HttpStatus.OK)\n  @Header(\"Cache-Control\", \"no-store\")\n  @Throttle({ default: AUTH_THROTTLE.staffLogin })", "  @HttpCode(HttpStatus.CREATED)\n  @Header(\"Cache-Control\", \"no-store\")\n  @Throttle({ default: AUTH_THROTTLE.staffLogin })", ["int-connexion"])
 cible("L-12. ⛔ MP-36 — l'activation emprunte la limite de la CONNEXION (10 au lieu de 5)", CONTROLEUR,
       "  @Throttle({ default: AUTH_THROTTLE.staffActivate })", "  @Throttle({ default: AUTH_THROTTLE.login })", ["int-debit"])
 cible("L-13. ⛔ MP-36 — la connexion emprunte la limite de l'ACTIVATION (5 au lieu de 10)", CONTROLEUR,
@@ -762,8 +762,8 @@ TITRES: dict[str, str] = {
     "L-11|int-connexion": "K-15 — la connexion nominale > 200 : le membre est rendu, une SESSION neuve est ouverte et son cookie posé, `l",
     "L-12|int-debit": "Rate limiting /auth (limites réelles) > staffActivate (rang 44, D341, MP-36) : 5 requêtes passent (ici 401, sa",
     "L-13|int-debit": "Rate limiting /auth (limites réelles) > staffLogin (rang 44, D341, MP-36) : 10 requêtes passent (401), la 11e",
-    "L-14|int-debit": "Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune varia",
-    "L-15|int-debit": "Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des deux clés neuves (aucune varia",
+    "L-14|int-debit": "Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune varia",
+    "L-15|int-debit": "Rate limiting /auth (limites réelles) > ⛔ MP-36 — les DÉFAUTS de production des trois clés neuves (aucune varia",
     "L-16|int-activation": "MP-22 — l'activation CONCURRENTE > ⛔ dix activations simultanées (manche 1) : UNE réussit (201), les neuf autr",
     "L-17|sources": "le câblage > ⛔ la liste blanche des routes EXEMPTÉES du garde est FERMÉE : `@StaffExempt()` apparaît sur exact",
     "L-18|int-activation": "K-14 — l'activation nominale > ⛔ S-99 / MP-37 — le cookie de SESSION : `HttpOnly`, `SameSite=Strict`, chemin `",
