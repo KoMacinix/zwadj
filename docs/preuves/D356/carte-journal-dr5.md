@@ -1,0 +1,36 @@
+# D356 — la CARTE du journal de DR5, mise à jour ADDITIVEMENT (R-5, versée AVANT tout code ; complétée à la clôture)
+
+**Ce que ce document est** : la carte de D355 (`docs/preuves/D355/carte-journal-dr5.md`), dont les lignes « PAS ENCORE — lot 3b » deviennent ici « CE LOT (R-5) » avec l'action que ce lot écrira ; **la carte de D355 n'est pas réécrite** (une annotation additive, à sa fin, renvoie ici). À la CLÔTURE, la colonne « où et par quel test » est complétée par les numéros de ligne et les titres de test relevés dans le code livré — jamais écrits de mémoire (D275). Tant que la colonne dit « à relever à la clôture », la ligne **n'est pas écrite**.
+
+**Ce que DR5 liste** (`ZWADJ_CONTINUITE.md`, bloc DR1 à DR8, ligne « Journal », recopiée dans la table d'ouverture, § E) : `audit_logs.actor_member_id` « sur toute action de personnel (connexions, échecs, verrouillage, déblocage, création, réinitialisation, désactivation, recherche d'annuaire, création et modification de fiche) » — **neuf** éléments. **Réponse de Ko (consigne, 1 d)** : la liste est limitative pour ce qui S'AJOUTE — aucune nouvelle action n'est journalisée au-delà d'elle — mais toute ligne d'audit QUI EXISTE DÉJÀ et qu'une action de personnel écrit porte `actor_member_id`.
+
+## 1. Les neuf éléments de DR5
+
+| # | élément de DR5 | état à la carte de D355 (`b54e383`) | ce que CE lot écrit (R-5) | où et par quel test (à relever à la clôture) |
+|---|---|---|---|---|
+| 1 | **connexions** | écrit pour le mot de passe : `staff.login`, `staff.activate`, `staff.logout` | **+ `staff.pin_login`** : la connexion par PIN (K-23), dans la transaction qui ouvre la session ; l'entité est la session, la charge utile ne porte que le membre | à relever à la clôture |
+| 2 | **échecs** | écrit pour le mot de passe (`staff.login_failed`, `staff.password_change_failed`) ; PAS ENCORE pour le PIN | **+ `staff.pin_login_failed`** : un PIN faux (le compte d'échecs à la réservation, jamais le PIN) ; écrit après la réservation (qui a commité seule), comme pour le mot de passe — **même limite écrite** : un arrêt entre les deux perd une ligne, le compteur est juste | à relever à la clôture |
+| 3 | **verrouillage** | écrit pour la pause du mot de passe (`staff.password_pause`) ; PAS ENCORE pour le PIN | **+ `staff.pin_lock`** : le troisième échec pose `pin_locked_at` et met fin aux sessions du membre (`PIN_LOCKED`) ; la ligne dit le compte et le nombre de sessions terminées | à relever à la clôture |
+| 4 | **déblocage** | PAS ENCORE (il n'existe qu'avec le PIN) | **+ `staff.pin_unlock`** : la connexion par mot de passe (ou le changement de mot de passe) d'un membre dont le PIN est verrouillé génère un PIN neuf ; la ligne dit seulement que le déblocage a eu lieu par le mot de passe | à relever à la clôture |
+| 5 | **création** | écrit (`staff.member_create`, `staff.activate`) | inchangé | D354 / D341 |
+| 6 | **réinitialisation** | écrit (`staff.member_reset_password`) | inchangé dans sa charge utile (le PIN effacé n'est pas un compte : aucune clé de plus) ; **l'effacement du PIN se MESURE sur les colonnes**, pas sur la ligne | D354 ; l'effacement : à relever à la clôture |
+| 7 | **désactivation** | écrit (`staff.member_disable`) | inchangé dans sa charge utile ; l'effacement du PIN se mesure sur les colonnes | D354 ; l'effacement : à relever à la clôture |
+| 8 | **recherche d'annuaire** | PAS ENCORE (la route n'existe pas) | **rien** : lot L36-5 | — |
+| 9 | **création et modification de fiche** | écrit (D355 : `client_record.create`, `client_record.update`, `client_record.complete_names`) | inchangé | D355 |
+
+**Aucune ligne n'est écrite quand un PIN est ÉMIS** (à l'activation, à la connexion par mot de passe, au changement de mot de passe) : DR5 ne liste pas « l'émission d'un PIN » ; la réponse de Ko (1 d) interdit d'ajouter une action à la liste. L'émission se voit sur les colonnes (`pin_generated_at`) ; seul le **déblocage** (un PIN verrouillé que le mot de passe remplace) a sa ligne, parce que DR5 le liste.
+
+## 2. Les actions que le dépôt écrit et que DR5 ne liste PAS
+
+| action | écrite par | `actor_member_id` | ce que ce lot en fait |
+|---|---|---|---|
+| `staff.password_change` | `staff-store.prisma.ts` (K-18) | ✓ | inchangée |
+| **`quote.promote`** (D339) | `quote-store.prisma.ts` | **jamais écrit avant ce lot** (S-260) | **R-6 : elle porte le membre dont la session a passé le garde, `NULL` quand la couche est éteinte** ; la promotion elle-même ne change pas (D316) ; où et par quel test : à relever à la clôture |
+| `venue.publish`, `venue.reject`, `account_deletion.approve`, `account_deletion.reject`, `user.promote_admin` | l'administration (D349, D350) | `NULL` par construction (un ADMIN n'est pas un membre) | hors sujet |
+| les lignes de fiche (D355) | `pro-client-store.prisma.ts`, `quote-store.prisma.ts` par `ficheAuditEntry` | ✓ | inchangées |
+
+**Les actions MÉTIER d'un Pro (accepter ou refuser une demande, envoyer, réviser ou annuler un devis, bloquer une date, modifier la salle…) n'écrivent AUCUNE ligne de journal** — ni avec un membre, ni sans — et la réponse de Ko (1 d) dit qu'**aucune n'en reçoit** dans ce lot : « ni la création d'un devis, ni l'agenda, ni les réservations ».
+
+## 3. Ce que cette carte ne couvre PAS (écrit, pas tu)
+
+Qui **lit** le journal (aucun écran, aucune route) ; la **conservation** ; le **carnet horodaté des accès** de DR9 MS-3 (un lot de mise en service) ; un test qui **parcourrait toutes les actions écrites** et exigerait un membre quand la couche est activée (il n'existe pas : chaque action a son test, aucun ne les énumère toutes — la garde de SOURCE sur la charge utile du personnel, `staff-source-guards.spec.ts`, en tient la forme) ; l'**injection** de la ligne dans la même transaction se mesure par l'échec forcé (patron de D349 et de D355), pas par cette carte.

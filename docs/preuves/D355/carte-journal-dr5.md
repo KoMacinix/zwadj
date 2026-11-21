@@ -39,3 +39,5 @@
 ## 4. Ce que cette carte ne couvre PAS (écrit, pas tu)
 
 Qui **lit** le journal (aucun écran, aucune route ne le lit) ; la **conservation** (aucune purge, aucune durée) ; le **carnet horodaté des accès** que DR9 MS-3 exige à la mise en service (« les lignes d'audit des lots y servent ») : un lot de mise en service, pas celui-ci ; un test qui **parcourrait toutes les actions écrites** et exigerait un membre quand la couche est activée — il n'existe pas : chaque action a son test, aucun test ne les énumère toutes (une garde de SOURCE existe pour la forme de la charge utile du personnel : `staff-source-guards.spec.ts`).
+
+⛔ *(D356, 20/11/2026 : la moitié « PIN » des éléments 2, 3 et 4 (échecs, verrouillage, déblocage), l'élément 1 pour la connexion par PIN et la ligne `quote.promote` (§ 2) sont reprises par `docs/preuves/D356/carte-journal-dr5.md` : « PAS ENCORE — lot 3b » y devient « CE LOT (R-5) », puis, à la clôture, le fichier et le test. Le texte ci-dessus dit ce qui était vrai à `b54e383`. Annoté, pas réécrit.)*

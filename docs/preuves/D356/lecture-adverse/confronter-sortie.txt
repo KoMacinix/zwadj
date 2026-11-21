@@ -1,0 +1,91 @@
+calibration : 3 cas, 6 bras, 0 manqué (jeton présent/absent · expression enjambant une ligne · début de ligne MP-1 ≠ MP-10 ≠ MP-99)
+
+[0.1   ] ✓  origin/main = b54e383
+          examiné : 1 SHA
+          origin/main = b54e383 ; HEAD = 0ac8556 ; parent de HEAD = b54e383 (le commit de la table d'ouverture)
+[0.2   ] ✓  sur `main`, sans stash
+          examiné : 1 branche, 1 liste
+          branche main, 0 stash
+[0.3   ] ✓  « RANG 58 : EN ATTENTE DE CADRAGE DU RELECTEUR » (candidat L36-3b)
+          examiné : 3725737 caractères aplatis
+          4 occurrence(s)
+[0.4   ] ✓  compteur POUR MÉMOIRE TRENTE-SEPT
+          examiné : 3725737 caractères aplatis
+          1 occurrence(s) de « POUR MÉMOIRE **TRENTE-SEPT** »
+[0.5   ] ✓  dernier numéro du registre = D355 ; D356 libre
+          examiné : 310 lignes de registre
+          plus grand = D355
+[2.1   ] ✓  les colonnes pin_hash, pin_generated_at, pin_expires_at, pin_failed_count, pin_locked_at existent (migration de D341)
+          examiné : 5 colonnes
+          manquantes : aucune
+[2.2   ] ✓  CHECK pin_failed_count BETWEEN 0 AND 3 ; CHECK des trois colonnes du PIN nulles ou non nulles ensemble
+          examiné : 1 migration
+          compte 0..3 : 1 ; triple cohérent : 1
+[2.3   ] ✓  schema.prisma déclare les cinq champs du PIN (donc aucun `prisma generate` à refaire pour de nouvelles colonnes)
+          examiné : 5 champs
+          absents : aucun
+[2.4   ] ✓  env.ts : le secret JWT est `z.string().min(32)` sans défaut ; `PROD_REQUIRED_EXPLICIT` existe ; aucune variable du secret du PIN n'existe
+          examiné : 1 fichier
+          JWT min(32) sans défaut : 1 ; PROD_REQUIRED_EXPLICIT : 5 occurrence(s) ; « STAFF_PIN » : 0
+[2.5   ] ≈  « le secret JWT comme précédent » : il est dans `PROD_REQUIRED_EXPLICIT`
+          examiné : 1 liste
+          NON : `JWT_ACCESS_SECRET` n'est PAS dans la liste (son commentaire dit « n'a jamais eu de défaut, le schéma l'exige déjà partout ») ; la liste porte CLIENT_URL, PRO_URL, AUTH_COOKIE_SECURE, GOOGLE_CLIENT_ID, PAYMENTS_ENABLED (liste lue : 1). R-2 demande les DEUX (schéma `min(32)` sans défaut ET liste) : plus strict que le précédent, sans contradiction.
+[2.6   ] ✓  l'ouverture de session est conditionnée au hachage lu à la réservation (D355)
+          examiné : 1 fichier
+          2 occurrence(s) de « AND password_hash = ${input.expectedPasswordHash} »
+[1b.1  ] ✓  K-23 (`POST /pro/staff/pin-login`) n'existe pas encore
+          examiné : 3 fichiers
+          « pin-login » : 0 occurrence(s) dans le contrôleur, le client d'API et les types
+[1b.2  ] ≈  K-18 « si le cadrage le dit » : le cadrage amende-t-il K-18 ?
+          examiné : 3 lignes du § 5.1, 1 ligne du § 6.3
+          § 5.1 K-14 cite le PIN : True ; K-15 : True ; K-18 : False ; § 6.3 nomme K-18 dans « amendement des réponses de K-14, K-15, K-18 » : True. Le cadrage le dit en UN endroit (§ 6.3), sans dire QUAND K-18 rend un PIN : à décider (une règle, la même que K-15).
+[1b.3  ] ✓  K-21 n'efface aucun PIN aujourd'hui (« il n'existe pas encore »), K-22 non plus
+          examiné : 1 fichier
+          1 commentaire(s) « Aucune colonne de PIN n'est touchée » dans `resetMemberPassword` ; `disableMember` : aucune colonne `pin_` écrite (lue : 1 UPDATE de statut, sans `pin_`)
+[1d.1  ] ✓  `quote.promote` n'écrit pas `actor_member_id` ; c'est la seule ligne EXISTANTE qu'une action de personnel écrive sans lui
+          examiné : 2 site(s) `auditLog.create` dans quote-store.prisma.ts
+          "quote.promote" → actorMemberId : False | ligne de fiche (bâtie par `ficheAuditEntry`, module pur qui porte `actorMemberId`)
+[1d.2  ] ≈  les autres écrivains de `audit_logs` : ADMIN (hors couche), fiches (D355, `actorMemberId` porté), personnel (porté)
+          examiné : 5 fichiers
+          venues-admin.service.ts: 2 site(s), actorMemberId 0 fois, ficheAuditEntry( 0 fois; account-deletion.service.ts: 2 site(s), actorMemberId 0 fois, ficheAuditEntry( 0 fois; first-admin.ts: 1 site(s), actorMemberId 0 fois, ficheAuditEntry( 0 fois; pro-client-store.prisma.ts: 3 site(s), actorMemberId 0 fois, ficheAuditEntry( 3 fois; staff-store.prisma.ts: 1 site(s), actorMemberId 5 fois, ficheAuditEntry( 0 fois ; `client-record-audit.ts` porte `actorMemberId` 2 fois — la liste complète des sites est relevée par la carte du journal (R-5).
+[R3.1  ] ≈  MP-15 (le verrou `pin_locked_at` est posé par la RÉSERVATION n° 3) et R-3 (l'ouverture exige `pin_locked_at` nul) tiennent ENSEMBLE
+          examiné : 2 lignes du cadrage, 1 consigne
+          MP-15 pose le verrou à la réservation n° 3 : True (MP-1 ne dit que la CONDITION de la réservation, `pin_locked_at IS NULL AND pin_failed_count < 3` : True) ; R-3 exige `pin_locked_at` nul à l'ouverture : True. Pris à la lettre ensemble, le TROISIÈME essai, même JUSTE, trouverait le verrou posé par sa propre réservation et serait refusé : « trois essais » deviendrait deux. DÉCISION À PRENDRE (S-269).
+[R3.2  ] ✓  l'analogue D341 (mot de passe) : la pause est posée par la 5ᵉ réservation ET une 5ᵉ tentative juste ouvre la session
+          examiné : 1 fichier
+          « password_locked_until = NULL » : 4 occurrence(s) — l'ouverture REMET le verrou à NULL au lieu de l'exiger nul : le précédent ne refuse pas la dernière tentative juste.
+[R3.3  ] ≈  MP-2 : « PIN correct sans cookie → refus, compteur INCHANGÉ »
+          examiné : 1 ligne du cadrage
+          oblige à vérifier l'appareil AVANT de réserver (un PIN sans appareil ne consomme aucun essai : sinon un porteur du seul Bearer verrouillerait un membre). Précisé en design, pas contredit.
+[R6.1  ] ≈  R-6 (D341) : l'échéance d'un appareil est la durée du PIN ; L36-3b la ramène sous `pin_expires_at`
+          examiné : 1 fichier
+          2 insertion(s) d'appareil à `now() + PIN_VALIDITY_DAYS` (activation, connexion). Un appareil créé APRÈS un PIN existant dépasserait `pin_expires_at` : à ramener par `LEAST(…, pin_expires_at)` dans l'ouverture (MP-27 : inexprimable en SQL entre deux tables, donc applicatif).
+[R4.1  ] ≈  R-4 : l'état du compte est « lu par le garde, la connexion par mot de passe et la connexion par PIN »
+          examiné : 1 fichier
+          le garde lit `etatDuCompte` (True) ; AUCUNE décision du garde ne dépend du PIN (le verrouillage met fin aux sessions à la base ; une session ne se refuse pas parce que le PIN a expiré). « Lue par le garde » ne se prend pas à la lettre pour l'état du PIN : à écrire en décision.
+[R5.1  ] ✓  aucune ligne d'audit du PIN n'existe encore (connexion, échec, verrouillage, déblocage)
+          examiné : 1 fichier (l'union fermée `StaffAuditEntry`)
+          « staff.pin_ » : 0 occurrence(s)
+[R7.1  ] ≈  R-7 : « aucun code d'erreur neuf » — le refus de K-23 est donc `STAFF_INVALID_CREDENTIALS`
+          examiné : 1 catalogue
+          son message FR (`staff.errors.invalidCredentials`) est « Nom de compte ou mot de passe incorrect. Après plusieurs échecs, la connexion est suspendue 15 minutes. » : il parle de NOM DE COMPTE, de MOT DE PASSE et d'une pause de 15 minutes. Après un mauvais PIN l'écran devra dire autre chose (L36-4 écrit son texte) ; le code et le corps restent ceux de K-15 (aucune fuite d'état, R-3).
+[S264.1] ≈  les tests EXISTANTS qui comptent les routes exemptées ou les clés de débit du personnel (ils changeront avec K-23)
+          examiné : 5 fichiers de test
+          occurrences de « exempt » / clés de débit : staff-source-guards.spec.ts=4, staff-session-guard.int-spec.ts=12, throttle.int-spec.ts=8, rbac-all-routes.int-spec.ts=0, staff-capabilities.int-spec.ts=3
+[S264.2] ≈  les tests EXISTANTS qui comptent des lignes d'`audit_logs` ou comparent la FORME d'une réponse de K-14, K-15 ou K-18 (le corps gagne la clé `pin`)
+          examiné : 5 fichiers de test
+          staff-activation.int-spec.ts: audit=1 forme=0, staff-login.int-spec.ts: audit=0 forme=1, staff-password.int-spec.ts: audit=0 forme=1, staff-members.int-spec.ts: audit=2 forme=0, log-temporary-password.int-spec.ts: audit=0 forme=0
+[R2.1  ] ≈  R-2 : « les tests posent leur propre valeur jetable » — état d'aujourd'hui
+          examiné : setup-env.ts, playwright.config.ts
+          `setup-env.ts` lit `apps/api/.env` par `import "dotenv/config"` (True) et ne pose AUCUN secret (0 occurrence de JWT_ACCESS_SECRET : il vient du `.env` de Ko) ; le serveur d'API de l'e2e reçoit un bloc `env:` sans secret (0 occurrence). Sans la valeur jetable posée par ce lot, `test:int` et `test:e2e` refuseraient de démarrer APRÈS le lot.
+[R2.2  ] ≈  R-2 / D200 : `.env.example` reçoit le NOM seul
+          examiné : 1 fichier
+          l'exemple porte déjà `JWT_ACCESS_SECRET=dev-only-secret-change-me-in-production-0123456789` (un MARQUEUR de développement, pas une valeur réelle) ; la variable du PIN y entrera SANS valeur. Le précédent n'est pas suivi à la lettre ici, comme R-2 le veut.
+[MP36.1] ✓  MP-36 : la clé `staffPin` du débit n'existe pas encore ; le levier est unique (D128)
+          examiné : 1 fichier
+          « staffPin » : 0 occurrence(s) ; clés neuves attendues dans `AUTH_THROTTLE`, relâchées par `THROTTLE_STAFF_PIN_LIMIT` de `setup-env.ts`
+[MP43.1] ≈  « longueur = paramètre », « 3 essais » : le levier `STAFF_LIMITS` porte-t-il la longueur et le nombre d'essais ?
+          examiné : 1 fichier
+          `PIN_VALIDITY_DAYS` : 1 occurrence(s) ; `PIN_LENGTH` : 0 ; `PIN_MAX_FAILURES` : 0. Deux clés à ajouter ; le plafond de 3 est AUSSI écrit dans la `CHECK` de la base (la constante ne peut pas dépasser 3 sans la migration : à garder par un test).
+
+RÉSUMÉ : 29 contrôles : 16 ✓ · 13 ≈ · 0 ✗ · 0 ?   (SHA de départ b54e383 ; attendu : aucun ✗ — un ✗ ARRÊTE le lot)
