@@ -512,3 +512,22 @@ docs/preuves/D356/neutralisation/touchees/unite-neutralize-r57.py.log
 docs/preuves/D356/neutralisation/touchees/unite-neutralize-s10b.py.log
 docs/preuves/D356/neutralisation/touchees/unite-resume.txt
 ```
+
+**Extension 6 — avant le commit des pièces des PORTES, de la passe D277, du dernier audit de secrets et du contrôle de fin de lot** : les journaux bruts des six portes MASQUÉS par `masquer-jetons.py` (la copie de D354, non modifiée) — dont la seconde passe e2e —, l'index et l'état machine relevés par le pilote de D340 (non modifié), la passe D277 dans les deux sens, l'audit de secrets « c » (le dernier versement : portes, campagnes, harnais, geste de Ko, corrections) et son tri, et la sortie du contrôle de fin de lot (écrite APRÈS la poussée, D288 ; elle entre dans un commit propre, poussé à son tour). Chemins complets :
+
+```
+docs/preuves/D356/portes/_index.txt
+docs/preuves/D356/portes/FIN
+docs/preuves/D356/portes/etat-machine-pendant.txt
+docs/preuves/D356/portes/typecheck.txt
+docs/preuves/D356/portes/lint.txt
+docs/preuves/D356/portes/test.txt
+docs/preuves/D356/portes/build.txt
+docs/preuves/D356/portes/test-int.txt
+docs/preuves/D356/portes/test-e2e.txt
+docs/preuves/D356/portes/test-e2e-passe-2.txt
+docs/preuves/D356/passe-d277.txt
+docs/preuves/D356/audit-secrets-d356c.txt
+docs/preuves/D356/tri-audit-d356c.txt
+docs/preuves/D356/controle-fin-de-lot.txt
+```
